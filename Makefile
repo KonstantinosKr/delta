@@ -1,8 +1,8 @@
 # C files
-C_SRC=motion.c input.c output.c loba.c contact.c tribal.c migration.c 
+C_SRC=motion.c input.c output.c loba.c contact.c vega.c migration.c 
 
 # ISPC files
-ISPC_SRC= tribal.ispc bf.ispc
+ISPC_SRC= vega.ispc bf.ispc
 
 # ISPC targets
 ISPC_TARGETS=avx2
@@ -16,10 +16,10 @@ ZOLTANINC = -I/usr/local/include
 ZOLTANLIB = -L/usr/local/lib -lzoltan
 
 HULLINC = -Iext/hul
-HULLLIB = -Lext/hul/ -lhul
+HULLLIB = -Lext/hul -lhul
 
 # Program name
-EXE=tribal
+EXE=vega
 
 # Floating point type
 REAL=double

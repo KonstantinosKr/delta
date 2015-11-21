@@ -8,10 +8,10 @@ else
 endif
 
 ifeq ($(DEBUG),yes)
-  CFLAGS=-Iobjs/ -g -std=c11 --O0 -m64 $(REAL) -DDEBUG $(ZOLTANINC)
-  ISPC=ispc -g -O0 --arch=x86-64 $(REAL) -DDEBUG
+  CFLAGS=-Iobjs/ -g -O2 -m64 $(REAL) -DDEBUG $(ZOLTANINC) $(HULLINC)
+  ISPC=ispc -g -O2 --arch=x86-64 $(REAL) -DDEBUG
 else
-  CFLAGS=-Iobjs/ -std=c11 -O2 -m64 $(REAL) $(ZOLTANINC)
+  CFLAGS=-Iobjs/ -O2 -std=c11 -m64 $(REAL) $(ZOLTANINC) $(HULLINC)
   ISPC=ispc -O2 --arch=x86-64 --woff $(REAL) 
 endif
 
@@ -22,7 +22,7 @@ ISPC_OBJS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.o))
 ISPC_HEADERS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.h))
 CPP_OBJS=$(addprefix objs/, $(CPP_SRC:.cpp=.o) $(TASK_OBJ))
 C_OBJS=$(addprefix objs/, $(C_SRC:.c=.o))
-LIBS=-lm $(TASK_LIB) -lstdc++ $(ZOLTANLIB)
+LIBS=-lm $(TASK_LIB) -lstdc++ $(ZOLTANLIB) $(HULLLIB)
 
 
 default: dirs $(ISPC_HEADERS) $(CPP_OBJS) $(C_OBJS) $(EXE)

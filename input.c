@@ -64,7 +64,6 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3],
    
   iREAL mint, maxt;
   load_enviroment(ptype, nt, *nParticles, t, tid, pid, &mint, &maxt);
-  printf("ntinit:%i\n",*nt); 
   iREAL velo[3] = {50, 50, 50};
   lo[0] = -250; // lower corner
   lo[1] = -250; // lower corner
@@ -125,11 +124,9 @@ void load_enviroment(int ptype[], unsigned int *nt, unsigned int nParticles, iRE
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
         gen_nonsphericalparticle(0.25, 5, 50, &n, i, *nt, t, tid, pid, mint, maxt);
     }
-    printf("n:%i\n", n);
     *nt = n + *nt;
     n = 0;
   }
-  printf("loadnt:%i\n", *nt);
 }
 
 void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned int *nt, unsigned int bodyidx, unsigned int initidx, iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *mint, iREAL *maxt)
@@ -285,7 +282,6 @@ void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned i
 
     }
     
-    printf(":::%u::\n",pointlength);
     counter = 0;
     for(unsigned int i=initidx;i<initidx+n;i++)
     {
