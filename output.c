@@ -136,7 +136,6 @@ void postProcessing(int nranks, unsigned int size, unsigned int timesteps)
                 {
                     ch = fscanf(fp,"%s",word);//n points
                     n = atoi(word);//n points saved
-                    nt = n;
                     ch = fscanf(fp,"%s",word);//float or double read
                     
                     //loop through points
@@ -189,7 +188,7 @@ void postProcessing(int nranks, unsigned int size, unsigned int timesteps)
         
         // WRITE OUTPUT
         //
-        char iter[15];
+        char iter[50];
         sprintf(iter, "%i.vtk", ii);
         char filename[50] = "output/mergedmpi/output"; //care or buffer overflow
         strcat(filename, iter);

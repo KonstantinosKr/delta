@@ -15,6 +15,9 @@ MPICXX=mpicc
 ZOLTANINC = -I/usr/local/include
 ZOLTANLIB = -L/usr/local/lib -lzoltan
 
+HULLINC = -Iext/hul
+HULLLIB = -Lext/hul/ -lhul
+
 # Program name
 EXE=tribal
 
