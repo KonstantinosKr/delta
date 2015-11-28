@@ -14,6 +14,7 @@
 #include "migration.h"
 #include "tmr.h"
 
+
 int main (int argc, char **argv)
 {
   iREAL *t[3][3]; /* triangles */
@@ -47,6 +48,7 @@ int main (int argc, char **argv)
       p[i] = (iREAL *) malloc (size*sizeof(iREAL));
       q[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
+    
     distance = (iREAL *) malloc (size*sizeof(iREAL));
     tid = (unsigned int *) malloc (size*sizeof(unsigned int));
     pid = (unsigned int *) malloc (size*sizeof(unsigned int));
@@ -145,7 +147,7 @@ int main (int argc, char **argv)
     
     printf("RANK[%i]: integration:%f\n", myrank, tintegration[timesteps].total);
 
-//    output_state(lb, myrank, nt, t, v, timesteps);
+    output_state(lb, myrank, nt, t, v, timesteps);
     
     timesteps++;
   }

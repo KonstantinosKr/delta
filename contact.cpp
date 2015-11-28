@@ -3,6 +3,8 @@
 #include "stdlib.h"
 #include "algo.h"
 #include "math.h"
+
+using namespace ispc;
 //s1 and e1 mean start of section 1 and end of section 1, same for s2,e2 and nt size nts1, nts2
 void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2,  unsigned int size, iREAL *t[3][3], iREAL *p[3], iREAL *q[3], iREAL *distance)
 {
@@ -60,10 +62,11 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
     ispc_bf (nt, a, b, c, d, e, f, pp, qq);//use tasks 
     
     nt = 0;//use as counter
+    iREAL margin = 1E-3;
     for(unsigned int j=s2;j<e2;j++)
     {
       iREAL dist = sqrt(pow((qq[0][nt]-pp[0][nt]),2)+pow((qq[1][nt]-pp[1][nt]),2)+pow((qq[2][nt]-pp[1][nt]),2));
-      if(dist < 1E-3)
+      if(dist < margin*2)//if there is margin overlap
       {
         p[0][j]= pp[0][nt]; 
         p[1][j]= pp[1][nt]; 
@@ -72,7 +75,7 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
         q[0][j] = qq[0][nt];
         q[1][j] = qq[1][nt];
         q[2][j] = qq[2][nt];
-
+        
         distance[j] = dist;
       }
       nt++;

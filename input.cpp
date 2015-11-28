@@ -150,7 +150,7 @@ void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned i
     tr = hull((iREAL *)v, pointsize, &pointlength);
     int counter = 0;
     
-    for(TRI *t = tr, *e = t + pointlength; t < e; t ++){counter++;}
+    for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++){counter++;}
     
     unsigned int n = counter*3;
     *nt = pointlength;
@@ -163,13 +163,13 @@ void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned i
     iREAL max = DBL_MIN;
     
     counter = 0;
-    for(TRI *t = tr, *e = t + pointlength; t < e; t ++)
+    for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++)
     {
         iREAL p[3];
        
-        point[0][counter] = t->ver [0][0];
-        point[1][counter] = t->ver [0][1];
-        point[2][counter] = t->ver [0][2];
+        point[0][counter] = tri->ver [0][0];
+        point[1][counter] = tri->ver [0][1];
+        point[2][counter] = tri->ver [0][2];
        
         if(point[0][counter] < min)
         {
@@ -204,9 +204,9 @@ void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned i
         }
         
         counter++;
-        point[0][counter] = t->ver [1][0];
-        point[1][counter] = t->ver [1][1];
-        point[2][counter] = t->ver [1][2];
+        point[0][counter] = tri->ver [1][0];
+        point[1][counter] = tri->ver [1][1];
+        point[2][counter] = tri->ver [1][2];
         
         
         if(point[0][counter] < min)
@@ -242,9 +242,9 @@ void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned i
         }
         
         counter++;
-        point[0][counter] = t->ver [2][0];
-        point[1][counter] = t->ver [2][1];
-        point[2][counter] = t->ver [2][2];
+        point[0][counter] = tri->ver [2][0];
+        point[1][counter] = tri->ver [2][1];
+        point[2][counter] = tri->ver [2][2];
         
         if(point[0][counter] < min)
         {

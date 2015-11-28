@@ -1,6 +1,3 @@
-TASK_CPP_OBJ=tasksys.o
-TASK_LIB=-lpthread
-
 ifeq ($(REAL),double)
   REAL=-DiREAL=double
 else
@@ -8,22 +5,18 @@ else
 endif
 
 ifeq ($(DEBUG),yes)
-  CFLAGS=-Iobjs/ -g -O2 -m64 $(REAL) -DDEBUG $(ZOLTANINC) $(HULLINC)
-  ISPC=ispc -g -O2 --arch=x86-64 $(REAL) -DDEBUG
+  CFLAGS=-Iobjs/ -g -O0 -m64 $(REAL) $(ZOLTANINC) $(HULLINC) -fopenmp -DDEBUG
+  ISPC=ispc -g -O0 --arch=x86-64 $(REAL) -DDEBUG
 else
-  CFLAGS=-Iobjs/ -O2 -std=c11 -m64 $(REAL) $(ZOLTANINC) $(HULLINC)
+  CFLAGS=-Iobjs/ -O2 -m64 $(REAL) $(ZOLTANINC) $(HULLINC) -fopenmp
   ISPC=ispc -O2 --arch=x86-64 --woff $(REAL) 
 endif
 
-CC=icc
-CXX=icpc
-
-ISPC_OBJS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.o))
+ISPC_OBJS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.o) $(ISPC_SRC:.ispc=_ispc_sse2.o) $(ISPC_SRC:.ispc=_ispc_sse4.o) $(ISPC_SRC:.ispc=_ispc_avx.o)) 
 ISPC_HEADERS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.h))
-CPP_OBJS=$(addprefix objs/, $(CPP_SRC:.cpp=.o) $(TASK_OBJ))
+CPP_OBJS=$(addprefix objs/, $(CPP_SRC:.cpp=.o))
 C_OBJS=$(addprefix objs/, $(C_SRC:.c=.o))
-LIBS=-lm $(TASK_LIB) -lstdc++ $(ZOLTANLIB) $(HULLLIB)
-
+LIBS=-lm -lstdc++ $(ZOLTANLIB) $(HULLLIB) $(PYTHONLIB)
 
 default: dirs $(ISPC_HEADERS) $(CPP_OBJS) $(C_OBJS) $(EXE)
 
@@ -46,13 +39,20 @@ clean:
 	find ./ -iname "*.dump" -exec rm '{}' ';'
 
 $(EXE): $(CPP_OBJS) $(C_OBJS) $(ISPC_OBJS)
-	$(MPICXX) -o $@ $^ $(LIBS)
+	$(MPICXX) $(CFLAGS) -fopenmp -o $@ $^ $(LIBS)
 
 objs/%_ispc.h objs/%_ispc.o objs/%_ispc_sse2.o objs/%_ispc_sse4.o objs/%_ispc_avx.o: %.ispc
 	$(ISPC) --target=$(ISPC_TARGETS) $< -o objs/$*_ispc.o -h objs/$*_ispc.h
+
+objs/input.o: input.cpp
+	$(CXX) $(CFLAGS) $(PYTHONINC) $< -c -o $@
+
+objs/tasksys.o: tasksys.cpp
+	$(CXX) $(CFLAGS) -D ISPC_USE_OMP $< -c -o $@
 
 objs/%.o: %.cpp $(ISPC_HEADERS)
 	$(CXX) $(CFLAGS) $< -c -o $@
 
 objs/%.o: %.c $(ISPC_HEADERS)
 	$(MPICXX) $(CFLAGS) $< -c -o $@
+

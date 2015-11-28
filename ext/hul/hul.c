@@ -21,15 +21,15 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Solfec. If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdlib.h>
-#include <float.h>
-#include "mem.h"
-#include "err.h"
-#include "alg.h"
-#include "lis.h"
-#include "set.h"
 #include "hul.h"
+#include "float.h"
+#include "set.h"
+
+
+#include "alg.h"
+#include "mem.h"
 #include "predicates.h"
+#include "err.h"
 
 typedef struct vertex vertex;
 typedef struct edge edge;
@@ -93,9 +93,19 @@ static int setplane (face *f)
 /* return edge of f pointing to g */
 inline static edge* othere (face *f, face *g)
 {
+  // Changed for C++0x
+  // @todo Tell Tomek about
+
+/*
   for (edge *e = f->e; e; e = e->n)
   {
     if (e->f == g) return e;
+  }
+*/
+  edge* e = f->e;
+  while (e) {
+    if (e->f == g) return e;
+    e = e->n;
   }
 
 #if GEOMDEBUG
@@ -108,9 +118,20 @@ inline static edge* othere (face *f, face *g)
 /* return vertex of f other than p and q */
 inline static double* otherv (face *f, double *p, double *q)
 {
+  // Changed for C++0x
+  // @todo Tell Tomek about
+
+/*
   for (edge *e = f->e; e; e = e->n)
   {
     if (e->v[0] != p && e->v[0] != q) return e->v [0];
+  }
+*/
+
+  edge *e = f->e;
+  while (e) {
+    if (e->v[0] != p && e->v[0] != q) return e->v [0];
+    e = e->n;
   }
 
 #if GEOMDEBUG
@@ -123,9 +144,19 @@ inline static double* otherv (face *f, double *p, double *q)
 /* return edge starting at v */
 inline static edge* edge_0 (face *f, double *v)
 {
+  // Changed for C++0x
+  // @todo Tell Tomek about
+
+/*
   for (edge *e = f->e; e; e = e->n)
   {
     if (e->v [0] == v) return e;
+  }
+*/
+  edge *e = f->e;
+  while (e) {
+    if (e->v [0] == v) return e;
+    e = e->n;
   }
 
 #if GEOMDEBUG
@@ -138,9 +169,18 @@ inline static edge* edge_0 (face *f, double *v)
 /* return edge ending at v */
 inline static edge* edge_1 (face *f, double *v)
 {
+  // Changed for C++0x
+  // @todo Tell Tomek about
+/*
   for (edge *e = f->e; e; e = e->n)
   {
     if (e->v [1] == v) return e;
+  }
+*/
+  edge *e = f->e;
+  while (e) {
+    if (e->v [1] == v) return e;
+    e = e->n;
   }
 
 #if GEOMDEBUG
@@ -473,8 +513,16 @@ static void mark (face *f, double *v, face **g)
   if (!f->marked && d > 0.0)
   {
     f->marked = 1;
-    for (edge *e = f->e; e; e = e->n) mark (e->f, v, g);
-  }
+    // Changed for C++0x
+    // @todo Tell Tomek about
+
+//    for (edge *e = f->e; e; e = e->n) mark (e->f, v, g);
+    edge *e = f->e;
+    while (e) {
+      mark (e->f, v, g);
+      e = e->n;
+    }
+}
   else if (d <= 0.0) *g = f;
 }
 

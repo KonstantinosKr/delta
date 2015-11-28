@@ -28,6 +28,10 @@ void loba_balance (struct loba *lb, unsigned int n, iREAL *p[3], unsigned int *i
 
 void loba_getAdjacent(struct loba *lb, int myrank, int *neighborhood, int *nNeighbors);
 
+void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, unsigned nt, iREAL *t[3][3], unsigned int *tid, unsigned int *pid, 
+                    unsigned int *ghostTID, unsigned int *ghostPID, unsigned int *nGhosts, 
+                    unsigned int *nGhostNeighbors, int *ghostNeighborhood, 
+                    unsigned int *ghostTIDNeighbors[], unsigned int *ghostTIDcrosses);
 void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], iREAL *v[3], iREAL *p[3], iREAL *q[3], iREAL *distance, unsigned int *tid, unsigned int *pid, iREAL *timer1, iREAL *timer2, iREAL *timer3);
 
 /* find ranks overlapped by the [lo,hi] box */
