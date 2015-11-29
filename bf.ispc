@@ -1,9 +1,9 @@
 #include "algo.h"
 
-export void ispc_bf (uniform unsigned int n,
-                         uniform iREAL uniform pp1[3], uniform iREAL uniform pp2[3], uniform iREAL uniform pp3[3],
-                         uniform iREAL * uniform pp4[3], uniform iREAL * uniform pp5[3], uniform iREAL * uniform pp6[3],
-                         uniform iREAL * uniform P[3], uniform iREAL * uniform Q[3]) 
+export void ispc_bf (uniform unsigned int it, uniform unsigned int nt,
+                    uniform iREAL uniform pp1[3], uniform iREAL uniform pp2[3], uniform iREAL uniform pp3[3],
+                    uniform iREAL * uniform pp4[3], uniform iREAL * uniform pp5[3], uniform iREAL * uniform pp6[3],
+                    uniform iREAL * uniform P[3], uniform iREAL * uniform Q[3]) 
 {
 
 	
@@ -20,8 +20,8 @@ export void ispc_bf (uniform unsigned int n,
   pointArray[0][2] = pp3[0];
   pointArray[1][2] = pp3[1];
   pointArray[2][2] = pp3[2];
-  
-  foreach(i=0 ... n)
+
+  foreach(i=it ... nt)
   { 
     pointArray[0][3] = pp4[0][i];
     pointArray[1][3] = pp4[1][i];

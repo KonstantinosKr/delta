@@ -331,7 +331,7 @@ void loba_getbox (struct loba *lb, int part, iREAL lo[3], iREAL hi[3])
 }
 
 
-void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], iREAL *v[3], iREAL *p[3], iREAL *q[3], iREAL *distance, unsigned int *tid, unsigned int *pid, iREAL *timer1, iREAL *timer2, iREAL *timer3)
+void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], iREAL *v[3], iREAL dt, iREAL *p[3], iREAL *q[3], iREAL *distance, unsigned int *tid, unsigned int *pid, unsigned int long long *ncontacts, iREAL *timer1, iREAL *timer2, iREAL *timer3)
 {
   TIMING t1, t2, t3;
   
@@ -348,10 +348,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   unsigned int *ghostTIDcrosses = (unsigned int*) malloc(*nt*sizeof(unsigned int));
   int *ghostNeighborhood = (int*) malloc(nproc*sizeof(int));
   
-  for(int i = 0;i<nproc;i++)
-  {
-    ghostNeighborhood[i] = -1;
-  }
+  for(int i = 0;i<nproc;i++){ghostNeighborhood[i] = -1;}
   for(int i = 0;i<*nt;i++){ghostTIDNeighbors[i] = (unsigned int*) malloc(nNeighbors*sizeof(unsigned int));}
   unsigned int nGhosts, nGhostNeighbors;
   
@@ -477,7 +474,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   *timer1 = t1.total;
   
   timerstart(&t2);
-  contact_detection (0, *nt, 0, *nt, *nt, t, p, q, distance);//local computation
+  contact_detection (0, *nt, 0, *nt, t, v, dt, p, q, distance, ncontacts);//local computation
   timerend(&t2);
   *timer2 = t2.total;
   
@@ -526,11 +523,14 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
     }
   }
   timerend(&t3);
-  *timer3 = t3.total-t4.total;
+  *timer3 = t3.total;//doesn't include timer 4
   
-  //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-  contact_detection (0, *nt, *nt, receive_idx, n, t, p, q, distance);
-  
+  if(receive_idx > *nt)
+  {
+    printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, *nt, receive_idx);
+    //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
+    contact_detection (0, *nt, *nt, receive_idx, t, v, dt, p, q, distance, ncontacts);
+  }
   for(int i=0; i<3; i++)
   {
     free(tbuffer[i]);
@@ -595,7 +595,6 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, unsigned nt, iR
         zmin = t[ii][2][i];
       }
 
-
       if(t[ii][0][i] > xmax) //if x > xmax
       {
         xmax = t[ii][0][i];
@@ -649,7 +648,7 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, unsigned nt, iR
 }
 
 /*
-void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], iREAL *v[3], iREAL *p[3], iREAL *q[3], iREAL *distance, unsigned int *tid, unsigned int *pid, iREAL *timer1, iREAL *timer2, iREAL *timer3)
+void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], iREAL *v[3], iREAL dt, iREAL *p[3], iREAL *q[3], iREAL *distance, unsigned int *tid, unsigned int *pid, unsigned int long long *ncontacts, iREAL *timer1, iREAL *timer2, iREAL *timer3)
 {
     TIMING t1, t2, t3;
  
@@ -751,7 +750,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
     *timer1 = t1.total;
 
     timerstart(&t2); 
-    contact_detection (0, *nt, 0, *nt, *nt, t, p, q, distance);//local computation
+    contact_detection (0, *nt, 0, *nt, *nt, t, v, dt, p, q, distance, ncontacts);//local computation
     timerend(&t2);    
     *timer2 = t2.total; 
 
@@ -799,7 +798,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
     *timer3 = t3.total;
 
     //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-    contact_detection (0, *nt, *nt, sum, sum-*nt, t, p, q, distance);
+    contact_detection (0, *nt, *nt, sum, t, v, dt, p, q, distance, ncontacts);
     
     free(pivot);
     free(rcvpivot);

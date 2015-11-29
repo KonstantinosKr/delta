@@ -36,6 +36,6 @@ struct slave_conpnt
 };
 
 /* calculate distances */
-void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2,  unsigned int size, iREAL *t[3][3], iREAL *p[3], iREAL *q[3], iREAL *distance);
+void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, iREAL *t[3][3], iREAL *v[3], iREAL *p[3], iREAL *q[3], iREAL *distance,unsigned long long int *ncontacts);
 
 #endif

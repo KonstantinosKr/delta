@@ -34,7 +34,7 @@ namespace ispc { /* namespace */
 #if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
 extern "C" {
 #endif // __cplusplus
-    extern void ispc_bf(uint32_t n, double * pp1, double * pp2, double * pp3, double *  * pp4, double *  * pp5, double *  * pp6, double *  * P, double *  * Q);
+    extern void ispc_bf(uint32_t it, uint32_t nt, double * pp1, double * pp2, double * pp3, double *  * pp4, double *  * pp5, double *  * pp6, double *  * P, double *  * Q);
 #if defined(__cplusplus) && (! defined(__ISPC_NO_EXTERN_C) || !__ISPC_NO_EXTERN_C )
 } /* end extern C */
 #endif // __cplusplus

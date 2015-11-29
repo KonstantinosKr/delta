@@ -3,48 +3,24 @@
 #include "stdlib.h"
 #include "algo.h"
 #include "math.h"
+#include <omp.h>
 
 using namespace ispc;
 //s1 and e1 mean start of section 1 and end of section 1, same for s2,e2 and nt size nts1, nts2
-void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2,  unsigned int size, iREAL *t[3][3], iREAL *p[3], iREAL *q[3], iREAL *distance)
+void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, iREAL *t[3][3], iREAL *v[3], iREAL dt, iREAL *p[3], iREAL *q[3], iREAL *distance, unsigned long long int *ncontacts)
 {
   unsigned int nts1 = e1-s1;
   unsigned int nts2 = e2-s2;
-
-  iREAL *d[3], *e[3], *f[3], *pp[3], *qq[3];
   
-  //allocate memory
-  for(int i=0;i<3;i++)
-  {
-    d[i] = (iREAL *) malloc(nts2 * sizeof(iREAL));
-    e[i] = (iREAL *) malloc(nts2 * sizeof(iREAL));
-    f[i] = (iREAL *) malloc(nts2 * sizeof(iREAL));
-    pp[i] = (iREAL *) malloc(nts2 * sizeof(iREAL));
-    qq[i] = (iREAL *) malloc(nts2 * sizeof(iREAL));
-  }
-  
-  nts2 = 0; //use as counter
-  //Set triangle 2 points D,E,F
-  for(unsigned int i=s2;i<s2;i++)
-  {
-    d[0][nts2] = t[0][0][i];
-    d[1][nts2] = t[0][1][i];
-    d[2][nts2] = t[0][2][i];
-    
-    e[0][nts2] = t[1][0][i];
-    e[1][nts2] = t[1][1][i];
-    e[2][nts2] = t[1][2][i];
-    
-    f[0][nts2] = t[2][0][i];
-    f[1][nts2] = t[2][1][i];
-    f[2][nts2] = t[2][2][i];
-    nts2++;
-  }
-  
+  *ncontacts = 0;//use as counter
   iREAL a[3], b[3], c[3];
+
+  omp_set_num_threads(4);//don't know much to set this
   
   //Set triangle 1 points A,B,C
-  for(unsigned int i=s1;i<s1;i++)
+  #pragma force inline recursive
+  #pragma omp parallel for schedule(dynamic,1) collapse(2)
+  for(unsigned int i=s1;i<e1;i++)
   { 
     a[0] = t[0][0][i];
     a[1] = t[0][1][i];
@@ -58,38 +34,36 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
     c[1] = t[2][1][i];
     c[2] = t[2][2][i];
     
-    unsigned int nt = e2-s2;
-    ispc_bf (nt, a, b, c, d, e, f, pp, qq);//use tasks 
-    
-    nt = 0;//use as counter
-    iREAL margin = 1E-3;
-    for(unsigned int j=s2;j<e2;j++)
+    ispc_bf (s2, e2, a, b, c, t[0], t[1], t[2], p, q);//use tasks 
+     
+    iREAL marginT1 = 1E-3*dt;
+    iREAL marginT2 = 1E-3*dt;
+    iREAL margin = marginT1+marginT2
+    for(unsigned int j=s2;j<e2;j++) //careful; range can overflow due to ghosts particles
     {
-      iREAL dist = sqrt(pow((qq[0][nt]-pp[0][nt]),2)+pow((qq[1][nt]-pp[1][nt]),2)+pow((qq[2][nt]-pp[1][nt]),2));
-      if(dist < margin*2)//if there is margin overlap
-      {
-        p[0][j]= pp[0][nt]; 
-        p[1][j]= pp[1][nt]; 
-        p[2][j]= pp[2][nt]; 
-        
-        q[0][j] = qq[0][nt];
-        q[1][j] = qq[1][nt];
-        q[2][j] = qq[2][nt];
-        
+      iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[1][j]),2));
+      //if there is margin overlap
+      if(dist < margin && dist != 0 && (pid[i] != pid[j]))
+      {//contact found, //if not same particle body //get min distance contact
         distance[j] = dist;
+     
+        iREAL midpt[3];
+        midpt[0] = (p[0]+q[0])/2; //x
+        midpt[1] = (p[1]+q[1])/2; //y
+        midpt[2] = (p[2]+q[2])/2; //z
+    
+        iREAL depth = dist - margin;
+    
+        iREAL normal[3];
+        iREAL mul = 1/sqrt(pow(midpt[0],2)+pow(midpt[1],2)+pow(midpt[2],2));
+        normal[0] = mul*midpt[0];
+        normal[1] = mul*midpt[1];
+        normal[2] = mul*midpt[2];
+        *ncontacts++;
+
+        //store contact point to tree
       }
-      nt++;
     }
-  }
-
-
-  for(int i=0;i<3;i++)
-  {  
-    free(d[i]); 
-    free(e[i]);
-    free(f[i]);
-    free(pp[i]);
-    free(qq[i]);
   }
 }
 

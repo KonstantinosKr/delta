@@ -58,7 +58,7 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3],
    
    
   //non-spherical particles generation and loading
-  *nParticles = 1000;
+  *nParticles = 50;
   int ptype[*nParticles];
   for(int i = 0; i < *nParticles; i++){ptype[i] = 6;}
    

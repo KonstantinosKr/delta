@@ -77,10 +77,12 @@ int main (int argc, char **argv)
       
     for(unsigned int i=0;i<size;i++) tid[i] = UINT_MAX;
   }
-  
+
+  unsigned long long int ncontacts = 0;
+
   int num_import, num_export, *import_procs, *export_procs;
   ZOLTAN_ID_PTR import_global_ids, import_local_ids, export_global_ids, export_local_ids;
-  
+
   /* create load balancer */
   struct loba *lb = loba_create (ZOLTAN_RCB);
 
@@ -132,7 +134,7 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    loba_migrateGhosts(lb, myrank, &nt, t, v, p, q, distance, tid, pid, &timer1, &timer2, &timer3);
+    loba_migrateGhosts(lb, myrank, &nt, t, v, step, p, q, distance, tid, pid, &ncontacts, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
    
     tTimer1[timesteps] = timer1;
