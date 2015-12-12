@@ -2,9 +2,9 @@
 #define HEADER_FILE
 
 #include "bf_ispc.h"
-
+#include "algo.h"
 #define CONBUF 8
-
+#define LSIZE 96
 /* master contact points; global array is used because
  * constitutive data at contacts can be persistent */
 struct master_conpnt
@@ -36,6 +36,8 @@ struct slave_conpnt
 };
 
 /* calculate distances */
-void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, iREAL *t[3][3], iREAL *v[3], iREAL *p[3], iREAL *q[3], iREAL *distance,unsigned long long int *ncontacts);
+void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, 
+                        iREAL *t[3][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], iREAL dt, 
+                        iREAL *p[3], iREAL *q[3], master_conpnt *con, unsigned long long int *ncontacts);
 
 #endif

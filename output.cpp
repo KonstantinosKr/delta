@@ -107,7 +107,7 @@ void postProcessing(int nranks, unsigned int size, unsigned int timesteps)
         cells[i] = (int*) malloc(sizeof(int[size]));
     }
     
-    for(int ii=0; ii<timesteps; ii++)
+    for(unsigned int ii=0; ii<timesteps; ii++)
     {
         unsigned int nt = 0;
         unsigned int n = 0;

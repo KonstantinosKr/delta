@@ -1,9 +1,9 @@
 # C files
 C_SRC= 
-CPP_SRC = motion.cpp input.cpp output.cpp loba.cpp contact.cpp vega.cpp migration.cpp tasksys.cpp
+CPP_SRC = input.cpp output.cpp vega.cpp migration.cpp loba.cpp contact.cpp forces.cpp dynamics.cpp tasksys.cpp
 
 # ISPC files
-ISPC_SRC= vega.ispc bf.ispc parmes.ispc partition.ispc condet.ispc forces.ispc dynamics.ispc shapes.ispc obstacles.ispc
+ISPC_SRC= vega.ispc bf.ispc parmes.ispc
 
 # ISPC targets
 ISPC_TARGETS=sse2,sse4,avx
@@ -33,7 +33,7 @@ EXE=vega
 REAL=double
 
 # Debug version
-DEBUG=no
+DEBUG=yes
 
 # Do the rest
 include common.mk

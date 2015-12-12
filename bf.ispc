@@ -750,8 +750,8 @@ export void ispc_bf (uniform unsigned int it, uniform unsigned int nt,
         P[1][i] = p1[1];
         P[2][i] = p1[2];
 
-        Q[0][i] = p4[0] + ((p6[0] - p4[0]) * tt) + ((p4[0] - p4[0]) * ss);
-        Q[1][i] = p4[1] + ((p6[1] - p4[1]) * tt) + ((p4[1] - p4[1]) * ss);
+        Q[0][i] = p4[0] + ((p6[0] - p4[0]) * tt) + ((p5[0] - p4[0]) * ss);
+        Q[1][i] = p4[1] + ((p6[1] - p4[1]) * tt) + ((p5[1] - p4[1]) * ss);
         Q[2][i] = p4[2] + ((p6[2] - p4[2]) * tt) + ((p5[2] - p4[2]) * ss);
         break;
       case 4:
@@ -759,8 +759,8 @@ export void ispc_bf (uniform unsigned int it, uniform unsigned int nt,
         P[1][i] = p2[1];
         P[2][i] = p2[2];
 
-        Q[0][i] = p4[0] + ((p6[0] - p4[0]) * tt) + ((p4[0] - p4[0]) * ss);
-        Q[1][i] = p4[1] + ((p6[1] - p4[1]) * tt) + ((p4[1] - p4[1]) * ss);
+        Q[0][i] = p4[0] + ((p6[0] - p4[0]) * tt) + ((p5[0] - p4[0]) * ss);
+        Q[1][i] = p4[1] + ((p6[1] - p4[1]) * tt) + ((p5[1] - p4[1]) * ss);
         Q[2][i] = p4[2] + ((p6[2] - p4[2]) * tt) + ((p5[2] - p4[2]) * ss);
         break;
       case 5:
@@ -768,9 +768,9 @@ export void ispc_bf (uniform unsigned int it, uniform unsigned int nt,
         P[1][i] = p3[1];
         P[2][i] = p3[2];
 
-        Q[0][i] = p4[0] + ((p6[0] - p4[0]) * tt) + ((pp4[0] - pp4[0]) * ss);
-        Q[1][i] = p4[1] + ((p6[1] - p4[1]) * tt) + ((pp4[1] - pp4[1]) * ss);
-        Q[2][i] = p4[2] + ((p6[2] - p4[2]) * tt) + ((pp5[2] - pp4[2]) * ss);
+        Q[0][i] = p4[0] + ((p6[0] - p4[0]) * tt) + ((p5[0] - p4[0]) * ss);
+        Q[1][i] = p4[1] + ((p6[1] - p4[1]) * tt) + ((p5[1] - p4[1]) * ss);
+        Q[2][i] = p4[2] + ((p6[2] - p4[2]) * tt) + ((p5[2] - p4[2]) * ss);
         break;
     }
   }

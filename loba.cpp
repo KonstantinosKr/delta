@@ -4,7 +4,6 @@
 #include <float.h>
 #include "error.h"
 #include "loba.h"
-#include "contact.h"
 #include "tmr.h"
 
 struct zoltan_args
@@ -106,6 +105,8 @@ struct loba* loba_create (enum algo al)
     Zoltan_Set_Param (lb->zoltan, "NUM_GID_ENTRIES", "1");
     Zoltan_Set_Param (lb->zoltan, "NUM_LID_ENTRIES", "1");
     Zoltan_Set_Param (lb->zoltan, "OBJ_WEIGHT_DIM", "1");
+    //parts
+    //Zoltan_Set_Param (lb->zoltan, "NUM_LOCAL_PARTS", "4");
 
     /* load balancing parameters */
     Zoltan_Set_Param (lb->zoltan, "LB_METHOD", "RCB");
@@ -137,8 +138,8 @@ break;
 
 /* balance points up to tolerance; output migration ranks */
 void loba_balance (struct loba *lb, unsigned int n, iREAL *p[3], unsigned int *id, iREAL tol,
-                    int *num_import, int **import_procs, 
-		    int *num_export, int **export_procs, 
+                    int *num_import, int **import_procs, int **import_to_part, 
+		                int *num_export, int **export_procs, int **export_to_part, 
                     ZOLTAN_ID_PTR *import_global_ids, ZOLTAN_ID_PTR *import_local_ids, 
                     ZOLTAN_ID_PTR *export_global_ids, ZOLTAN_ID_PTR *export_local_ids) 
 {
@@ -165,6 +166,10 @@ void loba_balance (struct loba *lb, unsigned int n, iREAL *p[3], unsigned int *i
     ASSERT (Zoltan_LB_Balance (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
 	    num_import, import_global_ids, import_local_ids, import_procs,
 	    num_export, export_global_ids, export_local_ids, export_procs) == ZOLTAN_OK, "Zoltan load balancing failed");
+    
+    /*ASSERT (Zoltan_LB_Partition (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
+	    num_import, import_global_ids, import_local_ids, import_procs, import_to_part,
+	    num_export, export_global_ids, export_local_ids, export_procs, export_to_part) == ZOLTAN_OK, "Zoltan load balancing failed");*/
   }
   break;
   case ZOLTAN_RIB:
@@ -330,8 +335,11 @@ void loba_getbox (struct loba *lb, int part, iREAL lo[3], iREAL hi[3])
   }
 }
 
-
-void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], iREAL *v[3], iREAL dt, iREAL *p[3], iREAL *q[3], iREAL *distance, unsigned int *tid, unsigned int *pid, unsigned int long long *ncontacts, iREAL *timer1, iREAL *timer2, iREAL *timer3)
+void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], 
+                      iREAL *v[3], iREAL dt, iREAL *p[3], iREAL *q[3], 
+                      unsigned int *tid, unsigned int *pid, 
+                      master_conpnt *con, unsigned int long long *ncontacts, 
+                      iREAL *timer1, iREAL *timer2, iREAL *timer3)
 {
   TIMING t1, t2, t3;
   
@@ -349,7 +357,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   int *ghostNeighborhood = (int*) malloc(nproc*sizeof(int));
   
   for(int i = 0;i<nproc;i++){ghostNeighborhood[i] = -1;}
-  for(int i = 0;i<*nt;i++){ghostTIDNeighbors[i] = (unsigned int*) malloc(nNeighbors*sizeof(unsigned int));}
+  for(unsigned int i = 0;i<*nt;i++){ghostTIDNeighbors[i] = (unsigned int*) malloc(nNeighbors*sizeof(unsigned int));}
   unsigned int nGhosts, nGhostNeighbors;
   
   //get triangle tids that overlap into neighbors
@@ -360,7 +368,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   printf("RANK[%i]: overlaps:%i\n", myrank, nGhosts);
   
   //allocate memory for buffers
-  unsigned int **send_idx, *pivot, *tid_buffer, *pid_buffer, *rcvpivot, *rcvtid_buffer, *rcvpid_buffer;
+  unsigned int *pivot, *tid_buffer, *pid_buffer, *rcvpivot, *rcvtid_buffer, *rcvpid_buffer;
   iREAL *tbuffer[3], *vbuffer;
   iREAL *trvbuffer[3], *vrvbuffer;
   
@@ -374,16 +382,16 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   pivot = (unsigned int *) malloc(nNeighbors*sizeof(unsigned int));
   rcvpivot = (unsigned int *) malloc(nNeighbors*sizeof(unsigned int));
   
-  for(unsigned int i = 0; i < nNeighbors; i++)
+  for(int i = 0; i < nNeighbors; i++)
   { //set send indices and pivots for buffers
     pivot[i] = 0; //set pivot to zero
     rcvpivot[i] = 0;  
   }
   
   //prepare export buffers
-  for (int i = 0; i<nGhosts; i++)
+  for (unsigned int i = 0; i<nGhosts; i++)
   {
-    for(int ii = 0; ii<ghostTIDcrosses[i]; ii++)
+    for(unsigned int ii = 0; ii<ghostTIDcrosses[i]; ii++)
     {
       int oltid = ghostTID[i];
       int olpid = ghostPID[i];
@@ -421,7 +429,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
     MPI_Send(&pivot[i], 1, MPI_INT, proc, 1, MPI_COMM_WORLD);
   }
  
-  int max = 0;
+  unsigned int max = 0;
   for(int i=0; i<nNeighbors; i++)
   {
     int proc = neighborhood[i];
@@ -474,7 +482,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   *timer1 = t1.total;
   
   timerstart(&t2);
-  contact_detection (0, *nt, 0, *nt, t, v, dt, p, q, distance, ncontacts);//local computation
+  contact_detection (0, *nt, 0, *nt, t, tid, pid, v, dt, p, q, con, ncontacts);//local computation
   timerend(&t2);
   *timer2 = t2.total;
   
@@ -529,7 +537,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   {
     printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, *nt, receive_idx);
     //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-    contact_detection (0, *nt, *nt, receive_idx, t, v, dt, p, q, distance, ncontacts);
+    contact_detection (0, *nt, *nt, receive_idx, t, tid, pid, v, dt, p, q, con, ncontacts);
   }
   for(int i=0; i<3; i++)
   {
@@ -557,7 +565,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   free(ghostPID);
   free(ghostTIDcrosses);
   free(ghostNeighborhood);
-  for(int i = 0;i<*nt;i++)
+  for(unsigned int i = 0;i<*nt;i++)
   {
     free(ghostTIDNeighbors[i]);
   }
@@ -648,7 +656,7 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, unsigned nt, iR
 }
 
 /*
-void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], iREAL *v[3], iREAL dt, iREAL *p[3], iREAL *q[3], iREAL *distance, unsigned int *tid, unsigned int *pid, unsigned int long long *ncontacts, iREAL *timer1, iREAL *timer2, iREAL *timer3)
+void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], iREAL *v[3], iREAL dt, iREAL *p[3], iREAL *q[3], unsigned int *tid, unsigned int *pid, unsigned int long long *ncontacts, iREAL *timer1, iREAL *timer2, iREAL *timer3)
 {
     TIMING t1, t2, t3;
  
@@ -750,7 +758,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
     *timer1 = t1.total;
 
     timerstart(&t2); 
-    contact_detection (0, *nt, 0, *nt, *nt, t, v, dt, p, q, distance, ncontacts);//local computation
+    contact_detection (0, *nt, 0, *nt, *nt, t, v, dt, p, q, ncontacts);//local computation
     timerend(&t2);    
     *timer2 = t2.total; 
 
@@ -798,7 +806,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
     *timer3 = t3.total;
 
     //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-    contact_detection (0, *nt, *nt, sum, t, v, dt, p, q, distance, ncontacts);
+    contact_detection (0, *nt, *nt, sum, t, v, dt, p, q, ncontacts);
     
     free(pivot);
     free(rcvpivot);

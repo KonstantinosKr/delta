@@ -18,7 +18,7 @@ void translate_enviroment(unsigned int tid, iREAL *t[3][3], iREAL p[3])
 void condition_enviroment(unsigned int nt, unsigned int nParticles, iREAL *v[3], unsigned int pid[])
 {
   unsigned int counter=0;
-  for(int j = 0; j < nParticles; j++)
+  for(unsigned int j = 0; j < nParticles; j++)
   {
     iREAL rand = drand48();//random pull velocity
     for(unsigned int i = counter; i < nt; i++)
@@ -60,11 +60,11 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3],
   //non-spherical particles generation and loading
   *nParticles = 50;
   int ptype[*nParticles];
-  for(int i = 0; i < *nParticles; i++){ptype[i] = 6;}
+  for(unsigned int i = 0; i < *nParticles; i++){ptype[i] = 6;}
    
   iREAL mint, maxt;
   load_enviroment(ptype, nt, *nParticles, t, tid, pid, &mint, &maxt);
-  iREAL velo[3] = {50, 50, 50};
+ // iREAL velo[3] = {50, 50, 50};
   lo[0] = -250; // lower corner
   lo[1] = -250; // lower corner
   lo[2] = -250; // lower corner
@@ -78,8 +78,8 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3],
   iREAL p[3];//position to be translated
   int radius = 10;
 
-  int counter = 0;
-  int idx = 0;
+  unsigned int counter = 0;
+  unsigned int idx = 0;
   for(int ii = lo[0]; ii < hi[0]; ii=ii+radius)
   {
     for(int jj = lo[1]; jj < hi[1]; jj=jj+radius)
@@ -89,7 +89,7 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3],
         if(idx < *nParticles)
         {
           //computer position to translate
-          for(int j = counter; j < *nt; j++)
+          for(unsigned int j = counter; j < *nt; j++)
           {
             if(pid[j] == idx)
             {
@@ -165,8 +165,6 @@ void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned i
     counter = 0;
     for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++)
     {
-        iREAL p[3];
-       
         point[0][counter] = tri->ver [0][0];
         point[1][counter] = tri->ver [0][1];
         point[2][counter] = tri->ver [0][2];

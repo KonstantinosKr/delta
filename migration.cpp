@@ -3,7 +3,8 @@
 /* migrate triangles "in-place" to new ranks */
 void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iREAL *v[3],
                               unsigned int *tid, unsigned int *pid,  
-                              int num_import, int *import_procs, int num_export, int *export_procs, 
+                              int num_import, int *import_procs, int *import_to_part, 
+                              int num_export, int *export_procs, int *export_to_part,
                               ZOLTAN_ID_PTR import_global_ids, ZOLTAN_ID_PTR import_local_ids,
                               ZOLTAN_ID_PTR export_global_ids, ZOLTAN_ID_PTR export_local_ids)
 {
@@ -27,8 +28,8 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
     import_unique_procs[i] = -1;
   }
 
-  unsigned int n_export_unique_procs=0;//number of unique ids to export
-  for (unsigned int i = 0; i < num_export; i++)//loop through export data/ids 
+  int n_export_unique_procs=0;//number of unique ids to export
+  for (int i = 0; i < num_export; i++)//loop through export data/ids 
   {
     int proc = export_procs[i]; //proc is the export process for data id[i]
     
@@ -39,7 +40,7 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
     tid[export_local_ids[i]] = UINT_MAX; //mark tid that will be exported thus deleted
     
     int exists = 0; //set to 0 to mean doesn't exist
-    for(unsigned int j = 0; j < nproc; j++)
+    for(int j = 0; j < nproc; j++)
     {
       if(proc == export_unique_procs[j])//search list of unique export for duplicates 
       {
@@ -124,7 +125,7 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
   ///////////////////////////////////////////////
   //refine local arrays and ids (memory gaps)
   unsigned int pv = *nt-1;
-  for(unsigned int i=0;i<num_export;i++)
+  for(int i=0;i<num_export;i++)
   {//be cautious bug may be hidden here;
     for(unsigned int j=pv; j>export_local_ids[i]; j--)//from last towards first but only until gap of exported
     {
@@ -166,8 +167,8 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
     receive_idx = *nt;
   }
 
-  unsigned int n_import_unique_procs=0;
-  for(unsigned int i=0; i < num_import; i++) //loop throught imports
+  int n_import_unique_procs=0;
+  for(int i=0; i < num_import; i++) //loop throught imports
   {
     int proc = import_procs[i]; //get process of import id i
     

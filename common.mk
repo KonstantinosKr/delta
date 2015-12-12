@@ -5,7 +5,7 @@ else
 endif
 
 ifeq ($(DEBUG),yes)
-  CFLAGS=-Iobjs/ -g -O0 -m64 $(REAL) $(ZOLTANINC) $(HULLINC) -fopenmp -DDEBUG
+  CFLAGS=-Iobjs/ -g -Wall -O0 -m64 $(REAL) $(ZOLTANINC) $(HULLINC) -fopenmp -DDEBUG
   ISPC=ispc -g -O0 --arch=x86-64 $(REAL) -DDEBUG
 else
   CFLAGS=-Iobjs/ -O2 -m64 $(REAL) $(ZOLTANINC) $(HULLINC) -fopenmp

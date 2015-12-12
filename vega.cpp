@@ -4,16 +4,16 @@
 #include <string.h>
 #include <limits.h>
 #include <float.h>
+#include "error.h"
+#include "tmr.h"
+#include "vega_ispc.h"
 #include "input.h"
 #include "output.h"
-#include "loba.h"
-#include "error.h"
-#include "vega_ispc.h"
-#include "contact.h"
-#include "motion.h"
 #include "migration.h"
-#include "tmr.h"
-
+#include "loba.h"
+#include "contact.h"
+#include "dynamics.h"
+#include "forces.h"
 
 int main (int argc, char **argv)
 {
@@ -80,14 +80,14 @@ int main (int argc, char **argv)
 
   unsigned long long int ncontacts = 0;
 
-  int num_import, num_export, *import_procs, *export_procs;
+  int num_import, num_export, *import_procs, *import_to_part, *export_procs, *export_to_part;
   ZOLTAN_ID_PTR import_global_ids, import_local_ids, export_global_ids, export_local_ids;
 
   /* create load balancer */
   struct loba *lb = loba_create (ZOLTAN_RCB);
 
   /* perform time stepping */
-  iREAL step = 1E-3, time; unsigned int timesteps=0;
+  iREAL step = 1E-3, time; unsigned int timesteps=0; master_conpnt *con = 0;
   
   TIMING tbalance[100];
   TIMING tmigration[100];
@@ -96,7 +96,7 @@ int main (int argc, char **argv)
   iREAL tTimer1[100];
   iREAL tTimer2[100];
   iREAL tTimer3[100];
-  iREAL tTimer4[100];
+//  iREAL tTimer4[100];
 
   iREAL timer1, timer2, timer3;
   timer1 = 0.0;
@@ -107,12 +107,12 @@ int main (int argc, char **argv)
   for(time = 0; time < 0.1; time+=step)
   //for(time = 0; time < 1; time++)
   {
-    if(myrank == 0){printf("TIMESTEP: %i\n", timesteps);}
+    if(myrank == 0){printf("TIMESTEP: %i\n", timesteps);} 
     
     timerstart(&tbalance[timesteps]);
     loba_balance (lb, nt, t[0], tid, 1.1,
-                  &num_import, &import_procs, 
-                  &num_export, &export_procs, 
+                  &num_import, &import_procs, &import_to_part, 
+                  &num_export, &export_procs, &export_to_part, 
                   &import_global_ids, &import_local_ids, 
                   &export_global_ids, &export_local_ids);
     timerend (&tbalance[timesteps]);
@@ -121,8 +121,8 @@ int main (int argc, char **argv)
     
     timerstart(&tmigration[timesteps]);
     migrate_triangles (size, &nt, t, v, tid, pid, 
-                        num_import, import_procs, 
-                        num_export, export_procs, 
+                        num_import, import_procs, import_to_part, 
+                        num_export, export_procs, export_to_part, 
                         import_global_ids, import_local_ids, 
                         export_global_ids, export_local_ids);
     timerend (&tmigration[timesteps]);
@@ -134,7 +134,7 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    loba_migrateGhosts(lb, myrank, &nt, t, v, step, p, q, distance, tid, pid, &ncontacts, &timer1, &timer2, &timer3);
+    loba_migrateGhosts(lb, myrank, &nt, t, v, step, p, q, tid, pid, con, &ncontacts, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
    
     tTimer1[timesteps] = timer1;
@@ -142,7 +142,10 @@ int main (int argc, char **argv)
     tTimer3[timesteps] = timer3;
  
     printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
-    
+   
+    forces(tid, pid, con);
+    printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
+
     timerstart (&tintegration[timesteps]);
     integrate (step, lo, hi, nt, t, v);
     timerend (&tintegration[timesteps]);
@@ -162,7 +165,7 @@ int main (int argc, char **argv)
   iREAL dt1 = 0;
   iREAL dt2 = 0;
   iREAL dt3 = 0;
-  for(int i = 0; i<timesteps;i++)
+  for(unsigned int i = 0; i<timesteps;i++)
   {
     subtotal = subtotal + tbalance[i].total + tmigration[i].total + tdataExchange[i].total + tintegration[i].total;
     bal = bal + tbalance[i].total;

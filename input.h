@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <float.h>
 #include "error.h"
-#include "motion.h"
+#include "dynamics.h"
 #include <time.h>
 #include <math.h>
 extern "C"{

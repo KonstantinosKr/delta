@@ -25,6 +25,8 @@ SOFTWARE.
 #ifndef __macros__
 #define __macros__
 
+#include "math.h"
+
 /* textual assertion */
 #define ASSERT(__test__, ...)\
   do {\
@@ -653,7 +655,7 @@ SOFTWARE.
 
 /* 4*4 solver */
 
-static void solve4 (iREAL a[16], iREAL b[4], iREAL x[4])
+/*static void solve4 (iREAL a[16], iREAL b[4], iREAL x[4])
 {
     iREAL tmp;
     tmp = a[1]/a[0];
@@ -702,7 +704,7 @@ static void solve4 (iREAL a[16], iREAL b[4], iREAL x[4])
     tmp += a[8] * x[2];
     tmp += a[12] * x[3];
     x[0] = (b[0] - tmp) / a[0];
-}
+}*/
 
 #define MAX9(A, NORM)\
 {\
@@ -1500,10 +1502,10 @@ if (((DET) =\
   EXPMAP (omega, R);\
 }
 
-#if ISPC
+
 /* vectorizable exponential map */
 #define DEFINE_EXPMAP(TYPE)\
-static inline void expmap (TYPE Omega1, TYPE Omega2, TYPE Omega3,\
+static void expmap (TYPE Omega1, TYPE Omega2, TYPE Omega3,\
                            TYPE &Lambda1, TYPE &Lambda2, TYPE &Lambda3,\
 			   TYPE &Lambda4, TYPE &Lambda5, TYPE &Lambda6,\
 			   TYPE &Lambda7, TYPE &Lambda8, TYPE &Lambda9)\
@@ -1548,7 +1550,8 @@ static inline void expmap (TYPE Omega1, TYPE Omega2, TYPE Omega3,\
     TYPE t, s, c;\
     t = angsq;\
     angsq = sqrt (angsq);\
-    sincos (angsq, &s, &c);\
+    s = sin (angsq);\
+    c = cos (angsq);\
     sx = s / angsq;\
     cx = (1.0 - c) / t;\
   }\
@@ -1579,9 +1582,5 @@ static inline void expmap (TYPE Omega1, TYPE Omega2, TYPE Omega3,\
   Lambda8 -= s0;\
   Lambda9 += 1.0;\
 }
-
-DEFINE_EXPMAP (uniform iREAL);
 DEFINE_EXPMAP (iREAL);
-#endif
-
 #endif
