@@ -1,9 +1,9 @@
 # C files
 C_SRC= 
-CPP_SRC = input.cpp output.cpp vega.cpp migration.cpp loba.cpp contact.cpp forces.cpp dynamics.cpp tasksys.cpp
+CPP_SRC = input.cpp output.cpp delta.cpp migration.cpp loba.cpp contact.cpp forces.cpp dynamics.cpp tasksys.cpp
 
 # ISPC files
-ISPC_SRC= vega.ispc bf.ispc parmes.ispc
+ISPC_SRC= delta.ispc bf.ispc parmes.ispc
 
 # ISPC targets
 ISPC_TARGETS=sse2,sse4,avx
@@ -27,7 +27,7 @@ PYTHONINC=-I/usr/include/python2.7
 PYTHONLIB=-L/usr/lib -lpython2.7
 
 # Program name
-EXE=vega
+EXE=delta
 
 # Floating point type
 REAL=double
