@@ -20,7 +20,7 @@ int main (int argc, char **argv)
   unsigned long long int ncontacts;
   iREAL margin = 1E-3;
 
-  delta(0, margin, 0, nt, 0, nt, t, ncontacts);
+  delta(0, margin, 0, nt, 0, nt, t, &ncontacts);
 
   return 0;
 }

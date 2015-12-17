@@ -1,6 +1,4 @@
 #include <float.h>
-#include <iostream>
-#include <iomanip>
 #include "algo.h"
 #include "math.h"
 #include "hybrid.h"
@@ -16,7 +14,7 @@ iREAL bf(iREAL A[3], iREAL B[3], iREAL  C[3], iREAL  D[3], iREAL  E[3], iREAL  F
 
 
 void hybrid (unsigned int it, unsigned int nt,
-    iREAL *a[3], iREAL *b[3], iREAL *c[3],
+    iREAL a[3], iREAL b[3], iREAL c[3],
     iREAL *d[3], iREAL *e[3], iREAL *f[3],
     iREAL *p[3], iREAL *q[3]) 
 {
@@ -32,10 +30,10 @@ void hybrid (unsigned int it, unsigned int nt,
   iREAL P[3] __attribute__ ((aligned(byteSize)));
       
   const unsigned batchSize = 4;
-  //unsigned counter = 0;
+  
+  iREAL distance[batchSize] __attribute__ ((aligned(byteSize)));
   iREAL error[batchSize] __attribute__ ((aligned(byteSize)));
   iREAL batchError = 0.0;
-  unsigned counter = 0;
   for (unsigned k=it; k<nt/batchSize; k++) 
   { // works only for multiples of 16. Adopt      
         
@@ -47,17 +45,17 @@ void hybrid (unsigned int it, unsigned int nt,
     { 
       unsigned i=k*batchSize + l;
       
-      A[0] = a[0][i];
-      A[1] = a[1][i];
-      A[2] = a[2][i];
+      A[0] = a[0];
+      A[1] = a[1];
+      A[2] = a[2];
 
-      B[0] = b[0][i];
-      B[1] = b[1][i];
-      B[2] = b[2][i];
+      B[0] = b[0];
+      B[1] = b[1];
+      B[2] = b[2];
       
-      C[0] = c[0][i];
-      C[1] = c[1][i];
-      C[2] = c[2][i];
+      C[0] = c[0];
+      C[1] = c[1];
+      C[2] = c[2];
       
       D[0] = d[0][i];
       D[1] = d[1][i];
@@ -144,9 +142,9 @@ iREAL penalty(iREAL A[3], iREAL B[3], iREAL  C[3], iREAL  D[3], iREAL  E[3], iRE
   iREAL r = lambda*pow(10,log10(lambda)+8);
   
 #if iREAL==double
-  iREAL tol = DBL_EPSILON;
+  //iREAL tol = DBL_EPSILON;
 #else
-  iREAL tol = FLT_EPSILON;
+  //iREAL tol = FLT_EPSILON;
 #endif
   //initial guess
   x[0] = 0.33;

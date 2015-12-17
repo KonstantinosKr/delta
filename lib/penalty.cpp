@@ -1,26 +1,25 @@
 #include "penalty.h"
 
 void penalty (unsigned int it, unsigned int nt,
-              iREAL * a[3], iREAL * b[3], iREAL * c[3],
+              iREAL a[3], iREAL b[3], iREAL c[3],
               iREAL * d[3], iREAL * e[3], iREAL * f[3],
               iREAL * p[3], iREAL * q[3])
 {
-  for(it = 0; i<nt; i++)
+  for(unsigned int i = it; i<nt; i++)
   {
     iREAL A[3], B[3], C[3], D[3], E[3], F[3], P[3], Q[3];
-
     
-    A[0] = a[0][i];
-    A[1] = a[1][i];
-    A[2] = a[2][i];
+    A[0] = a[0];
+    A[1] = a[1];
+    A[2] = a[2];
 
-    B[0] = b[0][i];
-    B[1] = b[1][i];
-    B[2] = b[2][i];
+    B[0] = b[0];
+    B[1] = b[1];
+    B[2] = b[2];
 
-    C[0] = c[0][i];
-    C[1] = c[1][i];
-    C[2] = c[2][i];
+    C[0] = c[0];
+    C[1] = c[1];
+    C[2] = c[2];
 
     D[0] = d[0][i];
     D[1] = d[1][i];
@@ -74,7 +73,7 @@ void penalty (unsigned int it, unsigned int nt,
     x[3] = 0.33;
     
     //Declare loop variables;
-    iREAL error, dx[4], a[16], SUBXY[3], b[4], mx[6], dh[8], tmp1, tmp2, tmp3, tmp4, tmp5, tmp6;
+    iREAL dx[4], a[16], SUBXY[3], b[4], mx[6], dh[8], tmp1, tmp2, tmp3, tmp4, tmp5, tmp6;
     
     //Newton loop
     for(int j=0;j<5;j++)
@@ -174,13 +173,13 @@ void penalty (unsigned int it, unsigned int nt,
     SUBXY[2] = (P[2]) - (Q[2]);
     iREAL distance = sqrt(DOT(SUBXY,SUBXY));
     */
-    P[0] = p[0][i];
-    P[1] = p[1][i];
-    P[2] = p[2][i];
+    p[0][i] = P[0];
+    p[1][i] = P[1];
+    p[2][i] = P[2];
 
-    Q[0] = q[0][i];
-    Q[1] = q[1][i];
-    Q[2] = q[2][i];
+    q[0][i] = Q[0];
+    q[1][i] = Q[1];
+    q[2][i] = Q[2];
   }
 }
 

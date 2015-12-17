@@ -1,3 +1,7 @@
+#include "stdio.h"
+#include "stdlib.h"
+#include "math.h"
+#include "delta.h"
 #include "bf.h"
 #include "penalty.h"
 #include "hybrid.h"
@@ -57,7 +61,7 @@ void delta (int method, iREAL epsilon,
       if(dist < epsilon*2)
       {
         iREAL midpt[3];
-        int idx = numberOfContactPoints;
+        int idx = *ncontacts;;
         midpt[idx] = (p[0][j]+q[0][j])/2; //x
         midpt[idx] = (p[1][j]+q[1][j])/2; //y
         midpt[idx] = (p[2][j]+q[2][j])/2; //z

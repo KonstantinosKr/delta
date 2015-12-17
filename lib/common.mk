@@ -5,9 +5,9 @@ else
 endif
 
 ifeq ($(DEBUG),yes)
-  CFLAGS=-Iobjs/ -g -Wall -O0 -m64 $(REAL)
+  CFLAGS=-Iobjs/ -g -Wall -O0 -m64 $(REAL) -fopenmp
 else
-  CFLAGS=-Iobjs/ -O2 -m64 $(REAL) 
+  CFLAGS=-Iobjs/ -O2 -m64 $(REAL) -fopenmp
 endif
 
 CPP_OBJS=$(addprefix objs/, $(CPP_SRC:.cpp=.o))
@@ -32,9 +32,13 @@ clean:
 	/bin/rm -rf objs *~ $(EXE)
 	find ./ -iname "*.dump" -exec rm '{}' ';'
 
+lib: $(CPP_OBJS) 
+		ar rcv libdelta.a $(CPP_OBJS)
+		ranlib libdelta.a
+
 $(EXE): $(CPP_OBJS)
 	$(CXX) $(CFLAGS) -o $@ $^ $(LIBS)
-
+	
 objs/%.o: %.cpp 
 	$(CXX) $(CFLAGS) $< -c -o $@
 
