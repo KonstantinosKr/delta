@@ -4,10 +4,11 @@
 #include <limits.h>
 #include <float.h>
 #include "delta.h"
+
 int main (int argc, char **argv)
 {
   iREAL *t[3][3]; /* triangles */
-  unsigned int nt = 27000; /* memory buffer size */
+  unsigned int nt = 2700; /* memory buffer size */
    
   for (int i = 0; i < 3; i ++)
   { 
@@ -21,12 +22,12 @@ int main (int argc, char **argv)
     for(int j = 0; j<3; j++)
     {
       t[0][j][i] = 0;
-      t[1][j][i] = 1;
-      t[2][j][i] = 2;
+      t[1][j][i] = 0;
+      t[2][j][i] = 0;
     }
   }
 
-  unsigned long long int ncontacts;
+  unsigned long long int ncontacts = 0;
   iREAL margin = 1E-3;
 
   delta(0, margin, 0, nt, 0, nt, t, &ncontacts);

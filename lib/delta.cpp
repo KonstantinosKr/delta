@@ -50,28 +50,27 @@ void delta (int method, iREAL epsilon,
     {
       hybrid (s2, e2, a, b, c, t[0], t[1], t[2], p, q);
     }
-    printf("passed\n");
-    /*for(unsigned int j=s2;j<e2;j++) 
+    
+    for(unsigned int j=s2;j<e2;j++) 
     {
       iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[1][j]),2));
       
       if(dist < epsilon*2)
       {
         iREAL midpt[3];
-        int idx = *ncontacts;;
-        midpt[idx] = (p[0][j]+q[0][j])/2; //x
-        midpt[idx] = (p[1][j]+q[1][j])/2; //y
-        midpt[idx] = (p[2][j]+q[2][j])/2; //z
+        midpt[0] = (p[0][j]+q[0][j])/2; //x
+        midpt[1] = (p[1][j]+q[1][j])/2; //y
+        midpt[2] = (p[2][j]+q[2][j])/2; //z
                   
         iREAL depth = (epsilon*2)-dist;
         iREAL mul = sqrt(pow(q[0][j]-p[0][j], 2)+pow(q[1][j] - p[1][j], 2)+pow(q[2][j]-p[2][j], 2));
         iREAL normal[3];
-        normal[idx] = ((q[0][j] - p[0][j])/mul)*depth;
-        normal[idx] = ((q[1][j] - p[1][j])/mul)*depth;
-        normal[idx] = ((q[2][j] - p[2][j])/mul)*depth;
+        normal[0] = ((q[0][j] - p[0][j])/mul)*depth;
+        normal[1] = ((q[1][j] - p[1][j])/mul)*depth;
+        normal[2] = ((q[2][j] - p[2][j])/mul)*depth;
         *ncontacts++;
       }
-    }*/
+    }
   }
 
   for(int i = 0; i<3; i++)
