@@ -2,9 +2,6 @@
 #include "stdlib.h"
 #include "math.h"
 #include "delta.h"
-#include "bf.h"
-#include "penalty.h"
-#include "hybrid.h"
 
 //method 0 = bf
 //method 1 = penalty
@@ -53,8 +50,8 @@ void delta (int method, iREAL epsilon,
     {
       hybrid (s2, e2, a, b, c, t[0], t[1], t[2], p, q);
     }
-
-    for(unsigned int j=s2;j<e2;j++) 
+    printf("passed\n");
+    /*for(unsigned int j=s2;j<e2;j++) 
     {
       iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[1][j]),2));
       
@@ -74,7 +71,7 @@ void delta (int method, iREAL epsilon,
         normal[idx] = ((q[2][j] - p[2][j])/mul)*depth;
         *ncontacts++;
       }
-    }
+    }*/
   }
 
   for(int i = 0; i<3; i++)

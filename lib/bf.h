@@ -1,3 +1,8 @@
 #include "stdlib.h"
+#include "algo.h"
+#include "math.h"
 
-void bf (unsigned int it, unsigned int nt, iREAL pp1[3], iREAL pp2[3], iREAL pp3[3], iREAL * pp4[3], iREAL * pp5[3], iREAL * pp6[3], iREAL * P[3], iREAL * Q[3]); 
+void bf (unsigned int it, unsigned int nt,
+         double pp1[3], double pp2[3], double pp3[3],
+         double *pp4[3], double *pp5[3], double *pp6[3],
+         double *P[3], double *Q[3]);

@@ -1,10 +1,8 @@
-#include "algo.h"
-#include "math.h"
 #include "bf.h"
 
 void bf (unsigned int it, unsigned int nt,
          double pp1[3], double pp2[3], double pp3[3],
-         double *pp4, double *pp5, double *pp6,
+         double *pp4[3], double *pp5[3], double *pp6[3],
          double *P[3], double *Q[3])
 {
     
@@ -22,22 +20,20 @@ void bf (unsigned int it, unsigned int nt,
     pointArray[1][2] = pp3[1];
     pointArray[2][2] = pp3[2];
     
-    int iii = 0;
     for(unsigned int i=it; i<nt; i++)
     {
-        pointArray[0][3] = pp4[iii];  //D
-        pointArray[1][3] = pp5[iii];
-        pointArray[2][3] = pp6[iii];
+        pointArray[0][3] = pp4[0][i];  //D
+        pointArray[1][3] = pp4[1][i];
+        pointArray[2][3] = pp4[2][i];
         
-        iii++;
-        pointArray[0][4] = pp4[iii];  //E
-        pointArray[1][4] = pp5[iii];
-        pointArray[2][4] = pp6[iii];
-        iii++;
-        pointArray[0][5] = pp4[iii];  //F
-        pointArray[1][5] = pp5[iii];
-        pointArray[2][5] = pp6[iii];
-        iii++;
+        pointArray[0][4] = pp5[0][i];  //E
+        pointArray[1][4] = pp5[1][i];
+        pointArray[2][4] = pp5[2][i];
+        
+        pointArray[0][5] = pp6[0][i];  //F
+        pointArray[1][5] = pp6[1][i];
+        pointArray[2][5] = pp6[2][i];
+        
         u[0] = pointArray[0][4] - pointArray[0][3];
         u[1] = pointArray[1][4] - pointArray[1][3];
         u[2] = pointArray[2][4] - pointArray[2][3];

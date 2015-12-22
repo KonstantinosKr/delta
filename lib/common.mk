@@ -5,16 +5,16 @@ else
 endif
 
 ifeq ($(DEBUG),yes)
-  CFLAGS=-Iobjs/ -g -Wall -O0 -m64 $(REAL) -fopenmp
+  CFLAGS=-Iobjs/ -g -Wall -O0 $(REAL) -fopenmp -fPIC
 else
-  CFLAGS=-Iobjs/ -O2 -m64 $(REAL) -fopenmp
+  CFLAGS=-Iobjs/ -O2 $(REAL) -fopenmp -fPIC
 endif
 
 CPP_OBJS=$(addprefix objs/, $(CPP_SRC:.cpp=.o))
 C_OBJS=$(addprefix objs/, $(C_SRC:.c=.o))
 LIBS=-lm -lstdc++ 
 
-default: dirs $(CPP_OBJS) $(C_OBJS) $(EXE)
+default: dirs lib
 
 .PHONY: dirs clean print
 
@@ -33,8 +33,7 @@ clean:
 	find ./ -iname "*.dump" -exec rm '{}' ';'
 
 lib: $(CPP_OBJS) 
-		ar rcv libdelta.a $(CPP_OBJS)
-		ranlib libdelta.a
+		ar crs libdelta.a $(CPP_OBJS)
 
 $(EXE): $(CPP_OBJS)
 	$(CXX) $(CFLAGS) -o $@ $^ $(LIBS)
