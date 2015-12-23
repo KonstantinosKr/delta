@@ -4,13 +4,12 @@
 #include "hybrid.h"
 #include <omp.h>
 #define byteSize 32
-#define nsize 10000000
 
 
-iREAL penalty(iREAL A[3], iREAL B[3], iREAL  C[3], iREAL  D[3], iREAL  E[3], iREAL  F[3], iREAL  P[3], iREAL  Q[3], iREAL *error);
+void penalty(iREAL A[3], iREAL B[3], iREAL  C[3], iREAL  D[3], iREAL  E[3], iREAL  F[3], iREAL  P[3], iREAL  Q[3], iREAL *error);
 iREAL pt(iREAL TP1[3], iREAL TP2[3], iREAL TP3[3], iREAL cPoint[3], iREAL tq[3]);
 iREAL segseg(iREAL p1[3], iREAL p2[3], iREAL p3[3], iREAL p4[3], iREAL P[3], iREAL Q[3]);
-iREAL bf(iREAL A[3], iREAL B[3], iREAL  C[3], iREAL  D[3], iREAL  E[3], iREAL  F[3], iREAL  P[3], iREAL  Q[3]);
+void bf(iREAL A[3], iREAL B[3], iREAL  C[3], iREAL  D[3], iREAL  E[3], iREAL  F[3], iREAL  P[3], iREAL  Q[3]);
 
 
 void hybrid (unsigned int it, unsigned int nt,
@@ -18,7 +17,7 @@ void hybrid (unsigned int it, unsigned int nt,
     iREAL *d[3], iREAL *e[3], iREAL *f[3],
     iREAL *p[3], iREAL *q[3]) 
 {
-  omp_set_num_threads(2);
+  omp_set_num_threads(4);
 
   iREAL A[3] __attribute__ ((aligned(byteSize)));
   iREAL B[3] __attribute__ ((aligned(byteSize)));
@@ -31,7 +30,6 @@ void hybrid (unsigned int it, unsigned int nt,
       
   const unsigned batchSize = 4;
   
-  iREAL distance[batchSize] __attribute__ ((aligned(byteSize)));
   iREAL error[batchSize] __attribute__ ((aligned(byteSize)));
   iREAL batchError = 0.0;
   for (unsigned k=it; k<nt/batchSize; k++) 
@@ -69,7 +67,7 @@ void hybrid (unsigned int it, unsigned int nt,
       F[1] = f[1][i];
       F[2] = f[2][i];
       
-      distance[i] = penalty(A, B, C, D, E, F, P, Q, &error[l]);  // only four Newton steps
+      penalty(A, B, C, D, E, F, P, Q, &error[l]);  // only four Newton steps
       
       p[0][i] = P[0];
       p[1][i] = P[1];
@@ -88,12 +86,11 @@ void hybrid (unsigned int it, unsigned int nt,
     if(batchError/batchSize>1E-8)
     {
       #pragma forceinline recursive
-	    //#pragma simd 
 	    #pragma omp parallel for simd 
 	    for (unsigned l=0; l<batchSize; l++)
       {
-        unsigned i = k*batchSize + l;
-        distance[i] = bf(A,B,C, D,E,F, P,Q);
+        unsigned i=k*batchSize + l;
+        bf(A,B,C, D,E,F, P,Q);
 
         p[0][i] = P[0];
         p[1][i] = P[1];
@@ -107,7 +104,9 @@ void hybrid (unsigned int it, unsigned int nt,
   }
 } 
 
-iREAL penalty(iREAL A[3], iREAL B[3], iREAL  C[3], iREAL  D[3], iREAL  E[3], iREAL  F[3], iREAL  P[3], iREAL  Q[3], iREAL error[])
+void penalty(iREAL A[3], iREAL B[3], iREAL  C[3], 
+              iREAL  D[3], iREAL  E[3], iREAL  F[3], 
+              iREAL  P[3], iREAL  Q[3], iREAL error[])
 {
   iREAL BA[3], CA[3], ED[3], FD[3], hessian[16], x[4];
   
@@ -249,10 +248,6 @@ iREAL penalty(iREAL A[3], iREAL B[3], iREAL  C[3], iREAL  D[3], iREAL  E[3], iRE
   Q[0] = D[0]+(ED[0] * x[2])+(FD[0] * x[3]);
   Q[1] = D[1]+(ED[1] * x[2])+(FD[1] * x[3]);
   Q[2] = D[2]+(ED[2] * x[2])+(FD[2] * x[3]);
-  SUBXY[0] = (P[0]) - (Q[0]);
-  SUBXY[1] = (P[1]) - (Q[1]);
-  SUBXY[2] = (P[2]) - (Q[2]);
-  return sqrt(DOT(SUBXY,SUBXY));
 }
 
 int segt(iREAL p1[3], iREAL p2[3], iREAL A[3], iREAL B[3], iREAL C[3], iREAL P[3]){
@@ -621,7 +616,7 @@ iREAL pt(iREAL TP1[3], iREAL TP2[3], iREAL TP3[3], iREAL cPoint[3], iREAL tq[3])
   return sqrt(sqrDistance);
 }
 
-iREAL bf(iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3], iREAL E[3], iREAL F[3], iREAL P[3], iREAL Q[3])
+void bf(iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3], iREAL E[3], iREAL F[3], iREAL P[3], iREAL Q[3])
 {   
   //seg to triangle intersection
   int intersection = 0;
@@ -831,15 +826,11 @@ iREAL bf(iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3], iREAL E[3], iREAL F[3],
   }
   
   //%---Get min distance from ss and point to triangle sets
-  iREAL min=-1;
   if(intersection == 1){ 
-      min = 0;
-
       Q[0] = P[0];
       Q[1] = P[1];
       Q[2] = P[2];
   } else if(ssmin < ptmin){
-      min = ssmin;
       P[0] = ssP[0];
       P[1] = ssP[1];
       P[2] = ssP[2];
@@ -848,7 +839,6 @@ iREAL bf(iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3], iREAL E[3], iREAL F[3],
       Q[1] = ssQ[1];
       Q[2] = ssQ[2];
   } else if(ssmin > ptmin){
-      min = ptmin;
       P[0] = tp[0];
       P[1] = tp[1];
       P[2] = tp[2];
@@ -857,7 +847,6 @@ iREAL bf(iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3], iREAL E[3], iREAL F[3],
       Q[1] = tq[1];
       Q[2] = tq[2];
   } else if(ssmin == ptmin){
-      min = ptmin;
       P[0] = ssP[0];
       P[1] = ssP[1];
       P[2] = ssP[2];
@@ -866,6 +855,5 @@ iREAL bf(iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3], iREAL E[3], iREAL F[3],
       Q[1] = tq[1];
       Q[2] = tq[2];
   }
-  return min;
 }
 

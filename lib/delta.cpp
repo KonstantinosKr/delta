@@ -50,7 +50,6 @@ void delta (int method, iREAL epsilon,
     {
       hybrid (s2, e2, a, b, c, t[0], t[1], t[2], p, q);
     }
-    
     for(unsigned int j=s2;j<e2;j++) 
     {
       iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[1][j]),2));

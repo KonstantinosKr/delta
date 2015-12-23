@@ -1,38 +1,38 @@
 #include "bf.h"
 
 void bf (unsigned int it, unsigned int nt,
-         double pp1[3], double pp2[3], double pp3[3],
-         double *pp4[3], double *pp5[3], double *pp6[3],
+         double A[3], double B[3], double C[3],
+         double *D[3], double *E[3], double *F[3],
          double *P[3], double *Q[3])
 {
     
     double u[3], v[3], nn[3][2], w[3], w0[3][6], dir[3][6], pointArray[3][6];
     
-    pointArray[0][0] = pp1[0];
-    pointArray[1][0] = pp1[1];
-    pointArray[2][0] = pp1[2];
+    pointArray[0][0] = A[0];
+    pointArray[1][0] = A[1];
+    pointArray[2][0] = A[2];
     
-    pointArray[0][1] = pp2[0];
-    pointArray[1][1] = pp2[1];
-    pointArray[2][1] = pp2[2];
+    pointArray[0][1] = B[0];
+    pointArray[1][1] = B[1];
+    pointArray[2][1] = B[2];
     
-    pointArray[0][2] = pp3[0];
-    pointArray[1][2] = pp3[1];
-    pointArray[2][2] = pp3[2];
+    pointArray[0][2] = C[0];
+    pointArray[1][2] = C[1];
+    pointArray[2][2] = C[2];
     
     for(unsigned int i=it; i<nt; i++)
     {
-        pointArray[0][3] = pp4[0][i];  //D
-        pointArray[1][3] = pp4[1][i];
-        pointArray[2][3] = pp4[2][i];
+        pointArray[0][3] = D[0][i];  //D
+        pointArray[1][3] = D[1][i];
+        pointArray[2][3] = D[2][i];
         
-        pointArray[0][4] = pp5[0][i];  //E
-        pointArray[1][4] = pp5[1][i];
-        pointArray[2][4] = pp5[2][i];
+        pointArray[0][4] = E[0][i];  //E
+        pointArray[1][4] = E[1][i];
+        pointArray[2][4] = E[2][i];
         
-        pointArray[0][5] = pp6[0][i];  //F
-        pointArray[1][5] = pp6[1][i];
-        pointArray[2][5] = pp6[2][i];
+        pointArray[0][5] = F[0][i];  //F
+        pointArray[1][5] = F[1][i];
+        pointArray[2][5] = F[2][i];
         
         u[0] = pointArray[0][4] - pointArray[0][3];
         u[1] = pointArray[1][4] - pointArray[1][3];
@@ -171,17 +171,17 @@ void bf (unsigned int it, unsigned int nt,
         
         double a[9], b[9], c[9], d[9], e[9], f[9], p1[3], p2[3], p3[3], p4[3], p5[3], p6[3];
         
-        p1[0] = pp1[0];
-        p1[1] = pp1[1];
-        p1[2] = pp1[2];
+        p1[0] = A[0];
+        p1[1] = A[1];
+        p1[2] = A[2];
         
-        p2[0] = pp2[0];
-        p2[1] = pp2[1];
-        p2[2] = pp2[2];
+        p2[0] = B[0];
+        p2[1] = B[1];
+        p2[2] = B[2];
         
-        p3[0] = pp3[0];
-        p3[1] = pp3[1];
-        p3[2] = pp3[2];
+        p3[0] = C[0];
+        p3[1] = C[1];
+        p3[2] = C[2];
         
         p4[0] = pointArray[0][3];
         p4[1] = pointArray[1][3];
