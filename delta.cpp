@@ -6,7 +6,6 @@
 #include <float.h>
 #include "error.h"
 #include "tmr.h"
-#include "vega_ispc.h"
 #include "input.h"
 #include "output.h"
 #include "migration.h"
@@ -49,7 +48,6 @@ int main (int argc, char **argv)
       q[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
     
-    distance = (iREAL *) malloc (size*sizeof(iREAL));
     tid = (unsigned int *) malloc (size*sizeof(unsigned int));
     pid = (unsigned int *) malloc (size*sizeof(unsigned int));
     
@@ -71,7 +69,6 @@ int main (int argc, char **argv)
       p[i] = (iREAL *) malloc (size*sizeof(iREAL));
       q[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
-    distance = (iREAL*) malloc (size*sizeof(iREAL));
     tid = (unsigned int *) malloc (size*sizeof(unsigned int));
     pid = (unsigned int *) malloc (size*sizeof(unsigned int));
       
@@ -304,8 +301,6 @@ int main (int argc, char **argv)
     free (q[i]);
   }
 
-  free (distance);
-  
   Zoltan_LB_Free_Data (&import_global_ids, &import_local_ids, &import_procs, &export_global_ids, &export_local_ids, &export_procs);
   
   MPI_Finalize ();

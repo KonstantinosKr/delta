@@ -13,18 +13,16 @@ void gen_velocities (iREAL lo[3], iREAL hi[3], unsigned int nt, iREAL * v[3])
 
 
 // dynamics task 
-void dynamics_task (master_conpnt master[], slave_conpnt slave[],
+void dynamics (master_conpnt master[], slave_conpnt slave[],
   int parnum, iREAL * angular[6], iREAL * linear[3],
   iREAL * rotation[9], iREAL * position[6],
   iREAL * inertia[9], iREAL * inverse[9],
   iREAL mass[], iREAL invm[], iREAL * force[3],
   iREAL * torque[3], iREAL gravity[3], iREAL step)
 {
-  int start = 0;//change these
-  int end = parnum;
   iREAL half = 0.5*step;
 
-  for (int i = start; i < end; i ++) // force accumulation
+  for (int i = 0; i < parnum; i ++) // force accumulation
   {
     iREAL f[3], a[3], fs[3], ts[3];
     iREAL po[3], ma;
@@ -81,7 +79,7 @@ void dynamics_task (master_conpnt master[], slave_conpnt slave[],
     torque[2][i] = ts[2];
   }
 
-  for (int i = start; i<end; i++) // time integration 
+  for (int i = 0; i<parnum; i++) // time integration 
   {
     iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], t[3], T[3], DL[9], L2[9], A[3], B[3];
 
