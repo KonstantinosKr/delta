@@ -10,10 +10,37 @@ void gen_velocities (iREAL lo[3], iREAL hi[3], unsigned int nt, iREAL * v[3])
       v[2][i] = hi[2] * drand48();
     }
 }
-
+void dynamics (master_conpnt master[], slave_conpnt slave[],
+  int parnum, iREAL * angular[6], iREAL * v[3],
+  iREAL * rotation[9], iREAL * position[6],
+  iREAL * inertia[9], iREAL * inverse[9],
+  iREAL mass[], iREAL invm[], iREAL * force[3],
+  iREAL * torque[3], iREAL gravity[3], iREAL step)
+{
+  int idx = 0;
+  for(master_conpnt *i = con; i!=NULL; i= i->next;)
+  {
+    //filter out multiple contact points
+    for(int j = 0; j<i->size; j++)
+    {
+      int id = i->masterid[j];
+      
+      int counter = 0;
+      int indxx = 0;
+       
+      for(master_conpnt *ii = con; ii!=NULL; ii= ii->next;)
+      {
+        if (id == ii->masterid[idxx])
+        {
+          counter = counter + 1;
+        }
+      }
+    }
+  }
+}
 
 // dynamics task 
-void dynamics (master_conpnt master[], slave_conpnt slave[],
+/*void dynamics (master_conpnt master[], slave_conpnt slave[],
   int parnum, iREAL * angular[6], iREAL * linear[3],
   iREAL * rotation[9], iREAL * position[6],
   iREAL * inertia[9], iREAL * inverse[9],
@@ -180,7 +207,7 @@ void dynamics (master_conpnt master[], slave_conpnt slave[],
     linear[1][i] = v[1];
     linear[2][i] = v[2];
   }
-}
+}*/
 
 /*
 // invert inertia properties 

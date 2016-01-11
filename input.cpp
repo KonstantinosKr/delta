@@ -108,7 +108,6 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3],
   condition_enviroment(*nt, *nParticles, v, pid);
 }
 
-
 void load_enviroment(int ptype[], unsigned int *nt, unsigned int nParticles, iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *mint, iREAL *maxt)
 {
   unsigned int n = 0;

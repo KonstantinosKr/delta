@@ -10,7 +10,9 @@
 struct master_conpnt
 {
   int master[CONBUF]; /* ellipsoid */
+  int masterid[CONBUF];
   int slave[2][CONBUF]; /* particle, ellipsoid or -(triangle+1), unused */
+  int slaveid[CONBUF];
   int color[2][CONBUF];
   iREAL point[3][CONBUF];
   iREAL normal[3][CONBUF];
