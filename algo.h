@@ -25,8 +25,6 @@ SOFTWARE.
 #ifndef __macros__
 #define __macros__
 
-#include "math.h"
-
 /* textual assertion */
 #define ASSERT(__test__, ...)\
   do {\
@@ -1504,7 +1502,7 @@ if (((DET) =\
 
 
 /* vectorizable exponential map */
-#define DEFINE_EXPMAP(TYPE)\
+/*#define DEFINE_EXPMAP(TYPE)\
 static void expmap (TYPE Omega1, TYPE Omega2, TYPE Omega3,\
                            TYPE &Lambda1, TYPE &Lambda2, TYPE &Lambda3,\
 			   TYPE &Lambda4, TYPE &Lambda5, TYPE &Lambda6,\
@@ -1518,7 +1516,7 @@ static void expmap (TYPE Omega1, TYPE Omega2, TYPE Omega3,\
 \
   angsq = v0 + v1 + v2;\
 \
-  if (angsq < 3.0461741978671E-02) /* use Taylor expansion if |Omega| < 10 deg */\
+  if (angsq < 3.0461741978671E-02) // use Taylor expansion if |Omega| < 10 deg \
   {\
   sx = 1.0 +\
     (-1.666666666666667E-1 +\
@@ -1583,4 +1581,5 @@ static void expmap (TYPE Omega1, TYPE Omega2, TYPE Omega3,\
   Lambda9 += 1.0;\
 }
 DEFINE_EXPMAP (iREAL);
+*/
 #endif

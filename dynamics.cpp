@@ -10,6 +10,7 @@ void gen_velocities (iREAL lo[3], iREAL hi[3], unsigned int nt, iREAL * v[3])
       v[2][i] = hi[2] * drand48();
     }
 }
+
 void dynamics (master_conpnt master[], slave_conpnt slave[],
   int parnum, iREAL * angular[6], iREAL * v[3],
   iREAL * rotation[9], iREAL * position[6],
@@ -18,19 +19,19 @@ void dynamics (master_conpnt master[], slave_conpnt slave[],
   iREAL * torque[3], iREAL gravity[3], iREAL step)
 {
   int idx = 0;
-  for(master_conpnt *i = con; i!=NULL; i= i->next;)
+  for(master_conpnt *i = master; i!=NULL; i= i->next)
   {
     //filter out multiple contact points
     for(int j = 0; j<i->size; j++)
     {
-      int id = i->masterid[j];
+      idx = i->masterid[j];
       
       int counter = 0;
-      int indxx = 0;
+      int idxx = 0;
        
-      for(master_conpnt *ii = con; ii!=NULL; ii= ii->next;)
+      for(master_conpnt *ii = master; ii!=NULL; ii= ii->next)
       {
-        if (id == ii->masterid[idxx])
+        if (idx == ii->masterid[idxx])
         {
           counter = counter + 1;
         }

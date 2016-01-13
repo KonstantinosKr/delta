@@ -145,36 +145,37 @@ void loba_balance (struct loba *lb, unsigned int n, iREAL *p[3], unsigned int *i
 {
   switch (lb->al)
   {
-  case ZOLTAN_RCB:
-  {
-    struct zoltan_args args = {n, {p[0], p[1], p[2]}, id};
-    
-    /* callbacks */
-    Zoltan_Set_Fn (lb->zoltan, ZOLTAN_NUM_OBJ_FN_TYPE, (void (*)()) obj_count, &args);
-    Zoltan_Set_Fn (lb->zoltan, ZOLTAN_OBJ_LIST_FN_TYPE, (void (*)()) obj_list, &args);
-    Zoltan_Set_Fn (lb->zoltan, ZOLTAN_NUM_GEOM_FN_TYPE, (void (*)()) dimensions, &args);
-    Zoltan_Set_Fn (lb->zoltan, ZOLTAN_GEOM_MULTI_FN_TYPE, (void (*)()) obj_points, &args);
+    case ZOLTAN_RCB:
+    {
+      struct zoltan_args args = {n, {p[0], p[1], p[2]}, id};
+      
+      /* callbacks */
+      Zoltan_Set_Fn (lb->zoltan, ZOLTAN_NUM_OBJ_FN_TYPE, (void (*)()) obj_count, &args);
+      Zoltan_Set_Fn (lb->zoltan, ZOLTAN_OBJ_LIST_FN_TYPE, (void (*)()) obj_list, &args);
+      Zoltan_Set_Fn (lb->zoltan, ZOLTAN_NUM_GEOM_FN_TYPE, (void (*)()) dimensions, &args);
+      Zoltan_Set_Fn (lb->zoltan, ZOLTAN_GEOM_MULTI_FN_TYPE, (void (*)()) obj_points, &args);
 
-    /* update imbalance */
-    char str[128];
-    snprintf (str, 128, "%g", tol);
-    Zoltan_Set_Param (lb->zoltan, "IMBALANCE_TOL", str);
+      /* update imbalance */
+      char str[128];
+      snprintf (str, 128, "%g", tol);
+      Zoltan_Set_Param (lb->zoltan, "IMBALANCE_TOL", str);
+      
+      int changes, num_gid_entries, num_lid_entries; /* TODO: do we need this outside? */
+      
+      /* update partitioning */
+      ASSERT (Zoltan_LB_Balance (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
+        num_import, import_global_ids, import_local_ids, import_procs,
+        num_export, export_global_ids, export_local_ids, export_procs) == ZOLTAN_OK, "Zoltan load balancing failed");
+      
+      /*ASSERT (Zoltan_LB_Partition (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
+        num_import, import_global_ids, import_local_ids, import_procs, import_to_part,
+        num_export, export_global_ids, export_local_ids, export_procs, export_to_part) == ZOLTAN_OK, "Zoltan load balancing failed");*/
+    }
+    break;
+    case ZOLTAN_RIB:
+    {
     
-    int changes, num_gid_entries, num_lid_entries; /* TODO: do we need this outside? */
-    
-    /* update partitioning */
-    ASSERT (Zoltan_LB_Balance (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
-	    num_import, import_global_ids, import_local_ids, import_procs,
-	    num_export, export_global_ids, export_local_ids, export_procs) == ZOLTAN_OK, "Zoltan load balancing failed");
-    
-    /*ASSERT (Zoltan_LB_Partition (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
-	    num_import, import_global_ids, import_local_ids, import_procs, import_to_part,
-	    num_export, export_global_ids, export_local_ids, export_procs, export_to_part) == ZOLTAN_OK, "Zoltan load balancing failed");*/
-  }
-  break;
-  case ZOLTAN_RIB:
-  {
-  }
+    }
   }
 }
 
@@ -336,7 +337,8 @@ void loba_getbox (struct loba *lb, int part, iREAL lo[3], iREAL hi[3])
 }
 
 void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], 
-                      iREAL *v[3], iREAL dt, iREAL *p[3], iREAL *q[3], 
+                      iREAL *v[3], iREAL *angular[6],
+                      iREAL dt, iREAL *p[3], iREAL *q[3], 
                       unsigned int *tid, unsigned int *pid, 
                       master_conpnt *con, unsigned int long long *ncontacts, 
                       iREAL *timer1, iREAL *timer2, iREAL *timer3)
@@ -369,13 +371,15 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   
   //allocate memory for buffers
   unsigned int *pivot, *tid_buffer, *pid_buffer, *rcvpivot, *rcvtid_buffer, *rcvpid_buffer;
-  iREAL *tbuffer[3], *vbuffer;
-  iREAL *trvbuffer[3], *vrvbuffer;
+  iREAL *tbuffer[3], *vbuffer, *angbuffer;
+  iREAL *trvbuffer[3], *vrvbuffer, *angrvbuffer;
   
   tbuffer[0] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
   tbuffer[1] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
   tbuffer[2] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
   vbuffer = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
+  angbuffer = (iREAL *) malloc(nNeighbors*nGhosts*6*sizeof(iREAL));//six elements thus x2.
+  
   tid_buffer = (unsigned int *) malloc(nNeighbors*nGhosts*sizeof(unsigned int));
   pid_buffer = (unsigned int *) malloc(nNeighbors*nGhosts*sizeof(unsigned int));
   
@@ -418,6 +422,14 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
       vbuffer[(jj*nGhosts*3)+(xx*3)+0] = v[0][oltid];
       vbuffer[(jj*nGhosts*3)+(xx*3)+1] = v[1][oltid];
       vbuffer[(jj*nGhosts*3)+(xx*3)+2] = v[2][oltid];
+
+      angbuffer[(jj*nGhosts*6)+(xx*6)+0] = angular[0][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+1] = angular[1][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+2] = angular[2][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+3] = angular[3][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+4] = angular[4][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+5] = angular[5][oltid];
+      
       pivot[jj]++;
     }
   }
@@ -442,24 +454,29 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   trvbuffer[1] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
   trvbuffer[2] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
   vrvbuffer = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
+  angrvbuffer = (iREAL *) malloc(nNeighbors*n*6*sizeof(iREAL));//six elements thus x2.
+  
   rcvtid_buffer = (unsigned int *) malloc(nNeighbors*n*sizeof(unsigned int));
   rcvpid_buffer = (unsigned int *) malloc(nNeighbors*n*sizeof(unsigned int));
-  
-  MPI_Request *myRequest = (MPI_Request*) malloc(nNeighbors*6*sizeof(MPI_Request));//6 sends
-  MPI_Request *myrvRequest = (MPI_Request*) malloc(nNeighbors*6*sizeof(MPI_Request));//6 sends
+ 
+  int MPISENDS = 7;
+  MPI_Request *myRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
+  MPI_Request *myrvRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
   
   for(int i=0; i<nNeighbors; i++)
   {
     int proc = neighborhood[i];
     if(rcvpivot[i] > 0)
     {//safe check
-      MPI_Irecv(&rcvtid_buffer[i*n], rcvpivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*6)+0]);
-      MPI_Irecv(&trvbuffer[0][(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*6)+1]);
-      MPI_Irecv(&trvbuffer[1][(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*6)+2]);
-      MPI_Irecv(&trvbuffer[2][(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*6)+3]);
+      MPI_Irecv(&rcvtid_buffer[i*n], rcvpivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+0]);
+      MPI_Irecv(&trvbuffer[0][(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+1]);
+      MPI_Irecv(&trvbuffer[1][(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+2]);
+      MPI_Irecv(&trvbuffer[2][(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+3]);
       
-      MPI_Irecv(&vrvbuffer[(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*6)+4]);
-      MPI_Irecv(&rcvpid_buffer[i*n], rcvpivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*6)+5]);
+      MPI_Irecv(&vrvbuffer[(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+4]);
+      MPI_Irecv(&angrvbuffer[(i*n*6)], rcvpivot[i]*6, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+5]);
+      
+      MPI_Irecv(&rcvpid_buffer[i*n], rcvpivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+6]);
     }
   }
 
@@ -468,13 +485,15 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
     int proc = neighborhood[i];
     if(pivot[i] > 0)
     {//safe check
-      MPI_Isend(&tid_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*6)+0]);
-      MPI_Isend(&tbuffer[0][(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*6)+1]);
-      MPI_Isend(&tbuffer[1][(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*6)+2]);
-      MPI_Isend(&tbuffer[2][(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*6)+3]);
+      MPI_Isend(&tid_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+0]);
+      MPI_Isend(&tbuffer[0][(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+1]);
+      MPI_Isend(&tbuffer[1][(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+2]);
+      MPI_Isend(&tbuffer[2][(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+3]);
       
-      MPI_Isend(&vbuffer[(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*6)+4]);
-      MPI_Isend(&pid_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*6)+5]);
+      MPI_Isend(&vbuffer[(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+4]);
+      MPI_Isend(&angbuffer[(i*nGhosts*6)], pivot[i]*6, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+5]);
+
+      MPI_Isend(&pid_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+6]);
     }
   }
   
@@ -494,12 +513,13 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   {
     if(rcvpivot[i] > 0)
     {
-      MPI_Wait(&myrvRequest[(i*6)+0], MPI_STATUS_IGNORE);
-      MPI_Wait(&myrvRequest[(i*6)+1], MPI_STATUS_IGNORE);
-      MPI_Wait(&myrvRequest[(i*6)+2], MPI_STATUS_IGNORE);
-      MPI_Wait(&myrvRequest[(i*6)+3], MPI_STATUS_IGNORE);
-      MPI_Wait(&myrvRequest[(i*6)+4], MPI_STATUS_IGNORE);
-      MPI_Wait(&myrvRequest[(i*6)+5], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
       
       timerstart(&t4);
       for(unsigned int j=0;j<rcvpivot[i];j++)
@@ -514,6 +534,10 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
           
           v[k][receive_idx] = vrvbuffer[(i*n*3)+(j*3)+(k)];
         }
+        for(int k=0;k<6;k++)
+        {
+          //v[k][receive_idx] = vrvbuffer[(i*n*6)+(j*6)+(k)];
+        }
         receive_idx++;
       }
       timerend(&t4);
@@ -522,12 +546,13 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
       
     if(pivot[i] > 0)
     {//safe check
-      MPI_Wait(&myRequest[(i*6)+0], MPI_STATUS_IGNORE);
-      MPI_Wait(&myRequest[(i*6)+1], MPI_STATUS_IGNORE);
-      MPI_Wait(&myRequest[(i*6)+2], MPI_STATUS_IGNORE);
-      MPI_Wait(&myRequest[(i*6)+3], MPI_STATUS_IGNORE);
-      MPI_Wait(&myRequest[(i*6)+4], MPI_STATUS_IGNORE);
-      MPI_Wait(&myRequest[(i*6)+5], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
     }
   }
   timerend(&t3);
@@ -556,7 +581,10 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   
   free(vbuffer);
   free(vrvbuffer);
-  
+
+  free(angbuffer);
+  free(angrvbuffer);
+
   free(myRequest);
   free(myrvRequest);
   

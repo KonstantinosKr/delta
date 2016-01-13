@@ -3,7 +3,7 @@ C_SRC=
 CPP_SRC = input.cpp output.cpp delta.cpp migration.cpp loba.cpp contact.cpp forces.cpp dynamics.cpp tasksys.cpp
 
 # ISPC files
-ISPC_SRC= delta.ispc bf.ispc parmes.ispc
+ISPC_SRC= delta.ispc bf.ispc
 
 # ISPC targets
 ISPC_TARGETS=sse2,sse4,avx

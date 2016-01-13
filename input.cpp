@@ -1,4 +1,14 @@
 #include "input.h" 
+#include <Python.h>
+#include <structmember.h>
+#include <float.h>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <map>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
 
 void translate_enviroment(unsigned int tid, iREAL *t[3][3], iREAL p[3])
 {
@@ -61,7 +71,7 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3],
   *nParticles = 50;
   int ptype[*nParticles];
   for(unsigned int i = 0; i < *nParticles; i++){ptype[i] = 6;}
-   
+  
   iREAL mint, maxt;
   load_enviroment(ptype, nt, *nParticles, t, tid, pid, &mint, &maxt);
  // iREAL velo[3] = {50, 50, 50};
@@ -474,3 +484,227 @@ void normalize(unsigned int nt, iREAL *t[3][3], iREAL mint, iREAL maxt)
     }
   }
 }
+
+/*
+// temporary surface pairing 
+struct pair
+{
+  int color1;
+  int color2;
+  REAL iparam[NINT];
+};
+
+// material comparison by color pair 
+struct cmp
+{
+  bool operator() (const pair& a, const pair& b)
+  {
+    if (a.color1 == b.color1) return a.color2 < b.color2;
+    else return a.color1 < b.color1;
+  }
+};
+
+// sort materials according to surface color pairs 
+static void sort_materials ()
+{
+  std::vector<pair> v;
+
+  v.reserve (pairnum);
+
+  for (int i = 0; i < pairnum; i++)
+  {
+    pair x;
+
+    x.color1 = pairs[2*i];
+    x.color2 = pairs[2*i+1];
+    for (int j = 0; j < NINT; j ++) x.iparam[j] = iparam[j][i];
+
+    v.push_back (x);
+  }
+
+  std::sort (v.begin(), v.end(), cmp());
+
+  int i = 0;
+
+  for (std::vector<pair>::const_iterator p = v.begin(); p != v.end(); ++p, ++i)
+  {
+    pairs[2*i] = p->color1;
+    pairs[2*i+1] = p->color2;
+    for (int j = 0; j < NINT; j ++) iparam[j][i] = p->iparam[j];
+  }
+}
+
+// create material 
+static PyObject* MATERIAL (PyObject *self, PyObject *args, PyObject *kwds)
+{
+  KEYWORDS ("density", "young", "poisson");
+  double density, young, poisson;
+
+  PARSEKEYS ("ddd", &density, &young, &poisson);
+
+  TYPETEST (is_positive (density, kwl[0]) && is_positive (young, kwl[1]) && is_positive (poisson, kwl[2]));
+
+  if (matnum >= material_buffer_size) material_buffer_grow ();
+
+  int i = matnum ++;
+
+  mparam[DENSITY][i] = density;
+  mparam[YOUNG][i] = young;
+  mparam[POISSON][i] = poisson;
+
+  return PyInt_FromLong (i);
+}
+
+// define surface pairing 
+static PyObject* PAIRING (PyObject *self, PyObject *args, PyObject *kwds)
+{
+  KEYWORDS ("color1", "color2", "model", "spring", "damper", "friction", "rolling", "drilling",
+            "kskn", "uforce", "lambda", "young2", "kskn2", "sigc", "tauc", "alpha");
+  int color1, color2;
+  double spring, damper, rolling, drilling, kskn, lambda, young2, kskn2, sigc, tauc, alpha;
+  PyObject *model, *friction, *ufo;
+  double fri[2];
+  int iki;
+
+  spring = 1E6;
+  damper = 1.0;
+  rolling = 0.0;
+  drilling = 0.0;
+  kskn = 0.5;
+  lambda = 1.0;
+  young2 = 0.0;
+  kskn2 = 0.5;
+  sigc = 0.0;
+  tauc = 0.0;
+  alpha = 0.0;
+  friction = NULL;
+  fri[0] = 0.0;
+  fri[1] = 0.0;
+  ufo = NULL;
+
+  PARSEKEYS ("iiO|ddOdddOdddddd", &color1, &color2, &model, &spring, &damper, &friction,
+    &rolling, &drilling, &kskn, &ufo, &lambda, &young2, &kskn2, &sigc, &tauc, &alpha);
+
+  TYPETEST (is_string (model, kwl[2]) && is_positive (spring, kwl[3]) && is_non_negative (damper, kwl[4]) &&
+    is_non_negative (rolling, kwl[6]) && is_non_negative (drilling, kwl[7]) && is_positive (kskn, kwl[8]) &&
+    is_callable (ufo, kwl[9]) && is_positive (lambda, kwl[10]) && is_non_negative (young2, kwl[11]) &&
+    is_positive (kskn2, kwl[12]) && is_non_negative (sigc, kwl[13]) && is_non_negative (tauc, kwl[14]) &&
+    is_non_negative (alpha, kwl[15]));
+
+  IFIS (model, "granular")
+  {
+    iki = GRANULAR;
+  }
+  ELIF (model, "bonded")
+  {
+    iki = BONDED;
+  }
+  ELIF (model, "user")
+  {
+    iki = UFORCE;
+  }
+  ELSE
+  {
+    PyErr_SetString (PyExc_ValueError, "Invalid interaction model");
+    return NULL;
+  }
+
+  if (PyTuple_Check (friction))
+  {
+    TYPETEST (is_tuple (friction, kwl[5], 2));
+
+    fri[0] = PyFloat_AsDouble (PyTuple_GetItem (friction,0));
+    fri[1] = PyFloat_AsDouble (PyTuple_GetItem (friction,1));
+
+    TYPETEST (is_non_negative (fri[0], kwl[5]) && is_non_negative (fri[1], kwl[5]));
+  }
+  else
+  {
+    fri[0] = PyFloat_AsDouble (friction);
+
+    TYPETEST (is_non_negative (fri[0], kwl[5]));
+
+    fri[1] = fri[0];
+  }
+
+  int i = -1;
+
+  if (color1 == 0 && color2 == 0) // default
+  {
+    i = 0;
+  }
+  else if (color1 > 0 && color2 > 0)
+  {
+    if (pairnum >= pair_buffer_size) pair_buffer_grow ();
+
+    int i = pairnum ++;
+
+    pairs[2*i] = std::min(color1, color2);
+    pairs[2*i+1] = std::max(color1, color2);
+  }
+  else
+  {
+    PyErr_SetString (PyExc_ValueError, "invalid color values");
+    return NULL;
+  }
+
+  ikind[i] = iki;
+  iparam[SPRING][i] = spring;
+  iparam[DAMPER][i] = damper;
+  iparam[FRISTAT][i] = fri[0];
+  iparam[FRIDYN][i] = fri[1];
+  iparam[FRIROL][i] = rolling;
+  iparam[FRIDRIL][i] = drilling;
+  iparam[KSKN][i] = kskn;
+  iparam[LAMBDA][i] = lambda;
+  iparam[YOUNG2][i] = young2;
+  iparam[KSKN2][i] = kskn2;
+  iparam[SIGC][i] = sigc;
+  iparam[TAUC][i] = tauc;
+  iparam[ALPHA][i] = alpha;
+  uforce[i] = (callback_t) ufo;
+
+  Py_RETURN_NONE;
+}
+
+// set particle velocity 
+static PyObject* VELOCITY (PyObject *self, PyObject *args, PyObject *kwds)
+{
+  KEYWORDS ("parnum", "linear", "angular");
+  PyObject *lin, *ang;
+  int i;
+
+  ang = NULL;
+
+  PARSEKEYS ("iO|O", &i, &lin, &ang);
+
+  TYPETEST (is_in_range (i, 0, parnum, kwl[0]) && is_tuple (lin, kwl[1], 3) && is_tuple (ang, kwl[2], 3));
+
+  linear[0][i] = PyFloat_AsDouble (PyTuple_GetItem (lin, 0)); 
+  linear[1][i] = PyFloat_AsDouble (PyTuple_GetItem (lin, 1)); 
+  linear[2][i] = PyFloat_AsDouble (PyTuple_GetItem (lin, 2)); 
+
+  if (ang)
+  {
+    angular[0][i] = PyFloat_AsDouble (PyTuple_GetItem (ang, 0)); 
+    angular[1][i] = PyFloat_AsDouble (PyTuple_GetItem (ang, 1)); 
+    angular[2][i] = PyFloat_AsDouble (PyTuple_GetItem (ang, 2)); 
+  }
+
+  Py_RETURN_NONE;
+}
+
+// set gravity
+static PyObject* GRAVITY (PyObject *self, PyObject *args, PyObject *kwds)
+{
+  KEYWORDS ("gx", "gy", "gz");
+  double gx, gy, gz;
+
+  PARSEKEYS ("ddd", &gx, &gy, &gz);
+
+  gravity[0] = gx;
+  gravity[1] = gy;
+  gravity[2] = gz;
+
+  Py_RETURN_NONE;
+}*/

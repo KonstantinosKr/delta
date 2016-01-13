@@ -141,7 +141,7 @@ task void euler_task (uniform int span, uniform int parnum, uniform iREAL * unif
     O[1] = step*angular[1][i];
     O[2] = step*angular[2][i];
 
-    expmap (O[0], O[1], O[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
+   // expmap (O[0], O[1], O[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
 
     L1[0] = rotation[0][i];
     L1[1] = rotation[1][i];

@@ -5,6 +5,48 @@
 #include <omp.h>
 
 using namespace ispc;
+
+/* allocate new master contact point that can be written to */
+master_conpnt * newcon (master_conpnt * master, int *k)
+{
+  master_conpnt * con = master; 
+  while (con->size == CONBUF && con->next != NULL) con = con->next; // find available item or rewind to end
+   
+  if (con->size < CONBUF)
+  {
+    *k = con->size++;
+  }
+  else
+  {
+    master_conpnt * ptr = new master_conpnt;
+    ptr->size = 0;
+    ptr->next = NULL;
+    con->next = ptr; // append new item at the end 
+    con = ptr; // return new item 
+    *k = 0;
+  }
+  return con;
+}
+
+/* allocate new slave contact point that can be written to */
+slave_conpnt * newcon (slave_conpnt * slave, int *k)
+{
+  slave_conpnt * con = slave;
+ 
+  while (con->size == CONBUF) con = con->next; /* rewind to the end */
+ 
+  *k = con->size ++; 
+  if (con->size == CONBUF)
+  {
+    slave_conpnt * ptr = new slave_conpnt;
+    ptr->size = 0;
+    ptr->next = NULL;
+    con->next = ptr; /* append new item at the end */
+  } 
+  
+  return con;
+}
+
 //s1 and e1 mean start of section 1 and end of section 1, same for s2,e2 and nt size nts1, nts2
 void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, 
                         iREAL *t[3][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], iREAL dt, 
@@ -70,7 +112,9 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
         }
 
         conpiv->master[idx] = tid[i];
+        conpiv->masterid[idx] = pid[i];
         conpiv->slave[0][idx] = tid[j];
+        conpiv->slaveid[idx] = pid[j];
         
         //store contact point;
         conpiv->point[0][idx] = mul*midpt[0];

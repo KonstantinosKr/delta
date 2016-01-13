@@ -24,10 +24,14 @@ int main (int argc, char **argv)
   iREAL *force[3]; /* total spatial force */
   iREAL *torque[3]; /* total spatial torque */
  
-  int *pnum; /* particle count */
-  int *pmat; /* particle material */
+  int *parmat; /* particle material */
+  iREAL *mparam[NMAT]; /* material parameters */ 
+  int *pairs; /* color pairs */
+  int *ikind; /* interaction kind */ 
+  iREAL *iparam[NINT]; /* interaction parameters */
+
   iREAL *angular[6]; /* angular velocities (referential, spatial) */
-  iREAL *linear[3]; /* linear velocities */
+  //iREAL *linear[3]; /* linear velocities */
   iREAL *rotation[9]; /* rotation operators */
   iREAL *position[6]; /* mass center current and reference positions */
   iREAL *inertia[9]; /* inertia tensors */
@@ -60,18 +64,19 @@ int main (int argc, char **argv)
       t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
       t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
       v[i] = (iREAL *) malloc (size*sizeof(iREAL));
-    
+
       p[i] = (iREAL *) malloc (size*sizeof(iREAL));
       q[i] = (iREAL *) malloc (size*sizeof(iREAL));
-
-      cmass[i] = (iREAL *) malloc(size*sizeof(IREAL));
+    }
+    for (int i = 0; i < 6; i++)
+    {
+      angular[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
     
     tid = (unsigned int *) malloc (size*sizeof(unsigned int));
     pid = (unsigned int *) malloc (size*sizeof(unsigned int));
     
     mass = (iREAL *) malloc(size*sizeof(iREAL));
-    vol = (iREAL *) malloc(size*sizeof(iREAL));
 
     for(unsigned int i=0;i<size;i++) tid[i] = UINT_MAX; 
     
@@ -87,18 +92,19 @@ int main (int argc, char **argv)
       t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
       t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
       v[i] = (iREAL *) malloc (size*sizeof(iREAL));
-      
+
       p[i] = (iREAL *) malloc (size*sizeof(iREAL));
       q[i] = (iREAL *) malloc (size*sizeof(iREAL));
-    
-      cmass[i] = (iREAL *) malloc(size*sizeof(IREAL));
+    }
+    for (int i = 0; i < 6; i++)
+    {    
+      angular[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
     
     tid = (unsigned int *) malloc (size*sizeof(unsigned int));
     pid = (unsigned int *) malloc (size*sizeof(unsigned int));
       
     mass = (iREAL *) malloc(size*sizeof(iREAL));
-    vol = (iREAL *) malloc(size*sizeof(iREAL));
     
     for(unsigned int i=0;i<size;i++) tid[i] = UINT_MAX;
   }
@@ -110,18 +116,30 @@ int main (int argc, char **argv)
 
   /* create load balancer */
   struct loba *lb = loba_create (ZOLTAN_RCB);
-
-  /* perform time stepping */
-  iREAL step = 1E-3, time; unsigned int timesteps=0; master_conpnt *con = 0;
   
+  /* perform time stepping */
+  iREAL step = 1E-3, time; unsigned int timesteps=0; master_conpnt *con = 0; slave_conpnt *slave = 0;
+  
+  // reset to default pair 
+  /*pairs[0] = 0;
+  pairs[1] = 0;
+  ikind[0] = GRANULAR;
+  iparam[SPRING][0] = 1E6;
+  iparam[DAMPER][0] = 1.0;
+  iparam[FRISTAT][0] = 0.0;
+  iparam[FRIDYN][0] = 0.0;
+  iparam[FRIROL][0] = 0.0;
+  iparam[FRIDRIL][0] = 0.0;
+  iparam[KSKN][0] = 0.5;*/
+
   TIMING tbalance[100];
   TIMING tmigration[100];
   TIMING tdataExchange[100];
-  TIMING tintegration[100];
+  TIMING tdynamics[100];
   iREAL tTimer1[100];
   iREAL tTimer2[100];
   iREAL tTimer3[100];
-//  iREAL tTimer4[100];
+  //iREAL tTimer4[100];
 
   iREAL timer1, timer2, timer3;
   timer1 = 0.0;
@@ -145,7 +163,7 @@ int main (int argc, char **argv)
     printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
     
     timerstart(&tmigration[timesteps]);
-    migrate_triangles (size, &nt, t, v, tid, pid, 
+    migrate_triangles (size, &nt, t, v, angular, tid, pid, 
                         num_import, import_procs, import_to_part, 
                         num_export, export_procs, export_to_part, 
                         import_global_ids, import_local_ids, 
@@ -159,7 +177,7 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    loba_migrateGhosts(lb, myrank, &nt, t, v, step, p, q, tid, pid, con, &ncontacts, &timer1, &timer2, &timer3);
+    loba_migrateGhosts(lb, myrank, &nt, t, v, angular, step, p, q, tid, pid, con, &ncontacts, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
    
     tTimer1[timesteps] = timer1;
@@ -168,16 +186,15 @@ int main (int argc, char **argv)
  
     printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
-    forces(tid, pid, con);
+    //forces(con, slave, nt, angular, v, rotation, position, inertia, inverse, mass, invm, parmat, mparam, nt, pairs, ikind, iparam);
     printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
 
-    timerstart (&tintegration[timesteps]);
-    integrate (step, lo, hi, nt, t, v);
-    timerend (&tintegration[timesteps]);
+    timerstart (&tdynamics[timesteps]);
+    //integrate (step, lo, hi, nt, t, v);
+    //dynamics(con, slave, nt, angular, v, rotation, position, inertia, inverse, mass, invm, torque, gravity, step);
+    timerend (&tdynamics[timesteps]);
     
-    printf("RANK[%i]: integration:%f\n", myrank, tintegration[timesteps].total);
-
-    dynamics(con, slave, nt, angular, v, rotation, position, inertia, inverse, mass, invm, torque, gravity, step);
+    printf("RANK[%i]: integration:%f\n", myrank, tdynamics[timesteps].total);
 
     output_state(lb, myrank, nt, t, v, timesteps);
     
@@ -194,11 +211,11 @@ int main (int argc, char **argv)
   iREAL dt3 = 0;
   for(unsigned int i = 0; i<timesteps;i++)
   {
-    subtotal = subtotal + tbalance[i].total + tmigration[i].total + tdataExchange[i].total + tintegration[i].total;
+    subtotal = subtotal + tbalance[i].total + tmigration[i].total + tdataExchange[i].total + tdynamics[i].total;
     bal = bal + tbalance[i].total;
     mig = mig + tmigration[i].total;
     de = de + tdataExchange[i].total;
-    in = in + tintegration[i].total;
+    in = in + tdynamics[i].total;
     dt1 = dt1 + tTimer1[i];
     dt2 = dt2 + tTimer2[i];
     dt3 = dt3 + tTimer3[i];

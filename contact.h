@@ -7,6 +7,8 @@
 #define LSIZE 96
 /* master contact points; global array is used because
  * constitutive data at contacts can be persistent */
+
+
 struct master_conpnt
 {
   int master[CONBUF]; /* ellipsoid */
@@ -42,4 +44,6 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
                         iREAL *t[3][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], iREAL dt, 
                         iREAL *p[3], iREAL *q[3], master_conpnt *con, unsigned long long int *ncontacts);
 
+master_conpnt * newcon (master_conpnt * master, int *k);
+slave_conpnt * newcon (slave_conpnt * slave, int *k);
 #endif
