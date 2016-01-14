@@ -208,7 +208,7 @@ int main (int argc, char **argv)
  
     printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
-    //forces(con, slave, nt, position, angular, v, mass, invm, parmat, mparam, pairnum, pairs, ikind, iparam);
+    forces(con, slave, nt, position, angular, v, mass, invm, parmat, mparam, pairnum, pairs, ikind, iparam);
     printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
 
     timerstart (&tdynamics[timesteps]);
