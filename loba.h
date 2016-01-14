@@ -33,8 +33,9 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, unsigned nt, iR
                     unsigned int *ghostTID, unsigned int *ghostPID, unsigned int *nGhosts, 
                     unsigned int *nGhostNeighbors, int *ghostNeighborhood, 
                     unsigned int *ghostTIDNeighbors[], unsigned int *ghostTIDcrosses);
+
 void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], 
-                      iREAL *v[3], iREAL *angular[6],
+                      iREAL *v[3], iREAL *angular[6], int *parmat,
                       iREAL dt, iREAL *p[3], iREAL *q[3], 
                       unsigned int *tid, unsigned int *pid, 
                       master_conpnt *con, unsigned int long long *ncontacts, 

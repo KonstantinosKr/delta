@@ -337,7 +337,7 @@ void loba_getbox (struct loba *lb, int part, iREAL lo[3], iREAL hi[3])
 }
 
 void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t[3][3], 
-                      iREAL *v[3], iREAL *angular[6],
+                      iREAL *v[3], iREAL *angular[6], int *parmat,
                       iREAL dt, iREAL *p[3], iREAL *q[3], 
                       unsigned int *tid, unsigned int *pid, 
                       master_conpnt *con, unsigned int long long *ncontacts, 
@@ -373,7 +373,8 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   unsigned int *pivot, *tid_buffer, *pid_buffer, *rcvpivot, *rcvtid_buffer, *rcvpid_buffer;
   iREAL *tbuffer[3], *vbuffer, *angbuffer;
   iREAL *trvbuffer[3], *vrvbuffer, *angrvbuffer;
-  
+  int *parmat_buffer, *rvparmat_buffer;
+
   tbuffer[0] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
   tbuffer[1] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
   tbuffer[2] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
@@ -382,7 +383,8 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   
   tid_buffer = (unsigned int *) malloc(nNeighbors*nGhosts*sizeof(unsigned int));
   pid_buffer = (unsigned int *) malloc(nNeighbors*nGhosts*sizeof(unsigned int));
-  
+  parmat_buffer = (int *) malloc(nNeighbors*nGhosts*sizeof(int));
+
   pivot = (unsigned int *) malloc(nNeighbors*sizeof(unsigned int));
   rcvpivot = (unsigned int *) malloc(nNeighbors*sizeof(unsigned int));
   
@@ -404,6 +406,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
       //printf("RANK[%i]: J:%i JJ:%i\n", myrank, j, jj);
       int xx = pivot[jj];
       
+      parmat_buffer[(jj*nGhosts)+xx] = parmat[oltid];
       tid_buffer[(jj*nGhosts)+xx] = oltid;
       pid_buffer[(jj*nGhosts)+xx] = olpid;
       
@@ -456,10 +459,11 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   vrvbuffer = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
   angrvbuffer = (iREAL *) malloc(nNeighbors*n*6*sizeof(iREAL));//six elements thus x2.
   
+  rvparmat_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
   rcvtid_buffer = (unsigned int *) malloc(nNeighbors*n*sizeof(unsigned int));
   rcvpid_buffer = (unsigned int *) malloc(nNeighbors*n*sizeof(unsigned int));
  
-  int MPISENDS = 7;
+  int MPISENDS = 8;
   MPI_Request *myRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
   MPI_Request *myrvRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
   
@@ -475,8 +479,9 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
       
       MPI_Irecv(&vrvbuffer[(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+4]);
       MPI_Irecv(&angrvbuffer[(i*n*6)], rcvpivot[i]*6, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+5]);
-      
+
       MPI_Irecv(&rcvpid_buffer[i*n], rcvpivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+6]);
+      MPI_Irecv(&rvparmat_buffer[i*n], rcvpivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+7]); 
     }
   }
 
@@ -494,6 +499,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
       MPI_Isend(&angbuffer[(i*nGhosts*6)], pivot[i]*6, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+5]);
 
       MPI_Isend(&pid_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+6]);
+      MPI_Isend(&rvparmat_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+7]);
     }
   }
   
@@ -520,12 +526,14 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
       MPI_Wait(&myrvRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
       MPI_Wait(&myrvRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
       MPI_Wait(&myrvRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
       
       timerstart(&t4);
       for(unsigned int j=0;j<rcvpivot[i];j++)
       {
         tid[receive_idx] = rcvtid_buffer[(i*n)+j]; //tids to imported
         pid[receive_idx] = rcvpid_buffer[(i*n)+j];
+        parmat[receive_idx] = rvparmat_buffer[(i*n)+j];
         for(int k=0;k<3;k++)
         {
           t[0][k][receive_idx] = trvbuffer[0][(i*n*3)+(j*3)+(k)];
@@ -536,7 +544,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
         }
         for(int k=0;k<6;k++)
         {
-          //v[k][receive_idx] = vrvbuffer[(i*n*6)+(j*6)+(k)];
+          angular[k][receive_idx] = angrvbuffer[(i*n*6)+(j*6)+(k)];
         }
         receive_idx++;
       }
@@ -553,6 +561,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
       MPI_Wait(&myRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
       MPI_Wait(&myRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
       MPI_Wait(&myRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
     }
   }
   timerend(&t3);
@@ -578,7 +587,10 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   
   free(pid_buffer);
   free(rcvpid_buffer);
-  
+ 
+  free(parmat_buffer);
+  free(rvparmat_buffer);
+
   free(vbuffer);
   free(vrvbuffer);
 

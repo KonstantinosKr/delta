@@ -19,16 +19,46 @@ int main (int argc, char **argv)
   iREAL *t[3][3]; /* triangles */
   iREAL *v[3]; /* velocities */
   iREAL *mass; /* scalar mass */
-  iREAL *vol;
-  iREAL *cmass[3];
   iREAL *force[3]; /* total spatial force */
   iREAL *torque[3]; /* total spatial torque */
  
   int *parmat; /* particle material */
   iREAL *mparam[NMAT]; /* material parameters */ 
+  for(int i = 0; i<NMAT; i++)//number of material parameters
+  {
+    mparam[i] = (iREAL *) malloc(1*sizeof(iREAL));//n number of materials
+  }
+
+  int pairnum = 1;
   int *pairs; /* color pairs */
-  int *ikind; /* interaction kind */ 
-  iREAL *iparam[NINT]; /* interaction parameters */
+  pairs = (int *) malloc(pairnum*sizeof(pairnum));
+
+  int *ikind; /* interaction kind */
+  ikind = (int *) malloc(1*sizeof(int)); //number of interaction kinds/types
+
+  iREAL *iparam[NINT]; // interaction parameters // parameters per interaction type
+  for(int i=0;i<NINT;i++)
+  {
+    iparam[i] = (iREAL *) malloc(1*sizeof(iREAL));
+  }
+
+  //set first kind
+  ikind[0] = GRANULAR;
+  
+  //GRANULAR interaction type parameters 
+  iparam[SPRING][GRANULAR] = 0;
+  iparam[DAMPER][GRANULAR] = 0;
+  iparam[FRISTAT][GRANULAR] = 0;
+  iparam[FRIDYN][GRANULAR] = 0;
+  iparam[FRIROL][GRANULAR] = 0;
+  iparam[FRIDRIL][GRANULAR] = 0;
+  iparam[KSKN][GRANULAR] = 0;
+  iparam[LAMBDA][GRANULAR] = 0;
+  iparam[YOUNG2][GRANULAR] = 0;
+  iparam[KSKN2][GRANULAR] = 0;
+  iparam[SIGC][GRANULAR] = 0;
+  iparam[TAUC][GRANULAR] = 0;
+  iparam[ALPHA][GRANULAR] = 0;
 
   iREAL *angular[6]; /* angular velocities (referential, spatial) */
   //iREAL *linear[3]; /* linear velocities */
@@ -73,6 +103,8 @@ int main (int argc, char **argv)
       angular[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
     
+    parmat = (int *) malloc (size*sizeof(int));
+    
     tid = (unsigned int *) malloc (size*sizeof(unsigned int));
     pid = (unsigned int *) malloc (size*sizeof(unsigned int));
     
@@ -101,6 +133,8 @@ int main (int argc, char **argv)
       angular[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
     
+    parmat = (int *) malloc (size*sizeof(int));
+    
     tid = (unsigned int *) malloc (size*sizeof(unsigned int));
     pid = (unsigned int *) malloc (size*sizeof(unsigned int));
       
@@ -120,18 +154,6 @@ int main (int argc, char **argv)
   /* perform time stepping */
   iREAL step = 1E-3, time; unsigned int timesteps=0; master_conpnt *con = 0; slave_conpnt *slave = 0;
   
-  // reset to default pair 
-  /*pairs[0] = 0;
-  pairs[1] = 0;
-  ikind[0] = GRANULAR;
-  iparam[SPRING][0] = 1E6;
-  iparam[DAMPER][0] = 1.0;
-  iparam[FRISTAT][0] = 0.0;
-  iparam[FRIDYN][0] = 0.0;
-  iparam[FRIROL][0] = 0.0;
-  iparam[FRIDRIL][0] = 0.0;
-  iparam[KSKN][0] = 0.5;*/
-
   TIMING tbalance[100];
   TIMING tmigration[100];
   TIMING tdataExchange[100];
@@ -163,7 +185,7 @@ int main (int argc, char **argv)
     printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
     
     timerstart(&tmigration[timesteps]);
-    migrate_triangles (size, &nt, t, v, angular, tid, pid, 
+    migrate_triangles (size, &nt, t, v, angular, parmat, tid, pid, 
                         num_import, import_procs, import_to_part, 
                         num_export, export_procs, export_to_part, 
                         import_global_ids, import_local_ids, 
@@ -177,7 +199,7 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    loba_migrateGhosts(lb, myrank, &nt, t, v, angular, step, p, q, tid, pid, con, &ncontacts, &timer1, &timer2, &timer3);
+    loba_migrateGhosts(lb, myrank, &nt, t, v, angular, parmat, step, p, q, tid, pid, con, &ncontacts, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
    
     tTimer1[timesteps] = timer1;
@@ -186,7 +208,7 @@ int main (int argc, char **argv)
  
     printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
-    //forces(con, slave, nt, angular, v, rotation, position, inertia, inverse, mass, invm, parmat, mparam, nt, pairs, ikind, iparam);
+    //forces(con, slave, nt, position, angular, v, mass, invm, parmat, mparam, pairnum, pairs, ikind, iparam);
     printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
 
     timerstart (&tdynamics[timesteps]);

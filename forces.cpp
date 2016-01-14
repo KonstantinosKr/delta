@@ -48,9 +48,8 @@ int pairing (int nummat, int pairs[], int i, int j)
 }
 
 void forces (master_conpnt master[], slave_conpnt slave[],
-  int nt, iREAL * angular[6], iREAL * linear[3],
-  iREAL * rotation[9], iREAL * position[3], iREAL * inertia[9],
-  iREAL * inverse[9], iREAL mass[], iREAL invm[], int parmat[], iREAL * mparam[NMAT],
+  int nt, iREAL * position[3], iREAL * angular[6], iREAL * linear[3],
+  iREAL mass[], iREAL invm[], int parmat[], iREAL * mparam[NMAT],
   int pairnum, int pairs[], int ikind[], iREAL * iparam[NINT])
 {
 
@@ -116,7 +115,7 @@ void forces (master_conpnt master[], slave_conpnt slave[],
         SUB (oj, oi, oij); // relative angular velocity
 
         int ij = pairing (pairnum, pairs, con->color[0][k], con->color[1][k]);
-
+        
         iREAL f[3];
 
         switch (ikind[ij])
@@ -134,7 +133,7 @@ void forces (master_conpnt master[], slave_conpnt slave[],
             //printf ("ERROR: invalid pairing kind");
             break;
         }
-
+        
         con->force[0][k] = f[0];
         con->force[1][k] = f[1];
         con->force[2][k] = f[2];
@@ -174,7 +173,7 @@ void forces (master_conpnt master[], slave_conpnt slave[],
 
       con->size -= ngone;
     }
-
+    
     master_conpnt * con = master[i].next;
 
     while (con && con->next) // delete empty items
@@ -189,14 +188,14 @@ void forces (master_conpnt master[], slave_conpnt slave[],
 
       con = con->next;
     }
-
+    
     /* symmetrical copy into slave contact points */
     for (master_conpnt * con = &master[i]; con; con = con->next)
     {
       for (int j = 0; j < con->size; j ++)
       {
         slave_conpnt *ptr;
-        int k;
+        int k=0;
 
         if (con->slave[0][j] >= 0) /* particle-particle contact */
         {
