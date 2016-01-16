@@ -1,6 +1,4 @@
 #include "input.h" 
-#include <Python.h>
-#include <structmember.h>
 #include <float.h>
 #include <algorithm>
 #include <vector>
@@ -9,6 +7,32 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+
+void getCentroid(unsigned int range1, unsigned int range2, iREAL *t[3][3], iREAL *centroid[3], unsigned int bodyidx)
+{
+  iREAL cx=0;
+  iREAL cy=0;
+  iREAL cz=0;
+
+  for(unsigned int i=range1;i<range2;i++)
+  {
+    for(int j=0;j<3;j++)
+    {
+      cx = cx+t[0][j][i];
+      cy = cy+t[1][j][i];
+      cz = cz+t[2][j][i];
+    }
+  }
+
+  cx = cx/((range2-range1)*3);
+  cy = cy/((range2-range1)*3);
+  cz = cz/((range2-range1)*3);
+
+  centroid[0][bodyidx] = cx;
+  centroid[1][bodyidx] = cy;
+  centroid[2][bodyidx] = cz;
+}
+
 
 void translate_enviroment(unsigned int tid, iREAL *t[3][3], iREAL p[3])
 {
@@ -47,7 +71,8 @@ void condition_enviroment(unsigned int nt, unsigned int nParticles, iREAL *v[3],
   }
 }
 
-void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3], iREAL *v[3], unsigned int tid[], unsigned int pid[], iREAL lo[3], iREAL hi[3])
+void init_enviroment(unsigned int *nt, unsigned int *nParticles, 
+                iREAL *t[3][3], iREAL *v[3], unsigned int tid[], unsigned int pid[], iREAL *position[3], iREAL lo[3], iREAL hi[3])
 {
   //Input Type
   //0: Triangulated Mesh
@@ -73,7 +98,7 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3],
   for(unsigned int i = 0; i < *nParticles; i++){ptype[i] = 6;}
   
   iREAL mint, maxt;
-  load_enviroment(ptype, nt, *nParticles, t, tid, pid, &mint, &maxt);
+  load_enviroment(ptype, nt, *nParticles, t, tid, pid, position, &mint, &maxt);
  // iREAL velo[3] = {50, 50, 50};
   lo[0] = -250; // lower corner
   lo[1] = -250; // lower corner
@@ -118,7 +143,8 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles, iREAL *t[3][3],
   condition_enviroment(*nt, *nParticles, v, pid);
 }
 
-void load_enviroment(int ptype[], unsigned int *nt, unsigned int nParticles, iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *mint, iREAL *maxt)
+void load_enviroment(int ptype[], unsigned int *nt, unsigned int nParticles, 
+                    iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *position[3], iREAL *mint, iREAL *maxt)
 {
   unsigned int n = 0;
   *nt = 0;
@@ -127,18 +153,19 @@ void load_enviroment(int ptype[], unsigned int *nt, unsigned int nParticles, iRE
   {
     if(ptype[i] != 6)
     {//load particle from file
-        load_points(ptype[i], &n, i, *nt, t, tid, pid, mint, maxt);
+        load_points(ptype[i], &n, i, *nt, t, tid, pid, position, mint, maxt);
     } else
     {//create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        gen_nonsphericalparticle(0.25, 5, 50, &n, i, *nt, t, tid, pid, mint, maxt);
+        gen_nonsphericalparticle(0.25, 5, 50, &n, i, *nt, t, tid, pid, position, mint, maxt);
     }
     *nt = n + *nt;
     n = 0;
   }
 }
 
-void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned int *nt, unsigned int bodyidx, unsigned int initidx, iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *mint, iREAL *maxt)
+void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned int *nt, unsigned int bodyidx, unsigned int initidx, 
+                              iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *position[3], iREAL *mint, iREAL *maxt)
 {
   iREAL v[100][3];
   for(int i = 0; i<pointsize; i++)
@@ -154,168 +181,171 @@ void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned i
     v[i][2] = myradius*cos(phi);
   }
     
-    TRI* tr = NULL;
-    free(tr);int pointlength = 0;
-    tr = hull((iREAL *)v, pointsize, &pointlength);
-    int counter = 0;
-    
-    for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++){counter++;}
-    
-    unsigned int n = counter*3;
-    *nt = pointlength;
-    iREAL *point[3];
-    
-    point[0] = (iREAL *)malloc (n*sizeof(iREAL));
-    point[1] = (iREAL *)malloc (n*sizeof(iREAL));
-    point[2] = (iREAL *)malloc (n*sizeof(iREAL));
-    iREAL min = DBL_MAX;
-    iREAL max = DBL_MIN;
-    
-    counter = 0;
-    for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++)
+  TRI* tr = NULL;
+  free(tr);int pointlength = 0;
+  tr = hull((iREAL *)v, pointsize, &pointlength);
+  int counter = 0;
+  
+  for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++){counter++;}
+  
+  unsigned int n = counter*3;
+  *nt = pointlength;
+  iREAL *point[3];
+  
+  point[0] = (iREAL *)malloc (n*sizeof(iREAL));
+  point[1] = (iREAL *)malloc (n*sizeof(iREAL));
+  point[2] = (iREAL *)malloc (n*sizeof(iREAL));
+  iREAL min = DBL_MAX;
+  iREAL max = DBL_MIN;
+  
+  counter = 0;
+  for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++)
+  {
+    point[0][counter] = tri->ver [0][0];
+    point[1][counter] = tri->ver [0][1];
+    point[2][counter] = tri->ver [0][2];
+   
+    if(point[0][counter] < min)
     {
-        point[0][counter] = tri->ver [0][0];
-        point[1][counter] = tri->ver [0][1];
-        point[2][counter] = tri->ver [0][2];
-       
-        if(point[0][counter] < min)
-        {
-            min = point[0][counter];
-        }
-        
-        if(point[1][counter] < min)
-        {
-            min = point[1][counter];
-        }
-        
-        if(point[2][counter] < min)
-        {
-            min = point[2][counter];
-        }
-        
-        /////////////////////
-        
-        if(point[0][counter] > max)
-        {
-            max = point[0][counter];
-        }
-        
-        if(point[1][counter] > max)
-        {
-            max = point[1][counter];
-        }
-        
-        if(point[2][counter] > max)
-        {
-            max = point[2][counter];
-        }
-        
-        counter++;
-        point[0][counter] = tri->ver [1][0];
-        point[1][counter] = tri->ver [1][1];
-        point[2][counter] = tri->ver [1][2];
-        
-        
-        if(point[0][counter] < min)
-        {
-            min = point[0][counter];
-        }
-        
-        if(point[1][counter] < min)
-        {
-            min = point[1][counter];
-        }
-        
-        if(point[2][counter] < min)
-        {
-            min = point[2][counter];
-        }
-        
-        /////////////////////
-        
-        if(point[0][counter] > max)
-        {
-            max = point[0][counter];
-        }
-        
-        if(point[1][counter] > max)
-        {
-            max = point[1][counter];
-        }
-        
-        if(point[2][counter] > max)
-        {
-            max = point[2][counter];
-        }
-        
-        counter++;
-        point[0][counter] = tri->ver [2][0];
-        point[1][counter] = tri->ver [2][1];
-        point[2][counter] = tri->ver [2][2];
-        
-        if(point[0][counter] < min)
-        {
-            min = point[0][counter];
-        }
-        
-        if(point[1][counter] < min)
-        {
-            min = point[1][counter];
-        }
-        
-        if(point[2][counter] < min)
-        {
-            min = point[2][counter];
-        }
-        
-        /////////////////////
-        
-        if(point[0][counter] > max)
-        {
-            max = point[0][counter];
-        }
-        
-        if(point[1][counter] > max)
-        {
-            max = point[1][counter];
-        }
-        
-        if(point[2][counter] > max)
-        {
-            max = point[2][counter];
-        }
-        
-        counter++;
-
+        min = point[0][counter];
     }
     
-    counter = 0;
-    for(unsigned int i=initidx;i<initidx+n;i++)
+    if(point[1][counter] < min)
     {
-        t[0][0][i] = point[0][counter];
-        t[0][1][i] = point[1][counter];
-        t[0][2][i] = point[2][counter];
-        
-        counter++;
-        t[1][0][i] = point[0][counter];
-        t[1][1][i] = point[1][counter];
-        t[1][2][i] = point[2][counter];
-        
-        counter++;
-        t[2][0][i] = point[0][counter];
-        t[2][1][i] = point[1][counter];
-        t[2][2][i] = point[2][counter];
-        counter++;
-        
-        tid[i] = i;
-        pid[i] = bodyidx;
+        min = point[1][counter];
     }
-    *mint = min;
-    *maxt = max;
+    
+    if(point[2][counter] < min)
+    {
+        min = point[2][counter];
+    }
+    
+    /////////////////////
+    
+    if(point[0][counter] > max)
+    {
+        max = point[0][counter];
+    }
+    
+    if(point[1][counter] > max)
+    {
+        max = point[1][counter];
+    }
+    
+    if(point[2][counter] > max)
+    {
+        max = point[2][counter];
+    }
+    
+    counter++;
+    point[0][counter] = tri->ver [1][0];
+    point[1][counter] = tri->ver [1][1];
+    point[2][counter] = tri->ver [1][2];
+    
+    
+    if(point[0][counter] < min)
+    {
+        min = point[0][counter];
+    }
+    
+    if(point[1][counter] < min)
+    {
+        min = point[1][counter];
+    }
+    
+    if(point[2][counter] < min)
+    {
+        min = point[2][counter];
+    }
+    
+    /////////////////////
+    
+    if(point[0][counter] > max)
+    {
+        max = point[0][counter];
+    }
+    
+    if(point[1][counter] > max)
+    {
+        max = point[1][counter];
+    }
+    
+    if(point[2][counter] > max)
+    {
+        max = point[2][counter];
+    }
+    
+    counter++;
+    point[0][counter] = tri->ver [2][0];
+    point[1][counter] = tri->ver [2][1];
+    point[2][counter] = tri->ver [2][2];
+    
+    if(point[0][counter] < min)
+    {
+        min = point[0][counter];
+    }
+    
+    if(point[1][counter] < min)
+    {
+        min = point[1][counter];
+    }
+    
+    if(point[2][counter] < min)
+    {
+        min = point[2][counter];
+    }
+    
+    /////////////////////
+    
+    if(point[0][counter] > max)
+    {
+        max = point[0][counter];
+    }
+    
+    if(point[1][counter] > max)
+    {
+        max = point[1][counter];
+    }
+    
+    if(point[2][counter] > max)
+    {
+        max = point[2][counter];
+    }
+    
+    counter++;
+  }
+  
+  counter = 0;
+  for(unsigned int i=initidx;i<initidx+n;i++)
+  {
+    t[0][0][i] = point[0][counter];
+    t[0][1][i] = point[1][counter];
+    t[0][2][i] = point[2][counter];
+    
+    counter++;
+    t[1][0][i] = point[0][counter];
+    t[1][1][i] = point[1][counter];
+    t[1][2][i] = point[2][counter];
+    
+    counter++;
+    t[2][0][i] = point[0][counter];
+    t[2][1][i] = point[1][counter];
+    t[2][2][i] = point[2][counter];
+    counter++;
+    
+    tid[i] = i;
+    pid[i] = bodyidx;
+  }
+  
+  getCentroid(initidx, initidx+n, t, position, bodyidx);
+  
+  *mint = min;
+  *maxt = max;
 }
 
 
-void load_points(int ptype, unsigned int *nt, unsigned int bodyID, unsigned int startIDX, iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *mint, iREAL *maxt)
+void load_points(int ptype, unsigned int *nt, unsigned int bodyID, unsigned int startIDX, 
+                iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *position[3], iREAL *mint, iREAL *maxt)
 {
   //////////VTK format////////////
 
@@ -461,6 +491,7 @@ void load_points(int ptype, unsigned int *nt, unsigned int bodyID, unsigned int 
               tid[i] = i;
               pid[i] = bodyID;
           }
+          getCentroid(startIDX, startIDX+n, t, position, bodyID);
       }
   } while (ch != EOF);
   *mint = min;

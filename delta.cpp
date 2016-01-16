@@ -95,6 +95,7 @@ int main (int argc, char **argv)
       t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
       v[i] = (iREAL *) malloc (size*sizeof(iREAL));
 
+      position[i] = (iREAL *) malloc (size*sizeof(iREAL));
       p[i] = (iREAL *) malloc (size*sizeof(iREAL));
       q[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
@@ -113,7 +114,7 @@ int main (int argc, char **argv)
     for(unsigned int i=0;i<size;i++) tid[i] = UINT_MAX; 
     
     unsigned int nparticles;
-    init_enviroment(&nt, &nparticles, t, v, tid, pid, lo, hi);  
+    init_enviroment(&nt, &nparticles, t, v, tid, pid, position, lo, hi);  
     printf("NT:%i\n", nt);
   }
   else
@@ -123,7 +124,10 @@ int main (int argc, char **argv)
       t[0][i] = (iREAL *) malloc (size*sizeof(iREAL));
       t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
       t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      
       v[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      
+      position[i] = (iREAL *) malloc (size*sizeof(iREAL));
 
       p[i] = (iREAL *) malloc (size*sizeof(iREAL));
       q[i] = (iREAL *) malloc (size*sizeof(iREAL));
@@ -208,7 +212,7 @@ int main (int argc, char **argv)
  
     printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
-    forces(con, slave, nt, position, angular, v, mass, invm, parmat, mparam, pairnum, pairs, ikind, iparam);
+    //forces(con, slave, nt, position, angular, v, mass, invm, parmat, mparam, pairnum, pairs, ikind, iparam);
     printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
 
     timerstart (&tdynamics[timesteps]);
