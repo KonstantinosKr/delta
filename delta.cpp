@@ -17,7 +17,6 @@
 int main (int argc, char **argv)
 {
   iREAL *t[3][3]; /* triangles */
-  iREAL *v[3]; /* velocities */
   iREAL *mass; /* scalar mass */
   iREAL *force[3]; /* total spatial force */
   iREAL *torque[3]; /* total spatial torque */
@@ -61,7 +60,7 @@ int main (int argc, char **argv)
   iparam[ALPHA][GRANULAR] = 0;
 
   iREAL *angular[6]; /* angular velocities (referential, spatial) */
-  //iREAL *linear[3]; /* linear velocities */
+  iREAL *linear[3]; /* linear velocities */
   iREAL *rotation[9]; /* rotation operators */
   iREAL *position[6]; /* mass center current and reference positions */
   iREAL *inertia[9]; /* inertia tensors */
@@ -72,6 +71,7 @@ int main (int argc, char **argv)
   iREAL *p[3],*q[3];//p and q points
   
   unsigned int nt = 0; /* number of triangles */
+  unsigned int nb = 0;
   unsigned int *pid; /*particle identifier */
   unsigned int *tid; /* triangle identifiers */
   iREAL lo[3] = {-500, -500, -500}; /* lower corner */
@@ -93,9 +93,9 @@ int main (int argc, char **argv)
       t[0][i] = (iREAL *) malloc (size*sizeof(iREAL));
       t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
       t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
-      v[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      
+      linear[i] = (iREAL *) malloc (size*sizeof(iREAL));
 
-      position[i] = (iREAL *) malloc (size*sizeof(iREAL));
       p[i] = (iREAL *) malloc (size*sizeof(iREAL));
       q[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
@@ -113,9 +113,10 @@ int main (int argc, char **argv)
 
     for(unsigned int i=0;i<size;i++) tid[i] = UINT_MAX; 
     
-    unsigned int nparticles;
-    init_enviroment(&nt, &nparticles, t, v, tid, pid, position, lo, hi);  
-    printf("NT:%i\n", nt);
+    bd *b = (bd *) malloc (size*sizeof(bd));
+    init_enviroment(&nt, &nb, b, t, linear, tid, pid, lo, hi);
+    
+    printf("NT:%i, NB: %i\n", nt, nb);
   }
   else
   {
@@ -125,10 +126,8 @@ int main (int argc, char **argv)
       t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
       t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
       
-      v[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      linear[i] = (iREAL *) malloc (size*sizeof(iREAL));
       
-      position[i] = (iREAL *) malloc (size*sizeof(iREAL));
-
       p[i] = (iREAL *) malloc (size*sizeof(iREAL));
       q[i] = (iREAL *) malloc (size*sizeof(iREAL));
     }
@@ -189,7 +188,7 @@ int main (int argc, char **argv)
     printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
     
     timerstart(&tmigration[timesteps]);
-    migrate_triangles (size, &nt, t, v, angular, parmat, tid, pid, 
+    migrate_triangles (size, &nt, t, linear, angular, parmat, tid, pid, 
                         num_import, import_procs, import_to_part, 
                         num_export, export_procs, export_to_part, 
                         import_global_ids, import_local_ids, 
@@ -203,7 +202,7 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    loba_migrateGhosts(lb, myrank, &nt, t, v, angular, parmat, step, p, q, tid, pid, con, &ncontacts, &timer1, &timer2, &timer3);
+    loba_migrateGhosts(lb, myrank, &nt, t, linear, angular, parmat, step, p, q, tid, pid, con, &ncontacts, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
    
     tTimer1[timesteps] = timer1;
@@ -212,17 +211,16 @@ int main (int argc, char **argv)
  
     printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
-    //forces(con, slave, nt, position, angular, v, mass, invm, parmat, mparam, pairnum, pairs, ikind, iparam);
+    forces(con, slave, nt, position, angular, linear, mass, invm, parmat, mparam, pairnum, pairs, ikind, iparam);
     printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
 
     timerstart (&tdynamics[timesteps]);
-    //integrate (step, lo, hi, nt, t, v);
-    //dynamics(con, slave, nt, angular, v, rotation, position, inertia, inverse, mass, invm, torque, gravity, step);
+    //dynamics(con, slave, nt, angular, linear, rotation, position, inertia, inverse, mass, invm, torque, gravity, step);
     timerend (&tdynamics[timesteps]);
     
     printf("RANK[%i]: integration:%f\n", myrank, tdynamics[timesteps].total);
 
-    output_state(lb, myrank, nt, t, v, timesteps);
+    output_state(lb, myrank, nt, t, linear, timesteps);
     
     timesteps++;
   }
@@ -369,7 +367,7 @@ int main (int argc, char **argv)
     free (t[0][i]);
     free (t[1][i]);
     free (t[2][i]);
-    free (v[i]);
+    free (linear[i]);
     free (p[i]);
     free (q[i]);
   }

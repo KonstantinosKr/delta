@@ -48,7 +48,7 @@ int pairing (int nummat, int pairs[], int i, int j)
 }
 
 void forces (master_conpnt master[], slave_conpnt slave[],
-  int nt, iREAL * position[3], iREAL * angular[6], iREAL * linear[3],
+  int nt, int nb, bd *b, iREAL * angular[6], iREAL * linear[3],
   iREAL mass[], iREAL invm[], int parmat[], iREAL * mparam[NMAT],
   int pairnum, int pairs[], int ikind[], iREAL * iparam[NINT])
 {
@@ -188,7 +188,7 @@ void forces (master_conpnt master[], slave_conpnt slave[],
 
       con = con->next;
     }
-    
+
     /* symmetrical copy into slave contact points */
     for (master_conpnt * con = &master[i]; con; con = con->next)
     {

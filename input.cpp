@@ -8,7 +8,7 @@
 #include <fstream>
 #include <iomanip>
 
-void getCentroid(unsigned int range1, unsigned int range2, iREAL *t[3][3], iREAL *centroid[3], unsigned int bodyidx)
+void getCentroid(unsigned int range1, unsigned int range2, iREAL *t[3][3], iREAL *centroid)
 {
   iREAL cx=0;
   iREAL cy=0;
@@ -28,9 +28,9 @@ void getCentroid(unsigned int range1, unsigned int range2, iREAL *t[3][3], iREAL
   cy = cy/((range2-range1)*3);
   cz = cz/((range2-range1)*3);
 
-  centroid[0][bodyidx] = cx;
-  centroid[1][bodyidx] = cy;
-  centroid[2][bodyidx] = cz;
+  centroid[0] = cx;
+  centroid[1] = cy;
+  centroid[2] = cz;
 }
 
 
@@ -49,30 +49,63 @@ void translate_enviroment(unsigned int tid, iREAL *t[3][3], iREAL p[3])
   t[2][2][tid] = t[2][2][tid] + p[2];
 }
 
-void condition_enviroment(unsigned int nt, unsigned int nParticles, iREAL *v[3], unsigned int pid[])
+void condition_enviroment(unsigned int nt, unsigned int nb, bd *b, iREAL *linear[3], unsigned int pid[])
 {
   unsigned int counter=0;
-  for(unsigned int j = 0; j < nParticles; j++)
+  for(unsigned int i = 0; i < nb; i++)
   {
     iREAL rand = drand48();//random pull velocity
-    for(unsigned int i = counter; i < nt; i++)
+    for(unsigned int j = counter; j < nt; j++)
     {
-      if(pid[i] == j)
+      if(pid[j] == i)
       {
-        v[0][i] = 250 * rand;
-        v[1][i] = 0;
-        v[2][i] = 0;
+        linear[0][j] = 250 * rand;
+        linear[1][j] = 0;
+        linear[2][j] = 0;
         counter++;
       } else
       {
         break;
       }
     }
+
+    b[i].linear[0] = 250 * rand;
+    b[i].linear[1] = 0;
+    b[i].linear[2] = 0;
+
+    b[i].angular[0] = 0;
+    b[i].angular[1] = 0;
+    b[i].angular[2] = 0;
+
+    b[i].inertia[0] = 0;
+    b[i].inertia[1] = 0;
+    b[i].inertia[2] = 0;
+    b[i].inertia[3] = 0;
+    b[i].inertia[4] = 0;
+    b[i].inertia[5] = 0;
+    b[i].inertia[6] = 0;
+    b[i].inertia[7] = 0;
+    b[i].inertia[8] = 0;
+
+    b[i].inverse[0] = 0;
+    b[i].inverse[1] = 0;
+    b[i].inverse[2] = 0;
+    b[i].inverse[3] = 0;
+    b[i].inverse[4] = 0;
+    b[i].inverse[5] = 0;
+    b[i].inverse[6] = 0;
+    b[i].inverse[7] = 0;
+    b[i].inverse[8] = 0;
+
+    b[i].invm = 0;
+    b[i].mass = 0;
+
+    b[i].parmat = 0;
   }
 }
 
-void init_enviroment(unsigned int *nt, unsigned int *nParticles, 
-                iREAL *t[3][3], iREAL *v[3], unsigned int tid[], unsigned int pid[], iREAL *position[3], iREAL lo[3], iREAL hi[3])
+void init_enviroment(unsigned int *nt, unsigned int *nb, bd *b, 
+                iREAL *t[3][3], iREAL *v[3], unsigned int tid[], unsigned int pid[], iREAL lo[3], iREAL hi[3])
 {
   //Input Type
   //0: Triangulated Mesh
@@ -93,12 +126,12 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles,
    
    
   //non-spherical particles generation and loading
-  *nParticles = 50;
-  int ptype[*nParticles];
-  for(unsigned int i = 0; i < *nParticles; i++){ptype[i] = 6;}
+  *nb = 50;
+  int ptype[*nb];
+  for(unsigned int i = 0; i < *nb; i++){ptype[i] = 6;}
   
   iREAL mint, maxt;
-  load_enviroment(ptype, nt, *nParticles, t, tid, pid, position, &mint, &maxt);
+  load_enviroment(ptype, nt, *nb, b, t, tid, pid, &mint, &maxt);
  // iREAL velo[3] = {50, 50, 50};
   lo[0] = -250; // lower corner
   lo[1] = -250; // lower corner
@@ -112,7 +145,7 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles,
   
   iREAL p[3];//position to be translated
   int radius = 10;
-
+  
   unsigned int counter = 0;
   unsigned int idx = 0;
   for(int ii = lo[0]; ii < hi[0]; ii=ii+radius)
@@ -121,7 +154,7 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles,
     {
       for(int kk = lo[2]; kk < hi[2]; kk=kk+radius)
       {
-        if(idx < *nParticles)
+        if(idx < *nb)
         {
           //computer position to translate
           for(unsigned int j = counter; j < *nt; j++)
@@ -140,32 +173,33 @@ void init_enviroment(unsigned int *nt, unsigned int *nParticles,
       }
     }
   }
-  condition_enviroment(*nt, *nParticles, v, pid);
+  condition_enviroment(*nt, *nb, b, v, pid);
 }
 
-void load_enviroment(int ptype[], unsigned int *nt, unsigned int nParticles, 
-                    iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *position[3], iREAL *mint, iREAL *maxt)
+void load_enviroment(int ptype[], unsigned int *nt, unsigned int nb, bd *b,
+                    iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *mint, iREAL *maxt)
 {
   unsigned int n = 0;
   *nt = 0;
   srand48(time(NULL));
-  for(unsigned int i = 0; i < nParticles; i++)
+  
+  for(unsigned int i = 0; i < nb; i++)
   {
     if(ptype[i] != 6)
     {//load particle from file
-        load_points(ptype[i], &n, i, *nt, t, tid, pid, position, mint, maxt);
+        load_points(ptype[i], &n, i, b, *nt, t, tid, pid, mint, maxt);
     } else
     {//create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        gen_nonsphericalparticle(0.25, 5, 50, &n, i, *nt, t, tid, pid, position, mint, maxt);
+        gen_nonsphericalparticle(0.25, 5, 50, &n, b, i, *nt, t, tid, pid, mint, maxt);
     }
     *nt = n + *nt;
     n = 0;
   }
 }
 
-void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned int *nt, unsigned int bodyidx, unsigned int initidx, 
-                              iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *position[3], iREAL *mint, iREAL *maxt)
+void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned int *nt, bd *b, unsigned int bodyidx, unsigned int initidx, 
+                              iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *mint, iREAL *maxt)
 {
   iREAL v[100][3];
   for(int i = 0; i<pointsize; i++)
@@ -337,15 +371,20 @@ void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned i
     pid[i] = bodyidx;
   }
   
-  getCentroid(initidx, initidx+n, t, position, bodyidx);
+  iREAL position[3];
+  getCentroid(initidx, initidx+n, t, position);
   
+  b[bodyidx].position[0] = position[0];
+  b[bodyidx].position[1] = position[1];
+  b[bodyidx].position[2] = position[2];
+    
   *mint = min;
   *maxt = max;
 }
 
 
-void load_points(int ptype, unsigned int *nt, unsigned int bodyID, unsigned int startIDX, 
-                iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *position[3], iREAL *mint, iREAL *maxt)
+void load_points(int ptype, unsigned int *nt, unsigned int nb, bd *b, unsigned int startIDX,  
+                iREAL *t[3][3], unsigned int tid[], unsigned int pid[], iREAL *mint, iREAL *maxt)
 {
   //////////VTK format////////////
 
@@ -364,7 +403,7 @@ void load_points(int ptype, unsigned int *nt, unsigned int bodyID, unsigned int 
   {
     char filename[100] = "input/mesh/mesh";
     char strtmp[100];
-    sprintf(strtmp, "%i.vtk", bodyID);
+    sprintf(strtmp, "%i.vtk", nb);
     strcat(filename, strtmp);
     fp1 = fopen(filename, "r+");
     printf("%s\n", filename);
@@ -372,7 +411,7 @@ void load_points(int ptype, unsigned int *nt, unsigned int bodyID, unsigned int 
   {
     char filename[100] = "input/particles/par_";
     char strtmp[100];
-    sprintf(strtmp, "%i.vtk", bodyID);
+    sprintf(strtmp, "%i.vtk", nb);
     strcat(filename, strtmp);
     fp1 = fopen(filename, "r+");
     printf("%s\n", filename);
@@ -489,9 +528,14 @@ void load_points(int ptype, unsigned int *nt, unsigned int bodyID, unsigned int 
               //printf("idx:%s T[2][0] = %f | T[2][1] = %f | T[2][2] = %f\n", word, t[2][0][i], t[2][1][i], t[2][2][i]);
               
               tid[i] = i;
-              pid[i] = bodyID;
+              pid[i] = nb;
           }
-          getCentroid(startIDX, startIDX+n, t, position, bodyID);
+          iREAL position[3];
+          getCentroid(startIDX, startIDX+n, t, position);
+          
+          b[nb].position[0] = position[0];
+          b[nb].position[1] = position[1];
+          b[nb].position[2] = position[2];
       }
   } while (ch != EOF);
   *mint = min;
