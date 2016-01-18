@@ -215,30 +215,3 @@ void forces (master_conpnt master[], slave_conpnt slave[],
   }
 }
 
-
-void forces2(unsigned int *tid, unsigned int *pid, master_conpnt *con)
-{
-  for(master_conpnt *i = con; i!=0; i= i->next)//0 = NULL
-  {
-    for(int j = 0; j < i->size; j++)
-    {
-      iREAL normal[3];
-      normal[0] = i->normal[0][j];
-      normal[1] = i->normal[1][j];
-      normal[2] = i->normal[2][j];
-
-      iREAL depth = i->depth[j];
-      
-      iREAL f[3];
-      f[0] = 0;
-      f[1] = 0;
-      f[2] = 0;
-     // granular_force(normal, vij, oij, depth, i, j, mass, invm, ij, f);
-      
-      i->force[0][j] = f[0];
-      i->force[1][j] = f[1];
-      i->force[2][j] = f[2];   
-    }
-  }
-}
-
