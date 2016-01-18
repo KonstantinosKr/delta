@@ -86,6 +86,7 @@ void forces (master_conpnt master[], slave_conpnt slave[],
         n[1] = con->normal[1][k];
         n[2] = con->normal[2][k];
 
+
         z[0] = p[0]-x[0];
         z[1] = p[1]-x[1];
         z[2] = p[2]-x[2];
