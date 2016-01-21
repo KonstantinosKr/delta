@@ -210,6 +210,7 @@ void forces (master_conpnt master[], slave_conpnt slave[],
           ptr->force[0][k] = -con->force[0][j];
           ptr->force[1][k] = -con->force[1][j];
           ptr->force[2][k] = -con->force[2][j];
+          k++;
         }
       }
     }
