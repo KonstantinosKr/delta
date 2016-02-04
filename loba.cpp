@@ -507,7 +507,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   *timer1 = t1.total;
   
   timerstart(&t2);
-  contact_detection (0, *nt, 0, *nt, t, tid, pid, v, dt, p, q, con, ncontacts);//local computation
+  contact_detection (0, *nt, 0, *nt, t, tid, pid, v, dt, p, q, con);//local computation
   timerend(&t2);
   *timer2 = t2.total;
   
@@ -571,7 +571,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   {
     printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, *nt, receive_idx);
     //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-    contact_detection (0, *nt, *nt, receive_idx, t, tid, pid, v, dt, p, q, con, ncontacts);
+    contact_detection (0, *nt, *nt, receive_idx, t, tid, pid, v, dt, p, q, con);
   }
   for(int i=0; i<3; i++)
   {

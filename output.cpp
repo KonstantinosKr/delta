@@ -1,6 +1,6 @@
 #include "output.h"
 
-void output_state(struct loba *lb, int myrank, unsigned int nt, iREAL *t[3][3], iREAL *v[3], unsigned int timesteps)
+void output_state(struct loba *lb, int myrank, unsigned int nt, iREAL *t[3][3], unsigned int timesteps)
 {
     iREAL lo[3], hi[3]; 
     loba_getbox (lb, myrank, lo, hi);//get local subdomain boundary box
