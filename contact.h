@@ -12,9 +12,7 @@
 struct master_conpnt
 {
   int master[CONBUF]; /* ellipsoid */
-  int masterid[CONBUF];
   int slave[2][CONBUF]; /* particle, ellipsoid or -(triangle+1), unused */
-  int slaveid[CONBUF];
   int color[2][CONBUF];
   iREAL point[3][CONBUF];
   iREAL normal[3][CONBUF];
@@ -41,8 +39,8 @@ struct slave_conpnt
 
 /* calculate distances */
 void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, 
-                        iREAL *t[3][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], iREAL dt, 
-                        iREAL *p[3], iREAL *q[3], master_conpnt *con, unsigned long long int *ncontacts);
+                        iREAL *t[6][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], iREAL dt, 
+                        iREAL *p[3], iREAL *q[3], master_conpnt *con);
 
 master_conpnt * newcon (master_conpnt * master, int *k);
 slave_conpnt * newcon (slave_conpnt * slave, int *k);
