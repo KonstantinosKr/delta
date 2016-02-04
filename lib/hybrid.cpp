@@ -61,8 +61,11 @@ void hybrid (unsigned int it, unsigned int nt,
         
     batchError = 0.0;
 	  #pragma forceinline recursive
-    //#pragma simd reduction (+:batchError)
+    #if (defined(__GNUC__) && (__GNUC__==4) && (__GNUC_MINOR__>8)) || (defined(__GNUC__) && (__GNUC__>4))
     #pragma omp parallel for simd reduction (+:batchError)
+    #else
+    #pragma omp parallel for
+    #endif
     for (unsigned l=0; l<batchSize; l++) 
     { 
       unsigned i=k*batchSize + l;
@@ -110,7 +113,11 @@ void hybrid (unsigned int it, unsigned int nt,
     if(batchError/batchSize>1E-8)
     {
       #pragma forceinline recursive
-	    #pragma omp parallel for simd 
+      #if (defined(__GNUC__) && (__GNUC__==4) && (__GNUC_MINOR__>8)) || (defined(__GNUC__) && (__GNUC__>4))
+      #pragma omp parallel for simd
+      #else
+      #pragma omp parallel for
+      #endif
 	    for (unsigned l=0; l<batchSize; l++)
       {
         unsigned i=k*batchSize + l;
