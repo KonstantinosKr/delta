@@ -340,7 +340,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
                       iREAL *v[3], iREAL *angular[6], int *parmat,
                       iREAL dt, iREAL *p[3], iREAL *q[3], 
                       unsigned int *tid, unsigned int *pid, 
-                      master_conpnt *con, unsigned int long long *ncontacts, 
+                      master_conpnt *con, 
                       iREAL *timer1, iREAL *timer2, iREAL *timer3)
 {
   TIMING t1, t2, t3;
@@ -507,7 +507,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   *timer1 = t1.total;
   
   timerstart(&t2);
-  contact_detection (0, *nt, 0, *nt, t, tid, pid, v, dt, p, q, con);//local computation
+  contact_detection (0, *nt, 0, *nt, t, tid, pid, v, p, q, con);//local computation
   timerend(&t2);
   *timer2 = t2.total;
   
@@ -571,7 +571,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
   {
     printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, *nt, receive_idx);
     //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-    contact_detection (0, *nt, *nt, receive_idx, t, tid, pid, v, dt, p, q, con);
+    contact_detection (0, *nt, *nt, receive_idx, t, tid, pid, v, p, q, con);
   }
   for(int i=0; i<3; i++)
   {

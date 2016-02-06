@@ -49,7 +49,7 @@ slave_conpnt * newcon (slave_conpnt * slave, int *k)
 
 //s1 and e1 mean start of section 1 and end of section 1, same for s2,e2 and nt size nts1, nts2
 void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, 
-                        iREAL *t[6][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], iREAL dt, 
+                        iREAL *t[6][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], 
                         iREAL *p[3], iREAL *q[3], master_conpnt *con)
 {
   //unsigned int nts1 = e1-s1;
@@ -81,47 +81,17 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
     iREAL marginT1 = 1E-3;
     iREAL marginT2 = 1E-3;
     iREAL margin = marginT1+marginT2;
-    
+
     master_conpnt * conpiv = &con[pid[i]];   
-    for(master_conpnt *iter = conpiv; iter!=0; iter=iter->next)
-    {//update existing contact points
-      for(int j=0;j<iter->size;j++)
-      {
-        int index = 0;
-        index = iter->slave[0][j];
-        iREAL dist = sqrt(pow((q[0][index]-p[0][index]),2)+pow((q[1][index]-p[1][index]),2)+pow((q[2][index]-p[1][index]),2));
-        iREAL midpt[3];
-        midpt[0] = (p[0][index]+q[0][index])/2; //x
-        midpt[1] = (p[1][index]+q[1][index])/2; //y
-        midpt[2] = (p[2][index]+q[2][index])/2; //z
     
-        iREAL depth = dist - margin;
-    
-        iREAL mul = 1/sqrt(pow(midpt[0],2)+pow(midpt[1],2)+pow(midpt[2],2));
-        iREAL normal[3];
-        normal[0] = mul*midpt[0];
-        normal[1] = mul*midpt[1];
-        normal[2] = mul*midpt[2];
-        
-        iter->point[0][j] = mul*midpt[0];
-        iter->point[1][j] = mul*midpt[1];
-        iter->point[2][j] = mul*midpt[2];
-
-        iter->normal[0][j] = normal[0];
-        iter->normal[1][j] = normal[1];
-        iter->normal[2][j] = normal[2];
-
-        iter->depth[j] = depth;
-      }
-    }
-
     for(unsigned int j=s2;j<e2;j++) //careful; range can overflow due to ghosts particles
     {
       iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[1][j]),2));
       //if there is margin overlap or contact point is stored
       if(dist < margin && dist != 0 && (pid[i] != pid[j]))
       {//contact found, //if not same particle body //get min distance contact
-        iREAL midpt[3];
+        iREAL midpt[3], normal[3];
+
         midpt[0] = (p[0][j]+q[0][j])/2; //x
         midpt[1] = (p[1][j]+q[1][j])/2; //y
         midpt[2] = (p[2][j]+q[2][j])/2; //z
@@ -129,51 +99,170 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
         iREAL depth = dist - margin;
     
         iREAL mul = 1/sqrt(pow(midpt[0],2)+pow(midpt[1],2)+pow(midpt[2],2));
-        iREAL normal[3];
         normal[0] = mul*midpt[0];
         normal[1] = mul*midpt[1];
         normal[2] = mul*midpt[2];
         
-        int idx = conpiv->size%CONBUF;//CONBUF set to 8;
-        if(idx == 0 && conpiv->size > 0 )
+        int found = 0;
+        //check if contact point is already in the list
+        for(master_conpnt *iter = conpiv; iter!=NULL; iter=iter->next)
         {
-          if(conpiv->next == 0) //conpiv->next makes sure that no next contact point exist from previous contacts
+          for(int jj=0;jj<iter->size;jj++)
           {
-            conpiv->next = (master_conpnt*) malloc(sizeof(master_conpnt));
-            conpiv = conpiv->next;
-          }
-          else
-          {
-            while(conpiv->next != 0)
+            if((unsigned int)iter->slave[0][jj]==tid[j])//con slave equal slave processed 
             {
-              conpiv = conpiv->next;
+              found = 1;//contact exist, need to update
+              
+              //update existing contact
+              iter->point[0][jj] = mul*midpt[0];
+              iter->point[1][jj] = mul*midpt[1];
+              iter->point[2][jj] = mul*midpt[2];
+
+              iter->normal[0][jj] = normal[0];
+              iter->normal[1][jj] = normal[1];
+              iter->normal[2][jj] = normal[2];
+
+              iter->depth[jj] = depth;
+              break;
             }
-            //take to first with gap
-            idx = conpiv->size%CONBUF;
           }
         }
-
-        conpiv->master[idx] = tid[i];
-        conpiv->slave[0][idx] = tid[j];
         
-        //store contact point;
-        conpiv->point[0][idx] = mul*midpt[0];
-        conpiv->point[1][idx] = mul*midpt[1];
-        conpiv->point[2][idx] = mul*midpt[2];
+        if(!found)//not found
+        {//append to list
+          int idx;
+          conpiv = newcon (conpiv, &idx);
 
-        conpiv->normal[0][idx] = normal[0];
-        conpiv->normal[1][idx] = normal[1];
-        conpiv->normal[2][idx] = normal[2];
+          conpiv->master[idx] = tid[i];
+          conpiv->slave[0][idx] = tid[j];
+          conpiv->slave[1][idx] = pid[j];
 
-        conpiv->depth[idx] = depth;
-        
-        conpiv->size++; 
+          //store contact point;
+          conpiv->point[0][idx] = mul*midpt[0];
+          conpiv->point[1][idx] = mul*midpt[1];
+          conpiv->point[2][idx] = mul*midpt[2];
+
+          conpiv->normal[0][idx] = normal[0];
+          conpiv->normal[1][idx] = normal[1];
+          conpiv->normal[2][idx] = normal[2];
+
+          conpiv->depth[idx] = depth;
+          
+          conpiv->size++; 
+        }      
       }
     }
   }
 }
 
+/* update existing contact points */
+void update_existing (unsigned int nt, master_conpnt *master, iREAL * t[3][3], unsigned int *tid, unsigned int *pid, iREAL *p[3], iREAL *q[3])
+{
+  for(master_conpnt *iter = master; iter!=NULL; iter=iter->next)
+  {//update existing contact points - adhensive contact
+    for(int k=0;k<iter->size;k++)
+    {
+      if(iter->depth > 0) continue;//only look for distance > 0 //adhensive contact update
 
+      int i = iter->master[k];
+      int j = iter->slave[0][k];
+      
+      //search and find it exist
+      int ii; int jj; int foundslave = 0; int foundmaster = 0;
+      
+      for(ii=0;ii<(int) nt;ii++)//find real indices
+      {
+        if(tid[ii] == i)
+        {
+          foundmaster = 1;
+          break;
+        }
+      }
+      for(jj=0;jj<nt;jj++)
+      {
+        if(tid[jj] == j)
+        {
+          foundslave = 1;
+          break;
+        }
+      }
+
+      if(!foundmaster) printf("SOMETHING WEIRD HAPPENED");//BUG CHECKPOINT
+       
+      if(!foundslave || !foundmaster)//master or slave is not in domain, so delete contact point
+      {//not found - slave has migrated to another rank
+        //delete the contact
+        
+        int x = k+1; //go to next contact id
+        while (x < iter->size) x ++;//get j id of last contact
+        if (x < iter->size)
+        {//replace with last to fill the gone contact point
+          iter->master[k] = iter->master[x];
+          iter->slave[0][k] = iter->slave[0][x];
+          iter->slave[1][k] = iter->slave[1][x];
+          
+          iter->color[0][k] = iter->color[0][x];
+          iter->color[1][k] = iter->color[1][x];
+          
+          iter->point[0][k] = iter->point[0][x];
+          iter->point[1][k] = iter->point[1][x];
+          iter->point[2][k] = iter->point[2][x];
+          
+          iter->normal[0][k] = iter->normal[0][x];
+          iter->normal[1][k] = iter->normal[1][x];
+          iter->normal[2][k] = iter->normal[2][x];
+          
+          iter->depth[k] = iter->depth[x];
+        }
+        iter->size = iter->size-1;
+        
+        
+        while (iter && iter->next) // delete empty items
+        {
+          master_conpnt * next = iter->next;
+
+          if (next->size == 0)
+          {
+            iter->next = next->next;
+            delete next;
+          }
+
+          iter = iter->next;
+        }
+      }else
+      { //if slave found - has not migrated to another rank
+        //update distance 
+         
+        //already calculated in previous stage of simulation, just retrieve value
+        iREAL dist = sqrt(pow((q[0][jj]-p[0][ii]),2)+pow((q[1][jj]-p[1][ii]),2)+pow((q[2][jj]-p[1][ii]),2));
+         
+        iREAL midpt[3], normal[3];
+        midpt[0] = (p[0][ii]+q[0][jj])/2; //x
+        midpt[1] = (p[1][ii]+q[1][jj])/2; //y
+        midpt[2] = (p[2][ii]+q[2][jj])/2; //z
+    
+        iREAL margin = 1E-3+1E-3;
+        iREAL depth = dist - margin;
+    
+        iREAL mul = 1/sqrt(pow(midpt[0],2)+pow(midpt[1],2)+pow(midpt[2],2));
+        
+        normal[0] = mul*midpt[0];
+        normal[1] = mul*midpt[1];
+        normal[2] = mul*midpt[2];
+        
+        iter->point[0][k] = mul*midpt[0];
+        iter->point[1][k] = mul*midpt[1];
+        iter->point[2][k] = mul*midpt[2];
+
+        iter->normal[0][k] = normal[0];
+        iter->normal[1][k] = normal[1];
+        iter->normal[2][k] = normal[2];
+
+        iter->depth[k] = depth;
+      }
+    }
+  }
+}
 
 iREAL sphere_ellipsoid (iREAL p[3], iREAL r, iREAL center[3],
   iREAL radii[3], iREAL orient[9], iREAL point[3], iREAL normal[3], int j)
@@ -304,75 +393,5 @@ inline static iREAL triangle_sphere (iREAL ax, iREAL ay, iREAL az, iREAL bx, iRE
   normal[1][j] = ilen*q[1];
   normal[2][j] = ilen*q[2];
   return r - len;
-}
-
-/* update existing contact points */
-void update_existing (int span, int parnum, master_conpnt master,
-                      iREAL * center[6], iREAL * radii[3],
-                      iREAL * orient[18], iREAL * tri[3][3])
-{
-  for (master_conpnt * con = &master; con; con = con->next)
-  {
-    for(int k = 0; k<con->size; k++)
-    {
-      int i = con->master[k];
-      int j = con->slave[1][k];
-
-      if (radii[1][i] < 0.0) /* sphere- */
-      {
-        if (j < 0) /* sphere-triangle */
-        {
-          int u = -j-1;
-          con->depth[k] = triangle_sphere (tri[0][0][u], tri[0][1][u], tri[0][2][u],
-                                         tri[1][0][u], tri[1][1][u], tri[1][2][u],
-                 tri[2][0][u], tri[2][1][u], tri[2][2][u],
-                 center[0][i], center[1][i], center[2][i],
-                 radii[0][i], con->point, con->normal, k);
-        }
-        else if (radii[1][j] < 0.0) /* sphere-sphere */
-        {
-          iREAL p[3], q[3], c[3], len, ilen;
-
-          p[0] = center[0][i];
-          p[1] = center[1][i];
-          p[2] = center[2][i];
-          c[0] = center[0][j];
-          c[1] = center[1][j];
-          c[2] = center[2][j];
-          q[0] = p[0]-c[0];
-          q[1] = p[1]-c[1];
-          q[2] = p[2]-c[2];
-          len = LEN(q);
-          ilen = 1.0/len;
-          con->point[0][k] = 0.5*(p[0]+c[0]);
-          con->point[1][k] = 0.5*(p[1]+c[1]); 
-          con->point[2][k] = 0.5*(p[2]+c[2]); 
-          con->normal[0][k] = ilen*q[0];
-          con->normal[1][k] = ilen*q[1];
-          con->normal[2][k] = ilen*q[2];
-          con->depth[k] = radii[0][i]+radii[0][j] - len;
-        }
-        else /* sphere-ellipsoid */
-        {
-          return;
-        }
-      }
-      else /* ellipsoid- */
-      {
-        if (j < 0) /* ellipsoid-triangle */
-        {
-          return; /* TODO */
-        }
-        else if (radii[1][j] < 0.0) /* ellipsoid-sphere */
-        {
-          return; /* TODO */
-        }
-        else /* ellipsoid-ellipsoid */
-        {
-          return; /* TODO */
-        }
-      }
-    }
-  }
 }
 

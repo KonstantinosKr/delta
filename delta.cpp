@@ -13,6 +13,9 @@
 #include "contact.h"
 #include "dynamics.h"
 #include "forces.h"
+#include "delta_ispc.h"
+
+using namespace ispc;
 
 int main (int argc, char **argv)
 {
@@ -94,105 +97,106 @@ int main (int argc, char **argv)
    
   if (myrank == 0)
   {
-      for (int i = 0; i < 3; i ++)
-      {
-          t[0][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[3][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[4][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[5][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          
-          linear[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          
-          torque[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          force[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          
-          p[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          q[i] = (iREAL *) malloc (size*sizeof(iREAL));
-      }
+    for (int i = 0; i < 3; i ++)
+    {
+      t[0][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[3][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[4][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[5][i] = (iREAL *) malloc (size*sizeof(iREAL));
       
-      for (int i = 0; i < 6; i++)
-      {
-          angular[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          position[i] = (iREAL *) malloc (size*sizeof(iREAL));
-      }
+      linear[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      //linear[i] = aligned_real_alloc(size);
       
-      for (int i = 0; i<9; i++)
-      {
-          inverse[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          inertia[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          rotation[i] = (iREAL *) malloc (size*sizeof(iREAL));
-      }
+      torque[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      force[i] = (iREAL *) malloc (size*sizeof(iREAL));
       
-      con = (master_conpnt *) malloc (size*sizeof(master_conpnt));
-      slave = (slave_conpnt *) malloc (size*sizeof(slave_conpnt));
-      
-      parmat = (int *) malloc (size*sizeof(int));
-      
-      tid = (unsigned int *) malloc (size*sizeof(unsigned int));
-      pid = (unsigned int *) malloc (size*sizeof(unsigned int));
-      
-      invm = (iREAL *) malloc(size*sizeof(iREAL));
-      mass = (iREAL *) malloc(size*sizeof(iREAL));
+      p[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      q[i] = (iREAL *) malloc (size*sizeof(iREAL));
+    }
+    
+    for (int i = 0; i < 6; i++)
+    {
+      angular[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      position[i] = (iREAL *) malloc (size*sizeof(iREAL));
+    }
+    
+    for (int i = 0; i<9; i++)
+    {
+      inverse[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      inertia[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      rotation[i] = (iREAL *) malloc (size*sizeof(iREAL));
+    }
+    
+    con = (master_conpnt *) malloc (size*sizeof(master_conpnt));
+    slave = (slave_conpnt *) malloc (size*sizeof(slave_conpnt));
+    
+    parmat = (int *) malloc (size*sizeof(int));
+    
+    tid = (unsigned int *) malloc (size*sizeof(unsigned int));
+    pid = (unsigned int *) malloc (size*sizeof(unsigned int));
+    
+    invm = (iREAL *) malloc(size*sizeof(iREAL));
+    mass = (iREAL *) malloc(size*sizeof(iREAL));
 
     for(unsigned int i=0;i<size;i++) tid[i] = UINT_MAX; 
     
 //    bd *b = (bd *) malloc (size*sizeof(bd));
     //init_enviroment(&nt, &nb, b, t, linear, tid, pid, lo, hi);
-      unsigned int nb;
+      unsigned int nb = 0;
       init_enviroment(&nt, &nb, t, linear, angular, inertia, inverse, rotation, mass, invm, parmat, tid, pid, position, lo, hi);
     
     printf("NT:%i, NB: %i\n", nt, nb);
   }
   else
   {
-      for (int i = 0; i < 3; i ++)
-      {
-          t[0][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[3][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[4][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          t[5][i] = (iREAL *) malloc (size*sizeof(iREAL));
-          
-          linear[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          
-          torque[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          force[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          
-          p[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          q[i] = (iREAL *) malloc (size*sizeof(iREAL));
-      }
+    for (int i = 0; i < 3; i ++)
+    {
+      t[0][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[3][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[4][i] = (iREAL *) malloc (size*sizeof(iREAL));
+      t[5][i] = (iREAL *) malloc (size*sizeof(iREAL));
       
-      for (int i = 0; i < 6; i++)
-      {
-          angular[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          position[i] = (iREAL *) malloc (size*sizeof(iREAL));
-      }
+      linear[i] = (iREAL *) malloc (size*sizeof(iREAL));
       
-      for (int i = 0; i<9; i++)
-      {
-          inverse[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          inertia[i] = (iREAL *) malloc (size*sizeof(iREAL));
-          rotation[i] = (iREAL *) malloc (size*sizeof(iREAL));
-      }
+      //linear[i] = aligned_real_alloc(size);
       
-      con = (master_conpnt *) malloc (size*sizeof(master_conpnt));
-      slave = (slave_conpnt *) malloc (size*sizeof(slave_conpnt));
+      torque[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      force[i] = (iREAL *) malloc (size*sizeof(iREAL));
       
-      parmat = (int *) malloc (size*sizeof(int));
-      
-      tid = (unsigned int *) malloc (size*sizeof(unsigned int));
-      pid = (unsigned int *) malloc (size*sizeof(unsigned int));
-      
-      invm = (iREAL *) malloc(size*sizeof(iREAL));
-      mass = (iREAL *) malloc(size*sizeof(iREAL));
+      p[i] = (iREAL *) malloc (size*sizeof(iREAL));
+      q[i] = (iREAL *) malloc (size*sizeof(iREAL));
+    }
+    
+    for (int i = 0; i < 6; i++)
+    {
+        angular[i] = (iREAL *) malloc (size*sizeof(iREAL));
+        position[i] = (iREAL *) malloc (size*sizeof(iREAL));
+    }
+    
+    for (int i = 0; i<9; i++)
+    {
+        inverse[i] = (iREAL *) malloc (size*sizeof(iREAL));
+        inertia[i] = (iREAL *) malloc (size*sizeof(iREAL));
+        rotation[i] = (iREAL *) malloc (size*sizeof(iREAL));
+    }
+    
+    con = (master_conpnt *) malloc (size*sizeof(master_conpnt));
+    slave = (slave_conpnt *) malloc (size*sizeof(slave_conpnt));
+    
+    parmat = (int *) malloc (size*sizeof(int));
+    
+    tid = (unsigned int *) malloc (size*sizeof(unsigned int));
+    pid = (unsigned int *) malloc (size*sizeof(unsigned int));
+    
+    invm = (iREAL *) malloc(size*sizeof(iREAL));
+    mass = (iREAL *) malloc(size*sizeof(iREAL));
     
     for(unsigned int i=0;i<size;i++) tid[i] = UINT_MAX;
   }
-
-  unsigned long long int ncontacts = 0;
 
   int num_import, num_export, *import_procs, *import_to_part, *export_procs, *export_to_part;
   ZOLTAN_ID_PTR import_global_ids, import_local_ids, export_global_ids, export_local_ids;
@@ -216,11 +220,13 @@ int main (int argc, char **argv)
   timer1 = 0.0;
   timer2 = 0.0;
   timer3 = 0.0;
-    
-  euler(nb, angular, linear, rotation, position, 0.5*step);//half step
-  shapes (nb, nt, lo, hi, pid, t, linear, rotation, position);
-  output_state(lb, myrank, nt, t, 0);
   
+  if(myrank == 0)//do half step
+  {
+    euler(nb, angular, linear, rotation, position, 0.5*step);//half step
+    shapes (nb, nt, lo, hi, pid, t, linear, rotation, position);
+  }
+
   //for (time = 0.0; time < 1.0; time += step)
   for(time = 0; time < 0.1; time+=step)
   //for(time = 0; time < 1; time++)
@@ -252,28 +258,27 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    loba_migrateGhosts(lb, myrank, &nt, t, linear, angular, parmat, step, p, q, tid, pid, con, &ncontacts, &timer1, &timer2, &timer3);
+    loba_migrateGhosts(lb, myrank, &nt, t, linear, angular, parmat, step, p, q, tid, pid, con, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
    
     tTimer1[timesteps] = timer1;
     tTimer2[timesteps] = timer2;
     tTimer3[timesteps] = timer3;
- 
     printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
-    //forces(con, slave, nt, b, angular, linear, mass, invm, parmat, mparam, pairnum, pairs, ikind, iparam);
+    update_existing (nt, con, t, tid, pid, p, q);
+    
     forces(con, slave, nb, position, angular, linear, mass, invm, parmat, mparam, pairnum, pairs, ikind, iparam);
     printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
 
     timerstart (&tdynamics[timesteps]);
-      
-    dynamics(con, slave, nb, angular, linear, rotation, position, inertia, inverse, mass, invm, force, torque, gravity, step);
+    //dynamics(con, slave, nb, angular, linear, rotation, position, inertia, inverse, mass, invm, force, torque, gravity, step);
     timerend (&tdynamics[timesteps]);
+    printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
     
-    printf("RANK[%i]: integration:%f\n", myrank, tdynamics[timesteps].total);
-    shapes (nb, nt, lo, hi, pid, t, linear, rotation, position);
+    //shapes (nb, nt, lo, hi, pid, t, linear, rotation, position);
 
-    output_state(lb, myrank, nt, t, timesteps);
+    //output_state(lb, myrank, nt, t, timesteps);
     
     timesteps++;
   }

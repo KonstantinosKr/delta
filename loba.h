@@ -38,7 +38,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, unsigned int *nt, iREAL *t
                       iREAL *v[3], iREAL *angular[6], int *parmat,
                       iREAL dt, iREAL *p[3], iREAL *q[3], 
                       unsigned int *tid, unsigned int *pid, 
-                      master_conpnt *con, unsigned int long long *ncontacts, 
+                      master_conpnt *con, 
                       iREAL *timer1, iREAL *timer2, iREAL *timer3);
 
 /* find ranks overlapped by the [lo,hi] box */

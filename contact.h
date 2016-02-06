@@ -39,8 +39,10 @@ struct slave_conpnt
 
 /* calculate distances */
 void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, 
-                        iREAL *t[6][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], iREAL dt, 
+                        iREAL *t[6][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], 
                         iREAL *p[3], iREAL *q[3], master_conpnt *con);
+
+void update_existing (unsigned int nt, master_conpnt *master, iREAL * t[3][3], unsigned int *tid, unsigned int *pid, iREAL *p[3], iREAL *q[3]);
 
 master_conpnt * newcon (master_conpnt * master, int *k);
 slave_conpnt * newcon (slave_conpnt * slave, int *k);

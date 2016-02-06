@@ -1,3 +1,14 @@
+/* aligned real allocator */
+export uniform iREAL * uniform  aligned_real_alloc (uniform int n)
+{
+  return uniform new uniform iREAL [n];
+}
+ 
+export void aligned_real_free (uniform iREAL * uniform ptr)
+{
+  delete ptr;
+}
+
 export void generate_triangles_and_velocities (uniform iREAL lo[3], uniform iREAL hi[3], uniform int64 nt, uniform iREAL * uniform t[3][3], uniform iREAL * uniform v[3], uniform unsigned int64 tid[], uniform unsigned int64 pid[])
 {
   struct RNGState state;
@@ -12,7 +23,7 @@ export void generate_triangles_and_velocities (uniform iREAL lo[3], uniform iREA
 
   foreach (i = 0 ... nt)
   {
-    iREAL xrnd = frandom(&state);
+   /* iREAL xrnd = frandom(&state);
     iREAL yrnd = frandom(&state);
     iREAL zrnd = frandom(&state);
 
@@ -53,7 +64,7 @@ export void generate_triangles_and_velocities (uniform iREAL lo[3], uniform iREA
     v[2][i] = 0.5-frandom(&state);
 
     tid[i] = i;
-    pid[i] = i;
+    pid[i] = i;*/
   }
 }
 
@@ -69,10 +80,11 @@ export void generate_velocities (uniform iREAL lo[3], uniform iREAL hi[3], unifo
   
     foreach (i = 0 ... nt)
     {
-        v[0][i] = hi[0] * frandom(&state);
-        v[1][i] = hi[1] * frandom(&state);
-        v[2][i] = hi[2] * frandom(&state);
+        //v[0][i] = hi[0] * frandom(&state);
+        //v[1][i] = hi[1] * frandom(&state);
+        iREAL x = v[2][i];// = 0;//hi[2] * frandom(&state);
     }
+    
 }
 
 export void scale_triangles (uniform iREAL lo[3], uniform iREAL hi[3], uniform int64 nt, uniform iREAL * uniform t[3][3])
@@ -89,18 +101,18 @@ export void scale_triangles (uniform iREAL lo[3], uniform iREAL hi[3], uniform i
 
   foreach (i = 0 ... nt)
   {
-    t[0][0][i] = t[0][0][i]*(hi[0]-lo[0]) * scale;
-    t[0][1][i] = t[0][1][i]*(hi[1]-lo[1]) * scale;
-    t[0][2][i] = t[0][2][i]*(hi[2]-lo[2]) * scale;
+    t[0][0][i] = 0;//t[0][0][i]*(hi[0]-lo[0]); //* scale;
+    t[0][1][i] = 0;//t[0][1][i]*(hi[1]-lo[1]); //* scale;
+    t[0][2][i] = 0;//t[0][2][i]*(hi[2]-lo[2]); //* scale;
+/*
+    t[1][0][i] = t[1][0][i]*(hi[0]-lo[0]); //* scale;
+    t[1][1][i] = t[1][1][i]*(hi[1]-lo[1]); //* scale;
+    t[1][2][i] = t[1][2][i]*(hi[2]-lo[2]); //* scale;
 
-    t[1][0][i] = t[1][0][i]*(hi[0]-lo[0]) * scale;
-    t[1][1][i] = t[1][1][i]*(hi[1]-lo[1]) * scale;
-    t[1][2][i] = t[1][2][i]*(hi[2]-lo[2]) * scale;
-
-    t[2][0][i] = t[2][0][i]*(hi[0]-lo[0]) * scale;
-    t[2][1][i] = t[2][1][i]*(hi[1]-lo[1]) * scale;
-    t[2][2][i] = t[2][2][i]*(hi[2]-lo[2]) * scale;
-  }
+    t[2][0][i] = t[2][0][i]*(hi[0]-lo[0]); //* scale;
+    t[2][1][i] = t[2][1][i]*(hi[1]-lo[1]); //* scale;
+    t[2][2][i] = t[2][2][i]*(hi[2]-lo[2]); //* scale;
+ */ }
 }
 
 export void integrate_triangles (uniform iREAL step, uniform iREAL lo[3], uniform iREAL hi[3],
@@ -108,7 +120,7 @@ export void integrate_triangles (uniform iREAL step, uniform iREAL lo[3], unifor
 {
   foreach (i = 0 ... nt)
   {
-    t[0][0][i] += step*v[0][i];
+ /*   t[0][0][i] += step*v[0][i];
     t[0][1][i] += step*v[1][i];
     t[0][2][i] += step*v[2][i];
     t[1][0][i] += step*v[0][i];
@@ -138,7 +150,7 @@ export void integrate_triangles (uniform iREAL step, uniform iREAL lo[3], unifor
     if (t[2][0][i] > hi[0]) v[0][i] *= -1;
     if (t[2][1][i] > hi[1]) v[1][i] *= -1;
     if (t[2][2][i] > hi[2]) v[2][i] *= -1;
-  }
+ */ }
 
 }
 

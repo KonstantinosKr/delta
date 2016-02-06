@@ -189,7 +189,7 @@ void forces (master_conpnt master[], slave_conpnt slave[],
       con->size -= ngone; //reduce size of contact points to size-removed/gone
     }
     
-    master_conpnt * con = master[i].next; //may be con = master[i] instead of master[i].next
+    master_conpnt * con = &master[i]; //may be con = master[i] instead of master[i].next
     while (con && con->next) // delete empty items
     {
       master_conpnt * next = con->next;
