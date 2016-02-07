@@ -48,7 +48,7 @@ int main (int argc, char **argv)
   ikind[0] = GRANULAR;
   
   //GRANULAR interaction type parameters 
-  iparam[SPRING][GRANULAR] = 1E6;
+  iparam[SPRING][GRANULAR] = 1E9;
   iparam[DAMPER][GRANULAR] = 1;
   iparam[FRISTAT][GRANULAR] = 0;
   iparam[FRIDYN][GRANULAR] = 0;
@@ -272,13 +272,13 @@ int main (int argc, char **argv)
     printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
 
     timerstart (&tdynamics[timesteps]);
-    //dynamics(con, slave, nb, angular, linear, rotation, position, inertia, inverse, mass, invm, force, torque, gravity, step);
+    dynamics(con, slave, nb, angular, linear, rotation, position, inertia, inverse, mass, invm, force, torque, gravity, step);
     timerend (&tdynamics[timesteps]);
     printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
     
-    //shapes (nb, nt, lo, hi, pid, t, linear, rotation, position);
+    shapes (nb, nt, lo, hi, pid, t, linear, rotation, position);
 
-    //output_state(lb, myrank, nt, t, timesteps);
+    output_state(lb, myrank, nt, t, timesteps);
     
     timesteps++;
   }

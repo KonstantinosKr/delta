@@ -19,10 +19,11 @@ int granular_force(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, i
   iREAL en = iparam[DAMPER][ij] * 2.0 * sqrt(kn*ma);
   iREAL vn = DOT(vij,n);
   iREAL fn = kn*depth + en*vn;
-  printf("CONTACT\n"); 
+  //printf("kn:%f, en:%f, vn:%f, fn:%f depth:%f, vij[0]:%f vij[1]:%f vij[2]:%f\n", kn, en, vn, fn, depth, vij[0], vij[1], vij[2]); 
   f[0] = fn*n[0];
   f[1] = fn*n[1];
   f[2] = fn*n[2];
+  //printf("CONTACT F[0]: %f, F[1]: %f, F[2]: %f\n", f[0], f[1], f[2]); 
  
   /* TODO */
   int ret = 0;
@@ -69,6 +70,19 @@ void forces (master_conpnt master[], slave_conpnt slave[],
   iREAL mass[], iREAL invm[], int parmat[], iREAL * mparam[NMAT],
   int pairnum, int pairs[], int ikind[], iREAL * iparam[NINT])
 {
+//DEBUG ONLY
+  int counter = 0;
+  for(int i=0;i<nb;i++)
+  {
+    for (master_conpnt * con = &master[i]; con; con = con->next)
+    {
+      for(int k = 0; k<con->size; k++)
+      {
+        printf("BODY:%i, Contact:%i, depth:%f\n", i, counter, con->depth[k]);
+        counter++;
+      }
+    }
+  }
 
   for (int i = 0; i < nb; i++)
   {
@@ -111,7 +125,7 @@ void forces (master_conpnt master[], slave_conpnt slave[],
         vi[1] = oi[2]*z[0]-oi[0]*z[2] + v[1];
         vi[2] = oi[0]*z[1]-oi[1]*z[0] + v[2];
 
-        int j = con->slave[0][k]; //get index from slave body/contact
+        int j = con->slave[0][k]; //get index from slave body contact
 
         z[0] = p[0]-position[0][j];
         z[1] = p[1]-position[1][j];
@@ -155,26 +169,34 @@ void forces (master_conpnt master[], slave_conpnt slave[],
       
       int ngone = 0;
 
-      for (int k = 0; k < con->size; k ++)
+      for (int k = 0; k < con->size; k++)
       {//fill gaps
         if (gone[k] != 0)//gone is 1 so remove contact point.
         {
+          printf("REMOVING CONTACT\n");
           int j = k+1; //go to next contact id
-          while (j < con->size && gone[j] != 0) j ++;//get j id of last contact
+          while (j < con->size && gone[j] != 0) j++;//get j id of last contact
+          
           if (j < con->size)//loop through the contacts
           {//replace with last to fill the gone contact point
             con->master[k] = con->master[j];
+            
             con->slave[0][k] = con->slave[0][j];
             con->slave[1][k] = con->slave[1][j];
+            
             con->color[0][k] = con->color[0][j];
             con->color[1][k] = con->color[1][j];
+            
             con->point[0][k] = con->point[0][j];
             con->point[1][k] = con->point[1][j];
             con->point[2][k] = con->point[2][j];
+            
             con->normal[0][k] = con->normal[0][j];
             con->normal[1][k] = con->normal[1][j];
             con->normal[2][k] = con->normal[2][j];
+            
             con->depth[k] = con->depth[j];
+            
             con->force[0][k] = con->force[0][j];
             con->force[1][k] = con->force[1][j];
             con->force[2][k] = con->force[2][j];
@@ -186,10 +208,10 @@ void forces (master_conpnt master[], slave_conpnt slave[],
         }
       }
 
-      con->size -= ngone; //reduce size of contact points to size-removed/gone
+      con->size = con->size - ngone; //reduce size of contact points to size-removed/gone
     }
     
-    master_conpnt * con = &master[i]; //may be con = master[i] instead of master[i].next
+    master_conpnt * con = master[i].next; //may be con = master[i] instead of master[i].next
     while (con && con->next) // delete empty items
     {
       master_conpnt * next = con->next;
@@ -206,7 +228,7 @@ void forces (master_conpnt master[], slave_conpnt slave[],
     /* symmetrical copy into slave contact points */
     for (master_conpnt * con = &master[i]; con; con = con->next)
     {
-      for (int j = 0; j < con->size; j ++)
+      for (int j = 0; j < con->size; j++)
       {
         slave_conpnt *ptr;
         int k=0;
@@ -215,9 +237,11 @@ void forces (master_conpnt master[], slave_conpnt slave[],
 
         ptr->master[0][k] = i;
         ptr->master[1][k] = con->master[j];
+        
         ptr->point[0][k] = con->point[0][j];
         ptr->point[1][k] = con->point[1][j];
         ptr->point[2][k] = con->point[2][j];
+        
         ptr->force[0][k] = -con->force[0][j];
         ptr->force[1][k] = -con->force[1][j];
         ptr->force[2][k] = -con->force[2][j];

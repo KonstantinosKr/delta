@@ -109,7 +109,7 @@ void condition_enviroment(unsigned int nb, iREAL *v[3], iREAL *angular[6], iREAL
         angular[4][i] = 0;
         angular[5][i] = 0;
         
-        mass[i] = 1E-3;
+        mass[i] = 1;
         parmat[i] = 0;
         
         inertia[0][i] = 0.4*mass[i];
