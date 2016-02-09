@@ -106,7 +106,7 @@ struct loba* loba_create (enum algo al)
     Zoltan_Set_Param (lb->zoltan, "NUM_LID_ENTRIES", "1");
     Zoltan_Set_Param (lb->zoltan, "OBJ_WEIGHT_DIM", "1");
     //parts
-    //Zoltan_Set_Param (lb->zoltan, "NUM_LOCAL_PARTS", "4");
+    //Zoltan_Set_Param (lb->zoltan, "NUM_LOCAL_PARTS", "2");
 
     /* load balancing parameters */
     Zoltan_Set_Param (lb->zoltan, "LB_METHOD", "RCB");
@@ -163,13 +163,13 @@ void loba_balance (struct loba *lb, unsigned int n, iREAL *p[3], unsigned int *i
       int changes, num_gid_entries, num_lid_entries; /* TODO: do we need this outside? */
       
       /* update partitioning */
-      ASSERT (Zoltan_LB_Balance (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
+      /*ASSERT (Zoltan_LB_Balance (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
         num_import, import_global_ids, import_local_ids, import_procs,
         num_export, export_global_ids, export_local_ids, export_procs) == ZOLTAN_OK, "Zoltan load balancing failed");
-      
-      /*ASSERT (Zoltan_LB_Partition (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
+      */
+      ASSERT (Zoltan_LB_Partition (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
         num_import, import_global_ids, import_local_ids, import_procs, import_to_part,
-        num_export, export_global_ids, export_local_ids, export_procs, export_to_part) == ZOLTAN_OK, "Zoltan load balancing failed");*/
+        num_export, export_global_ids, export_local_ids, export_procs, export_to_part) == ZOLTAN_OK, "Zoltan load balancing failed");
     }
     break;
     case ZOLTAN_RIB:
@@ -180,13 +180,13 @@ void loba_balance (struct loba *lb, unsigned int n, iREAL *p[3], unsigned int *i
 }
 
 /* find ranks overlapped by the [lo,hi] box */
-void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks, int *nranks)
+void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks, int *nranks, int *parts, int *nparts)
 {
   switch (lb->al)
   {
     case ZOLTAN_RCB:
     {
-      Zoltan_LB_Box_Assign (lb->zoltan, lo[0], lo[1], lo[2], hi[0], hi[1], hi[2], ranks, nranks);
+      Zoltan_LB_Box_PP_Assign (lb->zoltan, lo[0], lo[1], lo[2], hi[0], hi[1], hi[2], ranks, nranks, parts, nparts);
       break;
     }
     case ZOLTAN_RIB:
@@ -620,6 +620,7 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, unsigned nt, iR
   iREAL lo[3], hi[3];
   unsigned int idx = 0; unsigned int uniqueRanks = 0;
   int *ranks = (int*) malloc(nNeighbors*sizeof(int)); 
+  int *parts = (int*) malloc(nNeighbors*sizeof(int)); 
   for(unsigned int i=0;i<nt;i++)
   {
     iREAL xmin = FLT_MAX;
@@ -665,7 +666,8 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, unsigned nt, iR
     hi[1] = ymax;
     hi[2] = zmax;
     int nranks = 0;
-    loba_query (lb, myrank, lo, hi, ranks, &nranks);
+    int nparts = 0;
+    loba_query (lb, myrank, lo, hi, ranks, &nranks, parts, &nparts);
     if(nranks > 1)
     {
       int counter = 0;

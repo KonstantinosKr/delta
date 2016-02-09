@@ -126,7 +126,7 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
         midpt[2] = (p[2][j]+q[2][j])/2; //z
     
         iREAL depth = margin-dist;
-        printf("DIST:%f DEPTH:%f JJ:%i\n", dist, depth, j);   
+        //printf("DIST:%f DEPTH:%f JJ:%i\n", dist, depth, j);   
         //iREAL mul = 1/sqrt(pow(midpt[0],2)+pow(midpt[1],2)+pow(midpt[2],2));
         iREAL mul = sqrt(pow(q[0][j]-p[0][j], 2)+pow(q[1][j] - p[1][j], 2)+pow(q[2][j]-p[2][j], 2));
         normal[0] = ((q[0][j] - p[0][j])/mul);//*depth for inclusion to normal
@@ -143,7 +143,7 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
           {
             if(!found && (unsigned int)iter->slave[1][jj]==tid[j] && (unsigned int)iter->master[i] == tid[i])//con slave equal slave processed 
             {
-              printf("POINT ALREADY IN THE LIST\n");
+              //printf("POINT ALREADY IN THE LIST\n");
               found = 1;//contact exist, need to update
               
               //update existing contact
@@ -170,7 +170,7 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
         */
         if(!found)//not found
         {//append to list
-          printf("APPENDED TO THE LIST\n");
+          //printf("APPENDED TO THE LIST\n");
           int idx;
           conpiv = newcon (conpiv, &idx);
 
@@ -237,7 +237,7 @@ void update_existing (int nb, unsigned int nt, master_conpnt *master, iREAL * t[
         {//not found - slave has migrated to another rank
           //delete the contact
          
-          printf("deleting contact because contact is gone\n");
+          //printf("deleting contact because contact is gone\n");
           int x = k+1; //go to next contact id
           while (x < iter->size) x ++;//get j id of last contact
           if (x < iter->size)
@@ -278,7 +278,7 @@ void update_existing (int nb, unsigned int nt, master_conpnt *master, iREAL * t[
         { //if slave found - has not migrated to another rank
           //update distance 
           
-          printf("update distance because contact is adhensive. DEPTH:%f JJ:%i\n", iter->depth[k], jj);
+          //printf("update distance because contact is adhensive. DEPTH:%f JJ:%i\n", iter->depth[k], jj);
           
           iREAL a[3], b[3], c[3];
           a[0] = t[0][0][ii];
@@ -305,7 +305,7 @@ void update_existing (int nb, unsigned int nt, master_conpnt *master, iREAL * t[
           iREAL margin = 10E-2;
           iREAL depth = margin-dist;
           
-          printf("UPDATE: depth:%f dist:%f\n", depth, dist);
+          //printf("UPDATE: depth:%f dist:%f\n", depth, dist);
         
           iREAL mul = sqrt(pow(q[0][jj]-p[0][jj], 2)+pow(q[1][jj] - p[1][jj], 2)+pow(q[2][jj]-p[2][jj], 2));
           normal[0] = ((q[0][jj] - p[0][jj])/mul);//*depth for inclusion to normal

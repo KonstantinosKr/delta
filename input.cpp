@@ -167,7 +167,7 @@ void init_enviroment(unsigned int *nt, unsigned int *nb,
     
     
     //non-spherical particles generation and loading
-    *nb = 150;
+    *nb = 10;
     int ptype[*nb];
     for(unsigned int i = 0; i < *nb; i++){ptype[i] = 6;}
     
