@@ -2,9 +2,9 @@
 #include "stdio.h"
 
 
-void gen_velocities (iREAL lo[3], iREAL hi[3], unsigned int nt, iREAL * v[3])
+void gen_velocities (iREAL lo[3], iREAL hi[3], int nt, iREAL * v[3])
 {
-    for(unsigned int i = 0; i < nt; i++)
+    for(int i = 0; i < nt; i++)
     {
         v[0][i] = hi[0] * drand48();
         v[1][i] = hi[1] * drand48();
@@ -207,9 +207,9 @@ void dynamics (master_conpnt master[], slave_conpnt slave[],
     }
 }
 
-void shapes (int nb, unsigned int nt, iREAL lo[3], iREAL hi[3], unsigned int pid[], iREAL * t[6][3], iREAL *v[3], iREAL * rotation[9], iREAL * position[6])
+void shapes (int nb, int nt, iREAL lo[3], iREAL hi[3], int pid[], iREAL * t[6][3], iREAL *v[3], iREAL * rotation[9], iREAL * position[6])
 {
-    for (unsigned int i = 0; i<nt; i++)
+    for (int i = 0; i<nt; i++)
     {
         iREAL L[9], X[3], x[3], C[3], c[3];
         
@@ -342,9 +342,9 @@ void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], i
 }
 
 
-void integrate (iREAL step, iREAL lo[3], iREAL hi[3], unsigned int nt, iREAL * t[3][3], iREAL * v[3])
+void integrate (iREAL step, iREAL lo[3], iREAL hi[3], int nt, iREAL * t[3][3], iREAL * v[3])
 {
-    for(unsigned int i = 0; i < nt; i++)
+    for(int i = 0; i < nt; i++)
     {
         t[0][0][i] += step*v[0][i];
         t[0][1][i] += step*v[1][i];

@@ -1,8 +1,4 @@
 #include "contact.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "math.h"
-#include <omp.h>
 
 using namespace ispc;
 
@@ -81,8 +77,8 @@ void slave_free (slave_conpnt * con, int size)
 }
 
 //s1 and e1 mean start of section 1 and end of section 1, same for s2,e2 and nt size nts1, nts2
-void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, 
-                        iREAL *t[6][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], 
+void contact_detection (int s1, int e1, int s2, int e2, 
+                        iREAL *t[6][3], int *tid, int *pid, iREAL *v[3], 
                         iREAL *p[3], iREAL *q[3], master_conpnt *con)
 {
   //unsigned int nts1 = e1-s1;
@@ -90,12 +86,11 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
   
   iREAL a[3], b[3], c[3];
 
-  omp_set_num_threads(4);//don't know much to set this
   
   //Set triangle 1 points A,B,C
   //#pragma force inline recursive
   //#pragma omp parallel for schedule(dynamic,1) collapse(2)
-  for(unsigned int i=s1;i<e1;i++)
+  for(int i=s1;i<e1;i++)
   { 
     a[0] = t[0][0][i];
     a[1] = t[0][1][i];
@@ -110,10 +105,12 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
     c[2] = t[2][2][i];
     
     ispc_bf (s2, e2, a, b, c, t[0], t[1], t[2], p, q);//use tasks 
-     
+   
+    //hybrid (s2, e2, a, b, c, t[0], t[1], t[2], p, q);
+
     iREAL margin = 10E-2;
     
-    for(unsigned int j=s2;j<e2;j++) //careful; range can overflow due to ghosts particles
+    for(int j=s2;j<e2;j++) //careful; range can overflow due to ghosts particles
     {
       iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[1][j]),2));
       //if there is margin overlap or contact point is stored
@@ -141,7 +138,7 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
         {
           for(int jj=0;jj<iter->size;jj++)
           {
-            if(!found && (unsigned int)iter->slave[1][jj]==tid[j] && (unsigned int)iter->master[i] == tid[i])//con slave equal slave processed 
+            if(!found && iter->slave[1][jj]==tid[j] && iter->master[i] == tid[i])//con slave equal slave processed 
             {
               //printf("POINT ALREADY IN THE LIST\n");
               found = 1;//contact exist, need to update
@@ -198,7 +195,7 @@ void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsig
 }
 
 /* update existing contact points */
-void update_existing (int nb, unsigned int nt, master_conpnt *master, iREAL * t[3][3], unsigned int *tid, unsigned int *pid, iREAL *p[3], iREAL *q[3])
+void update_existing (int nb, int nt, master_conpnt *master, iREAL * t[3][3], int *tid, int *pid, iREAL *p[3], iREAL *q[3])
 {
   for(int zz=0;zz<nb;zz++)
   {

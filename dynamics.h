@@ -3,12 +3,12 @@
 #include "algo.h"
 #include "math.h"
 
-void gen_velocities (iREAL lo[3], iREAL hi[3], unsigned int nt, iREAL * v[3]);
-void integrate (iREAL step, iREAL lo[3], iREAL hi[3], unsigned int nt, iREAL * t[3][3], iREAL * v[3]);
+void gen_velocities (iREAL lo[3], iREAL hi[3], int nt, iREAL * v[3]);
+void integrate (iREAL step, iREAL lo[3], iREAL hi[3], int nt, iREAL * t[3][3], iREAL * v[3]);
 
 void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[3], iREAL step);
 
-void shapes (int nb, unsigned int nt, iREAL lo[3], iREAL hi[3], unsigned int pid[], iREAL * t[6][3], iREAL *v[3], iREAL * rotation[9], iREAL * position[6]);
+void shapes (int nb, int nt, iREAL lo[3], iREAL hi[3], int pid[], iREAL * t[6][3], iREAL *v[3], iREAL * rotation[9], iREAL * position[6]);
 
 void dynamics (master_conpnt master[], slave_conpnt slave[],
                int nb, iREAL * angular[6], iREAL * linear[3],

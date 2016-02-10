@@ -2,7 +2,12 @@
 #define HEADER_FILE
 
 #include "bf_ispc.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "math.h"
+#include <omp.h>
 #include "algo.h"
+#include "hybrid.h"
 #define CONBUF 8
 #define LSIZE 96
 /* master contact points; global array is used because
@@ -38,12 +43,12 @@ struct slave_conpnt
 };
 
 /* calculate distances */
-void contact_detection (unsigned int s1, unsigned int e1, unsigned int s2, unsigned int e2, 
-                        iREAL *t[6][3], unsigned int *tid, unsigned int *pid, iREAL *v[3], 
+void contact_detection (int s1, int e1, int s2, int e2, 
+                        iREAL *t[6][3], int *tid, int *pid, iREAL *v[3], 
                         iREAL *p[3], iREAL *q[3], master_conpnt *con);
 
 
-void update_existing (int nb, unsigned int nt, master_conpnt *master, iREAL * t[3][3], unsigned int *tid, unsigned int *pid, iREAL *p[3], iREAL *q[3]);
+void update_existing (int nb, int nt, master_conpnt *master, iREAL * t[3][3], int *tid, int *pid, iREAL *p[3], iREAL *q[3]);
 
 master_conpnt * newcon (master_conpnt * master, int *k);
 slave_conpnt * newcon (slave_conpnt * slave, int *k);

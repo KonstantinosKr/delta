@@ -11,603 +11,601 @@
 // invert inertia properties
 void invert (int nb, iREAL * inertia[9], iREAL * inverse[9], iREAL mass[], iREAL invm[])
 {
-    for(int i = 0; i<nb;i++)
-    {
-        iREAL a[9], x[9], det;
-        
-        for (int j = 0; j < 9; j ++)
-        {
-            a[j] = inertia[j][i];
-        }
-        INVERT (a, x, det);
-        
-        for (int j = 0; j < 9; j ++)
-        {
-            inverse[j][i] = x[j];
-        }
-        
-        invm[i] = 1.0 / mass[i];
-    }
-}
-
-void getCentroid(int pid, unsigned int range1, unsigned int range2, iREAL *t[6][3], iREAL *centroid[6])
-{
-    iREAL cx=0;
-    iREAL cy=0;
-    iREAL cz=0;
+  for(int i = 0; i<nb;i++)
+  {
+    iREAL a[9], x[9], det;
     
-    for(unsigned int i=range1;i<range2;i++)
+    for (int j = 0; j < 9; j ++)
     {
-        cx = cx+t[0][0][i];
-        cy = cy+t[0][1][i];
-        cz = cz+t[0][2][i];
-        
-        cx = cx+t[1][0][i];
-        cy = cy+t[1][1][i];
-        cz = cz+t[1][2][i];
-        
-        cx = cx+t[2][0][i];
-        cy = cy+t[2][1][i];
-        cz = cz+t[2][2][i];
+      a[j] = inertia[j][i];
+    }
+    INVERT (a, x, det);
+    
+    for (int j = 0; j < 9; j ++)
+    {
+      inverse[j][i] = x[j];
     }
     
-    cx = cx/((range2-range1)*3);
-    cy = cy/((range2-range1)*3);
-    cz = cz/((range2-range1)*3);
-    
-    centroid[0][pid] = cx;
-    centroid[1][pid] = cy;
-    centroid[2][pid] = cz;
-    
-    centroid[3][pid] = cx;
-    centroid[4][pid] = cy;
-    centroid[5][pid] = cz;
+    invm[i] = 1.0 / mass[i];
+  }
 }
 
-void translate_enviroment(unsigned int i, unsigned int pid, iREAL *t[6][3], iREAL *p[6])
+void getCentroid(int pid, int range1, int range2, iREAL *t[6][3], iREAL *centroid[6])
 {
-    t[0][0][i] = t[0][0][i] + p[0][pid];
-    t[0][1][i] = t[0][1][i] + p[1][pid];
-    t[0][2][i] = t[0][2][i] + p[2][pid];
+  iREAL cx=0;
+  iREAL cy=0;
+  iREAL cz=0;
+  
+  for(int i=range1;i<range2;i++)
+  {
+    cx = cx+t[0][0][i];
+    cy = cy+t[0][1][i];
+    cz = cz+t[0][2][i];
     
-    t[1][0][i] = t[1][0][i] + p[0][pid];
-    t[1][1][i] = t[1][1][i] + p[1][pid];
-    t[1][2][i] = t[1][2][i] + p[2][pid];
+    cx = cx+t[1][0][i];
+    cy = cy+t[1][1][i];
+    cz = cz+t[1][2][i];
     
-    t[2][0][i] = t[2][0][i] + p[0][pid];
-    t[2][1][i] = t[2][1][i] + p[1][pid];
-    t[2][2][i] = t[2][2][i] + p[2][pid];
-    
-    t[3][0][i] = t[3][0][i] + p[0][pid];
-    t[3][1][i] = t[3][1][i] + p[1][pid];
-    t[3][2][i] = t[3][2][i] + p[2][pid];
-    
-    t[4][0][i] = t[4][0][i] + p[0][pid];
-    t[4][1][i] = t[4][1][i] + p[1][pid];
-    t[4][2][i] = t[4][2][i] + p[2][pid];
-    
-    t[5][0][i] = t[5][0][i] + p[0][pid];
-    t[5][1][i] = t[5][1][i] + p[1][pid];
-    t[5][2][i] = t[5][2][i] + p[2][pid];
+    cx = cx+t[2][0][i];
+    cy = cy+t[2][1][i];
+    cz = cz+t[2][2][i];
+  }
+  
+  cx = cx/((range2-range1)*3);
+  cy = cy/((range2-range1)*3);
+  cz = cz/((range2-range1)*3);
+  
+  centroid[0][pid] = cx;
+  centroid[1][pid] = cy;
+  centroid[2][pid] = cz;
+  
+  centroid[3][pid] = cx;
+  centroid[4][pid] = cy;
+  centroid[5][pid] = cz;
 }
 
-void condition_enviroment(unsigned int nb, iREAL *v[3], iREAL *angular[6], iREAL *rotation[9],
+void translate_enviroment(int i, int pid, iREAL *t[6][3], iREAL *p[6])
+{
+  t[0][0][i] = t[0][0][i] + p[0][pid];
+  t[0][1][i] = t[0][1][i] + p[1][pid];
+  t[0][2][i] = t[0][2][i] + p[2][pid];
+  
+  t[1][0][i] = t[1][0][i] + p[0][pid];
+  t[1][1][i] = t[1][1][i] + p[1][pid];
+  t[1][2][i] = t[1][2][i] + p[2][pid];
+  
+  t[2][0][i] = t[2][0][i] + p[0][pid];
+  t[2][1][i] = t[2][1][i] + p[1][pid];
+  t[2][2][i] = t[2][2][i] + p[2][pid];
+  
+  t[3][0][i] = t[3][0][i] + p[0][pid];
+  t[3][1][i] = t[3][1][i] + p[1][pid];
+  t[3][2][i] = t[3][2][i] + p[2][pid];
+  
+  t[4][0][i] = t[4][0][i] + p[0][pid];
+  t[4][1][i] = t[4][1][i] + p[1][pid];
+  t[4][2][i] = t[4][2][i] + p[2][pid];
+  
+  t[5][0][i] = t[5][0][i] + p[0][pid];
+  t[5][1][i] = t[5][1][i] + p[1][pid];
+  t[5][2][i] = t[5][2][i] + p[2][pid];
+}
+
+void condition_enviroment(int nb, iREAL *v[3], iREAL *angular[6], iREAL *rotation[9],
                           iREAL *mass, iREAL *inertia[9], iREAL *inverse[9], iREAL *invm, int *parmat)
 {
-    for(unsigned int i = 0; i < nb; i++)
-    {
-        iREAL rand = drand48();//random pull velocity
-        v[0][i] = 500 * rand;
-        v[1][i] = 500 * rand;
-        v[2][i] = 500 * rand;
-        
-        iREAL randomrot = 5 *rand;
-        angular[0][i] = randomrot;
-        angular[1][i] = 0;
-        angular[2][i] = 0;
-        angular[3][i] = 0;
-        angular[4][i] = 0;
-        angular[5][i] = 0;
-        
-        mass[i] = 1;
-        parmat[i] = 0;
-        
-        inertia[0][i] = 0.4*mass[i];
-        inertia[1][i] = 0;
-        inertia[2][i] = 0;
-        inertia[3][i] = 0;
-        inertia[4][i] = 0.4*mass[i];
-        inertia[5][i] = 0;
-        inertia[6][i] = 0;
-        inertia[7][i] = 0;
-        inertia[8][i] = 0.4*mass[i];
-        
-        rotation[0][i] = 1;
-        rotation[1][i] = 0;
-        rotation[2][i] = 0;
-        rotation[3][i] = 0;
-        rotation[4][i] = 1;
-        rotation[5][i] = 0;
-        rotation[6][i] = 0;
-        rotation[7][i] = 0;
-        rotation[8][i] = 1;
-        
-        //double volume = (4./3.)*M_PI*rad*rad*rad;
-        
-        //mass[i] = volume*mparam[DENSITY][material];
-        
-        //inertia[0][i] = inertia[4][i] = inertia[8][i] = 0.4*mass[i]*radii[0][j]*radii[0][j];
-        //inertia[1][i] = inertia[2][i] = inertia[3][i] =
-        //inertia[5][i] = inertia[6][i] = inertia[7][i] = 0.0;
-    }
+  for(int i = 0; i < nb; i++)
+  {
+    iREAL rand = drand48();//random pull velocity
+    v[0][i] = 500 * rand;
+    v[1][i] = 500 * rand;
+    v[2][i] = 500 * rand;
     
-    invert (nb, inertia, inverse, mass, invm);
+    iREAL randomrot = 5 *rand;
+    angular[0][i] = randomrot;
+    angular[1][i] = 0;
+    angular[2][i] = 0;
+    angular[3][i] = 0;
+    angular[4][i] = 0;
+    angular[5][i] = 0;
+    
+    mass[i] = 1;
+    parmat[i] = 0;
+    
+    inertia[0][i] = 0.4*mass[i];
+    inertia[1][i] = 0;
+    inertia[2][i] = 0;
+    inertia[3][i] = 0;
+    inertia[4][i] = 0.4*mass[i];
+    inertia[5][i] = 0;
+    inertia[6][i] = 0;
+    inertia[7][i] = 0;
+    inertia[8][i] = 0.4*mass[i];
+    
+    rotation[0][i] = 1;
+    rotation[1][i] = 0;
+    rotation[2][i] = 0;
+    rotation[3][i] = 0;
+    rotation[4][i] = 1;
+    rotation[5][i] = 0;
+    rotation[6][i] = 0;
+    rotation[7][i] = 0;
+    rotation[8][i] = 1;
+    
+    //double volume = (4./3.)*M_PI*rad*rad*rad;
+    
+    //mass[i] = volume*mparam[DENSITY][material];
+    
+    //inertia[0][i] = inertia[4][i] = inertia[8][i] = 0.4*mass[i]*radii[0][j]*radii[0][j];
+    //inertia[1][i] = inertia[2][i] = inertia[3][i] =
+    //inertia[5][i] = inertia[6][i] = inertia[7][i] = 0.0;
+  }
+  
+  invert (nb, inertia, inverse, mass, invm);
 }
 
-void init_enviroment(unsigned int *nt, unsigned int *nb,
+void init_enviroment(int *nt, int *nb,
                      iREAL *t[6][3], iREAL *v[3], iREAL *angular[6], iREAL *inertia[9], iREAL *inverse[9], iREAL *rotation[9],
-                     iREAL *mass, iREAL *invm, int *parmat, unsigned int tid[], unsigned int pid[], iREAL *position[6], iREAL lo[3], iREAL hi[3])
+                     iREAL *mass, iREAL *invm, int *parmat, int tid[], int pid[], iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
-    //Input Type
-    //0: Triangulated Mesh
-    //1: Particle
-    //2: Triangle
-    //3: Sphere
-    //4: Square
-    //5: Hexahedron
-    
-    
-    //load non-spherical meshes from vtk files
-    /* *nParticles = 1000;
-     int ptype[*nParticles];
-     for(int i = 0; i < *nParticles; i++)
-     {
-     ptype[i] = 1;
-     }*/
-    
-    
-    //non-spherical particles generation and loading
-    *nb = 10;
-    int ptype[*nb];
-    for(unsigned int i = 0; i < *nb; i++){ptype[i] = 6;}
-    
-    iREAL mint, maxt;
-    load_enviroment(ptype, nt, *nb, t, tid, pid, position, &mint, &maxt);
-    
-    lo[0] = -250; // lower corner
-    lo[1] = -250; // lower corner
-    lo[2] = -250; // lower corner
-    
-    hi[0] = 250; // upper corner
-    hi[1] = 250; // upper corner
-    hi[2] = 250; // upper corner
-    
-    int radius = 10;
-    
-    unsigned int idx = 0;
-    for(int ii = lo[0]; ii < hi[0]; ii=ii+radius)
+  //Input Type
+  //0: Triangulated Mesh
+  //1: Particle
+  //2: Triangle
+  //3: Sphere
+  //4: Square
+  //5: Hexahedron
+  
+  //load non-spherical meshes from vtk files
+  /* *nParticles = 1000;
+   int ptype[*nParticles];
+   for(int i = 0; i < *nParticles; i++)
+   {
+   ptype[i] = 1;
+   }*/
+  
+  //non-spherical particles generation and loading
+  *nb = 10;
+  int ptype[*nb];
+  for(int i = 0; i < *nb; i++){ptype[i] = 6;}
+  
+  iREAL mint, maxt;
+  load_enviroment(ptype, nt, *nb, t, tid, pid, position, &mint, &maxt);
+  
+  lo[0] = -250; // lower corner
+  lo[1] = -250; // lower corner
+  lo[2] = -250; // lower corner
+  
+  hi[0] = 250; // upper corner
+  hi[1] = 250; // upper corner
+  hi[2] = 250; // upper corner
+  
+  int radius = 10;
+  
+  int idx = 0;
+  for(int ii = lo[0]; ii < hi[0]; ii=ii+radius)
+  {
+    for(int jj = lo[1]; jj < hi[1]; jj=jj+radius)
     {
-        for(int jj = lo[1]; jj < hi[1]; jj=jj+radius)
+      for(int kk = lo[2]; kk < hi[2]; kk=kk+radius)
+      {
+        position[0][idx] = ii+(radius/2);
+        position[1][idx] = jj+(radius/2);
+        position[2][idx] = kk+(radius/2);
+        
+        position[3][idx] = ii+(radius/2);
+        position[4][idx] = jj+(radius/2);
+        position[5][idx] = kk+(radius/2);
+        
+        //compute position to translate
+        for(int j = 0; j < *nt; j++)
         {
-            for(int kk = lo[2]; kk < hi[2]; kk=kk+radius)
-            {
-                position[0][idx] = ii+(radius/2);
-                position[1][idx] = jj+(radius/2);
-                position[2][idx] = kk+(radius/2);
-                
-                position[3][idx] = ii+(radius/2);
-                position[4][idx] = jj+(radius/2);
-                position[5][idx] = kk+(radius/2);
-                
-                //compute position to translate
-                for(unsigned int j = 0; j < *nt; j++)
-                {
-                    if(pid[j] == idx)
-                    {
-                        translate_enviroment(j, idx, t, position);
-                    }
-                }
-                idx++;
-                if(idx > *nb) break;
-            }
-            if(idx > *nb) break;
+          if(pid[j] == idx)
+          {
+            translate_enviroment(j, idx, t, position);
+          }
         }
+        idx++;
         if(idx > *nb) break;
+      }
+      if(idx > *nb) break;
     }
-    
-    condition_enviroment(*nb, v, angular, rotation, mass, inertia, inverse, invm, parmat);
+    if(idx > *nb) break;
+  }
+  
+  condition_enviroment(*nb, v, angular, rotation, mass, inertia, inverse, invm, parmat);
 }
 
-void load_enviroment(int ptype[], unsigned int *nt, unsigned int nParticles,
-                     iREAL *t[6][3], unsigned int tid[], unsigned int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
+void load_enviroment(int ptype[], int *nt, int nParticles,
+                     iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
 {
-    unsigned int n = 0;
-    *nt = 0;
-    srand48(time(NULL));
-    for(unsigned int i = 0; i < nParticles; i++)
-    {
-        if(ptype[i] != 6)
-        {//load particle from file
-            load_points(ptype[i], &n, i, *nt, t, tid, pid, position, mint, maxt);
-        } else
-        {//create point cloud and do delaunay hull triangulation
-            //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-            gen_nonsphericalparticle(0.25, 5, 50, &n, i, *nt, t, tid, pid, position, mint, maxt);
-        }
-        *nt = n + *nt;
-        n = 0;
+  int n = 0;
+  *nt = 0;
+  srand48(time(NULL));
+  for(int i = 0; i < nParticles; i++)
+  {
+    if(ptype[i] != 6)
+    {//load particle from file
+      load_points(ptype[i], &n, i, *nt, t, tid, pid, position, mint, maxt);
+    } else
+    {//create point cloud and do delaunay hull triangulation
+      //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
+      gen_nonsphericalparticle(0.25, 5, 50, &n, i, *nt, t, tid, pid, position, mint, maxt);
     }
+    *nt = n + *nt;
+    n = 0;
+  }
 }
 
-void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, unsigned int *nt, unsigned int bodyidx, unsigned int initidx,
-                              iREAL *t[6][3], unsigned int tid[], unsigned int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
+void gen_nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int *nt, int bodyidx, int initidx,
+                              iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
 {
-    iREAL v[100][3];
-    for(int i = 0; i<pointsize; i++)
+  iREAL v[100][3];
+  for(int i = 0; i<pointsize; i++)
+  {
+    iREAL rng1 = 0;
+    iREAL rng2 = 360;
+    iREAL phi = (rng2-rng1) * (drand48()) + rng1;
+    iREAL theta = (rng2-rng1) * (drand48()) + rng1;
+    iREAL myradius = ((drand48()*eps)+1.0-eps) * radius;
+    
+    v[i][0] = myradius*sin(phi) * cos(theta);
+    v[i][1] = myradius*sin(phi) * sin(theta);
+    v[i][2] = myradius*cos(phi);
+  }
+  
+  TRI* tr = NULL;
+  free(tr);int pointlength = 0;
+  tr = hull((iREAL *)v, pointsize, &pointlength);
+  int counter = 0;
+  
+  for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++){counter++;}
+  
+  int n = counter*3;
+  *nt = pointlength;
+  iREAL *point[3];
+  
+  point[0] = (iREAL *)malloc (n*sizeof(iREAL));
+  point[1] = (iREAL *)malloc (n*sizeof(iREAL));
+  point[2] = (iREAL *)malloc (n*sizeof(iREAL));
+  iREAL min = DBL_MAX;
+  iREAL max = DBL_MIN;
+  
+  counter = 0;
+  for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++)
+  {
+    point[0][counter] = tri->ver [0][0];
+    point[1][counter] = tri->ver [0][1];
+    point[2][counter] = tri->ver [0][2];
+    
+    if(point[0][counter] < min)
     {
-        iREAL rng1 = 0;
-        iREAL rng2 = 360;
-        iREAL phi = (rng2-rng1) * (drand48()) + rng1;
-        iREAL theta = (rng2-rng1) * (drand48()) + rng1;
-        iREAL myradius = ((drand48()*eps)+1.0-eps) * radius;
-        
-        v[i][0] = myradius*sin(phi) * cos(theta);
-        v[i][1] = myradius*sin(phi) * sin(theta);
-        v[i][2] = myradius*cos(phi);
+      min = point[0][counter];
     }
     
-    TRI* tr = NULL;
-    free(tr);int pointlength = 0;
-    tr = hull((iREAL *)v, pointsize, &pointlength);
-    int counter = 0;
-    
-    for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++){counter++;}
-    
-    unsigned int n = counter*3;
-    *nt = pointlength;
-    iREAL *point[3];
-    
-    point[0] = (iREAL *)malloc (n*sizeof(iREAL));
-    point[1] = (iREAL *)malloc (n*sizeof(iREAL));
-    point[2] = (iREAL *)malloc (n*sizeof(iREAL));
-    iREAL min = DBL_MAX;
-    iREAL max = DBL_MIN;
-    
-    counter = 0;
-    for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++)
+    if(point[1][counter] < min)
     {
-        point[0][counter] = tri->ver [0][0];
-        point[1][counter] = tri->ver [0][1];
-        point[2][counter] = tri->ver [0][2];
-        
-        if(point[0][counter] < min)
-        {
-            min = point[0][counter];
-        }
-        
-        if(point[1][counter] < min)
-        {
-            min = point[1][counter];
-        }
-        
-        if(point[2][counter] < min)
-        {
-            min = point[2][counter];
-        }
-        
-        /////////////////////
-        
-        if(point[0][counter] > max)
-        {
-            max = point[0][counter];
-        }
-        
-        if(point[1][counter] > max)
-        {
-            max = point[1][counter];
-        }
-        
-        if(point[2][counter] > max)
-        {
-            max = point[2][counter];
-        }
-        
-        counter++;
-        point[0][counter] = tri->ver [1][0];
-        point[1][counter] = tri->ver [1][1];
-        point[2][counter] = tri->ver [1][2];
-        
-        
-        if(point[0][counter] < min)
-        {
-            min = point[0][counter];
-        }
-        
-        if(point[1][counter] < min)
-        {
-            min = point[1][counter];
-        }
-        
-        if(point[2][counter] < min)
-        {
-            min = point[2][counter];
-        }
-        
-        /////////////////////
-        
-        if(point[0][counter] > max)
-        {
-            max = point[0][counter];
-        }
-        
-        if(point[1][counter] > max)
-        {
-            max = point[1][counter];
-        }
-        
-        if(point[2][counter] > max)
-        {
-            max = point[2][counter];
-        }
-        
-        counter++;
-        point[0][counter] = tri->ver [2][0];
-        point[1][counter] = tri->ver [2][1];
-        point[2][counter] = tri->ver [2][2];
-        
-        if(point[0][counter] < min)
-        {
-            min = point[0][counter];
-        }
-        
-        if(point[1][counter] < min)
-        {
-            min = point[1][counter];
-        }
-        
-        if(point[2][counter] < min)
-        {
-            min = point[2][counter];
-        }
-        
-        /////////////////////
-        
-        if(point[0][counter] > max)
-        {
-            max = point[0][counter];
-        }
-        
-        if(point[1][counter] > max)
-        {
-            max = point[1][counter];
-        }
-        
-        if(point[2][counter] > max)
-        {
-            max = point[2][counter];
-        }
-        
-        counter++;
+      min = point[1][counter];
     }
     
-    counter = 0;
-    for(unsigned int i=initidx;i<initidx+n;i++)
+    if(point[2][counter] < min)
     {
-        //SPATIAL POINT A
-        t[0][0][i] = point[0][counter];
-        t[0][1][i] = point[1][counter];
-        t[0][2][i] = point[2][counter];
+      min = point[2][counter];
+    }
+    
+    /////////////////////
+    
+    if(point[0][counter] > max)
+    {
+      max = point[0][counter];
+    }
+    
+    if(point[1][counter] > max)
+    {
+      max = point[1][counter];
+    }
+    
+    if(point[2][counter] > max)
+    {
+      max = point[2][counter];
+    }
+    
+    counter++;
+    point[0][counter] = tri->ver [1][0];
+    point[1][counter] = tri->ver [1][1];
+    point[2][counter] = tri->ver [1][2];
+    
+    
+    if(point[0][counter] < min)
+    {
+      min = point[0][counter];
+    }
+    
+    if(point[1][counter] < min)
+    {
+      min = point[1][counter];
+    }
+    
+    if(point[2][counter] < min)
+    {
+      min = point[2][counter];
+    }
+    
+    /////////////////////
+    
+    if(point[0][counter] > max)
+    {
+      max = point[0][counter];
+    }
+    
+    if(point[1][counter] > max)
+    {
+      max = point[1][counter];
+    }
+    
+    if(point[2][counter] > max)
+    {
+      max = point[2][counter];
+    }
+    
+    counter++;
+    point[0][counter] = tri->ver [2][0];
+    point[1][counter] = tri->ver [2][1];
+    point[2][counter] = tri->ver [2][2];
+    
+    if(point[0][counter] < min)
+    {
+      min = point[0][counter];
+    }
+    
+    if(point[1][counter] < min)
+    {
+      min = point[1][counter];
+    }
+    
+    if(point[2][counter] < min)
+    {
+      min = point[2][counter];
+    }
+    
+    /////////////////////
+    
+    if(point[0][counter] > max)
+    {
+      max = point[0][counter];
+    }
+    
+    if(point[1][counter] > max)
+    {
+      max = point[1][counter];
+    }
+    
+    if(point[2][counter] > max)
+    {
+      max = point[2][counter];
+    }
+    
+    counter++;
+  }
+    
+  counter = 0;
+  for(int i=initidx;i<initidx+n;i++)
+  {
+    //SPATIAL POINT A
+    t[0][0][i] = point[0][counter];
+    t[0][1][i] = point[1][counter];
+    t[0][2][i] = point[2][counter];
+    
+    //REFERENTIAL POINT A
+    t[3][0][i] = point[0][counter];
+    t[3][1][i] = point[1][counter];
+    t[3][2][i] = point[2][counter];
+    
+    counter++;
+    //SPATIAL POINT B
+    t[1][0][i] = point[0][counter];
+    t[1][1][i] = point[1][counter];
+    t[1][2][i] = point[2][counter];
+    
+    //REFENTIAL POINT B
+    t[4][0][i] = point[0][counter];
+    t[4][1][i] = point[1][counter];
+    t[4][2][i] = point[2][counter];
+    
+    counter++;
+    //SPATIAL POINT C
+    t[2][0][i] = point[0][counter];
+    t[2][1][i] = point[1][counter];
+    t[2][2][i] = point[2][counter];
+    
+    //SPATIAL POINT C
+    t[5][0][i] = point[0][counter];
+    t[5][1][i] = point[1][counter];
+    t[5][2][i] = point[2][counter];
+    
+    counter++;
+    
+    tid[i] = i;
+    pid[i] = bodyidx;
+  }
+  
+  getCentroid(bodyidx, initidx, initidx+n, t, position);
+  
+  *mint = min;
+  *maxt = max;
+}
+
+
+void load_points(int ptype, int *nt, int bodyID, int startIDX,
+                 iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
+{
+  //////////VTK format////////////
+  
+  //Input Type
+  //0: Triangulated Mesh
+  //1: Particle
+  //2: Triangle
+  //3: Sphere
+  //4: Square
+  //5: Hexahedron
+  //6: point cloud
+  iREAL min = DBL_MAX;
+  iREAL max = DBL_MIN;
+  FILE *fp1;
+  if(ptype == 0)
+  {
+    char filename[100] = "input/mesh/mesh";
+    char strtmp[100];
+    sprintf(strtmp, "%i.vtk", bodyID);
+    strcat(filename, strtmp);
+    fp1 = fopen(filename, "r+");
+    printf("%s\n", filename);
+  } else if(ptype == 1)
+  {
+    char filename[100] = "input/particles/par_";
+    char strtmp[100];
+    sprintf(strtmp, "%i.vtk", bodyID);
+    strcat(filename, strtmp);
+    fp1 = fopen(filename, "r+");
+    printf("%s\n", filename);
+  } else if(ptype == 2)
+  {
+    fp1 = fopen("input/shapes/triangle.vtk", "r");
+  } else if(ptype == 3)
+  {
+    fp1 = fopen("input/shapes/sphere.vtk", "r");
+  } else if(ptype == 4)
+  {
+    fp1 = fopen("input/shapes/square.vtk", "r");
+  } else if(ptype == 5)
+  {
+    fp1 = fopen("input/shapes/hexahedron.vtk", "r");
+  }
+  
+  if( fp1 == NULL )
+  {
+    perror("Error while opening the file.\n");
+    exit(EXIT_FAILURE);
+  }
+  
+  char ch, word[500];
+  iREAL *point[3];
+  
+  do {
+    ch = fscanf(fp1,"%s",word);
+    if(strcmp(word, "POINTS")==0)
+    {
+      printf("found!\n");
+      ch = fscanf(fp1,"%s",word);
+      unsigned int n = atol(word);
+      //get points
+      ch = fscanf(fp1,"%s",word);
+      //printf("will read: %llu\n",n);
+      point[0] = (iREAL *)malloc (n*sizeof(iREAL));
+      point[1] = (iREAL *)malloc (n*sizeof(iREAL));
+      point[2] = (iREAL *)malloc (n*sizeof(iREAL));
+      
+      for(unsigned int i=0;i<n;i++)
+      {
+        fscanf(fp1, "%lf", &point[0][i]);
+        fscanf(fp1, "%lf", &point[1][i]);
+        fscanf(fp1, "%lf", &point[2][i]);
+        //printf("POINT[0] = %f | POINT[1] = %f | POINT[2] = %f\n", point[0][i], point[1][i], point[2][i]);
         
-        //REFERENTIAL POINT A
-        t[3][0][i] = point[0][counter];
-        t[3][1][i] = point[1][counter];
-        t[3][2][i] = point[2][counter];
+        if(point[0][i] < min)
+        {
+          min = point[0][i];
+        }
         
-        counter++;
-        //SPATIAL POINT B
-        t[1][0][i] = point[0][counter];
-        t[1][1][i] = point[1][counter];
-        t[1][2][i] = point[2][counter];
+        if(point[1][i] < min)
+        {
+          min = point[1][i];
+        }
         
-        //REFENTIAL POINT B
-        t[4][0][i] = point[0][counter];
-        t[4][1][i] = point[1][counter];
-        t[4][2][i] = point[2][counter];
+        if(point[2][i] < min)
+        {
+          min = point[2][i];
+        }
         
-        counter++;
-        //SPATIAL POINT C
-        t[2][0][i] = point[0][counter];
-        t[2][1][i] = point[1][counter];
-        t[2][2][i] = point[2][counter];
+        /////////////////////
         
-        //SPATIAL POINT C
-        t[5][0][i] = point[0][counter];
-        t[5][1][i] = point[1][counter];
-        t[5][2][i] = point[2][counter];
+        if(point[0][i] > max)
+        {
+          max = point[0][i];
+        }
         
-        counter++;
+        if(point[1][i] > max)
+        {
+          max = point[1][i];
+        }
+        
+        if(point[2][i] > max)
+        {
+          max = point[2][i];
+        }
+      }
+    }
+    if(strcmp(word, "CELLS")==0 || strcmp(word, "POLYGONS") == 0)
+    {
+      ch = fscanf(fp1,"%s",word);
+      unsigned int n = atol(word);
+      *nt = n;
+      ch = fscanf(fp1,"%s",word);
+      printf(":::%u::\n",n);
+      for(unsigned int i=startIDX;i<startIDX+n;i++)
+      {
+        ch = fscanf(fp1,"%s",word);
+        ch = fscanf(fp1,"%s",word);
+        
+        unsigned int index = atol(word);
+        t[0][0][i] = point[0][index];
+        t[0][1][i] = point[1][index];
+        t[0][2][i] = point[2][index];
+        
+        //printf("idx:%s T[0][0] = %f | T[0][1] = %f | T[0][2] = %f\n", word, t[0][0][i], t[0][1][i], t[0][2][i]);
+        
+        ch = fscanf(fp1,"%s",word);
+        index = atol(word);
+        t[1][0][i] = point[0][index];
+        t[1][1][i] = point[1][index];
+        t[1][2][i] = point[2][index];
+        
+        //printf("idx:%s T[1][0] = %f | T[1][1] = %f | T[1][2] = %f\n", word, t[1][0][i], t[1][1][i], t[1][2][i]);
+        
+        ch = fscanf(fp1,"%s",word);
+        index = atol(word);
+        t[2][0][i] = point[0][index];
+        t[2][1][i] = point[1][index];
+        t[2][2][i] = point[2][index];
+        
+        //printf("idx:%s T[2][0] = %f | T[2][1] = %f | T[2][2] = %f\n", word, t[2][0][i], t[2][1][i], t[2][2][i]);
         
         tid[i] = i;
-        pid[i] = bodyidx;
+        pid[i] = bodyID;
+      }
+      getCentroid(bodyID, startIDX, startIDX+n, t, position);
     }
-    
-    getCentroid(bodyidx, initidx, initidx+n, t, position);
-    
-    *mint = min;
-    *maxt = max;
+  } while (ch != EOF);
+  *mint = min;
+  *maxt = max;
+  fclose(fp1);
 }
 
-
-void load_points(int ptype, unsigned int *nt, unsigned int bodyID, unsigned int startIDX,
-                 iREAL *t[6][3], unsigned int tid[], unsigned int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
+void normalize(int nt, iREAL *t[6][3], iREAL mint, iREAL maxt)
 {
-    //////////VTK format////////////
-    
-    //Input Type
-    //0: Triangulated Mesh
-    //1: Particle
-    //2: Triangle
-    //3: Sphere
-    //4: Square
-    //5: Hexahedron
-    //6: point cloud
-    iREAL min = DBL_MAX;
-    iREAL max = DBL_MIN;
-    FILE *fp1;
-    if(ptype == 0)
+  //range -255 to 255
+  iREAL inv_range = 510.0/(maxt-mint);
+  
+  for(int i=0; i < nt; i++)
+  {
+    for(int j=0; j < 3; j++)
     {
-        char filename[100] = "input/mesh/mesh";
-        char strtmp[100];
-        sprintf(strtmp, "%i.vtk", bodyID);
-        strcat(filename, strtmp);
-        fp1 = fopen(filename, "r+");
-        printf("%s\n", filename);
-    } else if(ptype == 1)
-    {
-        char filename[100] = "input/particles/par_";
-        char strtmp[100];
-        sprintf(strtmp, "%i.vtk", bodyID);
-        strcat(filename, strtmp);
-        fp1 = fopen(filename, "r+");
-        printf("%s\n", filename);
-    } else if(ptype == 2)
-    {
-        fp1 = fopen("input/shapes/triangle.vtk", "r");
-    } else if(ptype == 3)
-    {
-        fp1 = fopen("input/shapes/sphere.vtk", "r");
-    } else if(ptype == 4)
-    {
-        fp1 = fopen("input/shapes/square.vtk", "r");
-    } else if(ptype == 5)
-    {
-        fp1 = fopen("input/shapes/hexahedron.vtk", "r");
+      for(int k=0; k < 3; k++)
+      {
+        t[j][k][i] = -255.0 + (t[j][k][i] - mint) * inv_range;
+      }
     }
-    
-    if( fp1 == NULL )
-    {
-        perror("Error while opening the file.\n");
-        exit(EXIT_FAILURE);
-    }
-    
-    char ch, word[500];
-    iREAL *point[3];
-    
-    do {
-        ch = fscanf(fp1,"%s",word);
-        if(strcmp(word, "POINTS")==0)
-        {
-            printf("found!\n");
-            ch = fscanf(fp1,"%s",word);
-            unsigned int n = atol(word);
-            //get points
-            ch = fscanf(fp1,"%s",word);
-            //printf("will read: %llu\n",n);
-            point[0] = (iREAL *)malloc (n*sizeof(iREAL));
-            point[1] = (iREAL *)malloc (n*sizeof(iREAL));
-            point[2] = (iREAL *)malloc (n*sizeof(iREAL));
-            
-            for(unsigned int i=0;i<n;i++)
-            {
-                fscanf(fp1, "%lf", &point[0][i]);
-                fscanf(fp1, "%lf", &point[1][i]);
-                fscanf(fp1, "%lf", &point[2][i]);
-                //printf("POINT[0] = %f | POINT[1] = %f | POINT[2] = %f\n", point[0][i], point[1][i], point[2][i]);
-                
-                if(point[0][i] < min)
-                {
-                    min = point[0][i];
-                }
-                
-                if(point[1][i] < min)
-                {
-                    min = point[1][i];
-                }
-                
-                if(point[2][i] < min)
-                {
-                    min = point[2][i];
-                }
-                
-                /////////////////////
-                
-                if(point[0][i] > max)
-                {
-                    max = point[0][i];
-                }
-                
-                if(point[1][i] > max)
-                {
-                    max = point[1][i];
-                }
-                
-                if(point[2][i] > max)
-                {
-                    max = point[2][i];
-                }
-            }
-        }
-        if(strcmp(word, "CELLS")==0 || strcmp(word, "POLYGONS") == 0)
-        {
-            ch = fscanf(fp1,"%s",word);
-            unsigned int n = atol(word);
-            *nt = n;
-            ch = fscanf(fp1,"%s",word);
-            printf(":::%u::\n",n);
-            for(unsigned int i=startIDX;i<startIDX+n;i++)
-            {
-                ch = fscanf(fp1,"%s",word);
-                ch = fscanf(fp1,"%s",word);
-                
-                unsigned int index = atol(word);
-                t[0][0][i] = point[0][index];
-                t[0][1][i] = point[1][index];
-                t[0][2][i] = point[2][index];
-                
-                //printf("idx:%s T[0][0] = %f | T[0][1] = %f | T[0][2] = %f\n", word, t[0][0][i], t[0][1][i], t[0][2][i]);
-                
-                ch = fscanf(fp1,"%s",word);
-                index = atol(word);
-                t[1][0][i] = point[0][index];
-                t[1][1][i] = point[1][index];
-                t[1][2][i] = point[2][index];
-                
-                //printf("idx:%s T[1][0] = %f | T[1][1] = %f | T[1][2] = %f\n", word, t[1][0][i], t[1][1][i], t[1][2][i]);
-                
-                ch = fscanf(fp1,"%s",word);
-                index = atol(word);
-                t[2][0][i] = point[0][index];
-                t[2][1][i] = point[1][index];
-                t[2][2][i] = point[2][index];
-                
-                //printf("idx:%s T[2][0] = %f | T[2][1] = %f | T[2][2] = %f\n", word, t[2][0][i], t[2][1][i], t[2][2][i]);
-                
-                tid[i] = i;
-                pid[i] = bodyID;
-            }
-            getCentroid(bodyID, startIDX, startIDX+n, t, position);
-        }
-    } while (ch != EOF);
-    *mint = min;
-    *maxt = max;
-    fclose(fp1);
-}
-
-void normalize(unsigned int nt, iREAL *t[6][3], iREAL mint, iREAL maxt)
-{
-    //range -255 to 255
-    iREAL inv_range = 510.0/(maxt-mint);
-    
-    for(unsigned int i=0; i < nt; i++)
-    {
-        for(int j=0; j < 3; j++)
-        {
-            for(int k=0; k < 3; k++)
-            {
-                t[j][k][i] = -255.0 + (t[j][k][i] - mint) * inv_range;
-            }
-        }
-    }
+  }
 }
 
 /*

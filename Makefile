@@ -1,6 +1,6 @@
 # C files
 C_SRC= 
-CPP_SRC = input.cpp output.cpp delta.cpp migration.cpp loba.cpp contact.cpp forces.cpp dynamics.cpp tasksys.cpp
+CPP_SRC = input.cpp output.cpp delta.cpp migration.cpp loba.cpp contact.cpp forces.cpp dynamics.cpp hybrid.cpp tasksys.cpp
 
 # ISPC files
 ISPC_SRC= delta.ispc bf.ispc

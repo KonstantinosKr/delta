@@ -1,9 +1,9 @@
 #include "migration.h"
 
 /* migrate triangles "in-place" to new ranks */
-void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iREAL *v[3],
+void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
                               iREAL *angular[6], int *parmat,
-                              unsigned int *tid, unsigned int *pid,  
+                              int *tid, int *pid,  
                               int num_import, int *import_procs, int *import_to_part, 
                               int num_export, int *export_procs, int *export_to_part,
                               ZOLTAN_ID_PTR import_global_ids, ZOLTAN_ID_PTR import_local_ids,
@@ -14,9 +14,9 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
   MPI_Comm_rank (MPI_COMM_WORLD, &myrank);
   
   //allocate memory for tmp buffers
-  unsigned int **send_idx = (unsigned int **) malloc(nproc*sizeof(unsigned int*));
-  unsigned int *pivot = (unsigned int *) malloc(nproc*sizeof(unsigned int));
-  unsigned int *rcvpivot = (unsigned int *) malloc(nproc*sizeof(unsigned int));
+  int **send_idx = (int **) malloc(nproc*sizeof(int*));
+  int *pivot = (int *) malloc(nproc*sizeof(int));
+  int *rcvpivot = (int *) malloc(nproc*sizeof(int));
   int *export_unique_procs = (int*) malloc(nproc*sizeof(int));
   int *import_unique_procs = (int*) malloc(nproc*sizeof(int));
 
@@ -24,7 +24,7 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
   {
     rcvpivot[i] = 0;
     pivot[i] = 0;
-    send_idx[i] = (unsigned int *) malloc((*nt)*sizeof(unsigned int));
+    send_idx[i] = (int *) malloc((*nt)*sizeof(int));
     export_unique_procs[i] = -1;
     import_unique_procs[i] = -1;
   }
@@ -69,37 +69,38 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
   }
 
   iREAL *tbuffer[3], *vbuffer, *angbuffer;
-  unsigned int *pid_buffer;int *parmat_buffer;
-  unsigned int n = *nt;
+  int *pid_buffer;int *parmat_buffer;
+  int n = *nt;
   
   if(n_export_unique_procs > 0)
   {
-    unsigned int mul = n_export_unique_procs*n*3;
+    int mul = n_export_unique_procs*n*3;
     tbuffer[0] = (iREAL *) malloc(mul*sizeof(iREAL));
     tbuffer[1] = (iREAL *) malloc(mul*sizeof(iREAL));
     tbuffer[2] = (iREAL *) malloc(mul*sizeof(iREAL)); 
     vbuffer = (iREAL *) malloc(mul*sizeof(iREAL));
     angbuffer = (iREAL *) malloc(mul*2*sizeof(iREAL));//6 elements thus x 2
     mul = n_export_unique_procs*n;
-    pid_buffer = (unsigned int *) malloc(mul*sizeof(unsigned int));
+    pid_buffer = (int *) malloc(mul*sizeof(int));
     parmat_buffer = (int *) malloc(mul*sizeof(int));
     //printf("RANK[%i]: n:%i allocated: %i n_export_unique_procs: %i\n", myrank, n, n_export_unique_procs, mul);
   }
 
-  unsigned int *idx = (unsigned int *) malloc(nproc*sizeof(unsigned int));
+  int *idx = (int *) malloc(nproc*sizeof(int));
   idx[0] = 0;
   for(int i=0; i<n_export_unique_procs; i++)
   {
     int x = export_unique_procs[i];
     idx[i+1] = idx[i] + pivot[x];
   } 
+  
   //assign values to tmp export buffers
   for(int i=0; i<n_export_unique_procs; i++)//n processes to prepare buffers for
   {
     int x = export_unique_procs[i];
-    for(unsigned int j=0; j<pivot[x]; j++)//pivot gives n number of ids to loop through
+    for(int j=0; j<pivot[x]; j++)//pivot gives n number of ids to loop through
     {
-      unsigned int mul = (idx[i])+(j); 
+      int mul = (idx[i])+(j); 
       pid_buffer[(mul)+j] = pid[send_idx[x][j]];
       pid[send_idx[x][j]] = UINT_MAX;
 
@@ -135,10 +136,10 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
   
   ///////////////////////////////////////////////
   //refine local arrays and ids (memory gaps)
-  unsigned int pv = *nt-1;
+  int pv = *nt-1;
   for(int i=0;i<num_export;i++)
   {//be cautious bug may be hidden here;
-    for(unsigned int j=pv; j>export_local_ids[i]; j--)//from last towards first but only until gap of exported
+    for(int j=pv; j>export_local_ids[i]; j--)//from last towards first but only until gap of exported
     {
       if(tid[j] != UINT_MAX)//if not marked as to be exported switch fill gaps
       {
@@ -180,7 +181,7 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
 
   //////////////////////////////////////////////////////////////////////////
   
-  unsigned int receive_idx=0;
+  int receive_idx=0;
   if(*nt > 0 && num_export > 0) 
   {
     receive_idx = *nt - num_export; //set to last id
@@ -223,7 +224,7 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
   }
   
   iREAL *trvbuffer[3], *vrvbuffer, *angrvbuffer;
-  unsigned int *rcvpid_buffer; int *rvparmat_buffer;
+  int *rcvpid_buffer; int *rvparmat_buffer;
   size = 0;  
 
   int MPISENDS = 8;
@@ -261,7 +262,7 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
     trvbuffer[2] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL)); 
     vrvbuffer = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
     angrvbuffer = (iREAL *) malloc(n_import_unique_procs*size*6*sizeof(iREAL));//six elements
-    rcvpid_buffer = (unsigned int *) malloc(n_import_unique_procs*size*sizeof(unsigned int));
+    rcvpid_buffer = (int *) malloc(n_import_unique_procs*size*sizeof(int));
     rvparmat_buffer = (int *) malloc(n_import_unique_procs*size*sizeof(int));
   }
 
@@ -318,7 +319,7 @@ void migrate_triangles (unsigned int size, unsigned int *nt, iREAL *t[3][3], iRE
     //printf("RANK[%i]:received\n", myrank);
 
     int x = import_unique_procs[i];
-    for(unsigned int j=0; j<rcvpivot[x]; j++)
+    for(int j=0; j<rcvpivot[x]; j++)
     {
       pid[receive_idx] = rcvpid_buffer[(i*size)+j];
       parmat[receive_idx] = rvparmat_buffer[(i*size)+j];
