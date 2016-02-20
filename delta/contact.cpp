@@ -112,7 +112,7 @@ void contact_detection (int s1, int e1, int s2, int e2,
     
     for(int j=s2;j<e2;j++) //careful; range can overflow due to ghosts particles
     {
-      iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[1][j]),2));
+      iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[2][j]),2));
       //if there is margin overlap or contact point is stored
       if(dist < margin  && (pid[i] != pid[j]))
       {//contact found, //if not same particle body //get min distance contact

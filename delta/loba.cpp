@@ -108,6 +108,7 @@ struct loba* loba_create (enum algo al)
 
     /* load balancing parameters */
     Zoltan_Set_Param (lb->zoltan, "LB_METHOD", "RCB");
+    //Zoltan_Set_Param (lb->zoltan, "LB_APPROACH", "REPARTITION");
     Zoltan_Set_Param (lb->zoltan, "IMBALANCE_TOL", "1.3");
     Zoltan_Set_Param (lb->zoltan, "AUTO_MIGRATE", "FALSE");
     Zoltan_Set_Param (lb->zoltan, "RETURN_LISTS", "IMPORT AND EXPORT");
@@ -115,10 +116,10 @@ struct loba* loba_create (enum algo al)
     
     /* RCB parameters */
     Zoltan_Set_Param (lb->zoltan, "RCB_OVERALLOC", "1.3");
-    Zoltan_Set_Param (lb->zoltan, "RCB_REUSE", "TRUE");
+    Zoltan_Set_Param (lb->zoltan, "RCB_REUSE", "1");
     Zoltan_Set_Param (lb->zoltan, "RCB_OUTPUT_LEVEL", "0");
-    Zoltan_Set_Param (lb->zoltan, "CHECK_GEOM", "1");
-    Zoltan_Set_Param (lb->zoltan, "KEEP_CUTS", "TRUE");
+    Zoltan_Set_Param (lb->zoltan, "CHECK_GEOM", "0");
+    Zoltan_Set_Param (lb->zoltan, "KEEP_CUTS", "1");
     Zoltan_Set_Param (lb->zoltan, "REDUCE_DIMENSIONS", "0");
   }
   break;
@@ -161,13 +162,13 @@ void loba_balance (struct loba *lb, int n, iREAL *p[3], int *id, iREAL tol,
       int changes, num_gid_entries, num_lid_entries; /* TODO: do we need this outside? */
       
       /* update partitioning */
-      /*ASSERT (Zoltan_LB_Balance (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
+      ASSERT (Zoltan_LB_Balance (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
         num_import, import_global_ids, import_local_ids, import_procs,
         num_export, export_global_ids, export_local_ids, export_procs) == ZOLTAN_OK, "Zoltan load balancing failed");
-      */
-      ASSERT (Zoltan_LB_Partition (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
+      
+      /*ASSERT (Zoltan_LB_Partition (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
         num_import, import_global_ids, import_local_ids, import_procs, import_to_part,
-        num_export, export_global_ids, export_local_ids, export_procs, export_to_part) == ZOLTAN_OK, "Zoltan load balancing failed");
+        num_export, export_global_ids, export_local_ids, export_procs, export_to_part) == ZOLTAN_OK, "Zoltan load balancing failed");*/
     }
     break;
     case ZOLTAN_RIB:
@@ -184,7 +185,8 @@ void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks
   {
     case ZOLTAN_RCB:
     {
-      Zoltan_LB_Box_PP_Assign (lb->zoltan, lo[0], lo[1], lo[2], hi[0], hi[1], hi[2], ranks, nranks, parts, nparts);
+      //Zoltan_LB_Box_PP_Assign (lb->zoltan, lo[0], lo[1], lo[2], hi[0], hi[1], hi[2], ranks, nranks, parts, nparts);
+      Zoltan_LB_Box_Assign (lb->zoltan, lo[0], lo[1], lo[2], hi[0], hi[1], hi[2], ranks, nranks);
       break;
     }
     case ZOLTAN_RIB:

@@ -223,9 +223,23 @@ int main (int argc, char **argv)
   
   if(myrank == 0)//do half step
   {
-    euler(nb, angular, linear, rotation, position, 0.5*step);//half step
-    shapes (nb, nt, lo, hi, pid, t, linear, rotation, position);
+    //euler(nb, angular, linear, rotation, position, 0.5*step);//half step
+    //shapes (nb, nt, lo, hi, pid, t, linear, rotation, position);
   }
+  
+  loba_balance (lb, nt, t[0], tid, 1.1,
+                &num_import, &import_procs, &import_to_part, 
+                &num_export, &export_procs, &export_to_part, 
+                &import_global_ids, &import_local_ids, 
+                &export_global_ids, &export_local_ids);
+  
+  migrate_triangles (size, &nt, t, linear, angular, parmat, tid, pid, 
+                      num_import, import_procs, import_to_part, 
+                      num_export, export_procs, export_to_part, 
+                      import_global_ids, import_local_ids, 
+                      export_global_ids, export_local_ids);
+
+  MPI_Barrier(MPI_COMM_WORLD);
 
   //for (time = 0.0; time < 1.0; time += step)
   for(time = 0; time < 0.1; time+=step)
@@ -277,7 +291,7 @@ int main (int argc, char **argv)
     //printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
     
     //shapes (nb, nt, lo, hi, pid, t, linear, rotation, position);
-    output_state(lb, myrank, nt, t, timesteps);
+    //output_state(lb, myrank, nt, t, timesteps);
     
     timesteps++;
   }
