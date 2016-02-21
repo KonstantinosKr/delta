@@ -240,3 +240,9 @@ void postProcessing(int nranks, int size, int timesteps)
   free(cells[3]);
   free(cells[4]);
 }
+
+/*void output_log()
+{
+
+
+}*/
