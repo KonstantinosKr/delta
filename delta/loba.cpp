@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <mpi.h>
 #include <float.h>
-#include "error.h"
 #include "loba.h"
 #include "tmr.h"
 
@@ -96,31 +95,30 @@ struct loba* loba_create (enum algo al)
   {
     /* create Zoltan object */
     ASSERT (lb->zoltan = Zoltan_Create (MPI_COMM_WORLD), "Zoltan initialisation failed");
+      /* set general parameters */
+      Zoltan_Set_Param (lb->zoltan, "DEBUG_LEVEL", "0");
+      Zoltan_Set_Param (lb->zoltan, "DEBUG_MEMORY", "0");
+      Zoltan_Set_Param (lb->zoltan, "NUM_GID_ENTRIES", "1");
+      Zoltan_Set_Param (lb->zoltan, "NUM_LID_ENTRIES", "1");
+      Zoltan_Set_Param (lb->zoltan, "OBJ_WEIGHT_DIM", "1");
+      //parts
+      //Zoltan_Set_Param (lb->zoltan, "NUM_LOCAL_PARTS", "4");
+      
+      /* load balancing parameters */
+      Zoltan_Set_Param (lb->zoltan, "LB_METHOD", "RCB");
+      Zoltan_Set_Param (lb->zoltan, "IMBALANCE_TOL", "1.3");
+      Zoltan_Set_Param (lb->zoltan, "AUTO_MIGRATE", "FALSE");
+      Zoltan_Set_Param (lb->zoltan, "RETURN_LISTS", "IMPORT AND EXPORT");
+      //Zoltan_Set_Param (lb->zoltan, "RETURN_LISTS", "EXPORT");
+      
+      /* RCB parameters */
+      Zoltan_Set_Param (lb->zoltan, "RCB_OVERALLOC", "1.3");
+      Zoltan_Set_Param (lb->zoltan, "RCB_REUSE", "TRUE");
+      Zoltan_Set_Param (lb->zoltan, "RCB_OUTPUT_LEVEL", "0");
+      Zoltan_Set_Param (lb->zoltan, "CHECK_GEOM", "1");
+      Zoltan_Set_Param (lb->zoltan, "KEEP_CUTS", "TRUE");
+      Zoltan_Set_Param (lb->zoltan, "REDUCE_DIMENSIONS", "0");
 
-    /* set general parameters */
-    Zoltan_Set_Param (lb->zoltan, "DEBUG_LEVEL", "0");
-    Zoltan_Set_Param (lb->zoltan, "DEBUG_MEMORY", "0");
-    Zoltan_Set_Param (lb->zoltan, "NUM_GID_ENTRIES", "1");
-    Zoltan_Set_Param (lb->zoltan, "NUM_LID_ENTRIES", "1");
-    Zoltan_Set_Param (lb->zoltan, "OBJ_WEIGHT_DIM", "1");
-    //parts
-    //Zoltan_Set_Param (lb->zoltan, "NUM_LOCAL_PARTS", "2");
-
-    /* load balancing parameters */
-    Zoltan_Set_Param (lb->zoltan, "LB_METHOD", "RCB");
-    //Zoltan_Set_Param (lb->zoltan, "LB_APPROACH", "REPARTITION");
-    Zoltan_Set_Param (lb->zoltan, "IMBALANCE_TOL", "1.3");
-    Zoltan_Set_Param (lb->zoltan, "AUTO_MIGRATE", "FALSE");
-    Zoltan_Set_Param (lb->zoltan, "RETURN_LISTS", "IMPORT AND EXPORT");
-    //Zoltan_Set_Param (lb->zoltan, "RETURN_LISTS", "EXPORT");
-    
-    /* RCB parameters */
-    Zoltan_Set_Param (lb->zoltan, "RCB_OVERALLOC", "1.3");
-    Zoltan_Set_Param (lb->zoltan, "RCB_REUSE", "1");
-    Zoltan_Set_Param (lb->zoltan, "RCB_OUTPUT_LEVEL", "0");
-    Zoltan_Set_Param (lb->zoltan, "CHECK_GEOM", "0");
-    Zoltan_Set_Param (lb->zoltan, "KEEP_CUTS", "1");
-    Zoltan_Set_Param (lb->zoltan, "REDUCE_DIMENSIONS", "0");
   }
   break;
   case ZOLTAN_RIB:
@@ -135,7 +133,7 @@ break;
   return lb;
 }
 
-/* balance points up to tolerance; output migration ranks */
+// balance points up to tolerance; output migration ranks
 void loba_balance (struct loba *lb, int n, iREAL *p[3], int *id, iREAL tol,
                     int *num_import, int **import_procs, int **import_to_part, 
 		                int *num_export, int **export_procs, int **export_to_part, 
@@ -159,7 +157,7 @@ void loba_balance (struct loba *lb, int n, iREAL *p[3], int *id, iREAL tol,
       snprintf (str, 128, "%g", tol);
       Zoltan_Set_Param (lb->zoltan, "IMBALANCE_TOL", str);
       
-      int changes, num_gid_entries, num_lid_entries; /* TODO: do we need this outside? */
+      int changes, num_gid_entries, num_lid_entries; // TODO: do we need this outside? 
       
       /* update partitioning */
       ASSERT (Zoltan_LB_Balance (lb->zoltan, &changes, &num_gid_entries, &num_lid_entries,
@@ -336,11 +334,10 @@ void loba_getbox (struct loba *lb, int part, iREAL lo[3], iREAL hi[3])
   }
 }
 
-void loba_migrateGhosts(struct loba *lb, int  myrank, int *nt, iREAL *t[3][3], 
+void loba_migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3], 
                       iREAL *v[3], iREAL *angular[6], int *parmat,
                       iREAL dt, iREAL *p[3], iREAL *q[3], 
-                      int *tid, int *pid, master_conpnt *con, 
-                      iREAL *timer1, iREAL *timer2, iREAL *timer3)
+                      int tid[], int pid[], std::vector<contact> conpnt[], iREAL *timer1, iREAL *timer2, iREAL *timer3)
 {
   TIMING t1, t2, t3;
   
@@ -352,18 +349,18 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, int *nt, iREAL *t[3][3],
   int *neighborhood = (int *) malloc(nproc * sizeof(int));
   loba_getAdjacent(lb, myrank, neighborhood, &nNeighbors);
   
-  int *ghostTID = (int*) malloc(*nt*sizeof(int));
-  int *ghostPID = (int*) malloc(*nt*sizeof(int));
-  int **ghostTIDNeighbors = (int**) malloc(*nt*sizeof(int*));
-  int *ghostTIDcrosses = (int*) malloc(*nt*sizeof(int));
+  int *ghostTID = (int*) malloc(nt*sizeof(int));
+  int *ghostPID = (int*) malloc(nt*sizeof(int));
+  int **ghostTIDNeighbors = (int**) malloc(nt*sizeof(int*));
+  int *ghostTIDcrosses = (int*) malloc(nt*sizeof(int));
   int *ghostNeighborhood = (int*) malloc(nproc*sizeof(int));
   
   for(int i = 0;i<nproc;i++){ghostNeighborhood[i] = -1;}
-  for(int i = 0;i<*nt;i++){ghostTIDNeighbors[i] = (int*) malloc(nNeighbors*sizeof(int));}
+  for(int i = 0;i<nt;i++){ghostTIDNeighbors[i] = (int*) malloc(nNeighbors*sizeof(int));}
   int nGhosts, nGhostNeighbors;
   
   //get triangle tids that overlap into neighbors
-  loba_getGhosts(lb, myrank, nNeighbors, *nt, t, tid, pid, 
+  loba_getGhosts(lb, myrank, nNeighbors, nt, t, tid, pid, 
                       ghostTID, ghostPID, &nGhosts, 
                       &nGhostNeighbors, ghostNeighborhood, 
                       ghostTIDNeighbors, ghostTIDcrosses);
@@ -507,14 +504,14 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, int *nt, iREAL *t[3][3],
   *timer1 = t1.total;
   
   timerstart(&t2);
-  contact_detection (0, *nt, 0, *nt, t, tid, pid, v, p, q, con);//local computation
+  contact_detection (0, nt, 0, nt, t, tid, pid, v, p, q, conpnt);//local computation
   timerend(&t2);
   *timer2 = t2.total;
   
   TIMING t4;
   iREAL tassign=0;
   timerstart(&t3);
-  int receive_idx = *nt; //set to last id
+  int receive_idx = nt; //set to last id
   for(int i=0;i<nNeighbors;i++)
   {
     if(rcvpivot[i] > 0)
@@ -567,11 +564,11 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, int *nt, iREAL *t[3][3],
   timerend(&t3);
   *timer3 = t3.total;//doesn't include timer 4
   
-  if(receive_idx > *nt)
+  if(receive_idx > nt)
   {
-    printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, *nt, receive_idx);
+    printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, nt, receive_idx);
     //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-    contact_detection (0, *nt, *nt, receive_idx, t, tid, pid, v, p, q, con);
+    contact_detection (0, nt, nt, receive_idx, t, tid, pid, v, p, q, conpnt);
   }
   
   for(int i=0; i<3; i++)
@@ -606,7 +603,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, int *nt, iREAL *t[3][3],
   free(ghostPID);
   free(ghostTIDcrosses);
   free(ghostNeighborhood);
-  for(int i = 0;i<*nt;i++)
+  for(int i = 0;i<nt;i++)
   {
     free(ghostTIDNeighbors[i]);
   }

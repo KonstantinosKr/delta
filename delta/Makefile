@@ -1,12 +1,12 @@
 # C files
 C_SRC= 
-CPP_SRC = input.cpp output.cpp delta.cpp migration.cpp loba.cpp contact.cpp forces.cpp dynamics.cpp hybrid.cpp tasksys.cpp
+CPP_SRC = input.cpp output.cpp delta.cpp migration.cpp loba.cpp contact.cpp bf.cpp forces.cpp dynamics.cpp hybrid.cpp 
 
 # ISPC files
-ISPC_SRC= delta.ispc bf.ispc
+ISPC_SRC=
 
 # ISPC targets
-ISPC_TARGETS=sse2,sse4,avx
+ISPC_TARGETS=avx
 
 # MPI
 MPICC=mpicc

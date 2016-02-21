@@ -1,5 +1,5 @@
-#ifndef __rcb__
-#define __rcb__
+#ifndef __HEADER_FILE__
+#define __HEADER_FILE__
 
 #include <zoltan.h>
 #include "contact.h"
@@ -28,15 +28,15 @@ void loba_balance (struct loba *lb, int n, iREAL *p[3], int *id, iREAL tol,
 
 void loba_getAdjacent(struct loba *lb, int myrank, int *neighborhood, int *nNeighbors);
 
-void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *t[3][3], int *tid, int *pid, 
+void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *t[6][3], int tid[], int pid[], 
                     int *ghostTID, int *ghostPID, int *nGhosts, 
                     int *nGhostNeighbors, int *ghostNeighborhood, 
                     int *ghostTIDNeighbors[], int *ghostTIDcrosses);
 
-void loba_migrateGhosts(struct loba *lb, int  myrank, int *nt, iREAL *t[3][3], 
-                      iREAL *v[3], iREAL *angular[6], int *parmat,
-                      iREAL dt, iREAL *p[3], iREAL *q[3], 
-                      int *tid, int *pid, master_conpnt *con, 
+void loba_migrateGhosts(struct loba *lb, int myrank, int nt, iREAL *t[6][3], 
+                      iREAL *linear[3], iREAL *angular[6], int *parmat,
+                      iREAL step, iREAL *p[3], iREAL *q[3], 
+                      int tid[], int pid[], std::vector<contact> conpnt[], 
                       iREAL *timer1, iREAL *timer2, iREAL *timer3);
 
 /* find ranks overlapped by the [lo,hi] box */

@@ -1,6 +1,6 @@
 #include "output.h"
 
-void output_state(struct loba *lb, int myrank, int nt, iREAL *t[3][3], int timesteps)
+void output_state(struct loba *lb, int myrank, int nt, iREAL *t[6][3], int timesteps)
 {
   iREAL lo[3], hi[3]; 
   loba_getbox (lb, myrank, lo, hi);//get local subdomain boundary box
@@ -187,7 +187,6 @@ void postProcessing(int nranks, int size, int timesteps)
     }
     
     // WRITE OUTPUT
-    //
     char iter[50];
     sprintf(iter, "%i.vtk", ii);
     char filename[50] = "output/mergedmpi/output"; //care or buffer overflow

@@ -5,7 +5,7 @@ export void ispc_bf (uniform unsigned int it, uniform unsigned int nt,
                     uniform iREAL * uniform pp4[3], uniform iREAL * uniform pp5[3], uniform iREAL * uniform pp6[3],
                     uniform iREAL * uniform P[3], uniform iREAL * uniform Q[3]) 
 {
-	
+/*	
   iREAL u[3], v[3], nn[3][2], w[3], w0[3][6], dir[3][6], pointArray[3][6];
    
   pointArray[0][0] = pp1[0];
@@ -772,5 +772,5 @@ export void ispc_bf (uniform unsigned int it, uniform unsigned int nt,
         Q[2][i] = p4[2] + ((p6[2] - p4[2]) * tt) + ((p5[2] - p4[2]) * ss);
         break;
     }
-  }
+  }*/
 }

@@ -1,9 +1,9 @@
 #include "migration.h"
 
 /* migrate triangles "in-place" to new ranks */
-void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
+void migrate_triangles (int size, int &nt, iREAL *t[6][3], iREAL *v[3],
                               iREAL *angular[6], int *parmat,
-                              int *tid, int *pid,  
+                              int *tid, int *pid,
                               int num_import, int *import_procs, int *import_to_part, 
                               int num_export, int *export_procs, int *export_to_part,
                               ZOLTAN_ID_PTR import_global_ids, ZOLTAN_ID_PTR import_local_ids,
@@ -24,7 +24,7 @@ void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
   {
     rcvpivot[i] = 0;
     pivot[i] = 0;
-    send_idx[i] = (int *) malloc((*nt)*sizeof(int));
+    send_idx[i] = (int *) malloc((nt)*sizeof(int));
     export_unique_procs[i] = -1;
     import_unique_procs[i] = -1;
   }
@@ -38,7 +38,7 @@ void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
     send_idx[proc][pivot[proc]] = export_local_ids[i];
     pivot[proc]++;
     
-    tid[export_local_ids[i]] = UINT_MAX; //mark tid that will be exported thus deleted
+    tid[export_local_ids[i]] = INT_MAX; //mark tid that will be exported thus deleted
     
     int exists = 0; //set to 0 to mean doesn't exist
     for(int j = 0; j < nproc; j++)
@@ -70,7 +70,7 @@ void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
 
   iREAL *tbuffer[3], *vbuffer, *angbuffer;
   int *pid_buffer;int *parmat_buffer;
-  int n = *nt;
+  int n = nt;
   
   if(n_export_unique_procs > 0)
   {
@@ -136,19 +136,19 @@ void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
   
   ///////////////////////////////////////////////
   //refine local arrays and ids (memory gaps)
-  int pv = *nt-1;
+  int pv = nt-1;
   for(int i=0;i<num_export;i++)
   {//be cautious bug may be hidden here;
-    for(int j=pv; j>export_local_ids[i]; j--)//from last towards first but only until gap of exported
+    for(unsigned int j=pv; j>export_local_ids[i]; j--)//from last towards first but only until gap of exported
     {
-      if(tid[j] != UINT_MAX)//if not marked as to be exported switch fill gaps
+      if(tid[j] != INT_MAX)//if not marked as to be exported switch fill gaps
       {
         parmat[export_local_ids[i]] = parmat[j];
 
         tid[export_local_ids[i]] = tid[j]; //send from 'last to first' the tids to 'first to last' in tid array
         pid[export_local_ids[i]] = pid[j];
-        tid[j] = UINT_MAX; //mark moved tid
-        pid[j] = UINT_MAX;
+        tid[j] = INT_MAX; //mark moved tid
+        pid[j] = INT_MAX;
         
         t[0][0][export_local_ids[i]] = t[0][0][j];
         t[0][1][export_local_ids[i]] = t[0][1][j];
@@ -182,11 +182,11 @@ void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
   //////////////////////////////////////////////////////////////////////////
   
   int receive_idx=0;
-  if(*nt > 0 && num_export > 0) 
+  if(nt > 0 && num_export > 0) 
   {
-    receive_idx = *nt - num_export; //set to last id
-  } else if(*nt >= 0 && num_export <= 0){
-    receive_idx = *nt;
+    receive_idx = nt - num_export; //set to last id
+  } else if(nt >= 0 && num_export <= 0){
+    receive_idx = nt;
   }
 
   int n_import_unique_procs=0;
@@ -300,11 +300,11 @@ void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
     MPI_Isend(&parmat_buffer[idx[i]], pivot[x], MPI_INT, x, 8, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+7]);
   }
  
-  if(*nt > 0 && num_export > 0) 
+  if(nt > 0 && num_export > 0) 
   {
-    receive_idx = *nt - num_export; //set to last id
-  } else if(*nt >= 0 && num_export <= 0){
-    receive_idx = *nt;
+    receive_idx = nt - num_export; //set to last id
+  } else if(nt >= 0 && num_export <= 0){
+    receive_idx = nt;
   }
  
   for(int i=0; i<n_import_unique_procs; i++)
@@ -350,7 +350,7 @@ void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
     MPI_Wait(&myRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
   }
 
-  *nt = *nt + (num_import-num_export);
+  nt = nt + (num_import-num_export);
  
   if(n_export_unique_procs)
   {

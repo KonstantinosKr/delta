@@ -12,7 +12,7 @@ else
   ISPC=ispc -O2 --arch=x86-64 --woff $(REAL) 
 endif
 
-ISPC_OBJS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.o) $(ISPC_SRC:.ispc=_ispc_sse2.o) $(ISPC_SRC:.ispc=_ispc_sse4.o) $(ISPC_SRC:.ispc=_ispc_avx.o)) 
+ISPC_OBJS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.o))
 ISPC_HEADERS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.h))
 CPP_OBJS=$(addprefix objs/, $(CPP_SRC:.cpp=.o))
 C_OBJS=$(addprefix objs/, $(C_SRC:.c=.o))
@@ -41,14 +41,8 @@ clean:
 $(EXE): $(CPP_OBJS) $(C_OBJS) $(ISPC_OBJS)
 	$(MPICXX) $(CFLAGS) -fopenmp -o $@ $^ $(LIBS)
 
-objs/%_ispc.h objs/%_ispc.o objs/%_ispc_sse2.o objs/%_ispc_sse4.o objs/%_ispc_avx.o: %.ispc
+objs/%_ispc.h objs/%_ispc.o: %.ispc
 	$(ISPC) --target=$(ISPC_TARGETS) $< -o objs/$*_ispc.o -h objs/$*_ispc.h
-
-objs/input.o: input.cpp
-	$(CXX) $(CFLAGS) $(PYTHONINC) $< -c -o $@
-
-objs/tasksys.o: tasksys.cpp
-	$(CXX) $(CFLAGS) -D ISPC_USE_OMP $< -c -o $@
 
 objs/%.o: %.cpp $(ISPC_HEADERS)
 	$(CXX) $(CFLAGS) $< -c -o $@

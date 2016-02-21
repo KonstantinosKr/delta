@@ -6,7 +6,7 @@
 #include <float.h>
 #include <zoltan.h>
 
-void migrate_triangles (int size, int *nt, iREAL *t[3][3], iREAL *v[3],
+void migrate_triangles (int size, int &nt, iREAL *t[3][3], iREAL *v[3],
                               iREAL *angular[6], int *parmat,
                               int *tid, int *pid,  
                               int num_import, int *import_procs, int *import_to_part, 
