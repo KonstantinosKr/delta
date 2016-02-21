@@ -16,7 +16,7 @@ ISPC_OBJS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.o))
 ISPC_HEADERS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.h))
 CPP_OBJS=$(addprefix objs/, $(CPP_SRC:.cpp=.o))
 C_OBJS=$(addprefix objs/, $(C_SRC:.c=.o))
-LIBS=-lm -lstdc++ $(HULLLIB) #$(PYTHONLIB)
+LIBS=-lm -lstdc++ $(HULLLIB) $(PYTHONLIB)
 
 default: dirs $(ISPC_HEADERS) $(CPP_OBJS) $(C_OBJS) $(EXE)
 

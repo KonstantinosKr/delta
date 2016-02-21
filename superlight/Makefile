@@ -15,8 +15,10 @@ HULLINC = -Iext/hul
 HULLLIB = -Lext/hul -lhul
 
 # Python paths
-PYTHONINC=-I/usr/include/python2.7
-PYTHONLIB=-L/usr/lib -lpython2.7
+#PYTHONINC=-I/usr/include/python2.7
+#PYTHONLIB=-L/usr/lib -lpython2.7
+PYTHONINC=-I/Library/Frameworks/Python.framework/Versions/3.4/include/python3.4mi
+PYTHONLIB=-L/Library/Frameworks/Python.framework/Versions/3.4/lib/ -lpython3.4
 
 # Program name
 EXE=delta

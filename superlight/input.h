@@ -7,6 +7,7 @@
 #include <math.h>
 #include "geom.h"
 #include "algo.h"
+#include "Python/Python.h"
 
 void init_env(int &nt, int &nb, iREAL *t[3][3], iREAL *linear[3], iREAL *mass, int *parmat, int tid[], int pid[], iREAL *position[3], iREAL lo[3], iREAL hi[3]);
 
@@ -18,3 +19,4 @@ void trans_env(int i, int pid, iREAL *t[3][3], iREAL *p[3]);
 
 void cond_env(int nb, iREAL *linear[3], iREAL *mass, int *parmat);
 
+void pytest();

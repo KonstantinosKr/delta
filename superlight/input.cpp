@@ -279,3 +279,11 @@ void load_vtk(int &nt, int &nb, int IDX, iREAL *t[3][3], int tid[], int pid[], i
   fclose(fp1);
 }
 
+void pytest()
+{
+
+  PyObject *t;
+
+  t = PyTuple_New(3);
+
+}
