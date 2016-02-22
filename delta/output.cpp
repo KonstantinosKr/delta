@@ -7,7 +7,7 @@ void output_state(struct loba *lb, int myrank, int nt, iREAL *t[6][3], int times
   
   char iter[100];
   sprintf(iter, "%u_%i.vtk", timesteps, myrank);
-  char filename[100] = "output/mpi/output"; //care or buffer overflow
+  char filename[100] = "output/dump/output"; //care or buffer overflow
   strcat(filename, iter);
   printf("%s\n", filename);
     
@@ -118,7 +118,7 @@ void postProcessing(int nranks, int size, int timesteps)
     for(int j=0; j<nranks; j++)
     {
       char ch, word[100];
-      char filename[100] = "output/mpi/output";
+      char filename[100] = "output/dump/output";
       char str[100];
       sprintf(str, "%i_%i.vtk", ii, j);
       strcat(filename, str);
@@ -187,11 +187,11 @@ void postProcessing(int nranks, int size, int timesteps)
     }
     
     // WRITE OUTPUT
-    char iter[50];
+    char iter[100];
     sprintf(iter, "%i.vtk", ii);
-    char filename[50] = "output/mergedmpi/output"; //care or buffer overflow
+    char filename[100] = "output/mpi/output"; //care or buffer overflow
     strcat(filename, iter);
-    printf("%s\n", filename);
+    //printf("%s\n", filename);
     
     FILE *out = fopen(filename, "w+");
     
@@ -241,8 +241,44 @@ void postProcessing(int nranks, int size, int timesteps)
   free(cells[4]);
 }
 
-/*void output_log()
+void output_performance_log()
 {
+  char filename[100] = "output/mpi/performance.csv"; //care or buffer overflow
+  printf("Performance Data: %s\n", filename);
+    
+  FILE *fp = fopen(filename, "w+");
+  if( fp == NULL )
+  {
+    perror("Error while opening the file.\n");
+    exit(EXIT_FAILURE);
+  }
+  
+  fprintf(fp,"TotalRunMin, TotalRunMax, TotalRunAvg," 
+             "BalanceMin, BalanceMax, BalanceAvg,"
+             "MigrationMin, MigrationMax, MigrationAvg," 
+             "DataXchangeMax, DataXchangeMin, DataXchangeAvg," 
+             "DT1Min, DT1Max, DT1Avg," 
+             "DT2Min, DT2Max, DT2Avg," 
+             "DT2Min, DT2Max, DT2Avg," 
+             "DT3Min, DT3Max, DT3Avg\n");
 
+  //minsubtotal, maxsubtotal, avgsubtotal, minbal, maxbal, avgbal, minmig, maxmig, avgmig, minde, maxde, avgde, mindt1, maxdt1, avgdt1, mindt2, maxdt2, avgdt2, mindt3, maxdt3, avgdt3 
+  
+  fclose(fp);
+}
 
-}*/
+/*
+void output_balance_log();
+
+void output_migration_log();
+
+void output_contact_log();
+
+void output_ghost_log();
+
+void output_force_log();
+
+void output_dynamic_log();
+
+void output_statistics_log();
+*/

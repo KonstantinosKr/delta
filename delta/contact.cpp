@@ -22,7 +22,9 @@ contact::contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREA
 }
 
 //all-to-all range
-void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], iREAL *p[3], iREAL *q[3], std::vector<contact> conpnt[])
+void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], 
+                        iREAL *linear[3], iREAL *p[3], iREAL *q[3], 
+                        std::vector<contact> conpnt[])
 {
   iREAL a[3], b[3], c[3];
 
@@ -39,14 +41,15 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREA
     c[0] = t[2][0][i];
     c[1] = t[2][1][i];
     c[2] = t[2][2][i];
-    
+   
     bf (i+1, e, a, b, c, t[0], t[1], t[2], p, q);//use tasks 
-     
+    
     iREAL margin = 15E-2;
     
     for(int j=i+1;j<e;j++) //careful; range can overflow due to ghosts particles
     {
       if(pid[i] == pid[j])continue;
+      
       iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[2][j]),2));
       
       if(dist < margin)
@@ -64,7 +67,6 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREA
         normal[2] = ((q[2][j] - p[2][j])/depth);
         
         int found=0;
-        
         for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)
         {
           if(conpnt[pid[i]][ii].depth == depth) 
@@ -72,12 +74,12 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREA
             found = 1;
           }
         }
-        
+       
         if(found!=1)
         {
-          printf("Body:%i - TID[%i]:%i is in Contact with Body:%i - TID[%i]: %i dist:%f\n", pid[i], i, tid[i], pid[j], j, tid[j], dist);
-          int color[2], id[2];
+     //     printf("Body:%i - TID[%i]:%i is in Contact with Body:%i - TID[%i]: %i dist:%f\n", pid[i], i, tid[i], pid[j], j, tid[j], dist);
           
+          int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];
 
@@ -147,8 +149,8 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
         if(found!=1)
         {
           printf("Body:%i - TID[%i]:%i is in Contact with Body:%i - TID[%i]: %i dist:%f\n", pid[i], i, tid[i], pid[j], j, tid[j], dist);
-          int color[2], id[2];
           
+          int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];
 

@@ -56,7 +56,7 @@ void forces (std::vector<contact> conpnt[], int nb,
     /* update contact forces */
     for(unsigned int k = 0; k<conpnt[i].size(); k++)
     {
-      iREAL p[3], n[3], z[3], vi[3], vj[3], oj[3], vij[3], oij[3];
+      iREAL p[3], z[3], vi[3], vj[3], oj[3], vij[3], oij[3];
 
       p[0] = conpnt[i][k].point[0];
       p[1] = conpnt[i][k].point[1];

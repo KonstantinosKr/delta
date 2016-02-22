@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <mpi.h>
-#include <string.h>
 #include <limits.h>
 #include <float.h>
 #include "tmr.h"
@@ -10,33 +9,26 @@
 #include "migration.h"
 #include "loba.h"
 #include "contact.h"
-#include "dynamics.h"
 #include "forces.h"
+#include "dynamics.h"
 
 int main (int argc, char **argv)
 {
-  iREAL *t[3][3]; // triangles
-  iREAL *mass; // scalar mass
-  iREAL *force[3]; // total spatial force
-  iREAL *torque[3]; // total spatial torque
- 
   int *parmat; // particle material
   iREAL *mparam[NMAT]; // material parameters 
   for(int i = 0; i<NMAT; i++) {mparam[i] = (iREAL *) malloc(1*sizeof(iREAL));}//n materials and parameters
 
   int pairnum = 1;
-  int *pairs; // color pairs
-  pairs = (int *) malloc(pairnum*sizeof(pairnum));
-
-  int *ikind; // interaction kind
-  ikind = (int *) malloc(1*sizeof(int)); //number of interaction kinds/types
+  // color pairs
+  int *pairs = (int *) malloc(pairnum*sizeof(pairnum));
+  
+  // interaction kind
+  int *ikind = (int *) malloc(1*sizeof(int)); //number of interaction kinds/types
+  ikind[0] = GRANULAR;
 
   iREAL *iparam[NINT]; // interaction per interaction type
   for(int i=0;i<NINT;i++){iparam[i] = (iREAL *) malloc(1*sizeof(iREAL));}
 
-  //set first kind
-  ikind[0] = GRANULAR;
-  
   //GRANULAR interaction type parameters 
   iparam[SPRING][GRANULAR] = 1E9;
   iparam[DAMPER][GRANULAR] = 1;
@@ -52,28 +44,31 @@ int main (int argc, char **argv)
   iparam[TAUC][GRANULAR] = 0;
   iparam[ALPHA][GRANULAR] = 0;
 
+  int nt = 0; // number of triangles
+  int nb = 0;
+  int *pid; //particle identifier
+  int *tid; // triangle identifiers
+  iREAL *t[3][3]; // triangles
+  iREAL *p[3],*q[3];//p and q points
+  
+  iREAL *mass; // scalar mass
+  iREAL *force[3]; // total spatial force
+  iREAL *torque[3]; // total spatial torque
+  
   iREAL *angular[6]; // angular velocities (referential, spatial)
   iREAL *linear[3]; // linear velocities
   iREAL *rotation[9]; // rotation operators
   iREAL *position[6]; // mass center current and reference positions
   iREAL *inertia[9]; // inertia tensors
   iREAL *inverse[9]; // inverse inertia tensors 
-    
-  iREAL gravity[3];
-  gravity[0] = 0;
-  gravity[1] = 100;
-  gravity[2] = 0;
   
-  iREAL *p[3],*q[3];//p and q points
-  
-  int nt = 0; // number of triangles
-  int nb = 0;
-  int *pid; //particle identifier
-  int *tid; // triangle identifiers
   iREAL lo[3] = {-500, -500, -500}; // lower corner
   iREAL hi[3] = {500, 500, 500}; // upper corner
+    
+  iREAL gravity[3] = {0.0, 100.0, 0.0};
   
-  unsigned int size = 27000000; // memory buffer size
+  int size = 2700000; // memory buffer size
+ 
   int nprocs, myrank;
 
   MPI_Init (&argc, &argv);
@@ -90,8 +85,7 @@ int main (int argc, char **argv)
     t[4][i] = (iREAL *) malloc (size*sizeof(iREAL));
     t[5][i] = (iREAL *) malloc (size*sizeof(iREAL));
     
-    linear[i] = (iREAL *) malloc (size*sizeof(iREAL));
-    
+    linear[i] = (iREAL *) malloc (size*sizeof(iREAL)); 
     torque[i] = (iREAL *) malloc (size*sizeof(iREAL));
     force[i] = (iREAL *) malloc (size*sizeof(iREAL));
     
@@ -118,9 +112,9 @@ int main (int argc, char **argv)
   pid = (int *) malloc (size*sizeof(int));
   mass = (iREAL *) malloc(size*sizeof(iREAL));
 
-  for(unsigned int i=0;i<size;i++) tid[i] = INT_MAX; 
+  for(int i=0;i<size;i++) tid[i] = INT_MAX; 
 
-  std::vector<contact> *conpnt = (std::vector<contact> *) malloc(size/10000*sizeof(std::vector<contact>));
+  std::vector<contact> *conpnt = (std::vector<contact> *) malloc(size*sizeof(std::vector<contact>));
   
   int num_import, num_export, *import_procs, *import_to_part, *export_procs, *export_to_part;
   ZOLTAN_ID_PTR import_global_ids, import_local_ids, export_global_ids, export_local_ids;
@@ -146,16 +140,14 @@ int main (int argc, char **argv)
   {
     init_enviroment(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
     printf("NT:%i, NB: %i\n", nt, nb);
-  
-    //if(myrank == 0){euler(nb, angular, linear, rotation, position, 0.5*step);}
+    //euler(nb, angular, linear, rotation, position, 0.5*step);
   }
   
-  // perform time stepping 
-  iREAL step = 1E-3, time; int timesteps=0;
+  iREAL step = 1E-3; int timesteps=0;
 
-  for(time = step*0.5; time < 1; time+=step)
+  for(iREAL time = step; time < 1; time+=step)
   {
-    if(myrank == 0){printf("TIMESTEP: %i\n", timesteps);} 
+    if(!myrank){printf("TIMESTEP: %i\n", timesteps);} 
     
     timerstart(&tbalance[timesteps]);
     loba_balance (lb, nt, t[0], tid, 1.1,
@@ -166,9 +158,9 @@ int main (int argc, char **argv)
     timerend (&tbalance[timesteps]);
   
     printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
-    
+   
     timerstart(&tmigration[timesteps]);
-    migrate_triangles (size, nt, t, linear, angular, parmat, tid, pid, 
+    migrate_triangles (nt, t, linear, angular, parmat, tid, pid, 
                         num_import, import_procs, import_to_part, 
                         num_export, export_procs, export_to_part, 
                         import_global_ids, import_local_ids, 
@@ -197,9 +189,8 @@ int main (int argc, char **argv)
     //dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step);
     timerend (&tdynamics[timesteps]);
     printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
-    
+    //return 0; 
     output_state(lb, myrank, nt, t, timesteps);
-    return 0;
     timesteps++;
   }
 
@@ -326,15 +317,28 @@ int main (int argc, char **argv)
     avgdt2 = avgdt2/nprocs;
     avgdt3 = avgdt3/nprocs; 
    
-    printf("TOTALmin: %f, TOTALmax: %f, TOTALavg: %f\nZ-BALmin: %f, Z-BALmax: %f, Z-BALavg: %f\nMIGRATIONmin: %f, MIGRATIONmax: %f, MIGRATIONavg: %f\nDTXmin: %f, DTXmax: %f, DTXavg: %f\nDT1min: %f, DT1max: %f, DT1avg: %f\nDT2min: %f, DT2max: %f, DT2avg: %f\nDT3min: %f, DT3max: %f, DT3avg: %f\n", minsubtotal, maxsubtotal, avgsubtotal, minbal, maxbal, avgbal, minmig, maxmig, avgmig, minde, maxde, avgde, mindt1, maxdt1, avgdt1, mindt2, maxdt2, avgdt2, mindt3, maxdt3, avgdt3); 
+    printf("TOTmin: %f, TOTmax: %f, TOTavg: %f\n"
+           "BALmin: %f, BALmax: %f, BALavg: %f\n"
+           "MIGmin: %f, MIGmax: %f, MIGavg: %f\n"
+           "DTXmin: %f, DTXmax: %f, DTXavg: %f\n"
+           "DT1min: %f, DT1max: %f, DT1avg: %f\n"
+           "DT2min: %f, DT2max: %f, DT2avg: %f\n"
+           "DT3min: %f, DT3max: %f, DT3avg: %f\n", 
+          minsubtotal, maxsubtotal, avgsubtotal, 
+          minbal, maxbal, avgbal, 
+          minmig, maxmig, avgmig, 
+          minde, maxde, avgde, 
+          mindt1, maxdt1, avgdt1, 
+          mindt2, maxdt2, avgdt2, 
+          mindt3, maxdt3, avgdt3); 
   }
-
+  //have to make sure all ranks finished
   MPI_Barrier(MPI_COMM_WORLD);
-  if(myrank == 0)//have to make sure all ranks finished
+  if(!myrank)
   {
     printf("\nComputation Finished.\n");
-    //postProcessing(nprocs, size, timesteps);
-    //printf("Post-Processing Finished.\n");
+    postProcessing(nprocs, size, timesteps);
+    printf("Post-Processing Finished.\n");
   }
 
   // finalise
@@ -342,15 +346,23 @@ int main (int argc, char **argv)
 
   for (int i = 0; i < 3; i ++)
   {
-    free (t[0][i]);
-    free (t[1][i]);
-    free (t[2][i]);
-    free (linear[i]);
-    free (p[i]);
-    free (q[i]);
+    free(t[0][i]);
+    free(t[1][i]);
+    free(t[2][i]);
+    free(t[3][i]);
+    free(t[4][i]);
+    free(t[5][i]);
+    free(linear[i]);
+    free(torque[i]);
+    free(force[i]);
+    free(p[i]);
+    free(q[i]);
   }
-
-  Zoltan_LB_Free_Data (&import_global_ids, &import_local_ids, &import_procs, &export_global_ids, &export_local_ids, &export_procs);
+  
+  
+  Zoltan_LB_Free_Data (&import_global_ids, &import_local_ids, 
+                      &import_procs, &export_global_ids, 
+                      &export_local_ids, &export_procs);
   
   MPI_Finalize ();
 

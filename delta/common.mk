@@ -36,7 +36,8 @@ del:
 
 clean:
 	/bin/rm -rf objs *~ $(EXE)
-	/bin/rm -rf output/mpi/
+	/bin/rm -rf output/mpi/*
+	/bin/rm -rf output/mpimerged/*
 	find ./ -iname "*.dump" -exec rm '{}' ';'
 
 $(EXE): $(CPP_OBJS) $(C_OBJS) $(ISPC_OBJS)

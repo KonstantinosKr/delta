@@ -3,13 +3,12 @@
 #include <algorithm>
 #include <vector>
 #include <set>
-#include <map>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 
 void condition_enviroment(int nb, iREAL *linear[3], iREAL *angular[6], iREAL *rotation[9],
-                        iREAL *mass, iREAL *inertia[9], iREAL *inverse[9], int *parmat)
+                          iREAL *mass, iREAL *inertia[9], iREAL *inverse[9], int *parmat)
 {
   for(int i = 0; i < nb; i++)
   {
@@ -81,7 +80,10 @@ void condition_enviroment(int nb, iREAL *linear[3], iREAL *angular[6], iREAL *ro
   }
 }
 
-void init_enviroment(int &nt, int &nb, iREAL *t[6][3], iREAL *linear[3], iREAL *angular[6], iREAL *inertia[9], iREAL *inverse[9], iREAL *rotation[9], iREAL *mass, int *parmat, int tid[], int pid[], iREAL *position[6], iREAL lo[3], iREAL hi[3])
+void init_enviroment(int &nt, int &nb, iREAL *t[6][3], 
+                      iREAL *linear[3], iREAL *angular[6], iREAL *inertia[9], iREAL *inverse[9], 
+                      iREAL *rotation[9], iREAL *mass, int *parmat, int tid[], int pid[], 
+                      iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
     
   //non-spherical particles generation and loading
@@ -136,7 +138,8 @@ void init_enviroment(int &nt, int &nb, iREAL *t[6][3], iREAL *linear[3], iREAL *
   condition_enviroment(nb, linear, angular, rotation, mass, inertia, inverse, parmat);
 }
 
-void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
+void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], 
+                      iREAL *position[6], iREAL *mint, iREAL *maxt)
 {
   int n = 0;
   nt = 0;
@@ -164,7 +167,9 @@ void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], in
   }
 }
 
-void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
+void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3], 
+              int tid[], int pid[], iREAL *position[6], 
+              iREAL *mint, iREAL *maxt)
 {
   //////////VTK format////////////
   iREAL min = DBL_MAX;

@@ -57,7 +57,7 @@ void hybrid (int it, int nt,
   { // works only for multiples of 16. Adopt      
         
     batchError = 0.0;
-	  #pragma forceinline recursive
+//	  #pragma forceinline recursive
     #if (defined(__GNUC__) && (__GNUC__==4) && (__GNUC_MINOR__>8)) || (defined(__GNUC__) && (__GNUC__>4))
     #pragma omp parallel for simd reduction (+:batchError)
     #else
@@ -109,7 +109,7 @@ void hybrid (int it, int nt,
 	  } // end of batch
     if(batchError/batchSize>1E-8)
     {
-      #pragma forceinline recursive
+//      #pragma forceinline recursive
       #if (defined(__GNUC__) && (__GNUC__==4) && (__GNUC_MINOR__>8)) || (defined(__GNUC__) && (__GNUC__>4))
       #pragma omp parallel for simd
       #else
