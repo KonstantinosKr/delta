@@ -1,6 +1,6 @@
 # C files
 C_SRC= 
-CPP_SRC = input.cpp output.cpp delta.cpp bf.cpp contact.cpp forces.cpp dynamics.cpp
+CPP_SRC = input.cpp geom.cpp output.cpp delta.cpp bf.cpp contact.cpp forces.cpp dynamics.cpp
 
 # ISPC files
 ISPC_SRC= delta.ispc

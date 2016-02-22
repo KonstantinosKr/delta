@@ -135,7 +135,7 @@ int main (int argc, char **argv)
     printf("BODY2 XVelocity:%f\n", linear[2][1]);
     contact_detection (0, nt, 0, nt, t, tid, pid, linear, p, q, conpnt);
 		
-    forces(conpnt, nb, pid, position, angular, linear, mass, force, torque, gravity, parmat, mparam, pairnum, pairs, ikind, iparam);
+    forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat, mparam, pairnum, pairs, ikind, iparam);
     
     dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step);
    

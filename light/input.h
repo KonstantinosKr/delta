@@ -6,6 +6,7 @@
 #include "dynamics.h"
 #include <time.h>
 #include <math.h>
+#include "geom.h"
 
 extern "C"{
 #include "ext/hul/hul.h"

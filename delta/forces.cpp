@@ -26,10 +26,10 @@ int pairing (int nummat, int pairs[], int i, int j)
   return 0; 
 }
 
-void forces (std::vector<contact> conpnt[],
-  int nb, int pid[], iREAL * position[3], iREAL * angular[6], iREAL * linear[3],
-  iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[], iREAL * mparam[NMAT],
-  int pairnum, int pairs[], int ikind[], iREAL * iparam[NINT])
+void forces (std::vector<contact> conpnt[], int nb, 
+            iREAL * position[3], iREAL * angular[6], iREAL * linear[3],
+            iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[], iREAL * mparam[NMAT],
+            int pairnum, int pairs[], int ikind[], iREAL * iparam[NINT])
 {
 
   for (int i = 0; i < nb; i++)
@@ -49,6 +49,9 @@ void forces (std::vector<contact> conpnt[],
     x[2] = position[2][i];
       
 
+    force[0][i] = mass[i] * gravity[0];
+    force[1][i] = mass[i] * gravity[1];
+    force[2][i] = mass[i] * gravity[2];
 
     /* update contact forces */
     for(unsigned int k = 0; k<conpnt[i].size(); k++)
@@ -137,17 +140,13 @@ void forces (std::vector<contact> conpnt[],
       torque[1][j] += a[2]*f[0] - a[0]*f[2];
       torque[2][j] += a[0]*f[1] - a[1]*f[0];
     }
+    std::vector<contact>().swap(conpnt[i]);
   }
 
   for(int i=0;i<nb;i++)
   {
-    force[0][i] = force[0][i] + mass[i] * gravity[0];
-    force[1][i] = force[1][i] + mass[i] * gravity[1];
-    force[2][i] = force[2][i] + mass[i] * gravity[2];
     printf("Total Force of body: %i is: %f %f %f\n", i, force[0][i], force[1][i], force[2][i]);
     printf("Total Torque of body: %i is: %f %f %f\n", i, torque[0][i], torque[1][i], torque[2][i]);
-    
-    std::vector<contact>().swap(conpnt[i]);
   }
 }
 

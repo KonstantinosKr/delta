@@ -8,7 +8,7 @@
 #include <fstream>
 #include <iomanip>
 
-void init_env(int &nt, int &nb, iREAL *t[3][3], iREAL *linear[3], iREAL *mass, int *parmat, int tid[], int pid[], iREAL *position[3], iREAL lo[3], iREAL hi[3])
+void init_enviroment(int &nt, int &nb, iREAL *t[3][3], iREAL *linear[3], iREAL *mass, int *parmat, int tid[], int pid[], iREAL *position[3], iREAL lo[3], iREAL hi[3])
 {
   //Input Type
   //0: Triangulated Mesh
@@ -23,7 +23,7 @@ void init_env(int &nt, int &nb, iREAL *t[3][3], iREAL *linear[3], iREAL *mass, i
   //*nb +=1;
 
   iREAL mint, maxt;
-  load_env(ptype, nt, nb, t, tid, pid, position, &mint, &maxt);
+  load_enviroment(ptype, nt, nb, t, tid, pid, position, &mint, &maxt);
   
   lo[0] = -250; // lower corner
   lo[1] = -250; // lower corner
@@ -51,7 +51,7 @@ void init_env(int &nt, int &nb, iREAL *t[3][3], iREAL *linear[3], iREAL *mass, i
         {
           if(pid[j] == idx)
           {
-            trans_env(j, idx, t, position);
+            trans_enviroment(j, idx, t, position);
           }
         }
         idx++;
@@ -61,10 +61,10 @@ void init_env(int &nt, int &nb, iREAL *t[3][3], iREAL *linear[3], iREAL *mass, i
     }
     if(idx > nb) break;
   }
-  cond_env(nb, linear, mass, parmat);
+  cond_enviroment(nb, linear, mass, parmat);
 }
 
-void load_env(int ptype[], int &nt, int &nb, iREAL *t[3][3], int tid[], int pid[], iREAL *position[3], iREAL *mint, iREAL *maxt)
+void load_enviroment(int ptype[], int &nt, int &nb, iREAL *t[3][3], int tid[], int pid[], iREAL *position[3], iREAL *mint, iREAL *maxt)
 {
   int n = 0;
   nt = 0;
@@ -112,7 +112,7 @@ void load_env(int ptype[], int &nt, int &nb, iREAL *t[3][3], int tid[], int pid[
   }
 }
 
-void trans_env(int i, int pid, iREAL *t[3][3], iREAL *p[3])
+void trans_enviroment(int i, int pid, iREAL *t[3][3], iREAL *p[3])
 { 
   t[0][0][i] = t[0][0][i] + p[0][pid];
   t[0][1][i] = t[0][1][i] + p[1][pid];
@@ -127,7 +127,7 @@ void trans_env(int i, int pid, iREAL *t[3][3], iREAL *p[3])
   t[2][2][i] = t[2][2][i] + p[2][pid];
 } 
 
-void cond_env(int nb, iREAL *linear[3], iREAL *mass, int *parmat)
+void cond_enviroment(int nb, iREAL *linear[3], iREAL *mass, int *parmat)
 {
   for(int i = 0; i < nb; i++)
   {

@@ -97,7 +97,7 @@ int main (int argc, char **argv)
 
 	for(int i=0;i<size;i++) tid[i] = UINT_MAX; 
 	
-	init_env(nt, nb, t, linear, mass, parmat, tid, pid, position, lo, hi);  
+	init_enviroment(nt, nb, t, linear, mass, parmat, tid, pid, position, lo, hi);  
 	printf("NT:%i NB:%i\n", nt, nb);
  
   iREAL step = 1E-4, time; int timesteps=0; 
