@@ -1,3 +1,27 @@
+/*
+ The MIT License (MIT)
+ 
+ Copyright (c) 2016 Konstantinos Krestenitis
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <mpi.h>
@@ -12,8 +36,12 @@
 #include "forces.h"
 #include "dynamics.h"
 
+int ui(int argc, char **argv);
+
 int main (int argc, char **argv)
 {
+  if(ui(argc, argv)) return 0; //user interface
+
   int *parmat; // particle material
   iREAL *mparam[NMAT]; // material parameters 
   for(int i = 0; i<NMAT; i++) {mparam[i] = (iREAL *) malloc(1*sizeof(iREAL));}//n materials and parameters
@@ -359,12 +387,22 @@ int main (int argc, char **argv)
     free(q[i]);
   }
   
-  
   Zoltan_LB_Free_Data (&import_global_ids, &import_local_ids, 
                       &import_procs, &export_global_ids, 
                       &export_local_ids, &export_procs);
-  
   MPI_Finalize ();
 
   return 0;
+}
+
+int ui(int argc, char **argv)
+{
+  printf("\nExecuting Project Delta\n");
+  if(argc==1) 
+    printf("Delta: no arguments given, initiating default setup.\n");
+  for(int i=1;i<argc;i++)
+  {
+    printf("Arg[%i]: %s\n", i, argv[i]);
+  }
+  return 1;
 }
