@@ -502,7 +502,7 @@ void loba_migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3],
   
   timerend(&t1);
   *timer1 = t1.total;
-  
+ 
   timerstart(&t2);
   contact_detection (0, nt, t, tid, pid, v, p, q, conpnt);//local computation
   timerend(&t2);

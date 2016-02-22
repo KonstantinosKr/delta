@@ -176,7 +176,7 @@ int main (int argc, char **argv)
     timerstart (&tdataExchange[timesteps]);
     loba_migrateGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
-   
+    
     tTimer1[timesteps] = timer1;
     tTimer2[timesteps] = timer2;
     tTimer3[timesteps] = timer3;

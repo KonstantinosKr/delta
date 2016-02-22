@@ -77,8 +77,6 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
        
         if(found!=1)
         {
-     //     printf("Body:%i - TID[%i]:%i is in Contact with Body:%i - TID[%i]: %i dist:%f\n", pid[i], i, tid[i], pid[j], j, tid[j], dist);
-          
           int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];
