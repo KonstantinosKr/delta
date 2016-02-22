@@ -160,11 +160,11 @@ int main (int argc, char **argv)
     printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
    
     timerstart(&tmigration[timesteps]);
-    migrate_triangles (nt, t, linear, angular, parmat, tid, pid, 
-                        num_import, import_procs, import_to_part, 
-                        num_export, export_procs, export_to_part, 
-                        import_global_ids, import_local_ids, 
-                        export_global_ids, export_local_ids);
+    migrate (nt, t, linear, angular, parmat, tid, pid, 
+               num_import, import_procs, import_to_part, 
+               num_export, export_procs, export_to_part, 
+               import_global_ids, import_local_ids, 
+               export_global_ids, export_local_ids);
     timerend (&tmigration[timesteps]);
    
     printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
@@ -174,7 +174,7 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    loba_migrateGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
+    migrateGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
     
     tTimer1[timesteps] = timer1;
@@ -189,7 +189,7 @@ int main (int argc, char **argv)
     //dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step);
     timerend (&tdynamics[timesteps]);
     printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
-    //return 0; 
+    
     output_state(lb, myrank, nt, t, timesteps);
     timesteps++;
   }

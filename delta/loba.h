@@ -33,12 +33,6 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *
                     int *nGhostNeighbors, int *ghostNeighborhood, 
                     int *ghostTIDNeighbors[], int *ghostTIDcrosses);
 
-void loba_migrateGhosts(struct loba *lb, int myrank, int nt, iREAL *t[6][3], 
-                      iREAL *linear[3], iREAL *angular[6], int *parmat,
-                      iREAL step, iREAL *p[3], iREAL *q[3], 
-                      int tid[], int pid[], std::vector<contact> conpnt[], 
-                      iREAL *timer1, iREAL *timer2, iREAL *timer3);
-
 /* find ranks overlapped by the [lo,hi] box */
 void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks, int *nranks);
 

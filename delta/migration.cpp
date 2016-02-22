@@ -1,7 +1,7 @@
 #include "migration.h"
 
 /* migrate triangles "in-place" to new ranks */
-void migrate_triangles (int &nt, iREAL *t[6][3], iREAL *v[3],
+void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
                         iREAL *angular[6], int *parmat,
                         int *tid, int *pid,
                         int num_import, int *import_procs, int *import_to_part, 
@@ -381,4 +381,280 @@ void migrate_triangles (int &nt, iREAL *t[6][3], iREAL *v[3],
     
    free(myRequest);
    free(myrvRequest);
+}
+
+void migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3], 
+              iREAL *v[3], iREAL *angular[6], int *parmat,
+              iREAL dt, iREAL *p[3], iREAL *q[3], 
+              int tid[], int pid[], std::vector<contact> conpnt[], 
+              iREAL *timer1, iREAL *timer2, iREAL *timer3)
+{
+  TIMING t1, t2, t3;
+  
+  timerstart(&t1);
+  int nproc=0;
+  int nNeighbors=0;
+
+  MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+  int *neighborhood = (int *) malloc(nproc * sizeof(int));
+  loba_getAdjacent(lb, myrank, neighborhood, &nNeighbors);
+  
+  int *ghostTID = (int*) malloc(nt*sizeof(int));
+  int *ghostPID = (int*) malloc(nt*sizeof(int));
+  int **ghostTIDNeighbors = (int**) malloc(nt*sizeof(int*));
+  int *ghostTIDcrosses = (int*) malloc(nt*sizeof(int));
+  int *ghostNeighborhood = (int*) malloc(nproc*sizeof(int));
+  
+  for(int i = 0;i<nproc;i++){ghostNeighborhood[i] = -1;}
+  for(int i = 0;i<nt;i++){ghostTIDNeighbors[i] = (int*) malloc(nNeighbors*sizeof(int));}
+  int nGhosts, nGhostNeighbors;
+  
+  //get triangle tids that overlap into neighbors
+  loba_getGhosts(lb, myrank, nNeighbors, nt, t, tid, pid, 
+                      ghostTID, ghostPID, &nGhosts, 
+                      &nGhostNeighbors, ghostNeighborhood, 
+                      ghostTIDNeighbors, ghostTIDcrosses);
+  printf("RANK[%i]: overlaps:%i\n", myrank, nGhosts);
+  
+  //allocate memory for buffers
+  int *pivot, *tid_buffer, *pid_buffer, *rcvpivot, *rcvtid_buffer, *rcvpid_buffer;
+  iREAL *tbuffer[3], *vbuffer, *angbuffer;
+  iREAL *trvbuffer[3], *vrvbuffer, *angrvbuffer;
+  int *parmat_buffer, *rvparmat_buffer;
+
+  tbuffer[0] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
+  tbuffer[1] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
+  tbuffer[2] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
+  vbuffer = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
+  angbuffer = (iREAL *) malloc(nNeighbors*nGhosts*6*sizeof(iREAL));//six elements thus x2.
+  
+  tid_buffer = (int *) malloc(nNeighbors*nGhosts*sizeof(int));
+  pid_buffer = (int *) malloc(nNeighbors*nGhosts*sizeof(int));
+  parmat_buffer = (int *) malloc(nNeighbors*nGhosts*sizeof(int));
+
+  pivot = (int *) malloc(nNeighbors*sizeof(int));
+  rcvpivot = (int *) malloc(nNeighbors*sizeof(int));
+  
+  for(int i = 0; i < nNeighbors; i++)
+  { //set send indices and pivots for buffers
+    pivot[i] = 0; //set pivot to zero
+    rcvpivot[i] = 0;  
+  }
+  
+  //prepare export buffers
+  for (int i = 0; i<nGhosts; i++)
+  {
+    for(int ii = 0; ii<ghostTIDcrosses[i]; ii++)
+    {
+      int oltid = ghostTID[i];
+      int olpid = ghostPID[i];
+      int j = ghostTIDNeighbors[i][ii];
+      int jj = ghostNeighborhood[j];
+      //printf("RANK[%i]: J:%i JJ:%i\n", myrank, j, jj);
+      int xx = pivot[jj];
+      
+      parmat_buffer[(jj*nGhosts)+xx] = parmat[oltid];
+      tid_buffer[(jj*nGhosts)+xx] = oltid;
+      pid_buffer[(jj*nGhosts)+xx] = olpid;
+      
+      tbuffer[0][(jj*nGhosts*3)+(xx*3)+0] = t[0][0][oltid]; //point 0
+      tbuffer[0][(jj*nGhosts*3)+(xx*3)+1] = t[0][1][oltid]; //point 0
+      tbuffer[0][(jj*nGhosts*3)+(xx*3)+2] = t[0][2][oltid]; //point 0
+      
+      tbuffer[1][(jj*nGhosts*3)+(xx*3)+0] = t[1][0][oltid]; //point 1
+      tbuffer[1][(jj*nGhosts*3)+(xx*3)+1] = t[1][1][oltid]; //point 1
+      tbuffer[1][(jj*nGhosts*3)+(xx*3)+2] = t[1][2][oltid]; //point 1
+      
+      tbuffer[2][(jj*nGhosts*3)+(xx*3)+0] = t[2][0][oltid]; //point 2
+      tbuffer[2][(jj*nGhosts*3)+(xx*3)+1] = t[2][1][oltid]; //point 2
+      tbuffer[2][(jj*nGhosts*3)+(xx*3)+2] = t[2][2][oltid]; //point 2
+      
+      vbuffer[(jj*nGhosts*3)+(xx*3)+0] = v[0][oltid];
+      vbuffer[(jj*nGhosts*3)+(xx*3)+1] = v[1][oltid];
+      vbuffer[(jj*nGhosts*3)+(xx*3)+2] = v[2][oltid];
+
+      angbuffer[(jj*nGhosts*6)+(xx*6)+0] = angular[0][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+1] = angular[1][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+2] = angular[2][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+3] = angular[3][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+4] = angular[4][oltid];
+      angbuffer[(jj*nGhosts*6)+(xx*6)+5] = angular[5][oltid];
+      
+      pivot[jj]++;
+    }
+  }
+  
+  //blocking communication
+  for(int i=0; i<nNeighbors; i++)
+  {
+    int proc = neighborhood[i];
+    MPI_Send(&pivot[i], 1, MPI_INT, proc, 1, MPI_COMM_WORLD);
+  }
+ 
+  int max = 0;
+  for(int i=0; i<nNeighbors; i++)
+  {
+    int proc = neighborhood[i];
+    MPI_Recv(&rcvpivot[i], 1, MPI_INT, proc, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    if(rcvpivot[i] > max) max = rcvpivot[i];
+  }
+  
+  int n = max;
+  trvbuffer[0] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
+  trvbuffer[1] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
+  trvbuffer[2] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
+  vrvbuffer = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
+  angrvbuffer = (iREAL *) malloc(nNeighbors*n*6*sizeof(iREAL));//six elements thus x2.
+  
+  rvparmat_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
+  rcvtid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
+  rcvpid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
+ 
+  int MPISENDS = 8;
+  MPI_Request *myRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
+  MPI_Request *myrvRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
+  
+  for(int i=0; i<nNeighbors; i++)
+  {
+    int proc = neighborhood[i];
+    if(rcvpivot[i] > 0)
+    {//safe check
+      MPI_Irecv(&rcvtid_buffer[i*n], rcvpivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+0]);
+      MPI_Irecv(&trvbuffer[0][(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+1]);
+      MPI_Irecv(&trvbuffer[1][(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+2]);
+      MPI_Irecv(&trvbuffer[2][(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+3]);
+      
+      MPI_Irecv(&vrvbuffer[(i*n*3)], rcvpivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+4]);
+      MPI_Irecv(&angrvbuffer[(i*n*6)], rcvpivot[i]*6, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+5]);
+
+      MPI_Irecv(&rcvpid_buffer[i*n], rcvpivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+6]);
+      MPI_Irecv(&rvparmat_buffer[i*n], rcvpivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+7]); 
+    }
+  }
+
+  for(int i=0;i<nNeighbors;i++)
+  {
+    int proc = neighborhood[i];
+    if(pivot[i] > 0)
+    {//safe check
+      MPI_Isend(&tid_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+0]);
+      MPI_Isend(&tbuffer[0][(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+1]);
+      MPI_Isend(&tbuffer[1][(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+2]);
+      MPI_Isend(&tbuffer[2][(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+3]);
+      
+      MPI_Isend(&vbuffer[(i*nGhosts*3)], pivot[i]*3, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+4]);
+      MPI_Isend(&angbuffer[(i*nGhosts*6)], pivot[i]*6, MPI_DOUBLE, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+5]);
+
+      MPI_Isend(&pid_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+6]);
+      MPI_Isend(&rvparmat_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+7]);
+    }
+  }
+  
+  timerend(&t1);
+  *timer1 = t1.total;
+ 
+  timerstart(&t2);
+  contact_detection (0, nt, t, tid, pid, v, p, q, conpnt);//local computation
+  timerend(&t2);
+  *timer2 = t2.total;
+  
+  TIMING t4;
+  iREAL tassign=0;
+  timerstart(&t3);
+  int receive_idx = nt; //set to last id
+  for(int i=0;i<nNeighbors;i++)
+  {
+    if(rcvpivot[i] > 0)
+    {
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
+      MPI_Wait(&myrvRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
+      
+      timerstart(&t4);
+      for(int j=0;j<rcvpivot[i];j++)
+      {
+        tid[receive_idx] = rcvtid_buffer[(i*n)+j]; //tids to imported
+        pid[receive_idx] = rcvpid_buffer[(i*n)+j];
+        parmat[receive_idx] = rvparmat_buffer[(i*n)+j];
+        for(int k=0;k<3;k++)
+        {
+          t[0][k][receive_idx] = trvbuffer[0][(i*n*3)+(j*3)+(k)];
+          t[1][k][receive_idx] = trvbuffer[1][(i*n*3)+(j*3)+(k)];
+          t[2][k][receive_idx] = trvbuffer[2][(i*n*3)+(j*3)+(k)];
+          
+          v[k][receive_idx] = vrvbuffer[(i*n*3)+(j*3)+(k)];
+        }
+        for(int k=0;k<6;k++)
+        {
+          angular[k][receive_idx] = angrvbuffer[(i*n*6)+(j*6)+(k)];
+        }
+        receive_idx++;
+      }
+      timerend(&t4);
+      tassign = tassign+t4.total;
+    }
+      
+    if(pivot[i] > 0)
+    {//safe check
+      MPI_Wait(&myRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
+      MPI_Wait(&myRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
+    }
+  }
+  timerend(&t3);
+  *timer3 = t3.total;//doesn't include timer 4
+  
+  if(receive_idx > nt)
+  {
+    printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, nt, receive_idx);
+    //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
+    contact_detection (0, nt, nt, receive_idx, t, tid, pid, v, p, q, conpnt);
+  }
+  
+  for(int i=0; i<3; i++)
+  {
+    free(tbuffer[i]);
+    free(trvbuffer[i]);
+  }
+  
+  free(pivot);
+  free(rcvpivot);
+  
+  free(tid_buffer);
+  free(rcvtid_buffer);
+  
+  free(pid_buffer);
+  free(rcvpid_buffer);
+ 
+  free(parmat_buffer);
+  free(rvparmat_buffer);
+
+  free(vbuffer);
+  free(vrvbuffer);
+
+  free(angbuffer);
+  free(angrvbuffer);
+
+  free(myRequest);
+  free(myrvRequest);
+  
+  free(neighborhood);
+  free(ghostTID);
+  free(ghostPID);
+  free(ghostTIDcrosses);
+  free(ghostNeighborhood);
+  for(int i = 0;i<nt;i++)
+  {
+    free(ghostTIDNeighbors[i]);
+  }
 }
