@@ -28,6 +28,7 @@
 #include <limits.h>
 #include <float.h>
 #include "tmr.h"
+#include "material.h"
 #include "input.h"
 #include "output.h"
 #include "migration.h"
@@ -36,41 +37,20 @@
 #include "forces.h"
 #include "dynamics.h"
 
-int ui(int argc, char **argv);
+int ui(myrank, int argc, char **argv);
 
 int main (int argc, char **argv)
 {
-  if(ui(argc, argv)) return 0; //user interface
+  int nprocs, myrank;
 
-  int *parmat; // particle material
-  iREAL *mparam[NMAT]; // material parameters 
-  for(int i = 0; i<NMAT; i++) {mparam[i] = (iREAL *) malloc(1*sizeof(iREAL));}//n materials and parameters
+  MPI_Init (&argc, &argv);
+  MPI_Comm_rank (MPI_COMM_WORLD, &myrank);
+  MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
+ 
+  //user interface
+  if(ui(myrank, argc, argv)) return 0;
 
-  int pairnum = 1;
-  // color pairs
-  int *pairs = (int *) malloc(pairnum*sizeof(pairnum));
-  
-  // interaction kind
-  int *ikind = (int *) malloc(1*sizeof(int)); //number of interaction kinds/types
-  ikind[0] = GRANULAR;
-
-  iREAL *iparam[NINT]; // interaction per interaction type
-  for(int i=0;i<NINT;i++){iparam[i] = (iREAL *) malloc(1*sizeof(iREAL));}
-
-  //GRANULAR interaction type parameters 
-  iparam[SPRING][GRANULAR] = 1E9;
-  iparam[DAMPER][GRANULAR] = 1;
-  iparam[FRISTAT][GRANULAR] = 0;
-  iparam[FRIDYN][GRANULAR] = 0;
-  iparam[FRIROL][GRANULAR] = 0;
-  iparam[FRIDRIL][GRANULAR] = 0;
-  iparam[KSKN][GRANULAR] = 0;
-  iparam[LAMBDA][GRANULAR] = 0;
-  iparam[YOUNG2][GRANULAR] = 0;
-  iparam[KSKN2][GRANULAR] = 0;
-  iparam[SIGC][GRANULAR] = 0;
-  iparam[TAUC][GRANULAR] = 0;
-  iparam[ALPHA][GRANULAR] = 0;
+  int *parmat; //particle material  
 
   int nt = 0; // number of triangles
   int nb = 0;
@@ -79,6 +59,7 @@ int main (int argc, char **argv)
   iREAL *t[3][3]; // triangles
   iREAL *p[3],*q[3];//p and q points
   
+  material material();
   iREAL *mass; // scalar mass
   iREAL *force[3]; // total spatial force
   iREAL *torque[3]; // total spatial torque
@@ -97,13 +78,6 @@ int main (int argc, char **argv)
   
   int size = 2700000; // memory buffer size
  
-  int nprocs, myrank;
-
-  MPI_Init (&argc, &argv);
-
-  MPI_Comm_rank (MPI_COMM_WORLD, &myrank);
-  MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
-   
   for (int i = 0; i < 3; i ++)
   {
     t[0][i] = (iREAL *) malloc (size*sizeof(iREAL));
@@ -369,7 +343,7 @@ int main (int argc, char **argv)
     printf("Post-Processing Finished.\n");
   }
 
-  // finalise
+  // DESTROY
   loba_destroy (lb);
 
   for (int i = 0; i < 3; i ++)
@@ -391,18 +365,26 @@ int main (int argc, char **argv)
                       &import_procs, &export_global_ids, 
                       &export_local_ids, &export_procs);
   MPI_Finalize ();
-
+  
   return 0;
 }
 
-int ui(int argc, char **argv)
+int ui(myrank, int argc, char **argv)
 {
-  printf("\nExecuting Project Delta\n");
-  if(argc==1) 
-    printf("Delta: no arguments given, initiating default setup.\n");
-  for(int i=1;i<argc;i++)
+  int abort = 0;
+  if(myrank==0)
   {
-    printf("Arg[%i]: %s\n", i, argv[i]);
+    printf("\nExecuting Project Delta\n");
+    if(argc==1) 
+      printf("Delta: initiating default setup.\n");
+    for(int i=1;i<argc;i++)
+    {
+      printf("Arg[%i]: %s\n", i, argv[i]);
+    }
+  }else
+  {
+    
+
   }
-  return 1;
+  return abort;
 }
