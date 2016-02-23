@@ -138,33 +138,33 @@ void init_enviroment(int &nt, int &nb, iREAL *t[6][3], iREAL *linear[3], iREAL *
 
 void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
 {
-  int n = 0;
-  nt = 0;
   srand48(time(NULL));
   for(int i = 0; i < nb; i++)
   {
     switch(ptype[i])
     {
-      case 0:
+      case 1:
       {
         printf("entered\n");
-        load_vtk(n, i, nt, t, tid, pid, position, mint, maxt);
+        load_vtk(nt, i, t, tid, pid, position, mint, maxt);
         break;
       }
-      case 1:
+      case 0:
       {
         //create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        nonsphericalparticle(0.25, 2.5, 50, n, i, nt, t, tid, pid, position, mint, maxt);
+        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
         break;
       }
+      case 2:
+      {
+        //wall(lo, hi, i, nt, t, tid, pid, position, mint, maxt);
+      }
     }
-    nt = n + nt;
-    n = 0;
   }
 }
 
-void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
+void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
 {
   //////////VTK format////////////
   iREAL min = DBL_MAX;
@@ -193,7 +193,7 @@ void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3], int tid[], int pid[], iR
         printf("found!\n");
         ch = fscanf(fp1,"%s",word);
         int n = atol(word);
-        //get points
+        
         ch = fscanf(fp1,"%s",word);
         //printf("will read: %llu\n",n); 
         point[0] = (iREAL *)malloc (n*sizeof(iREAL));
@@ -244,10 +244,10 @@ void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3], int tid[], int pid[], iR
       { 
         ch = fscanf(fp1,"%s",word);
         int n = atol(word);
-        nt = n;
+        //nt = n;
         ch = fscanf(fp1,"%s",word);
         printf(":::%u::\n",n);
-        for(int i=idx;i<idx+n;i++)
+        for(int i=nt;i<nt+n;i++)
         {
           ch = fscanf(fp1,"%s",word);
           ch = fscanf(fp1,"%s",word);
@@ -293,7 +293,8 @@ void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3], int tid[], int pid[], iR
           tid[i] = i;
           pid[i] = nb;
         }
-        getCentroid(nb, idx, idx+n, t, position);
+        getCentroid(nb, nt, nt+n, t, position);
+        nt+=n;
       }
   } while (ch != EOF);
   *mint = min;

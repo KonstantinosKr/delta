@@ -1,37 +1,15 @@
-/*
- The MIT License (MIT)
- 
- Copyright (c) 2016 Konstantinos Krestenitis
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
 #include "input.h" 
 #include <float.h>
 #include <algorithm>
 #include <vector>
 #include <set>
+#include <map>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 
 void condition_enviroment(int nb, iREAL *linear[3], iREAL *angular[6], iREAL *rotation[9],
-                          iREAL *mass, iREAL *inertia[9], iREAL *inverse[9], int *parmat)
+                        iREAL *mass, iREAL *inertia[9], iREAL *inverse[9], int *parmat)
 {
   for(int i = 0; i < nb; i++)
   {
@@ -103,10 +81,7 @@ void condition_enviroment(int nb, iREAL *linear[3], iREAL *angular[6], iREAL *ro
   }
 }
 
-void init_enviroment(int &nt, int &nb, iREAL *t[6][3], 
-                      iREAL *linear[3], iREAL *angular[6], iREAL *inertia[9], iREAL *inverse[9], 
-                      iREAL *rotation[9], iREAL *mass, int *parmat, int tid[], int pid[], 
-                      iREAL *position[6], iREAL lo[3], iREAL hi[3])
+void init_enviroment(int &nt, int &nb, iREAL *t[6][3], iREAL *linear[3], iREAL *angular[6], iREAL *inertia[9], iREAL *inverse[9], iREAL *rotation[9], iREAL *mass, int *parmat, int tid[], int pid[], iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
     
   //non-spherical particles generation and loading
@@ -161,38 +136,35 @@ void init_enviroment(int &nt, int &nb, iREAL *t[6][3],
   condition_enviroment(nb, linear, angular, rotation, mass, inertia, inverse, parmat);
 }
 
-void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], 
-                      iREAL *position[6], iREAL *mint, iREAL *maxt)
+void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
 {
-  int n = 0;
-  nt = 0;
   srand48(time(NULL));
   for(int i = 0; i < nb; i++)
   {
     switch(ptype[i])
     {
-      case 0:
+      case 1:
       {
         printf("entered\n");
-        load_vtk(n, i, nt, t, tid, pid, position, mint, maxt);
+        load_vtk(nt, i, t, tid, pid, position, mint, maxt);
         break;
       }
-      case 1:
+      case 0:
       {
         //create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        nonsphericalparticle(0.25, 2.5, 50, n, i, nt, t, tid, pid, position, mint, maxt);
+        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
         break;
       }
+      case 2:
+      {
+        //wall(lo, hi, i, nt, t, tid, pid, position, mint, maxt);
+      }
     }
-    nt = n + nt;
-    n = 0;
   }
 }
 
-void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3], 
-              int tid[], int pid[], iREAL *position[6], 
-              iREAL *mint, iREAL *maxt)
+void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
 {
   //////////VTK format////////////
   iREAL min = DBL_MAX;
@@ -221,7 +193,7 @@ void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3],
         printf("found!\n");
         ch = fscanf(fp1,"%s",word);
         int n = atol(word);
-        //get points
+        
         ch = fscanf(fp1,"%s",word);
         //printf("will read: %llu\n",n); 
         point[0] = (iREAL *)malloc (n*sizeof(iREAL));
@@ -272,10 +244,10 @@ void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3],
       { 
         ch = fscanf(fp1,"%s",word);
         int n = atol(word);
-        nt = n;
+        //nt = n;
         ch = fscanf(fp1,"%s",word);
         printf(":::%u::\n",n);
-        for(int i=idx;i<idx+n;i++)
+        for(int i=nt;i<nt+n;i++)
         {
           ch = fscanf(fp1,"%s",word);
           ch = fscanf(fp1,"%s",word);
@@ -321,7 +293,8 @@ void load_vtk(int &nt, int nb, int idx, iREAL *t[6][3],
           tid[i] = i;
           pid[i] = nb;
         }
-        getCentroid(nb, idx, idx+n, t, position);
+        getCentroid(nb, nt, nt+n, t, position);
+        nt+=n;
       }
   } while (ch != EOF);
   *mint = min;

@@ -1,4 +1,6 @@
 #include "geom.h"
+#include "stdio.h"
+
 void getCentroid(int pid, int range1, int range2, iREAL *t[6][3], iREAL *centroid[6])
 {
   iREAL cx=0;
@@ -77,7 +79,7 @@ void normalize(int nt, iREAL *t[6][3], iREAL mint, iREAL maxt)
   }
 }
 
-void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int nb, int idx, 
+void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int nb, 
                               iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
 {
   iREAL v[100][3];
@@ -102,7 +104,8 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
   for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++){counter++;}
   
   int n = counter*3;
-  nt = pointlength;
+  printf("pointlength:%i\n", pointlength);
+  //nt = pointlength;
   iREAL *point[3];
   
   point[0] = (iREAL *)malloc (n*sizeof(iREAL));
@@ -229,7 +232,7 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
   }
   
   counter = 0;
-  for(int i=idx;i<idx+n;i++)
+  for(int i=nt;i<nt+pointlength;i++)
   {
     //SPATIAL POINT A
     t[0][0][i] = point[0][counter];
@@ -268,8 +271,9 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
     tid[i] = i;
     pid[i] = nb;
   }
-  
-  getCentroid(nb, idx, idx+n, t, position);
+ 
+  getCentroid(nb, nt, nt+pointlength, t, position);
+  nt+=pointlength;
   
   *mint = min;
   *maxt = max;
@@ -277,7 +281,7 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
 
 
 
-void createWall(int &n, int &nt, int nb, iREAL *t[3][3], int *tid, int *pid, iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3])
+void wall(int &n, int &nt, int nb, iREAL *t[3][3], int *tid, int *pid, iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3])
 {
     //create rectangle with two triangles then refine
     //T1 = A,B |

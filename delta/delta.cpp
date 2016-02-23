@@ -382,20 +382,21 @@ int main (int argc, char **argv)
 
 int ui(int myrank, int argc, char **argv)
 {
-  int abort = 0;
-  if(myrank==0)
+  int execid = 0;
+  if(!myrank)
   {
     printf("\nExecuting Project Delta\n");
     if(argc==1) 
       printf("Delta: initiating default setup.\n");
-    for(int i=1;i<argc;i++)
-    {
-      printf("Arg[%i]: %s\n", i, argv[i]);
-    }
+    else
+      for(int i=1;i<argc;i++)
+      {
+        execid = 0;
+        printf("Arg[%i]: %s\n", i, argv[i]);
+      }
   }else
   {
-    
-
+    execid = 0;    
   }
-  return abort;
+  return execid;
 }
