@@ -31,13 +31,14 @@
 #include "material.h"
 #include "input.h"
 #include "output.h"
+#include "log.h"
 #include "migration.h"
 #include "loba.h"
 #include "contact.h"
 #include "forces.h"
 #include "dynamics.h"
 
-int ui(myrank, int argc, char **argv);
+int ui(int myrank, int argc, char **argv);
 
 int main (int argc, char **argv)
 {
@@ -333,6 +334,15 @@ int main (int argc, char **argv)
           mindt1, maxdt1, avgdt1, 
           mindt2, maxdt2, avgdt2, 
           mindt3, maxdt3, avgdt3); 
+
+    performance_log(minsubtotal, maxsubtotal, avgsubtotal, 
+                    minbal, maxbal, avgbal, 
+                    minmig, maxmig, avgmig, 
+                    minde, maxde, avgde, 
+                    mindt1, maxdt1, avgdt1, 
+                    mindt2, maxdt2, avgdt2, 
+                    mindt3, maxdt3, avgdt3); 
+    printf("Log Writting Finished.\n");
   }
   //have to make sure all ranks finished
   MPI_Barrier(MPI_COMM_WORLD);
@@ -341,6 +351,7 @@ int main (int argc, char **argv)
     printf("\nComputation Finished.\n");
     postProcessing(nprocs, size, timesteps);
     printf("Post-Processing Finished.\n");
+
   }
 
   // DESTROY
@@ -369,7 +380,7 @@ int main (int argc, char **argv)
   return 0;
 }
 
-int ui(myrank, int argc, char **argv)
+int ui(int myrank, int argc, char **argv)
 {
   int abort = 0;
   if(myrank==0)

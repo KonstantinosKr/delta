@@ -28,6 +28,7 @@
 #include <limits.h>
 #include <float.h>
 #include "tmr.h"
+#include "log.h"
 #include "loba.h"
 #include "contact.h"
 #include <vector>
