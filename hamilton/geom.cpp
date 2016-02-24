@@ -104,8 +104,6 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
   for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++){counter++;}
   
   int n = counter*3;
-  printf("pointlength:%i\n", pointlength);
-  //nt = pointlength;
   iREAL *point[3];
   
   point[0] = (iREAL *)malloc (n*sizeof(iREAL));

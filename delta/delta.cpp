@@ -148,7 +148,7 @@ int main (int argc, char **argv)
   
   iREAL step = 1E-3; int timesteps=0;
 
-  for(iREAL time = step; time < 1; time+=step)
+  for(iREAL time = step; time < 0.1; time+=step)
   {
     if(!myrank){printf("TIMESTEP: %i\n", timesteps);} 
     

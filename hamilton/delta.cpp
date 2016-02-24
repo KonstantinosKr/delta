@@ -77,7 +77,7 @@ int main (int argc, char **argv)
     
   iREAL gravity[3] = {0.0, 100.0, 0.0};
   
-  int size = 2700000; // memory buffer size
+  int size = 27000000; // memory buffer size
  
   for (int i = 0; i < 3; i ++)
   {
@@ -148,7 +148,7 @@ int main (int argc, char **argv)
   
   iREAL step = 1E-3; int timesteps=0;
 
-  for(iREAL time = step; time < 1; time+=step)
+  for(iREAL time = step; time < 0.1; time+=step)
   {
     if(!myrank){printf("TIMESTEP: %i\n", timesteps);} 
     
@@ -177,7 +177,8 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    migrateGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
+    //migrateGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
+    naiveGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
     
     tTimer1[timesteps] = timer1;
@@ -194,7 +195,7 @@ int main (int argc, char **argv)
     timerend (&tdynamics[timesteps]);
     printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
     
-    output_state(lb, myrank, nt, t, timesteps);
+    //output_state(lb, myrank, nt, t, timesteps);
     timesteps++;
   }
 
@@ -343,6 +344,23 @@ int main (int argc, char **argv)
                     mindt1, maxdt1, avgdt1, 
                     mindt2, maxdt2, avgdt2, 
                     mindt3, maxdt3, avgdt3); 
+  printf("TotalRunMin, TotalRunMax, TotalRunAvg," 
+             "BalanceMin, BalanceMax, BalanceAvg,"
+             "MigrationMin, MigrationMax, MigrationAvg," 
+             "DataXchangeMax, DataXchangeMin, DataXchangeAvg," 
+             "DT1Min, DT1Max, DT1Avg," 
+             "DT2Min, DT2Max, DT2Avg," 
+             "DT2Min, DT2Max, DT2Avg," 
+             "DT3Min, DT3Max, DT3Avg\n");
+
+  printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n", 
+          minsubtotal, maxsubtotal, avgsubtotal, 
+          minbal, maxbal, avgbal, 
+          minmig, maxmig, avgmig, 
+          minde, maxde, avgde, 
+          mindt1, maxdt1, avgdt1, 
+          mindt2, maxdt2, avgdt2, 
+          mindt3, maxdt3, avgdt3); 
     printf("Log Writting Finished.\n");
   }
   //have to make sure all ranks finished

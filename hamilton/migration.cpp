@@ -704,7 +704,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3],
 
 
 
-void migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3],
+void naiveGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3],
                    iREAL *v[3], iREAL *angular[6], int *parmat,
                    iREAL dt, iREAL *p[3], iREAL *q[3],
                    int tid[], int pid[], std::vector<contact> conpnt[],
@@ -719,7 +719,6 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3],
     MPI_Comm_size(MPI_COMM_WORLD, &nproc);
     int *neighborhood = (int *) malloc(nproc * sizeof(int));
     loba_getAdjacent(lb, myrank, neighborhood, &nNeighbors);
-    
     
     //allocate memory for buffers
     int *pivot, *tid_buffer, *pid_buffer, *rcvpivot, *rcvtid_buffer, *rcvpid_buffer;
@@ -749,41 +748,42 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3],
     //prepare export buffers
     for (int i = 0; i<nNeighbors; i++)
     {
-        for(int ii = 0; ii<nt; ii++)
+	for(int ii = 0; ii<nt; ii++)
         {
             int oltid = tid[ii];
             int olpid = pid[ii];
             int jj = neighborhood[i];
-            int xx = pivot[jj];
+      
+            int xx = pivot[i];
             
-            parmat_buffer[(jj*nt)+xx] = parmat[oltid];
-            tid_buffer[(jj*nt)+xx] = oltid;
-            pid_buffer[(jj*nt)+xx] = olpid;
+            parmat_buffer[(i*nt)+xx] = parmat[oltid];
+            tid_buffer[(i*nt)+xx] = oltid;
+            pid_buffer[(i*nt)+xx] = olpid;
             
-            tbuffer[0][(jj*nt*3)+(xx*3)+0] = t[0][0][oltid]; //point 0
-            tbuffer[0][(jj*nt*3)+(xx*3)+1] = t[0][1][oltid]; //point 0
-            tbuffer[0][(jj*nt*3)+(xx*3)+2] = t[0][2][oltid]; //point 0
+            tbuffer[0][(i*nt*3)+(xx*3)+0] = t[0][0][oltid]; //point 0
+            tbuffer[0][(i*nt*3)+(xx*3)+1] = t[0][1][oltid]; //point 0
+            tbuffer[0][(i*nt*3)+(xx*3)+2] = t[0][2][oltid]; //point 0
             
-            tbuffer[1][(jj*nt*3)+(xx*3)+0] = t[1][0][oltid]; //point 1
-            tbuffer[1][(jj*nt*3)+(xx*3)+1] = t[1][1][oltid]; //point 1
-            tbuffer[1][(jj*nt*3)+(xx*3)+2] = t[1][2][oltid]; //point 1
+            tbuffer[1][(i*nt*3)+(xx*3)+0] = t[1][0][oltid]; //point 1
+            tbuffer[1][(i*nt*3)+(xx*3)+1] = t[1][1][oltid]; //point 1
+            tbuffer[1][(i*nt*3)+(xx*3)+2] = t[1][2][oltid]; //point 1
             
-            tbuffer[2][(jj*nt*3)+(xx*3)+0] = t[2][0][oltid]; //point 2
-            tbuffer[2][(jj*nt*3)+(xx*3)+1] = t[2][1][oltid]; //point 2
-            tbuffer[2][(jj*nt*3)+(xx*3)+2] = t[2][2][oltid]; //point 2
+            tbuffer[2][(i*nt*3)+(xx*3)+0] = t[2][0][oltid]; //point 2
+            tbuffer[2][(i*nt*3)+(xx*3)+1] = t[2][1][oltid]; //point 2
+            tbuffer[2][(i*nt*3)+(xx*3)+2] = t[2][2][oltid]; //point 2
             
-            vbuffer[(jj*nt*3)+(xx*3)+0] = v[0][oltid];
-            vbuffer[(jj*nt*3)+(xx*3)+1] = v[1][oltid];
-            vbuffer[(jj*nt*3)+(xx*3)+2] = v[2][oltid];
+            vbuffer[(i*nt*3)+(xx*3)+0] = v[0][oltid];
+            vbuffer[(i*nt*3)+(xx*3)+1] = v[1][oltid];
+            vbuffer[(i*nt*3)+(xx*3)+2] = v[2][oltid];
             
-            angbuffer[(jj*nt*6)+(xx*6)+0] = angular[0][oltid];
-            angbuffer[(jj*nt*6)+(xx*6)+1] = angular[1][oltid];
-            angbuffer[(jj*nt*6)+(xx*6)+2] = angular[2][oltid];
-            angbuffer[(jj*nt*6)+(xx*6)+3] = angular[3][oltid];
-            angbuffer[(jj*nt*6)+(xx*6)+4] = angular[4][oltid];
-            angbuffer[(jj*nt*6)+(xx*6)+5] = angular[5][oltid];
+            angbuffer[(i*nt*6)+(xx*6)+0] = angular[0][oltid];
+            angbuffer[(i*nt*6)+(xx*6)+1] = angular[1][oltid];
+            angbuffer[(i*nt*6)+(xx*6)+2] = angular[2][oltid];
+            angbuffer[(i*nt*6)+(xx*6)+3] = angular[3][oltid];
+            angbuffer[(i*nt*6)+(xx*6)+4] = angular[4][oltid];
+            angbuffer[(i*nt*6)+(xx*6)+5] = angular[5][oltid];
             
-            pivot[jj]++;
+            pivot[i]++;
         }
     }
     

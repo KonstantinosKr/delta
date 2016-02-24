@@ -10,7 +10,7 @@ ISPC_TARGETS=avx
 
 # MPI
 MPICC=mpicc
-MPICXX=mpicc
+MPICXX=mpic++
 #MPICC = mpicc
 #MPICXX = mpiicpcp
 
