@@ -281,7 +281,7 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
 
 
 
-void wall(iREAL lo[3], iREAL hi[3], int &nt, int nb, iREAL *t[6][3], int *tid, int *pid, iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3])
+void wall(int &n, int &nt, int nb, iREAL *t[3][3], int *tid, int *pid, iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3])
 {
     //create rectangle with two triangles then refine
     //T1 = A,B |
@@ -297,7 +297,7 @@ void wall(iREAL lo[3], iREAL hi[3], int &nt, int nb, iREAL *t[6][3], int *tid, i
     t[2][1][nt] = D[1];
     t[2][2][nt] = D[2];
     tid[nt] = nt;
-    pid[nt] = -nb+1;
+    pid[nt] = nb+1;
     
     //T2
     t[0][0][nt+1] = A[0];
@@ -312,7 +312,7 @@ void wall(iREAL lo[3], iREAL hi[3], int &nt, int nb, iREAL *t[6][3], int *tid, i
     t[2][1][nt+1] = D[1];
     t[2][2][nt+1] = D[2];
     tid[nt+1] = nt+1;
-    pid[nt+1] = -nb+1;
+    pid[nt+1] = nb+1;
     n = 2;
 }
 
