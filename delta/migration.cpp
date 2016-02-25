@@ -682,3 +682,11 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3],
     free(ghostTIDNeighbors[i]);
   }
 }
+
+
+void migrateForce(struct loba *lb, int myrank, int *rank, int nranks, iREAL *force[3], iREAL *torque[3])
+{
+
+
+
+}

@@ -49,3 +49,4 @@ void migrateGhosts(struct loba *lb, int myrank, int nt, iREAL *t[6][3],
                       int tid[], int pid[], std::vector<contact> conpnt[], 
                       iREAL *timer1, iREAL *timer2, iREAL *timer3);
 
+void migrateForce(struct loba *lb, int myrank, int *rank, int nranks, iREAL *force[3], iREAL *torque[3]);

@@ -47,11 +47,13 @@ int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, 
 // return pairing index based on (i,j) pairing of colors
 int pairing (int i, int j){return 0;}
 
-void forces (std::vector<contact> conpnt[], int nb, 
+void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb, 
             iREAL * position[3], iREAL * angular[6], iREAL * linear[3],
             iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[])
 {
 
+  int *rank = (int *) malloc(nb*sizeof(int));
+  int nranks = 0;
   for (int i = 0; i < nb; i++)
   {
     iREAL oi[3], v[3], x[3];
@@ -68,10 +70,9 @@ void forces (std::vector<contact> conpnt[], int nb,
     x[1] = position[1][i];
     x[2] = position[2][i];
       
-
-    force[0][i] = mass[i] * gravity[0];
-    force[1][i] = mass[i] * gravity[1];
-    force[2][i] = mass[i] * gravity[2];
+    force[0][i] = 0;
+    force[1][i] = 0;
+    force[2][i] = 0;
 
     /* update contact forces */
     for(unsigned int k = 0; k<conpnt[i].size(); k++)
@@ -158,8 +159,24 @@ void forces (std::vector<contact> conpnt[], int nb,
       torque[2][j] += a[0]*f[1] - a[1]*f[0];
     }
     std::vector<contact>().swap(conpnt[i]);
+    
+    int qrank;
+    loba_query(lb, x, &qrank); 
+    printf("%i\n", qrank);
+    if(qrank != myrank)
+    {
+      rank[nranks++] = qrank;
+    }
+    else
+    {
+      force[0][i] += mass[i] * gravity[0];
+      force[1][i] += mass[i] * gravity[1];
+      force[2][i] += mass[i] * gravity[2];
+    }
   }
-
+    
+  migrateForce(lb, myrank, rank, nranks, force, torque);
+  
   for(int i=0;i<nb;i++)
   {
     printf("Total Force of body: %i is: %f %f %f\n", i, force[0][i], force[1][i], force[2][i]);

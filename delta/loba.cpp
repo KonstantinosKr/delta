@@ -218,6 +218,22 @@ void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks
   }
 }
 
+// find rank owning the point
+void loba_query (struct loba *lb, iREAL point[3], int *rank)
+{
+  switch (lb->al)
+  {
+    case ZOLTAN_RCB:
+    {
+      Zoltan_LB_Point_Assign (lb->zoltan, point, rank);
+      break;
+    }
+    case ZOLTAN_RIB:
+    {
+    }
+  }
+}
+
 void loba_getAdjacent(struct loba *lb, int myrank, int *neighborhood, int *nNeighbors)
 {
   iREAL mylo[3], myhi[3], lo[3], hi[3];

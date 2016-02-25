@@ -25,10 +25,11 @@
 #include "contact.h"
 #include "math.h"
 #include "material.h"
+#include "loba.h"
+#include "migration.h"
 
 int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, iREAL mass[], int ij, iREAL f[3]);
 
-void forces (std::vector<contact> conpnt[], int nb, 
+void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb, 
             iREAL * position[3], iREAL * angular[6], iREAL * linear[3],
             iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[]);
-
