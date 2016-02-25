@@ -57,7 +57,7 @@ int main (int argc, char **argv)
   int nb = 0;
   int *pid; //particle identifier
   int *tid; // triangle identifiers
-  iREAL *t[3][3]; // triangles
+  iREAL *t[6][3]; // triangles
   iREAL *p[3],*q[3];//p and q points
   
   material material();
@@ -160,7 +160,7 @@ int main (int argc, char **argv)
                   &export_global_ids, &export_local_ids);
     timerend (&tbalance[timesteps]);
   
-    printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
+    //printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
    
     timerstart(&tmigration[timesteps]);
     migrate (nt, t, linear, angular, parmat, tid, pid, 
@@ -170,7 +170,7 @@ int main (int argc, char **argv)
                export_global_ids, export_local_ids);
     timerend (&tmigration[timesteps]);
    
-    printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
+    //printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
     
     timer1 = 0.0;
     timer2 = 0.0;
@@ -184,16 +184,16 @@ int main (int argc, char **argv)
     tTimer1[timesteps] = timer1;
     tTimer2[timesteps] = timer2;
     tTimer3[timesteps] = timer3;
-    printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
+    //printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
     //forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat, mparam, pairnum, pairs, ikind, iparam);
-    printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
+    //printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
 
     timerstart (&tdynamics[timesteps]);
     //dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step);
     integrate (step, lo, hi, nt, t, linear);
     timerend (&tdynamics[timesteps]);
-    printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
+    //printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
     
     //output_state(lb, myrank, nt, t, timesteps);
     timesteps++;
@@ -381,12 +381,6 @@ int main (int argc, char **argv)
     free(t[0][i]);
     free(t[1][i]);
     free(t[2][i]);
-    free(t[3][i]);
-    free(t[4][i]);
-    free(t[5][i]);
-    free(linear[i]);
-    free(torque[i]);
-    free(force[i]);
     free(p[i]);
     free(q[i]);
   }

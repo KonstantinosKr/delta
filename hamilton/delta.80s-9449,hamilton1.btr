@@ -1,6 +1,0 @@
-
-delta:9449 terminated with signal 11 at PC=412d6c SP=7fff39196370.  Backtrace:
-./delta[0x412d6c]
-./delta[0x40b312]
-/lib64/libc.so.6(__libc_start_main+0xfd)[0x316601ed5d]
-./delta[0x403949]

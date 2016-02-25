@@ -24,7 +24,6 @@
 
 #include "contact.h"
 #include "math.h"
-#include <omp.h>
 
 contact::contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth)
 {
