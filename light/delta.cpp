@@ -12,39 +12,6 @@
 
 int main (int argc, char **argv)
 {
- 
-  int *parmat; /* particle material */
-  iREAL *mparam[NMAT]; /* material parameters */ 
-  for(int i = 0; i<NMAT; i++)//number of material parameters
-  {
-    mparam[i] = (iREAL *) malloc(1*sizeof(iREAL));//n number of materials
-  }
-
-  int pairnum = 1;
-  int *pairs; /* color pairs */
-  int *ikind; /* interaction kind */
-  iREAL *iparam[NINT]; // interaction parameters // parameters per interaction type
-  
-  pairs = (int *) malloc(pairnum*sizeof(pairnum));
-  ikind = (int *) malloc(1*sizeof(int)); //number of interaction kinds/types
-  ikind[0] = GRANULAR; //set first kind
-
-  for(int i=0;i<NINT;i++){iparam[i] = (iREAL *) malloc(1*sizeof(iREAL));}
-
-  //GRANULAR interaction type parameters 
-  iparam[SPRING][GRANULAR] = 1E2;
-  iparam[DAMPER][GRANULAR] = 1;
-  iparam[FRISTAT][GRANULAR] = 0;
-  iparam[FRIDYN][GRANULAR] = 0;
-  iparam[FRIROL][GRANULAR] = 0;
-  iparam[FRIDRIL][GRANULAR] = 0;
-  iparam[KSKN][GRANULAR] = 0;
-  iparam[LAMBDA][GRANULAR] = 0;
-  iparam[YOUNG2][GRANULAR] = 0;
-  iparam[KSKN2][GRANULAR] = 0;
-  iparam[SIGC][GRANULAR] = 0;
-  iparam[TAUC][GRANULAR] = 0;
-  iparam[ALPHA][GRANULAR] = 0;
 
   iREAL *angular[6]; /* angular velocities (referential, spatial) */
   iREAL *linear[3]; /* linear velocities */
@@ -55,7 +22,9 @@ int main (int argc, char **argv)
   iREAL *force[3]; /* total spatial force */
   iREAL *torque[3]; /* total spatial torque */
   iREAL *inverse[9]; /* inverse inertia tensors */
- 
+  
+  int *parmat; //particle material
+    
   iREAL gravity[3];
   gravity[0] = 0;
   gravity[1] = 0;
@@ -118,7 +87,7 @@ int main (int argc, char **argv)
 	init_enviroment(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);  
 	printf("NT:%i NB:%i\n", nt, nb);
   
-  std::vector<contact> *conpnt = (std::vector<contact> *) malloc (nb*sizeof(std::vector<contact>));
+  std::vector<contact> *conpnt = new std::vector<contact>[nb];
  
   /* perform time stepping */
   iREAL step = 1E-4, time; int timesteps=1; 
@@ -135,7 +104,7 @@ int main (int argc, char **argv)
     printf("BODY2 XVelocity:%f\n", linear[2][1]);
     contact_detection (0, nt, 0, nt, t, tid, pid, linear, p, q, conpnt);
 		
-    forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat, mparam, pairnum, pairs, ikind, iparam);
+    forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     
     dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step);
    

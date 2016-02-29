@@ -1,12 +1,36 @@
+/*
+ The MIT License (MIT)
+ 
+ Copyright (c) 2016 Konstantinos Krestenitis
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
 #include "forces.h"
 #include "stdio.h"
 
-int granular_force(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, iREAL mass[], iREAL *iparam[NINT], int ij, iREAL f[3])
+int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, iREAL mass[], int ij, iREAL f[3])
 {
   iREAL ma = 1.0 / ((1/mass[i]) + (1/mass[j]));
 
-  iREAL kn = iparam[SPRING][ij];
-  iREAL en = iparam[DAMPER][ij] * sqrt(kn*ma);
+  iREAL kn = material::iparam[SPRING][ij];
+  iREAL en = material::iparam[DAMPER][ij] * sqrt(kn*ma);
   iREAL vn = DOT(vij,n);
   iREAL fn = kn*depth + en*vn;
   
@@ -16,19 +40,16 @@ int granular_force(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, i
   f[2] = fn*n[2];
   printf("CONTACT F[0]: %f, F[1]: %f, F[2]: %f\n", f[0], f[1], f[2]); 
  
+  // TODO
   return depth < 0.0 ? 1 : 0;
 }
 
-/* return pairing index based on (i,j) pairing of colors */
-int pairing (int nummat, int pairs[], int i, int j)
-{
-  return 0; 
-}
+// return pairing index based on (i,j) pairing of colors
+int pairing (int i, int j){return 0;}
 
 void forces (std::vector<contact> conpnt[], int nb, 
-            iREAL * position[3], iREAL * angular[6], iREAL * linear[3],
-            iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[], iREAL * mparam[NMAT],
-            int pairnum, int pairs[], int ikind[], iREAL * iparam[NINT])
+            iREAL * position[6], iREAL * angular[6], iREAL * linear[3],
+            iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[])
 {
 
   for (int i = 0; i < nb; i++)
@@ -46,15 +67,15 @@ void forces (std::vector<contact> conpnt[], int nb,
     x[0] = position[0][i];
     x[1] = position[1][i];
     x[2] = position[2][i];
-    
-    force[0][i] = mass[i] * gravity[0];
-    force[1][i] = mass[i] * gravity[1];
-    force[2][i] = mass[i] * gravity[2];
       
-    // update contact forces
+    force[0][i] = 0;
+    force[1][i] = 0;
+    force[2][i] = 0;
+
+    /* update contact forces */
     for(unsigned int k = 0; k<conpnt[i].size(); k++)
     {
-      iREAL p[3], n[3], z[3], vi[3], vj[3], oj[3], vij[3], oij[3];
+      iREAL p[3], z[3], vi[3], vj[3], oj[3], vij[3], oij[3], a[3];
 
       p[0] = conpnt[i][k].point[0];
       p[1] = conpnt[i][k].point[1];
@@ -85,28 +106,26 @@ void forces (std::vector<contact> conpnt[], int nb,
       SUB (vj, vi, vij); // relative linear velocity
       SUB (oj, oi, oij); // relative angular velocity
 
-      int ij = pairing (pairnum, pairs, conpnt[i][k].color[0], conpnt[i][k].color[1]);//get material from colours
+      int ij = pairing (conpnt[i][k].color[0], conpnt[i][k].color[1]);//get material from colours
     
       iREAL f[3];
 
-      switch (ikind[ij])
+      switch (material::ikind[ij])
       {
         case GRANULAR:
-          granular_force (conpnt[i][k].normal, vij, oij, conpnt[i][k].depth, i, j, mass, iparam, ij, f);
+          granular(conpnt[i][k].normal, vij, oij, conpnt[i][k].depth, i, j, mass, ij, f);
           break;
         case BONDED:
-          /* TODO */
+          // TODO 
           break;
         case UFORCE:
-          /* TODO */
+          // TODO
           break;
         default:
           printf ("ERROR: invalid pairing kind");
           break;
       }
       
-      iREAL a[3];
-    
       a[0] = conpnt[i][j].point[0]-x[0];//boundary
       a[1] = conpnt[i][j].point[1]-x[1];
       a[2] = conpnt[i][j].point[2]-x[2];
@@ -121,7 +140,6 @@ void forces (std::vector<contact> conpnt[], int nb,
       torque[2][i] += a[0]*f[1] - a[1]*f[0];
 
       //add force to slaves
-      
       f[0] = -f[0];
       f[1] = -f[1];
       f[2] = -f[2];
@@ -140,7 +158,7 @@ void forces (std::vector<contact> conpnt[], int nb,
     }
     std::vector<contact>().swap(conpnt[i]);
   }
-
+    
   for(int i=0;i<nb;i++)
   {
     printf("Total Force of body: %i is: %f %f %f\n", i, force[0][i], force[1][i], force[2][i]);

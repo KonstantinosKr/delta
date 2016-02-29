@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2015 Tomasz Koziara
+Copyright (c) 2015 Konstantinos Krestenitis
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,25 @@ SOFTWARE.
 
 enum {DENSITY = 0, YOUNG, POISSON, NMAT};
 
-enum {GRANULAR, BONDED, UFORCE};
+enum {GRANULAR, BONDED, UFORCE, NFOR};
 
 enum {SPRING = 0, DAMPER, FRISTAT, FRIDYN, FRIROL, FRIDRIL, KSKN, LAMBDA, YOUNG2, KSKN2, SIGC, TAUC, ALPHA, NINT};
 
+class material
+{
+
+  material();
+  public:
+    // interaction per interaction type
+    static iREAL iparam[NINT][NFOR];   
+
+    //material pairs
+    static int pairs[1]; 
+
+    //material parameters 
+    static iREAL mparam[NMAT][1]; 
+
+    //interaction kind
+    static int ikind[NFOR];
+};
 #endif
