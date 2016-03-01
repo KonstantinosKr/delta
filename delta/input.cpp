@@ -85,9 +85,9 @@ void init_enviroment(int &nt, int &nb, iREAL *t[6][3], iREAL *linear[3], iREAL *
 {
     
   //non-spherical particles generation and loading
-  nb = 50;
+  nb = 1;
   int ptype[nb];
-  for(int i = 0; i < nb; i++){ptype[i] = 0;}
+  for(int i = 0; i < nb; i++){ptype[i] = 1;}
   
   iREAL mint, maxt;
   load_enviroment(ptype, nt, nb, t, tid, pid, position, &mint, &maxt);
@@ -143,17 +143,17 @@ void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], in
   {
     switch(ptype[i])
     {
-      case 1:
-      {
-        printf("entered\n");
-        load_vtk(nt, i, t, tid, pid, position, mint, maxt);
-        break;
-      }
       case 0:
       {
         //create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
         nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        break;
+      }
+      case 1:
+      {
+        printf("entered\n");
+        load_vtk(nt, i, t, tid, pid, position, mint, maxt);
         break;
       }
       case 2:

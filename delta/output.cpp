@@ -41,7 +41,7 @@ void output_state(struct loba *lb, int myrank, int nt, iREAL *t[6][3], int times
     perror("Error while opening the file.\n");
     exit(EXIT_FAILURE);
   }
-  
+
   fprintf(fp,"# vtk DataFile Version 2.0\nOutput vtk file\nASCII\n\nDATASET UNSTRUCTURED_GRID\nPOINTS %i float\n", (nt*3)+8);
     
   int i;
@@ -131,7 +131,7 @@ void postProcessing(int nranks, int size, int timesteps)
     cells[i] = (int*) malloc(sizeof(int[size]));
   }
   
-  for(int ii=0; ii<timesteps; ii++)
+  for(int ii=0; ii<=timesteps; ii++)
   {
     int nt = 0;
     int n = 0;

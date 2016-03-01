@@ -24,7 +24,26 @@ int main (int argc, char **argv)
   iREAL *inverse[9]; /* inverse inertia tensors */
   
   int *parmat; //particle material
-    
+  
+  material::ikind[0] = GRANULAR;
+  material::ikind[1] = GRANULAR;
+  material::ikind[2] = GRANULAR;
+  
+  //GRANULAR interaction type parameters 
+  material::iparam[SPRING][GRANULAR] = 1E2;
+  material::iparam[DAMPER][GRANULAR] = 0.5;
+  material::iparam[FRISTAT][GRANULAR] = 0;
+  material::iparam[FRIDYN][GRANULAR] = 0;
+  material::iparam[FRIROL][GRANULAR] = 0;
+  material::iparam[FRIDRIL][GRANULAR] = 0;
+  material::iparam[KSKN][GRANULAR] = 0;
+  material::iparam[LAMBDA][GRANULAR] = 0;
+  material::iparam[YOUNG2][GRANULAR] = 0;
+  material::iparam[KSKN2][GRANULAR] = 0;
+  material::iparam[SIGC][GRANULAR] = 0;
+  material::iparam[TAUC][GRANULAR] = 0;
+  material::iparam[ALPHA][GRANULAR] = 0;
+
   iREAL gravity[3];
   gravity[0] = 0;
   gravity[1] = 0;
@@ -84,7 +103,7 @@ int main (int argc, char **argv)
 
 	for(int i=0;i<size;i++) tid[i] = INT_MAX; 
 	
-	init_enviroment(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);  
+	init_enviroment(1, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);  
 	printf("NT:%i NB:%i\n", nt, nb);
   
   std::vector<contact> *conpnt = new std::vector<contact>[nb];
@@ -109,7 +128,6 @@ int main (int argc, char **argv)
     dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step);
    
     output_state(nt, t, timesteps);
-    
     timesteps++;
   }
 	printf("\nComputation Finished.\n");

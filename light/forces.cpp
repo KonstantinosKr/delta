@@ -31,8 +31,8 @@ int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, 
 
   iREAL kn = material::iparam[SPRING][ij];
   iREAL en = material::iparam[DAMPER][ij] * sqrt(kn*ma);
-  iREAL vn = DOT(vij,n);
-  iREAL fn = kn*depth + en*vn;
+  iREAL vn = DOT(vij,n)*2.0;
+  iREAL fn = (kn*depth) + (en*vn);
   
   printf("kn:%f, en:%f, vn:%f, fn:%f depth:%f, vij[0]:%f vij[1]:%f vij[2]:%f\n", kn, en, vn, fn, depth, vij[0], vij[1], vij[2]); 
   f[0] = fn*n[0];
@@ -40,7 +40,6 @@ int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, 
   f[2] = fn*n[2];
   printf("CONTACT F[0]: %f, F[1]: %f, F[2]: %f\n", f[0], f[1], f[2]); 
  
-  // TODO
   return depth < 0.0 ? 1 : 0;
 }
 

@@ -358,12 +358,12 @@ void loba_getbox (struct loba *lb, int part, iREAL lo[3], iREAL hi[3])
       {
         if(lo[j] < -FLT_MAX)
         {
-          lo[j] = -250;
+          lo[j] = -350;
         } 
         
         if(hi[j] > FLT_MAX)
         {
-          hi[j] = 250;
+          hi[j] = 350;
         } 
       }
       

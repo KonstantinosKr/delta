@@ -177,7 +177,7 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    migrateGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
+    //migrateGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
     
     tTimer1[timesteps] = timer1;
@@ -193,7 +193,8 @@ int main (int argc, char **argv)
     timerend (&tdynamics[timesteps]);
     //printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
     
-    //output_state(lb, myrank, nt, t, timesteps);
+    output_state(lb, myrank, nt, t, timesteps);
+    break;
     timesteps++;
   }
 

@@ -12,16 +12,32 @@ extern "C"{
 #include "ext/hul/hul.h"
 }
 
-void init_enviroment(int &nt, int &nb, iREAL *t[6][3], iREAL *linear[3], iREAL *angular[6], iREAL *inertia[9], iREAL *inverse[9], iREAL *rotation[9], iREAL *mass, int *parmat, int tid[], int pid[], iREAL *position[6], iREAL lo[3], iREAL hi[3]);
+void condition_enviroment(int nb, iREAL *linear[3], iREAL *angular[6], iREAL *rotation[9],
+                        iREAL *mass, iREAL *inertia[9], iREAL *inverse[9], int *parmat);
 
-void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt);
+void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt);
 
-void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt);
+void init_enviroment(int scene, int &nt, int &nb, iREAL *t[6][3], 
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3]);
 
-void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt);
+void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt);
 
-void normalize(int nt, iREAL *t[6][3], iREAL mint, iREAL maxt); 
+void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3]);
 
-// invert inertia properties 
-void invert (int nt, iREAL * inertia[9], iREAL * inverse[9], iREAL mass[]);
+
+void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3], 
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3]);
 

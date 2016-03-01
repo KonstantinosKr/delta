@@ -8,6 +8,31 @@
 #include <fstream>
 #include <iomanip>
 
+
+void init_enviroment(int scene, int &nt, int &nb, iREAL *t[6][3], 
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3])
+{
+  srand48(time(NULL));
+  switch(scene)
+  {
+    case 0:
+    {
+      twoParticleCollision(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
+      break;
+    }
+    case 1:
+    {
+      oneParticleVsWall(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
+      break;
+    }
+  }
+  condition_enviroment(nb, linear, angular, rotation, mass, inertia, inverse, parmat);
+}
+
 void condition_enviroment(int nb, iREAL *linear[3], iREAL *angular[6], iREAL *rotation[9],
                         iREAL *mass, iREAL *inertia[9], iREAL *inverse[9], int *parmat)
 {
@@ -23,6 +48,9 @@ void condition_enviroment(int nb, iREAL *linear[3], iREAL *angular[6], iREAL *ro
       linear[0][i] = 0;
       linear[1][i] = 0;
       linear[2][i] = 100;
+      linear[0][i] = 100;
+      linear[1][i] = 0;
+      linear[2][i] = 0;
     }else
     {
       linear[0][i] = 0;
@@ -81,90 +109,7 @@ void condition_enviroment(int nb, iREAL *linear[3], iREAL *angular[6], iREAL *ro
   }
 }
 
-void init_enviroment(int &nt, int &nb, iREAL *t[6][3], iREAL *linear[3], iREAL *angular[6], iREAL *inertia[9], iREAL *inverse[9], iREAL *rotation[9], iREAL *mass, int *parmat, int tid[], int pid[], iREAL *position[6], iREAL lo[3], iREAL hi[3])
-{
-    
-  //non-spherical particles generation and loading
-  nb = 2;
-  int ptype[nb];
-  for(int i = 0; i < nb; i++){ptype[i] = 0;}
-  
-  iREAL mint, maxt;
-  load_enviroment(ptype, nt, nb, t, tid, pid, position, &mint, &maxt);
-  
-  lo[0] = -250; // lower corner
-  lo[1] = -250; // lower corner
-  lo[2] = -250; // lower corner
-  
-  hi[0] = 250; // upper corner
-  hi[1] = 250; // upper corner
-  hi[2] = 250; // upper corner
-  
-  int radius = 10;
-
-  int idx = 0; lo[0] =0; lo[1] = 0; lo[2] = 0;
-  for(int ii = lo[0]; ii < hi[0]; ii=ii+radius)
-  {
-    for(int jj = lo[1]; jj < hi[1]; jj=jj+radius)
-    {
-      for(int kk = lo[2]; kk < hi[2]; kk=kk+radius)
-      {
-        position[0][idx] = ii+(radius/2);
-        position[1][idx] = jj+(radius/2);
-        position[2][idx] = kk+(radius/2);
-        
-        position[3][idx] = ii+(radius/2);
-        position[4][idx] = jj+(radius/2);
-        position[5][idx] = kk+(radius/2);
-        
-        //compute position to translate
-        for(int j = 0; j < nt; j++)
-        {
-          if(pid[j] == idx)
-          {
-            translate_enviroment(j, idx, t, position);
-          }
-        }
-        idx++;
-        if(idx > nb) break;
-      }
-      if(idx > nb) break;
-    }
-    if(idx > nb) break;
-  }
-
-  condition_enviroment(nb, linear, angular, rotation, mass, inertia, inverse, parmat);
-}
-
-void load_enviroment(int ptype[], int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
-{
-  srand48(time(NULL));
-  for(int i = 0; i < nb; i++)
-  {
-    switch(ptype[i])
-    {
-      case 1:
-      {
-        printf("entered\n");
-        load_vtk(nt, i, t, tid, pid, position, mint, maxt);
-        break;
-      }
-      case 0:
-      {
-        //create point cloud and do delaunay hull triangulation
-        //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
-        break;
-      }
-      case 2:
-      {
-        //wall(lo, hi, i, nt, t, tid, pid, position, mint, maxt);
-      }
-    }
-  }
-}
-
-void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
+void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt)
 {
   //////////VTK format////////////
   iREAL min = DBL_MAX;
@@ -297,9 +242,165 @@ void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *posi
         nt+=n;
       }
   } while (ch != EOF);
-  *mint = min;
-  *maxt = max;
+  mint = min;
+  maxt = max;
   fclose(fp1);
 }
 
+void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3], 
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3])
+{
+  nb = 2;
+  int ptype[nb];
+  for(int i = 0; i < nb; i++){ptype[i] = 0;}
+  
+  iREAL mint, maxt;
+  for(int i = 0; i < nb; i++)
+  {
+    switch(ptype[i])
+    {
+      case 0:
+      {
+        //create point cloud and do delaunay hull triangulation
+        //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
+        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        break;
+      }
+      case 1:
+      {
+        load_vtk(nt, i, t, tid, pid, position, mint, maxt);
+        break;
+      }
+    }
+  }
+  
+  int radius = 10;
 
+  int idx = 0; lo[0] =0; lo[1] = 0; lo[2] = 0;
+  for(int ii = lo[0]; ii < hi[0]; ii=ii+radius)
+  {
+    for(int jj = lo[1]; jj < hi[1]; jj=jj+radius)
+    {
+      for(int kk = lo[2]; kk < hi[2]; kk=kk+radius)
+      {
+        position[0][idx] = ii+(radius/2);
+        position[1][idx] = jj+(radius/2);
+        position[2][idx] = kk+(radius/2);
+        
+        position[3][idx] = ii+(radius/2);
+        position[4][idx] = jj+(radius/2);
+        position[5][idx] = kk+(radius/2);
+        
+        for(int j = 0; j < nt; j++)
+        {
+          if(pid[j] == idx)
+          {
+            translate_enviroment(j, idx, t, position);
+          }
+        }
+        idx++;
+        if(idx > nb) break;
+      }
+      if(idx > nb) break;
+    }
+    if(idx > nb) break;
+  }
+}
+
+void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3], 
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3])
+{
+  nb = 2;
+  int ptype[nb];
+  ptype[0] = 0;
+  ptype[1] = 2;
+  
+  iREAL wlo[3], whi[3];
+  wlo[0] = -10;
+  wlo[1] = -10;
+  wlo[2] = -10;
+
+  whi[0] = 10;
+  whi[1] = 100;
+  whi[2] = 10;
+    
+  iREAL mint, maxt;
+  for(int i = 0; i < nb; i++)
+  {
+    switch(ptype[i])
+    {
+      case 0:
+      {
+        //create point cloud and do delaunay hull triangulation
+        //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
+        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        break;
+      }
+      case 1:
+      {
+        load_vtk(nt, i, t, tid, pid, position, mint, maxt);
+        break;
+      }
+      case 2:
+      {
+        wall(wlo, whi, nt, i, t, tid, pid, position);
+        break;
+      }
+    }
+  }
+  
+  position[0][0] = -15;
+  position[1][0] = 0;
+  position[2][0] = 0;
+  
+  position[3][0] = -15;
+  position[4][0] = 0;
+  position[5][0] = 0;
+  
+  for(int j = 0; j < nt; j++)
+  {
+    if(pid[j] == 0)
+    {
+      translate_enviroment(j, 0, t, position);
+    }
+  }
+}
+
+void twoParticleVsWall(int &nt, int &nb, iREAL *t[6][3], 
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3])
+{
+
+}
+
+void chaos(int &nt, int &nb, iREAL *t[6][3], 
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3])
+{
+
+
+}
+
+void minion(int &nt, int &nb, iREAL *t[6][3], 
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3])
+{
+
+}

@@ -64,11 +64,11 @@ iREAL critical (int nt, iREAL mass[], int pairnum, iREAL * iparam[NINT])
 
 // dynamics task 
 void dynamics (std::vector<contact> conpnt[],
-  int nt, int nb, iREAL *t[6][3], int pid[], iREAL *angular[6], iREAL *linear[3],
-  iREAL *rotation[9], iREAL *position[6],
-  iREAL *inertia[9], iREAL *inverse[9],
-  iREAL mass[], iREAL *force[3],
-  iREAL *torque[3], iREAL step)
+              int nt, int nb, iREAL *t[6][3], int pid[], iREAL *angular[6], iREAL *linear[3],
+              iREAL *rotation[9], iREAL *position[6],
+              iREAL *inertia[9], iREAL *inverse[9],
+              iREAL mass[], iREAL *force[3],
+              iREAL *torque[3], iREAL step)
 {
   iREAL half = 0.5*step;
 
@@ -267,10 +267,8 @@ void dynamics (std::vector<contact> conpnt[],
     if (t[2][2][i] > hi[2]) v[2][j] *= -1;
  */ 
   }
-
 }
 
-// Euler task 
 void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[3], iREAL step)
 {
   for(int i = 0; i<nb;i++)
