@@ -25,7 +25,7 @@
 #include "contact.h"
 #include "math.h"
 
-contact::contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth)
+contact::contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth, iREAL p[3], iREAL q[3])
 {
   this->pid[0] = pid[0];
   this->pid[1] = pid[1];
@@ -41,6 +41,14 @@ contact::contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREA
   this->normal[1] = normal[1];
   this->normal[2] = normal[2];
     
+  this->pp[0] = p[0];
+  this->pp[1] = p[1];
+  this->pp[2] = p[2];
+  
+  this->qq[0] = q[0];
+  this->qq[1] = q[1];
+  this->qq[2] = q[2];
+  
   this->depth = depth;
 }
 
@@ -92,7 +100,7 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
         int found=0;
         for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)
         {
-          if(conpnt[pid[i]][ii].depth == depth) 
+          if(conpnt[pid[i]][ii].pp[0] == p[0][j] ||conpnt[pid[i]][ii].pp[1] == p[1][j] ||conpnt[pid[i]][ii].pp[2] == p[2][j] || conpnt[pid[i]][ii].qq[0] == q[0][j] ||conpnt[pid[i]][ii].qq[1] == q[1][j] || conpnt[pid[i]][ii].qq[2] == q[2][j]) 
           {
             found = 1;
           }
@@ -103,11 +111,19 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
           int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];
-
+          
           color[0] = 0;
           color[1] = 0;
+          iREAL pp[3]; iREAL qq[3];
+          pp[0] = p[0][j];
+          pp[1] = p[1][j];
+          pp[2] = p[2][j];
 
-          contact point(id, color, midpt, normal, depth);
+          qq[0] = q[0][j];
+          qq[1] = q[1][j];
+          qq[2] = q[2][j];
+
+          contact point(id, color, midpt, normal, depth, pp, qq);
           conpnt[pid[i]].push_back(point);
         }
       }
@@ -158,27 +174,32 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
         normal[2] = ((q[2][j] - p[2][j])/depth);
         
         int found=0;
-        
         for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)
         {
-          if(conpnt[pid[i]][ii].depth == depth) 
+          if(conpnt[pid[i]][ii].pp[0] == p[0][j] ||conpnt[pid[i]][ii].pp[1] == p[1][j] ||conpnt[pid[i]][ii].pp[2] == p[2][j] || conpnt[pid[i]][ii].qq[0] == q[0][j] ||conpnt[pid[i]][ii].qq[1] == q[1][j] || conpnt[pid[i]][ii].qq[2] == q[2][j]) 
           {
             found = 1;
           }
         }
-        
+       
         if(found!=1)
         {
-          printf("Body:%i - TID[%i]:%i is in Contact with Body:%i - TID[%i]: %i dist:%f\n", pid[i], i, tid[i], pid[j], j, tid[j], dist);
-          
           int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];
-
+          
           color[0] = 0;
           color[1] = 0;
+          iREAL pp[3]; iREAL qq[3];
+          pp[0] = p[0][j];
+          pp[1] = p[1][j];
+          pp[2] = p[2][j];
 
-          contact point(id, color, midpt, normal, depth);
+          qq[0] = q[0][j];
+          qq[1] = q[1][j];
+          qq[2] = q[2][j];
+
+          contact point(id, color, midpt, normal, depth, pp, qq);
           conpnt[pid[i]].push_back(point);
         }
       }

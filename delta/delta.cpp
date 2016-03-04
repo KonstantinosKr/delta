@@ -141,7 +141,7 @@ int main (int argc, char **argv)
 
   if (myrank == 0)
   {
-    init_enviroment(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
+    init_enviroment(2, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi); 
     printf("NT:%i, NB: %i\n", nt, nb);
     //euler(nb, angular, linear, rotation, position, 0.5*step);
   }
@@ -194,7 +194,6 @@ int main (int argc, char **argv)
     //printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
     
     output_state(lb, myrank, nt, t, timesteps);
-    break;
     timesteps++;
   }
 

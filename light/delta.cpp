@@ -12,7 +12,6 @@
 
 int main (int argc, char **argv)
 {
-
   iREAL *angular[6]; /* angular velocities (referential, spatial) */
   iREAL *linear[3]; /* linear velocities */
   iREAL *rotation[9]; /* rotation operators */
@@ -30,8 +29,8 @@ int main (int argc, char **argv)
   material::ikind[2] = GRANULAR;
   
   //GRANULAR interaction type parameters 
-  material::iparam[SPRING][GRANULAR] = 1E2;
-  material::iparam[DAMPER][GRANULAR] = 0.5;
+  material::iparam[SPRING][GRANULAR] = 1;
+  material::iparam[DAMPER][GRANULAR] = 1;
   material::iparam[FRISTAT][GRANULAR] = 0;
   material::iparam[FRIDYN][GRANULAR] = 0;
   material::iparam[FRIROL][GRANULAR] = 0;
@@ -103,12 +102,12 @@ int main (int argc, char **argv)
 
 	for(int i=0;i<size;i++) tid[i] = INT_MAX; 
 	
-	init_enviroment(1, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);  
+	init_enviroment(2, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);  
 	printf("NT:%i NB:%i\n", nt, nb);
   
   std::vector<contact> *conpnt = new std::vector<contact>[nb];
  
-  /* perform time stepping */
+  // perform time stepping
   iREAL step = 1E-4, time; int timesteps=1; 
   
   //step = critical (nt, mass, pairnum, iparam);
@@ -125,7 +124,7 @@ int main (int argc, char **argv)
 		
     forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     
-    dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step);
+    dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
    
     output_state(nt, t, timesteps);
     timesteps++;

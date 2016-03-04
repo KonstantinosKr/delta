@@ -68,7 +68,7 @@ void dynamics (std::vector<contact> conpnt[],
               iREAL *rotation[9], iREAL *position[6],
               iREAL *inertia[9], iREAL *inverse[9],
               iREAL mass[], iREAL *force[3],
-              iREAL *torque[3], iREAL step)
+              iREAL *torque[3], iREAL step, iREAL lo[3], iREAL hi[3])
 {
   iREAL half = 0.5*step;
 
@@ -245,27 +245,26 @@ void dynamics (std::vector<contact> conpnt[],
     t[2][1][i] = c[1];
     t[2][2][i] = c[2];
     
-/*    if (t[0][0][i] < lo[0]) v[0][j] *= -1;
-    if (t[0][1][i] < lo[1]) v[1][j] *= -1;
-    if (t[0][2][i] < lo[2]) v[2][j] *= -1;
-    if (t[0][0][i] > hi[0]) v[0][j] *= -1;
-    if (t[0][1][i] > hi[1]) v[1][j] *= -1;
-    if (t[0][2][i] > hi[2]) v[2][j] *= -1;
+    if (t[0][0][i] < lo[0]) linear[0][j] *= -1;
+    if (t[0][1][i] < lo[1]) linear[1][j] *= -1;
+    if (t[0][2][i] < lo[2]) linear[2][j] *= -1;
+    if (t[0][0][i] > hi[0]) linear[0][j] *= -1;
+    if (t[0][1][i] > hi[1]) linear[1][j] *= -1;
+    if (t[0][2][i] > hi[2]) linear[2][j] *= -1;
     
-    if (t[1][0][i] < lo[0]) v[0][j] *= -1;
-    if (t[1][1][i] < lo[1]) v[1][j] *= -1;
-    if (t[1][2][i] < lo[2]) v[2][j] *= -1;
-    if (t[1][0][i] > hi[0]) v[0][j] *= -1;
-    if (t[1][1][i] > hi[1]) v[1][j] *= -1;
-    if (t[1][2][i] > hi[2]) v[2][j] *= -1;
+    if (t[1][0][i] < lo[0]) linear[0][j] *= -1;
+    if (t[1][1][i] < lo[1]) linear[1][j] *= -1;
+    if (t[1][2][i] < lo[2]) linear[2][j] *= -1;
+    if (t[1][0][i] > hi[0]) linear[0][j] *= -1;
+    if (t[1][1][i] > hi[1]) linear[1][j] *= -1;
+    if (t[1][2][i] > hi[2]) linear[2][j] *= -1;
     
-    if (t[2][0][i] < lo[0]) v[0][j] *= -1;
-    if (t[2][1][i] < lo[1]) v[1][j] *= -1;
-    if (t[2][2][i] < lo[2]) v[2][j] *= -1;
-    if (t[2][0][i] > hi[0]) v[0][j] *= -1;
-    if (t[2][1][i] > hi[1]) v[1][j] *= -1;
-    if (t[2][2][i] > hi[2]) v[2][j] *= -1;
- */ 
+    if (t[2][0][i] < lo[0]) linear[0][j] *= -1;
+    if (t[2][1][i] < lo[1]) linear[1][j] *= -1;
+    if (t[2][2][i] < lo[2]) linear[2][j] *= -1;
+    if (t[2][0][i] > hi[0]) linear[0][j] *= -1;
+    if (t[2][1][i] > hi[1]) linear[1][j] *= -1;
+    if (t[2][2][i] > hi[2]) linear[2][j] *= -1; 
   }
 }
 
