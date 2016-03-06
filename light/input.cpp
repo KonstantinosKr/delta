@@ -417,7 +417,7 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
                     int *parmat, int tid[], int pid[], 
                     iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
-  nb = 20;
+  nb = 100;
   int ptype[nb];
   for(int i = 0; i < nb; i++){ptype[i] = 0;}
   
@@ -456,7 +456,13 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
   }
   
   int radius = 10;
+  lo[0] = -50;
+  lo[1] = -50;
+  lo[2] = -50;
 
+  hi[0] = 50;
+  hi[1] = 50;
+  hi[2] = 50;
   int idx = 0; lo[0] =0; lo[1] = 0; lo[2] = 0;
   for(int ii = lo[0]; ii < hi[0]; ii=ii+radius)
   {

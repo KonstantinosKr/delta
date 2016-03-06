@@ -24,14 +24,14 @@
 
 #include "migration.h"
 
-/* migrate triangles "in-place" to new ranks */
-void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
-                        iREAL *angular[6], int *parmat,
-                        int *tid, int *pid,
-                        int num_import, int *import_procs, int *import_to_part, 
-                        int num_export, int *export_procs, int *export_to_part,
-                        ZOLTAN_ID_PTR import_global_ids, ZOLTAN_ID_PTR import_local_ids,
-                        ZOLTAN_ID_PTR export_global_ids, ZOLTAN_ID_PTR export_local_ids)
+// migrate triangles "in-place" to new ranks 
+void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], iREAL *linear[3],
+              iREAL *angular[6], iREAL *rotation[9], iREAL *position[6], iREAL *inertia[9], iREAL *inverse[9], iREAL mass[], int *parmat,
+              int *tid, int *pid,
+              int num_import, int *import_procs, int *import_to_part, 
+              int num_export, int *export_procs, int *export_to_part,
+              ZOLTAN_ID_PTR import_global_ids, ZOLTAN_ID_PTR import_local_ids,
+              ZOLTAN_ID_PTR export_global_ids, ZOLTAN_ID_PTR export_local_ids)
 {
   int nproc, myrank;
   MPI_Comm_size(MPI_COMM_WORLD, &nproc);
@@ -39,8 +39,11 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
  
   //allocate memory for tmp buffers
   int **send_idx = (int **) malloc(nproc*sizeof(int*));
+  int **send_paridx = (int **) malloc(nproc*sizeof(int*));
   int *pivot = (int *) malloc(nproc*sizeof(int));
   int *rcvpivot = (int *) malloc(nproc*sizeof(int));
+  int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
+  int *parpivot = (int *) malloc(nproc*sizeof(int));
   int *export_unique_procs = (int*) malloc(nproc*sizeof(int));
   int *import_unique_procs = (int*) malloc(nproc*sizeof(int));
 
@@ -49,10 +52,13 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
     rcvpivot[i] = 0;
     pivot[i] = 0;
     send_idx[i] = (int *) malloc((nt)*sizeof(int));
+    send_paridx[i] = (int *) malloc((nt)*sizeof(int));
+    parrcvpivot[i] = 0;
+    parpivot[i] = 0;
     export_unique_procs[i] = -1;
     import_unique_procs[i] = -1;
   }
-
+  
   int n_export_unique_procs=0;//number of unique ids to export
   for (int i = 0; i < num_export; i++)//loop through export data/ids 
   {
@@ -61,7 +67,36 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
     //set send indices and pivot for buffers for each export process
     send_idx[proc][pivot[proc]] = export_local_ids[i];
     pivot[proc]++;
-    
+    int found = 0;
+    for(int j = 0; j < parpivot[proc];j++)
+    {
+      //printf("SEND_PARIDX[%i][%i]:%i\n", proc, j, send_paridx[proc][j]); 
+      if(send_paridx[proc][j] == pid[export_local_ids[i]])
+      {
+        found = 1;
+      }
+    } 
+   
+    if(found == 0)
+    {
+      int particle = pid[export_local_ids[i]];
+
+      iREAL point[3];
+      point[0] = position[0][particle];
+      point[1] = position[1][particle];
+      point[2] = position[2][particle];
+
+      //int rnk;
+      //loba_query (lb, point, &rnk);
+      //if(myrank == rnk)
+      //{
+        int j = parpivot[proc];
+        send_paridx[proc][j] = particle;
+        parpivot[proc]++;
+        //printf("myrank: %i, SEND:%i, parpivot[%i]: %i, PID:%i\n", myrank, send_paridx[proc][j], proc, j, pid[export_local_ids[i]]);
+      //}
+    }
+
     tid[export_local_ids[i]] = INT_MAX; //mark tid that will be exported thus deleted
     
     int exists = 0; //set to 0 to mean doesn't exist
@@ -92,8 +127,10 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
     }
   }
 
-  iREAL *tbuffer[3], *vbuffer, *angbuffer;
-  int *pid_buffer;int *parmat_buffer;
+  iREAL *tbuffer[6], *vbuffer, *angbuffer;
+  int *pid_buffer;int *parmat_buffer; int *paridxbuffer;
+  iREAL *rotationbuffer, *positionbuffer, *inertiabuffer, *inversebuffer, *massbuffer;
+  
   int n = nt;
   
   if(n_export_unique_procs > 0)
@@ -102,20 +139,36 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
     tbuffer[0] = (iREAL *) malloc(mul*sizeof(iREAL));
     tbuffer[1] = (iREAL *) malloc(mul*sizeof(iREAL));
     tbuffer[2] = (iREAL *) malloc(mul*sizeof(iREAL)); 
-    vbuffer = (iREAL *) malloc(mul*sizeof(iREAL));
-    angbuffer = (iREAL *) malloc(mul*2*sizeof(iREAL));//6 elements thus x 2
+    tbuffer[3] = (iREAL *) malloc(mul*sizeof(iREAL));
+    tbuffer[4] = (iREAL *) malloc(mul*sizeof(iREAL));
+    tbuffer[5] = (iREAL *) malloc(mul*sizeof(iREAL)); 
+    
+    mul = n_export_unique_procs*n;
+    vbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
+    angbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));//6 elements thus x 2
+    paridxbuffer = (int *) malloc(mul*sizeof(int)); 
+    
+    rotationbuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+    positionbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));
+    inertiabuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+    inversebuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+    massbuffer = (iREAL *) malloc(mul*sizeof(iREAL));
+
     mul = n_export_unique_procs*n;
     pid_buffer = (int *) malloc(mul*sizeof(int));
     parmat_buffer = (int *) malloc(mul*sizeof(int));
-    //printf("RANK[%i]: n:%i allocated: %i n_export_unique_procs: %i\n", myrank, n, n_export_unique_procs, mul);
+   // printf("RANK[%i]: n:%i allocated: %i n_export_unique_procs: %i\n", myrank, n, n_export_unique_procs, mul);
   }
 
   int *idx = (int *) malloc(nproc*sizeof(int));
+  int *paridx = (int *) malloc(nproc*sizeof(int));
   idx[0] = 0;
+  paridx[0] = 0;
   for(int i=0; i<n_export_unique_procs; i++)
   {
     int x = export_unique_procs[i];
     idx[i+1] = idx[i] + pivot[x];
+    paridx[i+1] = paridx[i] + parpivot[x];
   } 
   
   //assign values to tmp export buffers
@@ -130,7 +183,6 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
       pid[send_idx[x][j]] = INT_MAX;
     
       //printf("LOOKING:%i, equeals(i*size*3)+(j*3)+0: (i:%i * size:%i) + (j:%i * 3) + 0 \n", (i*n*3)+(j*3)+0, i, n, j); 
-      //mul = (i*n*3)+(j*3); 
       mul = (idx[i]*3)+(j*3);
       tbuffer[0][mul+0] = t[0][0][send_idx[x][j]]; //point 0/A        
       tbuffer[0][mul+1] = t[0][1][send_idx[x][j]]; //point 0/A        
@@ -144,16 +196,76 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
       tbuffer[2][mul+1] = t[2][1][send_idx[x][j]]; //point 2/C
       tbuffer[2][mul+2] = t[2][2][send_idx[x][j]]; //point 2/C
       
-      vbuffer[mul+0] = v[0][send_idx[x][j]];
-      vbuffer[mul+1] = v[1][send_idx[x][j]];
-      vbuffer[mul+2] = v[2][send_idx[x][j]];
+      tbuffer[3][mul+0] = t[3][0][send_idx[x][j]]; //point 0/A        
+      tbuffer[3][mul+1] = t[3][1][send_idx[x][j]]; //point 0/A        
+      tbuffer[3][mul+2] = t[3][2][send_idx[x][j]]; //point 0/A        
+      
+      tbuffer[4][mul+0] = t[4][0][send_idx[x][j]]; //point 1/B
+      tbuffer[4][mul+1] = t[4][1][send_idx[x][j]]; //point 1/B
+      tbuffer[4][mul+2] = t[4][2][send_idx[x][j]]; //point 1/B
+      
+      tbuffer[5][mul+0] = t[5][0][send_idx[x][j]]; //point 2/C
+      tbuffer[5][mul+1] = t[5][1][send_idx[x][j]]; //point 2/C
+      tbuffer[5][mul+2] = t[5][2][send_idx[x][j]]; //point 2/C
+    }
 
-      angbuffer[mul+0] = angular[0][send_idx[x][j]];
-      angbuffer[mul+1] = angular[1][send_idx[x][j]];
-      angbuffer[mul+2] = angular[2][send_idx[x][j]];
-      angbuffer[mul+3] = angular[3][send_idx[x][j]];
-      angbuffer[mul+4] = angular[4][send_idx[x][j]];
-      angbuffer[mul+5] = angular[5][send_idx[x][j]];
+    for(int j=0; j<parpivot[x]; j++)
+    {
+      int mul = (paridx[i]*3)+(j*3);
+      //printf("mul:%i, paridx[%i]:%i, j:%i, parpivot[%i]:%i\n", mul, i, paridx[i], j, x, parpivot[x]);
+      vbuffer[mul+0] = linear[0][send_paridx[x][j]];
+      vbuffer[mul+1] = linear[1][send_paridx[x][j]];
+      vbuffer[mul+2] = linear[2][send_paridx[x][j]];
+      
+      mul = (paridx[i]*6)+(j*6);
+      angbuffer[mul+0] = angular[0][send_paridx[x][j]];
+      angbuffer[mul+1] = angular[1][send_paridx[x][j]];
+      angbuffer[mul+2] = angular[2][send_paridx[x][j]];
+      angbuffer[mul+3] = angular[3][send_paridx[x][j]];
+      angbuffer[mul+4] = angular[4][send_paridx[x][j]];
+      angbuffer[mul+5] = angular[5][send_paridx[x][j]];
+      
+      positionbuffer[mul+0] = position[0][send_paridx[x][j]];
+      positionbuffer[mul+1] = position[1][send_paridx[x][j]];
+      positionbuffer[mul+2] = position[2][send_paridx[x][j]];
+      positionbuffer[mul+3] = position[3][send_paridx[x][j]];
+      positionbuffer[mul+4] = position[4][send_paridx[x][j]];
+      positionbuffer[mul+5] = position[5][send_paridx[x][j]];
+
+      mul = (paridx[i]*9)+(j*9);
+      rotationbuffer[mul+0] = rotation[0][send_paridx[x][j]];
+      rotationbuffer[mul+1] = rotation[1][send_paridx[x][j]];
+      rotationbuffer[mul+2] = rotation[2][send_paridx[x][j]];
+      rotationbuffer[mul+3] = rotation[3][send_paridx[x][j]];
+      rotationbuffer[mul+4] = rotation[4][send_paridx[x][j]];
+      rotationbuffer[mul+5] = rotation[5][send_paridx[x][j]];
+      rotationbuffer[mul+6] = rotation[6][send_paridx[x][j]];
+      rotationbuffer[mul+7] = rotation[7][send_paridx[x][j]];
+      rotationbuffer[mul+8] = rotation[8][send_paridx[x][j]];
+      
+      inertiabuffer[mul+0] = inertia[0][send_paridx[x][j]]; 
+      inertiabuffer[mul+1] = inertia[1][send_paridx[x][j]]; 
+      inertiabuffer[mul+2] = inertia[2][send_paridx[x][j]]; 
+      inertiabuffer[mul+3] = inertia[3][send_paridx[x][j]]; 
+      inertiabuffer[mul+4] = inertia[4][send_paridx[x][j]]; 
+      inertiabuffer[mul+5] = inertia[5][send_paridx[x][j]]; 
+      inertiabuffer[mul+6] = inertia[6][send_paridx[x][j]]; 
+      inertiabuffer[mul+7] = inertia[7][send_paridx[x][j]]; 
+      inertiabuffer[mul+8] = inertia[8][send_paridx[x][j]]; 
+
+      inversebuffer[mul+0] = inverse[0][send_paridx[x][j]]; 
+      inversebuffer[mul+1] = inverse[1][send_paridx[x][j]]; 
+      inversebuffer[mul+2] = inverse[2][send_paridx[x][j]]; 
+      inversebuffer[mul+3] = inverse[3][send_paridx[x][j]]; 
+      inversebuffer[mul+4] = inverse[4][send_paridx[x][j]]; 
+      inversebuffer[mul+5] = inverse[5][send_paridx[x][j]]; 
+      inversebuffer[mul+6] = inverse[6][send_paridx[x][j]]; 
+      inversebuffer[mul+7] = inverse[7][send_paridx[x][j]]; 
+      inversebuffer[mul+8] = inverse[8][send_paridx[x][j]]; 
+      
+      mul = (paridx[i])+(j);
+      paridxbuffer[mul] = send_paridx[x][j];
+      massbuffer[mul] = mass[send_paridx[x][j]]; 
     }
   }
   
@@ -184,20 +296,21 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
         t[2][0][export_local_ids[i]] = t[2][0][j];
         t[2][1][export_local_ids[i]] = t[2][1][j];
         t[2][2][export_local_ids[i]] = t[2][2][j];
+        
+        t[3][0][export_local_ids[i]] = t[3][0][j];
+        t[3][1][export_local_ids[i]] = t[3][1][j];
+        t[3][2][export_local_ids[i]] = t[3][2][j];
           
-        v[0][export_local_ids[i]] = v[0][j];
-        v[1][export_local_ids[i]] = v[1][j];
-        v[2][export_local_ids[i]] = v[2][j];
-        
-        angular[0][export_local_ids[i]] = angular[0][j];
-        angular[1][export_local_ids[i]] = angular[1][j];
-        angular[2][export_local_ids[i]] = angular[2][j];
-        angular[3][export_local_ids[i]] = angular[3][j];
-        angular[4][export_local_ids[i]] = angular[4][j];
-        angular[5][export_local_ids[i]] = angular[5][j];
-        
-        pv = j;//save cave location for next iteration, no need to start from end/back/nt again
-        break;//break loop/search from 'last to first' and go to next id that was exported
+        t[4][0][export_local_ids[i]] = t[4][0][j];
+        t[4][1][export_local_ids[i]] = t[4][1][j];
+        t[4][2][export_local_ids[i]] = t[4][2][j];
+          
+        t[5][0][export_local_ids[i]] = t[5][0][j];
+        t[5][1][export_local_ids[i]] = t[5][1][j];
+        t[5][2][export_local_ids[i]] = t[5][2][j];
+          
+        pv = j; //save cave location for next iteration, no need to start from end/back/nt again
+        break; //break loop/search from 'last to first' and go to next id that was exported
       }
     }
   }
@@ -246,11 +359,12 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
     }
   }
   
-  iREAL *trvbuffer[3], *vrvbuffer, *angrvbuffer;
-  int *rcvpid_buffer; int *rvparmat_buffer;
-  int size = 0;  
+  iREAL *trvbuffer[6], *vrvbuffer, *angrvbuffer;
+  int *rcvpid_buffer; int *rvparmat_buffer; int *rcv_paridx;
+  iREAL *rcvpositionbuffer, *rcvrotationbuffer, *rcvinertiabuffer, *rcvinversebuffer, *rcvmass; 
+  int size = 0; int parsize = 0;  
 
-  int MPISENDS = 8;
+  int MPISENDS = 18;
   MPI_Request *myRequest = (MPI_Request*) malloc(n_export_unique_procs*MPISENDS*sizeof(MPI_Request));//4 sends
   MPI_Request *myrvRequest = (MPI_Request*) malloc(n_import_unique_procs*MPISENDS*sizeof(MPI_Request));//4 sends 
  
@@ -258,24 +372,32 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
   {
     int x = import_unique_procs[i];
     MPI_Irecv(&rcvpivot[x], 1, MPI_INT, x, 0, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+0]);
+    MPI_Irecv(&parrcvpivot[x], 1, MPI_INT, x, 0, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+1]);
   }
 
   for(int i=0; i<n_export_unique_procs; i++)
   {
     int x = export_unique_procs[i];
     MPI_Isend(&pivot[x], 1, MPI_INT, x, 0, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+0]);
+    MPI_Isend(&parpivot[x], 1, MPI_INT, x, 0, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+1]);
   }
 
   for(int i=0; i<n_import_unique_procs; i++)
   {
     int x = import_unique_procs[i];
     MPI_Wait(&myrvRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
     if(rcvpivot[x] > size) size = rcvpivot[x];
+    if(parrcvpivot[x] > parsize) parsize = parrcvpivot[x];
   }
   
   for(int i=0; i<n_export_unique_procs; i++)
   {
     MPI_Wait(&myRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+    //int x = export_unique_procs[i];
+    //printf("RANK:%i sent:%i\n", myrank, parpivot[x]);
+    //printf("RANK:%i received:%i\n", myrank, parrcvpivot[x]);
   }
   
   if(n_import_unique_procs > 0)
@@ -283,38 +405,71 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
     trvbuffer[0] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
     trvbuffer[1] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
     trvbuffer[2] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL)); 
-    vrvbuffer = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
-    angrvbuffer = (iREAL *) malloc(n_import_unique_procs*size*6*sizeof(iREAL));//six elements
+    trvbuffer[3] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
+    trvbuffer[4] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
+    trvbuffer[5] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL)); 
+    
+    vrvbuffer = (iREAL *) malloc(n_import_unique_procs*parsize*3*sizeof(iREAL));
+    angrvbuffer = (iREAL *) malloc(n_import_unique_procs*parsize*6*sizeof(iREAL));//six elements
+    rcv_paridx = (int *) malloc(n_import_unique_procs*parsize*sizeof(int)); 
+    
+    rcvpositionbuffer = (iREAL *) malloc(n_import_unique_procs*parsize*6*sizeof(iREAL));
+    rcvrotationbuffer = (iREAL *) malloc(n_import_unique_procs*parsize*9*sizeof(iREAL));
+    rcvinertiabuffer = (iREAL *) malloc(n_import_unique_procs*parsize*9*sizeof(iREAL));
+    rcvinversebuffer = (iREAL *) malloc(n_import_unique_procs*parsize*9*sizeof(iREAL));
+    rcvmass = (iREAL *) malloc(n_import_unique_procs*parsize*sizeof(iREAL));
+
     rcvpid_buffer = (int *) malloc(n_import_unique_procs*size*sizeof(int));
     rvparmat_buffer = (int *) malloc(n_import_unique_procs*size*sizeof(int));
   }
-
 
   for(int i=0; i<n_import_unique_procs; i++)
   {
     int x = import_unique_procs[i];  
     //printf("RANK[%d]: receive from rank %d\n", myrank, x);
    
-    MPI_Irecv(&trvbuffer[0][(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 2, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+1]);
-    MPI_Irecv(&trvbuffer[1][(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 3, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+2]);
-    MPI_Irecv(&trvbuffer[2][(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 4, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+3]);
-    MPI_Irecv(&vrvbuffer[(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 5, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+4]);
-    MPI_Irecv(&angrvbuffer[(i*size*6)], rcvpivot[x]*6, MPI_DOUBLE, x, 6, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+5]);
-    MPI_Irecv(&rcvpid_buffer[(i*size)], rcvpivot[x], MPI_INT, x, 7, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+6]);
-    MPI_Irecv(&rvparmat_buffer[(i*size)], rcvpivot[x], MPI_INT, x, 8, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+7]);
+    MPI_Irecv(&trvbuffer[0][(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 2, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+2]);
+    MPI_Irecv(&trvbuffer[1][(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 3, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+3]);
+    MPI_Irecv(&trvbuffer[2][(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 4, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+4]);
+    MPI_Irecv(&trvbuffer[3][(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 5, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+5]);
+    MPI_Irecv(&trvbuffer[4][(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 6, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+6]);
+    MPI_Irecv(&trvbuffer[5][(i*size*3)], rcvpivot[x]*3, MPI_DOUBLE, x, 7, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+7]);
+    
+    MPI_Irecv(&rcv_paridx[(i*parsize)], parrcvpivot[x], MPI_DOUBLE, x, 8, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+8]);
+    MPI_Irecv(&vrvbuffer[(i*parsize*3)], parrcvpivot[x]*3, MPI_DOUBLE, x, 9, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+9]);
+    MPI_Irecv(&angrvbuffer[(i*parsize*6)], parrcvpivot[x]*6, MPI_DOUBLE, x, 10, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+10]);
+    MPI_Irecv(&rcvpositionbuffer[(i*parsize*6)], parrcvpivot[x]*6, MPI_DOUBLE, x, 11, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+11]); 
+    MPI_Irecv(&rcvrotationbuffer[(i*parsize*9)], parrcvpivot[x]*9, MPI_DOUBLE, x, 12, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+12]);
+    MPI_Irecv(&rcvinertiabuffer[(i*parsize*9)], parrcvpivot[x]*9, MPI_DOUBLE, x, 13, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+13]);
+    MPI_Irecv(&rcvinversebuffer[(i*parsize*9)], parrcvpivot[x]*9, MPI_DOUBLE, x, 14, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+14]);
+    MPI_Irecv(&rcvmass[(i*parsize)], parrcvpivot[x], MPI_DOUBLE, x, 15, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+15]);
+    
+    MPI_Irecv(&rcvpid_buffer[(i*size)], rcvpivot[x], MPI_INT, x, 16, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+16]);
+    MPI_Irecv(&rvparmat_buffer[(i*size)], rcvpivot[x], MPI_INT, x, 17, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+17]);
   }
 
   for(int i=0; i<n_export_unique_procs; i++)
   {
     int x = export_unique_procs[i]; 
     
-    MPI_Isend(&tbuffer[0][idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 2, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+1]);
-    MPI_Isend(&tbuffer[1][idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 3, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+2]);
-    MPI_Isend(&tbuffer[2][idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 4, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+3]);  
-    MPI_Isend(&vbuffer[idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 5, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+4]);
-    MPI_Isend(&angbuffer[idx[i]*6], pivot[x]*6, MPI_DOUBLE, x, 6, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+5]);
-    MPI_Isend(&pid_buffer[idx[i]], pivot[x], MPI_INT, x, 7, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+6]);
-    MPI_Isend(&parmat_buffer[idx[i]], pivot[x], MPI_INT, x, 8, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+7]);
+    MPI_Isend(&tbuffer[0][idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 2, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+2]);
+    MPI_Isend(&tbuffer[1][idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 3, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+3]);
+    MPI_Isend(&tbuffer[2][idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 4, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+4]);  
+    MPI_Isend(&tbuffer[3][idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 5, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+5]);
+    MPI_Isend(&tbuffer[4][idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 6, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+6]);
+    MPI_Isend(&tbuffer[5][idx[i]*3], pivot[x]*3, MPI_DOUBLE, x, 7, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+7]);  
+  
+    MPI_Isend(&paridxbuffer[paridx[i]], parpivot[x], MPI_DOUBLE, x, 8, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+8]);
+    MPI_Isend(&vbuffer[paridx[i]*3], parpivot[x]*3, MPI_DOUBLE, x, 9, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+9]);
+    MPI_Isend(&angbuffer[paridx[i]*6], parpivot[x]*6, MPI_DOUBLE, x, 10, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+10]);
+    MPI_Isend(&positionbuffer[paridx[i]*6], parpivot[x]*6, MPI_DOUBLE, x, 11, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+11]);
+    MPI_Isend(&rotationbuffer[paridx[i]*9], parpivot[x]*9, MPI_DOUBLE, x, 12, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+12]);
+    MPI_Isend(&inertiabuffer[paridx[i]*9], parpivot[x]*9, MPI_DOUBLE, x, 13, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+13]);
+    MPI_Isend(&inversebuffer[paridx[i]*9], parpivot[x]*9, MPI_DOUBLE, x, 14, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+14]);
+    MPI_Isend(&mass[paridx[i]], parpivot[x], MPI_DOUBLE, x, 15, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+15]);
+
+    MPI_Isend(&pid_buffer[idx[i]], pivot[x], MPI_INT, x, 16, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+16]);
+    MPI_Isend(&parmat_buffer[idx[i]], pivot[x], MPI_INT, x, 17, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+17]);
   }
  
   if(nt > 0 && num_export > 0) 
@@ -326,13 +481,22 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
  
   for(int i=0; i<n_import_unique_procs; i++)
   {
-    MPI_Wait(&myrvRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
     MPI_Wait(&myrvRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
     MPI_Wait(&myrvRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
     MPI_Wait(&myrvRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
     MPI_Wait(&myrvRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
     MPI_Wait(&myrvRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
     MPI_Wait(&myrvRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+8], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+9], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+10], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+11], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+12], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+13], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+14], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+15], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+16], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+17], MPI_STATUS_IGNORE);
     //printf("RANK[%i]:received\n", myrank);
 
     int x = import_unique_procs[i];
@@ -345,18 +509,675 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
         t[0][k][receive_idx] = trvbuffer[0][(i*size*3)+(j*3)+(k)];        
         t[1][k][receive_idx] = trvbuffer[1][(i*size*3)+(j*3)+(k)]; 
         t[2][k][receive_idx] = trvbuffer[2][(i*size*3)+(j*3)+(k)]; 
-        
-        v[k][receive_idx] = vrvbuffer[(i*size*3)+(j*3)+(k)];
-      }
-      for(int k=0;k<6;k++)
-      {
-        angular[k][receive_idx] = angrvbuffer[(i*size*6)+(j*6)+(k)];
+        t[3][k][receive_idx] = trvbuffer[3][(i*size*3)+(j*3)+(k)];        
+        t[4][k][receive_idx] = trvbuffer[4][(i*size*3)+(j*3)+(k)]; 
+        t[5][k][receive_idx] = trvbuffer[5][(i*size*3)+(j*3)+(k)]; 
       }
       receive_idx++;
+    }
+    
+    for(int j=0; j<parrcvpivot[x]; j++)
+    {     
+      int xx = rcv_paridx[(i*parsize)+j];
+      linear[0][xx] = vrvbuffer[(i*parsize*3)+(j*3)+0];
+      linear[1][xx] = vrvbuffer[(i*parsize*3)+(j*3)+1];
+      linear[2][xx] = vrvbuffer[(i*parsize*3)+(j*3)+2];
+      
+      angular[0][xx] = angrvbuffer[(i*parsize*6)+(j*6)+0];
+      angular[1][xx] = angrvbuffer[(i*parsize*6)+(j*6)+1];
+      angular[2][xx] = angrvbuffer[(i*parsize*6)+(j*6)+2];
+      angular[3][xx] = angrvbuffer[(i*parsize*6)+(j*6)+3];
+      angular[4][xx] = angrvbuffer[(i*parsize*6)+(j*6)+4];
+      angular[5][xx] = angrvbuffer[(i*parsize*6)+(j*6)+5];
+    
+      position[0][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+0];
+      position[1][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+1];
+      position[2][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+2];
+      position[3][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+3];
+      position[4][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+4];
+      position[5][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+5];
+      
+      rotation[0][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+0];
+      rotation[1][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+1];
+      rotation[2][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+2];
+      rotation[3][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+3];
+      rotation[4][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+4];
+      rotation[5][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+5];
+      rotation[6][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+6];
+      rotation[7][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+7];
+      rotation[8][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+8];
+      
+      inertia[0][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+0];
+      inertia[1][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+1];
+      inertia[2][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+2];
+      inertia[3][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+3];
+      inertia[4][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+4];
+      inertia[5][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+5];
+      inertia[6][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+6];
+      inertia[7][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+7];
+      inertia[8][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+8];
+      
+      inverse[0][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+0];
+      inverse[1][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+1];
+      inverse[2][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+2];
+      inverse[3][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+3];
+      inverse[4][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+4];
+      inverse[5][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+5];
+      inverse[6][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+6];
+      inverse[7][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+7];
+      inverse[8][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+8];
+      
+      mass[xx] = rcvmass[(i*parsize)+j];
     }
   }
   
   for(int i=0; i<n_export_unique_procs; i++)
+  {
+    MPI_Wait(&myRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+8], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+9], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+10], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+11], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+12], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+13], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+14], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+15], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+16], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+17], MPI_STATUS_IGNORE);
+  }
+
+  nt = nt + (num_import-num_export);
+ 
+  if(n_export_unique_procs)
+  {
+    free(tbuffer[0]);
+    free(tbuffer[1]);
+    free(tbuffer[2]);
+    free(tbuffer[3]);
+    free(tbuffer[4]);
+    free(tbuffer[5]);
+    free(pid_buffer);
+    free(vbuffer);
+    free(angbuffer);
+    free(parmat_buffer);
+  }
+  
+ if(n_import_unique_procs)
+ {
+   free(trvbuffer[0]);
+   free(trvbuffer[1]);
+   free(trvbuffer[2]);
+   free(trvbuffer[3]);
+   free(trvbuffer[4]);
+   free(trvbuffer[5]);
+   free(rcvpid_buffer);   
+   free(vrvbuffer);
+   free(angrvbuffer);
+   free(rvparmat_buffer);
+ }
+ 
+ for(int i=0; i<nproc;i++)
+ {
+   free(send_idx[i]);
+   free(send_paridx[i]);
+ }
+   
+ free(idx);
+ free(pivot);
+ free(rcvpivot);
+  
+ free(export_unique_procs);
+ free(import_unique_procs);
+  
+ free(myRequest);
+ free(myrvRequest);
+}
+
+// migrate triangles "in-place" to new ranks 
+void init_migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
+                    iREAL *angular[6], iREAL *rotation[9], 
+                    iREAL *position[6], iREAL *inertia[9], 
+                    iREAL *inverse[9], iREAL mass[])
+{
+  int nproc, myrank;
+  MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+  MPI_Comm_rank (MPI_COMM_WORLD, &myrank);
+ 
+  //allocate memory for tmp buffers
+  int **send_paridx = (int **) malloc(nproc*sizeof(int*));
+  int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
+  int *parpivot = (int *) malloc(nproc*sizeof(int));
+
+  int found = 0;
+  for(int i=0;i<nproc;i++)
+  {
+    send_paridx[i] = (int *) malloc((nb)*sizeof(int));
+    parrcvpivot[i] = 0;
+    parpivot[i] = 0;
+    if(myrank != i)
+    for (int j = 1; j <= nb; j++)//loop through export data/ids 
+    {
+      printf("nb:%i is in rank:%i\n", j, myrank);
+      int x = parpivot[i];
+      send_paridx[i][x] = j;
+      parpivot[i]++;
+      found = 1;
+    }
+  }
+
+  int *paridx = (int *) malloc(nproc*sizeof(int));
+  paridx[0] = 0;
+  for(int i=0; i<nproc; i++)
+  {
+    paridx[i+1] = paridx[i] + parpivot[i];
+  } 
+  
+  iREAL *vbuffer, *angbuffer;
+  int *paridxbuffer;
+  iREAL *rotationbuffer, *positionbuffer, *inertiabuffer, *inversebuffer, *massbuffer;
+  int n = nb;
+  if(found)
+  {
+    int mul = nproc*n;
+    paridxbuffer = (int *) malloc(mul*sizeof(int)); 
+    vbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
+    angbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));//6 elements thus x 2
+    positionbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));
+    massbuffer = (iREAL *) malloc(mul*sizeof(iREAL)); 
+    
+    rotationbuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+    inertiabuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+    inversebuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+
+    
+    for(int i=0; i<nproc; i++)//n processes to prepare buffers for
+    {
+      for(int j=0; j<parpivot[i]; j++)
+      {
+        int mul = (paridx[i]*3)+(j*3);
+        vbuffer[mul+0] = linear[0][send_paridx[i][j]];
+        vbuffer[mul+1] = linear[1][send_paridx[i][j]];
+        vbuffer[mul+2] = linear[2][send_paridx[i][j]];
+        
+        mul = (paridx[i]*6)+(j*6);
+        angbuffer[mul+0] = angular[0][send_paridx[i][j]];
+        angbuffer[mul+1] = angular[1][send_paridx[i][j]];
+        angbuffer[mul+2] = angular[2][send_paridx[i][j]];
+        angbuffer[mul+3] = angular[3][send_paridx[i][j]];
+        angbuffer[mul+4] = angular[4][send_paridx[i][j]];
+        angbuffer[mul+5] = angular[5][send_paridx[i][j]];
+        
+        positionbuffer[mul+0] = position[0][send_paridx[i][j]];
+        positionbuffer[mul+1] = position[1][send_paridx[i][j]];
+        positionbuffer[mul+2] = position[2][send_paridx[i][j]];
+        positionbuffer[mul+3] = position[3][send_paridx[i][j]];
+        positionbuffer[mul+4] = position[4][send_paridx[i][j]];
+        positionbuffer[mul+5] = position[5][send_paridx[i][j]];
+
+        mul = (paridx[i]*9)+(j*9);
+        rotationbuffer[mul+0] = rotation[0][send_paridx[i][j]];
+        rotationbuffer[mul+1] = rotation[1][send_paridx[i][j]];
+        rotationbuffer[mul+2] = rotation[2][send_paridx[i][j]];
+        rotationbuffer[mul+3] = rotation[3][send_paridx[i][j]];
+        rotationbuffer[mul+4] = rotation[4][send_paridx[i][j]];
+        rotationbuffer[mul+5] = rotation[5][send_paridx[i][j]];
+        rotationbuffer[mul+6] = rotation[6][send_paridx[i][j]];
+        rotationbuffer[mul+7] = rotation[7][send_paridx[i][j]];
+        rotationbuffer[mul+8] = rotation[8][send_paridx[i][j]];
+        
+        inertiabuffer[mul+0] = inertia[0][send_paridx[i][j]]; 
+        inertiabuffer[mul+1] = inertia[1][send_paridx[i][j]]; 
+        inertiabuffer[mul+2] = inertia[2][send_paridx[i][j]]; 
+        inertiabuffer[mul+3] = inertia[3][send_paridx[i][j]]; 
+        inertiabuffer[mul+4] = inertia[4][send_paridx[i][j]]; 
+        inertiabuffer[mul+5] = inertia[5][send_paridx[i][j]]; 
+        inertiabuffer[mul+6] = inertia[6][send_paridx[i][j]]; 
+        inertiabuffer[mul+7] = inertia[7][send_paridx[i][j]]; 
+        inertiabuffer[mul+8] = inertia[8][send_paridx[i][j]]; 
+
+        inversebuffer[mul+0] = inverse[0][send_paridx[i][j]]; 
+        inversebuffer[mul+1] = inverse[1][send_paridx[i][j]]; 
+        inversebuffer[mul+2] = inverse[2][send_paridx[i][j]]; 
+        inversebuffer[mul+3] = inverse[3][send_paridx[i][j]]; 
+        inversebuffer[mul+4] = inverse[4][send_paridx[i][j]]; 
+        inversebuffer[mul+5] = inverse[5][send_paridx[i][j]]; 
+        inversebuffer[mul+6] = inverse[6][send_paridx[i][j]]; 
+        inversebuffer[mul+7] = inverse[7][send_paridx[i][j]]; 
+        inversebuffer[mul+8] = inverse[8][send_paridx[i][j]]; 
+        
+        mul = (paridx[i])+(j);
+        paridxbuffer[mul] = send_paridx[i][j];
+        massbuffer[mul] = mass[send_paridx[i][j]];
+      }
+    }
+  }
+  
+  iREAL *vrvbuffer, *angrvbuffer;
+  int *rcv_paridx;
+  iREAL *rcvpositionbuffer, *rcvrotationbuffer, *rcvinertiabuffer, *rcvinversebuffer, *rcvmassbuffer; 
+  int parsize = 0;  
+
+  int MPISENDS = 9;
+  MPI_Request *myRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends
+  MPI_Request *myrvRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends 
+ 
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Irecv(&parrcvpivot[i], 1, MPI_INT, i, 0, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+0]);
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Isend(&parpivot[i], 1, MPI_INT, i, 0, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+0]);
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+    if(parrcvpivot[i] > parsize) parsize = parrcvpivot[i];
+  }
+  
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+  }
+  
+  if(nproc > 0)
+  {
+    vrvbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
+    angrvbuffer = (iREAL *) malloc(nproc*parsize*6*sizeof(iREAL));//six elements
+    rcv_paridx = (int *) malloc(nproc*parsize*sizeof(int)); 
+    
+    rcvpositionbuffer = (iREAL *) malloc(nproc*parsize*6*sizeof(iREAL));
+    rcvrotationbuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
+    rcvinertiabuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
+    rcvinversebuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
+    rcvmassbuffer = (iREAL *) malloc(nproc*parsize*sizeof(iREAL));
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Irecv(&rcv_paridx[(i*parsize)], parrcvpivot[i], MPI_DOUBLE, i, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+1]);
+    MPI_Irecv(&vrvbuffer[(i*parsize*3)], parrcvpivot[i]*3, MPI_DOUBLE, i, 2, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+2]);
+    MPI_Irecv(&angrvbuffer[(i*parsize*6)], parrcvpivot[i]*6, MPI_DOUBLE, i, 3, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+3]);
+    MPI_Irecv(&rcvpositionbuffer[(i*parsize*6)], parrcvpivot[i]*6, MPI_DOUBLE, i, 4, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+4]); 
+    MPI_Irecv(&rcvrotationbuffer[(i*parsize*9)], parrcvpivot[i]*9, MPI_DOUBLE, i, 5, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+5]);
+    MPI_Irecv(&rcvinertiabuffer[(i*parsize*9)], parrcvpivot[i]*9, MPI_DOUBLE, i, 6, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+6]);
+    MPI_Irecv(&rcvinversebuffer[(i*parsize*9)], parrcvpivot[i]*9, MPI_DOUBLE, i, 7, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+7]);
+    MPI_Irecv(&rcvmassbuffer[(i*parsize)], parrcvpivot[i], MPI_DOUBLE, i, 8, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+8]);
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Isend(&paridxbuffer[paridx[i]], parpivot[i], MPI_DOUBLE, i, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+1]);
+    MPI_Isend(&vbuffer[paridx[i]*3], parpivot[i]*3, MPI_DOUBLE, i, 2, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+2]);
+    MPI_Isend(&angbuffer[paridx[i]*6], parpivot[i]*6, MPI_DOUBLE, i, 3, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+3]);
+    MPI_Isend(&positionbuffer[paridx[i]*6], parpivot[i]*6, MPI_DOUBLE, i, 4, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+4]);
+    MPI_Isend(&rotationbuffer[paridx[i]*9], parpivot[i]*9, MPI_DOUBLE, i, 5, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+5]);
+    MPI_Isend(&inertiabuffer[paridx[i]*9], parpivot[i]*9, MPI_DOUBLE, i, 6, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+6]);
+    MPI_Isend(&inversebuffer[paridx[i]*9], parpivot[i]*9, MPI_DOUBLE, i, 7, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+7]);
+    MPI_Isend(&massbuffer[paridx[i]], parpivot[i], MPI_DOUBLE, i, 8, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+8]);
+  }
+ 
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+8], MPI_STATUS_IGNORE);
+    //printf("RANK[%i]:received\n", myrank);
+
+    for(int j=0; j<parrcvpivot[i]; j++)
+    {     
+      int xx = rcv_paridx[(i*parsize)+j];
+      
+      mass[xx] = rcvmassbuffer[(i*parsize)+j];
+       
+      linear[0][xx] = vrvbuffer[(i*parsize*3)+(j*3)+0];
+      linear[1][xx] = vrvbuffer[(i*parsize*3)+(j*3)+1];
+      linear[2][xx] = vrvbuffer[(i*parsize*3)+(j*3)+2];
+      
+      angular[0][xx] = angrvbuffer[(i*parsize*6)+(j*6)+0];
+      angular[1][xx] = angrvbuffer[(i*parsize*6)+(j*6)+1];
+      angular[2][xx] = angrvbuffer[(i*parsize*6)+(j*6)+2];
+      angular[3][xx] = angrvbuffer[(i*parsize*6)+(j*6)+3];
+      angular[4][xx] = angrvbuffer[(i*parsize*6)+(j*6)+4];
+      angular[5][xx] = angrvbuffer[(i*parsize*6)+(j*6)+5];
+    
+      position[0][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+0];
+      position[1][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+1];
+      position[2][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+2];
+      position[3][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+3];
+      position[4][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+4];
+      position[5][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+5];
+      
+      rotation[0][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+0];
+      rotation[1][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+1];
+      rotation[2][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+2];
+      rotation[3][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+3];
+      rotation[4][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+4];
+      rotation[5][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+5];
+      rotation[6][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+6];
+      rotation[7][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+7];
+      rotation[8][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+8];
+      
+      inertia[0][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+0];
+      inertia[1][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+1];
+      inertia[2][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+2];
+      inertia[3][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+3];
+      inertia[4][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+4];
+      inertia[5][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+5];
+      inertia[6][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+6];
+      inertia[7][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+7];
+      inertia[8][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+8];
+      
+      inverse[0][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+0];
+      inverse[1][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+1];
+      inverse[2][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+2];
+      inverse[3][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+3];
+      inverse[4][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+4];
+      inverse[5][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+5];
+      inverse[6][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+6];
+      inverse[7][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+7];
+      inverse[8][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+8];
+      nb++;
+    }
+  }
+  
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+8], MPI_STATUS_IGNORE);
+  }
+
+  if(found)
+  {
+    free(vbuffer);
+    free(angbuffer);
+  }
+  
+ free(vrvbuffer);
+ free(angrvbuffer);
+ 
+ for(int i=0; i<nproc;i++)
+ {
+   free(send_paridx[i]);
+ }
+  
+ free(myRequest);
+ free(myrvRequest);
+}
+
+// migrate triangles "in-place" to new ranks 
+void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
+                    iREAL *angular[6], iREAL *rotation[9], 
+                    iREAL *position[6], iREAL *inertia[9], 
+                    iREAL *inverse[9])
+{
+  int nproc, myrank;
+  MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+  MPI_Comm_rank (MPI_COMM_WORLD, &myrank);
+ 
+  //allocate memory for tmp buffers
+  int **send_paridx = (int **) malloc(nproc*sizeof(int*));
+  int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
+  int *parpivot = (int *) malloc(nproc*sizeof(int));
+
+  int found = 0;
+  for(int i=0;i<nproc;i++)
+  {
+    send_paridx[i] = (int *) malloc((nb)*sizeof(int));
+    parrcvpivot[i] = 0;
+    parpivot[i] = 0;
+    
+    for (int j = 1; j <= nb; j++)//loop through export data/ids 
+    {
+      iREAL point[3];
+      point[0] = position[0][j];
+      point[1] = position[1][j];
+      point[2] = position[2][j];
+
+      int rnk;
+      loba_query (lb, point, &rnk);
+      if(myrank == rnk)
+      {
+        int x = parpivot[i];
+        send_paridx[i][x] = j;
+        parpivot[i]++;
+        found = 1;
+      }
+    }
+  }
+
+  int *paridx = (int *) malloc(nproc*sizeof(int));
+  paridx[0] = 0;
+  for(int i=0; i<nproc; i++)
+  {
+    paridx[i+1] = paridx[i] + parpivot[i];
+  } 
+  
+  iREAL *vbuffer, *angbuffer;
+  int *paridxbuffer;
+  iREAL *rotationbuffer, *positionbuffer, *inertiabuffer, *inversebuffer;
+  int n = nb*10000;
+  if(found)
+  {
+    int mul = nproc*n;
+    vbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
+    angbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));//6 elements thus x 2
+    positionbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));
+    paridxbuffer = (int *) malloc(mul*sizeof(int)); 
+    
+    rotationbuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+    inertiabuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+    inversebuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+
+    
+    for(int i=0; i<nproc; i++)//n processes to prepare buffers for
+    {
+      for(int j=0; j<parpivot[i]; j++)
+      {
+        int mul = (paridx[i]*3)+(j*3);
+        vbuffer[mul+0] = linear[0][send_paridx[i][j]];
+        vbuffer[mul+1] = linear[1][send_paridx[i][j]];
+        vbuffer[mul+2] = linear[2][send_paridx[i][j]];
+        
+        mul = (paridx[i]*6)+(j*6);
+        angbuffer[mul+0] = angular[0][send_paridx[i][j]];
+        angbuffer[mul+1] = angular[1][send_paridx[i][j]];
+        angbuffer[mul+2] = angular[2][send_paridx[i][j]];
+        angbuffer[mul+3] = angular[3][send_paridx[i][j]];
+        angbuffer[mul+4] = angular[4][send_paridx[i][j]];
+        angbuffer[mul+5] = angular[5][send_paridx[i][j]];
+        
+        positionbuffer[mul+0] = position[0][send_paridx[i][j]];
+        positionbuffer[mul+1] = position[1][send_paridx[i][j]];
+        positionbuffer[mul+2] = position[2][send_paridx[i][j]];
+        positionbuffer[mul+3] = position[3][send_paridx[i][j]];
+        positionbuffer[mul+4] = position[4][send_paridx[i][j]];
+        positionbuffer[mul+5] = position[5][send_paridx[i][j]];
+
+        mul = (paridx[i]*9)+(j*9);
+        rotationbuffer[mul+0] = rotation[0][send_paridx[i][j]];
+        rotationbuffer[mul+1] = rotation[1][send_paridx[i][j]];
+        rotationbuffer[mul+2] = rotation[2][send_paridx[i][j]];
+        rotationbuffer[mul+3] = rotation[3][send_paridx[i][j]];
+        rotationbuffer[mul+4] = rotation[4][send_paridx[i][j]];
+        rotationbuffer[mul+5] = rotation[5][send_paridx[i][j]];
+        rotationbuffer[mul+6] = rotation[6][send_paridx[i][j]];
+        rotationbuffer[mul+7] = rotation[7][send_paridx[i][j]];
+        rotationbuffer[mul+8] = rotation[8][send_paridx[i][j]];
+        
+        inertiabuffer[mul+0] = inertia[0][send_paridx[i][j]]; 
+        inertiabuffer[mul+1] = inertia[1][send_paridx[i][j]]; 
+        inertiabuffer[mul+2] = inertia[2][send_paridx[i][j]]; 
+        inertiabuffer[mul+3] = inertia[3][send_paridx[i][j]]; 
+        inertiabuffer[mul+4] = inertia[4][send_paridx[i][j]]; 
+        inertiabuffer[mul+5] = inertia[5][send_paridx[i][j]]; 
+        inertiabuffer[mul+6] = inertia[6][send_paridx[i][j]]; 
+        inertiabuffer[mul+7] = inertia[7][send_paridx[i][j]]; 
+        inertiabuffer[mul+8] = inertia[8][send_paridx[i][j]]; 
+
+        inversebuffer[mul+0] = inverse[0][send_paridx[i][j]]; 
+        inversebuffer[mul+1] = inverse[1][send_paridx[i][j]]; 
+        inversebuffer[mul+2] = inverse[2][send_paridx[i][j]]; 
+        inversebuffer[mul+3] = inverse[3][send_paridx[i][j]]; 
+        inversebuffer[mul+4] = inverse[4][send_paridx[i][j]]; 
+        inversebuffer[mul+5] = inverse[5][send_paridx[i][j]]; 
+        inversebuffer[mul+6] = inverse[6][send_paridx[i][j]]; 
+        inversebuffer[mul+7] = inverse[7][send_paridx[i][j]]; 
+        inversebuffer[mul+8] = inverse[8][send_paridx[i][j]]; 
+        
+        mul = (paridx[i])+(j);
+        paridxbuffer[mul] = send_paridx[i][j];
+      }
+    }
+  }
+  
+  iREAL *vrvbuffer, *angrvbuffer;
+  int *rcv_paridx;
+  iREAL *rcvpositionbuffer, *rcvrotationbuffer, *rcvinertiabuffer, *rcvinversebuffer; 
+  int parsize = 0;  
+
+  int MPISENDS = 8;
+  MPI_Request *myRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends
+  MPI_Request *myrvRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends 
+ 
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Irecv(&parrcvpivot[i], 1, MPI_INT, i, 0, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+0]);
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Isend(&parpivot[i], 1, MPI_INT, i, 0, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+0]);
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+    if(parrcvpivot[i] > parsize) parsize = parrcvpivot[i];
+  }
+  
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+  }
+  
+  if(nproc > 0)
+  {
+    vrvbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
+    angrvbuffer = (iREAL *) malloc(nproc*parsize*6*sizeof(iREAL));//six elements
+    rcv_paridx = (int *) malloc(nproc*parsize*sizeof(int)); 
+    
+    rcvpositionbuffer = (iREAL *) malloc(nproc*parsize*6*sizeof(iREAL));
+    rcvrotationbuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
+    rcvinertiabuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
+    rcvinversebuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Irecv(&rcv_paridx[(i*parsize)], parrcvpivot[i], MPI_DOUBLE, i, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+1]);
+    MPI_Irecv(&vrvbuffer[(i*parsize*3)], parrcvpivot[i]*3, MPI_DOUBLE, i, 2, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+2]);
+    MPI_Irecv(&angrvbuffer[(i*parsize*6)], parrcvpivot[i]*6, MPI_DOUBLE, i, 3, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+3]);
+    MPI_Irecv(&rcvpositionbuffer[(i*parsize*6)], parrcvpivot[i]*6, MPI_DOUBLE, i, 4, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+4]); 
+    MPI_Irecv(&rcvrotationbuffer[(i*parsize*9)], parrcvpivot[i]*9, MPI_DOUBLE, i, 5, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+5]);
+    MPI_Irecv(&rcvinertiabuffer[(i*parsize*9)], parrcvpivot[i]*9, MPI_DOUBLE, i, 6, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+6]);
+    MPI_Irecv(&rcvinversebuffer[(i*parsize*9)], parrcvpivot[i]*9, MPI_DOUBLE, i, 7, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+7]);
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Isend(&paridxbuffer[paridx[i]], parpivot[i], MPI_DOUBLE, i, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+1]);
+    MPI_Isend(&vbuffer[paridx[i]*3], parpivot[i]*3, MPI_DOUBLE, i, 2, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+2]);
+    MPI_Isend(&angbuffer[paridx[i]*6], parpivot[i]*6, MPI_DOUBLE, i, 3, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+3]);
+    MPI_Isend(&positionbuffer[paridx[i]*6], parpivot[i]*6, MPI_DOUBLE, i, 4, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+4]);
+    MPI_Isend(&rotationbuffer[paridx[i]*9], parpivot[i]*9, MPI_DOUBLE, i, 5, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+5]);
+    MPI_Isend(&inertiabuffer[paridx[i]*9], parpivot[i]*9, MPI_DOUBLE, i, 6, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+6]);
+    MPI_Isend(&inversebuffer[paridx[i]*9], parpivot[i]*9, MPI_DOUBLE, i, 7, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+7]);
+  }
+ 
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+4], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+5], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
+    //printf("RANK[%i]:received\n", myrank);
+
+    for(int j=0; j<parrcvpivot[i]; j++)
+    {     
+      int xx = rcv_paridx[(i*parsize)+j];
+      linear[0][xx] = vrvbuffer[(i*parsize*3)+(j*3)+0];
+      linear[1][xx] = vrvbuffer[(i*parsize*3)+(j*3)+1];
+      linear[2][xx] = vrvbuffer[(i*parsize*3)+(j*3)+2];
+      
+      angular[0][xx] = angrvbuffer[(i*parsize*6)+(j*6)+0];
+      angular[1][xx] = angrvbuffer[(i*parsize*6)+(j*6)+1];
+      angular[2][xx] = angrvbuffer[(i*parsize*6)+(j*6)+2];
+      angular[3][xx] = angrvbuffer[(i*parsize*6)+(j*6)+3];
+      angular[4][xx] = angrvbuffer[(i*parsize*6)+(j*6)+4];
+      angular[5][xx] = angrvbuffer[(i*parsize*6)+(j*6)+5];
+    
+      position[0][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+0];
+      position[1][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+1];
+      position[2][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+2];
+      position[3][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+3];
+      position[4][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+4];
+      position[5][xx] = rcvpositionbuffer[(i*parsize*6)+(j*6)+5];
+      
+      rotation[0][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+0];
+      rotation[1][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+1];
+      rotation[2][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+2];
+      rotation[3][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+3];
+      rotation[4][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+4];
+      rotation[5][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+5];
+      rotation[6][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+6];
+      rotation[7][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+7];
+      rotation[8][xx] = rcvrotationbuffer[(i*parsize*9)+(j*9)+8];
+      
+      inertia[0][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+0];
+      inertia[1][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+1];
+      inertia[2][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+2];
+      inertia[3][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+3];
+      inertia[4][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+4];
+      inertia[5][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+5];
+      inertia[6][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+6];
+      inertia[7][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+7];
+      inertia[8][xx] = rcvinertiabuffer[(i*parsize*9)+(j*9)+8];
+      
+      inverse[0][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+0];
+      inverse[1][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+1];
+      inverse[2][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+2];
+      inverse[3][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+3];
+      inverse[4][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+4];
+      inverse[5][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+5];
+      inverse[6][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+6];
+      inverse[7][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+7];
+      inverse[8][xx] = rcvinversebuffer[(i*parsize*9)+(j*9)+8];
+    }
+  }
+  
+  for(int i=0; i<nproc; i++)
   {
     MPI_Wait(&myRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
     MPI_Wait(&myRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
@@ -367,51 +1188,29 @@ void migrate (int &nt, iREAL *t[6][3], iREAL *v[3],
     MPI_Wait(&myRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
   }
 
-  nt = nt + (num_import-num_export);
- 
-  if(n_export_unique_procs)
+  if(found)
   {
-    free(tbuffer[0]);
-    free(tbuffer[1]);
-    free(tbuffer[2]);
-    free(pid_buffer);
     free(vbuffer);
     free(angbuffer);
-    free(parmat_buffer);
   }
   
-   if(n_import_unique_procs)
-   {
-     free(trvbuffer[0]);
-     free(trvbuffer[1]);
-     free(trvbuffer[2]);
-     free(rcvpid_buffer);   
-     free(vrvbuffer);
-     free(angrvbuffer);
-     free(rvparmat_buffer);
-   }
-   
-   for(int i=0; i<nproc;i++)
-   {
-     free(send_idx[i]);
-   }
-     
-   free(idx);
-   free(pivot);
-   free(rcvpivot);
-    
-   free(export_unique_procs);
-   free(import_unique_procs);
-    
-   free(myRequest);
-   free(myrvRequest);
+ free(vrvbuffer);
+ free(angrvbuffer);
+ 
+ for(int i=0; i<nproc;i++)
+ {
+   free(send_paridx[i]);
+ }
+  
+ free(myRequest);
+ free(myrvRequest);
 }
 
-void migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3], 
-              iREAL *v[3], iREAL *angular[6], int *parmat,
-              iREAL dt, iREAL *p[3], iREAL *q[3], 
-              int tid[], int pid[], std::vector<contact> conpnt[], 
-              iREAL *timer1, iREAL *timer2, iREAL *timer3)
+void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3], 
+      iREAL *v[3], iREAL *angular[6], iREAL *rotation[9], iREAL *position[6], iREAL *inertia[9], iREAL *inverse[9], iREAL mass[], int *parmat,
+      iREAL dt, iREAL *p[3], iREAL *q[3], 
+      int tid[], int pid[], std::vector<contact> conpnt[], 
+      iREAL *timer1, iREAL *timer2, iREAL *timer3)
 {
   TIMING t1, t2, t3;
   
@@ -683,10 +1482,149 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, iREAL *t[6][3],
   }
 }
 
-
-void migrateForce(struct loba *lb, int myrank, int *rank, int nranks, iREAL *force[3], iREAL *torque[3])
+void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks, iREAL *force[3], iREAL *torque[3])
 {
+  int nproc;
+  MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+ 
+  //allocate memory for tmp buffers
+  int **send_paridx = (int **) malloc(nproc*sizeof(int*));
+  int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
+  int *parpivot = (int *) malloc(nproc*sizeof(int));
+  
+  for(int i=0;i<nproc;i++)
+  {
+    send_paridx[i] = (int *) malloc((nranks)*sizeof(int));
+    parrcvpivot[i] = 0;
+    parpivot[i] = 0;
+  }
 
+  int found = 0;
+  for(int i=0;i<nranks;i++)
+  {
+    int proc = rank[i];
+    send_paridx[proc][parpivot[i]++] = fpid[proc]; 
+    printf("proc:%i pid:%i\n", proc, fpid[i]); 
+    found = 1;
+  }
+  for(int i=0;i<nproc;i++)
+    printf("RANK:%i parpivot[%i]:%i, id:%i\n", myrank, i, parpivot[i], send_paridx[i][0]);
+  int *paridx = (int *) malloc(nproc*sizeof(int));
+  paridx[0] = 0;
+  for(int i=0; i<nproc; i++)
+  {
+    paridx[i+1] = paridx[i] + parpivot[i];
+  } 
+  
+  iREAL *fbuffer, *tbuffer;
+  int *paridxbuffer;
+  if(found)
+  {
+    int mul = nproc*nranks;
+    fbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
+    tbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
+    paridxbuffer = (int *) malloc(mul*sizeof(int)); 
+    
+    for(int i=0; i<nproc; i++)//n processes to prepare buffers for
+    {
+      for(int j=0; j<parpivot[i]; j++)
+      {
+        int mul = (paridx[i]*3)+(j*3);
+        fbuffer[mul+0] = force[0][send_paridx[i][j]];
+        fbuffer[mul+1] = force[1][send_paridx[i][j]];
+        fbuffer[mul+2] = force[2][send_paridx[i][j]];
+        
+        tbuffer[mul+0] = torque[0][send_paridx[i][j]];
+        tbuffer[mul+1] = torque[1][send_paridx[i][j]];
+        tbuffer[mul+2] = torque[2][send_paridx[i][j]];
+        
+        mul = (paridx[i])+(j);
+        paridxbuffer[mul] = send_paridx[i][j];
+      }
+    }
+  }
+  
+  iREAL *rcvfbuffer, *rcvtbuffer;
+  int *rcv_paridx;
+  int parsize = 0;  
 
+  int MPISENDS = 4;
+  MPI_Request *myRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends
+  MPI_Request *myrvRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends 
+ 
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Irecv(&parrcvpivot[i], 1, MPI_INT, i, 0, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+0]);
+  }
 
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Isend(&parpivot[i], 1, MPI_INT, i, 0, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+0]);
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+    if(parrcvpivot[i] > parsize) parsize = parrcvpivot[i];
+  }
+  
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
+  }
+  
+  if(nproc > 0)
+  {
+    rcvfbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
+    rcvtbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
+    rcv_paridx = (int *) malloc(nproc*parsize*sizeof(int)); 
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Irecv(&rcv_paridx[(i*parsize)], parrcvpivot[i], MPI_DOUBLE, i, 1, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+1]);
+    MPI_Irecv(&rcvfbuffer[(i*parsize*3)], parrcvpivot[i]*3, MPI_DOUBLE, i, 2, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+2]);
+    MPI_Irecv(&rcvtbuffer[(i*parsize*3)], parrcvpivot[i]*3, MPI_DOUBLE, i, 3, MPI_COMM_WORLD, &myrvRequest[(i*MPISENDS)+3]);
+  }
+
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Isend(&paridxbuffer[paridx[i]], parpivot[i], MPI_DOUBLE, i, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+1]);
+    MPI_Isend(&fbuffer[paridx[i]*3], parpivot[i]*3, MPI_DOUBLE, i, 2, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+2]);
+    MPI_Isend(&tbuffer[paridx[i]*3], parpivot[i]*3, MPI_DOUBLE, i, 3, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+3]);
+  }
+ 
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+    MPI_Wait(&myrvRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+
+    for(int j=0; j<parrcvpivot[i]; j++)
+    {     
+      int xx = rcv_paridx[(i*parsize)+j];
+      force[0][xx] = rcvfbuffer[(i*parsize*3)+(j*3)+0];
+      force[1][xx] = rcvfbuffer[(i*parsize*3)+(j*3)+1];
+      force[2][xx] = rcvfbuffer[(i*parsize*3)+(j*3)+2];
+      
+      torque[0][xx] = rcvtbuffer[(i*parsize*3)+(j*3)+0];
+      torque[1][xx] = rcvtbuffer[(i*parsize*3)+(j*3)+1];
+      torque[2][xx] = rcvtbuffer[(i*parsize*3)+(j*3)+2];
+    }
+  }
+  
+  for(int i=0; i<nproc; i++)
+  {
+    MPI_Wait(&myRequest[(i*MPISENDS)+1], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
+    MPI_Wait(&myRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
+  }
+ 
+ for(int i=0; i<nproc;i++)
+ {
+   free(send_paridx[i]);
+ }
+  
+ free(myRequest);
+ free(myrvRequest);
 }

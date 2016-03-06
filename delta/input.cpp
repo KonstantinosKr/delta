@@ -250,7 +250,7 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
   for(int i = 0; i < nb; i++){ptype[i] = 0;}
   
   iREAL mint, maxt;
-  for(int i = 0; i < nb; i++)
+  for(int i = 1; i <= nb; i++)
   {
     switch(ptype[i])
     {
@@ -338,7 +338,7 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
   whi[2] = 10;
     
   iREAL mint, maxt;
-  for(int i = 0; i < nb; i++)
+  for(int i = 1; i <= nb; i++)
   {
     switch(ptype[i])
     {
@@ -422,7 +422,7 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
   for(int i = 0; i < nb; i++){ptype[i] = 0;}
   
   iREAL mint, maxt;
-  for(int i = 0; i < nb; i++)
+  for(int i = 1; i <= nb; i++)
   {
     switch(ptype[i])
     {

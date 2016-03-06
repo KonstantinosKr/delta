@@ -53,8 +53,9 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
 {
 
   int *rank = (int *) malloc(nb*sizeof(int));
+  int *fpid = (int *) malloc(nb*sizeof(int));
   int nranks = 0;
-  for (int i = 0; i < nb; i++)
+  for (int i = 1; i <= nb; i++)
   {
     iREAL oi[3], v[3], x[3];
 
@@ -162,10 +163,11 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
     
     int qrank;
     loba_query(lb, x, &qrank); 
-    printf("%i\n", qrank);
     if(qrank != myrank)
     {
-      rank[nranks++] = qrank;
+      rank[nranks] = qrank;
+      fpid[nranks++] = i;
+      force[0][i] = 111;
     }
     else
     {
@@ -175,7 +177,7 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
     }
   }
     
-  migrateForce(lb, myrank, rank, nranks, force, torque);
+  migrateForce(lb, myrank, rank, fpid, nranks, force, torque);
   
   for(int i=0;i<nb;i++)
   {
