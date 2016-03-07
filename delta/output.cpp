@@ -131,7 +131,7 @@ void postProcessing(int nranks, int size, int timesteps)
     cells[i] = (int*) malloc(sizeof(int[size]));
   }
   
-  for(int ii=0; ii<=timesteps; ii++)
+  for(int ii=0; ii<timesteps; ii++)
   {
     int nt = 0;
     int n = 0;
@@ -150,7 +150,7 @@ void postProcessing(int nranks, int size, int timesteps)
       FILE *fp = fopen(filename, "r");
       if( fp == NULL )
       {
-        perror("Error while opening the file.\n");
+        perror("Error while opening the file dump/output.\n");
         exit(EXIT_FAILURE);
       }
       

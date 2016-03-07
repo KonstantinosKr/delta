@@ -63,7 +63,7 @@ iREAL critical (int nt, iREAL mass[], int pairnum, iREAL * iparam[NINT])
 }
 
 // dynamics task 
-void dynamics (std::vector<contact> conpnt[],
+void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
               int nt, int nb, iREAL *t[6][3], int pid[], iREAL *angular[6], iREAL *linear[3],
               iREAL *rotation[9], iREAL *position[6],
               iREAL *inertia[9], iREAL *inverse[9],
@@ -72,8 +72,23 @@ void dynamics (std::vector<contact> conpnt[],
 {
   iREAL half = 0.5*step;
 
-  for (int i = 0; i<nb; i++) // time integration 
+  for (int i = 1; i<=nb; i++) // time integration 
   {
+    
+    iREAL x[3];
+    x[0] = position[0][i];
+    x[1] = position[1][i];
+    x[2] = position[2][i];
+
+    
+    printf("MYRANK:%i POSITION[%i]: %f %f %f \n", myrank, i, position[0][i], position[1][i], position[2][i]);
+    int qrank;
+    loba_query(lb, x, &qrank); 
+    if(qrank != myrank)
+    {
+      continue;
+    }
+    
     iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], t[3], T[3], DL[9], L2[9], A[3], B[3];
 
     O[0] = angular[0][i];
@@ -115,7 +130,7 @@ void dynamics (std::vector<contact> conpnt[],
     I[8] = inverse[8][i];
 
     im = 1/mass[i];
-
+    printf("MASS:%f\n", mass[i]); 
     f[0] = force[0][i];
     f[1] = force[1][i];
     f[2] = force[2][i];
@@ -169,6 +184,8 @@ void dynamics (std::vector<contact> conpnt[],
     position[0][i] += step*v[0];
     position[1][i] += step*v[1];
     position[2][i] += step*v[2];
+    printf("MYRANK:%i v[%i]: %f %f %f \n", myrank, i, linear[0][i], linear[1][i], linear[2][i]);
+    printf("MYRANK:%i POSITION[%i]: %f %f %f \n", myrank, i, position[0][i], position[1][i], position[2][i]);
 
     angular[0][i] = O[0];
     angular[1][i] = O[1];
@@ -183,6 +200,8 @@ void dynamics (std::vector<contact> conpnt[],
     linear[2][i] = v[2];
   }
 
+  migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
+  
   for (int i = 0; i<nt; i++)
   {
     iREAL L[9], X[3], x[3], C[3], c[3];
@@ -268,9 +287,9 @@ void dynamics (std::vector<contact> conpnt[],
   }
 }
 
-void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[3], iREAL step)
+void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)
 {
-  for(int i = 0; i<nb;i++)
+  for(int i = 1; i<=nb;i++)
   {
     iREAL O[3], L1[9], DL[9], L2[9], o[3];
 

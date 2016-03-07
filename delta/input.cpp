@@ -260,9 +260,15 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
         nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
         iREAL lin[3], ang[3]; iREAL ma;
-
-        lin[0] = 100;
-        lin[1] = lin[2] = 0;
+        if(i == 1)
+        {
+          lin[2] = 100;
+        }
+        else 
+        {
+          lin[2] = -100;
+        }
+        lin[0] = lin[1] = 0;
         ang[0] = ang[1] = ang[2] = 0;
         ma = 1;
         condition_enviroment(i, lin, ang, ma, linear, angular, rotation, mass, inertia, inverse, parmat);

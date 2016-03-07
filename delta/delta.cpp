@@ -166,12 +166,10 @@ int main (int argc, char **argv)
     euler(nb, angular, linear, rotation, position, 0.5*step);
   }
   
-  init_migratePosition (lb, nb, linear,
-                    angular, rotation, 
-                    position, inertia, 
-                    inverse, mass);
+  init_migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse, mass);
  
   printf("RANK:%i NB:%i\n", myrank, nb);
+  for(int i=1;i<=nb;i++) printf("MYRANK:%i MASS[%i]: %f\n", myrank, i, mass[i]);
 
   for(iREAL time = step; time < 0.1; time+=step)
   {
@@ -188,16 +186,12 @@ int main (int argc, char **argv)
     printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
    
     timerstart(&tmigration[timesteps]);
-    migrate (lb, nt, nb, t, linear, angular, rotation, position, inertia, inverse, mass, parmat, tid, pid, 
+    migrate (lb, nt, nb, t, parmat, tid, pid, 
                num_import, import_procs, import_to_part, 
                num_export, export_procs, export_to_part, 
                import_global_ids, import_local_ids, 
                export_global_ids, export_local_ids);
     timerend (&tmigration[timesteps]); 
-    
-    timerstart (&tdataExchange[timesteps]);
-    migrateGhosts(lb, myrank, nt, nb, t, linear, angular, rotation, position, inertia, inverse, mass, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
-    timerend (&tdataExchange[timesteps]);
     
     printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
     
@@ -205,6 +199,10 @@ int main (int argc, char **argv)
     timer2 = 0.0;
     timer3 = 0.0;
     
+  for(int i=1;i<=nb;i++) printf("MYRANK:%i MASS[%i]: %f\n", myrank, i, mass[i]);
+    timerstart (&tdataExchange[timesteps]);
+    migrateGhosts(lb, myrank, nt, nb, t, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
+    timerend (&tdataExchange[timesteps]);
     
     tTimer1[timesteps] = timer1;
     tTimer2[timesteps] = timer2;
@@ -212,15 +210,17 @@ int main (int argc, char **argv)
     printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
     forces(lb, myrank, conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
-    //printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
-    //migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
-    return 0;
+    
+    for(int i=1;i<=nb;i++) printf("MYRANK:%i POSITION[%i]: %f %f %f \n", myrank, i, position[0][i], position[1][i], position[2][i]);
+    
     timerstart (&tdynamics[timesteps]);
-    //dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step);
+    dynamics(lb, myrank, conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
     timerend (&tdynamics[timesteps]);
     //printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
     
-    //output_state(lb, myrank, nt, t, timesteps);
+    migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
+    
+    output_state(lb, myrank, nt, t, timesteps);
     timesteps++;
   }
 
@@ -376,9 +376,8 @@ int main (int argc, char **argv)
   if(!myrank)
   {
     printf("\nComputation Finished.\n");
-    //postProcessing(nprocs, size, timesteps);
-    //printf("Post-Processing Finished.\n");
-
+    postProcessing(nprocs, size, timesteps);
+    printf("Post-Processing Finished.\n");
   }
 
   // DESTROY

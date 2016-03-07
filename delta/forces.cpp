@@ -160,26 +160,29 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       torque[2][j] += a[0]*f[1] - a[1]*f[0];
     }
     std::vector<contact>().swap(conpnt[i]);
-    
-    int qrank;
-    loba_query(lb, x, &qrank); 
-    if(qrank != myrank)
+    if(force[0][i] != 0.0 && force[1][i] != 0.0 && force[2][i] != 0.0)
     {
-      rank[nranks] = qrank;
-      fpid[nranks++] = i;
-      force[0][i] = 111;
-    }
-    else
-    {
-      force[0][i] += mass[i] * gravity[0];
-      force[1][i] += mass[i] * gravity[1];
-      force[2][i] += mass[i] * gravity[2];
+      int qrank;
+      loba_query(lb, x, &qrank); 
+      if(qrank != myrank)
+      {
+        rank[nranks] = qrank;
+        fpid[nranks++] = i;
+        if(myrank == 0)
+        force[0][i] = 222;
+      }
+      else
+      {
+        force[0][i] += mass[i] * gravity[0];
+        force[1][i] += mass[i] * gravity[1];
+        force[2][i] += mass[i] * gravity[2];
+      }
     }
   }
     
   migrateForce(lb, myrank, rank, fpid, nranks, force, torque);
   
-  for(int i=0;i<nb;i++)
+  for(int i=1;i<=nb;i++)
   {
     printf("Total Force of body: %i is: %f %f %f\n", i, force[0][i], force[1][i], force[2][i]);
     printf("Total Torque of body: %i is: %f %f %f\n", i, torque[0][i], torque[1][i], torque[2][i]);
