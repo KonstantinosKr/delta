@@ -72,7 +72,7 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
 {
   iREAL half = 0.5*step;
 
-  for (int i = 1; i<=nb; i++) // time integration 
+  for (int i = 0; i<nb; i++) // time integration 
   {
     
     iREAL x[3];

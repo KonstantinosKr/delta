@@ -444,7 +444,7 @@ void init_migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
     parpivot[i] = 0;
     paridx[i] = 0;
     if(myrank != i)
-    for (int j = 1; j <= nb; j++)//loop through export data/ids 
+    for (int j = 0; j < nb; j++)//loop through export data/ids 
     {
       printf("nb:%i is in rank:%i\n", j, myrank);
       int x = parpivot[i];
@@ -736,7 +736,7 @@ void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
     parpivot[i] = 0;
     paridx[i] = 0;//if there is bug look this line
     
-    for (int j = 1; j <= nb; j++)//loop through export data/ids 
+    for (int j = 0; j < nb; j++)//loop through export data/ids 
     {
       iREAL point[3];
       point[0] = position[0][j];
@@ -1017,6 +1017,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   loba_getAdjacent(lb, myrank, neighborhood, &nNeighbors);
   
   int *ghostTID = (int*) malloc(nt*sizeof(int));
+  int *ghostlocalTID = (int*) malloc(nt*sizeof(int));
   int *ghostPID = (int*) malloc(nt*sizeof(int));
   int **ghostTIDNeighbors = (int**) malloc(nt*sizeof(int*));
   int *ghostTIDcrosses = (int*) malloc(nt*sizeof(int));
@@ -1028,7 +1029,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   
   //get triangle tids that overlap into neighbors
   loba_getGhosts(lb, myrank, nNeighbors, nt, t, tid, pid, 
-                      ghostTID, ghostPID, &nGhosts, 
+                      ghostlocalTID, ghostTID, ghostPID, &nGhosts, 
                       &nGhostNeighbors, ghostNeighborhood, 
                       ghostTIDNeighbors, ghostTIDcrosses);
   printf("RANK[%i]: overlaps:%i\n", myrank, nGhosts);
@@ -1066,6 +1067,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
     {
       int oltid = ghostTID[i];
       int olpid = ghostPID[i];
+      int id = ghostlocalTID[i];
       int j = ghostTIDNeighbors[i][ii];
       int jj = ghostNeighborhood[j];
       //printf("RANK[%i]: J:%i JJ:%i\n", myrank, j, jj);
@@ -1075,30 +1077,32 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
       tid_buffer[(jj*nGhosts)+xx] = oltid;
       pid_buffer[(jj*nGhosts)+xx] = olpid;
       
-      tbuffer[0][(jj*nGhosts*3)+(xx*3)+0] = t[0][0][oltid]; //point 0
-      tbuffer[0][(jj*nGhosts*3)+(xx*3)+1] = t[0][1][oltid]; //point 0
-      tbuffer[0][(jj*nGhosts*3)+(xx*3)+2] = t[0][2][oltid]; //point 0
+      tbuffer[0][(jj*nGhosts*3)+(xx*3)+0] = t[0][0][id]; //point 0
+      tbuffer[0][(jj*nGhosts*3)+(xx*3)+1] = t[0][1][id]; //point 0
+      tbuffer[0][(jj*nGhosts*3)+(xx*3)+2] = t[0][2][id]; //point 0
       
-      tbuffer[1][(jj*nGhosts*3)+(xx*3)+0] = t[1][0][oltid]; //point 1
-      tbuffer[1][(jj*nGhosts*3)+(xx*3)+1] = t[1][1][oltid]; //point 1
-      tbuffer[1][(jj*nGhosts*3)+(xx*3)+2] = t[1][2][oltid]; //point 1
+      tbuffer[1][(jj*nGhosts*3)+(xx*3)+0] = t[1][0][id]; //point 1
+      tbuffer[1][(jj*nGhosts*3)+(xx*3)+1] = t[1][1][id]; //point 1
+      tbuffer[1][(jj*nGhosts*3)+(xx*3)+2] = t[1][2][id]; //point 1
       
-      tbuffer[2][(jj*nGhosts*3)+(xx*3)+0] = t[2][0][oltid]; //point 2
-      tbuffer[2][(jj*nGhosts*3)+(xx*3)+1] = t[2][1][oltid]; //point 2
-      tbuffer[2][(jj*nGhosts*3)+(xx*3)+2] = t[2][2][oltid]; //point 2
+      tbuffer[2][(jj*nGhosts*3)+(xx*3)+0] = t[2][0][id]; //point 2
+      tbuffer[2][(jj*nGhosts*3)+(xx*3)+1] = t[2][1][id]; //point 2
+      tbuffer[2][(jj*nGhosts*3)+(xx*3)+2] = t[2][2][id]; //point 2
       
-      tbuffer[3][(jj*nGhosts*3)+(xx*3)+0] = t[3][0][oltid]; //point 0
-      tbuffer[3][(jj*nGhosts*3)+(xx*3)+1] = t[3][1][oltid]; //point 0
-      tbuffer[3][(jj*nGhosts*3)+(xx*3)+2] = t[3][2][oltid]; //point 0
+      tbuffer[3][(jj*nGhosts*3)+(xx*3)+0] = t[3][0][id]; //point 0
+      tbuffer[3][(jj*nGhosts*3)+(xx*3)+1] = t[3][1][id]; //point 0
+      tbuffer[3][(jj*nGhosts*3)+(xx*3)+2] = t[3][2][id]; //point 0
       
-      tbuffer[4][(jj*nGhosts*3)+(xx*3)+0] = t[4][0][oltid]; //point 1
-      tbuffer[4][(jj*nGhosts*3)+(xx*3)+1] = t[4][1][oltid]; //point 1
-      tbuffer[4][(jj*nGhosts*3)+(xx*3)+2] = t[4][2][oltid]; //point 1
+      tbuffer[4][(jj*nGhosts*3)+(xx*3)+0] = t[4][0][id]; //point 1
+      tbuffer[4][(jj*nGhosts*3)+(xx*3)+1] = t[4][1][id]; //point 1
+      tbuffer[4][(jj*nGhosts*3)+(xx*3)+2] = t[4][2][id]; //point 1
       
-      tbuffer[5][(jj*nGhosts*3)+(xx*3)+0] = t[5][0][oltid]; //point 2
-      tbuffer[5][(jj*nGhosts*3)+(xx*3)+1] = t[5][1][oltid]; //point 2
-      tbuffer[5][(jj*nGhosts*3)+(xx*3)+2] = t[5][2][oltid]; //point 2
-      
+      tbuffer[5][(jj*nGhosts*3)+(xx*3)+0] = t[5][0][id]; //point 2
+      tbuffer[5][(jj*nGhosts*3)+(xx*3)+1] = t[5][1][id]; //point 2
+      tbuffer[5][(jj*nGhosts*3)+(xx*3)+2] = t[5][2][id]; //point 2
+      printf("RANK:%i SENDS TID:%i\n", myrank, oltid); 
+      if(myrank == 1)  
+      printf("MYRANK:%i SENDS :%i\n %.5f %.5f %.5f\n%.5f %.5f %.5f\n%.5f %.5f %.5f\n", myrank, oltid, t[0][0][id], t[0][1][id], t[0][2][id], t[1][0][id], t[1][1][id], t[1][2][id], t[2][0][id], t[2][1][id], t[2][2][id]);
       pivot[jj]++;
     }
   }
@@ -1130,7 +1134,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   rcvtid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
   rcvpid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
  
-  int MPISENDS = 89;
+  int MPISENDS = 9;
   MPI_Request *myRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
   MPI_Request *myrvRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
   
@@ -1208,10 +1212,13 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
           t[0][k][receive_idx] = trvbuffer[0][(i*n*3)+(j*3)+(k)];
           t[1][k][receive_idx] = trvbuffer[1][(i*n*3)+(j*3)+(k)];
           t[2][k][receive_idx] = trvbuffer[2][(i*n*3)+(j*3)+(k)];
+          
           t[3][k][receive_idx] = trvbuffer[3][(i*n*3)+(j*3)+(k)];
           t[4][k][receive_idx] = trvbuffer[4][(i*n*3)+(j*3)+(k)];
           t[5][k][receive_idx] = trvbuffer[5][(i*n*3)+(j*3)+(k)];
         }
+          int x = receive_idx;
+          printf("AFTER GHOST MYRANK:%i RECEIVED :%i\n %.5f %.5f %.5f\n%.5f %.5f %.5f\n%.5f %.5f %.5f\n", myrank, tid[x], t[0][0][x], t[0][1][x], t[0][2][x], t[1][0][x], t[1][1][x], t[1][2][x], t[2][0][x], t[2][1][x], t[2][2][x]);
         receive_idx++;
       }
       timerend(&t4);

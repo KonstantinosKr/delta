@@ -91,9 +91,9 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
     iREAL theta = (rng2-rng1) * (drand48()) + rng1;
     iREAL myradius = ((drand48()*eps)+1.0-eps) * radius;
     
-    v[i][0] = myradius*sin(phi) * cos(theta);
-    v[i][1] = myradius*sin(phi) * sin(theta);
-    v[i][2] = myradius*cos(phi);
+    v[i][0] = (myradius*sin(phi) * cos(theta))*1E6;
+    v[i][1] = (myradius*sin(phi) * sin(theta))*1E6;
+    v[i][2] = (myradius*cos(phi))*1E6;
   }
   
   TRI* tr = NULL;
@@ -236,36 +236,36 @@ counter = 0;
 for(int i=idx;i<idx+n;i++)
 {
     //SPATIAL POINT A
-    t[0][0][i] = point[0][counter];
-    t[0][1][i] = point[1][counter];
-    t[0][2][i] = point[2][counter];
+    t[0][0][i] = point[0][counter]/1E6;
+    t[0][1][i] = point[1][counter]/1E6;
+    t[0][2][i] = point[2][counter]/1E6;
     
     //REFERENTIAL POINT A
-    t[3][0][i] = point[0][counter];
-    t[3][1][i] = point[1][counter];
-    t[3][2][i] = point[2][counter];
+    t[3][0][i] = point[0][counter]/1E6;
+    t[3][1][i] = point[1][counter]/1E6;
+    t[3][2][i] = point[2][counter]/1E6;
     
     counter++;
     //SPATIAL POINT B
-    t[1][0][i] = point[0][counter];
-    t[1][1][i] = point[1][counter];
-    t[1][2][i] = point[2][counter];
+    t[1][0][i] = point[0][counter]/1E6;
+    t[1][1][i] = point[1][counter]/1E6;
+    t[1][2][i] = point[2][counter]/1E6;
     
     //REFENTIAL POINT B
-    t[4][0][i] = point[0][counter];
-    t[4][1][i] = point[1][counter];
-    t[4][2][i] = point[2][counter];
+    t[4][0][i] = point[0][counter]/1E6;
+    t[4][1][i] = point[1][counter]/1E6;
+    t[4][2][i] = point[2][counter]/1E6;
     
     counter++;
     //SPATIAL POINT C
-    t[2][0][i] = point[0][counter];
-    t[2][1][i] = point[1][counter];
-    t[2][2][i] = point[2][counter];
+    t[2][0][i] = point[0][counter]/1E6;
+    t[2][1][i] = point[1][counter]/1E6;
+    t[2][2][i] = point[2][counter]/1E6;
     
     //SPATIAL POINT C
-    t[5][0][i] = point[0][counter];
-    t[5][1][i] = point[1][counter];
-    t[5][2][i] = point[2][counter];
+    t[5][0][i] = point[0][counter]/1E6;
+    t[5][1][i] = point[1][counter]/1E6;
+    t[5][2][i] = point[2][counter]/1E6;
     
     counter++;
     

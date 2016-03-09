@@ -247,7 +247,7 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
 {
   nb = 2;
   int ptype[nb];
-  for(int i = 0; i < nb; i++){ptype[i] = 0;}
+  for(int i = 0; i < nb; i++){ptype[i] = 1;}
   
   iREAL mint, maxt;
   for(int i = 0; i < nb; i++)

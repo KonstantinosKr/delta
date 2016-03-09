@@ -376,8 +376,8 @@ void loba_getbox (struct loba *lb, int part, iREAL lo[3], iREAL hi[3])
 }
 
 //get triangle tids that overlap into neighbors
-void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *t[3][3], int *tid, int *pid, 
-                    int *ghostTID, int *ghostPID, int *nGhosts, 
+void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *t[6][3], int *tid, int *pid, 
+                    int *ghostlocalTID, int *ghostTID, int *ghostPID, int *nGhosts, 
                     int *nGhostNeighbors, int *ghostNeighborhood, 
                     int *ghostTIDNeighbors[], int *ghostTIDcrosses)
 {
@@ -453,6 +453,7 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *
         }
       }
       ghostTIDcrosses[idx] = counter;
+      ghostlocalTID[idx] = i;
       ghostTID[idx] = tid[i];
       ghostPID[idx] = pid[i];
       idx++;

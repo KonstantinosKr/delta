@@ -85,6 +85,7 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
       
       if(dist < margin)
       {
+        printf("PARTICLE A:%i T:%i is in CONTACT WITH PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
         iREAL midpt[3], normal[3];
         
         midpt[0] = (p[0][j]+q[0][j])/2; //x
@@ -172,6 +173,7 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
         normal[0] = ((q[0][j] - p[0][j])/depth);// depth for inclusion to normal
         normal[1] = ((q[1][j] - p[1][j])/depth);
         normal[2] = ((q[2][j] - p[2][j])/depth);
+        printf("PARTICLE A:%i T:%i is in CONTACT WITH GHOST PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
         
         int found=0;
         for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)

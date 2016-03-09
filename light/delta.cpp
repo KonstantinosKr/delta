@@ -102,7 +102,7 @@ int main (int argc, char **argv)
 
 	for(int i=0;i<size;i++) tid[i] = INT_MAX; 
 	
-	init_enviroment(2, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);  
+	init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);  
 	printf("NT:%i NB:%i\n", nt, nb);
   
   std::vector<contact> *conpnt = new std::vector<contact>[nb];

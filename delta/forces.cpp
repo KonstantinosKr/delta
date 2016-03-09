@@ -55,7 +55,7 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
   int *rank = (int *) malloc(nb*sizeof(int));
   int *fpid = (int *) malloc(nb*sizeof(int));
   int nranks = 0;
-  for (int i = 1; i <= nb; i++)
+  for (int i = 0; i < nb; i++)
   {
     iREAL oi[3], v[3], x[3];
 
@@ -75,7 +75,7 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
     force[1][i] = 0;
     force[2][i] = 0;
 
-    /* update contact forces */
+    // update contact forces
     for(unsigned int k = 0; k<conpnt[i].size(); k++)
     {
       iREAL p[3], z[3], vi[3], vj[3], oj[3], vij[3], oij[3], a[3];
@@ -105,7 +105,6 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       vj[0] = oj[1]*z[2]-oj[2]*z[1] + linear[0][j];
       vj[1] = oj[2]*z[0]-oj[0]*z[2] + linear[1][j];
       vj[2] = oj[0]*z[1]-oj[1]*z[0] + linear[2][j];
-
       SUB (vj, vi, vij); // relative linear velocity
       SUB (oj, oi, oij); // relative angular velocity
 
@@ -168,8 +167,6 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       {
         rank[nranks] = qrank;
         fpid[nranks++] = i;
-        if(myrank == 0)
-        force[0][i] = 222;
       }
       else
       {
@@ -182,7 +179,7 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
     
   migrateForce(lb, myrank, rank, fpid, nranks, force, torque);
   
-  for(int i=1;i<=nb;i++)
+  for(int i=0;i<nb;i++)
   {
     printf("Total Force of body: %i is: %f %f %f\n", i, force[0][i], force[1][i], force[2][i]);
     printf("Total Torque of body: %i is: %f %f %f\n", i, torque[0][i], torque[1][i], torque[2][i]);
