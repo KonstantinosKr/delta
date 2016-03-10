@@ -32,23 +32,21 @@ int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, 
   iREAL kn = material::iparam[SPRING][ij];
   iREAL en = material::iparam[DAMPER][ij] * sqrt(kn*ma);
   iREAL vn = DOT(vij,n);
-  iREAL fn = kn*depth + en*vn;
+  iREAL fn = (kn*depth) + (en*vn);
   
-  printf("kn:%f, en:%f, vn:%f, fn:%f depth:%f, vij[0]:%f vij[1]:%f vij[2]:%f\n", kn, en, vn, fn, depth, vij[0], vij[1], vij[2]); 
+  printf("kn:%f, en:%f, vn:%f, fn:%f depth:%f, vij[0]:%f vij[1]:%f vij[2]:%f mass[i]:%f mass[j]:%f\n", kn, en, vn, fn, depth, vij[0], vij[1], vij[2], mass[i], mass[j]); 
   f[0] = fn*n[0];
   f[1] = fn*n[1];
   f[2] = fn*n[2];
   printf("CONTACT F[0]: %f, F[1]: %f, F[2]: %f\n", f[0], f[1], f[2]); 
  
-  // TODO
   return depth < 0.0 ? 1 : 0;
 }
 
-// return pairing index based on (i,j) pairing of colors
 int pairing (int i, int j){return 0;}
 
 void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb, 
-            iREAL * position[3], iREAL * angular[6], iREAL * linear[3],
+            iREAL * position[6], iREAL * angular[6], iREAL * linear[3],
             iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[])
 {
 
@@ -71,10 +69,6 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
     x[1] = position[1][i];
     x[2] = position[2][i];
       
-    force[0][i] = 0;
-    force[1][i] = 0;
-    force[2][i] = 0;
-
     // update contact forces
     for(unsigned int k = 0; k<conpnt[i].size(); k++)
     {
@@ -128,19 +122,21 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
           break;
       }
       
-      a[0] = conpnt[i][j].point[0]-x[0];//boundary
-      a[1] = conpnt[i][j].point[1]-x[1];
-      a[2] = conpnt[i][j].point[2]-x[2];
+      a[0] = conpnt[i][k].point[0]-x[0];//boundary
+      a[1] = conpnt[i][k].point[1]-x[1];
+      a[2] = conpnt[i][k].point[2]-x[2];
       
       //master force
       force[0][i] += f[0];
       force[1][i] += f[1];
       force[2][i] += f[2];
 
+      printf("RANK:%i contact point of body: %i is: %f %f %f\n", myrank, j, conpnt[i][k].point[0], conpnt[i][k].point[1], conpnt[i][k].point[2]);
+      
       torque[0][i] += a[1]*f[2] - a[2]*f[1];//cross product
       torque[1][i] += a[2]*f[0] - a[0]*f[2];
       torque[2][i] += a[0]*f[1] - a[1]*f[0];
-
+      
       //add force to slaves
       f[0] = -f[0];
       f[1] = -f[1];
@@ -149,40 +145,42 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       force[0][j] += f[0];
       force[1][j] += f[1];
       force[2][j] += f[2];
-      
-      a[0] = conpnt[i][j].point[0]-position[0][j];//boundary
-      a[1] = conpnt[i][j].point[1]-position[1][j];
-      a[2] = conpnt[i][j].point[2]-position[2][j];
+
+      a[0] = conpnt[i][k].point[0]-position[0][j];//boundary
+      a[1] = conpnt[i][k].point[1]-position[1][j];
+      a[2] = conpnt[i][k].point[2]-position[2][j];
 
       torque[0][j] += a[1]*f[2] - a[2]*f[1];//cross product
       torque[1][j] += a[2]*f[0] - a[0]*f[2];
       torque[2][j] += a[0]*f[1] - a[1]*f[0];
     }
+    
     std::vector<contact>().swap(conpnt[i]);
-    if(force[0][i] != 0.0 && force[1][i] != 0.0 && force[2][i] != 0.0)
+    
+    int qrank;
+    loba_query(lb, x, &qrank); 
+    if(qrank != myrank)
     {
-      int qrank;
-      loba_query(lb, x, &qrank); 
-      if(qrank != myrank)
+      if(force[0][i]!=0.0 && force[0][i]!=0.0 &&force[2][i] !=0.0)
       {
         rank[nranks] = qrank;
         fpid[nranks++] = i;
       }
-      else
-      {
-        force[0][i] += mass[i] * gravity[0];
-        force[1][i] += mass[i] * gravity[1];
-        force[2][i] += mass[i] * gravity[2];
-      }
+    }
+    else
+    {
+      force[0][i] += mass[i] * gravity[0];
+      force[1][i] += mass[i] * gravity[1];
+      force[2][i] += mass[i] * gravity[2];
     }
   }
-    
   migrateForce(lb, myrank, rank, fpid, nranks, force, torque);
+  //migrateForceGlobal(lb, myrank, nb, position, force, torque);
   
   for(int i=0;i<nb;i++)
   {
-    printf("Total Force of body: %i is: %f %f %f\n", i, force[0][i], force[1][i], force[2][i]);
-    printf("Total Torque of body: %i is: %f %f %f\n", i, torque[0][i], torque[1][i], torque[2][i]);
+    printf("RANK:%i Total Force of body: %i is: %f %f %f\n", myrank, i, force[0][i], force[1][i], force[2][i]);
+    printf("RANK:%i Total Torque of body: %i is: %f %f %f\n", myrank, i, torque[0][i], torque[1][i], torque[2][i]);
   }
 }
 

@@ -79,22 +79,21 @@ int main (int argc, char **argv)
   iREAL *t[6][3]; // triangles
   iREAL *p[3],*q[3];//p and q points
   
-  material material();
   iREAL *mass; // scalar mass
   iREAL *force[3]; // total spatial force
   iREAL *torque[3]; // total spatial torque
   
+  iREAL *position[6]; // mass center current and reference positions
   iREAL *angular[6]; // angular velocities (referential, spatial)
   iREAL *linear[3]; // linear velocities
   iREAL *rotation[9]; // rotation operators
-  iREAL *position[6]; // mass center current and reference positions
   iREAL *inertia[9]; // inertia tensors
   iREAL *inverse[9]; // inverse inertia tensors 
   
   iREAL lo[3] = {-500, -500, -500}; // lower corner
   iREAL hi[3] = {500, 500, 500}; // upper corner
     
-  iREAL gravity[3] = {0.0, 100.0, 0.0};
+  iREAL gravity[3] = {0.0, 0.0, 0.0};
   
   int size = 2700000; // memory buffer size
  
@@ -135,8 +134,6 @@ int main (int argc, char **argv)
   mass = (iREAL *) malloc(size*sizeof(iREAL));
 
   for(int i=0;i<size;i++) tid[i] = INT_MAX; 
-
-  std::vector<contact> *conpnt = (std::vector<contact> *) malloc(size*sizeof(std::vector<contact>));
   
   int num_import, num_export, *import_procs, *import_to_part, *export_procs, *export_to_part;
   ZOLTAN_ID_PTR import_global_ids, import_local_ids, export_global_ids, export_local_ids;
@@ -167,12 +164,11 @@ int main (int argc, char **argv)
   }
   
   init_migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse, mass);
+  
+  std::vector<contact> *conpnt = new std::vector<contact>[nb]; 
  
   printf("RANK:%i NB:%i\n", myrank, nb);
-  for(int i=0;i<nb;i++) printf("MYRANK:%i MASS[%i]: %f\n", myrank, i, mass[i]);
         
-  //for(int i=0;i<nt;i++)printf("MYRANK:%i :%i\n%.5f %.5f %.5f\n%.5f %.5f %.5f\n%.5f %.5f %.5f\n", myrank, i, t[0][0][i], t[0][1][i], t[0][2][i], t[1][0][i], t[1][1][i], t[1][2][i], t[2][0][i], t[2][1][i], t[2][2][i]);
-
   for(iREAL time = step; time < 0.1; time+=step)
   {
     if(!myrank){printf("TIMESTEP: %i\n", timesteps);} 
@@ -196,7 +192,6 @@ int main (int argc, char **argv)
     timerend (&tmigration[timesteps]); 
     
     printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
-  //for(int i=0;i<nt;i++)printf("MYRANK:%i :%i\n%.5f %.5f %.5f\n%.5f %.5f %.5f\n%.5f %.5f %.5f\n", myrank, i, t[0][0][i], t[0][1][i], t[0][2][i], t[1][0][i], t[1][1][i], t[1][2][i], t[2][0][i], t[2][1][i], t[2][2][i]);
     
     timer1 = 0.0;
     timer2 = 0.0;
@@ -205,7 +200,6 @@ int main (int argc, char **argv)
     timerstart (&tdataExchange[timesteps]);
     migrateGhosts(lb, myrank, nt, nb, t, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
-  //for(int i=0;i<nt;i++)printf("MYRANK:%i :%i\n%.5f %.5f %.5f\n%.5f %.5f %.5f\n%.5f %.5f %.5f\n", myrank, i, t[0][0][i], t[0][1][i], t[0][2][i], t[1][0][i], t[1][1][i], t[1][2][i], t[2][0][i], t[2][1][i], t[2][2][i]);
     
     tTimer1[timesteps] = timer1;
     tTimer2[timesteps] = timer2;
@@ -213,15 +207,16 @@ int main (int argc, char **argv)
     printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
     forces(lb, myrank, conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
-    for(int i=0;i<=nb;i++) printf("MYRANK:%i POSITION[%i]: %f %f %f \n", myrank, i, position[0][i], position[1][i], position[2][i]);
     
     timerstart (&tdynamics[timesteps]);
     dynamics(lb, myrank, conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
     timerend (&tdynamics[timesteps]);
-    //printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
+      
+    //migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
     
     output_state(lb, myrank, nt, t, timesteps);
     timesteps++;
+    if(timesteps==300) break;
   }
 
   iREAL subtotal = 0;
@@ -378,6 +373,7 @@ int main (int argc, char **argv)
     printf("\nComputation Finished.\n");
     postProcessing(nprocs, size, timesteps);
     printf("Post-Processing Finished.\n");
+    return 0;
   }
 
   // DESTROY

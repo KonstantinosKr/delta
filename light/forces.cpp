@@ -34,7 +34,7 @@ int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, 
   iREAL vn = DOT(vij,n);
   iREAL fn = (kn*depth) + (en*vn); 
   
-  printf("kn:%f, en:%f, vn:%f, fn:%f depth:%f, vij[0]:%f vij[1]:%f vij[2]:%f\n", kn, en, vn, fn, depth, vij[0], vij[1], vij[2]); 
+  printf("kn:%f, en:%f, vn:%f, fn:%f depth:%f, vij[0]:%f vij[1]:%f vij[2]:%f mass[i]:%f mass[j]:%f\n", kn, en, vn, fn, depth, vij[0], vij[1], vij[2], mass[i], mass[j]); 
   f[0] = fn*n[0];
   f[1] = fn*n[1];
   f[2] = fn*n[2];
@@ -66,9 +66,6 @@ void forces (std::vector<contact> conpnt[], int nb,
     x[1] = position[1][i];
     x[2] = position[2][i];
       
-    force[0][i] = 0;
-    force[1][i] = 0;
-    force[2][i] = 0;
 
     /* update contact forces */
     for(unsigned int k = 0; k<conpnt[i].size(); k++)
@@ -124,9 +121,9 @@ void forces (std::vector<contact> conpnt[], int nb,
           break;
       }
       
-      a[0] = conpnt[i][j].point[0]-x[0];//boundary
-      a[1] = conpnt[i][j].point[1]-x[1];
-      a[2] = conpnt[i][j].point[2]-x[2];
+      a[0] = conpnt[i][k].point[0]-x[0];//boundary
+      a[1] = conpnt[i][k].point[1]-x[1];
+      a[2] = conpnt[i][k].point[2]-x[2];
       
       //master force
       force[0][i] += f[0];
@@ -146,15 +143,18 @@ void forces (std::vector<contact> conpnt[], int nb,
       force[1][j] += f[1];
       force[2][j] += f[2];
       
-      a[0] = conpnt[i][j].point[0]-position[0][j];//boundary
-      a[1] = conpnt[i][j].point[1]-position[1][j];
-      a[2] = conpnt[i][j].point[2]-position[2][j];
+      a[0] = conpnt[i][k].point[0]-position[0][j];//boundary
+      a[1] = conpnt[i][k].point[1]-position[1][j];
+      a[2] = conpnt[i][k].point[2]-position[2][j];
 
       torque[0][j] += a[1]*f[2] - a[2]*f[1];//cross product
       torque[1][j] += a[2]*f[0] - a[0]*f[2];
       torque[2][j] += a[0]*f[1] - a[1]*f[0];
     }
     std::vector<contact>().swap(conpnt[i]);
+    force[0][i] += mass[i] * gravity[0];
+    force[1][i] += mass[i] * gravity[1];
+    force[2][i] += mass[i] * gravity[2];
   }
     
   for(int i=0;i<nb;i++)

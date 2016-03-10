@@ -108,6 +108,7 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
        
         if(found!=1)
         {
+          printf("PARTICLE A:%i T:%i is in CONTACT WITH PARTICLE B:%i T:%i, DEPTH:%f DIST:%f\n", pid[i], tid[i], pid[j], tid[j], depth, dist);
           int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];
@@ -125,6 +126,7 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
 
           contact point(id, color, midpt, normal, depth, pp, qq);
           conpnt[pid[i]].push_back(point);
+       printf("contact point of body: %i is: %f %f %f\n", j,  conpnt[pid[i]][0].point[0], conpnt[pid[i]][0].point[1], conpnt[pid[i]][0].point[2]); 
         }
       }
     }
@@ -184,6 +186,7 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
        
         if(found!=1)
         {
+        printf("PARTICLE A:%i T:%i is in CONTACT WITH GHOST PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
           int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];

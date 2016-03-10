@@ -57,6 +57,5 @@ void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
                     iREAL *position[6], iREAL *inertia[9], 
                     iREAL *inverse[9]);
 
-void migrateForce(struct loba *lb, int myrank, int *rank, int nranks, iREAL *force[3], iREAL *torque[3]);
-
 void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks, iREAL *force[3], iREAL *torque[3]);
+void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3], iREAL *force[3], iREAL *torque[3]);

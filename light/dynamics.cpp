@@ -74,6 +74,8 @@ void dynamics (std::vector<contact> conpnt[],
 
   for (int i = 0; i<nb; i++) // time integration 
   {
+    printf("POSITION[%i]: %f %f %f \n", i, position[0][i], position[1][i], position[2][i]); 
+    
     iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], t[3], T[3], DL[9], L2[9], A[3], B[3];
 
     O[0] = angular[0][i];
@@ -244,7 +246,7 @@ void dynamics (std::vector<contact> conpnt[],
     t[2][0][i] = c[0];
     t[2][1][i] = c[1];
     t[2][2][i] = c[2];
-    
+   /* 
     if (t[0][0][i] < lo[0]) linear[0][j] *= -1;
     if (t[0][1][i] < lo[1]) linear[1][j] *= -1;
     if (t[0][2][i] < lo[2]) linear[2][j] *= -1;
@@ -265,10 +267,10 @@ void dynamics (std::vector<contact> conpnt[],
     if (t[2][0][i] > hi[0]) linear[0][j] *= -1;
     if (t[2][1][i] > hi[1]) linear[1][j] *= -1;
     if (t[2][2][i] > hi[2]) linear[2][j] *= -1; 
-  }
+  */}
 }
 
-void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[3], iREAL step)
+void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)
 {
   for(int i = 0; i<nb;i++)
   {

@@ -74,20 +74,7 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
 
   for (int i = 0; i<nb; i++) // time integration 
   {
-    
-    iREAL x[3];
-    x[0] = position[0][i];
-    x[1] = position[1][i];
-    x[2] = position[2][i];
-
-    
     printf("MYRANK:%i POSITION[%i]: %f %f %f \n", myrank, i, position[0][i], position[1][i], position[2][i]);
-    int qrank;
-    loba_query(lb, x, &qrank); 
-    if(qrank != myrank)
-    {
-      continue;
-    }
     
     iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], t[3], T[3], DL[9], L2[9], A[3], B[3];
 
@@ -130,7 +117,7 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     I[8] = inverse[8][i];
 
     im = 1/mass[i];
-    printf("MASS:%f\n", mass[i]); 
+    
     f[0] = force[0][i];
     f[1] = force[1][i];
     f[2] = force[2][i];
@@ -184,8 +171,6 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     position[0][i] += step*v[0];
     position[1][i] += step*v[1];
     position[2][i] += step*v[2];
-    printf("MYRANK:%i v[%i]: %f %f %f \n", myrank, i, linear[0][i], linear[1][i], linear[2][i]);
-    printf("MYRANK:%i POSITION[%i]: %f %f %f \n", myrank, i, position[0][i], position[1][i], position[2][i]);
 
     angular[0][i] = O[0];
     angular[1][i] = O[1];
@@ -200,8 +185,6 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     linear[2][i] = v[2];
   }
 
-  migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
-  
   for (int i = 0; i<nt; i++)
   {
     iREAL L[9], X[3], x[3], C[3], c[3];
@@ -263,7 +246,7 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     t[2][0][i] = c[0];
     t[2][1][i] = c[1];
     t[2][2][i] = c[2];
-    
+/*    
     if (t[0][0][i] < lo[0]) linear[0][j] *= -1;
     if (t[0][1][i] < lo[1]) linear[1][j] *= -1;
     if (t[0][2][i] < lo[2]) linear[2][j] *= -1;
@@ -284,12 +267,12 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     if (t[2][0][i] > hi[0]) linear[0][j] *= -1;
     if (t[2][1][i] > hi[1]) linear[1][j] *= -1;
     if (t[2][2][i] > hi[2]) linear[2][j] *= -1; 
-  }
+  */}
 }
 
 void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)
 {
-  for(int i = 1; i<=nb;i++)
+  for(int i = 0; i<nb;i++)
   {
     iREAL O[3], L1[9], DL[9], L2[9], o[3];
 

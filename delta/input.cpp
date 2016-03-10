@@ -504,12 +504,95 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
 
 }
 
-void minion(int &nt, int &nb, iREAL *t[6][3], 
+void eggs(int &nt, int &nb, iREAL *t[6][3], 
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
                     int *parmat, int tid[], int pid[], 
                     iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
+  nb = 2;
+  int ptype[nb];
+  for(int i = 0; i < nb; i++){ptype[i] = 1;}
+  
+  iREAL mint, maxt;
+  for(int i = 0; i < nb; i++)
+  {
+    switch(ptype[i])
+    {
+      case 0:
+      {
+        //create point cloud and do delaunay hull triangulation
+        //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
+        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        iREAL lin[3], ang[3]; iREAL ma;
+        if(i == 0)
+        {
+          lin[2] = 100;
+        }
+        else 
+        {
+          lin[2] = 100;
+        }
+        lin[0] = lin[1] = 0;
+        ang[0] = ang[1] = ang[2] = 0;
+        ma = 1;
+        condition_enviroment(i, lin, ang, ma, linear, angular, rotation, mass, inertia, inverse, parmat);
+        break;
+      }
+      case 1:
+      {
+        load_vtk(nt, i, t, tid, pid, position, mint, maxt);
+        iREAL lin[3], ang[3]; iREAL ma;
+
+        lin[1] = lin[2] = 0;
+        if(i == 0)
+        {
+          lin[2] = 100;
+        }
+        else 
+        {
+          lin[2] = -100;
+        }
+        lin[0] = lin[1] = 0;
+        ang[0] = ang[1] = ang[2] = 0;
+        ma = 1;
+        condition_enviroment(i, lin, ang, ma, linear, angular, rotation, mass, inertia, inverse, parmat);
+        break;
+      }
+    }
+  }
+  
+  int radius = 10;
+
+  int idx = 0; lo[0] =0; lo[1] = 0; lo[2] = 0;
+  for(int ii = lo[0]; ii < hi[0]; ii=ii+radius)
+  {
+    for(int jj = lo[1]; jj < hi[1]; jj=jj+radius)
+    {
+      for(int kk = lo[2]; kk < hi[2]; kk=kk+radius)
+      {
+        position[0][idx] = ii+(radius/2);
+        position[1][idx] = jj+(radius/2);
+        position[2][idx] = kk+(radius/2);
+        
+        position[3][idx] = ii+(radius/2);
+        position[4][idx] = jj+(radius/2);
+        position[5][idx] = kk+(radius/2);
+        
+        for(int j = 0; j < nt; j++)
+        {
+          if(pid[j] == idx)
+          {
+            translate_enviroment(j, idx, t, position);
+          }
+        }
+        idx++;
+        if(idx > nb) break;
+      }
+      if(idx > nb) break;
+    }
+    if(idx > nb) break;
+  }
 
 }

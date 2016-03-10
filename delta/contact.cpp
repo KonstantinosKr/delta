@@ -76,7 +76,6 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
     bf (i+1, e, a, b, c, t[0], t[1], t[2], p, q);//use tasks 
     
     iREAL margin = 15E-2;
-    
     for(int j=i+1;j<e;j++) //careful; range can overflow due to ghosts particles
     {
       if(pid[i] == pid[j])continue;
@@ -85,8 +84,7 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
       
       if(dist < margin)
       {
-        printf("PARTICLE A:%i T:%i is in CONTACT WITH PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
-        iREAL midpt[3], normal[3];
+        iREAL midpt[3], normal[3];  
         
         midpt[0] = (p[0][j]+q[0][j])/2; //x
         midpt[1] = (p[1][j]+q[1][j])/2; //y
@@ -101,7 +99,7 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
         int found=0;
         for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)
         {
-          if(conpnt[pid[i]][ii].pp[0] == p[0][j] ||conpnt[pid[i]][ii].pp[1] == p[1][j] ||conpnt[pid[i]][ii].pp[2] == p[2][j] || conpnt[pid[i]][ii].qq[0] == q[0][j] ||conpnt[pid[i]][ii].qq[1] == q[1][j] || conpnt[pid[i]][ii].qq[2] == q[2][j]) 
+          if(conpnt[pid[i]][ii].pp[0] == p[0][j] || conpnt[pid[i]][ii].pp[1] == p[1][j] || conpnt[pid[i]][ii].pp[2] == p[2][j] || conpnt[pid[i]][ii].qq[0] == q[0][j] ||conpnt[pid[i]][ii].qq[1] == q[1][j] || conpnt[pid[i]][ii].qq[2] == q[2][j]) 
           {
             found = 1;
           }
@@ -109,6 +107,7 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[],
        
         if(found!=1)
         {
+          printf("PARTICLE A:%i T:%i is in CONTACT WITH PARTICLE B:%i T:%i DEPTH:%f DIST:%f\n", pid[i], tid[i], pid[j], tid[j], depth, dist);
           int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];
@@ -173,7 +172,6 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
         normal[0] = ((q[0][j] - p[0][j])/depth);// depth for inclusion to normal
         normal[1] = ((q[1][j] - p[1][j])/depth);
         normal[2] = ((q[2][j] - p[2][j])/depth);
-        printf("PARTICLE A:%i T:%i is in CONTACT WITH GHOST PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
         
         int found=0;
         for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)
@@ -186,6 +184,7 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
        
         if(found!=1)
         {
+        //printf("PARTICLE A:%i T:%i is in CONTACT WITH GHOST PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
           int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];

@@ -120,7 +120,7 @@ int main (int argc, char **argv)
    
     printf("BODY1 XVelocity:%f\n", linear[2][0]);
     printf("BODY2 XVelocity:%f\n", linear[2][1]);
-    contact_detection (0, nt, 0, nt, t, tid, pid, linear, p, q, conpnt);
+    contact_detection (0, nt, t, tid, pid, linear, p, q, conpnt);
 		
     forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     
@@ -128,6 +128,7 @@ int main (int argc, char **argv)
    
     output_state(nt, t, timesteps);
     timesteps++;
+    if(timesteps==270) break;
   }
 	printf("\nComputation Finished.\n");
 
