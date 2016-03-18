@@ -33,7 +33,7 @@ void output_state(struct loba *lb, int myrank, int nt, iREAL *t[6][3], int times
   sprintf(iter, "%u_%i.vtk", timesteps, myrank);
   char filename[100] = "output/dump/output"; //care or buffer overflow
   strcat(filename, iter);
-  printf("%s\n", filename);
+  //printf("%s\n", filename);
     
   FILE *fp = fopen(filename, "w+");
   if( fp == NULL )

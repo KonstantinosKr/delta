@@ -58,7 +58,7 @@ int main (int argc, char **argv)
   material::ikind[2] = GRANULAR;
   
   //GRANULAR interaction type parameters 
-  material::iparam[SPRING][GRANULAR] = 1E2;
+  material::iparam[SPRING][GRANULAR] = 1E4;
   material::iparam[DAMPER][GRANULAR] = 1;
   material::iparam[FRISTAT][GRANULAR] = 0;
   material::iparam[FRIDYN][GRANULAR] = 0;
@@ -95,7 +95,7 @@ int main (int argc, char **argv)
     
   iREAL gravity[3] = {0.0, 0.0, 0.0};
   
-  int size = 2700000; // memory buffer size
+  int size = 2700; // memory buffer size
  
   for (int i = 0; i < 3; i ++)
   {
@@ -165,7 +165,7 @@ int main (int argc, char **argv)
   
   init_migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse, mass);
   
-  std::vector<contact> *conpnt = new std::vector<contact>[nb]; 
+  std::vector<contact> *conpnt = new std::vector<contact>[100]; 
  
   printf("RANK:%i NB:%i\n", myrank, nb);
         
@@ -181,7 +181,7 @@ int main (int argc, char **argv)
                   &export_global_ids, &export_local_ids);
     timerend (&tbalance[timesteps]);
   
-    printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
+    //printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
    
     timerstart(&tmigration[timesteps]);
     migrate (lb, nt, nb, t, parmat, tid, pid, 
@@ -191,7 +191,7 @@ int main (int argc, char **argv)
                export_global_ids, export_local_ids);
     timerend (&tmigration[timesteps]); 
     
-    printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
+    //printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
     
     timer1 = 0.0;
     timer2 = 0.0;
@@ -204,7 +204,8 @@ int main (int argc, char **argv)
     tTimer1[timesteps] = timer1;
     tTimer2[timesteps] = timer2;
     tTimer3[timesteps] = timer3;
-    printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
+  
+    //printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
     forces(lb, myrank, conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     

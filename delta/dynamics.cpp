@@ -74,7 +74,7 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
 
   for (int i = 0; i<nb; i++) // time integration 
   {
-    printf("MYRANK:%i POSITION[%i]: %f %f %f \n", myrank, i, position[0][i], position[1][i], position[2][i]);
+    //printf("MYRANK:%i POSITION[%i]: %f %f %f ROTATION[:%i]: %f %f %f %f %f %f %f %f %f\n", myrank, i, position[0][i], position[1][i], position[2][i], i, rotation[0][i], rotation[1][i], rotation[2][i], rotation[3][i], rotation[4][i], rotation[5][i], rotation[6][i], rotation[7][i], rotation[8][i]);
     
     iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], t[3], T[3], DL[9], L2[9], A[3], B[3];
 

@@ -161,17 +161,6 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
       
       if(dist < margin)
       {
-        iREAL midpt[3], normal[3];
-        
-        midpt[0] = (p[0][j]+q[0][j])/2; //x
-        midpt[1] = (p[1][j]+q[1][j])/2; //y
-        midpt[2] = (p[2][j]+q[2][j])/2; //z
-    
-        iREAL depth = margin-dist;
-        
-        normal[0] = ((q[0][j] - p[0][j])/depth);// depth for inclusion to normal
-        normal[1] = ((q[1][j] - p[1][j])/depth);
-        normal[2] = ((q[2][j] - p[2][j])/depth);
         
         int found=0;
         for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)
@@ -185,12 +174,25 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
         if(found!=1)
         {
         //printf("PARTICLE A:%i T:%i is in CONTACT WITH GHOST PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
+          iREAL midpt[3], normal[3];
+          
+          midpt[0] = (p[0][j]+q[0][j])/2; //x
+          midpt[1] = (p[1][j]+q[1][j])/2; //y
+          midpt[2] = (p[2][j]+q[2][j])/2; //z
+      
+          iREAL depth = margin-dist;
+          
+          normal[0] = ((q[0][j] - p[0][j])/depth);// depth for inclusion to normal
+          normal[1] = ((q[1][j] - p[1][j])/depth);
+          normal[2] = ((q[2][j] - p[2][j])/depth);
+          
           int color[2], id[2];
           id[0] = pid[i];
           id[1] = pid[j];
           
           color[0] = 0;
           color[1] = 0;
+          
           iREAL pp[3]; iREAL qq[3];
           pp[0] = p[0][j];
           pp[1] = p[1][j];

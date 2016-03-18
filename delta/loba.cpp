@@ -462,6 +462,7 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *
   *nGhosts = idx;
   *nGhostNeighbors = uniqueRanks;
   free(ranks);
+  free(parts);
 }
 
 /* free load balancer */

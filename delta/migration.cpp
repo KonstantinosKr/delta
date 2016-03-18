@@ -1012,18 +1012,21 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   int nNeighbors=0;
 
   MPI_Comm_size(MPI_COMM_WORLD, &nproc);
+  
   int *neighborhood = (int *) malloc(nproc * sizeof(int));
+  
   loba_getAdjacent(lb, myrank, neighborhood, &nNeighbors);
   
   int *ghostTID = (int*) malloc(nt*sizeof(int));
-  int *ghostlocalTID = (int*) malloc(nt*sizeof(int));
   int *ghostPID = (int*) malloc(nt*sizeof(int));
+  int *ghostlocalTID = (int*) malloc(nt*sizeof(int));
   int **ghostTIDNeighbors = (int**) malloc(nt*sizeof(int*));
   int *ghostTIDcrosses = (int*) malloc(nt*sizeof(int));
   int *ghostNeighborhood = (int*) malloc(nproc*sizeof(int));
   
   for(int i = 0;i<nproc;i++){ghostNeighborhood[i] = -1;}
   for(int i = 0;i<nt;i++){ghostTIDNeighbors[i] = (int*) malloc(nNeighbors*sizeof(int));}
+  
   int nGhosts, nGhostNeighbors;
   
   //get triangle tids that overlap into neighbors
@@ -1031,29 +1034,24 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
                       ghostlocalTID, ghostTID, ghostPID, &nGhosts, 
                       &nGhostNeighbors, ghostNeighborhood, 
                       ghostTIDNeighbors, ghostTIDcrosses);
-  printf("RANK[%i]: overlaps:%i\n", myrank, nGhosts);
+  //printf("RANK[%i]: overlaps:%i\n", myrank, nGhosts);
   
-  //allocate memory for buffers
-  int *pivot, *tid_buffer, *pid_buffer, *rcvpivot, *rcvtid_buffer, *rcvpid_buffer;
   iREAL *tbuffer[6]; 
-  iREAL *trvbuffer[6];
-  int *parmat_buffer, *rvparmat_buffer;
-
-  tbuffer[0] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
-  tbuffer[1] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
-  tbuffer[2] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
-  tbuffer[3] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
-  tbuffer[4] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
-  tbuffer[5] = (iREAL *) malloc(nNeighbors*nGhosts*3*sizeof(iREAL));
+  tbuffer[0] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
+  tbuffer[1] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
+  tbuffer[2] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
+  tbuffer[3] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
+  tbuffer[4] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
+  tbuffer[5] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
   
-  tid_buffer = (int *) malloc(nNeighbors*nGhosts*sizeof(int));
-  pid_buffer = (int *) malloc(nNeighbors*nGhosts*sizeof(int));
-  parmat_buffer = (int *) malloc(nNeighbors*nGhosts*sizeof(int));
+  int *tid_buffer = (int *) malloc(nproc*nGhosts*sizeof(int));
+  int *pid_buffer = (int *) malloc(nproc*nGhosts*sizeof(int));
+  int *parmat_buffer = (int *) malloc(nproc*nGhosts*sizeof(int));
 
-  pivot = (int *) malloc(nNeighbors*sizeof(int));
-  rcvpivot = (int *) malloc(nNeighbors*sizeof(int));
+  int *pivot = (int *) malloc(nproc*sizeof(int));
+  int *rcvpivot = (int *) malloc(nproc*sizeof(int));
   
-  for(int i = 0; i < nNeighbors; i++)
+  for(int i = 0; i < nproc; i++)
   { //set send indices and pivots for buffers
     pivot[i] = 0; //set pivot to zero
     rcvpivot[i] = 0;  
@@ -1069,9 +1067,9 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
       int id = ghostlocalTID[i];
       int j = ghostTIDNeighbors[i][ii];
       int jj = ghostNeighborhood[j];
-      //printf("RANK[%i]: J:%i JJ:%i\n", myrank, j, jj);
       int xx = pivot[jj];
-      
+      //printf("RANK[%i]: J:%i JJ:%i xx:%i\n", myrank, j, jj, xx);
+        
       parmat_buffer[(jj*nGhosts)+xx] = parmat[oltid];
       tid_buffer[(jj*nGhosts)+xx] = oltid;
       pid_buffer[(jj*nGhosts)+xx] = olpid;
@@ -1110,15 +1108,15 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
     MPI_Send(&pivot[i], 1, MPI_INT, proc, 1, MPI_COMM_WORLD);
   }
  
-  int max = 0;
+  int n = 0;
   for(int i=0; i<nNeighbors; i++)
   {
     int proc = neighborhood[i];
     MPI_Recv(&rcvpivot[i], 1, MPI_INT, proc, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    if(rcvpivot[i] > max) max = rcvpivot[i];
+    if(rcvpivot[i] > n) n = rcvpivot[i];
   }
   
-  int n = max;
+  iREAL *trvbuffer[6];
   trvbuffer[0] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
   trvbuffer[1] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
   trvbuffer[2] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
@@ -1126,10 +1124,10 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   trvbuffer[4] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
   trvbuffer[5] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
   
-  rvparmat_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
-  rcvtid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
-  rcvpid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
- 
+  int *rvparmat_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
+  int *rcvtid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
+  int *rcvpid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
+  
   int MPISENDS = 9;
   MPI_Request *myRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
   MPI_Request *myrvRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
@@ -1152,7 +1150,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
     }
   }
 
-  for(int i=0;i<nNeighbors;i++)
+  for(int i=0; i<nNeighbors; i++)
   {
     int proc = neighborhood[i];
     if(pivot[i] > 0)
@@ -1169,7 +1167,6 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
       MPI_Isend(&rvparmat_buffer[i*nGhosts], pivot[i], MPI_INT, proc, 1, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+8]);
     }
   }
-  
   timerend(&t1);
   *timer1 = t1.total;
 
@@ -1237,12 +1234,12 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   
   if(receive_idx > nt)
   {
-    printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, nt, receive_idx);
+    //printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, nt, receive_idx);
     //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-    contact_detection (0, nt, nt, receive_idx, t, tid, pid, v, p, q, conpnt);
+    contact_detection(0, nt, nt, receive_idx, t, tid, pid, v, p, q, conpnt);
   }
   
-  for(int i=0; i<3; i++)
+  for(int i=0; i<6; i++)
   {
     free(tbuffer[i]);
     free(trvbuffer[i]);
@@ -1268,9 +1265,9 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   free(ghostPID);
   free(ghostTIDcrosses);
   free(ghostNeighborhood);
-  for(int i = 0;i<nt;i++)
+  //for(int i=0; i<nGhosts;i++)
   {
-    free(ghostTIDNeighbors[i]);
+    //free(ghostTIDNeighbors);
   }
 }
 
@@ -1306,13 +1303,11 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
     //printf("PROC:%i -> %i\n", i, parpivot[i]);
   } 
   
-  iREAL *fbuffer, *tbuffer;
-  int *paridxbuffer;
   int mul = nproc*1000;
-  fbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-  tbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-  paridxbuffer = (int *) malloc(mul*sizeof(int)); 
-  
+  iREAL *fbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
+  iREAL *tbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
+  int *paridxbuffer = (int *) malloc(mul*sizeof(int)); 
+ 
   for(int i=0; i<nproc; i++)//n processes to prepare buffers for
   {
     if(i == myrank) continue;
@@ -1331,15 +1326,12 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
       paridxbuffer[mul] = send_paridx[i][j];
     }
   }
-  
-  iREAL *rcvfbuffer, *rcvtbuffer;
-  int *rcv_paridx;
-  int parsize = 0;  
 
   int MPISENDS = 4;
   MPI_Request *myRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends
   MPI_Request *myrvRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends 
  
+ return; 
   for(int i=0; i<nproc; i++)
   {
     if(i==myrank)continue;
@@ -1352,17 +1344,21 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
     MPI_Isend(&parpivot[i], 1, MPI_INT, i, 0, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+0]);
   }
 
+  int parsize = 0;  
   for(int i=0; i<nproc; i++)
   {
     if(i==myrank)continue;
     MPI_Wait(&myrvRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
     if(parrcvpivot[i] > parsize) parsize = parrcvpivot[i];
   }
+
   for(int i=0; i<nproc; i++)
   {
     if(i==myrank)continue;
     MPI_Wait(&myRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
   }
+  iREAL *rcvfbuffer, *rcvtbuffer;
+  int *rcv_paridx;
   
   if(nproc > 0)
   {
@@ -1386,7 +1382,6 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
     MPI_Isend(&fbuffer[paridx[i]*3], parpivot[i]*3, MPI_DOUBLE, i, 2, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+2]);
     MPI_Isend(&tbuffer[paridx[i]*3], parpivot[i]*3, MPI_DOUBLE, i, 3, MPI_COMM_WORLD, &myRequest[(i*MPISENDS)+3]);
   }
- 
   for(int i=0; i<nproc; i++)
   {
     if(i==myrank)continue;
