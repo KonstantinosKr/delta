@@ -222,7 +222,7 @@ int main (int argc, char **argv)
       
     //migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
     
-    //output_state(lb, myrank, nt, t, timesteps);
+    output_state(lb, myrank, nt, t, timesteps);
     timesteps++;
     if(timesteps==300) break;
   }
@@ -379,7 +379,7 @@ int main (int argc, char **argv)
   if(!myrank)
   {
     printf("\nComputation Finished.\n");
-    //postProcessing(nprocs, size, timesteps);
+    postProcessing(nprocs, size, timesteps);
     printf("Post-Processing Finished.\n");
     return 0;
   }
