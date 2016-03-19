@@ -6,7 +6,7 @@ void getCentroid(int pid, int range1, int range2, iREAL *t[6][3], iREAL *centroi
   iREAL cx=0;
   iREAL cy=0;
   iREAL cz=0;
-
+  
   for(int i=range1;i<range2;i++)
   {
     cx = cx+t[0][0][i];
@@ -21,11 +21,11 @@ void getCentroid(int pid, int range1, int range2, iREAL *t[6][3], iREAL *centroi
     cy = cy+t[2][1][i];
     cz = cz+t[2][2][i];
   }
-
+  
   cx = cx/((range2-range1)*3);
   cy = cy/((range2-range1)*3);
   cz = cz/((range2-range1)*3);
-    
+ 
   centroid[0][pid] = cx;
   centroid[1][pid] = cy;
   centroid[2][pid] = cz;
@@ -40,11 +40,11 @@ void translate_enviroment(int i, int pid, iREAL *t[6][3], iREAL *p[6])
   t[0][0][i] = t[0][0][i] + p[0][pid];
   t[0][1][i] = t[0][1][i] + p[1][pid];
   t[0][2][i] = t[0][2][i] + p[2][pid];
-
+  
   t[1][0][i] = t[1][0][i] + p[0][pid];
   t[1][1][i] = t[1][1][i] + p[1][pid];
   t[1][2][i] = t[1][2][i] + p[2][pid];
-
+  
   t[2][0][i] = t[2][0][i] + p[0][pid];
   t[2][1][i] = t[2][1][i] + p[1][pid];
   t[2][2][i] = t[2][2][i] + p[2][pid];
@@ -52,35 +52,35 @@ void translate_enviroment(int i, int pid, iREAL *t[6][3], iREAL *p[6])
   t[3][0][i] = t[3][0][i] + p[0][pid];
   t[3][1][i] = t[3][1][i] + p[1][pid];
   t[3][2][i] = t[3][2][i] + p[2][pid];
-
+  
   t[4][0][i] = t[4][0][i] + p[0][pid];
   t[4][1][i] = t[4][1][i] + p[1][pid];
   t[4][2][i] = t[4][2][i] + p[2][pid];
-
+  
   t[5][0][i] = t[5][0][i] + p[0][pid];
   t[5][1][i] = t[5][1][i] + p[1][pid];
   t[5][2][i] = t[5][2][i] + p[2][pid];
 }
 
-void normalize(int nt, iREAL *t[6][3], iREAL mint, iREAL maxt) 
-{  
-  //range -255 to 255
-  iREAL inv_range = 510.0/(maxt-mint);
-
-  for(int i=0; i < nt; i++)
-  {
-    for(int j=0; j < 3; j++)
+void normalize(int nt, iREAL *t[6][3], iREAL mint, iREAL maxt)
+{
+    //range -255 to 255
+    iREAL inv_range = 510.0/(maxt-mint);
+    
+    for(int i=0; i < nt; i++)
     {
-      for(int k=0; k < 3; k++)
-      {
-        t[j][k][i] = -255.0 + (t[j][k][i] - mint) * inv_range;
-      }
+        for(int j=0; j < 3; j++)
+        {
+            for(int k=0; k < 3; k++)
+            {
+                t[j][k][i] = -255.0 + (t[j][k][i] - mint) * inv_range;
+            }
+        }
     }
-  }
 }
 
-void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int nb, 
-                              iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL *mint, iREAL *maxt)
+void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int nb,
+                          iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt)
 {
   iREAL v[100][3];
   for(int i = 0; i<pointsize; i++)
@@ -90,12 +90,12 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
     iREAL phi = (rng2-rng1) * (drand48()) + rng1;
     iREAL theta = (rng2-rng1) * (drand48()) + rng1;
     iREAL myradius = ((drand48()*eps)+1.0-eps) * radius;
-            
+    
     v[i][0] = myradius*sin(phi) * cos(theta);
     v[i][1] = myradius*sin(phi) * sin(theta);
     v[i][2] = myradius*cos(phi);
   }
-    
+  
   TRI* tr = NULL;
   free(tr);int pointlength = 0;
   tr = hull((iREAL *)v, pointsize, &pointlength);
@@ -104,6 +104,9 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
   for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++){counter++;}
   
   int n = counter*3;
+  int idx = nt;
+  nt += pointlength;
+  
   iREAL *point[3];
   
   point[0] = (iREAL *)malloc (n*sizeof(iREAL));
@@ -118,7 +121,7 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
     point[0][counter] = tri->ver [0][0];
     point[1][counter] = tri->ver [0][1];
     point[2][counter] = tri->ver [0][2];
-   
+    
     if(point[0][counter] < min)
     {
         min = point[0][counter];
@@ -227,21 +230,21 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
     }
     
     counter++;
-  }
-  
-  counter = 0;
-  for(int i=nt;i<nt+pointlength;i++)
-  {
+}
+
+counter = 0;
+for(int i=idx;i<idx+n;i++)
+{
     //SPATIAL POINT A
     t[0][0][i] = point[0][counter];
     t[0][1][i] = point[1][counter];
     t[0][2][i] = point[2][counter];
-  
+    
     //REFERENTIAL POINT A
     t[3][0][i] = point[0][counter];
     t[3][1][i] = point[1][counter];
     t[3][2][i] = point[2][counter];
-
+    
     counter++;
     //SPATIAL POINT B
     t[1][0][i] = point[0][counter];
@@ -252,7 +255,7 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
     t[4][0][i] = point[0][counter];
     t[4][1][i] = point[1][counter];
     t[4][2][i] = point[2][counter];
-
+    
     counter++;
     //SPATIAL POINT C
     t[2][0][i] = point[0][counter];
@@ -269,49 +272,384 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
     tid[i] = i;
     pid[i] = nb;
   }
- 
-  getCentroid(nb, nt, nt+pointlength, t, position);
-  nt+=pointlength;
   
-  *mint = min;
-  *maxt = max;
+  getCentroid(nb, idx, idx+n, t, position);
+  
+  mint = min;
+  maxt = max;
 }
 
 
-
-void wall(int &n, int &nt, int nb, iREAL *t[3][3], int *tid, int *pid, iREAL A[3], iREAL B[3], iREAL C[3], iREAL D[3])
+void wall(iREAL lo[3], iREAL hi[3], int &nt, int nb, iREAL *t[6][3], int *tid, int *pid, iREAL *position[6])
 {
-    //create rectangle with two triangles then refine
-    //T1 = A,B |
-    t[0][0][nt] = C[0];
-    t[0][1][nt] = C[1];
-    t[0][2][nt] = C[2];
+    iREAL leftUI[3], leftUO[3], leftDI[3], leftDO[3];
+    iREAL rightUI[3], rightUO[3], rightDI[3], rightDO[3];
     
-    t[1][0][nt] = A[0];
-    t[1][1][nt] = A[1];
-    t[1][2][nt] = A[2];
+    //left down inner
+    leftDI[0] = lo[0];
+    leftDI[1] = lo[1];
+    leftDI[2] = lo[2];
     
-    t[2][0][nt] = D[0];
-    t[2][1][nt] = D[1];
-    t[2][2][nt] = D[2];
+    leftDO[0] = lo[0];
+    leftDO[1] = lo[1];
+    leftDO[2] = hi[2];
+    
+    leftUI[0] = lo[0];
+    leftUI[1] = hi[1];
+    leftUI[2] = lo[2];
+    
+    leftUO[0] = lo[0];
+    leftUO[1] = hi[1];
+    leftUO[2] = hi[2];
+    
+    rightDI[0] = hi[0];
+    rightDI[1] = lo[1];
+    rightDI[2] = lo[2];
+    
+    rightDO[0] = hi[0];
+    rightDO[1] = lo[1];
+    rightDO[2] = hi[2];
+    
+    rightUI[0] = hi[0];
+    rightUI[1] = hi[1];
+    rightUI[2] = lo[2];
+    
+    rightUO[0] = hi[0];
+    rightUO[1] = hi[1];
+    rightUO[2] = hi[2];
+    
+    //for each plane put two triangles
+    //plane left
+    t[0][0][nt] = leftDI[0];
+    t[0][1][nt] = leftDI[1];
+    t[0][2][nt] = leftDI[2];
+    
+    t[1][0][nt] = leftDO[0];
+    t[1][1][nt] = leftDO[1];
+    t[1][2][nt] = leftDO[2];
+    
+    t[2][0][nt] = leftUI[0];
+    t[2][1][nt] = leftUI[1];
+    t[2][2][nt] = leftUI[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
     tid[nt] = nt;
-    pid[nt] = nb+1;
+    pid[nt] = nb;
+    nt++;
     
-    //T2
-    t[0][0][nt+1] = A[0];
-    t[0][1][nt+1] = A[1];
-    t[0][2][nt+1] = A[2];
+    t[0][0][nt] = leftDO[0];
+    t[0][1][nt] = leftDO[1];
+    t[0][2][nt] = leftDO[2];
     
-    t[1][0][nt+1] = B[0];
-    t[1][1][nt+1] = B[1];
-    t[1][2][nt+1] = B[2];
+    t[1][0][nt] = leftUO[0];
+    t[1][1][nt] = leftUO[1];
+    t[1][2][nt] = leftUO[2];
     
-    t[2][0][nt+1] = D[0];
-    t[2][1][nt+1] = D[1];
-    t[2][2][nt+1] = D[2];
-    tid[nt+1] = nt+1;
-    pid[nt+1] = nb+1;
-    n = 2;
+    t[2][0][nt] = leftUI[0];
+    t[2][1][nt] = leftUI[1];
+    t[2][2][nt] = leftUI[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+
+    //plane right
+    t[0][0][nt] = rightDI[0];
+    t[0][1][nt] = rightDI[1];
+    t[0][2][nt] = rightDI[2];
+    
+    t[1][0][nt] = rightDO[0];
+    t[1][1][nt] = rightDO[1];
+    t[1][2][nt] = rightDO[2];
+    
+    t[2][0][nt] = rightUI[0];
+    t[2][1][nt] = rightUI[1];
+    t[2][2][nt] = rightUI[2];
+ 
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+    
+    t[0][0][nt] = rightDO[0];
+    t[0][1][nt] = rightDO[1];
+    t[0][2][nt] = rightDO[2];
+    
+    t[1][0][nt] = rightUO[0];
+    t[1][1][nt] = rightUO[1];
+    t[1][2][nt] = rightUO[2];
+    
+    t[2][0][nt] = rightUI[0];
+    t[2][1][nt] = rightUI[1];
+    t[2][2][nt] = rightUI[2];
+
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+
+    //plane front
+    t[0][0][nt] = leftDO[0];
+    t[0][1][nt] = leftDO[1];
+    t[0][2][nt] = leftDO[2];
+    
+    t[1][0][nt] = rightDO[0];
+    t[1][1][nt] = rightDO[1];
+    t[1][2][nt] = rightDO[2];
+    
+    t[2][0][nt] = rightUO[0];
+    t[2][1][nt] = rightUO[1];
+    t[2][2][nt] = rightUO[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+    
+    t[0][0][nt] = rightUO[0];
+    t[0][1][nt] = rightUO[1];
+    t[0][2][nt] = rightUO[2];
+    
+    t[1][0][nt] = leftDO[0];
+    t[1][1][nt] = leftDO[1];
+    t[1][2][nt] = leftDO[2];
+    
+    t[2][0][nt] = leftUO[0];
+    t[2][1][nt] = leftUO[1];
+    t[2][2][nt] = leftUO[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+
+    //plane inner
+    t[0][0][nt] = leftDI[0];
+    t[0][1][nt] = leftDI[1];
+    t[0][2][nt] = leftDI[2];
+    
+    t[1][0][nt] = rightDI[0];
+    t[1][1][nt] = rightDI[1];
+    t[1][2][nt] = rightDI[2];
+    
+    t[2][0][nt] = rightUI[0];
+    t[2][1][nt] = rightUI[1];
+    t[2][2][nt] = rightUI[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+    
+    t[0][0][nt] = rightUI[0];
+    t[0][1][nt] = rightUI[1];
+    t[0][2][nt] = rightUI[2];
+    
+    t[1][0][nt] = leftDI[0];
+    t[1][1][nt] = leftDI[1];
+    t[1][2][nt] = leftDI[2];
+    
+    t[2][0][nt] = leftUI[0];
+    t[2][1][nt] = leftUI[1];
+    t[2][2][nt] = leftUI[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+
+    //plane down
+    t[0][0][nt] = leftDI[0];
+    t[0][1][nt] = leftDI[1];
+    t[0][2][nt] = leftDI[2];
+    
+    t[1][0][nt] = rightDI[0];
+    t[1][1][nt] = rightDI[1];
+    t[1][2][nt] = rightDI[2];
+    
+    t[2][0][nt] = rightDO[0];
+    t[2][1][nt] = rightDO[1];
+    t[2][2][nt] = rightDO[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+    
+    t[0][0][nt] = rightDO[0];
+    t[0][1][nt] = rightDO[1];
+    t[0][2][nt] = rightDO[2];
+    
+    t[1][0][nt] = leftDO[0];
+    t[1][1][nt] = leftDO[1];
+    t[1][2][nt] = leftDO[2];
+    
+    t[2][0][nt] = leftDI[0];
+    t[2][1][nt] = leftDI[1];
+    t[2][2][nt] = leftDI[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+    
+    //plane up
+    t[0][0][nt] = leftUI[0];
+    t[0][1][nt] = leftUI[1];
+    t[0][2][nt] = leftUI[2];
+    
+    t[1][0][nt] = rightUI[0];
+    t[1][1][nt] = rightUI[1];
+    t[1][2][nt] = rightUI[2];
+    
+    t[2][0][nt] = rightUO[0];
+    t[2][1][nt] = rightUO[1];
+    t[2][2][nt] = rightUO[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+    
+    t[0][0][nt] = rightUO[0];
+    t[0][1][nt] = rightUO[1];
+    t[0][2][nt] = rightUO[2];
+    
+    t[1][0][nt] = leftUO[0];
+    t[1][1][nt] = leftUO[1];
+    t[1][2][nt] = leftUO[2];
+    
+    t[2][0][nt] = leftUI[0];
+    t[2][1][nt] = leftUI[1];
+    t[2][2][nt] = leftUI[2];
+    
+    t[3][0][nt] = t[0][0][nt];
+    t[3][1][nt] = t[0][1][nt];
+    t[3][2][nt] = t[0][2][nt];
+    
+    t[4][0][nt] = t[1][0][nt];
+    t[4][1][nt] = t[1][1][nt];
+    t[4][2][nt] = t[1][2][nt];
+    
+    t[5][0][nt] = t[2][0][nt];
+    t[5][1][nt] = t[2][1][nt];
+    t[5][2][nt] = t[2][2][nt];
+    tid[nt] = nt;
+    pid[nt] = nb;
+    nt++;
+
+    getCentroid(nb, nt-13, nt, t, position);
 }
 
 void refine(int s, int nt, iREAL *t[3][3], int *tid, int *pid, int times)

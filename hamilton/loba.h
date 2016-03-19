@@ -53,13 +53,17 @@ void loba_balance (struct loba *lb, int n, iREAL *p[3], int *id, iREAL tol,
 
 void loba_getAdjacent(struct loba *lb, int myrank, int *neighborhood, int *nNeighbors);
 
-void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *t[6][3], int tid[], int pid[], 
-                    int *ghostTID, int *ghostPID, int *nGhosts, 
+void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *t[6][3], int *tid, int *pid, 
+                    int *ghostlocalTID, int *ghostTID, int *ghostPID, int *nGhosts, 
                     int *nGhostNeighbors, int *ghostNeighborhood, 
                     int *ghostTIDNeighbors[], int *ghostTIDcrosses);
 
 /* find ranks overlapped by the [lo,hi] box */
 void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks, int *nranks);
+
+
+// find rank owning the point
+void loba_query (struct loba *lb, iREAL point[3], int *rank);
 
 void loba_getbox (struct loba *lb, int part, iREAL lo[3], iREAL hi[3]);
 

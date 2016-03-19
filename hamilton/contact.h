@@ -36,8 +36,11 @@ struct contact {
   iREAL point[3];
   iREAL normal[3];
   iREAL depth;
-
-  contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth);
+  
+  iREAL pp[3];
+  iREAL qq[3];
+  //contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth);
+  contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth, iREAL p[3], iREAL q[3]);
 };
 
 // calculate distances all-to-all

@@ -26,7 +26,6 @@
 #include "algo.h"
 #include "math.h"
 #include "hybrid.h"
-#include <omp.h>
 #define byteSize 32
 
 void penalty(iREAL A[3], iREAL B[3], iREAL  C[3], iREAL  D[3], iREAL  E[3], iREAL  F[3], iREAL  P[3], iREAL  Q[3], iREAL *error);

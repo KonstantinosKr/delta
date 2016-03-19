@@ -63,17 +63,19 @@ iREAL critical (int nt, iREAL mass[], int pairnum, iREAL * iparam[NINT])
 }
 
 // dynamics task 
-void dynamics (std::vector<contact> conpnt[],
-  int nt, int nb, iREAL *t[6][3], int pid[], iREAL *angular[6], iREAL *linear[3],
-  iREAL *rotation[9], iREAL *position[6],
-  iREAL *inertia[9], iREAL *inverse[9],
-  iREAL mass[], iREAL *force[3],
-  iREAL *torque[3], iREAL step)
+void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
+              int nt, int nb, iREAL *t[6][3], int pid[], iREAL *angular[6], iREAL *linear[3],
+              iREAL *rotation[9], iREAL *position[6],
+              iREAL *inertia[9], iREAL *inverse[9],
+              iREAL mass[], iREAL *force[3],
+              iREAL *torque[3], iREAL step, iREAL lo[3], iREAL hi[3])
 {
   iREAL half = 0.5*step;
 
   for (int i = 0; i<nb; i++) // time integration 
   {
+    //printf("MYRANK:%i POSITION[%i]: %f %f %f ROTATION[:%i]: %f %f %f %f %f %f %f %f %f\n", myrank, i, position[0][i], position[1][i], position[2][i], i, rotation[0][i], rotation[1][i], rotation[2][i], rotation[3][i], rotation[4][i], rotation[5][i], rotation[6][i], rotation[7][i], rotation[8][i]);
+    
     iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], t[3], T[3], DL[9], L2[9], A[3], B[3];
 
     O[0] = angular[0][i];
@@ -115,7 +117,7 @@ void dynamics (std::vector<contact> conpnt[],
     I[8] = inverse[8][i];
 
     im = 1/mass[i];
-
+    
     f[0] = force[0][i];
     f[1] = force[1][i];
     f[2] = force[2][i];
@@ -244,34 +246,31 @@ void dynamics (std::vector<contact> conpnt[],
     t[2][0][i] = c[0];
     t[2][1][i] = c[1];
     t[2][2][i] = c[2];
+/*    
+    if (t[0][0][i] < lo[0]) linear[0][j] *= -1;
+    if (t[0][1][i] < lo[1]) linear[1][j] *= -1;
+    if (t[0][2][i] < lo[2]) linear[2][j] *= -1;
+    if (t[0][0][i] > hi[0]) linear[0][j] *= -1;
+    if (t[0][1][i] > hi[1]) linear[1][j] *= -1;
+    if (t[0][2][i] > hi[2]) linear[2][j] *= -1;
     
-/*    if (t[0][0][i] < lo[0]) v[0][j] *= -1;
-    if (t[0][1][i] < lo[1]) v[1][j] *= -1;
-    if (t[0][2][i] < lo[2]) v[2][j] *= -1;
-    if (t[0][0][i] > hi[0]) v[0][j] *= -1;
-    if (t[0][1][i] > hi[1]) v[1][j] *= -1;
-    if (t[0][2][i] > hi[2]) v[2][j] *= -1;
+    if (t[1][0][i] < lo[0]) linear[0][j] *= -1;
+    if (t[1][1][i] < lo[1]) linear[1][j] *= -1;
+    if (t[1][2][i] < lo[2]) linear[2][j] *= -1;
+    if (t[1][0][i] > hi[0]) linear[0][j] *= -1;
+    if (t[1][1][i] > hi[1]) linear[1][j] *= -1;
+    if (t[1][2][i] > hi[2]) linear[2][j] *= -1;
     
-    if (t[1][0][i] < lo[0]) v[0][j] *= -1;
-    if (t[1][1][i] < lo[1]) v[1][j] *= -1;
-    if (t[1][2][i] < lo[2]) v[2][j] *= -1;
-    if (t[1][0][i] > hi[0]) v[0][j] *= -1;
-    if (t[1][1][i] > hi[1]) v[1][j] *= -1;
-    if (t[1][2][i] > hi[2]) v[2][j] *= -1;
-    
-    if (t[2][0][i] < lo[0]) v[0][j] *= -1;
-    if (t[2][1][i] < lo[1]) v[1][j] *= -1;
-    if (t[2][2][i] < lo[2]) v[2][j] *= -1;
-    if (t[2][0][i] > hi[0]) v[0][j] *= -1;
-    if (t[2][1][i] > hi[1]) v[1][j] *= -1;
-    if (t[2][2][i] > hi[2]) v[2][j] *= -1;
- */ 
-  }
-
+    if (t[2][0][i] < lo[0]) linear[0][j] *= -1;
+    if (t[2][1][i] < lo[1]) linear[1][j] *= -1;
+    if (t[2][2][i] < lo[2]) linear[2][j] *= -1;
+    if (t[2][0][i] > hi[0]) linear[0][j] *= -1;
+    if (t[2][1][i] > hi[1]) linear[1][j] *= -1;
+    if (t[2][2][i] > hi[2]) linear[2][j] *= -1; 
+  */}
 }
 
-// Euler task 
-void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[3], iREAL step)
+void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)
 {
   for(int i = 0; i<nb;i++)
   {

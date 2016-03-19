@@ -52,6 +52,25 @@ int main (int argc, char **argv)
   if(ui(myrank, argc, argv)) return 0;
 
   int *parmat; //particle material  
+  
+  material::ikind[0] = GRANULAR;
+  material::ikind[1] = GRANULAR;
+  material::ikind[2] = GRANULAR;
+  
+  //GRANULAR interaction type parameters 
+  material::iparam[SPRING][GRANULAR] = 1E4;
+  material::iparam[DAMPER][GRANULAR] = 1;
+  material::iparam[FRISTAT][GRANULAR] = 0;
+  material::iparam[FRIDYN][GRANULAR] = 0;
+  material::iparam[FRIROL][GRANULAR] = 0;
+  material::iparam[FRIDRIL][GRANULAR] = 0;
+  material::iparam[KSKN][GRANULAR] = 0;
+  material::iparam[LAMBDA][GRANULAR] = 0;
+  material::iparam[YOUNG2][GRANULAR] = 0;
+  material::iparam[KSKN2][GRANULAR] = 0;
+  material::iparam[SIGC][GRANULAR] = 0;
+  material::iparam[TAUC][GRANULAR] = 0;
+  material::iparam[ALPHA][GRANULAR] = 0;
 
   int nt = 0; // number of triangles
   int nb = 0;
@@ -60,24 +79,23 @@ int main (int argc, char **argv)
   iREAL *t[6][3]; // triangles
   iREAL *p[3],*q[3];//p and q points
   
-  material material();
   iREAL *mass; // scalar mass
   iREAL *force[3]; // total spatial force
   iREAL *torque[3]; // total spatial torque
   
+  iREAL *position[6]; // mass center current and reference positions
   iREAL *angular[6]; // angular velocities (referential, spatial)
   iREAL *linear[3]; // linear velocities
   iREAL *rotation[9]; // rotation operators
-  iREAL *position[6]; // mass center current and reference positions
   iREAL *inertia[9]; // inertia tensors
   iREAL *inverse[9]; // inverse inertia tensors 
   
   iREAL lo[3] = {-500, -500, -500}; // lower corner
   iREAL hi[3] = {500, 500, 500}; // upper corner
     
-  iREAL gravity[3] = {0.0, 100.0, 0.0};
+  iREAL gravity[3] = {0.0, 0.0, 0.0};
   
-  int size = 27000000; // memory buffer size
+  int size = 2700; // memory buffer size
  
   for (int i = 0; i < 3; i ++)
   {
@@ -116,8 +134,6 @@ int main (int argc, char **argv)
   mass = (iREAL *) malloc(size*sizeof(iREAL));
 
   for(int i=0;i<size;i++) tid[i] = INT_MAX; 
-
-  std::vector<contact> *conpnt = (std::vector<contact> *) malloc(size*sizeof(std::vector<contact>));
   
   int num_import, num_export, *import_procs, *import_to_part, *export_procs, *export_to_part;
   ZOLTAN_ID_PTR import_global_ids, import_local_ids, export_global_ids, export_local_ids;
@@ -139,15 +155,20 @@ int main (int argc, char **argv)
   timer2 = 0.0;
   timer3 = 0.0;
 
+  iREAL step = 1E-4; int timesteps=0;
   if (myrank == 0)
   {
-    init_enviroment(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
+    init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi); 
     printf("NT:%i, NB: %i\n", nt, nb);
-    //euler(nb, angular, linear, rotation, position, 0.5*step);
+    euler(nb, angular, linear, rotation, position, 0.5*step);
   }
   
-  iREAL step = 1E-3; int timesteps=0;
-
+  init_migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse, mass);
+  
+  std::vector<contact> *conpnt = new std::vector<contact>[100]; 
+ 
+  printf("RANK:%i NB:%i\n", myrank, nb);
+        
   for(iREAL time = step; time < 0.1; time+=step)
   {
     if(!myrank){printf("TIMESTEP: %i\n", timesteps);} 
@@ -163,13 +184,13 @@ int main (int argc, char **argv)
     //printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
    
     timerstart(&tmigration[timesteps]);
-    migrate (nt, t, linear, angular, parmat, tid, pid, 
+    migrate (lb, nt, nb, t, parmat, tid, pid, 
                num_import, import_procs, import_to_part, 
                num_export, export_procs, export_to_part, 
                import_global_ids, import_local_ids, 
                export_global_ids, export_local_ids);
-    timerend (&tmigration[timesteps]);
-   
+    timerend (&tmigration[timesteps]); 
+    
     //printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
     
     timer1 = 0.0;
@@ -177,26 +198,26 @@ int main (int argc, char **argv)
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    //migrateGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
-    naiveGhosts(lb, myrank, nt, t, linear, angular, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
+    migrateGhosts(lb, myrank, nt, nb, t, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
     
     tTimer1[timesteps] = timer1;
     tTimer2[timesteps] = timer2;
     tTimer3[timesteps] = timer3;
+  
     //printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
    
-    //forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat, mparam, pairnum, pairs, ikind, iparam);
-    //printf("RANK[%i]: contact forces: %f\n", myrank, 0.0);
-
-    timerstart (&tdynamics[timesteps]);
-    //dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step);
-    integrate (step, lo, hi, nt, t, linear);
-    timerend (&tdynamics[timesteps]);
-    //printf("RANK[%i]: dynamics:%f\n", myrank, tdynamics[timesteps].total);
+    forces(lb, myrank, conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     
-    //output_state(lb, myrank, nt, t, timesteps);
+    timerstart (&tdynamics[timesteps]);
+    dynamics(lb, myrank, conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
+    timerend (&tdynamics[timesteps]);
+      
+    //migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
+    
+    output_state(lb, myrank, nt, t, timesteps);
     timesteps++;
+    if(timesteps==300) break;
   }
 
   iREAL subtotal = 0;
@@ -344,23 +365,6 @@ int main (int argc, char **argv)
                     mindt1, maxdt1, avgdt1, 
                     mindt2, maxdt2, avgdt2, 
                     mindt3, maxdt3, avgdt3); 
-  printf("TotalRunMin, TotalRunMax, TotalRunAvg," 
-             "BalanceMin, BalanceMax, BalanceAvg,"
-             "MigrationMin, MigrationMax, MigrationAvg," 
-             "DataXchangeMax, DataXchangeMin, DataXchangeAvg," 
-             "DT1Min, DT1Max, DT1Avg," 
-             "DT2Min, DT2Max, DT2Avg," 
-             "DT2Min, DT2Max, DT2Avg," 
-             "DT3Min, DT3Max, DT3Avg\n");
-
-  printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n", 
-          minsubtotal, maxsubtotal, avgsubtotal, 
-          minbal, maxbal, avgbal, 
-          minmig, maxmig, avgmig, 
-          minde, maxde, avgde, 
-          mindt1, maxdt1, avgdt1, 
-          mindt2, maxdt2, avgdt2, 
-          mindt3, maxdt3, avgdt3); 
     printf("Log Writting Finished.\n");
   }
   //have to make sure all ranks finished
@@ -370,7 +374,7 @@ int main (int argc, char **argv)
     printf("\nComputation Finished.\n");
     postProcessing(nprocs, size, timesteps);
     printf("Post-Processing Finished.\n");
-
+    return 0;
   }
 
   // DESTROY
@@ -381,6 +385,12 @@ int main (int argc, char **argv)
     free(t[0][i]);
     free(t[1][i]);
     free(t[2][i]);
+    free(t[3][i]);
+    free(t[4][i]);
+    free(t[5][i]);
+    free(linear[i]);
+    free(torque[i]);
+    free(force[i]);
     free(p[i]);
     free(q[i]);
   }
