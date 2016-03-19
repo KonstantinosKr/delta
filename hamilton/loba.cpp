@@ -208,7 +208,22 @@ void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks
   {
     case ZOLTAN_RCB:
     {
-      //Zoltan_LB_Box_PP_Assign (lb->zoltan, lo[0], lo[1], lo[2], hi[0], hi[1], hi[2], ranks, nranks, parts, nparts);
+      Zoltan_LB_Box_PP_Assign (lb->zoltan, lo[0], lo[1], lo[2], hi[0], hi[1], hi[2], ranks, nranks, parts, nparts);
+      break;
+    }
+    case ZOLTAN_RIB:
+    {
+    }
+  }
+}
+
+/* find ranks overlapped by the [lo,hi] box */
+void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks, int *nranks)
+{
+  switch (lb->al)
+  {
+    case ZOLTAN_RCB:
+    {
       Zoltan_LB_Box_Assign (lb->zoltan, lo[0], lo[1], lo[2], hi[0], hi[1], hi[2], ranks, nranks);
       break;
     }
@@ -384,7 +399,8 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *
   iREAL lo[3], hi[3];
   int idx = 0; int uniqueRanks = 0;
   int *ranks = (int*) malloc(nNeighbors*sizeof(int)); 
-  int *parts = (int*) malloc(nNeighbors*sizeof(int)); 
+  //int *parts = (int*) malloc(nNeighbors*sizeof(int)); 
+  
   for(int i=0;i<nt;i++)
   {
     iREAL xmin = FLT_MAX;
@@ -431,9 +447,10 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *
     hi[1] = ymax;
     hi[2] = zmax;
     int nranks = 0;
-    int nparts = 0;
+    //int nparts = 0;
     
-    loba_query (lb, myrank, lo, hi, ranks, &nranks, parts, &nparts);
+    //loba_query (lb, myrank, lo, hi, ranks, &nranks, parts, &nparts);
+    loba_query (lb, myrank, lo, hi, ranks, &nranks);
     if(nranks > 1)
     {
       int counter = 0;
@@ -461,8 +478,8 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *
   }
   *nGhosts = idx;
   *nGhostNeighbors = uniqueRanks;
-  free(ranks);
-  free(parts);
+  //free(ranks);
+  //free(parts);
 }
 
 /* free load balancer */

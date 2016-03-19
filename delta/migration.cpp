@@ -1020,14 +1020,14 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   int *ghostTID = (int*) malloc(nt*sizeof(int));
   int *ghostPID = (int*) malloc(nt*sizeof(int));
   int *ghostlocalTID = (int*) malloc(nt*sizeof(int));
-  int **ghostTIDNeighbors = (int**) malloc(nt*sizeof(int*));
-  int *ghostTIDcrosses = (int*) malloc(nt*sizeof(int));
   int *ghostNeighborhood = (int*) malloc(nproc*sizeof(int));
+  int *ghostTIDcrosses = (int*) malloc(nt*sizeof(int));
+  int **ghostTIDNeighbors = (int**) malloc(nt*sizeof(int*));
   
   for(int i = 0;i<nproc;i++){ghostNeighborhood[i] = -1;}
-  for(int i = 0;i<nt;i++){ghostTIDNeighbors[i] = (int*) malloc(nNeighbors*sizeof(int));}
+  for(int i = 0;i<nt;i++){ghostTIDNeighbors[i] = (int*) malloc(nproc*sizeof(int));}
   
-  int nGhosts, nGhostNeighbors;
+  int nGhosts=0, nGhostNeighbors=0;
   
   //get triangle tids that overlap into neighbors
   loba_getGhosts(lb, myrank, nNeighbors, nt, t, tid, pid, 
@@ -1035,7 +1035,6 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
                       &nGhostNeighbors, ghostNeighborhood, 
                       ghostTIDNeighbors, ghostTIDcrosses);
   //printf("RANK[%i]: overlaps:%i\n", myrank, nGhosts);
-  
   iREAL *tbuffer[6]; 
   tbuffer[0] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
   tbuffer[1] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
@@ -1244,7 +1243,6 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
     free(tbuffer[i]);
     free(trvbuffer[i]);
   }
-  
   free(pivot);
   free(rcvpivot);
   
@@ -1256,7 +1254,6 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
  
   free(parmat_buffer);
   free(rvparmat_buffer);
-
   free(myRequest);
   free(myrvRequest);
   
@@ -1265,7 +1262,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   free(ghostPID);
   free(ghostTIDcrosses);
   free(ghostNeighborhood);
-  //for(int i=0; i<nGhosts;i++)
+  for(int i=0; i<nGhosts;i++)
   {
     //free(ghostTIDNeighbors);
   }

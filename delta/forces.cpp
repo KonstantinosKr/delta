@@ -138,6 +138,7 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       torque[0][i] += a[1]*f[2] - a[2]*f[1];//cross product
       torque[1][i] += a[2]*f[0] - a[0]*f[2];
       torque[2][i] += a[0]*f[1] - a[1]*f[0];
+      continue;  
       
       //add force to slaves
       f[0] = -f[0];
@@ -148,13 +149,9 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       force[1][j] += f[1];
       force[2][j] += f[2];
       
-      a[0] = p[0];//boundary
-      a[1] = p[1];//bug here
-      a[2] = p[2];
-      
-      a[0] = a[0] - position[0][j];
-      a[1] = a[1] - position[1][j];
-      a[2] = a[2] - position[2][j];
+      a[0] = p[0] - position[0][j];
+      a[1] = p[1] - position[1][j];
+      a[2] = p[2] - position[2][j];
 
       torque[0][j] += a[1]*f[2] - a[2]*f[1];//cross product
       torque[1][j] += a[2]*f[0] - a[0]*f[2];
@@ -162,7 +159,7 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
     }
     std::vector<contact>().swap(conpnt[i]);
     
-    int qrank;
+   int qrank;
     loba_query(lb, x, &qrank); 
     if(qrank != myrank)
     {

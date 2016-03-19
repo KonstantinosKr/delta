@@ -133,8 +133,17 @@ int main (int argc, char **argv)
   pid = (int *) malloc (size*sizeof(int));
   mass = (iREAL *) malloc(size*sizeof(iREAL));
 
-  for(int i=0;i<size;i++) tid[i] = INT_MAX; 
-  
+  for(int i=0;i<size;i++) 
+  {
+    tid[i] = INT_MAX;
+    force[0][i] = 0;
+    force[1][i] = 0;
+    force[2][i] = 0;
+    
+    torque[0][i] = 0;
+    torque[1][i] = 0;
+    torque[2][i] = 0;
+  }
   int num_import, num_export, *import_procs, *import_to_part, *export_procs, *export_to_part;
   ZOLTAN_ID_PTR import_global_ids, import_local_ids, export_global_ids, export_local_ids;
 
@@ -205,8 +214,6 @@ int main (int argc, char **argv)
     tTimer2[timesteps] = timer2;
     tTimer3[timesteps] = timer3;
   
-    //printf("RANK[%i]: data exchange:%f\n", myrank, tdataExchange[timesteps].total);
-   
     forces(lb, myrank, conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     
     timerstart (&tdynamics[timesteps]);
@@ -215,7 +222,7 @@ int main (int argc, char **argv)
       
     //migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
     
-    output_state(lb, myrank, nt, t, timesteps);
+    //output_state(lb, myrank, nt, t, timesteps);
     timesteps++;
     if(timesteps==300) break;
   }
@@ -372,7 +379,7 @@ int main (int argc, char **argv)
   if(!myrank)
   {
     printf("\nComputation Finished.\n");
-    postProcessing(nprocs, size, timesteps);
+    //postProcessing(nprocs, size, timesteps);
     printf("Post-Processing Finished.\n");
     return 0;
   }

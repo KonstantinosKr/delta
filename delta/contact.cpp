@@ -154,7 +154,7 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
      
     iREAL margin = 15E-2;
     
-    for(int j=s2;j<e2;j++) //careful; range can overflow due to ghosts particles
+    for(int j=s2; j<e2; j++) //careful; range can overflow due to ghosts particles
     {
       if(pid[i] == pid[j])continue;
       iREAL dist = sqrt(pow((q[0][j]-p[0][j]),2)+pow((q[1][j]-p[1][j]),2)+pow((q[2][j]-p[2][j]),2));
