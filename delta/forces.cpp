@@ -138,8 +138,7 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       torque[0][i] += a[1]*f[2] - a[2]*f[1];//cross product
       torque[1][i] += a[2]*f[0] - a[0]*f[2];
       torque[2][i] += a[0]*f[1] - a[1]*f[0];
-      continue;  
-      
+      printf("myrank:%i %i\n", myrank, j);      
       //add force to slaves
       f[0] = -f[0];
       f[1] = -f[1];
@@ -156,17 +155,20 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       torque[0][j] += a[1]*f[2] - a[2]*f[1];//cross product
       torque[1][j] += a[2]*f[0] - a[0]*f[2];
       torque[2][j] += a[0]*f[1] - a[1]*f[0];
+      //continue;  
     }
     std::vector<contact>().swap(conpnt[i]);
     
-   int qrank;
+    int qrank;
     loba_query(lb, x, &qrank); 
     if(qrank != myrank)
     {
-      if(force[0][i]!=0.0 && force[0][i]!=0.0 &&force[2][i] !=0.0)
+      if(force[0][i]!=0.0 && force[0][i]!=0.0 && force[2][i] !=0.0)
       {
         rank[nranks] = qrank;
-        fpid[nranks++] = i;
+        fpid[nranks] = i;
+        nranks++;
+        //printf("RANK %i WILL SEND TO RANK:%i PARTICLE %i nrank:%i\n", myrank, qrank, i, nranks);
       }
     }
     else
@@ -176,14 +178,26 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       force[2][i] += mass[i] * gravity[2];
     }
   }
-  //migrateForce(lb, myrank, rank, fpid, nranks, force, torque);
-  //migrateForceGlobal(lb, myrank, nb, position, force, torque);
- 
-  if(iscontact)
   for(int i=0;i<nb;i++)
   {
-    //printf("RANK:%i Total Force of body: %i is: %f %f %f\n", myrank, i, force[0][i], force[1][i], force[2][i]);
-    //printf("RANK:%i Total Torque of body: %i is: %f %f %f\n", myrank, i, torque[0][i], torque[1][i], torque[2][i]);
+    //printf("RANK:%i BEFORE Total Force of body: %i is: %f %f %f\n", myrank, i, force[0][i], force[1][i], force[2][i]);
+    //printf("RANK:%i BEFORE Total Torque of body: %i is: %f %f %f\n", myrank, i, torque[0][i], torque[1][i], torque[2][i]);
+  }
+  
+  migrateForce(lb, myrank, rank, fpid, nranks, force, torque);
+  //if(iscontact)
+  for(int i=0;i<nb;i++)
+  {
+    //printf("RANK:%i AFTER Force of body: %i is: %f %f %f\n", myrank, i, force[0][i], force[1][i], force[2][i]);
+    //printf("RANK:%i AFTER Torque of body: %i is: %f %f %f\n", myrank, i, torque[0][i], torque[1][i], torque[2][i]);
+  }
+  migrateForceGlobal(lb, myrank, nb, position, force, torque);
+ 
+  if(iscontact == 1)
+  for(int i=0;i<nb;i++)
+  {
+    printf("RANK:%i Total Force of body: %i is: %f %f %f\n", myrank, i, force[0][i], force[1][i], force[2][i]);
+    printf("RANK:%i Total Torque of body: %i is: %f %f %f\n", myrank, i, torque[0][i], torque[1][i], torque[2][i]);
   }
 }
 

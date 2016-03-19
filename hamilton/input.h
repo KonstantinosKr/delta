@@ -26,7 +26,7 @@ void init_enviroment(int scene, int &nt, int &nb, iREAL *t[6][3],
                     int *parmat, int tid[], int pid[], 
                     iREAL *position[6], iREAL lo[3], iREAL hi[3]);
 
-void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt);
+void load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt);
 
 void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
@@ -43,6 +43,12 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
                     int *parmat, int tid[], int pid[], 
                     iREAL *position[6], iREAL lo[3], iREAL hi[3]);
 
+void eggCollision(int &nt, int &nb, iREAL *t[6][3], 
+                    iREAL *linear[3], iREAL *angular[6], 
+                    iREAL *inertia[9], iREAL *inverse[9], 
+                    iREAL *rotation[9], iREAL *mass, 
+                    int *parmat, int tid[], int pid[], 
+                    iREAL *position[6], iREAL lo[3], iREAL hi[3]);
 
 void chaos(int &nt, int &nb, iREAL *t[6][3], 
                     iREAL *linear[3], iREAL *angular[6], 

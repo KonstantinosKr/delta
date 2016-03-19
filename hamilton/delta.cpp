@@ -58,7 +58,7 @@ int main (int argc, char **argv)
   material::ikind[2] = GRANULAR;
   
   //GRANULAR interaction type parameters 
-  material::iparam[SPRING][GRANULAR] = 1E4;
+  material::iparam[SPRING][GRANULAR] = 1E2;
   material::iparam[DAMPER][GRANULAR] = 1;
   material::iparam[FRISTAT][GRANULAR] = 0;
   material::iparam[FRIDYN][GRANULAR] = 0;
@@ -95,7 +95,7 @@ int main (int argc, char **argv)
     
   iREAL gravity[3] = {0.0, 0.0, 0.0};
   
-  int size = 2700; // memory buffer size
+  int size = 100000; // memory buffer size
  
   for (int i = 0; i < 3; i ++)
   {
@@ -144,10 +144,11 @@ int main (int argc, char **argv)
     torque[1][i] = 0;
     torque[2][i] = 0;
   }
+  
   int num_import, num_export, *import_procs, *import_to_part, *export_procs, *export_to_part;
   ZOLTAN_ID_PTR import_global_ids, import_local_ids, export_global_ids, export_local_ids;
 
-  // create load balancer 
+  //create load balancer 
   struct loba *lb = loba_create (ZOLTAN_RCB);
   
   TIMING tbalance[1000];
@@ -174,7 +175,7 @@ int main (int argc, char **argv)
   
   init_migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse, mass);
   
-  std::vector<contact> *conpnt = new std::vector<contact>[100]; 
+  std::vector<contact> *conpnt = new std::vector<contact>[nb]; 
  
   printf("RANK:%i NB:%i\n", myrank, nb);
         
@@ -222,7 +223,7 @@ int main (int argc, char **argv)
       
     //migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
     
-    //output_state(lb, myrank, nt, t, timesteps);
+    output_state(lb, myrank, nt, t, timesteps);
     timesteps++;
     if(timesteps==300) break;
   }
@@ -379,9 +380,8 @@ int main (int argc, char **argv)
   if(!myrank)
   {
     printf("\nComputation Finished.\n");
-    //postProcessing(nprocs, size, timesteps);
+    postProcessing(nprocs, size, timesteps);
     printf("Post-Processing Finished.\n");
-    return 0;
   }
 
   // DESTROY

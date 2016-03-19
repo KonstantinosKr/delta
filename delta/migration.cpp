@@ -1273,12 +1273,12 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
   int nproc;
   MPI_Comm_size(MPI_COMM_WORLD, &nproc);
  
- return; 
   //allocate memory for tmp buffers
   int **send_paridx = (int **) malloc(nproc*sizeof(int*));
   int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
   int *parpivot = (int *) malloc(nproc*sizeof(int));
   int *paridx = (int *) malloc(nproc*sizeof(int));
+  
   for(int i=0;i<nproc;i++)
   {
     send_paridx[i] = (int *) malloc((1000)*sizeof(int));
@@ -1290,25 +1290,29 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
   for(int i=0;i<nranks;i++)
   {
     int proc = rank[i];
-    send_paridx[proc][parpivot[proc]++] = fpid[i]; 
-    //printf("RANK:%i IS SENDING TO RANK:%i PARTICLE:%i\n", myrank, proc, fpid[i]);
+    send_paridx[proc][parpivot[proc]] = fpid[i]; 
+    printf("INSIDE MIGRATE FORCE RANK:%i IS SENDING TO RANK:%i PARTICLE:%i\n", myrank, proc, fpid[i]);
+    parpivot[proc]++;
   }
-  for(int i=0; i<nproc; i++)
-  {
-    if(i == myrank) continue;
-    paridx[i+1] = paridx[i] + parpivot[i];
-    //printf("PROC:%i -> %i\n", i, parpivot[i]);
-  } 
   
- return; 
   int mul = nproc*1000;
   iREAL *fbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
   iREAL *tbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
   int *paridxbuffer = (int *) malloc(mul*sizeof(int)); 
- 
+  
+  int counter=0;
+  for(int i=0; i<nproc; i++)
+  {
+    if(i == myrank) continue;
+    paridx[i] = counter;
+    counter += parpivot[i];
+    //if(myrank == 1) printf("STARTIDX: %i FOR %i RANK:%i\n", paridx[i], i, myrank);
+  }
+  
   for(int i=0; i<nproc; i++)//n processes to prepare buffers for
   {
     if(i == myrank) continue;
+    //printf("PROC:%i -> %i\n", i, parpivot[i]);
     for(int j=0; j<parpivot[i]; j++)
     {
       int mul = (paridx[i]*3)+(j*3);
@@ -1319,7 +1323,8 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
       tbuffer[mul+0] = torque[0][send_paridx[i][j]];
       tbuffer[mul+1] = torque[1][send_paridx[i][j]];
       tbuffer[mul+2] = torque[2][send_paridx[i][j]];
-      //printf("PROC:%i SENDS %f\n", i, fbuffer[mul+0]); 
+      //printf("PROC:%i SENDS %f TO RANK %i\n", myrank, fbuffer[mul+0], i); 
+      
       mul = (paridx[i])+(j);
       paridxbuffer[mul] = send_paridx[i][j];
     }
@@ -1347,6 +1352,7 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
     if(i==myrank)continue;
     MPI_Wait(&myrvRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
     if(parrcvpivot[i] > parsize) parsize = parrcvpivot[i];
+    //printf("INSIDE FORCE MIGRATE: RANK:%i will receive %i particles from rank:%i\n", myrank, parrcvpivot[i], i); 
   }
 
   for(int i=0; i<nproc; i++)
@@ -1396,7 +1402,7 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
       torque[0][xx] += rcvtbuffer[(i*parsize*3)+(j*3)+0];
       torque[1][xx] += rcvtbuffer[(i*parsize*3)+(j*3)+1];
       torque[2][xx] += rcvtbuffer[(i*parsize*3)+(j*3)+2];
-      printf("RANK:%i IS RECEIVING FROM RANK:%i PARTICLE:%i FORCE[0]:%f\n", myrank, i, xx, force[0][xx]);
+      //printf("RANK:%i IS RECEIVING FROM RANK:%i PARTICLE:%i FORCE[0]:%f\n", myrank, i, xx, force[0][xx]);
     }
   }
 
@@ -1422,7 +1428,8 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
 {
   int nproc;
   MPI_Comm_size(MPI_COMM_WORLD, &nproc);
- 
+  if(nproc <= 1) return;
+
   //allocate memory for tmp buffers
   int **send_paridx = (int **) malloc(nproc*sizeof(int*));
   int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
@@ -1431,7 +1438,7 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
   
   for(int i=0;i<nproc;i++)
   {
-    send_paridx[i] = (int *) malloc((1000)*sizeof(int));
+    send_paridx[i] = (int *) malloc(nb*sizeof(int));
     parrcvpivot[i] = 0;
     parpivot[i] = 0;
     paridx[i] = 0;
@@ -1451,24 +1458,26 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
       for(int j=0;j<nproc;j++)
       {
         if(j == myrank) continue;
-        send_paridx[j][parpivot[j]++] = i; 
+        send_paridx[j][parpivot[j]] = i; 
         //printf("RANK:%i IS SENDING TO RANK:%i PARTICLE:%i\n", myrank, j, i);
+        parpivot[j]++;
       }
     }
   }
   
+  int counter=0;
   for(int i=0; i<nproc; i++)
   {
     if(i == myrank) continue;
-    paridx[i+1] = paridx[i] + parpivot[i];
-  } 
-  
-  iREAL *fbuffer, *tbuffer;
-  int *paridxbuffer;
+    paridx[i] = counter;
+    counter += parpivot[i];
+    //if(myrank == 1) printf("STARTIDX: %i FOR %i RANK:%i\n", paridx[i], i, myrank);
+  }
+   
   int mul = nproc*nb;
-  fbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-  tbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-  paridxbuffer = (int *) malloc(mul*sizeof(int)); 
+  iREAL *fbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
+  iREAL *tbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
+  int *paridxbuffer = (int *) malloc(mul*sizeof(int)); 
   
   for(int i=0; i<nproc; i++)//n processes to prepare buffers for
   {
@@ -1483,16 +1492,12 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
       tbuffer[mul+0] = torque[0][send_paridx[i][j]];
       tbuffer[mul+1] = torque[1][send_paridx[i][j]];
       tbuffer[mul+2] = torque[2][send_paridx[i][j]];
-      //printf("PROC:%i SENDS %f\n", i, fbuffer[mul+0]); 
+      //printf("PROC:%i SENDS %f TO %i\n", myrank, fbuffer[mul+0], i); 
       mul = (paridx[i])+(j);
       paridxbuffer[mul] = send_paridx[i][j];
     }
   }
   
-  iREAL *rcvfbuffer, *rcvtbuffer;
-  int *rcv_paridx;
-  int parsize = 0;  
-
   int MPISENDS = 4;
   MPI_Request *myRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends
   MPI_Request *myrvRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends 
@@ -1513,7 +1518,6 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
   {
     if(i==myrank)continue;
     MPI_Wait(&myrvRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
-    if(parrcvpivot[i] > parsize) parsize = parrcvpivot[i];
   }
   
   for(int i=0; i<nproc; i++)
@@ -1522,12 +1526,10 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
     MPI_Wait(&myRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
   }
   
-  if(nproc > 0)
-  {
-    rcvfbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
-    rcvtbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
-    rcv_paridx = (int *) malloc(nproc*parsize*sizeof(int)); 
-  }
+  int parsize = nb;  
+  iREAL *rcvfbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
+  iREAL *rcvtbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
+  int *rcv_paridx = (int *) malloc(nproc*parsize*sizeof(int)); 
 
   for(int i=0; i<nproc; i++)
   {
