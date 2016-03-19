@@ -1276,12 +1276,12 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
   int nproc;
   MPI_Comm_size(MPI_COMM_WORLD, &nproc);
  
+ return; 
   //allocate memory for tmp buffers
   int **send_paridx = (int **) malloc(nproc*sizeof(int*));
   int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
   int *parpivot = (int *) malloc(nproc*sizeof(int));
   int *paridx = (int *) malloc(nproc*sizeof(int));
-  
   for(int i=0;i<nproc;i++)
   {
     send_paridx[i] = (int *) malloc((1000)*sizeof(int));
@@ -1303,6 +1303,7 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
     //printf("PROC:%i -> %i\n", i, parpivot[i]);
   } 
   
+ return; 
   int mul = nproc*1000;
   iREAL *fbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
   iREAL *tbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
@@ -1331,7 +1332,6 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
   MPI_Request *myRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends
   MPI_Request *myrvRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends 
  
- return; 
   for(int i=0; i<nproc; i++)
   {
     if(i==myrank)continue;
