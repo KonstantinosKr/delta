@@ -202,7 +202,7 @@ void loba_balance (struct loba *lb, int n, iREAL *p[3], int *id, iREAL tol,
 }
 
 /* find ranks overlapped by the [lo,hi] box */
-void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks, int *nranks, int *parts, int *nparts)
+void loba_query (struct loba *lb, int node, double lo[3], double hi[3], int *ranks, int *nranks, int *parts, int *nparts)
 {
   switch (lb->al)
   {
@@ -218,7 +218,7 @@ void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks
 }
 
 /* find ranks overlapped by the [lo,hi] box */
-void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks, int *nranks)
+void loba_query (struct loba *lb, int node, double lo[3], double hi[3], int *ranks, int *nranks)
 {
   switch (lb->al)
   {
@@ -234,7 +234,7 @@ void loba_query (struct loba *lb, int node, iREAL lo[3], iREAL hi[3], int *ranks
 }
 
 // find rank owning the point
-void loba_query (struct loba *lb, iREAL point[3], int *rank)
+void loba_query (struct loba *lb, double point[3], int *rank)
 {
   switch (lb->al)
   {
@@ -251,7 +251,7 @@ void loba_query (struct loba *lb, iREAL point[3], int *rank)
 
 void loba_getAdjacent(struct loba *lb, int myrank, int *neighborhood, int *nNeighbors)
 {
-  iREAL mylo[3], myhi[3], lo[3], hi[3];
+  double mylo[3], myhi[3], lo[3], hi[3];
 
   loba_getbox(lb, myrank, mylo, myhi); 
   
@@ -360,7 +360,7 @@ void loba_getAdjacent(struct loba *lb, int myrank, int *neighborhood, int *nNeig
   *nNeighbors = counter;
 }
  
-void loba_getbox (struct loba *lb, int part, iREAL lo[3], iREAL hi[3])
+void loba_getbox (struct loba *lb, int part, double lo[3], double hi[3])
 {
   switch (lb->al)
   {
@@ -396,7 +396,7 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *
                     int *nGhostNeighbors, int *ghostNeighborhood, 
                     int *ghostTIDNeighbors[], int *ghostTIDcrosses)
 {
-  iREAL lo[3], hi[3];
+  double lo[3], hi[3];
   int idx = 0; int uniqueRanks = 0;
   int *ranks = (int*) malloc(nNeighbors*sizeof(int)); 
   //int *parts = (int*) malloc(nNeighbors*sizeof(int)); 

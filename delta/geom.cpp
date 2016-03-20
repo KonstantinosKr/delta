@@ -98,7 +98,7 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
   
   TRI* tr = NULL;
   free(tr);int pointlength = 0;
-  tr = hull((iREAL *)v, pointsize, &pointlength);
+  tr = hull((double *)v, pointsize, &pointlength);
   int counter = 0;
   
   for(TRI *tri = tr, *e = tri + pointlength; tri < e; tri ++){counter++;}

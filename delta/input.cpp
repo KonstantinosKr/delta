@@ -532,8 +532,8 @@ void eggCollision(int &nt, int &nb, iREAL *t[6][3],
   nb = 2;
   
   iREAL mint, maxt;
-  load_vtk(0, nt, 0, t, tid, pid, position, mint, maxt);
-  load_vtk(0, nt, 1, t, tid, pid, position, mint, maxt);
+  load_vtk(1, nt, 0, t, tid, pid, position, mint, maxt);
+  load_vtk(1, nt, 1, t, tid, pid, position, mint, maxt);
   iREAL lin[3], ang[3]; iREAL ma;
 
   lin[1] = lin[2] = 0;
@@ -549,7 +549,7 @@ void eggCollision(int &nt, int &nb, iREAL *t[6][3],
   
   condition_enviroment(1, lin, ang, ma, linear, angular, rotation, mass, inertia, inverse, parmat);
   
-  int radius = 10;
+  int radius = maxt;
 
   int idx = 0; lo[0] =0; lo[1] = 0; lo[2] = 0;
   for(int ii = lo[0]; ii < hi[0]; ii=ii+radius)

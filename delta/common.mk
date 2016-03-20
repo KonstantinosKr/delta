@@ -8,8 +8,8 @@ ifeq ($(DEBUG),yes)
   CFLAGS=-Iobjs/ -g -Wall -O0 -m64 $(REAL) $(ZOLTANINC) $(HULLINC) -fopenmp -DDEBUG
   ISPC=ispc -g -O0 --arch=x86-64 $(REAL) -DDEBUG
 else
-  CFLAGS=-Iobjs/ -O2 -m64 $(REAL) $(ZOLTANINC) $(HULLINC) -fopenmp
-  ISPC=ispc -O2 --arch=x86-64 --woff $(REAL) 
+  CFLAGS=-Iobjs/ -O3 -m64 $(REAL) $(ZOLTANINC) $(HULLINC) -fopenmp
+  ISPC=ispc -O3 --arch=x86-64 --woff $(REAL) 
 endif
 
 ISPC_OBJS=$(addprefix objs/, $(ISPC_SRC:.ispc=_ispc.o))

@@ -48,8 +48,13 @@ int main (int argc, char **argv)
   MPI_Comm_rank (MPI_COMM_WORLD, &myrank);
   MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
  
+  int scenario;
   //user interface
-  if(ui(myrank, argc, argv)) return 0;
+  if(!myrank)
+  {
+    scenario = ui(myrank, argc, argv);
+    printf("DELTA MASTER | INITIATING EXPERIMENT SCENARIO #%i\n", scenario);
+  }
 
   int *parmat; //particle material  
   
@@ -77,7 +82,6 @@ int main (int argc, char **argv)
   int *pid; //particle identifier
   int *tid; // triangle identifiers
   iREAL *t[6][3]; // triangles
-  iREAL *p[3],*q[3];//p and q points
   
   iREAL *mass; // scalar mass
   iREAL *force[3]; // total spatial force
@@ -109,9 +113,6 @@ int main (int argc, char **argv)
     linear[i] = (iREAL *) malloc (size*sizeof(iREAL)); 
     torque[i] = (iREAL *) malloc (size*sizeof(iREAL));
     force[i] = (iREAL *) malloc (size*sizeof(iREAL));
-    
-    p[i] = (iREAL *) malloc (size*sizeof(iREAL));
-    q[i] = (iREAL *) malloc (size*sizeof(iREAL));
   }
   
   for (int i = 0; i < 6; i++)
@@ -168,7 +169,7 @@ int main (int argc, char **argv)
   iREAL step = 1E-4; int timesteps=0;
   if (myrank == 0)
   {
-    init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi); 
+    init_enviroment(scenario, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi); 
     printf("NT:%i, NB: %i\n", nt, nb);
     euler(nb, angular, linear, rotation, position, 0.5*step);
   }
@@ -177,11 +178,10 @@ int main (int argc, char **argv)
   
   std::vector<contact> *conpnt = new std::vector<contact>[nb]; 
  
-  printf("RANK:%i NB:%i\n", myrank, nb);
+  printf("DELTA SLAVE | RANK:%i NB:%i\n", myrank, nb);
         
   for(iREAL time = step; time < 0.1; time+=step)
   {
-    if(!myrank){printf("TIMESTEP: %i\n", timesteps);} 
     
     timerstart(&tbalance[timesteps]);
     loba_balance (lb, nt, t[0], tid, 1.1,
@@ -191,7 +191,7 @@ int main (int argc, char **argv)
                   &export_global_ids, &export_local_ids);
     timerend (&tbalance[timesteps]);
   
-    //printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
+    printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
    
     timerstart(&tmigration[timesteps]);
     migrate (lb, nt, nb, t, parmat, tid, pid, 
@@ -201,14 +201,14 @@ int main (int argc, char **argv)
                export_global_ids, export_local_ids);
     timerend (&tmigration[timesteps]); 
     
-    //printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
+    printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
     
     timer1 = 0.0;
     timer2 = 0.0;
     timer3 = 0.0;
     
     timerstart (&tdataExchange[timesteps]);
-    migrateGhosts(lb, myrank, nt, nb, t, parmat, step, p, q, tid, pid, conpnt, &timer1, &timer2, &timer3);
+    migrateGhosts(lb, myrank, nt, nb, t, parmat, step, tid, pid, conpnt, &timer1, &timer2, &timer3);
     timerend (&tdataExchange[timesteps]);
     
     tTimer1[timesteps] = timer1;
@@ -221,9 +221,10 @@ int main (int argc, char **argv)
     dynamics(lb, myrank, conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
     timerend (&tdynamics[timesteps]);
       
-    //migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse);
-    
     output_state(lb, myrank, nt, t, timesteps);
+    
+    if(!myrank){printf("DELTA MASTER | TIMESTEP: %i\n", timesteps);} 
+    
     timesteps++;
     if(timesteps==300) break;
   }
@@ -350,14 +351,14 @@ int main (int argc, char **argv)
     avgdt1 = avgdt1/nprocs;
     avgdt2 = avgdt2/nprocs;
     avgdt3 = avgdt3/nprocs; 
-   
-    printf("TOTmin: %f, TOTmax: %f, TOTavg: %f\n"
-           "BALmin: %f, BALmax: %f, BALavg: %f\n"
-           "MIGmin: %f, MIGmax: %f, MIGavg: %f\n"
-           "DTXmin: %f, DTXmax: %f, DTXavg: %f\n"
-           "DT1min: %f, DT1max: %f, DT1avg: %f\n"
-           "DT2min: %f, DT2max: %f, DT2avg: %f\n"
-           "DT3min: %f, DT3max: %f, DT3avg: %f\n", 
+    printf("\nDELTA MASTER | PERFORMANCE MEASUREMENT:\n"); 
+    printf("TOTmin:%f\tTOTmax:%f\tTOTavg:%f\n"
+           "BALmin:%f\tBALmax:%f\tBALavg:%f\n"
+           "MIGmin:%f\tMIGmax:%f\tMIGavg:%f\n"
+           "DTXmin:%f\tDTXmax:%f\tDTXavg:%f\n"
+           "DT1min:%f\tDT1max:%f\tDT1avg:%f\n"
+           "DT2min:%f\tDT2max:%f\tDT2avg:%f\n"
+           "DT3min:%f\tDT3max:%f\tDT3avg:%f\n\n", 
           minsubtotal, maxsubtotal, avgsubtotal, 
           minbal, maxbal, avgbal, 
           minmig, maxmig, avgmig, 
@@ -373,15 +374,15 @@ int main (int argc, char **argv)
                     mindt1, maxdt1, avgdt1, 
                     mindt2, maxdt2, avgdt2, 
                     mindt3, maxdt3, avgdt3); 
-    printf("Log Writting Finished.\n");
+    printf("DELTA MASTER | LOG WRITE COMPLETE.\n");
   }
   //have to make sure all ranks finished
   MPI_Barrier(MPI_COMM_WORLD);
   if(!myrank)
   {
-    printf("\nComputation Finished.\n");
+    printf("DELTA MASTER | COMPUTATION COMPLETE | EXPERIMENT CODE #%i.\n", scenario);
     postProcessing(nprocs, size, timesteps);
-    printf("Post-Processing Finished.\n");
+    printf("DELTA MASTER | POST-PROCESSING COMPLETE.\n");
   }
 
   // DESTROY
@@ -398,8 +399,6 @@ int main (int argc, char **argv)
     free(linear[i]);
     free(torque[i]);
     free(force[i]);
-    free(p[i]);
-    free(q[i]);
   }
   
   Zoltan_LB_Free_Data (&import_global_ids, &import_local_ids, 
@@ -415,15 +414,20 @@ int ui(int myrank, int argc, char **argv)
   int execid = 0;
   if(!myrank)
   {
-    printf("\nExecuting Project Delta\n");
+    printf("\nEXECUTING DELTA...\n\n");
     if(argc==1) 
-      printf("Delta: initiating default setup.\n");
+    {
+      printf("DELTA MASTER | PROVIDE ARGUEMENT | ./delta _#scenario_\nSCENARIOS:\n#1.Two Particle Collision\n#2.Two Egg Collision\n");
+      exit(0);
+    }
     else
+    {
       for(int i=1;i<argc;i++)
       {
-        execid = 0;
-        printf("Arg[%i]: %s\n", i, argv[i]);
+        //printf("Arg[%i]: %s\n", i, argv[i]);
+        execid = atoi(argv[i]);
       }
+    }
   }else
   {
     execid = 0;    

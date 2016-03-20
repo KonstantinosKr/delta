@@ -26,7 +26,7 @@
 
 void output_state(struct loba *lb, int myrank, int nt, iREAL *t[6][3], int timesteps)
 {
-  iREAL lo[3], hi[3]; 
+  double lo[3], hi[3]; 
   loba_getbox (lb, myrank, lo, hi);//get local subdomain boundary box
   
   char iter[100];

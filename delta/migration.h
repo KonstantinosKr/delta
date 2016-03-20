@@ -43,8 +43,7 @@ void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], int *parmat,
               ZOLTAN_ID_PTR export_global_ids, ZOLTAN_ID_PTR export_local_ids);
 
 void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3], int *parmat,
-      iREAL dt, iREAL *p[3], iREAL *q[3], 
-      int tid[], int pid[], std::vector<contact> conpnt[], 
+      iREAL dt, int tid[], int pid[], std::vector<contact> conpnt[], 
       iREAL *timer1, iREAL *timer2, iREAL *timer3);
 
 void init_migratePosition (struct loba *lb, int &nb, iREAL *linear[3],

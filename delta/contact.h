@@ -44,9 +44,9 @@ struct contact {
 };
 
 // calculate distances all-to-all
-void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], iREAL *p[3], iREAL *q[3], std::vector<contact> conpnt[]);
+void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contact> conpnt[]);
 
 // calculate distances all-to-small
-void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], iREAL *p[3], iREAL *q[3], std::vector<contact> conpnt[]);
+void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contact> conpnt[]);
 
 #endif

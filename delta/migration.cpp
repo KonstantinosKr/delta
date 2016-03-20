@@ -206,7 +206,6 @@ void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], int *parmat,
   }
 
   //////////////////////////////////////////////////////////////////////////
-  
   int receive_idx=0;
   if(nt > 0 && num_export > 0) 
   {
@@ -251,7 +250,7 @@ void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], int *parmat,
   
   iREAL *trvbuffer[6];
   int *rcvpid_buffer; int *rvparmat_buffer;
-  int size = 0; 
+  int size = 100000; 
 
   int MPISENDS = 9;
   MPI_Request *myRequest = (MPI_Request*) malloc(n_export_unique_procs*MPISENDS*sizeof(MPI_Request));//4 sends
@@ -280,10 +279,8 @@ void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], int *parmat,
   {
     MPI_Wait(&myRequest[(i*MPISENDS)+0], MPI_STATUS_IGNORE);
     //int x = export_unique_procs[i];
-    //printf("RANK:%i sent:%i\n", myrank, parpivot[x]);
-    //printf("RANK:%i received:%i\n", myrank, parrcvpivot[x]);
   }
-  
+ 
   if(n_import_unique_procs > 0)
   {
     trvbuffer[0] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
@@ -378,7 +375,7 @@ void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], int *parmat,
   }
 
   nt = nt + (num_import-num_export);
- 
+  
   if(n_export_unique_procs)
   {
     free(tbuffer[0]);
@@ -737,7 +734,7 @@ void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
     
     for (int j = 0; j < nb; j++)//loop through export data/ids 
     {
-      iREAL point[3];
+      double point[3];
       point[0] = position[0][j];
       point[1] = position[1][j];
       point[2] = position[2][j];
@@ -1001,8 +998,7 @@ void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
 }
 
 void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3], int *parmat,
-                iREAL dt, iREAL *p[3], iREAL *q[3], 
-                int tid[], int pid[], std::vector<contact> conpnt[], 
+                iREAL dt, int tid[], int pid[], std::vector<contact> conpnt[], 
                 iREAL *timer1, iREAL *timer2, iREAL *timer3)
 {
   TIMING t1, t2, t3;
@@ -1107,7 +1103,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
     MPI_Send(&pivot[i], 1, MPI_INT, proc, 1, MPI_COMM_WORLD);
   }
  
-  int n = 0;
+  int n = 100000;
   for(int i=0; i<nNeighbors; i++)
   {
     int proc = neighborhood[i];
@@ -1171,7 +1167,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
 
   iREAL *v[3];
   timerstart(&t2);
-  contact_detection (0, nt, t, tid, pid, v, p, q, conpnt);//local computation
+  contact_detection (0, nt, t, tid, pid, v, conpnt);//local computation
   timerend(&t2);
   *timer2 = t2.total;
   
@@ -1235,7 +1231,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   {
     //printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, nt, receive_idx);
     //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-    contact_detection(0, nt, nt, receive_idx, t, tid, pid, v, p, q, conpnt);
+    contact_detection(0, nt, nt, receive_idx, t, tid, pid, v, conpnt);
   }
   
   for(int i=0; i<6; i++)
@@ -1447,7 +1443,7 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
   for(int i=0;i<nb;i++)
   {
     int qrank;
-    iREAL x[3];
+    double x[3];
     x[0] = position[0][i];
     x[1] = position[1][i];
     x[2] = position[2][i];
