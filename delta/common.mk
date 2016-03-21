@@ -20,6 +20,10 @@ LIBS=-lm -lstdc++ $(ZOLTANLIB) $(HULLLIB) $(PYTHONLIB)
 
 default: dirs $(ISPC_HEADERS) $(CPP_OBJS) $(C_OBJS) $(EXE)
 
+release: dirs $(ISPC_HEADERS) $(CPP_OBJS) $(C_OBJS) $(EXE)
+
+debug: dirs $(ISPC_HEADERS) $(CPP_OBJS) $(C_OBJS) $(EXE)
+
 .PHONY: dirs clean print
 
 print:

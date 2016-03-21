@@ -977,24 +977,40 @@ void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
     MPI_Wait(&myRequest[(i*MPISENDS)+6], MPI_STATUS_IGNORE);
     MPI_Wait(&myRequest[(i*MPISENDS)+7], MPI_STATUS_IGNORE);
   }
+  
+  free(parrcvpivot);
+  free(parpivot);
+  free(paridx);
 
   if(found)
   {
     free(vbuffer);
     free(angbuffer);
+    free(paridxbuffer);
+    free(rotationbuffer);
+    free(positionbuffer);
+    free(inertiabuffer);
+    free(inversebuffer);
   }
   
- free(vrvbuffer);
- free(angrvbuffer);
+  free(vrvbuffer);
+  free(angrvbuffer);
+  free(rcv_paridx);
+  free(rcvpositionbuffer);
+  free(rcvrotationbuffer); 
+  free(rcvinertiabuffer);
+  free(rcvinversebuffer); 
  
- for(int i=0; i<nproc;i++)
- {
-   if(i == myrank) continue;
-   free(send_paridx[i]);
- }
-  
- free(myRequest);
- free(myrvRequest);
+  for(int i=0; i<nproc;i++)
+  {
+    if(i == myrank) continue;
+    free(send_paridx[i]);
+  }
+ 
+  free(send_paridx);
+
+  free(myRequest);
+  free(myrvRequest);
 }
 
 void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3], int *parmat,
@@ -1410,14 +1426,31 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
     MPI_Wait(&myRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
   }
  
- for(int i=0; i<nproc;i++)
- {
-   if(i==myrank) continue;
-   free(send_paridx[i]);
- }
+  free(parrcvpivot);
+  free(parpivot);
+  free(paridx);
   
- free(myRequest);
- free(myrvRequest);
+  free(fbuffer);
+  free(tbuffer);
+  free(paridxbuffer);
+  
+  if(nproc > 0)
+  {
+    free(rcvfbuffer);
+    free(rcvtbuffer);
+    free(rcv_paridx);
+  }
+  
+  for(int i=0; i<nproc;i++)
+  {
+    if(i==myrank) continue;
+    free(send_paridx[i]);
+  }
+
+  free(send_paridx);
+  
+  free(myRequest);
+  free(myrvRequest);
 }
 
 void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3], iREAL *force[3], iREAL *torque[3])
@@ -1571,13 +1604,26 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
     MPI_Wait(&myRequest[(i*MPISENDS)+2], MPI_STATUS_IGNORE);
     MPI_Wait(&myRequest[(i*MPISENDS)+3], MPI_STATUS_IGNORE);
   }
- 
- for(int i=0; i<nproc;i++)
- {
-   if(i==myrank)continue;
-   free(send_paridx[i]);
- }
   
- free(myRequest);
- free(myrvRequest);
+  free(parrcvpivot);
+  free(parpivot);
+  free(paridx);
+  
+  free(fbuffer);
+  free(tbuffer);
+  free(paridxbuffer);
+ 
+  free(rcvfbuffer);
+  free(rcvtbuffer);
+  free(rcv_paridx);
+  
+  for(int i=0; i<nproc;i++)
+  {
+    if(i==myrank)continue;
+    free(send_paridx[i]);
+  }
+  free(send_paridx);
+
+  free(myRequest);
+  free(myrvRequest);
 }
