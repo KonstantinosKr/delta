@@ -23,41 +23,9 @@
  */
 
 #include <vector>
-
-#include "delta/collision/contactpoint.h"
 #include <limits>
-#include <float.h>
+#include <cfloat>
 #include "algo.h"
-
-namespace delta {
-  namespace collision {
-    void cleanPenaltyStatistics();
-
-    /**
-     * The penalty() operation that accepts whole batches of triangles, i.e.
-     * triangulated bodies, keeps some statistics about the number of
-     * comparisons. You can retrieve this information with this routine,
-     * and clean the statistics with cleanPenaltyStatistics(). The whole
-     * statistics stuff is not thread-safe.
-     */
-    std::vector<int> getPenaltyStatistics();
-
-
-    /**
-     *
-     * @see hybrid() or bf() for a description of the remaining parameters.
-     */
-    std::vector<contactpoint> penalty(
-      int       numberOfTrianglesOfGeometryA,
-      double*   xCoordinatesOfPointsOfGeometryA,
-      double*   yCoordinatesOfPointsOfGeometryA,
-      double*   zCoordinatesOfPointsOfGeometryA,
-      int       numberOfTrianglesOfGeometryB,
-      double*   xCoordinatesOfPointsOfGeometryB,
-      double*   yCoordinatesOfPointsOfGeometryB,
-      double*   zCoordinatesOfPointsOfGeometryB,
-      double    epsilon
-    );
 
     /**
      * penalty method for nonlinear constrained optimization of convex problem
@@ -106,27 +74,3 @@ namespace delta {
       double&  error
     );
 
-    /**
-     * This is a second variant of the penalty method. Different to the one
-     * above, this one does terminate as soon as the error underruns maxError
-     * or the number of itertions exceeds maxNumberOfNewtonIterations.
-     */
-    void penalty(
-      double   xCoordinatesOfTriangleA[3],
-      double   yCoordinatesOfTriangleA[3],
-      double   zCoordinatesOfTriangleA[3],
-      double   xCoordinatesOfTriangleB[3],
-      double   yCoordinatesOfTriangleB[3],
-      double   zCoordinatesOfTriangleB[3],
-      double&  xPA,
-      double&  yPA,
-      double&  zPA,
-      double&  xPB,
-      double&  yPB,
-      double&  zPB,
-      int      maxNumberOfNewtonIterations,
-      double   maxError,
-      int&     numberOfNewtonIterationsRequired
-    );
-  }
-}

@@ -1,5 +1,6 @@
 #include "material.h"
 #include "stdio.h"
+
 // interaction per interaction type
 iREAL material::iparam[NINT][NFOR];   
 

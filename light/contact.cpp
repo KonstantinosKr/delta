@@ -57,7 +57,6 @@ void contact::detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iRE
 {
   iREAL Ax[3], Ay[3], Az[3], Bx[3], By[3], Bz[3];
   
-#pragma simd
   for(int i=s;i<e;i++)
   {
     Ax[0] = t[0][0][i];

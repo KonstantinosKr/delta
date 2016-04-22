@@ -105,7 +105,7 @@ int main (int argc, char **argv)
 
 	for(int i=0;i<size;i++) tid[i] = INT_MAX; 
 	
-	init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);  
+  input::init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
 	printf("NT:%i NB:%i\n", nt, nb);
   
   std::vector<contactpoint> *conpnt = new std::vector<contactpoint>[nb];
@@ -118,9 +118,6 @@ int main (int argc, char **argv)
    
   for(int time = 1; time < timesteps; time++)
   {
-    //printf("TIMESTEP: %i\n", timesteps);
-    //printf("BODY1 XVelocity:%f\n", linear[2][0]);
-    //printf("BODY2 XVelocity:%f\n", linear[2][1]);
     contact::detection (0, nt, t, tid, pid, linear, conpnt);
 		
     forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);

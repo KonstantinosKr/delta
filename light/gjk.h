@@ -23,12 +23,8 @@
 #include <vector>
 #include <limits>
 
-#include "delta/collision/contactpoint.h"
-
 #include "algo.h"
 
-namespace delta {
-  namespace collision {
     std::vector<contactpoint> gjk(
      int       numberOfTrianglesOfGeometryA,
      double*   xCoordinatesOfPointsOfGeometryA,
@@ -45,5 +41,4 @@ namespace delta {
      * 'p' and 'q' are the two outputed closest points, respectively in
      * polyhedron (a,na) and polyhedron (b,nb); the distance is returned */
     double gjk (double *a, int na, double *b, int nb, double *p, double *q);
-  }
-}
+

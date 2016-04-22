@@ -56,7 +56,7 @@ int input(const char *path)
 
 */
 
-void init_enviroment(int scene, int &nt, int &nb, iREAL *t[6][3], 
+void input::init_enviroment(int scene, int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
@@ -68,22 +68,22 @@ void init_enviroment(int scene, int &nt, int &nb, iREAL *t[6][3],
   {
     case 0:
     {
-      twoParticleCollision(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
+      input::twoParticleCollision(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
       break;
     }
     case 1:
     {
-      oneParticleVsWall(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
+      input::oneParticleVsWall(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
       break;
     }
     case 2:
     {
-      chaos(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
+      input::chaos(nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
     }
   }
 }
 
-void condition_enviroment(int nb, iREAL lin[3], iREAL ang[3], int ma, 
+void input::condition_enviroment(int nb, iREAL lin[3], iREAL ang[3], int ma,
                           iREAL *linear[3], iREAL *angular[6], 
                           iREAL *rotation[9], iREAL *mass, 
                           iREAL *inertia[9], iREAL *inverse[9], int *parmat)
@@ -147,7 +147,7 @@ void condition_enviroment(int nb, iREAL lin[3], iREAL ang[3], int ma,
   }
 }
 
-void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt)
+void input::load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt)
 {
   //////////VTK format////////////
   iREAL min = DBL_MAX;
@@ -179,9 +179,9 @@ void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *posi
         
         ch = fscanf(fp1,"%s",word);
         //printf("will read: %llu\n",n); 
-        point[0] = (iREAL *)malloc (n*sizeof(iREAL));
-        point[1] = (iREAL *)malloc (n*sizeof(iREAL));
-        point[2] = (iREAL *)malloc (n*sizeof(iREAL));
+        point[0] = (iREAL *) new iREAL[n*sizeof(iREAL)];
+        point[1] = (iREAL *) new iREAL[n*sizeof(iREAL)];
+        point[2] = (iREAL *) new iREAL[n*sizeof(iREAL)];
         
         for(int i=0;i<n;i++)
         {
@@ -285,7 +285,7 @@ void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *posi
   fclose(fp1);
 }
 
-void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3], 
+void input::twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
@@ -293,7 +293,7 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
   nb = 2;
-  int ptype[nb];
+  int ptype[2];
   for(int i = 0; i < nb; i++){ptype[i] = 1;}
   
   iREAL mint, maxt;
@@ -369,7 +369,7 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
   }
 }
 
-void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3], 
+void input::oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
@@ -377,7 +377,7 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
   nb = 2;
-  int ptype[nb];
+  int ptype[2];
   ptype[0] = 1;
   ptype[1] = 2;
   
@@ -453,17 +453,7 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
   }
 }
 
-void twoParticleVsWall(int &nt, int &nb, iREAL *t[6][3], 
-                    iREAL *linear[3], iREAL *angular[6], 
-                    iREAL *inertia[9], iREAL *inverse[9], 
-                    iREAL *rotation[9], iREAL *mass, 
-                    int *parmat, int tid[], int pid[], 
-                    iREAL *position[6], iREAL lo[3], iREAL hi[3])
-{
-
-}
-
-void chaos(int &nt, int &nb, iREAL *t[6][3], 
+void input::chaos(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
@@ -471,7 +461,7 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
   nb = 100;
-  int ptype[nb];
+  int ptype[100];
   for(int i = 0; i < nb; i++){ptype[i] = 0;}
   
   iREAL mint, maxt;
@@ -545,16 +535,4 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
     }
     if(idx > nb) break;
   }
-
-
-}
-
-void minion(int &nt, int &nb, iREAL *t[6][3], 
-                    iREAL *linear[3], iREAL *angular[6], 
-                    iREAL *inertia[9], iREAL *inverse[9], 
-                    iREAL *rotation[9], iREAL *mass, 
-                    int *parmat, int tid[], int pid[], 
-                    iREAL *position[6], iREAL lo[3], iREAL hi[3])
-{
-
 }

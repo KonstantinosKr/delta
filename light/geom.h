@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <limits.h>
-#include <float.h>
+#include <cfloat>
 #include <math.h>
 
 extern "C"{

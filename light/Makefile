@@ -1,12 +1,4 @@
-# C files
-#C_SRC= 
 CPP_SRC = input.cpp geom.cpp material.cpp output.cpp delta.cpp bf.cpp contact.cpp forces.cpp dynamics.cpp
-
-# ISPC files
-#ISPC_SRC= delta.ispc
-
-# ISPC targets
-#ISPC_TARGETS= avx
 
 CC=gcc
 CXX=g++
@@ -24,11 +16,46 @@ PYTHONLIB = -L/Library/Frameworks/Python.framework/Versions/3.4/lib -lpython3.4
 # Program name
 EXE=delta
 
-# Floating point type
 REAL=double
 
-# Debug version
-DEBUG=no
+DEBUG=yes
 
-# Do the rest
-include common.mk
+ifeq ($(REAL),double)
+  REAL=-DiREAL=double
+else
+  REAL=-DiREAL=float
+endif
+
+ifeq ($(DEBUG),yes)
+  CFLAGS=-Iobjs/ -g -Wall -O0 -pedantic -pedantic-errors -m64 $(REAL) $(HULLINC) -DDEBUG
+else
+  CFLAGS=-Iobjs/ -03 -m64 $(REAL) $(HULLINC)
+endif
+
+CPP_OBJS=$(addprefix objs/, $(CPP_SRC:.cpp=.o))
+C_OBJS=$(addprefix objs/, $(C_SRC:.c=.o))
+LIBS=-lm -lstdc++ $(HULLLIB) 
+
+default: dirs $(CPP_OBJS) $(EXE)
+
+.PHONY: dirs clean print
+
+print:
+	@echo $(CPP_OBJS)
+
+dirs:
+	/bin/mkdir -p objs/
+
+del:
+	find ./ -iname "*.dump" -exec rm '{}' ';'
+
+clean:
+	/bin/rm -rf objs *~ $(EXE)
+	/bin/rm -rf output/*
+	find ./ -iname "*.dump" -exec rm '{}' ';'
+
+$(EXE): $(CPP_OBJS) 
+	$(CXX) -o $@ $^ $(LIBS)
+
+objs/%.o: %.cpp
+	$(CXX) $(CFLAGS) $< -c -o $@
