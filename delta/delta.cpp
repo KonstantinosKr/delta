@@ -171,19 +171,19 @@ int main (int argc, char **argv)
   {
     init_enviroment(scenario, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi); 
     printf("NT:%i, NB: %i\n", nt, nb);
-    euler(nb, angular, linear, rotation, position, 0.5*step);
+    dynamics::euler(nb, angular, linear, rotation, position, 0.5*step);
   }
   
   init_migratePosition (lb, nb, linear, angular, rotation, position, inertia, inverse, mass);
   
-  std::vector<contact> *conpnt = new std::vector<contact>[nb]; 
+  std::vector<contactpoint> *conpnt = new std::vector<contactpoint>[nb]; 
  
   printf("DELTA SLAVE | RANK:%i NB:%i\n", myrank, nb);
         
-  for(iREAL time = step; time < 0.1; time+=step)
+  for(int time = 0; time < timesteps; time++)
   {
     
-    timerstart(&tbalance[timesteps]);
+    timerstart(&tbalance[time]);
     loba_balance (lb, nt, t[0], tid, 1.1,
                   &num_import, &import_procs, &import_to_part, 
                   &num_export, &export_procs, &export_to_part, 
@@ -193,7 +193,7 @@ int main (int argc, char **argv)
   
     printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
    
-    timerstart(&tmigration[timesteps]);
+    timerstart(&tmigration[time]);
     migrate (lb, nt, nb, t, parmat, tid, pid, 
                num_import, import_procs, import_to_part, 
                num_export, export_procs, export_to_part, 
@@ -207,26 +207,25 @@ int main (int argc, char **argv)
     timer2 = 0.0;
     timer3 = 0.0;
     
-    timerstart (&tdataExchange[timesteps]);
+    timerstart (&tdataExchange[time]);
     migrateGhosts(lb, myrank, nt, nb, t, parmat, step, tid, pid, conpnt, &timer1, &timer2, &timer3);
-    timerend (&tdataExchange[timesteps]);
+    timerend (&tdataExchange[time]);
     
-    tTimer1[timesteps] = timer1;
-    tTimer2[timesteps] = timer2;
-    tTimer3[timesteps] = timer3;
+    tTimer1[time] = timer1;
+    tTimer2[time] = timer2;
+    tTimer3[time] = timer3;
   
     forces(lb, myrank, conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     
-    timerstart (&tdynamics[timesteps]);
-    dynamics(lb, myrank, conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
-    timerend (&tdynamics[timesteps]);
+    timerstart (&tdynamics[time]);
+    dynamics::update(lb, myrank, conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
+    timerend (&tdynamics[time]);
       
-    output_state(lb, myrank, nt, t, timesteps);
+    output::state(lb, myrank, nt, t, time);
     
-    if(!myrank){printf("DELTA MASTER | TIMESTEP: %i\n", timesteps);} 
+    if(!myrank){printf("DELTA MASTER | TIMESTEP: %i\n", time);} 
     
-    timesteps++;
-    if(timesteps==300) break;
+    if(time==300) break;
   }
 
   iREAL subtotal = 0;
@@ -381,7 +380,7 @@ int main (int argc, char **argv)
   if(!myrank)
   {
     printf("DELTA MASTER | COMPUTATION COMPLETE | EXPERIMENT CODE #%i.\n", scenario);
-    postProcessing(nprocs, size, timesteps);
+    output::postProcessing(nprocs, size, timesteps);
     printf("DELTA MASTER | POST-PROCESSING COMPLETE.\n");
   }
 

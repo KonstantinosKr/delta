@@ -24,7 +24,7 @@
 
 #include "output.h"
 
-void output_state(struct loba *lb, int myrank, int nt, iREAL *t[6][3], int timesteps)
+void output::state(struct loba *lb, int myrank, int nt, iREAL *t[6][3], int timesteps)
 {
   double lo[3], hi[3]; 
   loba_getbox (lb, myrank, lo, hi);//get local subdomain boundary box
@@ -116,7 +116,7 @@ void output_state(struct loba *lb, int myrank, int nt, iREAL *t[6][3], int times
   fclose(fp);
 }
 
-void postProcessing(int nranks, int size, int timesteps)
+void output::postProcessing(int nranks, int size, int timesteps)
 {
   double *point[3];
   int *cells[5];
@@ -265,7 +265,7 @@ void postProcessing(int nranks, int size, int timesteps)
   free(cells[4]);
 }
 
-void output_performance_log()
+void output::performance_log()
 {
   char filename[100] = "output/mpi/performance.csv"; //care or buffer overflow
   printf("Performance Data: %s\n", filename);

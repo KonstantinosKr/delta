@@ -2,16 +2,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-#include <float.h>
 #include "tmr.h"
 #include "input.h"
 #include "output.h"
 #include "contact.h"
 #include "dynamics.h"
 #include "forces.h"
+#include <iostream>
+#include <vector>
 
 int main (int argc, char **argv)
 {
+  //input("input/twoparticles.py");
+
   iREAL *angular[6]; /* angular velocities (referential, spatial) */
   iREAL *linear[3]; /* linear velocities */
   iREAL *rotation[9]; /* rotation operators */
@@ -64,77 +67,73 @@ int main (int argc, char **argv)
    
 	for (int i = 0; i < 3; i ++)
 	{ 
-		t[0][i] = (iREAL *) malloc (size*sizeof(iREAL));
-		t[1][i] = (iREAL *) malloc (size*sizeof(iREAL));
-		t[2][i] = (iREAL *) malloc (size*sizeof(iREAL));
-		t[3][i] = (iREAL *) malloc (size*sizeof(iREAL));
-		t[4][i] = (iREAL *) malloc (size*sizeof(iREAL));
-		t[5][i] = (iREAL *) malloc (size*sizeof(iREAL));
+		t[0][i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+		t[1][i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+		t[2][i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+		t[3][i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+		t[4][i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+		t[5][i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
 		
-    linear[i] = (iREAL *) malloc (size*sizeof(iREAL));
+    linear[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
     
-    torque[i] = (iREAL *) malloc (size*sizeof(iREAL));
-    force[i] = (iREAL *) malloc (size*sizeof(iREAL));
+    torque[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+    force[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
 
-		p[i] = (iREAL *) malloc (size*sizeof(iREAL));
-		q[i] = (iREAL *) malloc (size*sizeof(iREAL));
+		p[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+		q[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
   }
 	
 	for (int i = 0; i < 6; i++)
 	{
-		angular[i] = (iREAL *) malloc (size*sizeof(iREAL));
-    position[i] = (iREAL *) malloc (size*sizeof(iREAL)); 
+		angular[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+    position[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
 	}
  
   for (int i = 0; i<9; i++)
   {
-    inverse[i] = (iREAL *) malloc (size*sizeof(iREAL));
-    inertia[i] = (iREAL *) malloc (size*sizeof(iREAL));
-    rotation[i] = (iREAL *) malloc (size*sizeof(iREAL));
+    inverse[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+    inertia[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
+    rotation[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
   }
 	
-  parmat = (int *) malloc (size*sizeof(int));
+  parmat = (int *) new iREAL[size*sizeof(int)];
 	
-	tid = (int *) malloc (size*sizeof(int));
-	pid = (int *) malloc (size*sizeof(int));
+	tid = (int *) new iREAL[size*sizeof(int)];
+	pid = (int *) new iREAL[size*sizeof(int)];
 
-	mass = (iREAL *) malloc(size*sizeof(iREAL));
+	mass = (iREAL *) new iREAL[size*sizeof(iREAL)];
 
 	for(int i=0;i<size;i++) tid[i] = INT_MAX; 
 	
 	init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);  
 	printf("NT:%i NB:%i\n", nt, nb);
   
-  std::vector<contact> *conpnt = new std::vector<contact>[nb];
+  std::vector<contactpoint> *conpnt = new std::vector<contactpoint>[nb];
  
-  // perform time stepping
-  iREAL step = 1E-4, time; int timesteps=1; 
+  iREAL step = 1E-4; int timesteps=100;
   
   //step = critical (nt, mass, pairnum, iparam);
   
-  euler(nb, angular, linear, rotation, position, 0.5*step);//half step
+  dynamics::euler(nb, angular, linear, rotation, position, 0.5*step);//half step
    
-  for(time = 1E-4; time < 1; time+=step)
+  for(int time = 1; time < timesteps; time++)
   {
-    printf("TIMESTEP: %i\n", timesteps); 
-   
-    printf("BODY1 XVelocity:%f\n", linear[2][0]);
-    printf("BODY2 XVelocity:%f\n", linear[2][1]);
-    contact_detection (0, nt, t, tid, pid, linear, p, q, conpnt);
+    //printf("TIMESTEP: %i\n", timesteps);
+    //printf("BODY1 XVelocity:%f\n", linear[2][0]);
+    //printf("BODY2 XVelocity:%f\n", linear[2][1]);
+    contact::detection (0, nt, t, tid, pid, linear, conpnt);
 		
     forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     
-    dynamics(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
+    dynamics::update(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
    
-    output_state(nt, t, timesteps);
-    timesteps++;
-    if(timesteps==270) break;
+    output::state(nt, t, time);
+    if(time==270) break;
   }
 	printf("\nComputation Finished.\n");
 
   for (int i = 0; i < 3; i ++)
-  {
-    free (t[0][i]);
+  { free (t[0][i]);
     free (t[1][i]);
     free (t[2][i]);
     free (linear[i]);
@@ -144,3 +143,4 @@ int main (int argc, char **argv)
 
   return 0;
 }
+

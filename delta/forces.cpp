@@ -45,7 +45,7 @@ int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, 
 
 int pairing (int i, int j){return 0;}
 
-void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb, 
+void forces (struct loba* lb, int myrank, std::vector<contactpoint> conpnt[], int nb, 
             iREAL * position[6], iREAL * angular[6], iREAL * linear[3],
             iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[])
 {
@@ -157,7 +157,7 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
       torque[2][j] += a[0]*f[1] - a[1]*f[0];
       //continue;  
     }
-    std::vector<contact>().swap(conpnt[i]);
+    std::vector<contactpoint>().swap(conpnt[i]);
     
     int qrank;
     double point[3];
@@ -200,8 +200,8 @@ void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb,
   if(iscontact == 1)
   for(int i=0;i<nb;i++)
   {
-    printf("RANK:%i Total Force of body: %i is: %f %f %f\n", myrank, i, force[0][i], force[1][i], force[2][i]);
-    printf("RANK:%i Total Torque of body: %i is: %f %f %f\n", myrank, i, torque[0][i], torque[1][i], torque[2][i]);
+    //printf("RANK:%i Total Force of body: %i is: %f %f %f\n", myrank, i, force[0][i], force[1][i], force[2][i]);
+    //printf("RANK:%i Total Torque of body: %i is: %f %f %f\n", myrank, i, torque[0][i], torque[1][i], torque[2][i]);
   }
 }
 

@@ -45,7 +45,21 @@
  *
  */
 
+void bf(
+        iREAL  xCoordinatesOfPointsOfGeometryA[3],
+        iREAL  yCoordinatesOfPointsOfGeometryA[3],
+        iREAL  zCoordinatesOfPointsOfGeometryA[3],
+        iREAL  xCoordinatesOfPointsOfGeometryB[3],
+        iREAL  yCoordinatesOfPointsOfGeometryB[3],
+        iREAL  zCoordinatesOfPointsOfGeometryB[3],
+        iREAL&  xPA,
+        iREAL&  yPA,
+        iREAL&  zPA,
+        iREAL&  xPB,
+        iREAL&  yPB,
+        iREAL&  zPB);
+
 void bf (unsigned int it, unsigned int nt,
-         double A[3], double B[3], double C[3],
-         double *D[3], double *E[3], double *F[3],
-         double *P[3], double *Q[3]);
+         iREAL A[3], iREAL B[3], iREAL C[3],
+         iREAL *D[3], iREAL *E[3], iREAL *F[3],
+         iREAL *P[3], iREAL *Q[3]);

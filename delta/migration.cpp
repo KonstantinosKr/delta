@@ -1014,7 +1014,7 @@ void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
 }
 
 void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3], int *parmat,
-                iREAL dt, int tid[], int pid[], std::vector<contact> conpnt[], 
+                iREAL dt, int tid[], int pid[], std::vector<contactpoint> conpnt[], 
                 iREAL *timer1, iREAL *timer2, iREAL *timer3)
 {
   TIMING t1, t2, t3;
@@ -1183,7 +1183,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
 
   iREAL *v[3];
   timerstart(&t2);
-  contact_detection (0, nt, t, tid, pid, v, conpnt);//local computation
+  contact::detection (0, nt, t, tid, pid, v, conpnt);//local computation
   timerend(&t2);
   *timer2 = t2.total;
   
@@ -1247,7 +1247,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   {
     //printf("Myrank[%i]: nt:%i, receive:%i\n", myrank, nt, receive_idx);
     //range s1-e1 is outter loop, s2-e2 is inner loop in the traversal
-    contact_detection(0, nt, nt, receive_idx, t, tid, pid, v, conpnt);
+    contact::detection(0, nt, nt, receive_idx, t, tid, pid, v, conpnt);
   }
   
   for(int i=0; i<6; i++)

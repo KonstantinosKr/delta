@@ -63,7 +63,7 @@ iREAL critical (int nt, iREAL mass[], int pairnum, iREAL * iparam[NINT])
 }
 
 // dynamics task 
-void dynamics (std::vector<contact> conpnt[],
+void dynamics::update (std::vector<contactpoint> conpnt[],
               int nt, int nb, iREAL *t[6][3], int pid[], iREAL *angular[6], iREAL *linear[3],
               iREAL *rotation[9], iREAL *position[6],
               iREAL *inertia[9], iREAL *inverse[9],
@@ -74,7 +74,7 @@ void dynamics (std::vector<contact> conpnt[],
 
   for (int i = 0; i<nb; i++) // time integration 
   {
-    printf("POSITION[%i]: %f %f %f \n", i, position[0][i], position[1][i], position[2][i]); 
+    //printf("POSITION[%i]: %f %f %f \n", i, position[0][i], position[1][i], position[2][i]);
     
     iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], t[3], T[3], DL[9], L2[9], A[3], B[3];
 
@@ -270,7 +270,7 @@ void dynamics (std::vector<contact> conpnt[],
   */}
 }
 
-void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)
+void dynamics::euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)
 {
   for(int i = 0; i<nb;i++)
   {
@@ -317,7 +317,7 @@ void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], i
 }
 
 
-void integrate (iREAL step, iREAL lo[3], iREAL hi[3], int nt, iREAL * t[3][3], iREAL * v[3])
+void dynamics::integrate (iREAL step, iREAL lo[3], iREAL hi[3], int nt, iREAL * t[3][3], iREAL * v[3])
 {
     for(int i = 0; i < nt; i++)
     {
@@ -356,7 +356,7 @@ void integrate (iREAL step, iREAL lo[3], iREAL hi[3], int nt, iREAL * t[3][3], i
 
 
 /* vectorizable exponential map */
-void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
+void dynamics::expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
                 iREAL &Lambda1, iREAL &Lambda2, iREAL &Lambda3,
 			          iREAL &Lambda4, iREAL &Lambda5, iREAL &Lambda6,
 			          iREAL &Lambda7, iREAL &Lambda8, iREAL &Lambda9)

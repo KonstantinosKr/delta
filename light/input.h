@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <float.h>
 #include "dynamics.h"
 #include <time.h>
 #include <math.h>

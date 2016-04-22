@@ -1,6 +1,6 @@
 #include "output.h"
 
-void output_state(int nt, iREAL *t[6][3], int timesteps)
+void output::state(int nt, iREAL *t[6][3], int timesteps)
 {
   iREAL lo[3], hi[3];	
   lo[0] = -250; // lower corner

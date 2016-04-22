@@ -30,7 +30,7 @@
 #include "stdio.h"
 #include <vector>
 
-struct contact {
+struct contactpoint {
   int pid[2];
   int color[2];
   iREAL point[3];
@@ -39,14 +39,15 @@ struct contact {
   
   iREAL pp[3];
   iREAL qq[3];
-  //contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth);
-  contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth, iREAL p[3], iREAL q[3]);
+  contactpoint(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth, iREAL p[3], iREAL q[3]);
 };
 
-// calculate distances all-to-all
-void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], iREAL *p[3], iREAL *q[3], std::vector<contact> conpnt[]);
+namespace contact
+{
+	// calculate distances all-to-all
+	void detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contactpoint> conpnt[]);
 
-// calculate distances all-to-small
-void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], iREAL *p[3], iREAL *q[3], std::vector<contact> conpnt[]);
-
+	// calculate distances all-to-small
+	void detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contactpoint> conpnt[]);
+}
 #endif

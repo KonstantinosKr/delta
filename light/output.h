@@ -4,4 +4,6 @@
 #include <limits.h>
 #include <float.h>
 
-void output_state(int nt, iREAL *t[6][3], int timesteps);
+namespace output{
+	void state(int nt, iREAL *t[6][3], int timesteps);
+}

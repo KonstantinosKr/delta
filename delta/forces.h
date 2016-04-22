@@ -30,7 +30,7 @@
 
 int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, iREAL mass[], int ij, iREAL f[3]);
 
-void forces (struct loba* lb, int myrank, std::vector<contact> conpnt[], int nb, 
+void forces (struct loba* lb, int myrank, std::vector<contactpoint> conpnt[], int nb, 
             iREAL * position[6], iREAL * angular[6], iREAL * linear[3],
             iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[]);
 

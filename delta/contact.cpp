@@ -25,22 +25,22 @@
 #include "contact.h"
 #include "math.h"
 
-contact::contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth, iREAL p[3], iREAL q[3])
+contactpoint::contactpoint(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREAL depth, iREAL p[3], iREAL q[3])
 {
   this->pid[0] = pid[0];
   this->pid[1] = pid[1];
-
+  
   this->color[0] = color[0];
   this->color[1] = color[1];
-
+  
   this->point[0] = point[0];
   this->point[1] = point[1];
   this->point[2] = point[2];
-
+  
   this->normal[0] = normal[0];
   this->normal[1] = normal[1];
   this->normal[2] = normal[2];
-    
+  
   this->pp[0] = p[0];
   this->pp[1] = p[1];
   this->pp[2] = p[2];
@@ -53,13 +53,13 @@ contact::contact(int pid[2], int color[2], iREAL point[3], iREAL normal[3], iREA
 }
 
 //all-to-all range
-void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contact> conpnt[])
+void contact::detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contactpoint> conpnt[])
 {
   iREAL Ax[3], Ay[3], Az[3], Bx[3], By[3], Bz[3];
-
-  #pragma simd
+  
+#pragma simd
   for(int i=s;i<e;i++)
-  { 
+  {
     Ax[0] = t[0][0][i];
     Ax[1] = t[1][0][i];
     Ax[2] = t[2][0][i];
@@ -71,7 +71,7 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREA
     Bz[0] = t[0][2][i];
     Bz[1] = t[1][2][i];
     Bz[2] = t[2][2][i];
-   
+    
     for(int j=i+1;j<e;j++) //careful; range can overflow due to ghosts particles
     {
       if(pid[i] == pid[j])continue;
@@ -79,7 +79,7 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREA
       Bx[0] = t[0][0][j];
       Bx[1] = t[1][0][j];
       Bx[2] = t[2][0][j];
-
+      
       By[0] = t[0][1][j];
       By[1] = t[1][1][j];
       By[2] = t[2][1][j];
@@ -102,20 +102,20 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREA
         int found=0;
         for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)
         {
-          if(conpnt[pid[i]][ii].pp[0] == xPA ||conpnt[pid[i]][ii].pp[1] == yPA ||conpnt[pid[i]][ii].pp[2] == zPA || conpnt[pid[i]][ii].qq[0] == xPB ||conpnt[pid[i]][ii].qq[1] == yPB || conpnt[pid[i]][ii].qq[2] == zPB) 
+          if(conpnt[pid[i]][ii].pp[0] == xPA ||conpnt[pid[i]][ii].pp[1] == yPA ||conpnt[pid[i]][ii].pp[2] == zPA || conpnt[pid[i]][ii].qq[0] == xPB ||conpnt[pid[i]][ii].qq[1] == yPB || conpnt[pid[i]][ii].qq[2] == zPB)
           {
             found = 1;
           }
         }
-       
+        
         if(found!=1)
         {
-          iREAL midpt[3], normal[3];  
-        
+          iREAL midpt[3], normal[3];
+          
           midpt[0] = (xPA+xPB)/2; //x
           midpt[1] = (yPA+yPB)/2; //y
           midpt[2] = (zPA+zPB)/2; //z
-      
+          
           iREAL depth = margin-dist;
           
           normal[0] = ((xPB - xPA)/depth);// depth for inclusion to normal
@@ -132,12 +132,12 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREA
           pp[0] = xPA;
           pp[1] = yPA;
           pp[2] = zPA;
-
+          
           qq[0] = xPB;
           qq[1] = yPB;
           qq[2] = zPB;
-
-          contact point(id, color, midpt, normal, depth, pp, qq);
+          
+          contactpoint point(id, color, midpt, normal, depth, pp, qq);
           conpnt[pid[i]].push_back(point);
         }
       }
@@ -146,12 +146,12 @@ void contact_detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREA
 }
 
 //two ranges
-void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contact> conpnt[])
+void contact::detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contactpoint> conpnt[])
 {
   iREAL Ax[3], Ay[3], Az[3], Bx[3], By[3], Bz[3];
-
+  
   for(int i=s1;i<e1;i++)
-  { 
+  {
     Ax[0] = t[0][0][i];
     Ax[1] = t[1][0][i];
     Ax[2] = t[2][0][i];
@@ -171,7 +171,7 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
       Bx[0] = t[0][0][j];
       Bx[1] = t[1][0][j];
       Bx[2] = t[2][0][j];
-
+      
       By[0] = t[0][1][j];
       By[1] = t[1][1][j];
       By[2] = t[2][1][j];
@@ -188,27 +188,27 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
       iREAL dist = sqrt(pow((xPB-xPA),2)+pow((yPB-yPA),2)+pow((zPB-zPA),2));
       
       iREAL margin = 15E-2;
-
+      
       if(dist < margin)
       {
-        int found = 0;  
+        int found = 0;
         for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)
         {
-          if(conpnt[pid[i]][ii].pp[0] == xPA ||conpnt[pid[i]][ii].pp[1] == yPA ||conpnt[pid[i]][ii].pp[2] == zPA || conpnt[pid[i]][ii].qq[0] == xPB ||conpnt[pid[i]][ii].qq[1] == yPB || conpnt[pid[i]][ii].qq[2] == zPB) 
+          if(conpnt[pid[i]][ii].pp[0] == xPA ||conpnt[pid[i]][ii].pp[1] == yPA ||conpnt[pid[i]][ii].pp[2] == zPA || conpnt[pid[i]][ii].qq[0] == xPB ||conpnt[pid[i]][ii].qq[1] == yPB || conpnt[pid[i]][ii].qq[2] == zPB)
           {
             found = 1;
           }
         }
-       
+        
         if(found!=1)
         {
-        //printf("PARTICLE A:%i T:%i is in CONTACT WITH GHOST PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
+          //printf("PARTICLE A:%i T:%i is in CONTACT WITH GHOST PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
           iREAL midpt[3], normal[3];
           
           midpt[0] = (xPA+xPB)/2; //x
           midpt[1] = (yPA+yPB)/2; //y
           midpt[2] = (zPA+zPB)/2; //z
-      
+          
           iREAL depth = margin-dist;
           
           normal[0] = ((xPB - xPA)/depth);// depth for inclusion to normal
@@ -226,12 +226,12 @@ void contact_detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[
           pp[0] = xPA;
           pp[1] = yPA;
           pp[2] = zPA;
-
+          
           qq[0] = xPB;
           qq[1] = yPB;
           qq[2] = zPB;
-
-          contact point(id, color, midpt, normal, depth, pp, qq);
+          
+          contactpoint point(id, color, midpt, normal, depth, pp, qq);
           conpnt[pid[i]].push_back(point);
         }
       }

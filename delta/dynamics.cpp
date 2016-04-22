@@ -63,29 +63,29 @@ iREAL critical (int nt, iREAL mass[], int pairnum, iREAL * iparam[NINT])
 }
 
 // dynamics task 
-void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
-              int nt, int nb, iREAL *t[6][3], int pid[], iREAL *angular[6], iREAL *linear[3],
-              iREAL *rotation[9], iREAL *position[6],
-              iREAL *inertia[9], iREAL *inverse[9],
-              iREAL mass[], iREAL *force[3],
-              iREAL *torque[3], iREAL step, iREAL lo[3], iREAL hi[3])
+void dynamics::update (struct loba *lb, int myrank, std::vector<contactpoint> conpnt[],
+                                      int nt, int nb, iREAL *t[6][3], int pid[], iREAL *angular[6], iREAL *linear[3],
+                                      iREAL *rotation[9], iREAL *position[6],
+                                      iREAL *inertia[9], iREAL *inverse[9],
+                                      iREAL mass[], iREAL *force[3],
+                                      iREAL *torque[3], iREAL step, iREAL lo[3], iREAL hi[3])
 {
   iREAL half = 0.5*step;
-
-  for (int i = 0; i<nb; i++) // time integration 
+  
+  for (int i = 0; i<nb; i++) // time integration
   {
     //printf("MYRANK:%i POSITION[%i]: %f %f %f ROTATION[:%i]: %f %f %f %f %f %f %f %f %f\n", myrank, i, position[0][i], position[1][i], position[2][i], i, rotation[0][i], rotation[1][i], rotation[2][i], rotation[3][i], rotation[4][i], rotation[5][i], rotation[6][i], rotation[7][i], rotation[8][i]);
     
     iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], t[3], T[3], DL[9], L2[9], A[3], B[3];
-
+    
     O[0] = angular[0][i];
     O[1] = angular[1][i];
     O[2] = angular[2][i];
-
+    
     v[0] = linear[0][i];
     v[1] = linear[1][i];
     v[2] = linear[2][i];
-
+    
     L1[0] = rotation[0][i];
     L1[1] = rotation[1][i];
     L1[2] = rotation[2][i];
@@ -95,7 +95,7 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     L1[6] = rotation[6][i];
     L1[7] = rotation[7][i];
     L1[8] = rotation[8][i];
-
+    
     J[0] = inertia[0][i];
     J[1] = inertia[1][i];
     J[2] = inertia[2][i];
@@ -105,7 +105,7 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     J[6] = inertia[6][i];
     J[7] = inertia[7][i];
     J[8] = inertia[8][i];
-
+    
     I[0] = inverse[0][i];
     I[1] = inverse[1][i];
     I[2] = inverse[2][i];
@@ -115,13 +115,13 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     I[6] = inverse[6][i];
     I[7] = inverse[7][i];
     I[8] = inverse[8][i];
-
+    
     im = 1/mass[i];
     
     f[0] = force[0][i];
     f[1] = force[1][i];
     f[2] = force[2][i];
-
+    
     t[0] = torque[0][i];
     t[1] = torque[1][i];
     t[2] = torque[2][i];
@@ -129,33 +129,33 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     force[0][i] = 0.0;
     force[1][i] = 0.0;
     force[2][i] = 0.0;
-
+    
     torque[0][i] = 0.0;
     torque[1][i] = 0.0;
     torque[2][i] = 0.0;
     
     TVMUL (L1, t, T);
-
+    
     expmap (-half*O[0], -half*O[1], -half*O[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
-
+    
     NVMUL (J, O, A);
     NVMUL (DL, A, B);
     ADDMUL (B, half, T, B);
-    NVMUL (I, B, A); // O(t+h/2) 
-
+    NVMUL (I, B, A); // O(t+h/2)
+    
     NVMUL (J, A, B);
-    PRODUCTSUB (A, B, T); // T - O(t+h/2) x J O(t+h/2) 
-
+    PRODUCTSUB (A, B, T); // T - O(t+h/2) x J O(t+h/2)
+    
     SCALE (T, step);
-    NVADDMUL (O, I, T, O); // O(t+h) 
-
+    NVADDMUL (O, I, T, O); // O(t+h)
+    
     im *= step;
-    ADDMUL (v, im, f, v); // v(t+h) 
-
+    ADDMUL (v, im, f, v); // v(t+h)
+    
     expmap (step*O[0], step*O[1], step*O[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
-
+    
     NNMUL (L1, DL, L2);
-
+    
     rotation[0][i] = L2[0];
     rotation[1][i] = L2[1];
     rotation[2][i] = L2[2];
@@ -165,13 +165,13 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     rotation[6][i] = L2[6];
     rotation[7][i] = L2[7];
     rotation[8][i] = L2[8];
-
+    
     NVMUL (L2, O, o);
-
+    
     position[0][i] += step*v[0];
     position[1][i] += step*v[1];
     position[2][i] += step*v[2];
-
+    
     angular[0][i] = O[0];
     angular[1][i] = O[1];
     angular[2][i] = O[2];
@@ -179,16 +179,16 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     angular[3][i] = o[0];
     angular[4][i] = o[1];
     angular[5][i] = o[2];
-
+    
     linear[0][i] = v[0];
     linear[1][i] = v[1];
     linear[2][i] = v[2];
   }
-
+  
   for (int i = 0; i<nt; i++)
   {
     iREAL L[9], X[3], x[3], C[3], c[3];
-
+    
     int j = pid[i];
     L[0] = rotation[0][j];
     L[1] = rotation[1][j];
@@ -199,23 +199,23 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     L[6] = rotation[6][j];
     L[7] = rotation[7][j];
     L[8] = rotation[8][j];
-
+    
     X[0] = position[3][j];
     X[1] = position[4][j];
     X[2] = position[5][j];
-
+    
     x[0] = position[0][j];
     x[1] = position[1][j];
     x[2] = position[2][j];
-
+    
     //point A REFERENCIAL
     C[0] = t[3][0][i];
     C[1] = t[3][1][i];
     C[2] = t[3][2][i];
-  
+    
     SCC (X, C);
     NVADDMUL (x, L, C, c);
-
+    
     //point A SPATIAL
     t[0][0][i] = c[0];
     t[0][1][i] = c[1];
@@ -225,10 +225,10 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     C[0] = t[4][0][i];
     C[1] = t[4][1][i];
     C[2] = t[4][2][i];
-
+    
     SCC (X, C);
     NVADDMUL (x, L, C, c);
-
+    
     //point B SPATIAL
     t[1][0][i] = c[0];
     t[1][1][i] = c[1];
@@ -238,39 +238,39 @@ void dynamics (struct loba *lb, int myrank, std::vector<contact> conpnt[],
     C[0] = t[5][0][i];
     C[1] = t[5][1][i];
     C[2] = t[5][2][i];
-
+    
     SCC (X, C);
     NVADDMUL (x, L, C, c);
-
+    
     //point C SPATIAL
     t[2][0][i] = c[0];
     t[2][1][i] = c[1];
     t[2][2][i] = c[2];
-/*    
-    if (t[0][0][i] < lo[0]) linear[0][j] *= -1;
-    if (t[0][1][i] < lo[1]) linear[1][j] *= -1;
-    if (t[0][2][i] < lo[2]) linear[2][j] *= -1;
-    if (t[0][0][i] > hi[0]) linear[0][j] *= -1;
-    if (t[0][1][i] > hi[1]) linear[1][j] *= -1;
-    if (t[0][2][i] > hi[2]) linear[2][j] *= -1;
-    
-    if (t[1][0][i] < lo[0]) linear[0][j] *= -1;
-    if (t[1][1][i] < lo[1]) linear[1][j] *= -1;
-    if (t[1][2][i] < lo[2]) linear[2][j] *= -1;
-    if (t[1][0][i] > hi[0]) linear[0][j] *= -1;
-    if (t[1][1][i] > hi[1]) linear[1][j] *= -1;
-    if (t[1][2][i] > hi[2]) linear[2][j] *= -1;
-    
-    if (t[2][0][i] < lo[0]) linear[0][j] *= -1;
-    if (t[2][1][i] < lo[1]) linear[1][j] *= -1;
-    if (t[2][2][i] < lo[2]) linear[2][j] *= -1;
-    if (t[2][0][i] > hi[0]) linear[0][j] *= -1;
-    if (t[2][1][i] > hi[1]) linear[1][j] *= -1;
-    if (t[2][2][i] > hi[2]) linear[2][j] *= -1; 
-  */}
+    /*
+     if (t[0][0][i] < lo[0]) linear[0][j] *= -1;
+     if (t[0][1][i] < lo[1]) linear[1][j] *= -1;
+     if (t[0][2][i] < lo[2]) linear[2][j] *= -1;
+     if (t[0][0][i] > hi[0]) linear[0][j] *= -1;
+     if (t[0][1][i] > hi[1]) linear[1][j] *= -1;
+     if (t[0][2][i] > hi[2]) linear[2][j] *= -1;
+     
+     if (t[1][0][i] < lo[0]) linear[0][j] *= -1;
+     if (t[1][1][i] < lo[1]) linear[1][j] *= -1;
+     if (t[1][2][i] < lo[2]) linear[2][j] *= -1;
+     if (t[1][0][i] > hi[0]) linear[0][j] *= -1;
+     if (t[1][1][i] > hi[1]) linear[1][j] *= -1;
+     if (t[1][2][i] > hi[2]) linear[2][j] *= -1;
+     
+     if (t[2][0][i] < lo[0]) linear[0][j] *= -1;
+     if (t[2][1][i] < lo[1]) linear[1][j] *= -1;
+     if (t[2][2][i] < lo[2]) linear[2][j] *= -1;
+     if (t[2][0][i] > hi[0]) linear[0][j] *= -1;
+     if (t[2][1][i] > hi[1]) linear[1][j] *= -1;
+     if (t[2][2][i] > hi[2]) linear[2][j] *= -1; 
+     */}
 }
 
-void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)
+void dynamics::euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)
 {
   for(int i = 0; i<nb;i++)
   {
@@ -317,7 +317,7 @@ void euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], i
 }
 
 
-void integrate (iREAL step, iREAL lo[3], iREAL hi[3], int nt, iREAL * t[3][3], iREAL * v[3])
+void dynamics::integrate (iREAL step, iREAL lo[3], iREAL hi[3], int nt, iREAL * t[3][3], iREAL * v[3])
 {
     for(int i = 0; i < nt; i++)
     {
@@ -356,7 +356,7 @@ void integrate (iREAL step, iREAL lo[3], iREAL hi[3], int nt, iREAL * t[3][3], i
 
 
 /* vectorizable exponential map */
-void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
+void dynamics::expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
                 iREAL &Lambda1, iREAL &Lambda2, iREAL &Lambda3,
 			          iREAL &Lambda4, iREAL &Lambda5, iREAL &Lambda6,
 			          iREAL &Lambda7, iREAL &Lambda8, iREAL &Lambda9)

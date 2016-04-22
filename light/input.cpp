@@ -1,13 +1,60 @@
 #include "input.h" 
-#include <float.h>
-#include <algorithm>
-#include <vector>
-#include <set>
-#include <map>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
 
+
+//#include "Python"
+
+/*
+// define keywords
+#define KEYWORDS(...) const char *kwl [] = {__VA_ARGS__, NULL}
+
+// parse arguments with keywords
+#define PARSEKEYS(fmt, ...) if (!PyArg_ParseTupleAndKeywords (args, kwds, fmt, (char**)kwl, __VA_ARGS__)) return NULL
+
+// parse arguments without keywords
+#define PARSE(fmt, ...) if (!PyArg_ParseTuple (args, fmt, __VA_ARGS__)) return NULL
+
+ PyObject* GRAVITY(PyObject *self, PyObject *args, PyObject *kwds)
+{
+  KEYWORDS("gx", "gy", "gz");
+  double gx, gy, gz;
+
+  PARSEKEYS("ddd", &gx, &gy, &gz);
+
+  return 0;
+}
+
+static PyMethodDef methods [] =
+{
+  {"GRAVITY", (PyCFunction)GRAVITY, METH_VARARGS|METH_KEYWORDS, "Set gravity"},
+  {NULL, 0, 0, NULL}
+};
+
+static struct PyModuleDef mdelta = {PyModuleDef_HEAD_INIT, "mdelta", NULL, -1, methods, NULL, NULL, NULL, NULL };
+
+static PyObject *PyInit_emb(void)
+{
+  return PyModule_Create(&mdelta);
+}
+int input(const char *path)
+{
+  char *line;
+  int error;
+
+
+  Py_Initialize();
+  PyImport_AppendInittab("GRAVITY", &PyInit_emb);
+
+  PyRun_SimpleString("from mdelta import GRAVITY\n");
+
+  //line = new char[128 + strlen(path)];
+  //sprintf(line, "exec ( '%s' )", path);
+
+  //error = PyRun_SimpleString(line);
+  delete line;
+  return error;
+}
+
+*/
 
 void init_enviroment(int scene, int &nt, int &nb, iREAL *t[6][3], 
                     iREAL *linear[3], iREAL *angular[6], 
@@ -229,7 +276,7 @@ void load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *posi
           tid[i] = i;
           pid[i] = nb;
         }
-        getCentroid(nb, nt, nt+n, t, position);
+        geometry::getCentroid(nb, nt, nt+n, t, position);
         nt+=n;
       }
   } while (ch != EOF);
@@ -258,7 +305,7 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
       {
         //create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        geometry::nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
         iREAL lin[3], ang[3]; iREAL ma;
 
         lin[0] = 100;
@@ -310,7 +357,7 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
         {
           if(pid[j] == idx)
           {
-            translate_enviroment(j, idx, t, position);
+            geometry::translate_enviroment(j, idx, t, position);
           }
         }
         idx++;
@@ -352,7 +399,7 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
       {
         //create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        geometry::nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
         iREAL lin[3], ang[3]; iREAL ma;
 
         lin[0] = 100;
@@ -377,7 +424,7 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
       }
       case 2:
       {
-        wall(wlo, whi, nt, i, t, tid, pid, position);
+        geometry::wall(wlo, whi, nt, i, t, tid, pid, position);
         iREAL lin[3], ang[3]; iREAL ma;
 
         lin[0] = lin[1] = lin[2] = 0;
@@ -401,7 +448,7 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
   {
     if(pid[j] == 0)
     {
-      translate_enviroment(j, 0, t, position);
+      geometry::translate_enviroment(j, 0, t, position);
     }
   }
 }
@@ -436,7 +483,7 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
       {
         //create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        geometry::nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
         iREAL lin[3], ang[3]; iREAL ma;
 
         lin[0] = 100;
@@ -488,7 +535,7 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
         {
           if(pid[j] == idx)
           {
-            translate_enviroment(j, idx, t, position);
+            geometry::translate_enviroment(j, idx, t, position);
           }
         }
         idx++;
