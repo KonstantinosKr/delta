@@ -158,9 +158,9 @@ void input::load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREA
   sprintf(strtmp, "%i.vtk", nb);
   strcat(filename, strtmp);
   fp1 = fopen(filename, "r+");
-  printf("%s\n", filename);
+  printf("DELTA MASTER \t\t\t| INPUT \t| %s", filename);
 
-  if( fp1 == NULL )
+  if(fp1 == NULL)
   {
     perror("Error while opening the file.\n");
     exit(EXIT_FAILURE);
@@ -173,7 +173,7 @@ void input::load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREA
       ch = fscanf(fp1,"%s",word);
       if(strcmp(word, "POINTS")==0)
       {
-        printf("found!\n");
+        //printf("found!\n");
         ch = fscanf(fp1,"%s",word);
         int n = atol(word);
         

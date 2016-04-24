@@ -9,7 +9,7 @@
 #include <iomanip>
 
 
-void init_enviroment(int scenario, int &nt, int &nb, iREAL *t[6][3], 
+void input::init_enviroment(int scenario, int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
@@ -41,7 +41,7 @@ void init_enviroment(int scenario, int &nt, int &nb, iREAL *t[6][3],
   }
 }
 
-void condition_enviroment(int nb, iREAL lin[3], iREAL ang[3], int ma, 
+void input::condition_enviroment(int nb, iREAL lin[3], iREAL ang[3], int ma,
                           iREAL *linear[3], iREAL *angular[6], 
                           iREAL *rotation[9], iREAL *mass, 
                           iREAL *inertia[9], iREAL *inverse[9], int *parmat)
@@ -105,7 +105,7 @@ void condition_enviroment(int nb, iREAL lin[3], iREAL ang[3], int ma,
   }
 }
 
-void load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt)
+void input::load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt)
 {
   //////////VTK format////////////
   iREAL min = DBL_MAX;
@@ -249,7 +249,7 @@ void load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], i
         tid[i] = i;
         pid[i] = nb;
       }
-      getCentroid(nb, nt, nt+n, t, position);
+      geometry::getCentroid(nb, nt, nt+n, t, position);
       nt+=n;
     }
   } while (ch != EOF);
@@ -258,7 +258,7 @@ void load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], i
   fclose(fp1);
 }
 
-void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3], 
+void input::twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
@@ -278,7 +278,7 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
       {
         //create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        geometry::nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
         iREAL lin[3], ang[3]; iREAL ma;
         if(i == 0)
         {
@@ -338,7 +338,7 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
         {
           if(pid[j] == idx)
           {
-            translate_enviroment(j, idx, t, position);
+            geometry::translate_enviroment(j, idx, t, position);
           }
         }
         idx++;
@@ -350,7 +350,7 @@ void twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
   }
 }
 
-void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3], 
+void input::oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
@@ -380,7 +380,7 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
       {
         //create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        geometry::nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
         iREAL lin[3], ang[3]; iREAL ma;
 
         lin[0] = 100;
@@ -405,7 +405,7 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
       }
       case 2:
       {
-        wall(wlo, whi, nt, i, t, tid, pid, position);
+        geometry::wall(wlo, whi, nt, i, t, tid, pid, position);
         iREAL lin[3], ang[3]; iREAL ma;
 
         lin[0] = lin[1] = lin[2] = 0;
@@ -429,22 +429,12 @@ void oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
   {
     if(pid[j] == 0)
     {
-      translate_enviroment(j, 0, t, position);
+      geometry::translate_enviroment(j, 0, t, position);
     }
   }
 }
 
-void twoParticleVsWall(int &nt, int &nb, iREAL *t[6][3], 
-                    iREAL *linear[3], iREAL *angular[6], 
-                    iREAL *inertia[9], iREAL *inverse[9], 
-                    iREAL *rotation[9], iREAL *mass, 
-                    int *parmat, int tid[], int pid[], 
-                    iREAL *position[6], iREAL lo[3], iREAL hi[3])
-{
-
-}
-
-void chaos(int &nt, int &nb, iREAL *t[6][3], 
+void input::chaos(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
@@ -464,7 +454,7 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
       {
         //create point cloud and do delaunay hull triangulation
         //0.25 eps is the roundness degree, 5 is the radius, 50 are the point of the point cloud
-        nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
+        geometry::nonsphericalparticle(0.25, 2.5, 50, nt, i, t, tid, pid, position, mint, maxt);
         iREAL lin[3], ang[3]; iREAL ma;
 
         lin[0] = 100;
@@ -510,7 +500,7 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
         {
           if(pid[j] == idx)
           {
-            translate_enviroment(j, idx, t, position);
+            geometry::translate_enviroment(j, idx, t, position);
           }
         }
         idx++;
@@ -522,7 +512,7 @@ void chaos(int &nt, int &nb, iREAL *t[6][3],
   }
 }
 
-void eggCollision(int &nt, int &nb, iREAL *t[6][3], 
+void input::eggCollision(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *linear[3], iREAL *angular[6], 
                     iREAL *inertia[9], iREAL *inverse[9], 
                     iREAL *rotation[9], iREAL *mass, 
@@ -570,7 +560,7 @@ void eggCollision(int &nt, int &nb, iREAL *t[6][3],
         {
           if(pid[j] == idx)
           {
-            translate_enviroment(j, idx, t, position);
+            geometry::translate_enviroment(j, idx, t, position);
           }
         }
         idx++;

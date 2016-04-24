@@ -49,7 +49,6 @@ int main (int argc, char **argv)
   MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
  
   int scenario;
-  //user interface
   if(!myrank)
   {
     scenario = ui(myrank, argc, argv);
@@ -150,7 +149,7 @@ int main (int argc, char **argv)
   ZOLTAN_ID_PTR import_global_ids, import_local_ids, export_global_ids, export_local_ids;
 
   //create load balancer 
-  struct loba *lb = loba_create (ZOLTAN_RCB);
+  struct loba *lb = loba_create(ZOLTAN_RCB);
   
   TIMING tbalance[1000];
   TIMING tmigration[1000];
@@ -169,7 +168,7 @@ int main (int argc, char **argv)
   iREAL step = 1E-4; int timesteps=0;
   if (myrank == 0)
   {
-    init_enviroment(scenario, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi); 
+    input::init_enviroment(scenario, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
     printf("NT:%i, NB: %i\n", nt, nb);
     dynamics::euler(nb, angular, linear, rotation, position, 0.5*step);
   }
@@ -215,12 +214,12 @@ int main (int argc, char **argv)
     tTimer2[time] = timer2;
     tTimer3[time] = timer3;
   
-    forces(lb, myrank, conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
+    forces::force(lb, myrank, conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     
     timerstart (&tdynamics[time]);
     dynamics::update(lb, myrank, conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
     timerend (&tdynamics[time]);
-      
+
     output::state(lb, myrank, nt, t, time);
     
     if(!myrank){printf("DELTA MASTER | TIMESTEP: %i\n", time);} 
@@ -384,7 +383,6 @@ int main (int argc, char **argv)
     printf("DELTA MASTER | POST-PROCESSING COMPLETE.\n");
   }
 
-  // DESTROY
   loba_destroy (lb);
 
   for (int i = 0; i < 3; i ++)

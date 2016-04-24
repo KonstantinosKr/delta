@@ -10,20 +10,29 @@
 #include "forces.h"
 #include <iostream>
 #include <vector>
+#include <ctime>
+
+void ui(int argc, char **argv, std::string &scenario, int &timesteps,
+				iREAL &step, std::string  &collisionModel);
 
 int main (int argc, char **argv)
 {
   //input("input/twoparticles.py");
+	std::string scenario; int timesteps; iREAL step; std::string  collisionModel;
 
-  iREAL *angular[6]; /* angular velocities (referential, spatial) */
-  iREAL *linear[3]; /* linear velocities */
-  iREAL *rotation[9]; /* rotation operators */
-  iREAL *position[6]; /* mass center current and reference positions */
-  iREAL *inertia[9]; /* inertia tensors */
-  iREAL *mass; /* scalar mass */
-  iREAL *force[3]; /* total spatial force */
-  iREAL *torque[3]; /* total spatial torque */
-  iREAL *inverse[9]; /* inverse inertia tensors */
+	ui(argc, argv, scenario, timesteps, step, collisionModel);
+
+	printf("DELTA MASTER \t\t\t| INITIATING EXPERIMENT\n");
+
+  iREAL *angular[6]; // angular velocities (referential, spatial)
+  iREAL *linear[3]; // linear velocities
+  iREAL *rotation[9]; // rotation operators
+  iREAL *position[6]; // mass center current and reference positions
+  iREAL *inertia[9]; // inertia tensors
+  iREAL *mass; // scalar mass
+  iREAL *force[3]; // total spatial force
+  iREAL *torque[3]; // total spatial torque
+  iREAL *inverse[9]; // inverse inertia tensors
   
   int *parmat; //particle material
   
@@ -53,17 +62,15 @@ int main (int argc, char **argv)
   
   iREAL *t[6][3]; /* triangles */
   
-  iREAL *p[3],*q[3];//p and q points
-  
 	int nb;
-  int nt = 0; /* number of triangles */
-  int *pid; /*particle identifier */
-  int *tid; /* triangle identifiers */
+  int nt = 0; // number of triangles
+  int *pid; // particle identifier
+  int *tid; // triangle identifiers
   
-  iREAL lo[3] = {-500, -500, -500}; /* lower corner */
-  iREAL hi[3] = {500, 500, 500}; /* upper corner */
+  iREAL lo[3] = {-500, -500, -500}; // lower corner
+  iREAL hi[3] = {500, 500, 500}; // upper corner
   
-  int size = 27000000; /* memory buffer size */
+  int size = 27000000; // memory buffer size
    
 	for (int i = 0; i < 3; i ++)
 	{ 
@@ -78,9 +85,6 @@ int main (int argc, char **argv)
     
     torque[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
     force[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
-
-		p[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
-		q[i] = (iREAL *) new iREAL[size*sizeof(iREAL)];
   }
 	
 	for (int i = 0; i < 6; i++)
@@ -106,11 +110,15 @@ int main (int argc, char **argv)
 	for(int i=0;i<size;i++) tid[i] = INT_MAX; 
 	
   input::init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
-	printf("NT:%i NB:%i\n", nt, nb);
-  
+
+  time_t now = time(0);
+  tm *ltm = std::localtime(&now);
+
+	printf("DELTA MASTER h:%i m:%i s%i \t| NUMBER \t| NT:%i NB:%i\n", 1 + ltm->tm_hour, 1 + ltm->tm_min,  1 + ltm->tm_sec, nt, nb);
+
   std::vector<contactpoint> *conpnt = new std::vector<contactpoint>[nb];
  
-  iREAL step = 1E-4; int timesteps=100;
+  //iREAL step = 1E-4;
   
   //step = critical (nt, mass, pairnum, iparam);
   
@@ -120,24 +128,62 @@ int main (int argc, char **argv)
   {
     contact::detection (0, nt, t, tid, pid, linear, conpnt);
 		
-    forces(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
+    forces::force(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     
     dynamics::update(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
-   
+
+    printf("DELTA MASTER h:%i m:%i s%i \t| ITERATION \t| %i\n", 1 + ltm->tm_hour, 1 + ltm->tm_min,  1 + ltm->tm_sec, time);
+
     output::state(nt, t, time);
-    if(time==270) break;
   }
-	printf("\nComputation Finished.\n");
+
+	printf("----------------------------------------------------------------------------\n");
+	printf("DELTA MASTER \t\t\t| COMPUTATION FINISHED\n");
 
   for (int i = 0; i < 3; i ++)
   { free (t[0][i]);
     free (t[1][i]);
     free (t[2][i]);
+    free (t[3][i]);
+    free (t[4][i]);
+    free (t[5][i]);
     free (linear[i]);
-    free (p[i]);
-    free (q[i]);
   }
 
   return 0;
 }
 
+void ui(int argc, char **argv, std::string &scenario, int &timesteps, iREAL &step, std::string  &collisionModel)
+{
+  printf("\nEXECUTING DELTA...\n\n");
+  if(argc==1)
+  {
+  	printf("DELTA MASTER | PROVIDE ARGUEMENT: ./delta _#scenario_ "
+  																									 "_#timesteps_ "
+  																									 "_#step_ "
+  																									 "_#method_\n"
+  				"SCENARIOS\n"
+  				"two-particle-crash\n"
+  				"two-egg-crash\n"
+  				"------------------------------\n"
+  				"TIMESTEPS\n"
+  				"100-100000\n"
+  				"------------------------------\n"
+  				"STEP\n"
+  				"0.00001-1\n"
+  				"------------------------------\n"
+  				"METHOD\n"
+  				"bf\n"
+  				"penalty\n"
+  				"hybrid\n"
+  				"------------------------------\n");
+    exit(0);
+  }
+  else
+  {
+  	scenario = argv[1];
+  	timesteps = atoi(argv[2]);
+  	step = atof(argv[3]);
+  	collisionModel	= argv[4];
+  }
+}

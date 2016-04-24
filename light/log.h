@@ -1,18 +1,18 @@
 /*
  The MIT License (MIT)
- 
+
  Copyright (c) 2016 Konstantinos Krestenitis
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,15 +22,35 @@
  SOFTWARE.
  */
 
-#include "contact.h"
-#include "math.h"
-#include "material.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <limits.h>
 
-namespace forces
+namespace log
 {
-	int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, iREAL mass[], int ij, iREAL f[3]);
 
-	void force (std::vector<contactpoint> conpnt[], int nb,
-							iREAL * position[6], iREAL * angular[6], iREAL * linear[3],
-							iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[]);
+	void performance(iREAL minsubtotal, iREAL maxsubtotal, iREAL avgsubtotal,
+												iREAL minbal, iREAL maxbal, iREAL avgbal,
+												iREAL minmig, iREAL maxmig, iREAL avgmig,
+												iREAL minde, iREAL maxde, iREAL avgde,
+												iREAL mindt1, iREAL maxdt1, iREAL avgdt1,
+												iREAL mindt2, iREAL maxdt2, iREAL avgdt2,
+												iREAL mindt3, iREAL maxdt3, iREAL avgdt3);
+
+	void balance();
+
+	void migrate();
+
+	void migrateGhost();
+
+	void contact();
+
+	void ghost();
+
+	void force();
+
+	void dynamic();
+
+	void statistics();
 }

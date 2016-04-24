@@ -1,7 +1,7 @@
 #include "geom.h"
 #include "stdio.h"
 
-void getCentroid(int pid, int range1, int range2, iREAL *t[6][3], iREAL *centroid[6])
+void geometry::getCentroid(int pid, int range1, int range2, iREAL *t[6][3], iREAL *centroid[6])
 {
   iREAL cx=0;
   iREAL cy=0;
@@ -35,7 +35,7 @@ void getCentroid(int pid, int range1, int range2, iREAL *t[6][3], iREAL *centroi
   centroid[5][pid] = cz;
 }
 
-void translate_enviroment(int i, int pid, iREAL *t[6][3], iREAL *p[6])
+void geometry::translate_enviroment(int i, int pid, iREAL *t[6][3], iREAL *p[6])
 {
   t[0][0][i] = t[0][0][i] + p[0][pid];
   t[0][1][i] = t[0][1][i] + p[1][pid];
@@ -79,7 +79,7 @@ void normalize(int nt, iREAL *t[6][3], iREAL mint, iREAL maxt)
     }
 }
 
-void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int nb,
+void geometry::nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int nb,
                           iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt)
 {
   iREAL v[100][3];
@@ -280,7 +280,7 @@ void nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int n
 }
 
 
-void wall(iREAL lo[3], iREAL hi[3], int &nt, int nb, iREAL *t[6][3], int *tid, int *pid, iREAL *position[6])
+void geometry::wall(iREAL lo[3], iREAL hi[3], int &nt, int nb, iREAL *t[6][3], int *tid, int *pid, iREAL *position[6])
 {
   iREAL leftUI[3], leftUO[3], leftDI[3], leftDO[3];
   iREAL rightUI[3], rightUO[3], rightDI[3], rightDO[3];
@@ -651,8 +651,8 @@ void wall(iREAL lo[3], iREAL hi[3], int &nt, int nb, iREAL *t[6][3], int *tid, i
 
   getCentroid(nb, nt-13, nt, t, position);
 }
-
-void refine(int s, int nt, iREAL *t[3][3], int *tid, int *pid, int times)
+/*
+void geometry::refine(int s, int nt, iREAL *t[3][3], int *tid, int *pid, int times)
 {
   for(int x = 0; x<times; x++)
   {
@@ -799,4 +799,4 @@ void refine(int s, int nt, iREAL *t[3][3], int *tid, int *pid, int times)
     }
     nt += nt;
   }
-}
+}*/

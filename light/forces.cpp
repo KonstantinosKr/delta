@@ -25,7 +25,7 @@
 #include "forces.h"
 #include "stdio.h"
 
-int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, iREAL mass[], int ij, iREAL f[3])
+int forces::granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, iREAL mass[], int ij, iREAL f[3])
 {
   iREAL ma = 1.0 / ((1/mass[i]) + (1/mass[j]));
 
@@ -45,7 +45,7 @@ int granular(iREAL n[3], iREAL vij[3], iREAL oij[3], iREAL depth, int i, int j, 
 
 int pairing (int i, int j){return 0;}
 
-void forces (std::vector<contactpoint> conpnt[], int nb,
+void forces::force (std::vector<contactpoint> conpnt[], int nb,
             iREAL * position[6], iREAL * angular[6], iREAL * linear[3],
             iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[])
 {
@@ -108,7 +108,7 @@ void forces (std::vector<contactpoint> conpnt[], int nb,
       switch (material::ikind[ij])
       {
         case GRANULAR:
-          granular(conpnt[i][k].normal, vij, oij, conpnt[i][k].depth, i, j, mass, ij, f);
+        	forces::granular(conpnt[i][k].normal, vij, oij, conpnt[i][k].depth, i, j, mass, ij, f);
           break;
         case BONDED:
           // TODO 

@@ -37,14 +37,14 @@ enum algo
 
 struct loba
 {
-  struct Zoltan_Struct *zoltan; /* Zoltan load balancer */
+  struct Zoltan_Struct *zoltan;
   enum algo al;
 };
 
-/* create load balancer */
+// create load balancer
 struct loba* loba_create (enum algo al);
 
-/* balance points up to tolerance; output migration ranks */
+// balance points up to tolerance; output migration ranks
 void loba_balance (struct loba *lb, int n, iREAL *p[3], int *id, iREAL tol,
                     int *num_import, int **import_procs, int **import_to_part, 
 		                int *num_export, int **export_procs, int **export_to_part, 
@@ -58,10 +58,10 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *
                     int *nGhostNeighbors, int *ghostNeighborhood, 
                     int *ghostTIDNeighbors[], int *ghostTIDcrosses);
 
-/* find ranks overlapped by the [lo,hi] box */
+// find ranks overlapped by the [lo,hi] box
 void loba_query (struct loba *lb, int node, double lo[3], double hi[3], int *ranks, int *nranks, int *parts, int *nparts);
 
-/* find ranks overlapped by the [lo,hi] box */
+// find ranks overlapped by the [lo,hi] box
 void loba_query (struct loba *lb, int node, double lo[3], double hi[3], int *ranks, int *nranks);
 
 // find rank owning the point
@@ -69,7 +69,7 @@ void loba_query (struct loba *lb, double point[3], int *rank);
 
 void loba_getbox (struct loba *lb, int part, double lo[3], double hi[3]);
 
-/* free load balancer */
+// free load balancer
 void loba_destroy (struct loba *lb);
 
 #endif

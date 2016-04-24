@@ -49,4 +49,5 @@ static inline double timerend (TIMING *t)
   return t->sec;
 }
 
+
 #endif

@@ -14,13 +14,13 @@ void output::state(int nt, iREAL *t[6][3], int timesteps)
 	sprintf(iter, "%u.vtk", timesteps);
 	char filename[100] = "output/output"; //care or buffer overflow
 	strcat(filename, iter);
-	printf("%s\n", filename);
+	printf("DELTA MASTER \t\t\t| OUTPUT \t| %s\n", filename);
 		
 	FILE *fp = fopen(filename, "w+");
 	if( fp == NULL )
 	{
-			perror("Error while opening the file.\n");
-			exit(EXIT_FAILURE);
+		perror("Error while opening the file.\n");
+		exit(EXIT_FAILURE);
 	}
 	
 	fprintf(fp,"# vtk DataFile Version 2.0\nOutput vtk file\nASCII\n\nDATASET UNSTRUCTURED_GRID\nPOINTS %i float\n", (nt*3)+8);
