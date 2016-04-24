@@ -26,8 +26,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <ctime>
 
-namespace log
+namespace logg
 {
 
 	void performance(iREAL minsubtotal, iREAL maxsubtotal, iREAL avgsubtotal,
@@ -38,19 +39,21 @@ namespace log
 												iREAL mindt2, iREAL maxdt2, iREAL avgdt2,
 												iREAL mindt3, iREAL maxdt3, iREAL avgdt3);
 
-	void balance();
+	void input(char *filename, int nt);
 
-	void migrate();
+	void initiate();
 
-	void migrateGhost();
+	void start(int nt, int nb);
+
+	void output(char *filename);
+
+	void iteration(int timestep);
+
+	void end();
 
 	void contact();
-
-	void ghost();
 
 	void force();
 
 	void dynamic();
-
-	void statistics();
 }

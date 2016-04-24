@@ -24,7 +24,7 @@
 
 #include "log.h"
 
-void log::performance(iREAL minsubtotal, iREAL maxsubtotal, iREAL avgsubtotal,
+void logg::performance(iREAL minsubtotal, iREAL maxsubtotal, iREAL avgsubtotal,
                       iREAL minbal, iREAL maxbal, iREAL avgbal,
                       iREAL minmig, iREAL maxmig, iREAL avgmig,
                       iREAL minde, iREAL maxde, iREAL avgde,
@@ -63,37 +63,62 @@ void log::performance(iREAL minsubtotal, iREAL maxsubtotal, iREAL avgsubtotal,
   fclose(fp);
 }
 
-void log::balance()
+void logg::input(char *filename, int nt)
+{
+  time_t now = time(0);
+  tm *ltm = std::localtime(&now);
+  printf("DELTA MASTER h:%i m:%i s%i \t| INPUT \t| %s::%i::\n", ltm->tm_hour, ltm->tm_min, ltm->tm_sec, filename, nt);
+}
+
+void logg::initiate()
+{
+  time_t now = time(0);
+  tm *ltm = std::localtime(&now);
+	printf("DELTA MASTER h:%i m:%i s%i \t| INITIATING EXPERIMENT\n", ltm->tm_hour, ltm->tm_min, ltm->tm_sec);
+}
+
+void logg::start(int nt, int nb)
+{
+  time_t now = time(0);
+  tm *ltm = std::localtime(&now);
+
+	printf("DELTA MASTER h:%i m:%i s%i \t| NUMBERS \t| NT:%i NB:%i\n", ltm->tm_hour, ltm->tm_min, ltm->tm_sec, nt, nb);
+	printf("----------------------------------------------------------------------------\n");
+}
+
+void logg::iteration(int timestep)
+{
+  time_t now = time(0);
+  tm *ltm = std::localtime(&now);
+	printf("DELTA MASTER h:%i m:%i s%i \t| ITERATION \t| %i\n", ltm->tm_hour, ltm->tm_min, ltm->tm_sec, timestep);
+}
+
+void logg::output(char *filename)
+{
+  time_t now = time(0);
+  tm *ltm = std::localtime(&now);
+	printf("DELTA MASTER h:%i m:%i s%i \t| OUTPUT \t| %s\n", ltm->tm_hour, ltm->tm_min, ltm->tm_sec, filename);
+}
+
+void logg::end()
+{
+  time_t now = time(0);
+  tm *ltm = std::localtime(&now);
+	printf("----------------------------------------------------------------------------\n");
+	printf("DELTA MASTER h:%i m:%i s%i \t| COMPUTATION FINISHED\n", ltm->tm_hour, ltm->tm_min, ltm->tm_sec);
+}
+
+void logg::contact()
 {
 
 }
 
-void log::migrate()
+void logg::force()
 {
 
 }
 
-void log::migrateGhost()
-{
-
-}
-
-void log::contact()
-{
-
-}
-
-void log::ghost()
-{
-
-}
-
-void log::force()
-{
-
-}
-
-void log::dynamic()
+void logg::dynamic()
 {
 
 }

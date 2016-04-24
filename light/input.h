@@ -6,6 +6,7 @@
 #include <time.h>
 #include <math.h>
 #include "geom.h"
+#include "log.h"
 
 extern "C"{
 #include "ext/hul/hul.h"

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <cfloat>
+#include "log.h"
 
 namespace output{
 	void state(int nt, iREAL *t[6][3], int timesteps);

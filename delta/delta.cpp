@@ -38,7 +38,8 @@
 #include "forces.h"
 #include "dynamics.h"
 
-int ui(int myrank, int argc, char **argv);
+void ui(int argc, char **argv, std::string &scenario, int &timesteps,
+				iREAL &step, std::string  &collisionModel);
 
 int main (int argc, char **argv)
 {
@@ -48,12 +49,15 @@ int main (int argc, char **argv)
   MPI_Comm_rank (MPI_COMM_WORLD, &myrank);
   MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
  
-  int scenario;
+	std::string scenario; int timesteps = 100; iREAL step = 1E-4; std::string  collisionModel;
+
   if(!myrank)
   {
-    scenario = ui(myrank, argc, argv);
-    printf("DELTA MASTER | INITIATING EXPERIMENT SCENARIO #%i\n", scenario);
+  	ui(argc, argv, scenario, timesteps, step, collisionModel);
+    logg::initiate();
   }
+
+  MPI_Barrier(MPI_COMM_WORLD);
 
   int *parmat; //particle material  
   
@@ -165,11 +169,10 @@ int main (int argc, char **argv)
   timer2 = 0.0;
   timer3 = 0.0;
 
-  iREAL step = 1E-4; int timesteps=0;
   if (myrank == 0)
   {
-    input::init_enviroment(scenario, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
-    printf("NT:%i, NB: %i\n", nt, nb);
+    input::init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
+    logg::start(nt, nb);
     dynamics::euler(nb, angular, linear, rotation, position, 0.5*step);
   }
   
@@ -177,7 +180,7 @@ int main (int argc, char **argv)
   
   std::vector<contactpoint> *conpnt = new std::vector<contactpoint>[nb]; 
  
-  printf("DELTA SLAVE | RANK:%i NB:%i\n", myrank, nb);
+  logg::slaveInitiate(myrank, nb);
         
   for(int time = 0; time < timesteps; time++)
   {
@@ -222,9 +225,7 @@ int main (int argc, char **argv)
 
     output::state(lb, myrank, nt, t, time);
     
-    if(!myrank){printf("DELTA MASTER | TIMESTEP: %i\n", time);} 
-    
-    if(time==300) break;
+    if(!myrank){logg::iteration(timesteps);}
   }
 
   iREAL subtotal = 0;
@@ -349,38 +350,22 @@ int main (int argc, char **argv)
     avgdt1 = avgdt1/nprocs;
     avgdt2 = avgdt2/nprocs;
     avgdt3 = avgdt3/nprocs; 
-    printf("\nDELTA MASTER | PERFORMANCE MEASUREMENT:\n"); 
-    printf("TOTmin:%f\tTOTmax:%f\tTOTavg:%f\n"
-           "BALmin:%f\tBALmax:%f\tBALavg:%f\n"
-           "MIGmin:%f\tMIGmax:%f\tMIGavg:%f\n"
-           "DTXmin:%f\tDTXmax:%f\tDTXavg:%f\n"
-           "DT1min:%f\tDT1max:%f\tDT1avg:%f\n"
-           "DT2min:%f\tDT2max:%f\tDT2avg:%f\n"
-           "DT3min:%f\tDT3max:%f\tDT3avg:%f\n\n", 
-          minsubtotal, maxsubtotal, avgsubtotal, 
-          minbal, maxbal, avgbal, 
-          minmig, maxmig, avgmig, 
-          minde, maxde, avgde, 
-          mindt1, maxdt1, avgdt1, 
-          mindt2, maxdt2, avgdt2, 
-          mindt3, maxdt3, avgdt3); 
 
-    performance_log(minsubtotal, maxsubtotal, avgsubtotal, 
+    logg::performance(minsubtotal, maxsubtotal, avgsubtotal,
                     minbal, maxbal, avgbal, 
                     minmig, maxmig, avgmig, 
                     minde, maxde, avgde, 
                     mindt1, maxdt1, avgdt1, 
                     mindt2, maxdt2, avgdt2, 
                     mindt3, maxdt3, avgdt3); 
-    printf("DELTA MASTER | LOG WRITE COMPLETE.\n");
   }
   //have to make sure all ranks finished
   MPI_Barrier(MPI_COMM_WORLD);
   if(!myrank)
   {
-    printf("DELTA MASTER | COMPUTATION COMPLETE | EXPERIMENT CODE #%i.\n", scenario);
+  	logg::end();
     output::postProcessing(nprocs, size, timesteps);
-    printf("DELTA MASTER | POST-PROCESSING COMPLETE.\n");
+    logg::postprocessing();
   }
 
   loba_destroy (lb);
@@ -406,28 +391,37 @@ int main (int argc, char **argv)
   return 0;
 }
 
-int ui(int myrank, int argc, char **argv)
+void ui(int argc, char **argv, std::string &scenario, int &timesteps, iREAL &step, std::string  &collisionModel)
 {
-  int execid = 0;
-  if(!myrank)
+  printf("\nEXECUTING DELTA...\n\n");
+  if(argc==1)
   {
-    printf("\nEXECUTING DELTA...\n\n");
-    if(argc==1) 
-    {
-      printf("DELTA MASTER | PROVIDE ARGUEMENT | ./delta _#scenario_\nSCENARIOS:\n#1.Two Particle Collision\n#2.Two Egg Collision\n");
-      exit(0);
-    }
-    else
-    {
-      for(int i=1;i<argc;i++)
-      {
-        //printf("Arg[%i]: %s\n", i, argv[i]);
-        execid = atoi(argv[i]);
-      }
-    }
-  }else
-  {
-    execid = 0;    
+  	printf("DELTA MASTER | PROVIDE ARGUEMENT: ./delta _#scenario_ "
+  																									 "_#timesteps_ "
+  																									 "_#step_ "
+  																									 "_#method_\n"
+  				"SCENARIOS\n"
+  				"two-particle-crash\n"
+  				"two-egg-crash\n"
+  				"------------------------------\n"
+  				"TIMESTEPS\n"
+  				"100-100000\n"
+  				"------------------------------\n"
+  				"STEP\n"
+  				"0.00001-1\n"
+  				"------------------------------\n"
+  				"METHOD\n"
+  				"bf\n"
+  				"penalty\n"
+  				"hybrid\n"
+  				"------------------------------\n");
+    exit(0);
   }
-  return execid;
+  else
+  {
+  	scenario = argv[1];
+  	timesteps = atoi(argv[2]);
+  	step = atof(argv[3]);
+  	collisionModel	= argv[4];
+  }
 }

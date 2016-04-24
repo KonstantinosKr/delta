@@ -17,12 +17,11 @@ void ui(int argc, char **argv, std::string &scenario, int &timesteps,
 
 int main (int argc, char **argv)
 {
-  //input("input/twoparticles.py");
 	std::string scenario; int timesteps; iREAL step; std::string  collisionModel;
 
 	ui(argc, argv, scenario, timesteps, step, collisionModel);
 
-	printf("DELTA MASTER \t\t\t| INITIATING EXPERIMENT\n");
+	logg::initiate();
 
   iREAL *angular[6]; // angular velocities (referential, spatial)
   iREAL *linear[3]; // linear velocities
@@ -62,7 +61,7 @@ int main (int argc, char **argv)
   
   iREAL *t[6][3]; /* triangles */
   
-	int nb;
+	int nb = 0;
   int nt = 0; // number of triangles
   int *pid; // particle identifier
   int *tid; // triangle identifiers
@@ -111,20 +110,15 @@ int main (int argc, char **argv)
 	
   input::init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
 
-  time_t now = time(0);
-  tm *ltm = std::localtime(&now);
-
-	printf("DELTA MASTER h:%i m:%i s%i \t| NUMBER \t| NT:%i NB:%i\n", 1 + ltm->tm_hour, 1 + ltm->tm_min,  1 + ltm->tm_sec, nt, nb);
+  logg::start(nt, nb);
 
   std::vector<contactpoint> *conpnt = new std::vector<contactpoint>[nb];
  
-  //iREAL step = 1E-4;
-  
-  //step = critical (nt, mass, pairnum, iparam);
+  //iREAL step = 1E-4; = critical (nt, mass, pairnum, iparam);
   
   dynamics::euler(nb, angular, linear, rotation, position, 0.5*step);//half step
    
-  for(int time = 1; time < timesteps; time++)
+  for(int time = 0; time < timesteps; time++)
   {
     contact::detection (0, nt, t, tid, pid, linear, conpnt);
 		
@@ -132,13 +126,12 @@ int main (int argc, char **argv)
     
     dynamics::update(conpnt, nt, nb, t, pid, angular, linear, rotation, position, inertia, inverse, mass, force, torque, step, lo, hi);
 
-    printf("DELTA MASTER h:%i m:%i s%i \t| ITERATION \t| %i\n", 1 + ltm->tm_hour, 1 + ltm->tm_min,  1 + ltm->tm_sec, time);
+    logg::iteration(time);
 
     output::state(nt, t, time);
   }
 
-	printf("----------------------------------------------------------------------------\n");
-	printf("DELTA MASTER \t\t\t| COMPUTATION FINISHED\n");
+  logg::end();
 
   for (int i = 0; i < 3; i ++)
   { free (t[0][i]);

@@ -14,8 +14,9 @@ void output::state(int nt, iREAL *t[6][3], int timesteps)
 	sprintf(iter, "%u.vtk", timesteps);
 	char filename[100] = "output/output"; //care or buffer overflow
 	strcat(filename, iter);
-	printf("DELTA MASTER \t\t\t| OUTPUT \t| %s\n", filename);
-		
+
+	logg::output(filename);
+
 	FILE *fp = fopen(filename, "w+");
 	if( fp == NULL )
 	{

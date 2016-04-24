@@ -1,4 +1,4 @@
-CPP_SRC = input.cpp geom.cpp material.cpp output.cpp delta.cpp bf.cpp contact.cpp forces.cpp dynamics.cpp
+CPP_SRC = input.cpp geom.cpp material.cpp output.cpp delta.cpp bf.cpp contact.cpp forces.cpp dynamics.cpp log.cpp
 
 CC=gcc
 CXX=g++

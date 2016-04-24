@@ -130,7 +130,6 @@ void input::load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int p
   sprintf(strtmp, "%i.vtk", nb);
   strcat(filename, strtmp);
   FILE *fp1 = fopen(filename, "r+");
-  printf("%s\n", filename);
 
   if( fp1 == NULL )
   {
@@ -256,6 +255,7 @@ void input::load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int p
   mint = min;
   maxt = max;
   fclose(fp1);
+  logg::input(filename, nt);
 }
 
 void input::twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],

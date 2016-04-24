@@ -158,7 +158,6 @@ void input::load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREA
   sprintf(strtmp, "%i.vtk", nb);
   strcat(filename, strtmp);
   fp1 = fopen(filename, "r+");
-  printf("DELTA MASTER \t\t\t| INPUT \t| %s", filename);
 
   if(fp1 == NULL)
   {
@@ -229,7 +228,6 @@ void input::load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREA
         int n = atol(word);
         //nt = n;
         ch = fscanf(fp1,"%s",word);
-        printf(":::%u::\n",n);
         for(int i=nt;i<nt+n;i++)
         {
           ch = fscanf(fp1,"%s",word);
@@ -283,6 +281,7 @@ void input::load_vtk(int &nt, int nb, iREAL *t[6][3], int tid[], int pid[], iREA
   mint = min;
   maxt = max;
   fclose(fp1);
+  logg::input(filename, nt);
 }
 
 void input::twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
