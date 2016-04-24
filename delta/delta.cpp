@@ -81,7 +81,7 @@ int main (int argc, char **argv)
   material::iparam[ALPHA][GRANULAR] = 0;
 
   int nt = 0; // number of triangles
-  int nb = 0;
+  int nb = 0; // number of bodies
   int *pid; //particle identifier
   int *tid; // triangle identifiers
   iREAL *t[6][3]; // triangles
@@ -155,14 +155,13 @@ int main (int argc, char **argv)
   //create load balancer 
   struct loba *lb = loba_create(ZOLTAN_RCB);
   
-  TIMING tbalance[1000];
-  TIMING tmigration[1000];
-  TIMING tdataExchange[1000];
-  TIMING tdynamics[1000];
-  iREAL tTimer1[1000];
-  iREAL tTimer2[1000];
-  iREAL tTimer3[1000];
-  //iREAL tTimer4[1000];
+  TIMING tbalance[10000];
+  TIMING tmigration[10000];
+  TIMING tdataExchange[10000];
+  TIMING tdynamics[10000];
+  iREAL tTimer1[10000];
+  iREAL tTimer2[10000];
+  iREAL tTimer3[10000];
 
   iREAL timer1, timer2, timer3;
   timer1 = 0.0;
@@ -171,7 +170,10 @@ int main (int argc, char **argv)
 
   if (myrank == 0)
   {
-    input::init_enviroment(0, nt, nb, t, linear, angular, inertia, inverse, rotation, mass, parmat, tid, pid, position, lo, hi);
+    input::init_enviroment(atoi(scenario.c_str()), nt, nb, t, linear, angular,
+    											inertia, inverse, rotation, mass,
+													parmat, tid, pid, position, lo, hi);
+
     logg::start(nt, nb);
     dynamics::euler(nb, angular, linear, rotation, position, 0.5*step);
   }
@@ -359,8 +361,8 @@ int main (int argc, char **argv)
                     mindt2, maxdt2, avgdt2, 
                     mindt3, maxdt3, avgdt3); 
   }
-  //have to make sure all ranks finished
-  MPI_Barrier(MPI_COMM_WORLD);
+
+  MPI_Barrier(MPI_COMM_WORLD);  //make sure all ranks finished
   if(!myrank)
   {
   	logg::end();

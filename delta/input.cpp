@@ -338,7 +338,7 @@ void input::twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
         {
           if(pid[j] == idx)
           {
-            geometry::translate_enviroment(j, idx, t, position);
+            geometry::translate(j, idx, t, position);
           }
         }
         idx++;
@@ -405,7 +405,7 @@ void input::oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
       }
       case 2:
       {
-        geometry::wall(wlo, whi, nt, i, t, tid, pid, position);
+        geometry::hyperrectangle(wlo, whi, nt, i, t, tid, pid, position);
         iREAL lin[3], ang[3]; iREAL ma;
 
         lin[0] = lin[1] = lin[2] = 0;
@@ -429,7 +429,7 @@ void input::oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
   {
     if(pid[j] == 0)
     {
-      geometry::translate_enviroment(j, 0, t, position);
+      geometry::translate(j, 0, t, position);
     }
   }
 }
@@ -500,7 +500,7 @@ void input::chaos(int &nt, int &nb, iREAL *t[6][3],
         {
           if(pid[j] == idx)
           {
-            geometry::translate_enviroment(j, idx, t, position);
+            geometry::translate(j, idx, t, position);
           }
         }
         idx++;
@@ -560,7 +560,7 @@ void input::eggCollision(int &nt, int &nb, iREAL *t[6][3],
         {
           if(pid[j] == idx)
           {
-            geometry::translate_enviroment(j, idx, t, position);
+            geometry::translate(j, idx, t, position);
           }
         }
         idx++;

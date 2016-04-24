@@ -35,7 +35,7 @@ void geometry::getCentroid(int pid, int range1, int range2, iREAL *t[6][3], iREA
   centroid[5][pid] = cz;
 }
 
-void geometry::translate_enviroment(int i, int pid, iREAL *t[6][3], iREAL *p[6])
+void geometry::translate(int i, int pid, iREAL *t[6][3], iREAL *p[6])
 {
   t[0][0][i] = t[0][0][i] + p[0][pid];
   t[0][1][i] = t[0][1][i] + p[1][pid];
@@ -79,8 +79,11 @@ void normalize(int nt, iREAL *t[6][3], iREAL mint, iREAL maxt)
     }
 }
 
-void geometry::nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int &nt, int nb,
-                          iREAL *t[6][3], int tid[], int pid[], iREAL *position[6], iREAL &mint, iREAL &maxt)
+void geometry::nonsphericalparticle(iREAL eps, iREAL radius,
+																		int pointsize, int &nt, int nb,
+																		iREAL *t[6][3], int tid[], int pid[],
+																		iREAL *position[6],
+																		iREAL &mint, iREAL &maxt)
 {
   iREAL v[100][3];
   for(int i = 0; i<pointsize; i++)
@@ -280,7 +283,9 @@ void geometry::nonsphericalparticle(iREAL eps, iREAL radius, int pointsize, int 
 }
 
 
-void geometry::wall(iREAL lo[3], iREAL hi[3], int &nt, int nb, iREAL *t[6][3], int *tid, int *pid, iREAL *position[6])
+void geometry::hyperrectangle(iREAL lo[3], iREAL hi[3],
+															int &nt, int nb, iREAL *t[6][3],
+															int *tid, int *pid, iREAL *position[6])
 {
   iREAL leftUI[3], leftUO[3], leftDI[3], leftDO[3];
   iREAL rightUI[3], rightUO[3], rightDI[3], rightDO[3];

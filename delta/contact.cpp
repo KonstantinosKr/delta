@@ -57,7 +57,6 @@ void contact::detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iRE
 {
   iREAL Ax[3], Ay[3], Az[3], Bx[3], By[3], Bz[3];
   
-#pragma simd
   for(int i=s;i<e;i++)
   {
     Ax[0] = t[0][0][i];
@@ -92,7 +91,7 @@ void contact::detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iRE
       iREAL xPB, yPB, zPB;
       
       bf(Ax, Ay, Az, Bx, By, Bz, xPA, yPA, zPA, xPB, yPB, zPB);
-      
+
       iREAL dist = sqrt(pow((xPB-xPA),2)+pow((yPB-yPA),2)+pow((zPB-zPA),2));
       
       iREAL margin = 15e-2;
@@ -121,6 +120,7 @@ void contact::detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iRE
           normal[0] = ((xPB - xPA)/depth);// depth for inclusion to normal
           normal[1] = ((yPB - yPA)/depth);
           normal[2] = ((zPB - zPA)/depth);
+
           printf("PARTICLE A:%i T:%i is in CONTACT WITH PARTICLE B:%i T:%i DEPTH:%f DIST:%f\n", pid[i], tid[i], pid[j], tid[j], depth, dist);
           int color[2], id[2];
           id[0] = pid[i];
@@ -211,7 +211,7 @@ void contact::detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid
           
           iREAL depth = margin-dist;
           
-          normal[0] = ((xPB - xPA)/depth);// depth for inclusion to normal
+          normal[0] = ((xPB - xPA)/depth);
           normal[1] = ((yPB - yPA)/depth);
           normal[2] = ((zPB - zPA)/depth);
           
