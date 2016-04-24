@@ -77,11 +77,11 @@ void logg::initiate()
 	printf("DELTA MASTER h:%i m:%i s%i \t| INITIATING EXPERIMENT\n", ltm->tm_hour, ltm->tm_min, ltm->tm_sec);
 }
 
-void logg:slaveInitiate()
+void logg::slaveInitiate(int myrank, int nb)
 {
   time_t now = time(0);
   tm *ltm = std::localtime(&now);
-	printf("DELTA SLAVE | RANK:%i NB:%i\n", myrank, nb
+	printf("DELTA SLAVE h:%i m:%i s%i \t| RANK:%i NB:%i\n", ltm->tm_hour, ltm->tm_min, ltm->tm_sec, myrank, nb);
 }
 
 void logg::start(int nt, int nb)

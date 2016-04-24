@@ -43,6 +43,8 @@ namespace logg
 
 	void initiate();
 
+	void slaveInitiate(int myrank, int nb);
+
 	void start(int nt, int nb);
 
 	void output(char *filename);
