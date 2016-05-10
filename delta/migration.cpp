@@ -427,16 +427,16 @@ void init_migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
   MPI_Comm_rank (MPI_COMM_WORLD, &myrank);
  
   //allocate memory for tmp buffers
-  int **send_paridx = (int **) malloc(nproc*sizeof(int*));
-  int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
-  int *parpivot = (int *) malloc(nproc*sizeof(int));
-  int *paridx = (int *) malloc(nproc*sizeof(int));
+  int **send_paridx = (int **) malloc(nproc*sizeof(int));
+  int *parrcvpivot = new int [nproc];
+  int *parpivot = new int [nproc];
+  int *paridx = new int [nproc];
 
   int found = 0;
   for(int i=0;i<nproc;i++)
   {
     if(i==myrank)continue;
-    send_paridx[i] = (int *) malloc((nb)*sizeof(int));
+    send_paridx[i] = new int[nb];
     parrcvpivot[i] = 0;
     parpivot[i] = 0;
     paridx[i] = 0;
@@ -1303,7 +1303,7 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
   {
     int proc = rank[i];
     send_paridx[proc][parpivot[proc]] = fpid[i]; 
-    printf("INSIDE MIGRATE FORCE RANK:%i IS SENDING TO RANK:%i PARTICLE:%i\n", myrank, proc, fpid[i]);
+    //printf("INSIDE MIGRATE FORCE RANK:%i IS SENDING TO RANK:%i PARTICLE:%i\n", myrank, proc, fpid[i]);
     parpivot[proc]++;
   }
   

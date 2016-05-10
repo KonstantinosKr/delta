@@ -195,7 +195,7 @@ int main (int argc, char **argv)
                   &export_global_ids, &export_local_ids);
     timerend (&tbalance[timesteps]);
   
-    printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
+    //printf("RANK[%i]: load balance:%f\n", myrank, tbalance[timesteps].total);
    
     timerstart(&tmigration[time]);
     migrate (lb, nt, nb, t, parmat, tid, pid, 
@@ -205,7 +205,7 @@ int main (int argc, char **argv)
                export_global_ids, export_local_ids);
     timerend (&tmigration[timesteps]); 
     
-    printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
+    //printf("RANK[%i]: migration:%f\n", myrank, tmigration[timesteps].total);
     
     timer1 = 0.0;
     timer2 = 0.0;

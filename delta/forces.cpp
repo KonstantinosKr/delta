@@ -107,7 +107,7 @@ void forces::force (struct loba* lb, int myrank, std::vector<contactpoint> conpn
 
       int ij = pairing (conpnt[i][k].color[0], conpnt[i][k].color[1]);//get material from colours
     
-      iREAL f[3];
+      iREAL f[3] = {0, 0, 0};
 
       switch (material::ikind[ij])
       {

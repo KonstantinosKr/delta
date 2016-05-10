@@ -112,7 +112,6 @@ void input::load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int p
   iREAL max = DBL_MIN;
   char filename[100];
   
-   
   switch(mesh)
   {
     case 0:
@@ -148,12 +147,12 @@ void input::load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int p
       printf("found!\n");
       ch = fscanf(fp1,"%s",word);
       int n = atol(word);
+      //printf("will read: %llu\n",n); 
+      point[0] = new iREAL[n];
+      point[1] = new iREAL[n];
+      point[2] = new iREAL[n];
       
       ch = fscanf(fp1,"%s",word);
-      //printf("will read: %llu\n",n); 
-      point[0] = (iREAL *)malloc (n*sizeof(iREAL));
-      point[1] = (iREAL *)malloc (n*sizeof(iREAL));
-      point[2] = (iREAL *)malloc (n*sizeof(iREAL));
       
       for(int i=0;i<n;i++)
       {
@@ -195,6 +194,7 @@ void input::load_vtk(int mesh, int &nt, int nb, iREAL *t[6][3], int tid[], int p
         }
       }
     }
+    
     if(strcmp(word, "CELLS")==0 || strcmp(word, "POLYGONS") == 0)
     { 
       ch = fscanf(fp1,"%s",word);
@@ -266,7 +266,7 @@ void input::twoParticleCollision(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
   nb = 2;
-  int ptype[nb];
+  int *ptype = new int[nb];
   for(int i = 0; i < nb; i++){ptype[i] = 1;}
   
   iREAL mint, maxt;
@@ -358,7 +358,7 @@ void input::oneParticleVsWall(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
   nb = 2;
-  int ptype[nb];
+  int *ptype = new int[nb];
   ptype[0] = 1;
   ptype[1] = 2;
   
@@ -442,7 +442,7 @@ void input::chaos(int &nt, int &nb, iREAL *t[6][3],
                     iREAL *position[6], iREAL lo[3], iREAL hi[3])
 {
   nb = 20;
-  int ptype[nb];
+  int *ptype = new int[nb];
   for(int i = 0; i < nb; i++){ptype[i] = 0;}
   
   iREAL mint, maxt;

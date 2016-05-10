@@ -123,12 +123,12 @@ void output::postProcessing(int nranks, int size, int timesteps)
   
   for(int i=0; i<3; i++)
   {
-    point[i] = (double*) malloc(sizeof(double[size]));
+    point[i] = new double[size];
   }
   
   for(int i=0; i<5; i++)
   {
-    cells[i] = (int*) malloc(sizeof(int[size]));
+    cells[i] = new int[size];
   }
   
   for(int ii=0; ii<timesteps; ii++)
