@@ -38,16 +38,16 @@ void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], int *parmat,
  
   //allocate memory for tmp buffers
   int **send_idx = (int **) malloc(nproc*sizeof(int*));
-  int *pivot = (int *) malloc(nproc*sizeof(int));
-  int *rcvpivot = (int *) malloc(nproc*sizeof(int));
-  int *export_unique_procs = (int*) malloc(nproc*sizeof(int));
-  int *import_unique_procs = (int*) malloc(nproc*sizeof(int));
+  int *pivot = new int[nproc];
+  int *rcvpivot = new int[nproc];
+  int *export_unique_procs = new int[nproc];
+  int *import_unique_procs = new int[nproc];
 
   for(int i=0;i<nproc;i++)
   {
     rcvpivot[i] = 0;
     pivot[i] = 0;
-    send_idx[i] = (int *) malloc((nt)*sizeof(int));
+    send_idx[i] = new int[nt];
     export_unique_procs[i] = -1;
     import_unique_procs[i] = -1;
   }
@@ -99,20 +99,20 @@ void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], int *parmat,
   if(n_export_unique_procs > 0)
   {
     int mul = n_export_unique_procs*n*3;
-    tbuffer[0] = (iREAL *) malloc(mul*sizeof(iREAL));
-    tbuffer[1] = (iREAL *) malloc(mul*sizeof(iREAL));
-    tbuffer[2] = (iREAL *) malloc(mul*sizeof(iREAL)); 
-    tbuffer[3] = (iREAL *) malloc(mul*sizeof(iREAL));
-    tbuffer[4] = (iREAL *) malloc(mul*sizeof(iREAL));
-    tbuffer[5] = (iREAL *) malloc(mul*sizeof(iREAL)); 
+    tbuffer[0] = new iREAL[mul];
+    tbuffer[1] = new iREAL[mul];
+    tbuffer[2] = new iREAL[mul];
+    tbuffer[3] = new iREAL[mul];
+    tbuffer[4] = new iREAL[mul];
+    tbuffer[5] = new iREAL[mul];
     
     mul = n_export_unique_procs*n;
-    pid_buffer = (int *) malloc(mul*sizeof(int));
-    parmat_buffer = (int *) malloc(mul*sizeof(int));
+    pid_buffer = new int[mul];
+    parmat_buffer = new int[mul];
    // printf("RANK[%i]: n:%i allocated: %i n_export_unique_procs: %i\n", myrank, n, n_export_unique_procs, mul);
   }
 
-  int *idx = (int *) malloc(nproc*sizeof(int));
+  int *idx = new int[nproc];
   idx[0] = 0;
   for(int i=0; i<n_export_unique_procs; i++)
   {
@@ -283,15 +283,15 @@ void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], int *parmat,
  
   if(n_import_unique_procs > 0)
   {
-    trvbuffer[0] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
-    trvbuffer[1] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
-    trvbuffer[2] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL)); 
-    trvbuffer[3] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
-    trvbuffer[4] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL));
-    trvbuffer[5] = (iREAL *) malloc(n_import_unique_procs*size*3*sizeof(iREAL)); 
+    trvbuffer[0] = new iREAL[n_import_unique_procs*size*3];
+    trvbuffer[1] = new iREAL[n_import_unique_procs*size*3];
+    trvbuffer[2] = new iREAL[n_import_unique_procs*size*3];
+    trvbuffer[3] = new iREAL[n_import_unique_procs*size*3];
+    trvbuffer[4] = new iREAL[n_import_unique_procs*size*3];
+    trvbuffer[5] = new iREAL[n_import_unique_procs*size*3];
 
-    rcvpid_buffer = (int *) malloc(n_import_unique_procs*size*sizeof(int));
-    rvparmat_buffer = (int *) malloc(n_import_unique_procs*size*sizeof(int));
+    rcvpid_buffer = new int[n_import_unique_procs*size];
+    rvparmat_buffer = new int[n_import_unique_procs*size];
   }
 
   for(int i=0; i<n_import_unique_procs; i++)
@@ -416,6 +416,10 @@ void migrate (struct loba *lb, int &nt, int &nb, iREAL *t[6][3], int *parmat,
  free(myrvRequest);
 }
 
+void init_scenario (struct loba *lb, int &timestep, iREAL &step)
+{
+}
+
 // migrate triangles "in-place" to new ranks 
 void init_migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
                     iREAL *angular[6], iREAL *rotation[9], 
@@ -459,15 +463,15 @@ void init_migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
   if(found)
   {
     int mul = nproc*n;
-    paridxbuffer = (int *) malloc(mul*sizeof(int)); 
-    vbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-    angbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));//6 elements thus x 2
-    positionbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));
-    massbuffer = (iREAL *) malloc(mul*sizeof(iREAL)); 
+    paridxbuffer = new int[mul];
+    vbuffer = new iREAL[mul*3];
+    angbuffer = new iREAL[mul*6];//6 elements thus x 2
+    positionbuffer = new iREAL[mul*6];
+    massbuffer = new iREAL[mul]; 
     
-    rotationbuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
-    inertiabuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
-    inversebuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+    rotationbuffer = new iREAL[mul*9];
+    inertiabuffer = new iREAL[mul*9];
+    inversebuffer = new iREAL[mul*9];
 
     for(int i=0; i<nproc; i++)//n processes to prepare buffers for
     {
@@ -538,8 +542,8 @@ void init_migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
   int parsize = 0;  
 
   int MPISENDS = 9;
-  MPI_Request *myRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends
-  MPI_Request *myrvRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends 
+  MPI_Request *myRequest = new MPI_Request[nproc*MPISENDS];
+  MPI_Request *myrvRequest = new MPI_Request[nproc*MPISENDS];
  
   for(int i=0; i<nproc; i++)
   {
@@ -568,15 +572,15 @@ void init_migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
   
   if(nproc > 0)
   {
-    vrvbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
-    angrvbuffer = (iREAL *) malloc(nproc*parsize*6*sizeof(iREAL));//six elements
-    rcv_paridx = (int *) malloc(nproc*parsize*sizeof(int)); 
+    vrvbuffer = new iREAL[nproc*parsize*3];
+    angrvbuffer = new iREAL[nproc*parsize*6];
+    rcv_paridx = new int[nproc*parsize];
     
-    rcvpositionbuffer = (iREAL *) malloc(nproc*parsize*6*sizeof(iREAL));
-    rcvrotationbuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
-    rcvinertiabuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
-    rcvinversebuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
-    rcvmassbuffer = (iREAL *) malloc(nproc*parsize*sizeof(iREAL));
+    rcvpositionbuffer = new iREAL[nproc*parsize*6];
+    rcvrotationbuffer = new iREAL[nproc*parsize*9];
+    rcvinertiabuffer = new iREAL[nproc*parsize*9];
+    rcvinversebuffer = new iREAL[nproc*parsize*9];
+    rcvmassbuffer = new iREAL[nproc*parsize];
   }
 
   for(int i=0; i<nproc; i++)
@@ -719,15 +723,15 @@ void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
  
   //allocate memory for tmp buffers
   int **send_paridx = (int **) malloc(nproc*sizeof(int*));
-  int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
-  int *parpivot = (int *) malloc(nproc*sizeof(int));
-  int *paridx = (int *) malloc(nproc*sizeof(int));
+  int *parrcvpivot = new int[nproc];
+  int *parpivot = new int[nproc];
+  int *paridx = new int[nproc];
 
   int found = 0;
   for(int i=0;i<nproc;i++)
   {
     if(myrank == i) continue;
-    send_paridx[i] = (int *) malloc((nb)*sizeof(int));
+    send_paridx[i] = new int[nb];
     parrcvpivot[i] = 0;
     parpivot[i] = 0;
     paridx[i] = 0;//if there is bug look this line
@@ -760,14 +764,14 @@ void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
   if(found)
   {
     int mul = nproc*n;
-    vbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-    angbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));//6 elements thus x 2
-    positionbuffer = (iREAL *) malloc(mul*6*sizeof(iREAL));
-    paridxbuffer = (int *) malloc(mul*sizeof(int)); 
+    vbuffer = new iREAL[mul*3];
+    angbuffer = new iREAL[mul*6];//6 elements thus x 2
+    positionbuffer = new iREAL[mul*6];
+    paridxbuffer = new int[mul];
     
-    rotationbuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
-    inertiabuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
-    inversebuffer = (iREAL *) malloc(mul*9*sizeof(iREAL));
+    rotationbuffer = new iREAL[mul*9];
+    inertiabuffer = new iREAL[mul*9];
+    inversebuffer = new iREAL[mul*9];
 
     for(int i=0; i<nproc; i++)//n processes to prepare buffers for
     {
@@ -867,14 +871,14 @@ void migratePosition (struct loba *lb, int &nb, iREAL *linear[3],
   
   if(nproc > 0)
   {
-    vrvbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
-    angrvbuffer = (iREAL *) malloc(nproc*parsize*6*sizeof(iREAL));//six elements
-    rcv_paridx = (int *) malloc(nproc*parsize*sizeof(int)); 
+    vrvbuffer = new iREAL[nproc*parsize*3];
+    angrvbuffer = new iREAL[nproc*parsize*6];
+    rcv_paridx = new int[nproc*parsize];
     
-    rcvpositionbuffer = (iREAL *) malloc(nproc*parsize*6*sizeof(iREAL));
-    rcvrotationbuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
-    rcvinertiabuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
-    rcvinversebuffer = (iREAL *) malloc(nproc*parsize*9*sizeof(iREAL));
+    rcvpositionbuffer = new iREAL[nproc*parsize*6];
+    rcvrotationbuffer = new iREAL[nproc*parsize*9];
+    rcvinertiabuffer = new iREAL[nproc*parsize*9];
+    rcvinversebuffer = new iREAL[nproc*parsize*9];
   }
 
   for(int i=0; i<nproc; i++)
@@ -1025,22 +1029,21 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
 
   MPI_Comm_size(MPI_COMM_WORLD, &nproc);
   
-  int *neighborhood = (int *) malloc(nproc * sizeof(int));
+  int *neighborhood = new int[nproc];
   
   loba_getAdjacent(lb, myrank, neighborhood, &nNeighbors);
   
-  int *ghostTID = (int*) malloc(nt*sizeof(int));
-  int *ghostPID = (int*) malloc(nt*sizeof(int));
-  int *ghostlocalTID = (int*) malloc(nt*sizeof(int));
-  int *ghostNeighborhood = (int*) malloc(nproc*sizeof(int));
-  int *ghostTIDcrosses = (int*) malloc(nt*sizeof(int));
+  int *ghostTID = new int[nt];
+  int *ghostPID = new int[nt];
+  int *ghostlocalTID = new int[nt];
+  int *ghostNeighborhood = new int[nproc];
+  int *ghostTIDcrosses = new int[nt];
   int **ghostTIDNeighbors = (int**) malloc(nt*sizeof(int*));
   
   for(int i = 0;i<nproc;i++){ghostNeighborhood[i] = -1;}
-  for(int i = 0;i<nt;i++){ghostTIDNeighbors[i] = (int*) malloc(nproc*sizeof(int));}
+  for(int i = 0;i<nt;i++){ghostTIDNeighbors[i] = new int[nproc];}
   
   int nGhosts=0, nGhostNeighbors=0;
-  
   //get triangle tids that overlap into neighbors
   loba_getGhosts(lb, myrank, nNeighbors, nt, t, tid, pid, 
                       ghostlocalTID, ghostTID, ghostPID, &nGhosts, 
@@ -1048,19 +1051,19 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
                       ghostTIDNeighbors, ghostTIDcrosses);
   //printf("RANK[%i]: overlaps:%i\n", myrank, nGhosts);
   iREAL *tbuffer[6]; 
-  tbuffer[0] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
-  tbuffer[1] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
-  tbuffer[2] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
-  tbuffer[3] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
-  tbuffer[4] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
-  tbuffer[5] = (iREAL *) malloc(nproc*nGhosts*3*sizeof(iREAL));
+  tbuffer[0] = new iREAL[nproc*nGhosts*3];
+  tbuffer[1] = new iREAL[nproc*nGhosts*3];
+  tbuffer[2] = new iREAL[nproc*nGhosts*3];
+  tbuffer[3] = new iREAL[nproc*nGhosts*3];
+  tbuffer[4] = new iREAL[nproc*nGhosts*3];
+  tbuffer[5] = new iREAL[nproc*nGhosts*3];
   
-  int *tid_buffer = (int *) malloc(nproc*nGhosts*sizeof(int));
-  int *pid_buffer = (int *) malloc(nproc*nGhosts*sizeof(int));
-  int *parmat_buffer = (int *) malloc(nproc*nGhosts*sizeof(int));
+  int *tid_buffer = new int[nproc*nGhosts];
+  int *pid_buffer = new int[nproc*nGhosts];
+  int *parmat_buffer = new int[nproc*nGhosts];
 
-  int *pivot = (int *) malloc(nproc*sizeof(int));
-  int *rcvpivot = (int *) malloc(nproc*sizeof(int));
+  int *pivot = new int[nproc];
+  int *rcvpivot = new int[nproc];
   
   for(int i = 0; i < nproc; i++)
   { //set send indices and pivots for buffers
@@ -1128,20 +1131,20 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   }
   
   iREAL *trvbuffer[6];
-  trvbuffer[0] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
-  trvbuffer[1] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
-  trvbuffer[2] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
-  trvbuffer[3] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
-  trvbuffer[4] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
-  trvbuffer[5] = (iREAL *) malloc(nNeighbors*n*3*sizeof(iREAL));
+  trvbuffer[0] = new iREAL[nNeighbors*n*3];
+  trvbuffer[1] = new iREAL[nNeighbors*n*3];
+  trvbuffer[2] = new iREAL[nNeighbors*n*3];
+  trvbuffer[3] = new iREAL[nNeighbors*n*3];
+  trvbuffer[4] = new iREAL[nNeighbors*n*3];
+  trvbuffer[5] = new iREAL[nNeighbors*n*3];
   
-  int *rvparmat_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
-  int *rcvtid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
-  int *rcvpid_buffer = (int *) malloc(nNeighbors*n*sizeof(int));
+  int *rvparmat_buffer = new int[nNeighbors*n];
+  int *rcvtid_buffer = new int[nNeighbors*n];
+  int *rcvpid_buffer = new int[nNeighbors*n];
   
   int MPISENDS = 9;
-  MPI_Request *myRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
-  MPI_Request *myrvRequest = (MPI_Request*) malloc(nNeighbors*MPISENDS*sizeof(MPI_Request));//6 sends
+  MPI_Request *myRequest = new MPI_Request[nNeighbors*MPISENDS];
+  MPI_Request *myrvRequest = new MPI_Request[nNeighbors*MPISENDS];
   
   for(int i=0; i<nNeighbors; i++)
   {
@@ -1274,7 +1277,7 @@ void migrateGhosts(struct loba *lb, int  myrank, int nt, int nb, iREAL *t[6][3],
   free(ghostPID);
   free(ghostTIDcrosses);
   free(ghostNeighborhood);
-  for(int i=0; i<nGhosts;i++)
+  //for(int i=0; i<nGhosts;i++)
   {
     //free(ghostTIDNeighbors);
   }
@@ -1287,13 +1290,13 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
  
   //allocate memory for tmp buffers
   int **send_paridx = (int **) malloc(nproc*sizeof(int*));
-  int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
-  int *parpivot = (int *) malloc(nproc*sizeof(int));
-  int *paridx = (int *) malloc(nproc*sizeof(int));
+  int *parrcvpivot = new int[nproc];
+  int *parpivot = new int[nproc];
+  int *paridx = new int[nproc];
   
   for(int i=0;i<nproc;i++)
   {
-    send_paridx[i] = (int *) malloc((1000)*sizeof(int));
+    send_paridx[i] = new int[1000];
     parrcvpivot[i] = 0;
     parpivot[i] = 0;
     paridx[i] = 0;
@@ -1308,9 +1311,9 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
   }
   
   int mul = nproc*1000;
-  iREAL *fbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-  iREAL *tbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-  int *paridxbuffer = (int *) malloc(mul*sizeof(int)); 
+  iREAL *fbuffer = new iREAL[mul*3];
+  iREAL *tbuffer = new iREAL[mul*3];
+  int *paridxbuffer = new int[mul];
   
   int counter=0;
   for(int i=0; i<nproc; i++)
@@ -1343,8 +1346,8 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
   }
 
   int MPISENDS = 4;
-  MPI_Request *myRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends
-  MPI_Request *myrvRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends 
+  MPI_Request *myRequest = new MPI_Request[nproc*MPISENDS];
+  MPI_Request *myrvRequest = new MPI_Request[nproc*MPISENDS];
  
   for(int i=0; i<nproc; i++)
   {
@@ -1377,9 +1380,9 @@ void migrateForce(struct loba *lb, int myrank, int *rank, int *fpid, int nranks,
   
   if(nproc > 0)
   {
-    rcvfbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
-    rcvtbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
-    rcv_paridx = (int *) malloc(nproc*parsize*sizeof(int)); 
+    rcvfbuffer = new iREAL[nproc*parsize*3];
+    rcvtbuffer = new iREAL[nproc*parsize*3];
+    rcv_paridx = new int[nproc*parsize];
   }
 
   for(int i=0; i<nproc; i++)
@@ -1461,13 +1464,13 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
 
   //allocate memory for tmp buffers
   int **send_paridx = (int **) malloc(nproc*sizeof(int*));
-  int *parrcvpivot = (int *) malloc(nproc*sizeof(int));
-  int *parpivot = (int *) malloc(nproc*sizeof(int));
-  int *paridx = (int *) malloc(nproc*sizeof(int));
+  int *parrcvpivot = new int[nproc];
+  int *parpivot = new int[nproc];
+  int *paridx = new int[nproc];
   
   for(int i=0;i<nproc;i++)
   {
-    send_paridx[i] = (int *) malloc(nb*sizeof(int));
+    send_paridx[i] = new int[nb];
     parrcvpivot[i] = 0;
     parpivot[i] = 0;
     paridx[i] = 0;
@@ -1504,9 +1507,9 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
   }
    
   int mul = nproc*nb;
-  iREAL *fbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-  iREAL *tbuffer = (iREAL *) malloc(mul*3*sizeof(iREAL));
-  int *paridxbuffer = (int *) malloc(mul*sizeof(int)); 
+  iREAL *fbuffer = new iREAL[mul*3];
+  iREAL *tbuffer = new iREAL[mul*3];
+  int *paridxbuffer = new int[mul];
   
   for(int i=0; i<nproc; i++)//n processes to prepare buffers for
   {
@@ -1528,8 +1531,8 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
   }
   
   int MPISENDS = 4;
-  MPI_Request *myRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends
-  MPI_Request *myrvRequest = (MPI_Request*) malloc(nproc*MPISENDS*sizeof(MPI_Request));//4 sends 
+  MPI_Request *myRequest = new MPI_Request[nproc*MPISENDS];
+  MPI_Request *myrvRequest = new MPI_Request[nproc*MPISENDS];
  
   for(int i=0; i<nproc; i++)
   {
@@ -1556,9 +1559,9 @@ void migrateForceGlobal(struct loba *lb, int myrank, int nb, iREAL *position[3],
   }
   
   int parsize = nb;  
-  iREAL *rcvfbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
-  iREAL *rcvtbuffer = (iREAL *) malloc(nproc*parsize*3*sizeof(iREAL));
-  int *rcv_paridx = (int *) malloc(nproc*parsize*sizeof(int)); 
+  iREAL *rcvfbuffer = new iREAL[nproc*parsize*3];
+  iREAL *rcvtbuffer = new iREAL[nproc*parsize*3];
+  int *rcv_paridx = new int[nproc*parsize];
 
   for(int i=0; i<nproc; i++)
   {
