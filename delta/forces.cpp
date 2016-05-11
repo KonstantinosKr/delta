@@ -50,8 +50,8 @@ void forces::force (struct loba* lb, int myrank, std::vector<contactpoint> conpn
             iREAL mass[], iREAL *force[3], iREAL *torque[3], iREAL gravity[3], int parmat[])
 {
 
-  int *rank = (int *) malloc(nb*sizeof(int));
-  int *fpid = (int *) malloc(nb*sizeof(int));
+  int *rank = new int[nb];
+  int *fpid = new int[nb];
   int nranks = 0;
   int iscontact = 0;
   for (int i = 0; i < nb; i++)

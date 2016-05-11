@@ -110,9 +110,7 @@ static void obj_points (struct zoltan_args *args, int num_gid_entries, int num_l
 /* create load balancer */
 struct loba* loba_create (enum algo al)
 {
-  struct loba *lb;
-
-  ERRMEM (lb = (struct loba*) malloc (sizeof (struct loba)));
+  struct loba *lb = new struct loba;
 
   switch (al)
   {
@@ -398,7 +396,7 @@ void loba_getGhosts(struct loba *lb, int myrank, int nNeighbors, int nt, iREAL *
 {
   double lo[3], hi[3];
   int idx = 0; int uniqueRanks = 0;
-  int *ranks = (int*) malloc(nNeighbors*sizeof(int)); 
+  int *ranks = new int[nNeighbors];
   //int *parts = (int*) malloc(nNeighbors*sizeof(int)); 
   
   for(int i=0;i<nt;i++)

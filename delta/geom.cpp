@@ -112,9 +112,9 @@ void geometry::nonsphericalparticle(iREAL eps, iREAL radius,
   
   iREAL *point[3];
   
-  point[0] = (iREAL *)malloc (n*sizeof(iREAL));
-  point[1] = (iREAL *)malloc (n*sizeof(iREAL));
-  point[2] = (iREAL *)malloc (n*sizeof(iREAL));
+  point[0] = new iREAL[n];
+  point[1] = new iREAL[n];
+  point[2] = new iREAL[n];
   iREAL min = DBL_MAX;
   iREAL max = DBL_MIN;
   

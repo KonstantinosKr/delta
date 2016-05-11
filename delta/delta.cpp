@@ -159,9 +159,6 @@ int main (int argc, char **argv)
   TIMING tdynamics;
 
   iREAL timer1, timer2, timer3;
-  timer1 = 0.0;
-  timer2 = 0.0;
-  timer3 = 0.0;
 
   if (myrank == 0)
   {
