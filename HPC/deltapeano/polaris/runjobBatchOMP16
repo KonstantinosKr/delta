@@ -1,0 +1,16 @@
+#!/bin/csh
+#qsub -p par6.q
+#qsub -N 1
+#qsub --ntasks-per-node=16
+#qsub --output={OUTPUT_FILE}
+#qsub -t 62:00:00
+
+module purge
+module load intel/xe_2015.2
+module load intelmpi/intel/5.0.3
+module load slurm
+module load sge
+
+export OMPNUMTHREADS=16
+
+srun {RUN}
