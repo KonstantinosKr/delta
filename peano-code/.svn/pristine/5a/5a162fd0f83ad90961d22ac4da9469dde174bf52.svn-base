@@ -1,0 +1,28 @@
+#include "__PROJECT_PATH__/State.h"
+#include "__PROJECT_PATH__/Cell.h"
+#include "__PROJECT_PATH__/Vertex.h"
+
+#include "peano/grid/Checkpoint.h"
+
+
+
+__NAMESPACE__::State::State():
+  Base() { 
+  // @todo Insert your code here
+}
+
+
+__NAMESPACE__::State::State(const Base::PersistentState& argument):
+  Base(argument) {
+  // @todo Insert your code here
+}
+
+
+void __NAMESPACE__::State::writeToCheckpoint( peano::grid::Checkpoint<__NAMESPACE__::Vertex,__NAMESPACE__::Cell>& checkpoint ) const {
+  // @todo Insert your code here
+}
+
+    
+void __NAMESPACE__::State::readFromCheckpoint( const peano::grid::Checkpoint<__NAMESPACE__::Vertex,__NAMESPACE__::Cell>& checkpoint ) {
+  // @todo Insert your code here
+}

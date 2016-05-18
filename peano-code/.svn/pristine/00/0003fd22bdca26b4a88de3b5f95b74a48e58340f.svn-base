@@ -1,0 +1,5 @@
+Packed-Type: short int;
+
+
+class __PROJECT_NAME__::records::Cell {  
+};

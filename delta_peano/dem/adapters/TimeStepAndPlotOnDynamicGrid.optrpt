@@ -1,0 +1,469 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::touchVertexLastTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::touchVertexLastTimeSpecification()) [1/27=3.7%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(16,111)
+  -> EXTERN: (17,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (18,6) dem::mappings::Collision::touchVertexLastTimeSpecification()
+  -> EXTERN: (18,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (19,6) dem::mappings::MoveParticles::touchVertexLastTimeSpecification()
+  -> EXTERN: (19,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (20,6) dem::mappings::AdoptGrid::touchVertexLastTimeSpecification()
+  -> EXTERN: (20,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (21,6) dem::mappings::Plot::touchVertexLastTimeSpecification()
+  -> EXTERN: (21,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (22,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (22,6) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::touchVertexLastTimeSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::touchVertexFirstTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::touchVertexFirstTimeSpecification()) [2/27=7.4%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(28,112)
+  -> EXTERN: (29,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (30,6) dem::mappings::Collision::touchVertexFirstTimeSpecification()
+  -> EXTERN: (30,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (31,6) dem::mappings::MoveParticles::touchVertexFirstTimeSpecification()
+  -> EXTERN: (31,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (32,6) dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification()
+  -> EXTERN: (32,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (33,6) dem::mappings::Plot::touchVertexFirstTimeSpecification()
+  -> EXTERN: (33,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (34,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (34,6) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::touchVertexFirstTimeSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::enterCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::enterCellSpecification()) [3/27=11.1%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(40,101)
+  -> EXTERN: (41,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (42,6) dem::mappings::Collision::enterCellSpecification()
+  -> EXTERN: (42,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (43,6) dem::mappings::MoveParticles::enterCellSpecification()
+  -> EXTERN: (43,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (44,6) dem::mappings::AdoptGrid::enterCellSpecification()
+  -> EXTERN: (44,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (45,6) dem::mappings::Plot::enterCellSpecification()
+  -> EXTERN: (45,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (46,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (46,6) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::enterCellSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::leaveCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::leaveCellSpecification()) [4/27=14.8%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(52,101)
+  -> EXTERN: (53,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (54,6) dem::mappings::Collision::leaveCellSpecification()
+  -> EXTERN: (54,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (55,6) dem::mappings::MoveParticles::leaveCellSpecification()
+  -> EXTERN: (55,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (56,6) dem::mappings::AdoptGrid::leaveCellSpecification()
+  -> EXTERN: (56,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (57,6) dem::mappings::Plot::leaveCellSpecification()
+  -> EXTERN: (57,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (58,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (58,6) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::leaveCellSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::ascendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::ascendSpecification()) [5/27=18.5%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(64,98)
+  -> EXTERN: (65,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (66,6) dem::mappings::Collision::ascendSpecification()
+  -> EXTERN: (66,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (67,6) dem::mappings::MoveParticles::ascendSpecification()
+  -> EXTERN: (67,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (68,6) dem::mappings::AdoptGrid::ascendSpecification()
+  -> EXTERN: (68,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (69,6) dem::mappings::Plot::ascendSpecification()
+  -> EXTERN: (69,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (70,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (70,6) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::ascendSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::descendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::descendSpecification()) [6/27=22.2%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(76,99)
+  -> EXTERN: (77,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (78,6) dem::mappings::Collision::descendSpecification()
+  -> EXTERN: (78,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (79,6) dem::mappings::MoveParticles::descendSpecification()
+  -> EXTERN: (79,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (80,6) dem::mappings::AdoptGrid::descendSpecification()
+  -> EXTERN: (80,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (81,6) dem::mappings::Plot::descendSpecification()
+  -> EXTERN: (81,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (82,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (82,6) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::descendSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::communicationSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::communicationSpecification()) [7/27=25.9%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(4,111)
+  -> EXTERN: (5,10) peano::CommunicationSpecification::getMinimalSpecification(bool)
+  -> EXTERN: (5,10) memcpy(void *, const void *, size_t)
+  -> EXTERN: (6,6) dem::mappings::Collision::communicationSpecification()
+  -> EXTERN: (6,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (6,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (6,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (7,6) dem::mappings::MoveParticles::communicationSpecification()
+  -> EXTERN: (7,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (7,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (7,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (8,6) dem::mappings::AdoptGrid::communicationSpecification()
+  -> EXTERN: (8,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (8,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (8,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (9,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (9,6) dem::mappings::Plot::communicationSpecification()
+  -> EXTERN: (9,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (9,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (10,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (10,6) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::communicationSpecification()
+  -> EXTERN: (10,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(5,10):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(6,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(6,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(7,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(7,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(8,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(8,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(9,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(9,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(10,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *)) [8/27=29.6%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(88,77)
+  -> EXTERN: (88,46) dem::mappings::Collision::Collision(dem::mappings::Collision *)
+  -> EXTERN: (88,46) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+  -> EXTERN: (88,46) dem::mappings::Plot::Plot(dem::mappings::Plot *)
+  -> EXTERN: (88,46) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+  -> EXTERN: (88,46) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+  -> EXTERN: (88,46) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+  -> EXTERN: (88,46) dem::mappings::AdoptGrid::AdoptGrid(dem::mappings::AdoptGrid *)
+  -> EXTERN: (88,46) dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *)
+  -> EXTERN: (88,46) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *const)) [9/27=33.3%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(88,46)
+  -> INLINE: (88,46) dem::adapters::TimeStepAndPlotOnDynamicGrid::TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *) (isz = 59) (sz = 64)
+    -> EXTERN: (88,46) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *)
+    -> EXTERN: (88,46) dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (88,46) dem::mappings::AdoptGrid::AdoptGrid(dem::mappings::AdoptGrid *)
+    -> EXTERN: (88,46) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+    -> EXTERN: (88,46) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (88,46) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+    -> EXTERN: (88,46) dem::mappings::Plot::Plot(dem::mappings::Plot *)
+    -> EXTERN: (88,46) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (88,46) dem::mappings::Collision::Collision(dem::mappings::Collision *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::~TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::~TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *)) [10/27=37.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(92,78)
+  -> EXTERN: (92,78) ___cxa_call_unexpected
+  -> EXTERN: (92,78) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+  -> EXTERN: (92,78) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+  -> EXTERN: (92,78) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+  -> EXTERN: (92,78) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+  -> EXTERN: (93,1) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::~TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *)
+  -> EXTERN: (93,1) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+  -> EXTERN: (93,1) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+  -> EXTERN: (93,1) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+  -> EXTERN: (93,1) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::~TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::~TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *const)) [11/27=40.7%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(92,46)
+  -> EXTERN: (92,46) operator delete(void *)
+  -> INLINE: (92,46) dem::adapters::TimeStepAndPlotOnDynamicGrid::~TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *) (isz = 63) (sz = 68)
+    -> EXTERN: (92,78) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (92,78) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+    -> EXTERN: (92,78) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (92,78) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+    -> EXTERN: (92,78) ___cxa_call_unexpected
+    -> EXTERN: (93,1) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+    -> EXTERN: (93,1) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (93,1) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::~TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *)
+    -> EXTERN: (93,1) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (93,1) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::~TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::~TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *const)) [12/27=44.4%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(92,46)
+  -> INLINE: (92,46) dem::adapters::TimeStepAndPlotOnDynamicGrid::~TimeStepAndPlotOnDynamicGrid(dem::adapters::TimeStepAndPlotOnDynamicGrid *) (isz = 63) (sz = 68)
+    -> EXTERN: (92,78) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (92,78) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+    -> EXTERN: (92,78) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (92,78) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+    -> EXTERN: (92,78) ___cxa_call_unexpected
+    -> EXTERN: (93,1) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+    -> EXTERN: (93,1) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (93,1) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::~TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *)
+    -> EXTERN: (93,1) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (93,1) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::createInnerVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::createInnerVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [13/27=48.1%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(164,3)
+  -> EXTERN: (165,18) dem::mappings::Collision::createInnerVertex(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (166,22) dem::mappings::MoveParticles::createInnerVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (167,18) dem::mappings::AdoptGrid::createInnerVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (168,13) dem::mappings::Plot::createInnerVertex(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (169,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::createInnerVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::createBoundaryVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::createBoundaryVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [14/27=51.9%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(182,3)
+  -> EXTERN: (183,18) dem::mappings::Collision::createBoundaryVertex(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (184,22) dem::mappings::MoveParticles::createBoundaryVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (185,18) dem::mappings::AdoptGrid::createBoundaryVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (186,13) dem::mappings::Plot::createBoundaryVertex(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (187,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::createBoundaryVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::createHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::createHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [15/27=55.6%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(127,3)
+  -> EXTERN: (128,18) dem::mappings::Collision::createHangingVertex(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (129,22) dem::mappings::MoveParticles::createHangingVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (130,18) dem::mappings::AdoptGrid::createHangingVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (131,13) dem::mappings::Plot::createHangingVertex(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (132,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::createHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::destroyHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::destroyHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [16/27=59.3%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(146,3)
+  -> EXTERN: (147,18) dem::mappings::Collision::destroyHangingVertex(dem::mappings::Collision *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (148,22) dem::mappings::MoveParticles::destroyHangingVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (149,18) dem::mappings::AdoptGrid::destroyHangingVertex(dem::mappings::AdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (150,13) dem::mappings::Plot::destroyHangingVertex(dem::mappings::Plot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (151,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::destroyHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::destroyVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::destroyVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [17/27=63.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(200,3)
+  -> EXTERN: (201,18) dem::mappings::Collision::destroyVertex(dem::mappings::Collision *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (202,22) dem::mappings::MoveParticles::destroyVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (203,18) dem::mappings::AdoptGrid::destroyVertex(dem::mappings::AdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (204,13) dem::mappings::Plot::destroyVertex(dem::mappings::Plot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (205,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::destroyVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::createCell(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::createCell(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [18/27=66.7%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(218,3)
+  -> EXTERN: (219,18) dem::mappings::Collision::createCell(dem::mappings::Collision *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (220,22) dem::mappings::MoveParticles::createCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (221,18) dem::mappings::AdoptGrid::createCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (222,13) dem::mappings::Plot::createCell(dem::mappings::Plot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (223,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::createCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::destroyCell(dem::adapters::TimeStepAndPlotOnDynamicGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::destroyCell(dem::adapters::TimeStepAndPlotOnDynamicGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [19/27=70.4%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(236,3)
+  -> EXTERN: (237,18) dem::mappings::Collision::destroyCell(dem::mappings::Collision *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (238,22) dem::mappings::MoveParticles::destroyCell(dem::mappings::MoveParticles *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (239,18) dem::mappings::AdoptGrid::destroyCell(dem::mappings::AdoptGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (240,13) dem::mappings::Plot::destroyCell(dem::mappings::Plot *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (241,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::destroyCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::touchVertexFirstTime(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::touchVertexFirstTime(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [20/27=74.1%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(471,3)
+  -> EXTERN: (472,18) dem::mappings::Collision::touchVertexFirstTime(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (473,22) dem::mappings::MoveParticles::touchVertexFirstTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (474,18) dem::mappings::AdoptGrid::touchVertexFirstTime(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (475,13) dem::mappings::Plot::touchVertexFirstTime(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (476,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::touchVertexFirstTime(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::touchVertexLastTime(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::touchVertexLastTime(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [21/27=77.8%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(489,3)
+  -> EXTERN: (490,18) dem::mappings::Collision::touchVertexLastTime(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (491,22) dem::mappings::MoveParticles::touchVertexLastTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (492,18) dem::mappings::AdoptGrid::touchVertexLastTime(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (493,13) dem::mappings::Plot::touchVertexLastTime(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (494,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::touchVertexLastTime(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::enterCell(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::enterCell(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [22/27=81.5%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(507,3)
+  -> EXTERN: (508,18) dem::mappings::Collision::enterCell(dem::mappings::Collision *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (509,22) dem::mappings::MoveParticles::enterCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (510,18) dem::mappings::AdoptGrid::enterCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (511,13) dem::mappings::Plot::enterCell(dem::mappings::Plot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (512,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::enterCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::leaveCell(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::leaveCell(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [23/27=85.2%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(525,3)
+  -> EXTERN: (526,18) dem::mappings::Collision::leaveCell(dem::mappings::Collision *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (527,22) dem::mappings::MoveParticles::leaveCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (528,18) dem::mappings::AdoptGrid::leaveCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (529,13) dem::mappings::Plot::leaveCell(dem::mappings::Plot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (530,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::leaveCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::endIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::endIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::State &)) [24/27=88.9%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(549,3)
+  -> EXTERN: (550,18) dem::mappings::Collision::endIteration(dem::mappings::Collision *, dem::State &)
+  -> EXTERN: (551,22) dem::mappings::MoveParticles::endIteration(dem::mappings::MoveParticles *, dem::State &)
+  -> EXTERN: (552,18) dem::mappings::AdoptGrid::endIteration(dem::mappings::AdoptGrid *, dem::State &)
+  -> EXTERN: (553,13) dem::mappings::Plot::endIteration(dem::mappings::Plot *, dem::State &)
+  -> EXTERN: (554,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::endIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::State &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::descend(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::descend(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [25/27=92.6%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(568,3)
+  -> EXTERN: (569,18) dem::mappings::Collision::descend(dem::mappings::Collision *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (570,22) dem::mappings::MoveParticles::descend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (571,18) dem::mappings::AdoptGrid::descend(dem::mappings::AdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (572,13) dem::mappings::Plot::descend(dem::mappings::Plot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (573,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::descend(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::ascend(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::ascend(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [26/27=96.3%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(585,3)
+  -> EXTERN: (586,18) dem::mappings::Collision::ascend(dem::mappings::Collision *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (587,22) dem::mappings::MoveParticles::ascend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (588,18) dem::mappings::AdoptGrid::ascend(dem::mappings::AdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (589,13) dem::mappings::Plot::ascend(dem::mappings::Plot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (590,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::ascend(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid::beginIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid::beginIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid *, dem::State &)) [27/27=100.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid.cpp(537,3)
+  -> EXTERN: (538,18) dem::mappings::Collision::beginIteration(dem::mappings::Collision *, dem::State &)
+  -> EXTERN: (539,22) dem::mappings::MoveParticles::beginIteration(dem::mappings::MoveParticles *, dem::State &)
+  -> EXTERN: (540,18) dem::mappings::AdoptGrid::beginIteration(dem::mappings::AdoptGrid *, dem::State &)
+  -> EXTERN: (541,13) dem::mappings::Plot::beginIteration(dem::mappings::Plot *, dem::State &)
+  -> EXTERN: (542,57) dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::beginIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 *, dem::State &)
+
+===========================================================================

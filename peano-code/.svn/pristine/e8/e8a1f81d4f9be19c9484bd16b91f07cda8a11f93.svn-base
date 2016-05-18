@@ -1,0 +1,7 @@
+PDT tarball
+
+This tarball holds the whole pdt. Usually, there is no need to unzip this file 
+as Peano comes along with an executable jar file to run the pdt (see 
+www.peano-framework.org). However, if you wish to unzip the pdt sources, I 
+recommend to put it into a separate directory. The sources also stem from a 
+sourceforge directory called pdt.

@@ -1,0 +1,7 @@
+Packed-Type: short int;
+
+#include "peano/utils/Globals.h"
+
+class peano::heap::records::CharHeapData {
+  persistent expose parallelise signed char u;
+};

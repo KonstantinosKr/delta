@@ -1,0 +1,8 @@
+Toolbox for load balancing tools
+
+This tarball holds classes for dynamic load balancing. Most makefiles 
+by default expect them to be held by a directory toolboxes, i.e. I recommend to 
+unpack these classes into a subdirectory toolboxes parallel to any other Peano 
+sources such as Peano's kernel or a project.   
+
+Contact person: Tobias Weinzierl

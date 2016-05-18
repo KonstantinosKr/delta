@@ -1,0 +1,323 @@
+// This file is part of the Peano project. For conditions of distribution and
+// use, please see the copyright notice at www.peano-framework.org.
+Package org.peano.pdt;
+
+Helpers
+	all 	= 	[ 0 .. 127 ];
+	dot			=	'.';
+	digit 	= 	[ '0' .. '9' ];
+	five    = '5';
+	nondigit 	= 	[ '_' + [ [ 'a' .. 'z' ] + [ 'A' .. 'Z' ] ] ];
+	nonzero_digit 	= 	[ '1' .. '9' ];
+	
+	filename_element =  digit | nondigit | '-' | '_' | dot;
+
+  namespace_element =  digit | nondigit | '_' | dot;
+
+	not_star 	= 	[ all - '*' ];
+	not_star_not_slash 	= 	[ not_star - '/' ];
+
+	cr 	= 	13;   
+	lf 	= 	10;
+	tab 	= 	9;  
+	line_terminator = lf | cr | cr lf; 
+	not_line_terminator = [[all - cr] - lf];
+	
+ 
+Tokens 
+  token_vertex                = 'vertex:';
+  token_cell                  = 'cell:';
+  token_state                 = 'state:';
+  token_component             = 'component:';
+  token_namespace             = 'namespace:';
+  
+  token_heap_dastgen_file     = 'heap-dastgen-file:';
+
+  token_read                  = 'read';
+  token_write                 = 'write';
+  
+  token_scalar_double             = 'scalar(double):';
+  token_scalar_int                = 'scalar(int):';
+  token_scalar_complex            = 'scalar(complex):';
+  token_vector_d_double           = 'vector(double):';
+  token_vector_d_int              = 'vector(int):';
+  token_vector_d_complex          = 'vector(complex):';
+  token_vector_two_pow_d_double   = 'vector2PowD(double):';
+  token_vector_two_pow_d_int      = 'vector2PowD(int):';
+  token_vector_two_pow_d_complex  = 'vector2PowD(complex):';
+  token_vector_five_pow_d_double  = 'intergrid-operator(double):';
+  token_vector_five_pow_d_int     = 'intergrid-operator(int):';
+  token_vector_five_pow_d_complex = 'intergrid-operator(complex):';
+  token_stencil_double            = 'stencil(double):';
+  token_stencil_int               = 'stencil(int):';
+  token_stencil_complex           = 'stencil(complex):';
+  	
+  token_name                  = 'name:';
+  token_dastgen_file          = 'dastgen-file:';
+  
+  token_event_mapping         = 'event-mapping:';
+  
+  token_open_bracket          = '(';
+  token_close_bracket         = ')';
+  token_comma                 = ',';
+  
+  token_adapter                         = 'adapter:';
+  token_merge_with_user_defined_adapter = 'merge-with-user-defined-mapping:';
+  token_merge_with_predefined_adapter   = 'merge-with-predefined-mapping:';
+	
+	blank                       = ( cr | lf | tab | ' ' ) +;
+	identifier 	                = nondigit ( digit | nondigit ) *;
+  filename                    = '/' ? (filename_element + '/') * filename_element +;
+  namespace                   = '::' ? (namespace_element + '::') * namespace_element +;
+   	
+  traditional_comment = '/*' not_star+ '*'+ (not_star_not_slash not_star* '*'+)* '/';
+  documentation_comment =    '/**' '*'* (not_star_not_slash not_star* '*'+)* '/';
+	end_of_line_comment = '//' not_line_terminator * line_terminator;
+
+Ignored Tokens
+  
+  traditional_comment,
+  documentation_comment,
+  end_of_line_comment,
+  blank;
+
+Productions
+  
+  description {->description} = 
+    token_component [name]:identifier token_namespace namespace heap_dastgen_file_list? vertex cell state event_mapping_list? adapter_list?
+      { -> New description( name,namespace,[heap_dastgen_file_list.heap_dastgen_file],vertex, cell, state, [event_mapping_list.event_mapping], [adapter_list.adapter] ) };
+
+
+  heap_dastgen_file_list {->heap_dastgen_file*} =
+      {single} token_heap_dastgen_file filename                        {-> [New heap_dastgen_file(filename)] }
+    | {multi}  token_heap_dastgen_file filename heap_dastgen_file_list {-> [New heap_dastgen_file(filename),heap_dastgen_file_list.heap_dastgen_file] };
+
+
+  vertex {->vertex} = 
+    token_vertex token_dastgen_file filename operation_list? 
+      { -> New vertex( filename, [operation_list.operation]) };
+
+
+  state {->state} = 
+    token_state token_dastgen_file filename
+      { -> New state( filename) };
+
+
+  cell {->cell} = 
+    token_cell token_dastgen_file filename
+      { -> New cell( filename) };
+  
+  
+  operation_list { -> operation* } =
+      {single_read_scalar_double} token_read token_scalar_double identifier
+        { -> [New operation.read_scalar_double(identifier) ] }
+    | {list_read_scalar_double}   token_read token_scalar_double identifier operation_list
+        { -> [New operation.read_scalar_double(identifier),operation_list.operation] }
+    | {single_read_vector_double} token_read token_vector_d_double identifier
+        { -> [New operation.read_vector_double(identifier) ] }
+    | {list_read_vector_double}   token_read token_vector_d_double identifier operation_list
+        { -> [New operation.read_vector_double(identifier),operation_list.operation] }
+    | {single_read_token_vector_two_pow_d_double} token_read token_vector_two_pow_d_double identifier
+        { -> [New operation.read_vector_two_pow_d_double(identifier) ] }
+    | {list_read_token_vector_two_pow_d_double}   token_read token_vector_two_pow_d_double identifier operation_list
+        { -> [New operation.read_vector_two_pow_d_double(identifier),operation_list.operation] }
+    | {single_read_stencil_double} token_read token_stencil_double identifier
+        { -> [New operation.read_stencil_double(identifier) ] }
+    | {list_read_stencil_double}   token_read token_stencil_double identifier operation_list
+        { -> [New operation.read_stencil_double(identifier),operation_list.operation] }
+    | {single_read_intergrid_operator_double}   token_read token_vector_five_pow_d_double identifier 
+        { -> [New operation.read_intergrid_operator_double(identifier) ] }
+    | {list_read_intergrid_operator_double}   token_read token_vector_five_pow_d_double identifier operation_list
+        { -> [New operation.read_intergrid_operator_double(identifier),operation_list.operation] }
+    | {single_write_scalar_double} token_write token_scalar_double identifier
+        { -> [New operation.write_scalar_double(identifier) ] }
+    | {list_write_scalar_double}   token_write token_scalar_double identifier operation_list
+        { -> [New operation.write_scalar_double(identifier),operation_list.operation] }
+    | {single_write_vector_two_pow_d_double} token_write token_vector_two_pow_d_double identifier
+        { -> [New operation.write_vector_two_pow_d_double(identifier) ] }
+    | {list_write_vector_two_pow_d_double}   token_write token_vector_two_pow_d_double identifier operation_list
+        { -> [New operation.write_vector_two_pow_d_double(identifier),operation_list.operation] }
+    | {single_write_vector_double} token_write token_vector_d_double identifier
+        { -> [New operation.write_vector_double(identifier) ] }
+    | {list_write_vector_double}   token_write token_vector_d_double identifier operation_list
+        { -> [New operation.write_vector_double(identifier),operation_list.operation] }
+    | {single_write_stencil_double} token_write token_stencil_double identifier
+        { -> [New operation.write_stencil_double(identifier) ] }
+    | {list_write_stencil_double}   token_write token_stencil_double identifier operation_list
+        { -> [New operation.write_stencil_double(identifier),operation_list.operation] }
+    | {single_write_intergrid_operator_double}   token_write token_vector_five_pow_d_double identifier 
+        { -> [New operation.write_intergrid_operator_double(identifier) ] }
+    | {list_write_intergrid_operator_double}   token_write token_vector_five_pow_d_double identifier operation_list
+        { -> [New operation.write_intergrid_operator_double(identifier),operation_list.operation] }
+        
+    | {single_read_scalar_int} token_read token_scalar_int identifier
+        { -> [New operation.read_scalar_int(identifier) ] }
+    | {list_read_scalar_int}   token_read token_scalar_int identifier operation_list
+        { -> [New operation.read_scalar_int(identifier),operation_list.operation] }
+    | {single_read_vector_int} token_read token_vector_d_int identifier
+        { -> [New operation.read_vector_int(identifier) ] }
+    | {list_read_vector_int}   token_read token_vector_d_int identifier operation_list
+        { -> [New operation.read_vector_int(identifier),operation_list.operation] }
+    | {single_read_token_vector_two_pow_d_int} token_read token_vector_two_pow_d_int identifier
+        { -> [New operation.read_vector_two_pow_d_int(identifier) ] }
+    | {list_read_token_vector_two_pow_d_int}   token_read token_vector_two_pow_d_int identifier operation_list
+        { -> [New operation.read_vector_two_pow_d_int(identifier),operation_list.operation] }
+    | {single_read_stencil_int} token_read token_stencil_int identifier
+        { -> [New operation.read_stencil_int(identifier) ] }
+    | {list_read_stencil_int}   token_read token_stencil_int identifier operation_list
+        { -> [New operation.read_stencil_int(identifier),operation_list.operation] }
+    | {single_read_intergrid_operator_int}   token_read token_vector_five_pow_d_int identifier 
+        { -> [New operation.read_intergrid_operator_int(identifier) ] }
+    | {list_read_intergrid_operator_int}   token_read token_vector_five_pow_d_int identifier operation_list
+        { -> [New operation.read_intergrid_operator_int(identifier),operation_list.operation] }
+    | {single_write_scalar_int} token_write token_scalar_int identifier
+        { -> [New operation.write_scalar_int(identifier) ] }
+    | {list_write_scalar_int}   token_write token_scalar_int identifier operation_list
+        { -> [New operation.write_scalar_int(identifier),operation_list.operation] }
+    | {single_write_vector_two_pow_d_int} token_write token_vector_two_pow_d_int identifier
+        { -> [New operation.write_vector_two_pow_d_int(identifier) ] }
+    | {list_write_vector_two_pow_d_int}   token_write token_vector_two_pow_d_int identifier operation_list
+        { -> [New operation.write_vector_two_pow_d_int(identifier),operation_list.operation] }
+    | {single_write_vector_int} token_write token_vector_d_int identifier
+        { -> [New operation.write_vector_int(identifier) ] }
+    | {list_write_vector_int}   token_write token_vector_d_int identifier operation_list
+        { -> [New operation.write_vector_int(identifier),operation_list.operation] }
+    | {single_write_stencil_int} token_write token_stencil_int identifier
+        { -> [New operation.write_stencil_int(identifier) ] }
+    | {list_write_stencil_int}   token_write token_stencil_int identifier operation_list
+        { -> [New operation.write_stencil_int(identifier),operation_list.operation] }
+    | {single_write_intergrid_operator_int}   token_write token_vector_five_pow_d_int identifier 
+        { -> [New operation.write_intergrid_operator_int(identifier) ] }
+    | {list_write_intergrid_operator_int}   token_write token_vector_five_pow_d_int identifier operation_list
+        { -> [New operation.write_intergrid_operator_int(identifier),operation_list.operation] }
+        
+    | {single_read_scalar_complex} token_read token_scalar_complex identifier
+        { -> [New operation.read_scalar_complex(identifier) ] }
+    | {list_read_scalar_complex}   token_read token_scalar_complex identifier operation_list
+        { -> [New operation.read_scalar_complex(identifier),operation_list.operation] }
+    | {single_read_vector_complex} token_read token_vector_d_complex identifier
+        { -> [New operation.read_vector_complex(identifier) ] }
+    | {list_read_vector_complex}   token_read token_vector_d_complex identifier operation_list
+        { -> [New operation.read_vector_complex(identifier),operation_list.operation] }
+    | {single_read_token_vector_two_pow_d_complex} token_read token_vector_two_pow_d_complex identifier
+        { -> [New operation.read_vector_two_pow_d_complex(identifier) ] }
+    | {list_read_token_vector_two_pow_d_complex}   token_read token_vector_two_pow_d_complex identifier operation_list
+        { -> [New operation.read_vector_two_pow_d_complex(identifier),operation_list.operation] }
+    | {single_read_stencil_complex} token_read token_stencil_complex identifier
+        { -> [New operation.read_stencil_complex(identifier) ] }
+    | {list_read_stencil_complex}   token_read token_stencil_complex identifier operation_list
+        { -> [New operation.read_stencil_complex(identifier),operation_list.operation] }
+    | {single_read_intergrid_operator_complex}   token_read token_vector_five_pow_d_complex identifier 
+        { -> [New operation.read_intergrid_operator_complex(identifier) ] }
+    | {list_read_intergrid_operator_complex}   token_read token_vector_five_pow_d_complex identifier operation_list
+        { -> [New operation.read_intergrid_operator_complex(identifier),operation_list.operation] }
+    | {single_write_scalar_complex} token_write token_scalar_complex identifier
+        { -> [New operation.write_scalar_complex(identifier) ] }
+    | {list_write_scalar_complex}   token_write token_scalar_complex identifier operation_list
+        { -> [New operation.write_scalar_complex(identifier),operation_list.operation] }
+    | {single_write_vector_two_pow_d_complex} token_write token_vector_two_pow_d_complex identifier
+        { -> [New operation.write_vector_two_pow_d_complex(identifier) ] }
+    | {list_write_vector_two_pow_d_complex}   token_write token_vector_two_pow_d_complex identifier operation_list
+        { -> [New operation.write_vector_two_pow_d_complex(identifier),operation_list.operation] }
+    | {single_write_vector_complex} token_write token_vector_d_complex identifier
+        { -> [New operation.write_vector_complex(identifier) ] }
+    | {list_write_vector_complex}   token_write token_vector_d_complex identifier operation_list
+        { -> [New operation.write_vector_complex(identifier),operation_list.operation] }
+    | {single_write_stencil_complex} token_write token_stencil_complex identifier
+        { -> [New operation.write_stencil_complex(identifier) ] }
+    | {list_write_stencil_complex}   token_write token_stencil_complex identifier operation_list
+        { -> [New operation.write_stencil_complex(identifier),operation_list.operation] }
+    | {single_write_intergrid_operator_complex}   token_write token_vector_five_pow_d_complex identifier 
+        { -> [New operation.write_intergrid_operator_complex(identifier) ] }
+    | {list_write_intergrid_operator_complex}   token_write token_vector_five_pow_d_complex identifier operation_list
+        { -> [New operation.write_intergrid_operator_complex(identifier),operation_list.operation] }
+    ;
+  
+  event_mapping_list {->event_mapping*} =
+      {single}  token_event_mapping token_name identifier 
+        { -> [New event_mapping(identifier)] }
+    | {list}    token_event_mapping token_name identifier event_mapping_list
+        { -> [New event_mapping(identifier),event_mapping_list.event_mapping] };        
+  
+  
+  adapter_list {->adapter*} =
+      {single}  token_adapter token_name identifier use_mapping_list?
+        { -> [New adapter(identifier,[use_mapping_list.use_mapping])] }
+    | {list}    token_adapter token_name identifier use_mapping_list? adapter_list
+        { -> [New adapter(identifier,[use_mapping_list.use_mapping]),adapter_list.adapter] };
+      
+      
+  use_mapping_list {->use_mapping*} = 
+      {single_userdefined}  token_merge_with_user_defined_adapter identifier
+        { -> [New use_mapping.userdefined(identifier)] }
+    | {list_userdefined}  token_merge_with_user_defined_adapter identifier use_mapping_list
+        { -> [New use_mapping.userdefined(identifier), use_mapping_list.use_mapping] }
+    | {single_predefined}   token_merge_with_predefined_adapter identifier token_open_bracket predefined_adapter_parameter_list token_close_bracket
+        { -> [New use_mapping.predefined(identifier,[predefined_adapter_parameter_list.identifier])] }
+    | {list_predefined}   token_merge_with_predefined_adapter identifier token_open_bracket predefined_adapter_parameter_list token_close_bracket use_mapping_list
+        { -> [New use_mapping.predefined(identifier,[predefined_adapter_parameter_list.identifier]), use_mapping_list.use_mapping] };
+
+  
+  predefined_adapter_parameter_list {->identifier*} = 
+      {single}    identifier 
+         { -> [identifier] }
+    | {list}      identifier token_comma predefined_adapter_parameter_list
+         { -> [identifier,predefined_adapter_parameter_list.identifier] };
+         
+    
+  
+Abstract Syntax Tree
+ 
+  description = [name]:identifier namespace heap_dastgen_file* vertex cell state event_mapping* adapter*;
+  
+  repository = [name]:identifier;
+  
+  vertex = [filename]:filename operation*;
+
+  operation = 
+      {read_scalar_double}              [name]:identifier
+    | {read_vector_double}              [name]:identifier
+    | {read_vector_two_pow_d_double}    [name]:identifier
+    | {read_stencil_double}             [name]:identifier
+    | {read_intergrid_operator_double}  [name]:identifier
+    | {write_scalar_double}             [name]:identifier
+    | {write_vector_double}             [name]:identifier
+    | {write_vector_two_pow_d_double}   [name]:identifier
+    | {write_stencil_double}            [name]:identifier
+    | {write_intergrid_operator_double} [name]:identifier
+    | {read_scalar_int}              [name]:identifier
+    | {read_vector_int}              [name]:identifier
+    | {read_vector_two_pow_d_int}    [name]:identifier
+    | {read_stencil_int}             [name]:identifier
+    | {read_intergrid_operator_int}  [name]:identifier
+    | {write_scalar_int}             [name]:identifier
+    | {write_vector_int}             [name]:identifier
+    | {write_vector_two_pow_d_int}   [name]:identifier
+    | {write_stencil_int}            [name]:identifier
+    | {write_intergrid_operator_int} [name]:identifier
+    | {read_scalar_complex}              [name]:identifier
+    | {read_vector_complex}              [name]:identifier
+    | {read_vector_two_pow_d_complex}    [name]:identifier
+    | {read_stencil_complex}             [name]:identifier
+    | {read_intergrid_operator_complex}  [name]:identifier
+    | {write_scalar_complex}             [name]:identifier
+    | {write_vector_complex}             [name]:identifier
+    | {write_vector_two_pow_d_complex}   [name]:identifier
+    | {write_stencil_complex}            [name]:identifier
+    | {write_intergrid_operator_complex} [name]:identifier
+    ;
+    
+  cell = [filename]:filename;
+ 
+  state = [filename]:filename;
+  
+  heap_dastgen_file = [filename]:filename;
+  
+  event_mapping = [name]:identifier;
+  
+  adapter = [name]:identifier use_mapping*;
+  
+  use_mapping = 
+      {predefined}    [name]:identifier [parameters]:identifier*
+    | {userdefined}   [name]:identifier;
+ 

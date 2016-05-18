@@ -1,0 +1,111 @@
+component: Multigrid
+
+namespace: ::multigrid
+
+vertex:
+  dastgen-file: Vertex.def
+  read scalar(double): U
+  read scalar(double): F
+  read scalar(double): R
+  read scalar(double): D
+  read scalar(double): HierarchicalU
+  read scalar(double): HierarchicalR
+  read scalar(double): UUpdate
+  read vector(double): LinearSurplus
+  write scalar(double): U
+  write scalar(double): R
+  write scalar(double): D
+  write scalar(double): HierarchicalU
+  write scalar(double): HierarchicalR
+  write vector(double): LinearSurplus 
+  
+cell:
+  dastgen-file: Cell.def
+
+state:
+  dastgen-file: State.def
+
+event-mapping:
+  name: CreateGrid
+
+event-mapping:
+  name: RefinementCriterion
+
+event-mapping:
+  name: JacobiSmoother
+
+event-mapping:
+  name: PlotCells
+
+event-mapping:
+  name: AdditiveMG
+
+event-mapping:
+  name: MultiplicativeMG
+
+adapter:
+  name: CreateGrid
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: PlotCells
+  merge-with-predefined-mapping: VTKPlotVertexValue(f,getF,f)
+ 
+adapter:
+  name: Jacobi
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: JacobiSmoother
+  merge-with-user-defined-mapping: RefinementCriterion
+ 
+adapter:
+  name: JacobiAndPlot
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: JacobiSmoother
+  merge-with-user-defined-mapping: PlotCells
+  merge-with-user-defined-mapping: RefinementCriterion
+  merge-with-predefined-mapping: VTKPlotVertexValue(u,getU,u)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelValue(multiscaleU,getU,u)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelValue(multiscaleHierarchicalU,getHierarchicalU,u)
+ 
+ adapter:
+  name: AdditiveMG
+  merge-with-user-defined-mapping: AdditiveMG
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: RefinementCriterion
+ 
+adapter:
+  name: AdditiveMGAndPlot
+  merge-with-user-defined-mapping: AdditiveMG
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: PlotCells
+  merge-with-user-defined-mapping: RefinementCriterion
+  merge-with-predefined-mapping: VTKPlotVertexValue(u,getU,u)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelValue(multiscaleU,getU,u)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelValue(multiscaleHierarchicalU,getHierarchicalU,u)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelPointCloud(multiscaleResidual,getResidual,res)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelPointCloud(multiscaleHierarchicalResidual,getHierarchicalResidual,res)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelPointCloud(f,getF,f)
+  
+ adapter:
+  name: MultiplicativeMG
+  merge-with-user-defined-mapping: MultiplicativeMG
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: RefinementCriterion
+ 
+adapter:
+  name: MultiplicativeMGAndPlot
+  merge-with-user-defined-mapping: MultiplicativeMG
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: PlotCells
+  merge-with-user-defined-mapping: RefinementCriterion
+  merge-with-predefined-mapping: VTKPlotVertexValue(u,getU,u)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelValue(multiscaleU,getU,u)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelValue(multiscaleHierarchicalU,getHierarchicalU,u)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelPointCloud(multiscaleResidual,getResidual,res)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelPointCloud(multiscaleHierarchicalResidual,getHierarchicalResidual,res)
+  merge-with-predefined-mapping: VTKPlotVertexMultilevelPointCloud(f,getF,f)
+  
+adapter:
+  name: Plot
+  merge-with-user-defined-mapping: PlotCells
+  merge-with-predefined-mapping: VTKPlotVertexValue(u,getU,u)
+ 
+ 

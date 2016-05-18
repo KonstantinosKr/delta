@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="aspects.svg"
+   inkscape:export-filename="/work_fast/weinzier/workspace/peano/src/peano/kernel/spacetreegrid/aspects/aspects.png"
+   inkscape:export-xdpi="263.70999"
+   inkscape:export-ydpi="263.70999">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="TriangleOutL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="TriangleOutL"
+       style="overflow:visible">
+      <path
+         id="path4078"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.8)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3938"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="299.59528"
+     inkscape:cy="661.3355"
+     inkscape:document-units="px"
+     inkscape:current-layer="g3039-43"
+     showgrid="false"
+     inkscape:window-width="1600"
+     inkscape:window-height="1126"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3039"
+       transform="translate(55.55839,293.9544)">
+      <rect
+         y="77.564972"
+         x="23.233501"
+         height="61.619305"
+         width="254.47116"
+         id="rect2985"
+         style="fill:none;stroke:#000000;stroke-width:5.32355881;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text2987"
+         y="99.788338"
+         x="147.43584"
+         style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:14px;text-align:center;text-anchor:middle"
+           y="99.788338"
+           x="147.43584"
+           id="tspan2989"
+           sodipodi:role="line">&lt;&lt;namespace: spacetreegrid&gt;&gt;</tspan><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3017"
+           y="127.25583"
+           x="147.43584"
+           sodipodi:role="line">Cell</tspan></text>
+    </g>
+    <g
+       id="g3045"
+       transform="translate(86.873119,286.88333)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text2987-8"
+         y="89.181725"
+         x="497.51474"
+         style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:14px;text-align:center;text-anchor:middle"
+           y="89.181725"
+           x="497.51474"
+           id="tspan2989-0"
+           sodipodi:role="line">&lt;&lt;generated&gt;&gt;</tspan><tspan
+           id="tspan3019"
+           style="text-align:center;text-anchor:middle"
+           y="116.64922"
+           x="497.51474"
+           sodipodi:role="line">DaStGen</tspan><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3015"
+           y="146.64922"
+           x="497.51474"
+           sodipodi:role="line">Record</tspan></text>
+      <rect
+         y="69.929726"
+         x="416.16739"
+         height="91.031944"
+         width="164.68581"
+         id="rect2985-2"
+         style="fill:none;stroke:#000000;stroke-width:5.20534325;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <rect
+       style="fill:#999999;stroke:#000000;stroke-width:3;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3052"
+       width="23.233509"
+       height="23.233509"
+       x="-47.892063"
+       y="523.94427"
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 369.71583,403.84426 130.30968,0"
+       id="path3054"
+       inkscape:connector-curvature="0" />
+    <g
+       id="g3039-4"
+       transform="translate(58.632492,414.66762)">
+      <rect
+         y="243.23"
+         x="23.233501"
+         height="61.619305"
+         width="254.47116"
+         id="rect2985-5"
+         style="fill:none;stroke:#000000;stroke-width:5.32355881;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text2987-2"
+         y="265.45337"
+         x="147.43584"
+         style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:14px;text-align:center;text-anchor:middle"
+           y="265.45337"
+           x="147.43584"
+           id="tspan2989-02"
+           sodipodi:role="line">&lt;&lt;namespace: PDE-specific&gt;&gt;</tspan><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3017-9"
+           y="292.92084"
+           x="147.43584"
+           sodipodi:role="line">RegularCell</tspan></text>
+      <rect
+         y="243.23"
+         x="309.10669"
+         height="61.619305"
+         width="254.47116"
+         id="rect2985-5-2"
+         style="fill:none;stroke:#000000;stroke-width:5.32355881;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text2987-2-2"
+         y="265.45334"
+         x="433.30899"
+         style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:14px;text-align:center;text-anchor:middle"
+           y="265.45334"
+           x="433.30899"
+           id="tspan2989-02-0"
+           sodipodi:role="line">&lt;&lt;namespace: PDE-specific&gt;&gt;</tspan><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3017-9-2"
+           y="292.92084"
+           x="433.30899"
+           sodipodi:role="line">SpacetreeCell</tspan></text>
+      <g
+         id="g4564"
+         transform="translate(0,165.66502)">
+        <path
+           inkscape:connector-curvature="0"
+           id="path3162"
+           d="m 148.95386,75.207949 0,-201.200779"
+           style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.4000001;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL)" />
+        <path
+           transform="translate(-58.632492,-414.66762)"
+           inkscape:connector-curvature="0"
+           id="path4562"
+           d="m 209.10158,378.59043 285.87317,0 0,115.1574"
+           style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      </g>
+    </g>
+    <g
+       id="g3039-43"
+       transform="translate(54.591883,-10.606592)">
+      <rect
+         y="77.564972"
+         x="23.233501"
+         height="61.619305"
+         width="348.07376"
+         id="rect2985-7"
+         style="fill:none;stroke:#000000;stroke-width:6.22613335;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text2987-3"
+         y="99.788338"
+         x="193.90285"
+         style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:14px;text-align:center;text-anchor:middle"
+           y="99.788338"
+           x="193.90285"
+           id="tspan2989-4"
+           sodipodi:role="line">&lt;&lt;namespace: spacetreegrid::aspects&gt;&gt;</tspan><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3017-7"
+           y="127.25583"
+           x="193.90285"
+           sodipodi:role="line">Cell.........</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#TriangleOutL)"
+         d="m 220.21325,135.14367 0,225.26402"
+         id="path4598"
+         inkscape:connector-curvature="0"
+         transform="translate(-54.591883,10.606592)" />
+      <text
+         xml:space="preserve"
+         style="font-size:14.81717968px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         x="179.96906"
+         y="211.47005"
+         id="text4784"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4786"
+           x="179.96906"
+           y="211.47005">Aspect offers solely static operations, i.e. it</tspan><tspan
+           sodipodi:role="line"
+           x="179.96906"
+           y="229.99152"
+           id="tspan4788">is stateless. As it is a friend of cell, it may </tspan><tspan
+           sodipodi:role="line"
+           x="179.96906"
+           y="248.513"
+           id="tspan4790">modify the underlying DaStGen record. </tspan></text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,133 @@
+<center>
+  <img src="logo.png" />
+</center>
+
+<h1>Peano - a Framework for Solvers on Spacetree Grids</h1>
+<h2>www.peano-framework.org</h2>
+
+
+<p>
+Peano is an open source C++ solver framework. 
+It is based upon the fact that spacetrees, a generalisation of the classical 
+octree concept, yield a cascade of adaptive Cartesian grids. 
+Consequently, any spacetree traversal is equivalent to an element-wise 
+traversal of the hierarchy of the adaptive Cartesian grids. 
+The software Peano realises such a grid traversal and storage algorithm, and 
+it provides hook-in points for applications performing per-element, per-vertex, 
+and so forth operations on the grid. 
+It also provides interfaces for dynamic load balancing, sophisticated 
+geometry representations, and other features.
+Some properties are enlisted below.
+</p>
+
+<p>
+Peano is currently available in its third generation.
+The development of the original set of Peano codes started around 2002.
+2005-2009, we merged these codes into one Peano kernel (2nd generation).
+2009, I started a complete reimplementation of the kernel with special emphasis on
+reusability, application-independent design and the support for rapid prototyping.
+Currently, HPC challenges and extensions dominate the development.  
+All data you can download today are stable, i.e. the interfaces will not change.
+Updates to the kernel (in particular to speed up simulations) will be hidden from any application or
+will be made available due to additional, non-mandatory APIs.
+</p>
+
+<p>
+Peano is plain C++ code and depends only on MPI and Intel's TBB or OpenMP if you want 
+to run it with distributed or shared memory support.
+C++ 11 is used.
+There are no further dependencies or libraries required.
+If you intend to use Peano, we provide a small Java tool to facilitate rapid 
+prototyping and to get rid of writing glue code.
+This Peano Development Toolkit (PDT) is pure Java and uses <a href="http://www5.in.tum.de/dastgen/">DaStGen</a>.
+While we provide the PDT's sources, there's also a jar file available that comprises all required 
+Java libraries and runs stand alone. 
+</p>
+
+
+
+<table  border="1" style="background-color:#dedeee">
+  <tr>
+    <td> <b>Features</b> </td>
+    <td> <b>Parallelisation</b> </td>
+    <td> <b>Extensions</b> </td>
+    <td> <b>Applications</b> </td>
+  </tr>
+  <tr>
+    <td> Arbitrary dynamic adaptivity </td>
+    <td> MPI support (domain decomposition) </td>
+    <td> In-situ data exploration </td>
+    <td> Peano is one of the building <br />blocks of the <a href="http://www5.in.tum.de/forschung/exahype/" target="_blank">ExaHyPE</a> project </td>
+  </tr>
+  <tr>
+    <td> Arbitrary spatial dimensions <br /> or space-time grids</td>
+    <td> OpenMP and TBB support </td>
+    <td> Multiscale data compression <br &> with reduced floating point <br /> accuracy </td>
+    <td> Interface to <a href="http://www.mcs.anl.gov/petsc/" target="_blank">PETSc</a> </td> 
+  </tr>
+  <tr>
+    <td> Inherent geometric multiscale <br /> representation of the computational <br /> domain </td>
+    <td> Plug-in points for hybrid <br /> load balancing </td>
+    <td> </td>
+    <td> Interface to <a href="http://numerics.kaust.edu.sa/pyclaw/" target="_blank">PyClaw/ClawPack</a> <br /> due to <a href="http://www.peano-framework.org/download.shtml">PeanoClaw</a> 
+  </tr>
+  <tr>
+    <td> Low memory requirements </td>
+    <!--
+    <td> Resiliency support due to <br /><a href="http://www.exascience.com/cobra/" target="_blank">Cobra</a> </td>
+    -->
+  </tr>
+  <tr>
+    <td> Good cache and memory bus <br /> behaviour </td> 
+  </tr>
+  <tr>
+    <td> Complex-valued degrees of <br /> freedom </td>
+  </tr>
+</table>
+
+
+<h2>Recent News</h2>
+
+<ul>
+<!--
+  <li>
+    2015-09: <i>Webpage update</i><br />
+    Following recommendations of the <a href="http://www.software.ac.uk/">Software Sustainability Institute</a>, I will restructure the webpage throughout the next months. 
+    Please pay special attention to the documentation sections.
+  </li>
+  -->
+  <li>
+    2015-08: <i>Data compression</i><br />
+    We've added a new class to the heap namespace that allows codes to compress their double and floating point data. The class
+    allows codes to prescribe the precision they need. Its methods then decompose the floating point variable such that few 
+    chars are sufficient to store the value. Details will be presented in my ParCo 2015 talk. 
+  </li>
+  <li>
+    2015-04: <i>ExaHyPE</i><br />
+    The H2020 project <a href="http://www5.in.tum.de/forschung/exahype/" target="_blank">ExaHyPE</a> got granted. ExaHyPE will rely on Peano as grid management and 
+    we will continue to improve the software due to this grant. 
+  </li>
+  <li>
+    2015-02: <i>Support for particles added</i><br />
+    Because of our recent work on particle-in-cell methods (<a href="http://arxiv.org/abs/1508.02435">arXiv preprint</a>), Peano now allows users to embed particles into the grid.
+    This is made possible by Peano's heap. I've uploaded a small toolbox that realises the paper's algorithms and allows any application to use particles without any coding to 
+    insert them into the cell into which they belong accoring to their position in space. If particles move, the embedding is updated automatically.
+  </li>
+</ul>
+
+
+<h2>Citing Peano</h2>
+<p>
+If you use Peano, please cite it as 
+</p>
+<table  border="1"><tr><td>
+<pre>
+@Misc{Software:Peano,
+  author = {Tobias Weinzierl and others},
+  title  = {Peano---a {F}ramework for {PDE} {S}olvers on {S}pacetree {G}rids},
+  url    = {http://www.peano-framework.org},
+  year   = {201x},   % adopt to your paper
+  note   = {http://www.peano-framework.org}
+}
+</pre>
+</td></tr></table>

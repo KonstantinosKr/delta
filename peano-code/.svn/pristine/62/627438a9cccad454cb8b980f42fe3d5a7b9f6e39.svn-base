@@ -1,0 +1,59 @@
+component: ExplicitEulerForHeatEquation
+
+namespace: ::myproject
+
+vertex:
+  dastgen-file: Vertex.def
+  read scalar(double): U
+  read scalar(double): OldU
+  read scalar(double): AveragedU
+  write scalar(double): U
+  write scalar(double): AveragedU
+  
+cell:
+  dastgen-file: Cell.def
+
+state:
+  dastgen-file: State.def
+
+event-mapping:
+  name: CreateGrid
+
+event-mapping:
+  name: TimeStep
+  
+event-mapping:
+  name: Inject
+  
+event-mapping:
+  name: InterpolateHangingNodes
+  
+event-mapping:
+  name: RefineDynamically
+
+adapter:
+  name: CreateGrid
+  merge-with-user-defined-mapping: CreateGrid
+ 
+adapter:
+  name: TimeStep
+  merge-with-user-defined-mapping: TimeStep
+  merge-with-user-defined-mapping: Inject
+  merge-with-user-defined-mapping: InterpolateHangingNodes
+  merge-with-user-defined-mapping: RefineDynamically
+
+adapter:
+  name: CreateGridAndPlot
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-predefined-mapping: VTKPlotCellValue(epsilon,getEpsilon,eps)
+  merge-with-predefined-mapping: VTKPlotVertexValue(initialSetup,getU,u)
+
+adapter:
+  name: TimeStepAndPlot
+  merge-with-user-defined-mapping: TimeStep
+  merge-with-user-defined-mapping: InterpolateHangingNodes
+  merge-with-user-defined-mapping: Inject
+  merge-with-user-defined-mapping: RefineDynamically
+  merge-with-predefined-mapping: VTKPlotVertexValue(result,getU,u)
+  merge-with-predefined-mapping: VTKPlotVertexValue(averagedU,getAveragedU,a)
+

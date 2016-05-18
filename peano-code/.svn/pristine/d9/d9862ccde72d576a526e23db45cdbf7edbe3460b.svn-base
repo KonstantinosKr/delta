@@ -1,0 +1,76 @@
+<h1>Documents</h1>
+
+
+<p>
+Most technical documentation is done directly in the source.
+A webpage is extracted from these sources every night. 
+The link to this page is available on the left.
+</p>
+
+
+<center>
+<a href="cookbook.pdf"> <img src="quickstartguide.png" /> </a>
+<a href="http://www.hut-verlag.de/978-3-86853-146-6.html" target="_blank"> <img src="http://www5.in.tum.de/persons/weinzier/diss.jpg" /> </a>
+</center>
+
+<p>
+The <a href="starter.pdf">quick starter guide</a> is a document that I update on-the-fly.
+It is very much hands-on. 
+Peano's fundamental algorithmic ideas were first described in a concise format in the book
+<a href="http://www.hut-verlag.de/978-3-86853-146-6.html" target="_blank">A Framework for Parallel PDE Solvers on Multiscale Adaptive Cartesian Grids</a> (see picture above).
+I strongly appreciate if you buy the book, however there's also a 
+<a href="http://www5.in.tum.de/persons/weinzier/diss.pdf" target="_blank">download version</a>.
+</p>
+
+<h2>Papers</h2>
+
+<p>
+A paper describing the fundamental algorithmic ideas of Peano is 
+</p>
+<table  border="1"><tr><td>
+<pre>
+@article{weinzierl11peano,
+    author = {Weinzierl, Tobias and Mehl, Miriam},
+    journal = {SIAM Journal on Scientific Computing},
+    editor = {Tuminaro, R. and Benzi, M. and Cai, X.-C. and Duff, I. and Elman, H. and 
+              Freund, R. and Jordan, K. and Kelley, T. and Keyes, D. and Kilmer, M. and 
+              Leyffer, S. and Manteuffel, T. and McCormick, S. and Silvester, D. and 
+              Walker, H. and Woodward, C. and Yavneh, I.},
+    institution = {SIAM},
+    month = oct,
+    number = {5},
+    organization = {SIAM},
+    pages = {2732--2760},
+    series = {Special Section: 2010 Copper Mountain Conference},
+    title = {Peano -- A Traversal and Storage Scheme for Octree-Like Adaptive Cartesian Multiscale Grids},
+    volume = {33},
+    year = {2011},
+    ISSN = {1064-8275},
+    URL = {http://link.aip.org/link/?SCE/33/2732}
+}
+</pre>
+</td></tr></table>
+<p>
+while the <a href="http://arxiv.org/abs/1506.04496">arXiv preprint</a> below describes its software architecture/paradigms.
+</p>
+<table  border="1"><tr><td>
+<pre>
+@TechReport{Weinzierl:15:Peano,
+  author =   {T.~Weinzierl},
+  title =    {The {P}eano software---parallel, automaton-based, dynamically adaptive grid traversals},
+  institution =  {Durham University},
+  year =     {2015},
+  number =   {2015arXiv150604496W},
+  OPTnote =      {eprint arXiv:1506.04496}
+}
+</pre>
+</td></tr></table>
+
+<h2>Other software</h2>
+
+<p>
+If you search for information how to use Peano in the context or together with 
+other software, please consult the webpages of the respective software (PeanoClaw 
+or ExaHyPE) or have a quick look into the quick start guide (for PETSc).
+</p>
+ 

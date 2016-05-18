@@ -1,0 +1,57 @@
+
+
+Packed-Type: short int;
+
+
+class multigrid::records::Vertex {  
+  /**
+   * Solution
+   */
+  persistent parallelise double  u;
+
+  /**
+   * Rhs
+   */
+  persistent parallelise double  f;
+  
+  /**
+   * Hierarchical residual
+   */
+  discard parallelise double   r;
+
+  /**
+   * Diagonal element
+   */
+  discard parallelise double   d;
+  
+  /**
+   * Hierarchical solution
+   */
+  discard parallelise double   hierarchicalU;
+
+  /**
+   * Residual
+   */
+  discard parallelise double   hierarchicalR;
+
+  /**
+   * Update of solution
+   */
+  persistent parallelise double   uUpdate;
+
+  enum VertexType {
+    Unknown, Dirichlet, Neumann
+  };
+  
+  persistent VertexType vertexType;
+
+  /**
+   * Dynamic refinement criterion
+   * ============================
+   *
+   * Linear surplus of solution
+   */
+  discard parallelise double linearSurplus[DIMENSIONS];
+
+  discard parallelise int numberOfFinerLevelsAtSamePosition;
+};

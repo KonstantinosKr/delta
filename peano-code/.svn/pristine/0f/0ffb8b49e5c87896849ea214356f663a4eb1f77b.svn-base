@@ -1,0 +1,168 @@
+#include "tarch/Assertions.h"
+
+#include "peano/performanceanalysis/Analysis.h"
+
+
+template <class Functor>
+peano::datatraversal::TaskSet::TaskSet(
+  Functor&  myTask
+) {
+  peano::performanceanalysis::Analysis::getInstance().fireAndForgetBackgroundTask(1);
+
+  #if defined(SharedTBB)
+  typedef GenericTaskWithCopy<Functor> Task;
+
+  Task* tbbTask = new(tbb::task::allocate_root()) Task(myTask);
+
+  tbb::task::enqueue(*tbbTask);
+
+  #elif defined(SharedOMP)
+    #warning @Vasco OpenMP Implementierung evtl. nicht mehr up-to-date
+    #pragma omp task shared(myTask)
+    {
+      Functor copyOfMyTask(myTask);
+      copyOfMyTask();
+    }
+  #else
+  myTask();
+  #endif
+}
+
+
+template <class Functor0, class Functor1>
+peano::datatraversal::TaskSet::TaskSet(
+  Functor0&  task0,
+  Functor1&  task1,
+  int        parallelise
+) {
+  assertion1( parallelise>=0 && parallelise<=2, parallelise );
+  if (parallelise==1) {
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(2,2);
+
+    #if defined(SharedTBB)
+      typedef GenericTask<Functor0> Task0;
+      typedef GenericTask<Functor1> Task1;
+
+      Task0* tbbTask0 = new(tbb::task::allocate_root()) Task0(task0);
+      Task1* tbbTask1 = new(tbb::task::allocate_root()) Task1(task1);
+
+      tbb::task_list tbbTaskList;
+
+      tbbTaskList.push_back(*tbbTask0);
+      tbbTaskList.push_back(*tbbTask1);
+
+      tbb::task::spawn_root_and_wait(tbbTaskList);
+    #elif defined(SharedOMP)
+      #warning @Vasco OpenMP Implementierung evtl. nicht mehr up-to-date
+      #pragma omp task shared(task0)
+      {
+        task0();
+      }
+      #pragma omp task shared(task1)
+      {
+        task1();
+      }
+      #pragma omp taskwait
+    #else
+      task0();
+      task1();
+    #endif
+
+
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(-2,-2);
+  }
+  else {
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(0,2);
+    task0();
+    task1();
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(0,-2);
+  }
+}
+
+
+
+template <class Functor0, class Functor1, class Functor2>
+peano::datatraversal::TaskSet::TaskSet(
+  Functor0&  task0,
+  Functor1&  task1,
+  Functor2&  task2,
+  int        parallelise
+) {
+  assertion1( parallelise>=0 && parallelise<=3, parallelise );
+  if (parallelise==1 || parallelise==2) {
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(3,3);
+    #if defined(SharedTBB)
+      typedef GenericTask<Functor0> Task0;
+      typedef GenericTask<Functor1> Task1;
+      typedef GenericTask<Functor2> Task2;
+
+      Task0* tbbTask0 = new(tbb::task::allocate_root()) Task0(task0);
+      Task1* tbbTask1 = new(tbb::task::allocate_root()) Task1(task1);
+      Task2* tbbTask2 = new(tbb::task::allocate_root()) Task2(task2);
+
+      tbb::task_list tbbTaskList;
+
+      tbbTaskList.push_back(*tbbTask0);
+      tbbTaskList.push_back(*tbbTask1);
+      tbbTaskList.push_back(*tbbTask2);
+
+      tbb::task::spawn_root_and_wait(tbbTaskList);
+    #elif defined(SharedOMP)
+      #warning @Vasco OpenMP Implementierung evtl. nicht mehr up-to-date
+
+      #pragma omp task shared(task0)
+      {
+        task0();
+      }
+      #pragma omp task shared(task1)
+      {
+        task1();
+      }
+      #pragma omp task shared(task2)
+      {
+        task2();
+      }
+      #pragma omp taskwait
+    #else
+      task0();
+      task1();
+      task2();
+    #endif
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(-3,-3);
+  }
+  else {
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(0,3);
+    task0();
+    task1();
+    task2();
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(0,-3);
+  }
+}
+
+
+#ifdef SharedTBB
+template <class Functor>
+peano::datatraversal::TaskSet::GenericTask<Functor>::GenericTask(Functor& functor):
+  _functor(functor)  {
+}
+
+
+template <class Functor>
+tbb::task* peano::datatraversal::TaskSet::GenericTask<Functor>::execute() {
+  _functor();
+  return 0;
+}
+
+
+template <class Functor>
+peano::datatraversal::TaskSet::GenericTaskWithCopy<Functor>::GenericTaskWithCopy(const Functor&  functor):
+  _functor(functor)  {
+}
+
+
+template <class Functor>
+tbb::task* peano::datatraversal::TaskSet::GenericTaskWithCopy<Functor>::execute() {
+  _functor();
+  return 0;
+}
+#endif

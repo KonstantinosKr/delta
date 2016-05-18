@@ -1,0 +1,6 @@
+This directory holds the core archives and tools for the Peano framework. Notably,
+it holds the Peano sources (peano.tar.gz) and the Peano Development Toolkit (PDT).
+The latter is a Java tool provided as jar file and as sources. From time to time, 
+we experience problems with different Java versions when we use the jar file. In 
+this case, please download the Java sources and rebuild the PDT. Otherwise, you 
+might write an email to the Peano maillist and ask for a particular jar build.

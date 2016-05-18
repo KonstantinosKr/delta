@@ -1,0 +1,33 @@
+/**
+
+ @dir "Autotuning - Shared Memory"
+ 
+ This directory holds the tools for the autotuning. The term tools comprises 
+ three types of classes:
+ 
+ - The Oracle is the central contact point for Peano's kernel and also the 
+   application-specific code to control and manipulate Peano's multicore 
+   behaviour.
+ - All classes not starting with Oracle are helper classes. 
+ - The oracle mechanism is based upon an expert system tuning the application's 
+   behaviour to the PDE. Often, these expert systems have to be tailored to the 
+   PDE. Alternatively, there's however a couple of general-purpose oracles 
+   learning how the application behaves. 
+
+ The best starting point to learn how the parallelisation is used is the Jacobi 
+ tutorial (step three). The best starting point to understand how the 
+ autotuning (learning oracles) is designed is a paper by Nogina, Unterweger, 
+ and Weinzierl at the PPAM '11. See the literature section to your right on the 
+ start page of the sources. The canonical starting point to write a 
+ PDE-specific shared memory strategy is the OracleForOnePhase interface.     
+
+
+ !!! Kernel parallelisation
+ 
+ Besides PDE-specific concurrent routines, Peano also parallelises parts of its 
+ kernel. Here, grain sizes are required as well. For those parts, the file 
+ KernelGrainSizes.h encodes the grain sizes, as they are PDE independent 
+ (though they depend on the architecture for sure).
+  
+ */
+ 

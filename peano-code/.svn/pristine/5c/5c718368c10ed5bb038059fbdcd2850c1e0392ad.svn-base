@@ -1,0 +1,126 @@
+#include "peano/grid/nodes/Constants.h"
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+tarch::logging::Log peano::grid::nodes::loops::CallEnterCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::_log( "peano::grid::nodes::loops::CallEnterCellLoopBodyOnRegularRefinedPatch" );
+
+
+#ifdef Parallel
+#include <set>
+
+#include "peano/parallel/SendReceiveBufferPool.h"
+#endif
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::loops::CallEnterCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::CallEnterCellLoopBodyOnRegularRefinedPatch(
+  State&                                           state,
+  EventHandle&                                     eventHandle,
+  peano::grid::RegularGridContainer<Vertex,Cell>&  regularGridContainer
+):
+  _level(-1),
+  _state(state),
+  _eventHandle(eventHandle),
+  _threadLocalEventHandle(eventHandle),
+  _regularGridContainer(regularGridContainer),
+  _numberOfInnerCells(0.0),
+  _numberOfOuterCells(0.0),
+  _numberOfInnerLeafCells(0.0),
+  _numberOfOuterLeafCells(0.0),
+  _fineGridEnumerator(_regularGridContainer.getVertexEnumerator(1)),
+  _coarseGridEnumerator(_regularGridContainer.getVertexEnumerator(0)) {
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::loops::CallEnterCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::CallEnterCellLoopBodyOnRegularRefinedPatch(
+  const CallEnterCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>&  copy
+):
+  _level(copy._level),
+  _state(copy._state),
+  _eventHandle(copy._eventHandle),
+  _threadLocalEventHandle(copy._eventHandle),
+  _regularGridContainer(copy._regularGridContainer),
+  _numberOfInnerCells(0.0),
+  _numberOfOuterCells(0.0),
+  _numberOfInnerLeafCells(0.0),
+  _numberOfOuterLeafCells(0.0),
+  _fineGridEnumerator(copy._fineGridEnumerator),
+  _coarseGridEnumerator(copy._coarseGridEnumerator) {
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::loops::CallEnterCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::setLevel(int level) {
+  assertion( level>=1 );
+  _level = level;
+  _fineGridEnumerator   = _regularGridContainer.getVertexEnumerator(level);
+  _coarseGridEnumerator = _regularGridContainer.getVertexEnumerator(level-1);
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::loops::CallEnterCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::~CallEnterCellLoopBodyOnRegularRefinedPatch() {
+  tarch::multicore::Lock lock(peano::grid::nodes::tasks::Descend<Vertex,Cell,State,EventHandle>::_semaphore);
+
+  _state.incNumberOfInnerCells(_numberOfInnerCells);
+  _state.incNumberOfOuterCells(_numberOfOuterCells);
+
+  _state.incNumberOfInnerLeafCells(_numberOfInnerLeafCells);
+  _state.incNumberOfOuterLeafCells(_numberOfOuterLeafCells);
+
+  #if defined(SharedMemoryParallelisation)
+  _eventHandle.mergeWithWorkerThread( _threadLocalEventHandle );
+  #endif
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::loops::CallEnterCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::operator() (const tarch::la::Vector<DIMENSIONS, int>& i) {
+  logDebug( "operator(...)", "study vertex at " << i << " on level " << _level );
+
+  tarch::la::Vector<DIMENSIONS,int> offsetOfCoarseGridEnumerator;
+  tarch::la::Vector<DIMENSIONS,int> positionWithinNextCoarserCell;
+
+  computePositionRelativeToNextCoarserLevelFromFineGridCellPosition(i,offsetOfCoarseGridEnumerator,positionWithinNextCoarserCell);
+
+  _fineGridEnumerator.setOffset(i);
+  _coarseGridEnumerator.setOffset(offsetOfCoarseGridEnumerator);
+
+  const int fineGridCellIndex   = _fineGridEnumerator.lineariseCellIndex(i);
+  const int coarseGridCellIndex = _coarseGridEnumerator.lineariseCellIndex(offsetOfCoarseGridEnumerator);
+
+  Cell& currentCell = _regularGridContainer.getCell(_level,fineGridCellIndex);
+
+  if (currentCell.isInside()) {
+    if (currentCell.isRefined()) {
+      _numberOfInnerCells++;
+    }
+    else {
+      _numberOfInnerLeafCells++;
+    }
+    _threadLocalEventHandle.enterCell(
+      currentCell,
+      _regularGridContainer.getVertex(_level),
+      _fineGridEnumerator,
+      _regularGridContainer.getVertex(_level-1),
+      _coarseGridEnumerator,
+      _regularGridContainer.getCell(_level-1,coarseGridCellIndex),
+      positionWithinNextCoarserCell
+    );
+  }
+  else {
+    if (currentCell.isRefined()) {
+      _numberOfOuterCells++;
+    }
+    else {
+      _numberOfOuterLeafCells++;
+    }
+  }
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+int peano::grid::nodes::loops::CallEnterCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::getLevel() const {
+  return _level;
+}

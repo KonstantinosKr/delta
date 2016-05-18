@@ -1,0 +1,147 @@
+#include "tarch/la/VectorCompare.h"
+
+template <class Data>
+tarch::logging::Log  peano::heap::SendReceiveTask<Data>::_log( "peano::heap::SendReceiveTask<Data>" );
+
+
+#ifdef Asserts
+template <class Data>
+peano::heap::SendReceiveTask<Data>::SendReceiveTask():
+  _rank(-1),
+  _data(0) {
+}
+#endif
+
+
+template<class Data>
+bool peano::heap::SendReceiveTask<Data>::fits(
+  const tarch::la::Vector<DIMENSIONS, double>&  position,
+  int                                           level
+) const {
+  #ifdef Asserts
+  return
+    (_metaInformation.getLevel() == -1) ||
+    (
+      _metaInformation.getLevel() == level &&
+      tarch::la::equals(_metaInformation.getPosition(), position)
+    );
+  #else
+  return true;
+  #endif
+}
+
+
+template<class Data>
+void peano::heap::SendReceiveTask<Data>::setInvalid() {
+   #if defined(Asserts)
+  _metaInformation.setLevel(-1);
+  #endif
+  _metaInformation.setLength(0);
+  _data = nullptr;
+}
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::freeMemoryOfSendTask() {
+  if (_freeDataPointer && _metaInformation.getLength()>0) {
+    delete[] _data;
+  }
+}
+
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::sendDataDirectlyFromBuffer(const std::vector<Data>& data) {
+  assertion( !data.empty() );
+  assertion( _data==0 );
+
+  _freeDataPointer = false;
+  _data            = const_cast< Data* >( data.data() );
+}
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::wrapData(const std::vector<Data>& data) {
+  assertion( !data.empty() );
+  assertion( _data==0 );
+
+  _freeDataPointer = true;
+
+  _data = new MPIData[data.size()];
+  for (int i=0; i<static_cast<int>( data.size() ); i++) {
+    _data[i] = data[i];
+  }
+}
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::triggerSend(int tag) {
+  assertion( _data!=nullptr );
+  assertion( _metaInformation.getLength()>0 );
+
+  const int result = MPI_Isend(
+    _data, _metaInformation.getLength(), MPIData::Datatype, _rank,
+    tag,
+    tarch::parallel::Node::getInstance().getCommunicator(), &_request
+  );
+
+  if ( result != MPI_SUCCESS ) {
+    logError(
+      "triggerSend(int)", "failed to send heap data to node "
+      << _rank << ": " << tarch::parallel::MPIReturnValueToString(result)
+    );
+  }
+}
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::triggerReceive(int tag) {
+  assertion( _rank >= 0 );
+  assertion( _data==0 );
+
+  logTraceInWith2Arguments( "triggerReceive(int)", tag, _metaInformation.toString() );
+  _data = new typename SendReceiveTask<Data>::MPIData[ _metaInformation.getLength() ];
+
+  const int  result = MPI_Irecv(
+    _data, _metaInformation.getLength(), MPIData::Datatype,
+    _rank, tag, tarch::parallel::Node::getInstance().getCommunicator(),
+    &_request
+  );
+  if ( result != MPI_SUCCESS ) {
+    logError(
+      "triggerReceive()",
+      "failed to receive heap data from node "
+      << _rank << ": " << tarch::parallel::MPIReturnValueToString(result)
+    );
+  }
+  logTraceOut( "triggerReceive(int)" );
+}
+
+
+template <class Data>
+std::vector<Data> peano::heap::SendReceiveTask<Data>::unwrapDataAndFreeMemory() {
+  logTraceInWith1Argument( "unwrapDataAndFreeMemory()", _metaInformation.toString() );
+
+  std::vector<Data> result;
+
+  assertion( _metaInformation.getLength()>=0 );
+  if (_metaInformation.getLength()>0) {
+    assertion( _data!=0 );
+    for (int i=0; i<_metaInformation.getLength(); i++) {
+      result.push_back(_data[i]);
+    }
+
+    delete[] _data;
+  }
+
+  logTraceOutWith1Argument( "unwrapDataAndFreeMemory()", result.size() );
+  return result;
+}
+
+
+template <class Data>
+std::string peano::heap::SendReceiveTask<Data>::toString() const {
+  std::ostringstream out;
+  out << "(" << _metaInformation.toString() << ",rank=" << _rank << ",data=" << (_data==nullptr ? "no" : "yes") << ")";
+  return out.str();
+}

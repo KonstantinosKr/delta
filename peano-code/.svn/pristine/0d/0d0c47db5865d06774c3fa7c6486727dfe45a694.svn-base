@@ -1,0 +1,60 @@
+#include "peano/utils/Globals.h"
+
+Packed-Type: short int;
+
+Constant: DIMENSIONS;
+Constant: TWO_POWER_D_TIMES_TWO_POWER_D;
+
+
+/**
+ * Notify new worker about fork
+ *
+ * Notify a new worker about a fork. The fork process consists of three steps:
+ * - The node pool tells the rank that a new job arrived. As part of this 
+ *   notification, the node pool also know who the new master is.
+ * - The new worker receives a fork message. This message contains information 
+ *   about the spatial position of the new subdomain (offset and h), about its 
+ *   resolution.
+ * - The last step is optional, as there's two types of forks: new forks and 
+ *   splits of existing domains. If the fork belongs to the latter, the third 
+ *   phase is the data exchange of existing domain data. If it is a new fork, 
+ *   the last phase does not take place.
+ *
+ * @author Tobias Weinzierl
+ * @version $Revision: 1.3 $
+ */
+class peano::parallel::messages::ForkMessage {
+  /**
+   * Position of bottom-left vertex of new grid. 
+   */
+  parallelise persistent double domainOffset[DIMENSIONS];
+  
+  /**
+   * Size of new partition. 
+   */
+  parallelise persistent double h[DIMENSIONS];
+  
+  /**
+   * Adjancency information
+   *
+   * !!! Semantics regular grid
+   *
+   * This field has a meaning for a fork on the regular grid if and only if the
+   * flag isForkOfExistingDatastructure is not set.
+   *
+   * Sequence of @f$ 2^d @f$ vectors of @f$ 2^d @f$ integer vectors. Each 
+   * vector in the sequence represents one corner point of the new subdomain. 
+   * Each entry of each vector yields the adjacent ranks of this vertex/corner 
+   * point. As the new subdomain always is rectangular, this sequence of 
+   * vectors is sufficient to identify which neighbours are adjacent to the 
+   * new subdomain.  
+   */
+  parallelise persistent int    adjacencyData[TWO_POWER_D_TIMES_TWO_POWER_D];
+  
+  /**
+   * Level of the fork. Only relevant for spacetree. 
+   */
+  parallelise persistent int    level;
+
+  parallelise persistent int    positionOfFineGridCellRelativeToCoarseGridCell[DIMENSIONS];
+};

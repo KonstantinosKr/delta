@@ -1,0 +1,34 @@
+Chapter 2.4: Some real AMR
+--------------------------
+
+Enter the lines starting with >. The other lines show what the output should 
+look like:
+
+
+> ln -s <mypeanopath>/src/peano peano
+> ln -s <mypeanopath>/src/tarch tarch
+> ls 
+howto.txt  myproject  peano  tarch
+> java -jar <mypeanopath>/pdt/pdt.jar --create-project myproject myproject
+Run mode: create project
+Was not able to create directories myproject. Probably directory has existed before
+
+  (blueprint of myproject/Vertex.def already exists)
+  (blueprint of myproject/Cell.def already exists)
+  (blueprint of myproject/State.def already exists)
+  (blueprint of myproject/project.peano-specification already exists)
+
+> java -jar <mypeanopath>/pdt/pdt.jar  --generate-gluecode myproject/project.peano-specification myproject <mypeanopath>/pdt/usrtemplates
+[...]
+> make -f myproject/makefile       
+[...]
+> ./peano-YourProjectName-asserts
+[...]
+
+
+
+To clean up the directory, type in
+
+> make -f myproject/makefile clean
+> rm -rf *.vtk file.mk myproject/adapters myproject/dastgen myproject/records myproject/repositories myproject/tests  myproject/VertexOperations.* myproject/main.cpp myproject/runners/Runner.h myproject/runners/RunnerParallelWorker.cpp myproject/mappings/CreateGrid.h myproject/mappings/Inject.h myproject/mappings/InterpolateHangingNodes.h
+

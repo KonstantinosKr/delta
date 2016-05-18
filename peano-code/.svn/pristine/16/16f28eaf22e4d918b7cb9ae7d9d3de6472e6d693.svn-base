@@ -1,0 +1,281 @@
+#include "__PROJECT_PATH__/repositories/RepositorySTDStack.h"
+
+#include "tarch/Assertions.h"
+#include "tarch/timing/Watch.h"
+
+#include "tarch/compiler/CompilerSpecificSettings.h"
+
+#ifdef Parallel
+#include "tarch/parallel/Node.h"
+#include "tarch/parallel/NodePool.h"
+#include "peano/parallel/SendReceiveBufferPool.h"
+#include "peano/parallel/loadbalancing/Oracle.h"
+#endif
+
+#include "peano/datatraversal/autotuning/Oracle.h"
+
+#include "tarch/compiler/CompilerSpecificSettings.h"
+
+#if !defined(CompilerICC)
+#include "peano/grid/Grid.cpph"
+#endif
+
+
+tarch::logging::Log __NAMESPACE__::repositories::RepositorySTDStack::_log( "__NAMESPACE__::repositories::RepositorySTDStack" );
+
+
+__NAMESPACE__::repositories::RepositorySTDStack::RepositorySTDStack(
+  peano::geometry::Geometry&                   geometry,
+  const tarch::la::Vector<DIMENSIONS,double>&  domainSize,
+  const tarch::la::Vector<DIMENSIONS,double>&  computationalDomainOffset
+):
+  _geometry(geometry),
+  _cellStack(),
+  _vertexStack(),
+  _solverState(),
+ __x__NONQUALIFIED_ADAPTER_TYPE__ _gridWith__NONQUALIFIED_ADAPTER_TYPE__(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
+  _repositoryState() {
+  logTraceIn( "RepositorySTDStack(...)" );
+  _repositoryState.setAction( __NAMESPACE__::records::RepositoryState::Terminate );
+
+  peano::datatraversal::autotuning::Oracle::getInstance().setNumberOfOracles(__NAMESPACE__::records::RepositoryState::NumberOfAdapters);
+  #ifdef Parallel
+  peano::parallel::loadbalancing::Oracle::getInstance().setNumberOfOracles(__NAMESPACE__::records::RepositoryState::NumberOfAdapters);
+  #endif
+  
+  logTraceOut( "RepositorySTDStack(...)" );
+}
+
+
+
+__NAMESPACE__::repositories::RepositorySTDStack::RepositorySTDStack(
+  peano::geometry::Geometry&                   geometry
+):
+  _geometry(geometry),
+  _cellStack(),
+  _vertexStack(),
+  _solverState(),
+ __x__NONQUALIFIED_ADAPTER_TYPE__ _gridWith__NONQUALIFIED_ADAPTER_TYPE__(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
+  _repositoryState() {
+  logTraceIn( "RepositorySTDStack(Geometry&)" );
+
+  _repositoryState.setAction( __NAMESPACE__::records::RepositoryState::Terminate );
+  
+  peano::datatraversal::autotuning::Oracle::getInstance().setNumberOfOracles(__NAMESPACE__::records::RepositoryState::NumberOfAdapters);
+  #ifdef Parallel
+  peano::parallel::loadbalancing::Oracle::getInstance().setNumberOfOracles(__NAMESPACE__::records::RepositoryState::NumberOfAdapters);
+  #endif
+  
+  logTraceOut( "RepositorySTDStack(Geometry&)" );
+}
+    
+   
+__NAMESPACE__::repositories::RepositorySTDStack::~RepositorySTDStack() {
+  assertionMsg( _repositoryState.getAction() == __NAMESPACE__::records::RepositoryState::Terminate, "terminate() must be called before destroying repository." );
+}
+
+
+void __NAMESPACE__::repositories::RepositorySTDStack::restart(
+  const tarch::la::Vector<DIMENSIONS,double>&  domainSize,
+  const tarch::la::Vector<DIMENSIONS,double>&  domainOffset,
+  int                                          domainLevel,
+  const tarch::la::Vector<DIMENSIONS,int>&     positionOfCentralElementWithRespectToCoarserRemoteLevel
+) {
+  logTraceInWith4Arguments( "restart(...)", domainSize, domainOffset, domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel );
+  #ifdef Parallel
+  assertion( !tarch::parallel::Node::getInstance().isGlobalMaster());
+  #endif
+  
+  logInfo( "restart(...)", "start node for subdomain " << domainOffset << "x" << domainSize << " on level " << domainLevel );
+  
+  assertion( _repositoryState.getAction() == __NAMESPACE__::records::RepositoryState::Terminate );
+
+  _vertexStack.clear();
+  _cellStack.clear();
+
+ __x__NONQUALIFIED_ADAPTER_TYPE__ _gridWith__NONQUALIFIED_ADAPTER_TYPE__.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
+
+  _solverState.restart();
+
+  logTraceOut( "restart(...)" );
+}
+
+
+void __NAMESPACE__::repositories::RepositorySTDStack::terminate() {
+  logTraceIn( "terminate()" );
+  
+  _repositoryState.setAction( __NAMESPACE__::records::RepositoryState::Terminate );
+  
+  #ifdef Parallel
+  if (tarch::parallel::Node::getInstance().isGlobalMaster()) {
+    tarch::parallel::NodePool::getInstance().broadcastToWorkingNodes(
+      _repositoryState,
+      peano::parallel::SendReceiveBufferPool::getInstance().getIterationManagementTag()
+    );
+  }
+  peano::parallel::SendReceiveBufferPool::getInstance().terminate();
+  #endif
+
+ __x__NONQUALIFIED_ADAPTER_TYPE__ _gridWith__NONQUALIFIED_ADAPTER_TYPE__.terminate();
+
+  logTraceOut( "terminate()" );
+}
+
+
+__NAMESPACE__::State& __NAMESPACE__::repositories::RepositorySTDStack::getState() {
+  return _solverState;
+}
+
+
+const __NAMESPACE__::State& __NAMESPACE__::repositories::RepositorySTDStack::getState() const {
+  return _solverState;
+}
+
+
+void __NAMESPACE__::repositories::RepositorySTDStack::iterate(int numberOfIterations, bool exchangeBoundaryVertices) {
+  tarch::timing::Watch watch( "__NAMESPACE__::repositories::RepositorySTDStack", "iterate(bool)", false);
+  
+  #ifdef Parallel
+  if (tarch::parallel::Node::getInstance().isGlobalMaster()) {
+    _repositoryState.setNumberOfIterations(numberOfIterations);
+    _repositoryState.setExchangeBoundaryVertices(exchangeBoundaryVertices);
+    tarch::parallel::NodePool::getInstance().broadcastToWorkingNodes(
+      _repositoryState,
+      peano::parallel::SendReceiveBufferPool::getInstance().getIterationManagementTag()
+    );
+  }
+  else {
+    assertionEquals( numberOfIterations, 1 );
+    numberOfIterations = _repositoryState.getNumberOfIterations();
+  }
+  
+  peano::parallel::SendReceiveBufferPool::getInstance().exchangeBoundaryVertices(_repositoryState.getExchangeBoundaryVertices());
+
+  if ( numberOfIterations > 1 && ( peano::parallel::loadbalancing::Oracle::getInstance().isLoadBalancingActivated() || _solverState.isInvolvedInJoinOrFork() )) {
+    logWarning( "iterate()", "iterate invoked for multiple traversals though load balancing is switched on or grid is not balanced globally. Use activateLoadBalancing(false) to deactivate the load balancing before" );
+  }
+
+  peano::datatraversal::autotuning::Oracle::getInstance().switchToOracle(_repositoryState.getAction());
+
+  peano::parallel::loadbalancing::Oracle::getInstance().switchToOracle(_repositoryState.getAction());
+  
+  _solverState.currentlyRunsMultipleIterations(_repositoryState.getNumberOfIterations()>1);
+  #else
+  peano::datatraversal::autotuning::Oracle::getInstance().switchToOracle(_repositoryState.getAction());
+  #endif
+  
+  for (int i=0; i<numberOfIterations; i++) {
+    switch ( _repositoryState.getAction()) {
+  __x__NONQUALIFIED_ADAPTER_TYPE__    case __NAMESPACE__::records::RepositoryState::UseAdapter__NONQUALIFIED_ADAPTER_TYPE__: watch.startTimer(); _gridWith__NONQUALIFIED_ADAPTER_TYPE__.iterate(); watch.stopTimer(); _measure__NONQUALIFIED_ADAPTER_TYPE__CPUTime.setValue( watch.getCPUTime() ); _measure__NONQUALIFIED_ADAPTER_TYPE__CalendarTime.setValue( watch.getCalendarTime() ); break;
+      case __NAMESPACE__::records::RepositoryState::Terminate:
+        assertionMsg( false, "this branch/state should never be reached" ); 
+        break;
+      case __NAMESPACE__::records::RepositoryState::NumberOfAdapters:
+        assertionMsg( false, "this branch/state should never be reached" ); 
+        break;
+      case __NAMESPACE__::records::RepositoryState::RunOnAllNodes:
+        assertionMsg( false, "this branch/state should never be reached" ); 
+        break;
+      case __NAMESPACE__::records::RepositoryState::ReadCheckpoint:
+        assertionMsg( false, "not implemented yet" );
+        break;
+      case __NAMESPACE__::records::RepositoryState::WriteCheckpoint:
+        assertionMsg( false, "not implemented yet" );
+        break;
+    }
+  }
+  
+  #ifdef Parallel
+  if (_solverState.isJoiningWithMaster()) {
+    _repositoryState.setAction( __NAMESPACE__::records::RepositoryState::Terminate );
+  }
+  #endif
+}
+
+__x__NONQUALIFIED_ADAPTER_TYPE__ void __NAMESPACE__::repositories::RepositorySTDStack::switchTo__NONQUALIFIED_ADAPTER_TYPE__() { _repositoryState.setAction(__NAMESPACE__::records::RepositoryState::UseAdapter__NONQUALIFIED_ADAPTER_TYPE__); }
+
+
+__x__NONQUALIFIED_ADAPTER_TYPE__ bool __NAMESPACE__::repositories::RepositorySTDStack::isActiveAdapter__NONQUALIFIED_ADAPTER_TYPE__() const { return _repositoryState.getAction() == __NAMESPACE__::records::RepositoryState::UseAdapter__NONQUALIFIED_ADAPTER_TYPE__; }
+
+
+peano::grid::Checkpoint<__NAMESPACE__::Vertex, __NAMESPACE__::Cell>* __NAMESPACE__::repositories::RepositorySTDStack::createEmptyCheckpoint() {
+  return new peano::grid::Checkpoint<__NAMESPACE__::Vertex, __NAMESPACE__::Cell>();
+} 
+
+
+void __NAMESPACE__::repositories::RepositorySTDStack::writeCheckpoint(peano::grid::Checkpoint<__NAMESPACE__::Vertex, __NAMESPACE__::Cell> * const checkpoint) {
+  _solverState.writeToCheckpoint( *checkpoint );
+  _vertexStack.writeToCheckpoint( *checkpoint );
+  _cellStack.writeToCheckpoint( *checkpoint );
+} 
+
+
+void __NAMESPACE__::repositories::RepositorySTDStack::readCheckpoint( peano::grid::Checkpoint<__NAMESPACE__::Vertex, __NAMESPACE__::Cell> const * const checkpoint ) {
+  assertionMsg( checkpoint->isValid(), "checkpoint has to be valid if you call this operation" );
+
+  _solverState.readFromCheckpoint( *checkpoint );
+  _vertexStack.readFromCheckpoint( *checkpoint );
+  _cellStack.readFromCheckpoint( *checkpoint );
+}
+
+
+void __NAMESPACE__::repositories::RepositorySTDStack::setMaximumMemoryFootprintForTemporaryRegularGrids(double value) {
+  _regularGridContainer.setMaximumMemoryFootprintForTemporaryRegularGrids(value);
+}
+
+
+#ifdef Parallel
+void __NAMESPACE__::repositories::RepositorySTDStack::runGlobalStep() {
+  assertion(tarch::parallel::Node::getInstance().isGlobalMaster());
+
+  __NAMESPACE__::records::RepositoryState intermediateStateForWorkingNodes;
+  intermediateStateForWorkingNodes.setAction( __NAMESPACE__::records::RepositoryState::RunOnAllNodes );
+  
+  tarch::parallel::NodePool::getInstance().broadcastToWorkingNodes(
+    intermediateStateForWorkingNodes,
+    peano::parallel::SendReceiveBufferPool::getInstance().getIterationManagementTag()
+  );
+  tarch::parallel::NodePool::getInstance().activateIdleNodes();
+}
+
+
+__NAMESPACE__::repositories::RepositorySTDStack::ContinueCommand __NAMESPACE__::repositories::RepositorySTDStack::continueToIterate() {
+  logTraceIn( "continueToIterate()" );
+
+  assertion( !tarch::parallel::Node::getInstance().isGlobalMaster());
+
+  ContinueCommand result;
+  if ( _solverState.hasJoinedWithMaster() ) {
+    result = Terminate;
+  }
+  else {
+    int masterNode = tarch::parallel::Node::getInstance().getGlobalMasterRank();
+    assertion( masterNode != -1 );
+
+    _repositoryState.receive( masterNode, peano::parallel::SendReceiveBufferPool::getInstance().getIterationManagementTag(), true, ReceiveIterationControlMessagesBlocking );
+
+    result = Continue;
+    if (_repositoryState.getAction()==__NAMESPACE__::records::RepositoryState::Terminate) {
+      result = Terminate;
+    } 
+    if (_repositoryState.getAction()==__NAMESPACE__::records::RepositoryState::RunOnAllNodes) {
+      result = RunGlobalStep;
+    } 
+  }
+   
+  logTraceOutWith1Argument( "continueToIterate()", result );
+  return result;
+}
+#endif
+
+
+void __NAMESPACE__::repositories::RepositorySTDStack::logIterationStatistics() const {
+  logInfo( "logIterationStatistics()", "|| adapter name \t || iterations \t || total CPU time [t]=s \t || average CPU time [t]=s \t || total user time [t]=s \t || average user time [t]=s  || CPU time properties  || user time properties " );  
+ __x__NONQUALIFIED_ADAPTER_TYPE__  logInfo( "logIterationStatistics()", "| __NONQUALIFIED_ADAPTER_TYPE__ \t |  " << _measure__NONQUALIFIED_ADAPTER_TYPE__CPUTime.getNumberOfMeasurements() << " \t |  " << _measure__NONQUALIFIED_ADAPTER_TYPE__CPUTime.getAccumulatedValue() << " \t |  " << _measure__NONQUALIFIED_ADAPTER_TYPE__CPUTime.getValue()  << " \t |  " << _measure__NONQUALIFIED_ADAPTER_TYPE__CalendarTime.getAccumulatedValue() << " \t |  " << _measure__NONQUALIFIED_ADAPTER_TYPE__CalendarTime.getValue() << " \t |  " << _measure__NONQUALIFIED_ADAPTER_TYPE__CPUTime.toString() << " \t |  " << _measure__NONQUALIFIED_ADAPTER_TYPE__CalendarTime.toString() );
+}
+
+
+void __NAMESPACE__::repositories::RepositorySTDStack::clearIterationStatistics() {
+ __x__NONQUALIFIED_ADAPTER_TYPE__  _measure__NONQUALIFIED_ADAPTER_TYPE__CPUTime.erase();
+ __x__NONQUALIFIED_ADAPTER_TYPE__  _measure__NONQUALIFIED_ADAPTER_TYPE__CalendarTime.erase();
+}

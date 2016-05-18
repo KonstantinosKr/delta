@@ -1,0 +1,87 @@
+#include "__PROJECT_PATH__/repositories/RepositoryFactory.h"
+
+#include "__PROJECT_PATH__/repositories/RepositoryArrayStack.h"
+#include "__PROJECT_PATH__/repositories/RepositorySTDStack.h"
+
+#include "__PROJECT_PATH__/records/RepositoryState.h"
+
+#ifdef Parallel
+#include "tarch/parallel/NodePool.h"
+#include "peano/parallel/Partitioner.h"
+#endif
+
+
+__NAMESPACE__::repositories::RepositoryFactory::RepositoryFactory() {
+  #ifdef Parallel
+  peano::parallel::Partitioner::initDatatypes();
+
+  __NAMESPACE__::State::initDatatype();
+  __NAMESPACE__::Vertex::initDatatype();
+  __NAMESPACE__::Cell::initDatatype();
+
+  if (__NAMESPACE__::records::RepositoryState::Datatype==0) {
+    __NAMESPACE__::records::RepositoryState::initDatatype();
+  }
+  #endif
+}
+
+
+__NAMESPACE__::repositories::RepositoryFactory::~RepositoryFactory() {
+}
+
+
+void __NAMESPACE__::repositories::RepositoryFactory::shutdownAllParallelDatatypes() {
+  #ifdef Parallel
+  peano::parallel::Partitioner::shutdownDatatypes();
+
+  __NAMESPACE__::State::shutdownDatatype();
+  __NAMESPACE__::Vertex::shutdownDatatype();
+  __NAMESPACE__::Cell::shutdownDatatype();
+
+  if (__NAMESPACE__::records::RepositoryState::Datatype!=0) {
+    __NAMESPACE__::records::RepositoryState::shutdownDatatype();
+    __NAMESPACE__::records::RepositoryState::Datatype = 0;
+  }
+  #endif
+}
+
+
+__NAMESPACE__::repositories::RepositoryFactory& __NAMESPACE__::repositories::RepositoryFactory::getInstance() {
+  static __NAMESPACE__::repositories::RepositoryFactory singleton;
+  return singleton;
+}
+
+    
+__NAMESPACE__::repositories::Repository* 
+__NAMESPACE__::repositories::RepositoryFactory::createWithArrayStackImplementation(
+  peano::geometry::Geometry&                   geometry,
+  const tarch::la::Vector<DIMENSIONS,double>&  domainSize,
+  const tarch::la::Vector<DIMENSIONS,double>&  computationalDomainOffset,
+  int                                          maxCellStackSize,    
+  int                                          maxVertexStackSize,    
+  int                                          maxTemporaryVertexStackSize    
+) {
+  #ifdef Parallel
+  if (!tarch::parallel::Node::getInstance().isGlobalMaster()) {
+    return new __NAMESPACE__::repositories::RepositoryArrayStack(geometry, domainSize, computationalDomainOffset,maxCellStackSize,maxVertexStackSize,maxTemporaryVertexStackSize);
+  }
+  else
+  #endif
+  return new __NAMESPACE__::repositories::RepositoryArrayStack(geometry, domainSize, computationalDomainOffset,maxCellStackSize,maxVertexStackSize,maxTemporaryVertexStackSize);
+}    
+
+
+__NAMESPACE__::repositories::Repository* 
+__NAMESPACE__::repositories::RepositoryFactory::createWithSTDStackImplementation(
+  peano::geometry::Geometry&                   geometry,
+  const tarch::la::Vector<DIMENSIONS,double>&  domainSize,
+  const tarch::la::Vector<DIMENSIONS,double>&  computationalDomainOffset
+) {
+  #ifdef Parallel
+  if (!tarch::parallel::Node::getInstance().isGlobalMaster()) {
+    return new __NAMESPACE__::repositories::RepositorySTDStack(geometry);
+  }
+  else
+  #endif
+  return new __NAMESPACE__::repositories::RepositorySTDStack(geometry, domainSize, computationalDomainOffset);
+}

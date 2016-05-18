@@ -1,0 +1,68 @@
+#include "tarch/Assertions.h"
+#include <sstream>
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::MatrixAssignList<Rows,Cols,Scalar> tarch::la::assignList (
+  Matrix<Rows,Cols,Scalar>& matrix
+) {
+  return MatrixAssignList<Rows,Cols,Scalar>(matrix);
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::MatrixAssignList<Rows,Cols,Scalar>::MatrixAssignList( Matrix<Rows,Cols,Scalar>&  matrix ) :
+  _matrix(matrix), _rowIndex(0), _colIndex(0)
+{}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::MatrixAssignList<Rows,Cols,Scalar>::MatrixAssignList(
+  Matrix<Rows,Cols,Scalar>&  matrix,
+  int row, int col
+):
+  _matrix(matrix), _rowIndex(row), _colIndex(col) {
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::MatrixAssignList<Rows,Cols,Scalar>::~MatrixAssignList() {
+  assertion1( _rowIndex == Rows, toString() );
+  assertion1( _colIndex == 0, toString() );
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::MatrixAssignList<Rows,Cols,Scalar>& tarch::la::MatrixAssignList<Rows,Cols,Scalar>::operator= (const Scalar& toAssign) {
+  assertion1( _rowIndex < Rows, toString());
+  assertion1( _colIndex < Cols, toString() );
+  _matrix(_rowIndex, _colIndex) = toAssign;
+  _colIndex ++;
+  if (_colIndex == Cols) {
+    _colIndex = 0;
+    _rowIndex ++;
+  }
+  return *this;
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::MatrixAssignList<Rows,Cols,Scalar>& tarch::la::MatrixAssignList<Rows,Cols,Scalar>::operator, (const Scalar&  toAssign) {
+  assertion1(_rowIndex < Rows, toString());
+  assertion1(_colIndex < Cols, toString());
+  _matrix(_rowIndex,_colIndex) = toAssign;
+  _colIndex ++;
+  if (_colIndex == Cols) {
+    _colIndex = 0;
+    _rowIndex ++;
+  }
+  return *this;
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+std::string tarch::la::MatrixAssignList<Rows,Cols,Scalar>::toString() const {
+  std::ostringstream msg;
+  msg << "(row=" << _rowIndex << ",col=" << _colIndex << ",matrix=" << _matrix.toString() << ")";
+  return msg.str();
+}

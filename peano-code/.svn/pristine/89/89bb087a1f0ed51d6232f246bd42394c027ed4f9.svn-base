@@ -1,0 +1,48 @@
+component: Multigrid
+
+namespace: ::multigrid
+
+vertex:
+  dastgen-file: Vertex.def
+  read scalar(double): U
+  read scalar(double): R
+  read scalar(double): D
+  read scalar(double): F
+  write scalar(double): U
+  write scalar(double): R
+  write scalar(double): D
+  
+cell:
+  dastgen-file: Cell.def
+
+state:
+  dastgen-file: State.def
+
+event-mapping:
+  name: CreateGrid
+
+event-mapping:
+  name: JacobiSmoother
+
+event-mapping:
+  name: PlotCells
+
+adapter:
+  name: CreateGrid
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: PlotCells
+  merge-with-predefined-mapping: VTKPlotVertexValue(f,getF,f)
+ 
+adapter:
+  name: Jacobi
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: JacobiSmoother
+ 
+adapter:
+  name: JacobiAndPlot
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: JacobiSmoother
+  merge-with-user-defined-mapping: PlotCells
+  merge-with-predefined-mapping: VTKPlotVertexValue(u,getU,u)
+ 
+ 

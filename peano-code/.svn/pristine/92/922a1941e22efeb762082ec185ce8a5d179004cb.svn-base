@@ -1,0 +1,31 @@
+#include "peano/heap/CompressedFloatingPointNumbers.h"
+
+
+#include <cmath>
+#include <limits>
+
+
+template <class T>
+void peano::heap::decompose(
+  const double&  value,
+  char&          exponent,
+  T&             mantissa
+) {
+  int    integerExponent;
+  double significant = std::frexp(value , &integerExponent);
+
+  const double shiftExponent    = std::numeric_limits<T>::digits-1;
+  const double shiftMantissa    = std::pow( 2.0,shiftExponent );
+
+  exponent  = static_cast<char>( integerExponent-shiftExponent );
+  mantissa  = static_cast<T>( std::round(significant*shiftMantissa) );
+}
+
+
+template <class T>
+double peano::heap::compose(
+  const char&   exponent,
+  const T&      mantissa
+) {
+  return std::ldexp(mantissa,exponent);
+}

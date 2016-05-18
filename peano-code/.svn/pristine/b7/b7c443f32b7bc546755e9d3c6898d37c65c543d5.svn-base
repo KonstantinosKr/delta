@@ -1,0 +1,25 @@
+#include "__PROJECT_PATH__/repositories/Repository.h"
+#include "__PROJECT_PATH__/records/RepositoryState.h"
+
+#include "__PROJECT_PATH__/State.h"
+#include "__PROJECT_PATH__/Vertex.h"
+#include "__PROJECT_PATH__/Cell.h"
+
+#include "peano/grid/Grid.h"
+
+#include "peano/stacks/CellArrayStack.h"
+#include "peano/stacks/CellSTDStack.h"
+
+#include "peano/stacks/VertexArrayStack.h"
+#include "peano/stacks/VertexSTDStack.h"
+
+__x__NONQUALIFIED_ADAPTER_TYPE__ #include "__PROJECT_PATH__/adapters/__NONQUALIFIED_ADAPTER_TYPE__.h" 
+
+namespace peano {
+  namespace grid {
+    template class Grid<__NAMESPACE__::Vertex,__NAMESPACE__::Cell,__NAMESPACE__::State, peano::stacks::VertexArrayStack<__NAMESPACE__::Vertex> ,peano::stacks::CellArrayStack<__NAMESPACE__::Cell> ,__NAMESPACE__::adapters::__THIS_TYPENAME__>;
+    template class Grid<__NAMESPACE__::Vertex,__NAMESPACE__::Cell,__NAMESPACE__::State, peano::stacks::VertexSTDStack<  __NAMESPACE__::Vertex> ,peano::stacks::CellSTDStack<  __NAMESPACE__::Cell> ,__NAMESPACE__::adapters::__THIS_TYPENAME__>;
+  }
+}
+
+#include "peano/grid/Grid.cpph"

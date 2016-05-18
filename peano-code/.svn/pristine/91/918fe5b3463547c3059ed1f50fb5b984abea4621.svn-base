@@ -1,0 +1,56 @@
+#include "parallel/grid/ParallelLevelTransfer.h"
+#include "utils/Loop.h"
+
+using namespace peano;
+
+parallel::ParallelAdjacencyList parallel::getRefinedSublevelList(
+  const parallel::ParallelAdjacencyList&  smallerFlag,
+  const parallel::ParallelAdjacencyList&  biggerFlag,
+  int axis
+) {
+  assertion( axis>=0 );
+  assertion( axis<DIMENSIONS );
+
+  parallel::ParallelAdjacencyList result ;
+
+  dfore(i,2,axis,0) {
+    tarch::la::Vector<DIMENSIONS,int> smallerIndex;
+    tarch::la::Vector<DIMENSIONS,int> biggerIndex;
+    smallerIndex = i;
+    biggerIndex  = i;
+    biggerIndex(axis) += 1;
+
+    int valueOfSmallerFlag = smallerFlag( tarch::utils::dLinearized(biggerIndex,2)  );
+    int valueOfBiggerFlag  = biggerFlag( tarch::utils::dLinearized(smallerIndex,2) );
+
+    if (valueOfSmallerFlag!=valueOfBiggerFlag) {
+      // instead of -1 one should write Vertex::UNDEF_NEIGHBOUR, but I don't
+      // want this operation to become a template because of an assertion!
+      assertion5(
+        (valueOfSmallerFlag==-1 || valueOfBiggerFlag==-1) && !(valueOfSmallerFlag==-1 && valueOfBiggerFlag==-1),
+        smallerFlag,
+        biggerFlag,
+        axis,
+        i,
+        Node::getInstance().getRank()
+      );
+
+      // instead of <0 one should compare the value to Vertex::UNDEF_NEIGHBOUR,
+      // but I don't want this operation to become a template.
+      if (valueOfSmallerFlag<0) {
+        result( tarch::utils::dLinearized(smallerIndex,2) ) = valueOfBiggerFlag;
+        result( tarch::utils::dLinearized(biggerIndex,2) )  = valueOfBiggerFlag;
+      }
+      else {
+        result( tarch::utils::dLinearized(smallerIndex,2) ) = valueOfSmallerFlag;
+        result( tarch::utils::dLinearized(biggerIndex,2) )  = valueOfSmallerFlag;
+      }
+    }
+    else {
+      result( tarch::utils::dLinearized(smallerIndex,2) ) = valueOfSmallerFlag;
+      result( tarch::utils::dLinearized(biggerIndex,2) )  = valueOfSmallerFlag;
+    }
+  }
+
+  return result;
+}

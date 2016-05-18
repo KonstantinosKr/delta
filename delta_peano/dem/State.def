@@ -1,0 +1,8 @@
+Packed-Type: short int;
+
+
+class dem::records::State {  
+  parallelise persistent double  numberOfContactPoints; 
+  parallelise persistent double  numberOfParticleReassignments; 
+  parallelise persistent double  numberOfTriangleComparisons; 
+};

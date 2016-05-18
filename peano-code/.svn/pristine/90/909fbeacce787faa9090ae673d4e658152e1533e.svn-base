@@ -1,0 +1,107 @@
+#include "tarch/Assertions.h"
+
+
+template <class Cell>
+bool peano::grid::aspects::CellPeanoCurve::isTraversePositiveAlongAxis(
+  const Cell&  cell,
+  int          axis,
+  const bool&  isTraversalInverted
+) {
+  assertion( axis >= 0 );
+  assertion( axis < DIMENSIONS );
+
+  EvenFlags influencingEvenFlags = cell._cellData.getEvenFlags();
+  influencingEvenFlags.set(axis,false);
+
+  bool result = ( influencingEvenFlags.count() % 2) == 0;
+  return result ^ isTraversalInverted;
+}
+
+
+template <class Cell>
+peano::utils::LoopDirection peano::grid::aspects::CellPeanoCurve::getLoopDirection(const Cell& cell, const bool&  isTraversalInverted) {
+  peano::utils::LoopDirection result;
+  for (int i=0; i<DIMENSIONS; i++) {
+    result[i] = isTraversePositiveAlongAxis(cell,i,isTraversalInverted);
+  }
+  return result;
+}
+
+
+template <class Cell>
+void peano::grid::aspects::CellPeanoCurve::setExitFace(Cell& cell, int axis) {
+  if ( isTraversePositiveAlongAxis(cell, axis, false) ) {
+    removeFaceAccessNumber( cell, axis+DIMENSIONS );
+    setFaceAccessNumber( cell, axis+DIMENSIONS, 1 );
+  }
+  else {
+    removeFaceAccessNumber( cell, axis );
+    setFaceAccessNumber( cell, axis, 1 );
+  }
+}
+
+
+template <class Cell>
+void peano::grid::aspects::CellPeanoCurve::setEntryFace(Cell& cell, int axis) {
+  if ( isTraversePositiveAlongAxis(cell, axis, false) ) {
+    removeFaceAccessNumber( cell, axis );
+    setFaceAccessNumber( cell, axis, -1 );
+  }
+  else {
+    removeFaceAccessNumber( cell, axis+DIMENSIONS );
+    setFaceAccessNumber( cell, axis+DIMENSIONS, -1 );
+  }
+}
+
+
+template <class Cell>
+void peano::grid::aspects::CellPeanoCurve::invertEvenFlag(Cell& cell, int axis) {
+  assertion( axis >= 0 );
+  assertion( axis < DIMENSIONS );
+  cell._cellData.flipEvenFlags( axis );
+}
+
+
+template <class Cell>
+void peano::grid::aspects::CellPeanoCurve::removeFaceAccessNumber(Cell& cell, int face) {
+  assertion( face >= 0 );
+  assertion( face < 2*DIMENSIONS );
+
+  tarch::la::Vector<DIMENSIONS_TIMES_TWO,short int> accessNumber = cell._cellData.getAccessNumber();
+  int oldFaceNumber = accessNumber(face);
+
+  if (accessNumber(face)>0) {
+    for (int i=0; i<2*DIMENSIONS; i++)
+      if ( accessNumber(i) >= oldFaceNumber ) accessNumber(i)--;
+  }
+  if (accessNumber(face)<0) {
+    for (int i=0; i<2*DIMENSIONS; i++)
+      if ( accessNumber(i) <= oldFaceNumber ) accessNumber(i)++;
+  }
+
+  accessNumber(face) = 0;
+  cell._cellData.setAccessNumber(accessNumber);
+}
+
+
+template <class Cell>
+void peano::grid::aspects::CellPeanoCurve::setFaceAccessNumber(Cell& cell, int face, int value) {
+  assertion( face >= 0 );
+  assertion( face < 2*DIMENSIONS );
+  assertion( value != 0 );
+  assertion( cell._cellData.getAccessNumber()(face) == 0 );
+
+  tarch::la::Vector<DIMENSIONS_TIMES_TWO,short int> accessNumber = cell._cellData.getAccessNumber();
+
+  if (value > 0 ) {
+    for (int i=0; i<2*DIMENSIONS; i++)
+      if ( accessNumber(i) >= value ) accessNumber(i)++;
+  }
+  else {
+    for (int i=0; i<2*DIMENSIONS; i++)
+      if ( accessNumber(i) <= value ) accessNumber(i)--;
+  }
+
+  accessNumber(face) = static_cast<short int>(value);
+  cell._cellData.setAccessNumber(accessNumber);
+}

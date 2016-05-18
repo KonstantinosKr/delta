@@ -1,0 +1,9 @@
+
+Packed-Type: short int;
+
+Constant: DIMENSIONS;
+
+class multigrid::records::Cell {  
+  persistent parallelise double   epsilon[DIMENSIONS];
+  persistent parallelise double   v[DIMENSIONS];
+};

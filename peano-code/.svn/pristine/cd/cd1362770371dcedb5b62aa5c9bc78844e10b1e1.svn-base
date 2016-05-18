@@ -1,0 +1,104 @@
+/**
+
+\mainpage "Peano Development Toolkit (PDT)"
+  
+
+The pdt is the tool coming along with Peano to generate all glue code and 
+the empty class frames to be filled with data. A pdt specification file always 
+has the same structure:
+
+- Header. With component name and namespace specifier. 
+- Vertex. Basically a link to a DaStGen definition file. It also can define 
+  some default getters and setters.
+- Cell and State. They are referencing to a DaStGen definition file.  
+- Mappings.
+- Adapters.
+
+
+!!! Vertex specification
+
+The vertex specification first links to a DaStGen definition file. pdt hands 
+over this one to DaStGen and translates it into plain C++ code. After the 
+definition, you can specify a couple of getter:
+
+\code
+  vertex:
+  dastgen-file: Vertex.def
+  read scalar(int):  MyVariable
+  read vector(double):  MyVariable
+  write stencil(double):   MyVariable
+\endcode
+
+Due to a read/write specifier , pdt generates a static operation that basically 
+takes all adjacent vertices and extracts the specified variable (MyVariable 
+above) into one big array: If there's a scalar MyVariableA defined on each 
+vertex and you write down 
+\code
+  read scalar: MyVariableA
+\endcode
+this results in a code that takes @f$ 2^d @f$ vertices, and extracts all 
+MyVariableA into one big vector of length @f$ 2^d @f$. If MyVariableA were a 
+stencil, you would have to use stencil instead of scalar and the result would 
+be a vector of size @f$ 2^d \cdot 3^d @f$. 
+
+
+||  Keyword                    ||  Data cardinality of vertex ||  Data cardinality of read result || Datatype
+||  scalar(double)             |              1               |        2^d                        |  double
+||  vector(double)             |              d               |        2^d * d                    |  double
+||  vector2PowD(double)        |              2^d             |        2^d * 2^d                  |  double
+||  stencil(double)            |              3^d             |        2^d * 3^d                  |  double
+||  intergrid-operator(double) |              5^d             |        2^d * 5^d                  |  double
+||  scalar(int)                |              1               |        2^d                        |  int
+||  vector(int)                |              d               |        2^d * d                    |  int
+||  vector2PowD(int)           |              2^d             |        2^d * 2^d                  |  int
+||  stencil(int)               |              3^d             |        2^d * 3^d                  |  int
+||  intergrid-operator(int)    |              5^d             |        2^d * 5^d                  |  int
+
+
+
+
+
+ !! Building DaStGen / The Ant-File
+
+In order to recreate the PDT, we rely on ANT:
+
+
+\code
+ant clean
+ant createParser
+ant compile
+ant dist 
+\endcode
+
+
+
+!!! Manual recreation/recompilation
+
+  
+To (re-)create the parser, change into the pdt directory and type in
+\code
+java -jar lib/sablecc.jar -d src pdt.grammar
+\endcode
+
+
+To (re-)create the jar file, please type in
+\code
+cd bin
+jar xvf ../lib/DaStGen.jar
+jar xvf ../lib/jargs.jar
+cd ..
+jar cvfm pdt.jar Manifest.txt stdtemplates lib/DaStGen.jar -C bin .
+\endcode
+We here assume that all class files are held in a directory bin and that the 
+command is invoked in the pdt directory. 
+
+
+To create a zip with all the sources, invoke
+\code
+tar -cvf pdt.tar src stdtemplates Manifest.txt pdt.doxys pdt.grammar --exclude=.svn
+gzip pdt.tar
+mv pdt.tar.gz ../tarballs
+\endcode
+
+*/
+

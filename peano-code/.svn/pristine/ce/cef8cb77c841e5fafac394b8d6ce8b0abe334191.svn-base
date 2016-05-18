@@ -1,0 +1,14 @@
+Packed-Type: short int;
+
+#include "peano/utils/Globals.h"
+
+Constant: DIMENSIONS;
+
+class peano::heap::records::MetaInformation {
+  persistent parallelise int length;
+  
+  #ifdef Asserts
+  persistent parallelise double position[DIMENSIONS];
+  persistent parallelise int level;
+  #endif
+};

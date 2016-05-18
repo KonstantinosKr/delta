@@ -1,0 +1,14 @@
+#TeXlipse project settings
+#Thu Sep 10 17:00:59 BST 2015
+markTmpDer=true
+builderNum=2
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=tmp
+mainTexFile=cookbook.tex
+outputFile=cookbook.pdf
+langSpell=en
+markDer=true
+srcDir=

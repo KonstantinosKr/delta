@@ -1,0 +1,17 @@
+Packed-Type: short int;
+
+
+class myproject::dastgen::Vertex {  
+  parallelise persistent double  u;
+  discard    double  oldU;
+  
+  // If we have assertions on, I want to plot the 
+  // value. For this, I have to keep it persistent
+  #ifdef Asserts
+  persistent    double  averagedU;
+  #endif
+  
+  #ifndef Asserts
+  discard    double  averagedU;
+  #endif
+};

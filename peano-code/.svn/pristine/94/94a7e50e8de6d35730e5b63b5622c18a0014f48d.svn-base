@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+ <head>
+  <title>Peano - Copyright</title>
+  <meta name="author" content="Tobias Weinzierl" />
+  <link href="./stylesheet.css" type="text/css" rel="stylesheet" />
+ </head>
+ <body>
+   <table>
+     <tr>
+       <td class="menu">
+         <!--#include virtual="menu.html" -->
+       </td>
+       <td class="content">
+         <!--#include virtual="copyright.html" -->
+       </td>
+     </tr>
+   </table>      
+ </body>

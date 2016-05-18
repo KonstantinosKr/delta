@@ -1,0 +1,60 @@
+/**
+
+ @dir "datatraversal (and support for Multicore architectures)"
+ 
+ This directory holds Peano's data traversal features. Peano's data traversal 
+ algorithms and data structures are deployed to a directory of its own, as this
+ is the plugin point for the multicore parallelisation. 
+ 
+ To switch the multicore support on, include the corresponding tarch directory 
+ into your build and add either $-DSharedOMP$ 
+ or $-DSharedTBB$ to your build path. Depending on which type of multicore 
+ support you wanna use (either OpenMP or the TBB), you might also include the 
+ subdirectories omp or tbb, respectively.
+  
+ The shared memory parallelisation basically means to make the for-loops on 
+ cells and vertices run in parallel. We abstract from steps of the iteration and call them 
+ 'action'. An action is a for-loop step acting on a cell or vertex, respectively. Actions that can run 
+ in parallel are collected in action sets. A cell traversal, e.g., consequently  
+ consists of a sequence of action sets while each set requires all data up to a 
+ certain level to be loaded. The parallel traversals then read as 
+ follows:
+ 
+ - The traversing algorithm constructs a cell traversal.
+ - It implements one big for loop. Its length equals the cell traversal's 
+   maximum path.
+ - In each iteration
+   - the algorithm has to check whether all the data for the current maximum 
+     level is loaded, and, then,
+   - invokes a parallel for all elements of the current action set. 
+ 
+ It is important that the loads of data from stacks has to be strictly 
+ sequential and has to follow the deterministic spacefilling curve order. 
+ This statement also holds for the store processes. As our data traversal 
+ scheme already ensures this strictness and makes consecutive load calls 
+ belong to different actions sets, there's no need to introduce additional 
+ semaphores to keep everything consistent.  
+ 
+ !!! OpenMP
+ 
+ There are still bugs in the OpenMP version that occur on SuperMUC. On 
+ Shaheen, everything seems to be fine. The error is not the parallelisation 
+ itself but the semaphore handling. 
+ 
+ !!! Intel Threading Building Blocks
+ 
+ The TBB implementation seems to be correct on all tested Intel platforms. 
+ However, we encounter complicated thread affinity problems on the SuperMUC 
+ which induces severe runtime penalties. Interesting information by Intel on 
+ this issue can be found at
+ 
+ http://software.intel.com/en-us/blogs/2007/09/25/cache-affinity-support-for-tbb/
+ 
+ In particular data movements due to random data assignment in the work 
+ scheduling/steeling here introduces performance break downs. In accordance 
+ with the blog from above, this issue is the harder the smaller the problem. 
+ The blog talks about caches but all the reasoning also holds for shared 
+ memory.   
+  
+ */
+ 

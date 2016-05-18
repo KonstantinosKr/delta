@@ -1,0 +1,18 @@
+#include "__PROJECT_PATH__/Cell.h"
+
+
+__NAMESPACE__::Cell::Cell():
+  Base() { 
+  // @todo Insert your code here
+}
+
+
+__NAMESPACE__::Cell::Cell(const Base::DoNotCallStandardConstructor& value):
+  Base(value) { 
+  // Please do not insert anything here
+}
+
+__NAMESPACE__::Cell::Cell(const Base::PersistentCell& argument):
+  Base(argument) {
+  // @todo Insert your code here
+}

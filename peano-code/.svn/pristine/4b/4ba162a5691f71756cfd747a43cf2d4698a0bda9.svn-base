@@ -1,0 +1,77 @@
+#include "tarch/parallel/Node.h"
+#include "peano/utils/PeanoOptimisations.h"
+
+#include <sstream>
+
+
+template <class Vertex>
+tarch::logging::Log peano::parallel::SendReceiveBufferLIFO<Vertex>::_log("peano::parallel::SendReceiveBufferLIFO");
+
+
+template <class Vertex>
+peano::parallel::SendReceiveBufferLIFO<Vertex>::SendReceiveBufferLIFO(
+  int toRank, int bufferSize
+):
+  Base(toRank,bufferSize) {
+  Base::_currentDeployBufferPage = 0;
+  Base::_currentDeployBufferElement = -1;
+}
+
+
+template <class Vertex>
+peano::parallel::SendReceiveBufferLIFO<Vertex>::~SendReceiveBufferLIFO() {
+}
+
+
+template <class Vertex>
+void peano::parallel::SendReceiveBufferLIFO<Vertex>::updateDeployCounterDueToSwitchReceiveAndDeployBuffer() {
+  Base::_currentDeployBufferPage    = Base::_numberOfElementsSent / Base::_bufferPageSize;
+  Base::_currentDeployBufferElement = Base::_numberOfElementsSent - Base::_currentDeployBufferPage*Base::_bufferPageSize;
+  Base::_sizeOfDeployBuffer         = Base::_numberOfElementsSent;
+
+  assertion5(
+    Base::_currentDeployBufferPage >= 0,
+    Base::_currentDeployBufferPage, Base::_sizeOfDeployBuffer, Base::_currentDeployBufferElement,
+    Base::_bufferPageSize, tarch::parallel::Node::getInstance().getRank()
+  );
+  assertion5(
+    Base::_currentDeployBufferElement >= 0,
+    Base::_currentDeployBufferPage, Base::_sizeOfDeployBuffer, Base::_currentDeployBufferElement,
+    Base::_bufferPageSize, tarch::parallel::Node::getInstance().getRank()
+  );
+  assertion5(
+    Base::_currentDeployBufferElement <= Base::_bufferPageSize,
+    Base::_currentDeployBufferPage, Base::_sizeOfDeployBuffer, Base::_currentDeployBufferElement,
+    Base::_bufferPageSize, tarch::parallel::Node::getInstance().getRank()
+  );
+}
+
+
+
+template <class Vertex>
+void peano::parallel::SendReceiveBufferLIFO<Vertex>::moveDeployBufferPointerDueToGetVertex() {
+  Base::_currentDeployBufferElement--;
+  if ( Base::_currentDeployBufferElement < 0 ) {
+    Base::_currentDeployBufferElement = Base::_bufferPageSize-1;
+    Base::_currentDeployBufferPage    = Base::_currentDeployBufferPage-1;
+    assertion3(
+      Base::_currentDeployBufferPage >= 0,
+      tarch::parallel::Node::getInstance().getRank(),
+      Base::_currentDeployBufferPage,
+      Base::_destinationNodeNumber
+    );
+    assertion3(
+      Base::_currentDeployBufferElement >= 0,
+      tarch::parallel::Node::getInstance().getRank(),
+      Base::_currentDeployBufferElement,
+      Base::_destinationNodeNumber
+    );
+  }
+}
+
+
+
+template <class Vertex>
+int peano::parallel::SendReceiveBufferLIFO<Vertex>::getNumberOfDeployedMessages() const {
+  return Base::_sizeOfDeployBuffer - (Base::_currentDeployBufferElement+Base::_currentDeployBufferPage*Base::_bufferPageSize);
+}

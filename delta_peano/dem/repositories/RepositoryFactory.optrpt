@@ -1,0 +1,111 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: dem::repositories::RepositoryFactory::RepositoryFactory(dem::repositories::RepositoryFactory *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::repositories::RepositoryFactory::RepositoryFactory(dem::repositories::RepositoryFactory *)) [1/9=11.1%] dem/repositories/RepositoryFactory.cpp(14,59)
+
+===========================================================================
+
+Begin optimization report for: dem::repositories::RepositoryFactory::RepositoryFactory(dem::repositories::RepositoryFactory *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::repositories::RepositoryFactory::RepositoryFactory(dem::repositories::RepositoryFactory *const)) [2/9=22.2%] dem/repositories/RepositoryFactory.cpp(14,39)
+  -> INLINE: (14,39) dem::repositories::RepositoryFactory::RepositoryFactory(dem::repositories::RepositoryFactory *) (isz = 2) (sz = 7)
+
+===========================================================================
+
+Begin optimization report for: dem::repositories::RepositoryFactory::~RepositoryFactory(dem::repositories::RepositoryFactory *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::repositories::RepositoryFactory::~RepositoryFactory(dem::repositories::RepositoryFactory *)) [3/9=33.3%] dem/repositories/RepositoryFactory.cpp(29,60)
+
+===========================================================================
+
+Begin optimization report for: dem::repositories::RepositoryFactory::~RepositoryFactory(dem::repositories::RepositoryFactory *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::repositories::RepositoryFactory::~RepositoryFactory(dem::repositories::RepositoryFactory *const)) [4/9=44.4%] dem/repositories/RepositoryFactory.cpp(29,39)
+  -> EXTERN: (29,39) operator delete(void *)
+  -> INLINE: (29,39) dem::repositories::RepositoryFactory::~RepositoryFactory(dem::repositories::RepositoryFactory *) (isz = 2) (sz = 7)
+
+===========================================================================
+
+Begin optimization report for: dem::repositories::RepositoryFactory::~RepositoryFactory(dem::repositories::RepositoryFactory *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::repositories::RepositoryFactory::~RepositoryFactory(dem::repositories::RepositoryFactory *const)) [5/9=55.6%] dem/repositories/RepositoryFactory.cpp(29,39)
+  -> INLINE: (29,39) dem::repositories::RepositoryFactory::~RepositoryFactory(dem::repositories::RepositoryFactory *) (isz = 2) (sz = 7)
+
+===========================================================================
+
+Begin optimization report for: dem::repositories::RepositoryFactory::getInstance()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::repositories::RepositoryFactory::getInstance()) [6/9=66.7%] dem/repositories/RepositoryFactory.cpp(49,91)
+  -> INLINE: (50,47) dem::repositories::RepositoryFactory::RepositoryFactory(dem::repositories::RepositoryFactory *) (isz = 2) (sz = 7)
+  -> EXTERN: (50,47) __cxa_guard_release()
+  -> EXTERN: (50,47) __cxa_guard_acquire()
+
+===========================================================================
+
+Begin optimization report for: dem::repositories::RepositoryFactory::createWithArrayStackImplementation(dem::repositories::RepositoryFactory *, peano::geometry::Geometry &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, int, int, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::repositories::RepositoryFactory::createWithArrayStackImplementation(dem::repositories::RepositoryFactory *, peano::geometry::Geometry &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, int, int, int)) [7/9=77.8%] dem/repositories/RepositoryFactory.cpp(63,3)
+  -> EXTERN: (70,3) operator delete(void *)
+  -> EXTERN: (70,3) operator new(size_t)
+  -> EXTERN: (70,138) dem::repositories::RepositoryArrayStack::RepositoryArrayStack(dem::repositories::RepositoryArrayStack *, peano::geometry::Geometry &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, int, int, int)
+
+===========================================================================
+
+Begin optimization report for: dem::repositories::RepositoryFactory::createWithSTDStackImplementation(dem::repositories::RepositoryFactory *, peano::geometry::Geometry &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::repositories::RepositoryFactory::createWithSTDStackImplementation(dem::repositories::RepositoryFactory *, peano::geometry::Geometry &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &)) [8/9=88.9%] dem/repositories/RepositoryFactory.cpp(79,3)
+  -> EXTERN: (86,3) operator delete(void *)
+  -> EXTERN: (86,3) operator new(size_t)
+  -> EXTERN: (86,74) dem::repositories::RepositorySTDStack::RepositorySTDStack(dem::repositories::RepositorySTDStack *, peano::geometry::Geometry &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &)
+
+===========================================================================
+
+Begin optimization report for: dem::repositories::RepositoryFactory::shutdownAllParallelDatatypes(dem::repositories::RepositoryFactory *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::repositories::RepositoryFactory::shutdownAllParallelDatatypes(dem::repositories::RepositoryFactory *)) [9/9=100.0%] dem/repositories/RepositoryFactory.cpp(33,75)
+
+===========================================================================

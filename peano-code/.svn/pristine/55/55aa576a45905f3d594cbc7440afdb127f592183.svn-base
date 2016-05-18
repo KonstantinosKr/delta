@@ -1,0 +1,128 @@
+\section{Other ideas}
+
+
+, we assume that you've a reasonable load balancing but see that all
+the
+  
+  The smell
+  
+  Solution
+  
+  Related pitfalls \& ideas
+  
+  
+  
+
+
+
+Peano takes the computational Domain (the unit square, e.g.) and embeds it into a 3^d patch. This surrounding patch is held by rank 0 being the global master. This rank deploys the central element, i.e. the whole domain, immediately to rank 1 and sticks himself with administrative duties (node pool server, e.g.) only. We soon end up with a situation sketched below on the left:
+
+foobar
+
+Though rank 0 has deployed all cells to other ranks, still all workers of rank 1 are adjacent to rank 0. If they refine (and they most probably will do as most PDE solvers refine along the domain boundary), there is a pretty huge refined surface that connects each of the eight workers of rank 1 with rank 0. And now rank 0 becomes a bottleneck though rank 0 does no computation at all.
+
+One solution is to extend the computational domain by a halo region. For a unit square, using an offset of [-1/7 x -1/7] and a bounding box size of [9/7 x 9/7] has proven of value. This way, all halo cells of rank 0 are sufficiently away from the domain's real boundary. So, if a worker of rank 1 refines, it does not share additional Vertices with rank 0. 0 is not a bottleneck anymore.
+
+To identify whether you can benefit from this technique, try a simple run with a regular grid and only two ranks. In this case, you should not see any speedup, as all work is deployed by rank 0 to rank 1. However, you should also not observe a significant runtime penalty. If you do observe, try this fix.
+
+To realise the change, you might change
+
+peano::geometry::Hexahedron geometry(
+  tarch::la::Vector<DIMENSIONS,double>(1.0),
+  tarch::la::Vector<DIMENSIONS,double>(0.0)
+ );
+particles::pit::repositories::Repository* repository = 
+    particles::pit::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(
+    geometry,
+    tarch::la::Vector<DIMENSIONS,double>(1.0),   // domainSize,
+    tarch::la::Vector<DIMENSIONS,double>(0.0)    // computationalDomainOffset
+  );
+
+into
+
+peano::geometry::Hexahedron geometry(
+  tarch::la::Vector<DIMENSIONS,double>(1.0),
+  tarch::la::Vector<DIMENSIONS,double>(0.0)
+ );
+particles::pit::repositories::Repository* repository = 
+    particles::pit::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(
+    geometry,
+    tarch::la::Vector<DIMENSIONS,double>(9.0/7.0),   // domainSize,
+    tarch::la::Vector<DIMENSIONS,double>(-1.0/7.0)    // computationalDomainOffset
+  );
+
+Disable load balancing
+
+Joins and forks are expensive operations and furthermore hinder Peano to use its shared memory parallelisation, i.e. Peano always switches off multithreading if it has to rebalance a rank. As a consequence, it often makes sense to switch the load balancing oracles - to use an oracle not rebalancing at all most of the time but to identify critical steps where another òracle rebalancing is us used.
+Check the load balancing and node weights
+
+One of the first tuning activities is to analyse the load balancing. Peano has a mpianalysis interface and there analysis tools around. However, also the simple Default mpianalysis does the job - at least for stationary partitions, i.e. as long as you don't rebalance. Run your application and switch of the info output of tarch::mpianalysis. Pipe the results into a file and run the Shell/Python script from the mpianalysis directory on the output. This should result in a picture and you can analyse whether the partitioning fits to your expectations.
+
+If it doesn't, you can tune your load balancing. Prior to this, I however recommend that you write down a cost model - how expensive should one cell be to solve? Then you can use the load per cell individually in your mappings and thus guide the load balancing (actually any load balancing you intend later on to use) how costly different subtrees are.
+Doublecheck the multiscale concurrency
+
+Peano relies on a modified depth-first (dfs) traversal. The parallel variant also is a dfs, but whenever the dfs traversal encounters a remote node, it makes another mpi rank traverse the corresponding spacetree, while it continues itself with the local subtree. Before is ascends again, it checks whether the remote subtree traversals have terminates as well. As a result, it is important to split up the tree on an as coarse level as possible to obtain a high concurrency Level. Let's study a toy problem in 1d:
+
+foobar
+
+In the upper picture, we have forked 2,4,7,8,10 and 12 to remote ranks while we stop the forking on level 1. As a result, our dfs descends into node 1, then forks 3 and 4, waits until they are done, continues with node 5, forks 7 and 8, does ist local 6, waits for 7 and 8 to finish, and continues with 9 forking 11 and 12. Obviously, the maximum concurrency level is two. If we change the decomposition into the lower splitting, the concurrency level is 7 (mind that 8 should have a different colour than 0 and 9, but that's only a visualisation relict).
+
+Now, one has to Keep in mind that Peano forks only subtrees that have a certain regularity: Only nodes (and hence their children) can be forked where all 2^d adjacent vertices are refined. So, if we argue the other way round, it often makes sense to impose a certain regularity on rather coarse Levels (read: to refine all vertices up to a certain level independent of your application needs) to allow the load balancer to fork away subtrees.
+
+Often, enforcing this kind of regularity is not possible within the mappings, as the mappings work basically inside the computational domain. Given the sketched situations, it can be advantageous however also to refine within obstacles or along complicated boundaries regularly. Therefore, peano::parallel::loadbalancing::OracleForOnePhase holds another attribute that you can uuse to enforce a certain grid regularity and to enable your code to fork more aggressively.
+Introduce administrative ranks and reduce algorithmic latency
+
+Throughout the bottom-up traversal, each mpi traversal first receives data from all its children, i.e. data deployed to remote traversals, and afterward sends data to its master in turn. Unfortunately, Peano has to do quite some algorithmic work after the last children record has been received if and only if some subtrees are also to be traversed locally. It hence might make sense to introduce pure administrative ranks that do not take over any computation on the finest grid level. Again, we do a brief 1d toy case study:
+
+foobar
+
+In the upper case, the blue rank triggers the red one to traverse its subtree. The red one in turn tiggers 3 and 4. Afterward, it continues with 2 and then waits for 3 and 4 to finish. After the records from 3 and 4 have been received, it has to send its data to 0 to allow 0 to terminate the global traversal. However, between the last receive and the send, some administrative work has to be done, as the red node also holds local work (it has to run through the embedding cells to get the ordering of the boundary data exchange right, but that's irrelevant from a user point of view). This way, we've introduced an algorithmic latency: Some time elaps between 3 and 4 sending their data and the red one continuing with the data flow up the tree. This latency becomes severe for deep Splittings.
+
+In such a case, it is a better idea to make the red one fork all of its work. See the lower part of the Illustration. In this case, (almost) no local administration is required, i.e. 1 accepts the finished Messages from 2,3 and 4 and almost immediately passes on the token to 0. Now, 1 basically does no work and you introduce a bad balancing here. But you have mpi rank overloading to compensate for this. And a latency reduction usually is more important.
+Exploit overloading
+
+Peano's parallelisation is based upon tree-splits, i.e. the code can 'only' deploy whole subtrees to other ranks. Imbalances thus are always built-in. They become the more severe the fewer mpi ranks one uses. Thus, one has to check carefully whether mpi overbooking pays off. A general rule of thumb is that the smaller the computational workload the higher the overbooking should be. For codes with an extremely low compute load (just moving data, e.g.), overbooking by a factor of four on SandyBridge seems to be the method of choice. In that case, you start 64 mpi ranks per node. On SuperMUC, you have to restrict yourself to 32 ranks per node due to a load leveler constraint.
+
+Peano provides both mpi and shared memory parallelisation. I currently recommand to use the TBB variant of the latter. Following the overbooking discussion above, it does make sense to equip each mpi rank with t threads though the total number of threads then outnumbers the number of cores by far. This way, some mpi ranks might become idle throughout the computation, but their cores are grapped by other mpi ranks due to their many tbb threads eventually. Pays off in most cases ... as long as the shared memory scales for reasonably fine grids and as long as your grid has such regular subregions.
+Optimise worker-master commmunication
+
+Given the output of the component mpianalysis (either via text file or the postprocessing script), you can identify whether the masters had to wait for their workers a significant time. If that is the case, i.e. if you observe late workers,
+
+    try to balance your workload better, or
+    even try to undersubscribe the workers.
+
+In the latter case, you try to assign nodes acting both as compute nodes and as masters a bigger workload than those without any workers to administer. The rationale is that nodes far away from the global master in the call hierarchy may not delay the time per traversal as any delay there has a huge impact. Consequently, it is better to assign them a smaller workload and to give them time to send away their finished messages (that also have to run through the network). One avoids algorithmic latency. The price to pay is a non-optimal workload balancing.
+
+If a node delays ist master and you cannot change its workload, study its individual runtime profile. If the code spends a signficant time within its boundary exchange, this means that it needs this significant time to wait until mpi has released its last send and receive request and other nodes have delivered their data. Now, if all workload is reasonable balanced, you cannot do anything about the latter fact. However, it might make sense to try a different buffer size. As the code spends all this time to wait for the last peace of data to arrive and to release its current buffer, a smaller buffer size might lead to a situation where the nodes can exchange more data in the background. Splitting up the buffer into smaller chunks then is an option, i.e. to reduce the buffer size. Be Aware that smaller buffer sizes increase the administrative overhead. A too small buffer size hence slows down the code.
+
+If nodes delay their masters but are not suffering from data exchange, you have to reduce their workload. If that is not possible and if your code runs correctly (read: no deadlocks), it makes sense to try to switch Peano's communication protocols to blocking send. For this, you have to switch the corresponding flag in your compiler specific settings.
+Send them to sleep
+
+If several ranks are booked to one node, they compete for the network facilities. This competition can slow down the overall system: If one rank is done, it listens for a new message from its master. The other ranks however might still need the network to exchange data and thus are throtteled. For avoid this, you might think either to switch to a real blocking call (given that your MPI implementation realises this internally via an interrupt) or send threads waiting for a synchronous message to sleep.
+
+To do so, you have to go the compiler-specific settings and introduce a sleep penalty. The compiler flags are called ReceiveMasterMessagesBlocking or similar. The allowed values are documented.
+Switch off reduction
+
+The reduction of data along the spacetree often harms Peano's performance significantly. Check whether you can live (at least for some iterations) without the reduction. Often, e.g., load balancing and reduction are important in time stepping, but one can always do few linear algebra traversals without reducing any global data.
+
+Peano's iterate method can be passed false as argument. Then, the reduction is avoided. And your code should run faster and not suffer from latency and ill-balancing. Not that much at least.
+
+Please note that there are two different types of reduction: Peano by default transers vertices and cells bottom-up and thus, e.g., allows for load balancing. This is the behaviour you can switch off due to the flag. However, note that load balancing relies on reduced data, i.e. if you switch this off, you also disable load balancing. A different story is the user-defined reduction. Many applications reduce data in their services (if they have such global object instances per node) or send data to the master in their events. This is a reduction you have to handle correctly.
+Diving into implementation details
+
+The file peano::utils::PeanoOptimisation holds a number of different defines that influence Peano's runtime behaviour. With respect to MPI the compile arguments
+
+-DnoParallelExchangePackedRecordsAtBoundary
+-DnoParallelExchangePackedRecordsBetweenMasterAndWorker
+-DnoParallelExchangePackedRecordsInHeaps
+-DnoParallelExchangePackedRecordsThroughoutJoinsAndForks
+
+do have impact on the communication behaviour. They tell Peano not to reduce the memory footprint of the messages prior to sending them away. If you switch them off, you increase the bandwidth required (perhaps only slightly) but you skip the marshalling and unmarshalling steps. This might yield significant speedup but depends strongly on the PDE-specific data exchanged.
+
+Besides the four flags from above, there are some more settings that might interplay with the scaling of your application. But here, everything is trial-and-error.
+Become topology-aware
+
+Peano uses a node pool strategy to decide which rank assists which other rank if a rank asks for additional workers. By default, this strategy is FCFS and the ranks are just handed out without additional considerations. It thus can happen that all big partitions are assigned to the first p' ranks whereas the remaining p-p' ranks become responsible for rather small subgrids only.
+
+In such a case it often does make sense to implement topology-awareness into your node pool server (it also might make sense to add problem-awareness, i.e. knowledge about your grid, to the oracle, but that is a different story). A simple example for such a generic server can be found in the toolboxes. It assumes that there are k ranks assigned to each compute node. As a result, it assigns work to the ranks in the order 1, k, 2k, 3k, ..., 2, k+1, k+2, and so forth. It realises a modulo work assignment. This reduces the memory required per compute node and it also distributes the communication data footprint evenly.   
+

@@ -1,0 +1,49 @@
+/**
+
+ @dir "Aspects"
+ 
+ This page describes the aspects of cells and vertices.
+ Both cells and vertices have different aspects, i.e. their attributes and 
+ operations have different purposes:
+ 
+ - Some attributes and operations represent PDE-specific data.
+ - Some attributes and operations represent the cell's/vertex's state in the 
+   spacetree.
+ - Some operations offer tree statistics, i.e. queries how the underlying tree
+   is structured.
+ - Some operations offer refinement functionality.
+ 
+ Peano implements a multi-layered strategy to realise these different aspects 
+ of the data structure. At the same time, it tries to split up the different 
+ aspects into different classes and to hide the functional aspect from each 
+ other.
+ 
+ @image html aspects.png
+ 
+ 
+ !!! State in the Spacetree
+ 
+ There's a template class spacetreegrid::Cell holding a DaStGen records 
+ _cellData. Consequently, Cell also offers all the state operations. Examples 
+ for these operations are 'is this a leaf', can we merge different tree nodes, 
+ and so forth. 
+ The exact same arguing holds for the vertices.
+
+ !!! PDE-specific Data
+ 
+ The PDE-specific aspects are realised by a subclass of Cell. These subclasses 
+ belong to the PDE components (and namespaces) and extend the state accordingly.
+ As the PDE-specific data is already incorporated into the DaStGen record, the 
+ Cell subclass comprises only operations.
+ The exact same arguing holds for the vertices.
+ 
+ !!! Other Aspects 
+ 
+ All the other aspects are deployed to classes of their own. These classes offer 
+ solely static operations and are allowed to modify the DaStGen data structure, 
+ as they are friends of Cell.
+ 
+
+ */
+ 
+ 

@@ -1,0 +1,98 @@
+template <class Vertex>
+peano::stacks::VertexArrayStack<Vertex>::VertexArrayStack(int maxSizeOfPersistentStacks, int maxSizeOfTemporaryStacks):
+  _currentInputStack(0){
+  _inputOutputStack[0].init( maxSizeOfPersistentStacks );
+  _inputOutputStack[1].init( maxSizeOfPersistentStacks );
+  for (int i=0; i<NUMBER_OF_TEMPORARY_STACKS; i++) {
+	_temporaryStack[i].init(maxSizeOfTemporaryStacks);
+  }
+}
+
+
+template <class Vertex>
+peano::stacks::VertexArrayStack<Vertex>::~VertexArrayStack() {
+}
+
+
+template <class Vertex>
+Vertex peano::stacks::VertexArrayStack<Vertex>::pop(int stackNumber) {
+  if (stackNumber==peano::stacks::Constants::InOutStack) {
+    return _inputOutputStack[_currentInputStack].pop();
+  }
+  else {
+    return _temporaryStack[stackNumber].pop();
+  }
+}
+
+
+template <class Vertex>
+void peano::stacks::VertexArrayStack<Vertex>::push( int stackNumber, const Vertex& vertex ) {
+  if (stackNumber==peano::stacks::Constants::InOutStack) {
+    _inputOutputStack[1-_currentInputStack].push(vertex.getRecords());
+  }
+  else {
+    _temporaryStack[stackNumber].push(vertex);
+  }
+}
+
+
+template <class Vertex>
+int peano::stacks::VertexArrayStack<Vertex>::sizeOfInputStack() const {
+  return static_cast<int>(_inputOutputStack[_currentInputStack].size());
+}
+
+
+template <class Vertex>
+int peano::stacks::VertexArrayStack<Vertex>::sizeOfOutputStack() const {
+  return static_cast<int>(_inputOutputStack[1-_currentInputStack].size());
+}
+
+
+template <class Vertex>
+bool peano::stacks::VertexArrayStack<Vertex>::isInputStackEmpty() const {
+  return _inputOutputStack[_currentInputStack].isEmpty();
+}
+
+
+template <class Vertex>
+bool peano::stacks::VertexArrayStack<Vertex>::isOutputStackEmpty() const {
+  return _inputOutputStack[1-_currentInputStack].isEmpty();
+}
+
+
+template <class Vertex>
+void peano::stacks::VertexArrayStack<Vertex>::clear() {
+  _inputOutputStack[0].clear();
+  _inputOutputStack[1].clear();
+  for (int i=0; i<NUMBER_OF_TEMPORARY_STACKS; i++) {
+	_temporaryStack[i].clear();
+  }
+}
+
+
+template <class Vertex>
+void peano::stacks::VertexArrayStack<Vertex>::growOutputStackByAtLeastNElements(int n) {
+  // @todo
+  assertionMsg( false, "not implemented yet");
+}
+
+
+template <class Vertex>
+void peano::stacks::VertexArrayStack<Vertex>::flipInputAndOutputStack() {
+  assertion( isInputStackEmpty() );
+  _currentInputStack = 1-_currentInputStack;
+}
+
+
+template <class Vertex>
+template <class Cell>
+void peano::stacks::VertexArrayStack<Vertex>::writeToCheckpoint( peano::grid::Checkpoint<Vertex,Cell>& checkpoint ) const {
+  assertionMsg( false, "not implemented yet" );
+}
+
+
+template <class Vertex>
+template <class Cell>
+void peano::stacks::VertexArrayStack<Vertex>::readFromCheckpoint( const peano::grid::Checkpoint<Vertex,Cell>& checkpoint ) {
+  assertionMsg( false, "not implemented yet" );
+}

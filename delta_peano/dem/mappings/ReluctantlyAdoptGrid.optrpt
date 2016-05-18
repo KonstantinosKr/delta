@@ -1,0 +1,555 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string(640,55)
+
+===========================================================================
+
+Begin optimization report for: std::__1::allocator<char>::allocator(std::__1::allocator<char> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::allocator<char>::allocator(std::__1::allocator<char> *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(1713,53)
+
+===========================================================================
+
+Begin optimization report for: std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,75)
+
+===========================================================================
+
+Begin optimization report for: std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,31)
+
+===========================================================================
+
+Begin optimization report for: std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2400,51)
+
+===========================================================================
+
+Begin optimization report for: std::__1::__less<double, double>::operator()(const std::__1::__less<double, double> *, const double &, const double &) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::__less<double, double>::operator()(const std::__1::__less<double, double> *, const double &, const double &) const) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/algorithm(702,59)
+
+===========================================================================
+
+Begin optimization report for: tarch::la::Vector<3, double>::operator()(const tarch::la::Vector<3, double> *, int) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::la::Vector<3, double>::operator()(const tarch::la::Vector<3, double> *, int) const) ./tarch/la/Vector.h(129,7)
+
+===========================================================================
+
+Begin optimization report for: tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int)) ./tarch/la/Vector.h(144,6)
+
+===========================================================================
+
+Begin optimization report for: tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *)) ./tarch/la/Vector.cpph(6,13)
+
+===========================================================================
+
+Begin optimization report for: tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int)) ./tarch/la/Vector.h(144,6)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Vertex<dem::records::Vertex>::isHangingNode(const peano::grid::Vertex<dem::records::Vertex> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Vertex<dem::records::Vertex>::isHangingNode(const peano::grid::Vertex<dem::records::Vertex> *) const) ./peano/grid/Vertex.cpph(215,61)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const) ./peano/grid/Vertex.cpph(293,102)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Vertex<dem::records::Vertex>::refine(peano::grid::Vertex<dem::records::Vertex> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Vertex<dem::records::Vertex>::refine(peano::grid::Vertex<dem::records::Vertex> *)) ./peano/grid/Vertex.cpph(253,48)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Vertex::getIsHangingNode(const dem::records::Vertex *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Vertex::getIsHangingNode(const dem::records::Vertex *) const) ./dem/records/Vertex.h(4838,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const) ./dem/records/Vertex.h(4858,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Vertex::setRefinementControl(dem::records::Vertex *, const dem::records::Vertex::RefinementControl &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Vertex::setRefinementControl(dem::records::Vertex *, const dem::records::Vertex::RefinementControl &)) ./dem/records/Vertex.h(4868,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Vertex::setAdjacentCellsHeight(dem::records::Vertex *, const int &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Vertex::setAdjacentCellsHeight(dem::records::Vertex *, const int &)) ./dem/records/Vertex.h(4888,2)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTimeSpecification()) [19/49=38.8%] dem/mappings/ReluctantlyAdoptGrid.cpp(20,103)
+  -> EXTERN: (21,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTimeSpecification()) [20/49=40.8%] dem/mappings/ReluctantlyAdoptGrid.cpp(28,104)
+  -> EXTERN: (29,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::enterCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::enterCellSpecification()) [21/49=42.9%] dem/mappings/ReluctantlyAdoptGrid.cpp(36,93)
+  -> EXTERN: (37,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::leaveCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::leaveCellSpecification()) [22/49=44.9%] dem/mappings/ReluctantlyAdoptGrid.cpp(44,93)
+  -> EXTERN: (45,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::ascendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::ascendSpecification()) [23/49=46.9%] dem/mappings/ReluctantlyAdoptGrid.cpp(52,90)
+  -> EXTERN: (53,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::descendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::descendSpecification()) [24/49=49.0%] dem/mappings/ReluctantlyAdoptGrid.cpp(60,91)
+  -> EXTERN: (61,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::communicationSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::communicationSpecification()) [25/49=51.0%] dem/mappings/ReluctantlyAdoptGrid.cpp(12,103)
+  -> EXTERN: (13,207) peano::CommunicationSpecification::CommunicationSpecification(peano::CommunicationSpecification *, peano::CommunicationSpecification::ExchangeMasterWorkerData, peano::CommunicationSpecification::ExchangeWorkerMasterData, bool)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *)) [26/49=53.1%] dem/mappings/ReluctantlyAdoptGrid.cpp(260,61)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *const)) [27/49=55.1%] dem/mappings/ReluctantlyAdoptGrid.cpp(260,38)
+  -> INLINE: (260,38) dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *) (isz = 2) (sz = 7)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *)) [28/49=57.1%] dem/mappings/ReluctantlyAdoptGrid.cpp(267,62)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *const)) [29/49=59.2%] dem/mappings/ReluctantlyAdoptGrid.cpp(267,38)
+  -> EXTERN: (267,38) operator delete(void *)
+  -> INLINE: (267,38) dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *) (isz = 2) (sz = 7)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *const)) [30/49=61.2%] dem/mappings/ReluctantlyAdoptGrid.cpp(267,38)
+  -> INLINE: (267,38) dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid(dem::mappings::ReluctantlyAdoptGrid *) (isz = 2) (sz = 7)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [31/49=63.3%] dem/mappings/ReluctantlyAdoptGrid.cpp(173,3)
+  -> EXTERN: (176,18) dem::Vertex::init(dem::Vertex *)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [32/49=65.3%] dem/mappings/ReluctantlyAdoptGrid.cpp(190,3)
+  -> EXTERN: (193,18) dem::Vertex::init(dem::Vertex *)
+  -> EXTERN: (194,3) dem::mappings::dropParticles(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::createHangingVertex(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::createHangingVertex(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [33/49=67.3%] dem/mappings/ReluctantlyAdoptGrid.cpp(137,3)
+  -> EXTERN: (140,18) dem::Vertex::init(dem::Vertex *)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::destroyHangingVertex(dem::mappings::ReluctantlyAdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::destroyHangingVertex(dem::mappings::ReluctantlyAdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [34/49=69.4%] dem/mappings/ReluctantlyAdoptGrid.cpp(154,3)
+  -> EXTERN: (157,3) dem::mappings::liftAllParticles(const dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &)
+  -> EXTERN: (158,18) dem::Vertex::destroy(const dem::Vertex *) const
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::destroyVertex(dem::mappings::ReluctantlyAdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::destroyVertex(dem::mappings::ReluctantlyAdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [35/49=71.4%] dem/mappings/ReluctantlyAdoptGrid.cpp(208,3)
+  -> EXTERN: (212,18) dem::Vertex::destroy(const dem::Vertex *) const
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::createCell(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::createCell(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [36/49=73.5%] dem/mappings/ReluctantlyAdoptGrid.cpp(298,3)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::destroyCell(dem::mappings::ReluctantlyAdoptGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::destroyCell(dem::mappings::ReluctantlyAdoptGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [37/49=75.5%] dem/mappings/ReluctantlyAdoptGrid.cpp(310,3)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [38/49=77.6%] dem/mappings/ReluctantlyAdoptGrid.cpp(77,3)
+  -> EXTERN: (80,3) dem::mappings::dropParticles(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (82,22) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> EXTERN: (83,36) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> EXTERN: (83,36) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> EXTERN: (85,24) dem::Vertex::getParticle(dem::Vertex *, int)
+  -> INLINE (MANUAL): (85,77) tarch::la::Vector<3, double>::operator()(const tarch::la::Vector<3, double> *, int) const (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (87,24) peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 3) (sz = 10)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(294,22) dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (90,24) peano::grid::Vertex<dem::records::Vertex>::refine(peano::grid::Vertex<dem::records::Vertex> *) (isz = 12) (sz = 17)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(257,15) dem::records::Vertex::setRefinementControl(dem::records::Vertex *, const dem::records::Vertex::RefinementControl &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(258,15) dem::records::Vertex::setAdjacentCellsHeight(dem::records::Vertex *, const int &) (isz = 0) (sz = 7)
+  -> EXTERN: (104,18) dem::Vertex::clearGridRefinementAnalysisData(dem::Vertex *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/ReluctantlyAdoptGrid.cpp(83,36)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP END
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(dem::mappings::ReluctantlyAdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [39/49=79.6%] dem/mappings/ReluctantlyAdoptGrid.cpp(118,3)
+  -> EXTERN: (121,18) dem::Vertex::eraseIfParticleDistributionPermits(dem::Vertex *)
+  -> EXTERN: (123,3) dem::mappings::restrictCoarseningVetoToCoarseGrid(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::enterCell(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::enterCell(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [40/49=81.6%] dem/mappings/ReluctantlyAdoptGrid.cpp(227,3)
+  -> INLINE (MANUAL): (232,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (232,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (232,3) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
+    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset(void *, int, size_t)
+  -> INLINE (MANUAL): (232,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INDIRECT-: (233,71) 
+     [[ Unable to inline indirect callsite  <1>]]
+  -> EXTERN: (233,76) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> INDIRECT-: (234,66) 
+     [[ Unable to inline indirect callsite  <1>]]
+  -> INDIRECT-: (234,66) 
+     [[ Unable to inline indirect callsite  <1>]]
+  -> EXTERN: (234,71) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> EXTERN: (234,71) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> INLINE (MANUAL): (235,21) std::__1::min<double>(const double &, const double &) (isz = 3) (sz = 12)
+    -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/algorithm:(2591,12) std::__1::min<double, std::__1::__less<double, double>>(const double &, const double &, std::__1::__less<double, double>) (isz = 8) (sz = 19)
+      -> INLINE (MANUAL): (2583,18) std::__1::__less<double, double>::operator()(const std::__1::__less<double, double> *, const double &, const double &) const (isz = 1) (sz = 11)
+  -> INDIRECT-: (235,89) 
+     [[ Unable to inline indirect callsite  <1>]]
+  -> EXTERN: (235,94) dem::Vertex::getParticle(dem::Vertex *, int)
+  -> INDIRECT-: (239,44) 
+     [[ Unable to inline indirect callsite  <1>]]
+  -> INLINE (MANUAL): (239,84) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (240,5) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
+    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset(void *, int, size_t)
+  -> INLINE (MANUAL): (240,5) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (240,5) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (240,5) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INDIRECT-: (242,55) 
+     [[ Unable to inline indirect callsite  <1>]]
+  -> INLINE (MANUAL): (242,60) peano::grid::Vertex<dem::records::Vertex>::isHangingNode(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 3) (sz = 10)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(216,22) dem::records::Vertex::getIsHangingNode(const dem::records::Vertex *) const (isz = 0) (sz = 6)
+  -> INDIRECT-: (244,54) 
+     [[ Unable to inline indirect callsite  <1>]]
+  -> INLINE (MANUAL): (244,59) peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 3) (sz = 10)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(294,22) dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const (isz = 0) (sz = 6)
+  -> INDIRECT-: (246,54) 
+     [[ Unable to inline indirect callsite  <1>]]
+  -> INLINE (MANUAL): (246,59) peano::grid::Vertex<dem::records::Vertex>::refine(peano::grid::Vertex<dem::records::Vertex> *) (isz = 12) (sz = 17)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(257,15) dem::records::Vertex::setRefinementControl(dem::records::Vertex *, const dem::records::Vertex::RefinementControl &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(258,15) dem::records::Vertex::setAdjacentCellsHeight(dem::records::Vertex *, const int &) (isz = 0) (sz = 7)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/ReluctantlyAdoptGrid.cpp(232,3)
+   remark #15382: vectorization support: call to function memset(void *, int, size_t) cannot be vectorized   [ ./tarch/la/Vector.cpph(6,13) ]
+   remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(233,71) ]
+   remark #15382: vectorization support: call to function dem::Vertex::getNumberOfParticles(const dem::Vertex *) const cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(233,76) ]
+   remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(234,66) ]
+   remark #15382: vectorization support: call to function dem::Vertex::getNumberOfParticles(const dem::Vertex *) const cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(234,71) ]
+   remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(235,89) ]
+   remark #15382: vectorization support: call to function dem::Vertex::getParticle(dem::Vertex *, int) cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(235,94) ]
+   remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(234,66) ]
+   remark #15382: vectorization support: call to function dem::Vertex::getNumberOfParticles(const dem::Vertex *) const cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(234,71) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:memset(void *, int, size_t) line 6 and call:dem::Vertex::getNumberOfPar line 234
+   remark #15346: vector dependence: assumed OUTPUT dependence between  line 234 and  line 6
+
+   LOOP BEGIN at dem/mappings/ReluctantlyAdoptGrid.cpp(234,71)
+      remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+   LOOP END
+LOOP END
+
+LOOP BEGIN at ./peano/grid/Vertex.cpph(258,3) inlined into dem/mappings/ReluctantlyAdoptGrid.cpp(246,59)
+   remark #15382: vectorization support: call to function memset(void *, int, size_t) cannot be vectorized   [ ./tarch/la/Vector.cpph(6,13) ]
+   remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(242,55) ]
+   remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(244,54) ]
+   remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ dem/mappings/ReluctantlyAdoptGrid.cpp(246,54) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between k._values line 6 and k line 246
+   remark #15346: vector dependence: assumed OUTPUT dependence between k line 246 and k._values line 6
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+./tarch/la/Vector.cpph(6,13):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
+./tarch/la/Vector.cpph(6,13):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::leaveCell(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::leaveCell(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [41/49=83.7%] dem/mappings/ReluctantlyAdoptGrid.cpp(494,3)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::endIteration(dem::mappings::ReluctantlyAdoptGrid *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::endIteration(dem::mappings::ReluctantlyAdoptGrid *, dem::State &)) [42/49=85.7%] dem/mappings/ReluctantlyAdoptGrid.cpp(509,3)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::descend(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::descend(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [43/49=87.8%] dem/mappings/ReluctantlyAdoptGrid.cpp(524,3)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::ascend(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::ascend(dem::mappings::ReluctantlyAdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [44/49=89.8%] dem/mappings/ReluctantlyAdoptGrid.cpp(538,3)
+
+===========================================================================
+
+Begin optimization report for: std::__1::min<double>(const double &, const double &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::min<double>(const double &, const double &)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/algorithm(2590,1)
+
+===========================================================================
+
+Begin optimization report for: std::__1::min<double, std::__1::__less<double, double>>(const double &, const double &, std::__1::__less<double, double>)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::min<double, std::__1::__less<double, double>>(const double &, const double &, std::__1::__less<double, double>)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/algorithm(2582,1)
+
+===========================================================================
+
+Begin optimization report for: __sti___ZN3dem8mappings20ReluctantlyAdoptGrid4_logE()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (__sti___ZN3dem8mappings20ReluctantlyAdoptGrid4_logE()) [47/49=95.9%] <compiler generated>
+  -> EXTERN: dem/mappings/ReluctantlyAdoptGrid.cpp:(65,73) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+  -> EXTERN: dem/mappings/ReluctantlyAdoptGrid.cpp:(65,73) __cxa_atexit()
+  -> EXTERN: dem/mappings/ReluctantlyAdoptGrid.cpp:(65,79) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+  -> EXTERN: dem/mappings/ReluctantlyAdoptGrid.cpp:(65,79) tarch::logging::Log::Log(tarch::logging::Log *, const std::__1::string &)
+  -> INLINE (MANUAL): dem/mappings/ReluctantlyAdoptGrid.cpp:(65,79) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *) (isz = 16) (sz = 23)
+    -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2002,44) std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *) (isz = 7) (sz = 12)
+      -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory:(2400,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const) (isz = 7) (sz = 12)
+        -> INLINE (MANUAL): (2221,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *) (isz = 7) (sz = 12)
+          -> DELETED: (2221,31) std::__1::allocator<char>::allocator(std::__1::allocator<char> *const) (isz = 0) (sz = 5)
+          -> EXTERN: (2221,31) memset(void *, int, size_t)
+    -> EXTERN: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,5) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__init(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::size_type)
+    -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,17) std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *) (isz = 1) (sz = 8)
+      -> EXTERN: (640,63) strlen(const char *)
+
+
+    Report from: Code generation optimizations [cg]
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,31):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
+===========================================================================
+
+Begin optimization report for: std::__1::allocator<char>::allocator(std::__1::allocator<char> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::allocator<char>::allocator(std::__1::allocator<char> *const)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(1713,31)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::ReluctantlyAdoptGrid::beginIteration(dem::mappings::ReluctantlyAdoptGrid *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::ReluctantlyAdoptGrid::beginIteration(dem::mappings::ReluctantlyAdoptGrid *, dem::State &)) [49/49=100.0%] dem/mappings/ReluctantlyAdoptGrid.cpp(500,3)
+
+===========================================================================
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING FOOTNOTES:
+
+<1> The indirectly called function must be resolved to its targets before it 
+can be inlined.  Consider compiling with -ipo or -prof-gen followed by 
+-prof-use.
+

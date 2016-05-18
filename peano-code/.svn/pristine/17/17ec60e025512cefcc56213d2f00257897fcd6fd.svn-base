@@ -1,0 +1,17 @@
+/**
+
+ @dir "Tests for spacetree grid"
+ 
+ To regenerate the test records due to DaStGen, type in
+ 
+ \code
+ java -jar pdt/lib/DaStGen.jar --plugin PeanoSnippetGenerator --naming PeanoNameTranslator src/peano/grid/tests/dastgen/TestVertex.def  src/peano/grid/tests/records 
+ java -jar pdt/lib/DaStGen.jar --plugin PeanoSnippetGenerator --naming PeanoNameTranslator src/peano/grid/tests/dastgen/TestCell.def    src/peano/grid/tests/records 
+ java -jar pdt/lib/DaStGen.jar --plugin PeanoSnippetGenerator --naming PeanoNameTranslator src/peano/grid/tests/dastgen/TestState.def   src/peano/grid/tests/records 
+ \endcode
+ 
+ from the directory holding src.
+
+
+ */
+ 

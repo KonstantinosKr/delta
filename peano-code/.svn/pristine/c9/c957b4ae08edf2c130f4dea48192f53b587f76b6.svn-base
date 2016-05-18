@@ -1,0 +1,65 @@
+\definecolor{darkgrey}{rgb}{0.2,0.2,0.2}
+\definecolor{grey}{rgb}{0.9,0.9,0.9}
+\definecolor{red}{rgb}{0.9,0.0,0.0}
+\definecolor{green}{rgb}{0.0,0.9,0.0}
+\definecolor{blue}{rgb}{0.0,0.0,0.9}
+
+
+\newenvironment{remark}
+{
+ \begin{framed} 
+  \begin{minipage}{0.9\textwidth}
+   { \footnotesize
+    {\bf Remark:}
+   }
+}
+{
+  \end{minipage}
+ \end{framed}  
+}
+
+
+
+
+\newcommand{\chapterDescription}[2]{
+%\flushright{
+  \footnotesize
+  \hspace{0.4\textwidth}
+  \begin{minipage}{0.65\textwidth}
+  \includegraphics[width=0.2\textwidth]{symbols/clock.pdf}
+  {\bf Time:} #1
+  
+  {\bf Required:} #2
+  
+  \end{minipage}
+%}
+}
+
+
+
+\lstdefinelanguage{cCCode}[]{C}{
+  backgroundcolor=\color{grey},
+%  basicstyle=\tiny,
+%  basicstyle=\small,
+  basicstyle=\footnotesize,
+  stringstyle=\color{red},
+  keywordstyle=\color{blue},
+  commentstyle=\color{darkgrey}\slshape,
+  morekeywords={linestyle,linetype,linewidth,linecolor,pointtype,nohidden3d,hidden3d,palette,lt,lw,lc,pt,ps,fd,fill,fs,ls},
+  framexleftmargin=1mm, framextopmargin=1mm, frame=shadowbox,
+  rulesepcolor=\color{darkgrey}
+}
+
+
+
+    
+\lstnewenvironment{code}[1][]{
+\lstset{
+ language=cCCode,#1,
+upquote=true,
+columns=fullflexible,
+literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}}{}
+    
+    

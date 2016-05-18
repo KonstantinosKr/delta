@@ -1,0 +1,7 @@
+This file holds a toolbox for the PIDT/raPIDT particle handling
+
+Unpack the archive and include it into your build. There's a doxys
+file (a text file) in the archive that describes how to use the 
+toolbox.
+
+Authos: Tobias Weinzierl

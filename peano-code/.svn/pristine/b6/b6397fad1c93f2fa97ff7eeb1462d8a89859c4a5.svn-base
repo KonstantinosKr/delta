@@ -1,0 +1,31 @@
+
+Packed-Type: short int;
+
+
+class multigrid::records::Vertex {  
+  /**
+   * Solution
+   */
+  persistent parallelise double  u;
+
+  /**
+   * Rhs
+   */
+  persistent parallelise double  f;
+  
+  /**
+   * Residual
+   */
+  discard parallelise double   r;
+
+  /**
+   * Diagonal element
+   */
+  discard parallelise double   d;
+  
+  enum VertexType {
+    Unknown, Dirichlet, Neumann
+  };
+  
+  persistent VertexType vertexType;
+};

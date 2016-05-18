@@ -1,0 +1,21 @@
+#include "__PROJECT_PATH__/Vertex.h"
+#include "peano/utils/Loop.h"
+#include "peano/grid/Checkpoint.h"
+
+
+__NAMESPACE__::Vertex::Vertex():
+  Base() { 
+  // @todo Insert your code here
+}
+
+
+__NAMESPACE__::Vertex::Vertex(const Base::DoNotCallStandardConstructor& value):
+  Base(value) { 
+  // Please do not insert anything here
+}
+
+
+__NAMESPACE__::Vertex::Vertex(const Base::PersistentVertex& argument):
+  Base(argument) {
+  // @todo Insert your code here
+}

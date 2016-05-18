@@ -1,0 +1,647 @@
+#include "tarch/Assertions.h"
+#include "tarch/compiler/CompilerSpecificSettings.h"
+
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>& tarch::la::operator*= (
+  Vector<Size,Scalar>&  vector,
+  const Scalar&         scalar
+) {
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #endif
+  for (int i=0; i < Size; i++) {
+    vector(i) *= scalar;
+  }
+  return vector;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>& tarch::la::operator/= (
+  Vector<Size,Scalar>&  vector,
+  const Scalar&         scalar
+) {
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #endif
+  for (int i=0; i < Size; i++) {
+    vector(i) /= scalar;
+  }
+  return vector;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>& tarch::la::operator+= (
+  Vector<Size,Scalar>&  vector,
+  const Scalar&         scalar
+) {
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #endif
+  for (int i=0; i < Size; i++) {
+    vector(i) += scalar;
+  }
+  return vector;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>& tarch::la::operator-= (
+  Vector<Size,Scalar>&  vector,
+  const Scalar&         scalar
+) {
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #endif
+  for (int i=0; i < Size; i++) {
+    vector(i) -= scalar;
+  }
+  return vector;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::operator/ (
+  const Vector<Size,Scalar>&  vector,
+  const Scalar&               scalar
+) {
+  Vector<Size,Scalar> result;
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #pragma ivdep
+  #endif
+  for (int i=0; i < Size; i++) {
+    result(i) = vector(i) / scalar;
+  }
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::operator+ (
+  const Scalar&               scalar,
+  const Vector<Size,Scalar>&  vector
+) {
+  return vector + scalar;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::operator* (
+  const Vector<Size,Scalar>&  vector,
+  const Scalar&               scalar
+) {
+  Vector<Size,Scalar> result;
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #pragma ivdep
+  #endif
+  for (int i=0; i < Size; i++) {
+    result(i) = vector(i) * scalar;
+  }
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::operator* (
+  const Scalar&               scalar,
+  const Vector<Size,Scalar>&  vector
+) {
+  Vector<Size,Scalar> result;
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #endif
+  for (int i=0; i < Size; i++) {
+    result(i) = vector(i) * scalar;
+  }
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::operator+ (
+  const Vector<Size,Scalar>&  vector,
+  const Scalar&               scalar
+) {
+  Vector<Size,Scalar> result;
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #endif
+  for (int i=0; i < Size; i++) {
+    result(i) = vector(i) + scalar;
+  }
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::operator- (
+  const Vector<Size,Scalar>&  vector,
+  const Scalar&               scalar
+) {
+  Vector<Size,Scalar> result;
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #endif
+  for (int i=0; i < Size; i++) {
+    result(i) = vector(i)- scalar;
+  }
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::equals (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance 
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( la::abs(lhs(i) - cmp) > tolerance ) {
+      result = false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( la::abs(lhs(i) - cmp) > tolerance ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::oneEquals (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( la::abs(lhs(i) - cmp) <= tolerance ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( la::abs(lhs(i) - cmp) <= tolerance ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::oneGreater (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance 
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp > tolerance ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp > tolerance ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::oneGreaterEquals (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp >= - tolerance ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp >= - tolerance ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+
+
+template<int Size, typename Scalar>
+bool tarch::la::oneSmaller (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp < tolerance ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp < tolerance ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::oneSmallerEquals (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp <= - tolerance ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp <= - tolerance ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::allGreater (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp <= tolerance ) {
+      result =  false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp <= tolerance ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::allGreaterEquals (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp < -tolerance ) {
+      result = false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp < -tolerance ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::allSmaller (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance 
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp >= -tolerance ) {
+      result = false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp >= -tolerance ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::allSmallerEquals (
+  const Vector<Size,Scalar>&  lhs,
+  const Scalar&               cmp,
+  const Scalar                tolerance 
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp > tolerance ) {
+      result = false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - cmp > tolerance ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}
+
+
+
+template<int Size>
+bool tarch::la::equals (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i)!=cmp ) {
+      result = false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i)!=cmp ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}
+
+
+template<int Size>
+bool tarch::la::oneEquals (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i)==cmp ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i)==cmp ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+template<int Size>
+bool tarch::la::oneGreater (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) > cmp ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) > cmp ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+template<int Size>
+bool tarch::la::oneGreaterEquals (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) >= cmp ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) >= cmp ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+template<int Size>
+bool tarch::la::oneSmaller (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) < cmp ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) < cmp ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+template<int Size>
+bool tarch::la::oneSmallerEquals (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = false;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) <= cmp ) {
+      result = true;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) <= cmp ) {
+      return true;
+    }
+  }
+  return false;
+  #endif
+}
+
+
+template<int Size>
+bool tarch::la::allGreater (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) <= cmp ) {
+      result = false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) <= cmp ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}
+
+
+template<int Size>
+bool tarch::la::allGreaterEquals (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) < cmp ) {
+      result = false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) < cmp ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}
+
+
+template<int Size>
+bool tarch::la::allSmaller (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) >= cmp ) {
+      result = false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) >= cmp ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}
+
+
+template<int Size>
+bool tarch::la::allSmallerEquals (
+  const Vector<Size,int>&  lhs,
+  const int&               cmp
+) {
+  #ifdef CompilerICC
+  bool result = true;
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) > cmp ) {
+      result = false;
+    }
+  }
+  return result;
+  #else
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) > cmp ) {
+      return false;
+    }
+  }
+  return true;
+  #endif
+}

@@ -1,0 +1,130 @@
+#include "tarch/Assertions.h"
+#include "tarch/compiler/CompilerSpecificSettings.h"
+
+
+template<class Data, bool CreateCopiesOfSentData>
+tarch::logging::Log  peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::_log( "peano::heap::RLEBoundaryDataExchanger" );
+
+
+
+template<class Data, bool CreateCopiesOfSentData>
+peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::RLEBoundaryDataExchanger():
+  BoundaryDataExchanger<Data>(),
+  _numberOfEmptyMessagesSinceLastNonEmptySendCall(-1),
+  _totalNumberOfSentMessagesThisTraversal(-1) {
+}
+
+
+template<class Data, bool CreateCopiesOfSentData>
+peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::RLEBoundaryDataExchanger(
+  const std::string& identifier,
+  int metaDataTag, int dataTag,
+  int rank
+):
+  BoundaryDataExchanger<Data>(identifier,metaDataTag,dataTag,rank),
+  _numberOfEmptyMessagesSinceLastNonEmptySendCall(0),
+  _totalNumberOfSentMessagesThisTraversal(0) {
+}
+
+
+template<class Data, bool CreateCopiesOfSentData>
+peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::~RLEBoundaryDataExchanger() {
+}
+
+
+template<class Data, bool CreateCopiesOfSentData>
+bool peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::dataExchangerCommunicatesInBackground() const {
+  return true;
+}
+
+
+template<class Data, bool CreateCopiesOfSentData>
+int peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::getNumberOfSentMessages() const {
+  assertion( static_cast<int>(Base::_sendTasks.size()) <= _totalNumberOfSentMessagesThisTraversal );
+  return _totalNumberOfSentMessagesThisTraversal;
+}
+
+
+template<class Data, bool CreateCopiesOfSentData>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::sendAllCompressedEmptyMessages() {
+  assertion( _numberOfEmptyMessagesSinceLastNonEmptySendCall>=0 );
+  if (_numberOfEmptyMessagesSinceLastNonEmptySendCall>0) {
+    logTraceInWith1Argument( "sendAllCompressedEmptyMessages()", _numberOfEmptyMessagesSinceLastNonEmptySendCall );
+    SendReceiveTask<Data> zeroLengthReceiveTask;
+
+    zeroLengthReceiveTask._rank = Base::_rank;
+    zeroLengthReceiveTask._metaInformation.setLength(-_numberOfEmptyMessagesSinceLastNonEmptySendCall);
+    zeroLengthReceiveTask._data = 0;
+
+    zeroLengthReceiveTask._metaInformation.send(Base::_rank, Base::_metaDataTag, true, SendHeapMetaDataBlocking);
+
+    _numberOfEmptyMessagesSinceLastNonEmptySendCall = 0;
+    logTraceOut( "sendAllCompressedEmptyMessages()" );
+  }
+}
+
+
+template<class Data, bool CreateCopiesOfSentData>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::postprocessFinishedToSendData() {
+  sendAllCompressedEmptyMessages();
+
+  assertion( _numberOfEmptyMessagesSinceLastNonEmptySendCall==0 );
+}
+
+
+template<class Data, bool CreateCopiesOfSentData>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::handleAndQueueReceivedTask( const SendReceiveTask<Data>&  receivedTask ) {
+  assertion(receivedTask._metaInformation.getLength() != 0);
+  if(receivedTask._metaInformation.getLength() > 0) {
+    Base::_receiveTasks[Base::_currentReceiveBuffer].push_back( receivedTask );
+    Base::_receiveTasks[Base::_currentReceiveBuffer].back().triggerReceive(Base::_dataTag);
+    logDebug(
+      "handleAndQueueReceivedTask(...)",
+      "started to receive " << Base::_receiveTasks[Base::_currentReceiveBuffer].size() <<
+      "th message from rank " << receivedTask._rank << " with " << receivedTask._metaInformation.getLength() <<
+      " entries and data pointing to " << receivedTask._data
+    );
+  }
+  else {
+    for (int i=0; i<-receivedTask._metaInformation.getLength(); i++) {
+      SendReceiveTask<Data> zeroLengthReceiveTask;
+
+      zeroLengthReceiveTask.setInvalid();
+
+      Base::_receiveTasks[Base::_currentReceiveBuffer].push_back( zeroLengthReceiveTask );
+    }
+  }
+}
+
+
+template<class Data, bool CreateCopiesOfSentData>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::postprocessStartToSendData() {
+  _totalNumberOfSentMessagesThisTraversal = 0;
+}
+
+
+template<class Data, bool CreateCopiesOfSentData>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData>::handleAndQueueSendTask( const SendReceiveTask<Data>&  sendTask, const std::vector<Data>& data ) {
+  logTraceIn( "handleAndQueueSendTask(...)" );
+  _totalNumberOfSentMessagesThisTraversal++;
+
+  if (data.empty()) {
+    _numberOfEmptyMessagesSinceLastNonEmptySendCall++;
+  }
+  else {
+    sendAllCompressedEmptyMessages();
+
+    Base::_sendTasks.push_back(sendTask);
+
+    Base::_sendTasks.back()._metaInformation.send(Base::_rank, Base::_metaDataTag, true, SendHeapMetaDataBlocking);
+    if (CreateCopiesOfSentData) {
+      Base::_sendTasks.back().wrapData(data);
+    }
+    else {
+      Base::_sendTasks.back().sendDataDirectlyFromBuffer(data);
+    }
+
+    Base::_sendTasks.back().triggerSend(Base::_dataTag);
+  }
+  logTraceOut( "handleAndQueueSendTask(...)" );
+}

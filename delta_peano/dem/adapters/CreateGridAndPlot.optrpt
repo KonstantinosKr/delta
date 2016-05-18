@@ -1,0 +1,383 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::touchVertexLastTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::touchVertexLastTimeSpecification()) [1/27=3.7%] dem/adapters/CreateGridAndPlot.cpp(14,100)
+  -> EXTERN: (15,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (16,6) dem::mappings::CreateGrid::touchVertexLastTimeSpecification()
+  -> EXTERN: (16,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (17,6) dem::mappings::Plot::touchVertexLastTimeSpecification()
+  -> EXTERN: (17,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (18,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (18,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexLastTimeSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::touchVertexFirstTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::touchVertexFirstTimeSpecification()) [2/27=7.4%] dem/adapters/CreateGridAndPlot.cpp(24,101)
+  -> EXTERN: (25,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (26,6) dem::mappings::CreateGrid::touchVertexFirstTimeSpecification()
+  -> EXTERN: (26,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (27,6) dem::mappings::Plot::touchVertexFirstTimeSpecification()
+  -> EXTERN: (27,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (28,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (28,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexFirstTimeSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::enterCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::enterCellSpecification()) [3/27=11.1%] dem/adapters/CreateGridAndPlot.cpp(34,90)
+  -> EXTERN: (35,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (36,6) dem::mappings::CreateGrid::enterCellSpecification()
+  -> EXTERN: (36,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (37,6) dem::mappings::Plot::enterCellSpecification()
+  -> EXTERN: (37,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (38,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (38,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::enterCellSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::leaveCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::leaveCellSpecification()) [4/27=14.8%] dem/adapters/CreateGridAndPlot.cpp(44,90)
+  -> EXTERN: (45,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (46,6) dem::mappings::CreateGrid::leaveCellSpecification()
+  -> EXTERN: (46,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (47,6) dem::mappings::Plot::leaveCellSpecification()
+  -> EXTERN: (47,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (48,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (48,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::leaveCellSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::ascendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::ascendSpecification()) [5/27=18.5%] dem/adapters/CreateGridAndPlot.cpp(54,87)
+  -> EXTERN: (55,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (56,6) dem::mappings::CreateGrid::ascendSpecification()
+  -> EXTERN: (56,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (57,6) dem::mappings::Plot::ascendSpecification()
+  -> EXTERN: (57,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (58,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (58,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::ascendSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::descendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::descendSpecification()) [6/27=22.2%] dem/adapters/CreateGridAndPlot.cpp(64,88)
+  -> EXTERN: (65,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (66,6) dem::mappings::CreateGrid::descendSpecification()
+  -> EXTERN: (66,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (67,6) dem::mappings::Plot::descendSpecification()
+  -> EXTERN: (67,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (68,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (68,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::descendSpecification()
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::communicationSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::communicationSpecification()) [7/27=25.9%] dem/adapters/CreateGridAndPlot.cpp(4,100)
+  -> EXTERN: (5,10) memcpy(void *, const void *, size_t)
+  -> EXTERN: (5,10) peano::CommunicationSpecification::getMinimalSpecification(bool)
+  -> EXTERN: (6,6) dem::mappings::CreateGrid::communicationSpecification()
+  -> EXTERN: (6,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (6,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (6,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (7,6) dem::mappings::Plot::communicationSpecification()
+  -> EXTERN: (7,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (7,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (7,6) memcpy(void *, const void *, size_t)
+  -> EXTERN: (8,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (8,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::communicationSpecification()
+  -> EXTERN: (8,6) memcpy(void *, const void *, size_t)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(5,10):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/CreateGridAndPlot.cpp(6,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/CreateGridAndPlot.cpp(6,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/CreateGridAndPlot.cpp(7,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/CreateGridAndPlot.cpp(7,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+dem/adapters/CreateGridAndPlot.cpp(8,6):remark #34000: call to _memcpy implemented inline with loads and stores with proven source (alignment, offset): (4, 0), and destination (alignment, offset): (4, 0)
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *)) [8/27=29.6%] dem/adapters/CreateGridAndPlot.cpp(74,55)
+  -> EXTERN: (74,35) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+  -> EXTERN: (74,35) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+  -> EXTERN: (74,35) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+  -> EXTERN: (74,35) dem::mappings::Plot::Plot(dem::mappings::Plot *)
+  -> EXTERN: (74,35) dem::mappings::CreateGrid::CreateGrid(dem::mappings::CreateGrid *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)) [9/27=33.3%] dem/adapters/CreateGridAndPlot.cpp(74,35)
+  -> INLINE: (74,35) dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *) (isz = 33) (sz = 38)
+    -> EXTERN: (74,35) dem::mappings::CreateGrid::CreateGrid(dem::mappings::CreateGrid *)
+    -> EXTERN: (74,35) dem::mappings::Plot::Plot(dem::mappings::Plot *)
+    -> EXTERN: (74,35) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+    -> EXTERN: (74,35) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+    -> EXTERN: (74,35) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *)) [10/27=37.0%] dem/adapters/CreateGridAndPlot.cpp(78,56)
+  -> EXTERN: (78,56) ___cxa_call_unexpected
+  -> EXTERN: (78,56) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+  -> EXTERN: (78,56) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+  -> EXTERN: (79,1) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+  -> EXTERN: (79,1) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+  -> EXTERN: (79,1) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::~CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)) [11/27=40.7%] dem/adapters/CreateGridAndPlot.cpp(78,35)
+  -> EXTERN: (78,35) operator delete(void *)
+  -> INLINE: (78,35) dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *) (isz = 37) (sz = 42)
+    -> EXTERN: (78,56) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (78,56) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+    -> EXTERN: (78,56) ___cxa_call_unexpected
+    -> EXTERN: (79,1) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::~CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+    -> EXTERN: (79,1) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (79,1) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)) [12/27=44.4%] dem/adapters/CreateGridAndPlot.cpp(78,35)
+  -> INLINE: (78,35) dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *) (isz = 37) (sz = 42)
+    -> EXTERN: (78,56) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (78,56) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+    -> EXTERN: (78,56) ___cxa_call_unexpected
+    -> EXTERN: (79,1) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::~CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+    -> EXTERN: (79,1) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (79,1) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::createInnerVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::createInnerVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [13/27=48.1%] dem/adapters/CreateGridAndPlot.cpp(142,3)
+  -> EXTERN: (143,19) dem::mappings::CreateGrid::createInnerVertex(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (144,13) dem::mappings::Plot::createInnerVertex(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (145,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::createInnerVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::createBoundaryVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::createBoundaryVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [14/27=51.9%] dem/adapters/CreateGridAndPlot.cpp(158,3)
+  -> EXTERN: (159,19) dem::mappings::CreateGrid::createBoundaryVertex(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (160,13) dem::mappings::Plot::createBoundaryVertex(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (161,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::createBoundaryVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::createHangingVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::createHangingVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [15/27=55.6%] dem/adapters/CreateGridAndPlot.cpp(109,3)
+  -> EXTERN: (110,19) dem::mappings::CreateGrid::createHangingVertex(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (111,13) dem::mappings::Plot::createHangingVertex(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (112,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::createHangingVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::destroyHangingVertex(dem::adapters::CreateGridAndPlot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::destroyHangingVertex(dem::adapters::CreateGridAndPlot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [16/27=59.3%] dem/adapters/CreateGridAndPlot.cpp(126,3)
+  -> EXTERN: (127,19) dem::mappings::CreateGrid::destroyHangingVertex(dem::mappings::CreateGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (128,13) dem::mappings::Plot::destroyHangingVertex(dem::mappings::Plot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (129,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::destroyHangingVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::destroyVertex(dem::adapters::CreateGridAndPlot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::destroyVertex(dem::adapters::CreateGridAndPlot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [17/27=63.0%] dem/adapters/CreateGridAndPlot.cpp(174,3)
+  -> EXTERN: (175,19) dem::mappings::CreateGrid::destroyVertex(dem::mappings::CreateGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (176,13) dem::mappings::Plot::destroyVertex(dem::mappings::Plot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (177,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::destroyVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::createCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::createCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [18/27=66.7%] dem/adapters/CreateGridAndPlot.cpp(190,3)
+  -> EXTERN: (191,19) dem::mappings::CreateGrid::createCell(dem::mappings::CreateGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (192,13) dem::mappings::Plot::createCell(dem::mappings::Plot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (193,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::createCell(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::destroyCell(dem::adapters::CreateGridAndPlot *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::destroyCell(dem::adapters::CreateGridAndPlot *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [19/27=70.4%] dem/adapters/CreateGridAndPlot.cpp(206,3)
+  -> EXTERN: (207,19) dem::mappings::CreateGrid::destroyCell(dem::mappings::CreateGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (208,13) dem::mappings::Plot::destroyCell(dem::mappings::Plot *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (209,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::destroyCell(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::touchVertexFirstTime(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::touchVertexFirstTime(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [20/27=74.1%] dem/adapters/CreateGridAndPlot.cpp(415,3)
+  -> EXTERN: (416,19) dem::mappings::CreateGrid::touchVertexFirstTime(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (417,13) dem::mappings::Plot::touchVertexFirstTime(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (418,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexFirstTime(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::touchVertexLastTime(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::touchVertexLastTime(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [21/27=77.8%] dem/adapters/CreateGridAndPlot.cpp(431,3)
+  -> EXTERN: (432,19) dem::mappings::CreateGrid::touchVertexLastTime(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (433,13) dem::mappings::Plot::touchVertexLastTime(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (434,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexLastTime(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::enterCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::enterCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [22/27=81.5%] dem/adapters/CreateGridAndPlot.cpp(447,3)
+  -> EXTERN: (448,19) dem::mappings::CreateGrid::enterCell(dem::mappings::CreateGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (449,13) dem::mappings::Plot::enterCell(dem::mappings::Plot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (450,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::enterCell(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::leaveCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::leaveCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [23/27=85.2%] dem/adapters/CreateGridAndPlot.cpp(463,3)
+  -> EXTERN: (464,19) dem::mappings::CreateGrid::leaveCell(dem::mappings::CreateGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (465,13) dem::mappings::Plot::leaveCell(dem::mappings::Plot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (466,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::leaveCell(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::endIteration(dem::adapters::CreateGridAndPlot *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::endIteration(dem::adapters::CreateGridAndPlot *, dem::State &)) [24/27=88.9%] dem/adapters/CreateGridAndPlot.cpp(483,3)
+  -> EXTERN: (484,19) dem::mappings::CreateGrid::endIteration(dem::mappings::CreateGrid *, dem::State &)
+  -> EXTERN: (485,13) dem::mappings::Plot::endIteration(dem::mappings::Plot *, dem::State &)
+  -> EXTERN: (486,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::endIteration(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::State &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::descend(dem::adapters::CreateGridAndPlot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::descend(dem::adapters::CreateGridAndPlot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [25/27=92.6%] dem/adapters/CreateGridAndPlot.cpp(500,3)
+  -> EXTERN: (501,19) dem::mappings::CreateGrid::descend(dem::mappings::CreateGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (502,13) dem::mappings::Plot::descend(dem::mappings::Plot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (503,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::descend(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::ascend(dem::adapters::CreateGridAndPlot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::ascend(dem::adapters::CreateGridAndPlot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [26/27=96.3%] dem/adapters/CreateGridAndPlot.cpp(515,3)
+  -> EXTERN: (516,19) dem::mappings::CreateGrid::ascend(dem::mappings::CreateGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (517,13) dem::mappings::Plot::ascend(dem::mappings::Plot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (518,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::ascend(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::beginIteration(dem::adapters::CreateGridAndPlot *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::beginIteration(dem::adapters::CreateGridAndPlot *, dem::State &)) [27/27=100.0%] dem/adapters/CreateGridAndPlot.cpp(473,3)
+  -> EXTERN: (474,19) dem::mappings::CreateGrid::beginIteration(dem::mappings::CreateGrid *, dem::State &)
+  -> EXTERN: (475,13) dem::mappings::Plot::beginIteration(dem::mappings::Plot *, dem::State &)
+  -> EXTERN: (476,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::beginIteration(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::State &)
+
+===========================================================================

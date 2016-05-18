@@ -1,0 +1,187 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: dem::Cell::Cell(dem::Cell *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *)) [1/16=6.2%] dem/Cell.cpp(5,10)
+  -> INLINE (MANUAL): (4,12) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const) (isz = 16) (sz = 21)
+    -> INLINE (MANUAL): ./peano/grid/Cell.h:(97,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *) (isz = 16) (sz = 21)
+      -> EXTERN: ./peano/grid/Cell.cpph:(16,30) dem::records::Cell::Cell(dem::records::Cell *)
+      -> INLINE (MANUAL): ./peano/grid/Cell.cpph:(18,13) dem::records::Cell::setIsInside(dem::records::Cell *, const bool &) (isz = 0) (sz = 7)
+      -> INLINE (MANUAL): ./peano/grid/Cell.cpph:(19,13) dem::records::Cell::setState(dem::records::Cell *, const dem::records::Cell::State &) (isz = 0) (sz = 7)
+
+===========================================================================
+
+Begin optimization report for: dem::Cell::Cell(dem::Cell *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *const)) [2/16=12.5%] dem/Cell.cpp(4,12)
+  -> INLINE: (4,12) dem::Cell::Cell(dem::Cell *) (isz = 16) (sz = 21)
+    -> INLINE (MANUAL): (4,12) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const) (isz = 16) (sz = 21)
+      -> INLINE (MANUAL): ./peano/grid/Cell.h:(97,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *) (isz = 16) (sz = 21)
+        -> EXTERN: ./peano/grid/Cell.cpph:(16,30) dem::records::Cell::Cell(dem::records::Cell *)
+        -> INLINE (MANUAL): ./peano/grid/Cell.cpph:(18,13) dem::records::Cell::setIsInside(dem::records::Cell *, const bool &) (isz = 0) (sz = 7)
+        -> INLINE (MANUAL): ./peano/grid/Cell.cpph:(19,13) dem::records::Cell::setState(dem::records::Cell *, const dem::records::Cell::State &) (isz = 0) (sz = 7)
+
+===========================================================================
+
+Begin optimization report for: dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)) [3/16=18.8%] dem/Cell.cpp(11,15)
+  -> INLINE (MANUAL): (11,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
+    -> INLINE (MANUAL): ./peano/grid/Cell.h:(99,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
+      -> EXTERN: ./peano/grid/Cell.cpph:(35,30) dem::records::Cell::Cell(dem::records::Cell *)
+
+===========================================================================
+
+Begin optimization report for: dem::Cell::Cell(dem::Cell *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)) [4/16=25.0%] dem/Cell.cpp(10,12)
+  -> INLINE: (10,12) dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
+    -> INLINE (MANUAL): (11,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): ./peano/grid/Cell.h:(99,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
+        -> EXTERN: ./peano/grid/Cell.cpph:(35,30) dem::records::Cell::Cell(dem::records::Cell *)
+
+===========================================================================
+
+Begin optimization report for: dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)) [5/16=31.2%] dem/Cell.cpp(16,18)
+  -> INLINE (MANUAL): (16,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
+    -> INLINE (MANUAL): ./peano/grid/Cell.h:(98,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
+      -> EXTERN: ./peano/grid/Cell.cpph:(40,30) dem::records::CellPacked::~CellPacked(dem::records::CellPacked *)
+      -> EXTERN: ./peano/grid/Cell.cpph:(41,41) dem::records::CellPacked::CellPacked(dem::records::CellPacked *, const dem::records::CellPacked::PersistentRecords &)
+      -> EXTERN: ./peano/grid/Cell.cpph:(41,41) dem::records::CellPacked::~CellPacked(dem::records::CellPacked *)
+      -> EXTERN: ./peano/grid/Cell.cpph:(41,52) dem::records::CellPacked::convert(dem::records::Cell *, const dem::records::CellPacked *) const
+      -> EXTERN: ./peano/grid/Cell.cpph:(41,52) dem::records::Cell::~Cell(dem::records::Cell *)
+
+===========================================================================
+
+Begin optimization report for: dem::Cell::Cell(dem::Cell *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)) [6/16=37.5%] dem/Cell.cpp(15,12)
+  -> INLINE: (15,12) dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
+    -> INLINE (MANUAL): (16,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
+      -> INLINE (MANUAL): ./peano/grid/Cell.h:(98,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
+        -> EXTERN: ./peano/grid/Cell.cpph:(40,30) dem::records::CellPacked::~CellPacked(dem::records::CellPacked *)
+        -> EXTERN: ./peano/grid/Cell.cpph:(41,41) dem::records::CellPacked::CellPacked(dem::records::CellPacked *, const dem::records::CellPacked::PersistentRecords &)
+        -> EXTERN: ./peano/grid/Cell.cpph:(41,41) dem::records::CellPacked::~CellPacked(dem::records::CellPacked *)
+        -> EXTERN: ./peano/grid/Cell.cpph:(41,52) dem::records::CellPacked::convert(dem::records::Cell *, const dem::records::CellPacked *) const
+        -> EXTERN: ./peano/grid/Cell.cpph:(41,52) dem::records::Cell::~Cell(dem::records::Cell *)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Cell::setIsInside(dem::records::Cell *, const bool &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Cell::setIsInside(dem::records::Cell *, const bool &)) ./dem/records/Cell.h(6119,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Cell::setState(dem::records::Cell *, const dem::records::Cell::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Cell::setState(dem::records::Cell *, const dem::records::Cell::State &)) ./dem/records/Cell.h(6139,2)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *)) ./peano/grid/Cell.cpph(17,15)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const)) ./peano/grid/Cell.h(97,5)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)) ./peano/grid/Cell.cpph(41,64)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)) ./peano/grid/Cell.h(98,5)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)) ./peano/grid/Cell.cpph(35,87)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)) ./peano/grid/Cell.h(99,5)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Cell<dem::records::Cell>::~Cell(peano::grid::Cell<dem::records::Cell> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Cell<dem::records::Cell>::~Cell(peano::grid::Cell<dem::records::Cell> *)) ./peano/grid/Cell.cpph(73,38)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Cell<dem::records::Cell>::~Cell(peano::grid::Cell<dem::records::Cell> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Cell<dem::records::Cell>::~Cell(peano::grid::Cell<dem::records::Cell> *const)) ./peano/grid/Cell.h(102,5)
+
+===========================================================================

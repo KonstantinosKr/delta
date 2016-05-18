@@ -1,0 +1,54 @@
+\section{Performance analysis}
+
+
+\chapterDescription
+  {
+    Less than 10 minutes unless you postprocess a big file.
+  }
+  {
+    You may work with the plain output that Peano writes to the terminal. If you
+    use log filters (cmp.~Chapter \ref{chapter:logging}), it is important that
+    you know how to switch particular logging infos on. You also need a working
+    Python installation.
+  }
+
+\noindent
+Prior to any parallelisation or tuning discussion, I want to emphasise that it
+usually makes sense first of all to have a how Peano is performing from a grid
+point of view. For this, the framework comes along with a rather useful script.
+
+\begin{itemize}
+  \item Recompile your code with \texttt{-DPerformanceAnalysis}. For the
+    performance analysis, it usually makes sense to compile with the highest
+    optimisation level and to disable \texttt{-DDebug} and \texttt{-DAsserts}.
+  \item Run your code and ensure that \texttt{info} outputs from the
+    \texttt{peano::performanceanalysis} component are enabled.
+  \item Pipe the output into a file:
+    \begin{code}
+> ./myExecutable myArguments > outputfile.txt
+    \end{code} 
+    We call this file \texttt{outputfile.txt} from hereon.
+  \item Pass the output file to Peano's performance analysis script written in
+  Python. Besides the script (name), you also have to tell the script how many 
+    MPI ranks you have used and how many threads have been enabled. Skip
+    the arguments if you haven't used MPI.
+    \begin{code}
+> python <mypath>/peano/performanceanalysis/performanceanalysis.py outputfile.txt
+    \end{code} 
+  \item Open the web browser of your choice and open the file
+  \texttt{outputfile.txt.html}
+\end{itemize}
+
+\begin{remark}
+Besides the output written by Peano through the component
+\texttt{peano::performanceanalysis}, you also have to use the
+\texttt{CommandLineLogger} (the default), and you have to make this one write
+out time stamps as well as trace information. If you use your own logger or a
+modified log format, the Python script will fail.
+\end{remark}
+
+
+\noindent
+If you browse through your directory, you will notice that all graphs are
+written both as png and as pdf. 
+You can thus integrate them directly into your \LaTeX\ reports.

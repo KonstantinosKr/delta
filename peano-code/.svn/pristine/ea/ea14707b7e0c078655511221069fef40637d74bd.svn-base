@@ -1,0 +1,9 @@
+Peano tarball
+
+This tarball holds the directories
+
+- tarch
+- peano
+
+They holds the content of sourceforge's src directory. Thus, I recommend to 
+extract them into a src directory as well.  

@@ -1,0 +1,21 @@
+component: YourProjectName
+
+namespace: ::__PROJECT_NAME__
+
+vertex:
+  dastgen-file: Vertex.def
+  
+cell:
+  dastgen-file: Cell.def
+
+state:
+  dastgen-file: State.def
+
+event-mapping:
+  name: CreateGrid
+
+adapter:
+  name: CreateGrid
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-predefined-mapping: VTKGridVisualiser(grid)
+ 

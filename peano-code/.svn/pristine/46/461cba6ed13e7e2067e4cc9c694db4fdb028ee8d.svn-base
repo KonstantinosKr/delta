@@ -1,0 +1,35 @@
+Chapter 4.2: Jacobi
+-------------------
+
+Enter the lines starting with >. The other lines show what the output should 
+look like:
+
+
+> ln -s <mypeanopath>/src/peano peano
+> ln -s <mypeanopath>/src/tarch tarch
+> ls 
+howto.txt  myproject  peano  tarch
+> java -jar <mypeanopath>/pdt/pdt.jar --create-project multigrid multigrid
+Run mode: create project
+Was not able to create directories myproject. Probably directory has existed before
+
+  (blueprint of multigrid/Vertex.def already exists)
+  (blueprint of multigrid/Cell.def already exists)
+  (blueprint of multigrid/State.def already exists)
+  (blueprint of multigrid/project.peano-specification already exists)
+
+> java -jar <mypeanopath>/pdt/pdt.jar  --generate-gluecode multigrid/project.peano-specification multigrid <mypeanopath>/pdt/usrtemplates
+[...]
+> make -f multigrid/makefile       
+[...]
+> ./peano-Multigrid-asserts
+[...]
+
+
+
+To clean up the directory, type in
+
+> make -f multigrid/makefile clean
+> rm -rf *.vtk file.mk multigrid/adapters multigrid/dastgen multigrid/records multigrid/repositories multigrid/tests \
+multigrid/VertexOperations.* multigrid/runners/RunnerParallelWorker.cpp
+

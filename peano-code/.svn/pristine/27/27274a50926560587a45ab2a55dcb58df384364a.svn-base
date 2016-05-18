@@ -1,0 +1,11 @@
+Packed-Type: short int;
+
+class multigrid::records::State {  
+  // Stores squared value, i.e. apply sqrt before returning it
+  persistent parallelise double residual2Norm;
+  persistent parallelise double residualMaxNorm;
+  // Stores squared value, i.e. apply sqrt before returning it
+  persistent parallelise double solutionL2Norm;
+  persistent parallelise double solutionMaxNorm;
+  persistent parallelise double numberOfStencilUpdates;
+};

@@ -1,0 +1,113 @@
+%%\documentclass{article}
+\documentclass[12pt,twoside,a4paper]{scrbook}
+
+\usepackage{geometry}
+%\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{color}
+%\usepackage{ifthen}
+%\usepackage{wrapfig}
+%\usepackage{framed}
+\usepackage{framed}
+%\usepackage{enumitem}
+\usepackage{listings} 
+\usepackage{hyperref}
+%\usepackage[numbers,sort&compress]{natbib} 
+
+
+\geometry{left=3.5cm,textwidth=15cm,top=3cm,textheight=23cm}
+
+
+\input{macros}
+
+\begin{document}
+
+ \input{title}
+
+ \thispagestyle{empty}
+ \newpage
+ \cleardoublepage 
+
+ \pagestyle{plain}
+ \pagenumbering{roman}
+ \input{00_preamble}
+
+ \cleardoublepage 
+ 
+ \tableofcontents
+
+ \newpage
+
+ \cleardoublepage 
+
+ \pagestyle{plain}
+ \pagenumbering{arabic}
+
+
+
+ \input{2_quickstart}
+
+
+ 
+ \chapter{Basic Programming Course}
+  \label{chapter:basics-explained}
+
+  \input{31_basics}
+
+  \newpage
+  \input{32_logging-and-statistics}
+% 
+%  \newpage
+%  \input{33_dastgen-and-heaps}
+% 
+%  \newpage
+%  \input{34_element-wise-traversal}
+
+
+
+ \chapter{Applications}
+  \label{chapter:application}
+
+  \input{41_heat-equation}
+
+  \newpage
+  \input{42_matrix-free-multigrid}
+
+ % Poisson equatino with PETSc
+ 
+  \newpage
+  \input{44_patch-based-solver}
+ % Patch-based shallow water
+ % MD oder irgendwas body-maessiges
+ 
+ \chapter{Parallel Computing}
+  \label{chapter:parallel}
+  \input{51_shared-memory}
+
+% pdfor. pfor
+
+  \chapter{Tuning}
+  \label{chapter:tuning}
+
+  \input{60_performance-analysis}
+
+  \newpage
+  \input{61_mpi-setup}
+  \newpage
+  \input{62_quick-tuning}
+  \newpage
+  \input{63_mpi-synchronisation}
+  \newpage
+  \input{69_other-ideas}
+  
+% Die ganzen Optimisation Flags; eher tuning?
+
+%  \section{Multicore support} 
+%  \section{MPI with spacetree-associated data} 
+%  \section{MPI with data on the heap} 
+%  \section{Multicore load balancing} 
+%  \section{MPI load balancing} 
+%  \section{Tuning the single core performance} 
+ 
+
+\end{document}

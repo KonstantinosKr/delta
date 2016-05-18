@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="Oracle-class-diagram.svg"
+   inkscape:export-filename="/work_fast/weinzier/workspace/peano/src/peano/kernel/datatraversal/autotuning/Oracle-class-diagram.png"
+   inkscape:export-xdpi="263.70999"
+   inkscape:export-ydpi="263.70999">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="355.528"
+     inkscape:cy="644.76484"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1600"
+     inkscape:window-height="1126"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3914">
+      <rect
+         y="75.977356"
+         x="46.011848"
+         height="49.149586"
+         width="159.01335"
+         id="rect2985"
+         style="fill:none;stroke:#000000;stroke-width:0.50595158;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="124.71102"
+         x="45.752247"
+         height="26.148376"
+         width="159.01335"
+         id="rect2985-7"
+         style="fill:none;stroke:#000000;stroke-width:0.36903825;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="150.35374"
+         x="45.752247"
+         height="26.148376"
+         width="159.01335"
+         id="rect2985-7-5"
+         style="fill:none;stroke:#000000;stroke-width:0.36903825;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3791"
+         y="95.728722"
+         x="125.70573"
+         style="font-size:16.04293442px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="text-align:center;text-anchor:middle"
+           y="95.728722"
+           x="125.70573"
+           id="tspan3793"
+           sodipodi:role="line">&lt;&lt;singleton&gt;&gt;</tspan><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3795"
+           y="115.78239"
+           x="125.70573"
+           sodipodi:role="line">Oracle</tspan></text>
+    </g>
+    <g
+       id="g3922"
+       transform="translate(-125.25892,-30.304576)">
+      <rect
+         y="78.601616"
+         x="443.84793"
+         height="33.24012"
+         width="159.01335"
+         id="rect2985-9"
+         style="fill:none;stroke:#000000;stroke-width:0.41608334;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="111.42583"
+         x="443.58832"
+         height="26.148376"
+         width="159.01335"
+         id="rect2985-7-0"
+         style="fill:none;stroke:#000000;stroke-width:0.36903825;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="137.06856"
+         x="443.58832"
+         height="26.148376"
+         width="159.01335"
+         id="rect2985-7-5-7"
+         style="fill:none;stroke:#000000;stroke-width:0.36903825;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3791-6"
+         y="99.616119"
+         x="523.54181"
+         style="font-size:16.04293442px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3795-7"
+           y="99.616119"
+           x="523.54181"
+           sodipodi:role="line">Watch</tspan></text>
+    </g>
+    <g
+       id="g3941">
+      <rect
+         y="159.51784"
+         x="309.3645"
+         height="33.24012"
+         width="175.33138"
+         id="rect2985-9-3"
+         style="fill:none;stroke:#000000;stroke-width:0.43691137;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="192.34203"
+         x="309.1507"
+         height="55.606609"
+         width="175.28555"
+         id="rect2985-7-0-1"
+         style="fill:none;stroke:#000000;stroke-width:0.5650261;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3791-6-0"
+         y="180.53233"
+         x="405.3764"
+         style="font-size:16.04293442px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3795-7-6"
+           y="180.53233"
+           x="405.3764"
+           sodipodi:role="line">OracleForOnePhase</tspan></text>
+    </g>
+    <g
+       id="g3929"
+       transform="translate(-95.964492,-88.893424)">
+      <rect
+         y="415.08643"
+         x="241.73087"
+         height="33.24012"
+         width="210.82126"
+         id="rect2985-9-39"
+         style="fill:none;stroke:#000000;stroke-width:0.47909397;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="447.91064"
+         x="241.38667"
+         height="26.148376"
+         width="210.82126"
+         id="rect2985-7-0-9"
+         style="fill:none;stroke:#000000;stroke-width:0.42492452;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="473.55338"
+         x="241.38667"
+         height="26.148376"
+         width="210.82126"
+         id="rect2985-7-5-7-5"
+         style="fill:none;stroke:#000000;stroke-width:0.42492452;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3791-6-2"
+         y="436.10092"
+         x="346.7876"
+         style="font-size:16.04293442px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3795-7-1"
+           y="436.10092"
+           x="346.7876"
+           sodipodi:role="line">OracleForOnePhase...</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 205.06097,108.87971 c 9.09137,0 112.12693,-26.263971 112.12693,-26.263971"
+       id="path3947"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 203.04066,147.2655 106.06602,63.63961"
+       id="path3949"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 395.9798,248.28076 0,46.46701 -150.51273,0 0,32.32489"
+       id="path3951"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 393.95949,294.74777 144.45182,0 0,33.33504"
+       id="path3953"
+       inkscape:connector-curvature="0" />
+    <g
+       id="g3929-6"
+       transform="translate(200.51974,-86.871332)">
+      <rect
+         y="415.08643"
+         x="241.73087"
+         height="33.24012"
+         width="210.82126"
+         id="rect2985-9-39-4"
+         style="fill:none;stroke:#000000;stroke-width:0.47909397;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="447.91064"
+         x="241.38667"
+         height="26.148376"
+         width="210.82126"
+         id="rect2985-7-0-9-4"
+         style="fill:none;stroke:#000000;stroke-width:0.42492452;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <rect
+         y="473.55338"
+         x="241.38667"
+         height="26.148376"
+         width="210.82126"
+         id="rect2985-7-5-7-5-3"
+         style="fill:none;stroke:#000000;stroke-width:0.42492452;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3791-6-2-7"
+         y="436.10092"
+         x="346.7876"
+         style="font-size:16.04293442px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="text-align:center;text-anchor:middle"
+           id="tspan3795-7-1-3"
+           y="436.10092"
+           x="346.7876"
+           sodipodi:role="line">OracleForOnePhase...</tspan></text>
+    </g>
+  </g>
+</svg>

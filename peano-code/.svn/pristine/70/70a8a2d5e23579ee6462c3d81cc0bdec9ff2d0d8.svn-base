@@ -1,0 +1,92 @@
+#include "tarch/Assertions.h"
+#include "tarch/parallel/Node.h"
+#include "peano/parallel/SendReceiveBufferLIFO.h"
+#include "peano/parallel/SendReceiveBufferFIFO.h"
+
+
+
+template <class Vertex>
+Vertex peano::parallel::SendReceiveBufferPool::getVertex(int fromRank ) {
+  #ifdef Asserts
+  const bool receiveVertex = true;
+  #else
+  const bool receiveVertex = _mode==SendAndDeploy || _mode==DeployButDoNotSend;
+  #endif
+
+  if ( receiveVertex ) {
+    logTraceInWith2Arguments( "getVertex(int)", fromRank, toString(_mode) );
+
+    assertion2( _map.count(fromRank) == 1, fromRank, tarch::parallel::Node::getInstance().getRank() );
+
+    typedef SendReceiveBufferAbstractImplementation<Vertex> MySendReceiveBuffer;
+    std::map<int,SendReceiveBuffer*>::iterator bufferPointer = _map.find(fromRank);
+    assertion2( bufferPointer != _map.end(), fromRank, tarch::parallel::Node::getInstance().getRank() );
+    MySendReceiveBuffer* buffer = static_cast<MySendReceiveBuffer*>(bufferPointer->second);
+    const Vertex result = buffer->getVertex();
+    logTraceOutWith1Argument( "getVertex(int)", result.toString() );
+    return result;
+  }
+  else {
+    return Vertex();
+  }
+}
+
+
+template <class Vertex>
+void peano::parallel::SendReceiveBufferPool::createBufferManually(int toRank, const BufferAccessType& bufferAccessType ) {
+  if (_map.count(toRank)==0) {
+    logTraceInWith2Arguments( "createBufferManually(int,type)", toRank, bufferAccessType );
+    #ifdef SEND_RECEIVE_BUFFER_POOL_USES_BACKGROUND_THREAD_TO_RECEIVE_DATA
+    _backgroundThread.switchState(BackgroundThread::Suspend);
+    #endif
+
+    SendReceiveBuffer* newBuffer;
+    if (bufferAccessType == FIFO ) {
+      typedef SendReceiveBufferFIFO<Vertex> BufferType;
+      newBuffer = new BufferType( toRank, _bufferSize );
+    }
+    else {
+      typedef SendReceiveBufferLIFO<Vertex> BufferType;
+      newBuffer = new BufferType( toRank, _bufferSize );
+    }
+    _map.insert(
+      std::pair<int,SendReceiveBuffer*>( toRank,newBuffer )
+    );
+
+    #ifdef SEND_RECEIVE_BUFFER_POOL_USES_BACKGROUND_THREAD_TO_RECEIVE_DATA
+    _backgroundThread.switchState(BackgroundThread::ReceiveDataInBackground);
+    #endif
+
+    logTraceOut( "createBufferManually(int,type)" );
+  }
+}
+
+
+template <class Vertex>
+void peano::parallel::SendReceiveBufferPool::sendVertex(const Vertex& vertex, int toRank, const BufferAccessType& bufferAccessType ) {
+  assertion1( toRank >= 0, tarch::parallel::Node::getInstance().getRank() );
+  assertion1( toRank != tarch::parallel::Node::getInstance().getRank(), tarch::parallel::Node::getInstance().getRank() );
+
+  #ifdef Asserts
+  const bool sendVertexAway = true;
+  #else
+  const bool sendVertexAway = _mode==SendAndDeploy || _mode==SendButDoNotDeploy;
+  #endif
+
+  if ( sendVertexAway ) {
+    if (_bufferSize<=0) {
+      logError( "sendVertex(...)", "invalid buffer size. Probably buffer is not configured" );
+      _bufferSize = 1;
+    }
+
+    createBufferManually<Vertex>(toRank,bufferAccessType);
+
+    typedef SendReceiveBufferAbstractImplementation<Vertex> MySendReceiveBuffer;
+    std::map<int,SendReceiveBuffer*>::iterator bufferPointer = _map.find(toRank);
+    assertion2( bufferPointer != _map.end(), toRank, tarch::parallel::Node::getInstance().getRank() );
+    MySendReceiveBuffer* buffer = static_cast<MySendReceiveBuffer*>(bufferPointer->second);
+    logDebug("sendVertex(...)", "sending vertex from rank " << tarch::parallel::Node::getInstance().getRank() << " to rank " << toRank << " due to boundary exchange. Send " << vertex);
+    buffer->sendVertex(vertex);
+  }
+}
+
