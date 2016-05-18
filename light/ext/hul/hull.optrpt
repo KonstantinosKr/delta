@@ -1,0 +1,493 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: delta::hull::orient(delta::hull::face *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::orient(delta::hull::face *, double *)) delta/hull/hull.cpp(66,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::setplane(delta::hull::face *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::setplane(delta::hull::face *)) delta/hull/hull.cpp(81,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::othere(delta::hull::face *, delta::hull::face *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::othere(delta::hull::face *, delta::hull::face *)) delta/hull/hull.cpp(98,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::otherv(delta::hull::face *, double *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::otherv(delta::hull::face *, double *, double *)) delta/hull/hull.cpp(123,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::edge_0(delta::hull::face *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::edge_0(delta::hull::face *, double *)) delta/hull/hull.cpp(149,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::edge_1(delta::hull::face *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::edge_1(delta::hull::face *, double *)) delta/hull/hull.cpp(174,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::vcmp(double **, double **)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::vcmp(double **, double **)) [7/15=46.7%] delta/hull/hull.cpp(274,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::nextaround(delta::hull::face *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::nextaround(delta::hull::face *, double *)) delta/hull/hull.cpp(539,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::nextonridge(int, delta::hull::edge *, delta::hull::face **)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::nextonridge(int, delta::hull::edge *, delta::hull::face **)) delta/hull/hull.cpp(555,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::testsimplex(delta::hull::face *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::testsimplex(delta::hull::face *)) delta/hull/hull.cpp(586,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::hull(double *, int, int *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::hull(double *, int, int *)) [11/15=73.3%] delta/hull/hull.cpp(612,1)
+  -> EXTERN: (620,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> EXTERN: (621,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> EXTERN: (622,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> (626,8) delta::hull::simplex_vertices(double *, int, delta::hull::MEM *, double **, delta::hull::vertex **) (isz = 452) (sz = 468)
+     [[ Inlining would exceed -inline-max-size value (468>253) <1>]]
+  -> (629,13) delta::hull::simplex(delta::hull::MEM *, delta::hull::MEM *, double *, double *, double *, double *) (isz = 557) (sz = 575)
+     [[ Inlining would exceed -inline-max-size value (575>253) <1>]]
+  -> INLINE: (631,9) delta::hull::testsimplex(delta::hull::face *) (isz = 99) (sz = 107)
+    -> INLINE (MANUAL): (597,18) delta::hull::nextaround(delta::hull::face *, double *) (isz = 16) (sz = 26)
+    -> INLINE (MANUAL): (597,69) delta::hull::nextaround(delta::hull::face *, double *) (isz = 16) (sz = 26)
+  -> INLINE: (639,11) delta::hull::orient(delta::hull::face *, double *) (isz = 16) (sz = 25)
+    -> EXTERN: (76,10) delta::hull::orient3d(double *, double *, double *, double *)
+  -> INLINE: (665,5) delta::hull::mark(delta::hull::face *, double *, delta::hull::face **) (isz = 48) (sz = 57)
+    -> INLINE: (519,14) delta::hull::orient(delta::hull::face *, double *) (isz = 16) (sz = 25)
+      -> EXTERN: (76,10) delta::hull::orient3d(double *, double *, double *, double *)
+    -> (530,7) delta::hull::mark(delta::hull::face *, double *, delta::hull::face **) (isz = 48) (sz = 57)
+       [[ Callee not marked with inlining pragma  <2>]]
+  -> INLINE (MANUAL): (668,25) delta::hull::nextonridge(int, delta::hull::edge *, delta::hull::face **) (isz = 101) (sz = 113)
+    -> INLINE (MANUAL): (562,21) delta::hull::nextaround(delta::hull::face *, double *) (isz = 16) (sz = 26)
+    -> INLINE (MANUAL): (562,69) delta::hull::nextaround(delta::hull::face *, double *) (isz = 16) (sz = 26)
+  -> EXTERN: (674,21) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (676,19) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (681,19) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (685,19) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> INLINE (MANUAL): (699,17) delta::hull::nextonridge(int, delta::hull::edge *, delta::hull::face **) (isz = 101) (sz = 113)
+    -> INLINE (MANUAL): (562,21) delta::hull::nextaround(delta::hull::face *, double *) (isz = 16) (sz = 26)
+    -> INLINE (MANUAL): (562,69) delta::hull::nextaround(delta::hull::face *, double *) (isz = 16) (sz = 26)
+  -> EXTERN: (708,5) delta::hull::MEM_Free(delta::hull::MEM *, void *)
+  -> INLINE: (714,12) delta::hull::setplane(delta::hull::face *) (isz = 146) (sz = 154)
+  -> (716,14) delta::hull::mendface(delta::hull::face *) (isz = 679) (sz = 697)
+     [[ Inlining would exceed -inline-max-size value (697>253) <1>]]
+  -> INLINE: (739,12) delta::hull::orient(delta::hull::face *, double *) (isz = 16) (sz = 25)
+    -> EXTERN: (76,10) delta::hull::orient3d(double *, double *, double *, double *)
+  -> EXTERN: (771,14) delta::hull::MEM_Free(delta::hull::MEM *, void *)
+  -> EXTERN: (775,14) delta::hull::MEM_Free(delta::hull::MEM *, void *)
+  -> EXTERN: (778,2) delta::hull::MEM_Free(delta::hull::MEM *, void *)
+  -> EXTERN: (800,16) delta::hull::MEM_CALLOC(size_t)
+  -> EXTERN: (813,25) delta::hull::TRI_Addadj(delta::hull::TRI *, delta::hull::TRI *)
+  -> EXTERN: (814,25) delta::hull::TRI_Addadj(delta::hull::TRI *, delta::hull::TRI *)
+  -> EXTERN: (815,25) delta::hull::TRI_Addadj(delta::hull::TRI *, delta::hull::TRI *)
+  -> EXTERN: (820,30) delta::hull::TRI_Sortadj(delta::hull::TRI *)
+  -> EXTERN: (825,11) free(void *)
+  -> EXTERN: (830,3) delta::hull::MEM_Release(delta::hull::MEM *)
+  -> EXTERN: (831,3) delta::hull::MEM_Release(delta::hull::MEM *)
+  -> EXTERN: (832,3) delta::hull::MEM_Release(delta::hull::MEM *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/hull.cpp(595,7) inlined into delta/hull/hull.cpp(631,9)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+
+   LOOP BEGIN at delta/hull/hull.cpp(542,3) inlined into delta/hull/hull.cpp(631,9)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+   LOOP END
+
+   LOOP BEGIN at delta/hull/hull.cpp(597,2) inlined into delta/hull/hull.cpp(631,9)
+      remark #15523: loop was not vectorized: loop control variable _n was found, but loop iteration count cannot be computed before executing the loop
+
+      LOOP BEGIN at delta/hull/hull.cpp(542,3) inlined into delta/hull/hull.cpp(631,9)
+         remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+      LOOP END
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(634,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+
+   LOOP BEGIN at delta/hull/hull.cpp(636,5)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(661,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(529,5) inlined into delta/hull/hull.cpp(665,5)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(576,5) inlined into delta/hull/hull.cpp(668,25)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(542,3) inlined into delta/hull/hull.cpp(699,17)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(562,5) inlined into delta/hull/hull.cpp(699,17)
+   remark #15523: loop was not vectorized: loop control variable _n was found, but loop iteration count cannot be computed before executing the loop
+
+   LOOP BEGIN at delta/hull/hull.cpp(542,3) inlined into delta/hull/hull.cpp(699,17)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(570,5) inlined into delta/hull/hull.cpp(699,17)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(712,5)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(721,5)
+   remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
+
+   LOOP BEGIN at delta/hull/hull.cpp(732,4)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+
+      LOOP BEGIN at delta/hull/hull.cpp(735,6)
+         remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+      LOOP END
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(764,5)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+
+   LOOP BEGIN at delta/hull/hull.cpp(770,2)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+   LOOP END
+
+   LOOP BEGIN at delta/hull/hull.cpp(774,2)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(793,5)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(799,3)
+   remark #15308: loop was not vectorized: explicitly compute the iteration count before executing the loop or try using canonical loop form
+   remark #25478: While Loop Unrolled by 8  
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(801,3)
+   remark #15523: loop was not vectorized: loop control variable t was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(820,3)
+   remark #15382: vectorization support: call to function delta::hull::TRI_Sortadj(delta::hull::TRI *) cannot be vectorized   [ delta/hull/hull.cpp(820,30) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at delta/hull/hull.cpp(591,3) inlined into delta/hull/hull.cpp(631,9)
+   remark #15522: loop was not vectorized: loop control flow is too complex. Try using canonical loop form
+
+   LOOP BEGIN at delta/hull/hull.cpp(593,5) inlined into delta/hull/hull.cpp(631,9)
+      remark #15522: loop was not vectorized: loop control flow is too complex. Try using canonical loop form
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(662,3)
+   remark #15522: loop was not vectorized: loop control flow is too complex. Try using canonical loop form
+
+   LOOP BEGIN at delta/hull/hull.cpp(702,19)
+      remark #15341: loop was not vectorized: nonstandard loop is not a vectorization candidate
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::mark(delta::hull::face *, double *, delta::hull::face **)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::mark(delta::hull::face *, double *, delta::hull::face **)) [12/15=80.0%] delta/hull/hull.cpp(518,1)
+  -> INLINE: (519,14) delta::hull::orient(delta::hull::face *, double *) (isz = 16) (sz = 25)
+    -> EXTERN: (76,10) delta::hull::orient3d(double *, double *, double *, double *)
+  -> (530,7) delta::hull::mark(delta::hull::face *, double *, delta::hull::face **) (isz = 48) (sz = 57)
+     [[ Callee not marked with inlining pragma  <2>]]
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/hull.cpp(529,5)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::mendface(delta::hull::face *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::mendface(delta::hull::face *)) [13/15=86.7%] delta/hull/hull.cpp(198,1)
+  -> INLINE (MANUAL): (208,15) delta::hull::otherv(delta::hull::face *, double *, double *) (isz = 20) (sz = 32)
+  -> INLINE (MANUAL): (225,15) delta::hull::othere(delta::hull::face *, delta::hull::face *) (isz = 14) (sz = 24)
+  -> INLINE (MANUAL): (226,15) delta::hull::otherv(delta::hull::face *, double *, double *) (isz = 20) (sz = 32)
+  -> INLINE (MANUAL): (228,15) delta::hull::edge_0(delta::hull::face *, double *) (isz = 15) (sz = 25)
+  -> INLINE (MANUAL): (229,15) delta::hull::edge_1(delta::hull::face *, double *) (isz = 15) (sz = 25)
+  -> INLINE (MANUAL): (230,15) delta::hull::edge_0(delta::hull::face *, double *) (isz = 15) (sz = 25)
+  -> INLINE (MANUAL): (231,15) delta::hull::edge_1(delta::hull::face *, double *) (isz = 15) (sz = 25)
+  -> INLINE (MANUAL): (233,15) delta::hull::othere(delta::hull::face *, delta::hull::face *) (isz = 14) (sz = 24)
+  -> INLINE (MANUAL): (235,15) delta::hull::othere(delta::hull::face *, delta::hull::face *) (isz = 14) (sz = 24)
+  -> INLINE: (257,11) delta::hull::setplane(delta::hull::face *) (isz = 146) (sz = 154)
+  -> INLINE: (257,27) delta::hull::setplane(delta::hull::face *) (isz = 146) (sz = 154)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/hull.cpp(204,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+
+   LOOP BEGIN at delta/hull/hull.cpp(135,3) inlined into delta/hull/hull.cpp(208,15)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(109,3) inlined into delta/hull/hull.cpp(225,15)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(135,3) inlined into delta/hull/hull.cpp(226,15)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(160,3) inlined into delta/hull/hull.cpp(228,15)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(184,3) inlined into delta/hull/hull.cpp(229,15)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(160,3) inlined into delta/hull/hull.cpp(230,15)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(184,3) inlined into delta/hull/hull.cpp(231,15)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(109,3) inlined into delta/hull/hull.cpp(233,15)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(109,3) inlined into delta/hull/hull.cpp(235,15)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::simplex_vertices(double *, int, delta::hull::MEM *, double **, delta::hull::vertex **)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::simplex_vertices(double *, int, delta::hull::MEM *, double **, delta::hull::vertex **)) [14/15=93.3%] delta/hull/hull.cpp(282,1)
+  -> EXTERN: (290,20) delta::hull::MEM_CALLOC(size_t)
+  -> EXTERN: (291,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> EXTERN: (297,5) delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare)
+  -> EXTERN: (302,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+  -> EXTERN: (318,2) delta::hull::SET_Delete(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare)
+  -> EXTERN: (325,24) delta::hull::SET_First(delta::hull::SET *)
+  -> EXTERN: (325,64) delta::hull::SET_Next(delta::hull::SET *)
+  -> EXTERN: (365,7) delta::hull::SET_Delete(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare)
+  -> EXTERN: (374,5) delta::hull::MEM_Release(delta::hull::MEM *)
+  -> EXTERN: (375,5) free(void *)
+  -> EXTERN: (380,15) delta::hull::SET_First(delta::hull::SET *)
+  -> EXTERN: (380,48) delta::hull::SET_Next(delta::hull::SET *)
+  -> EXTERN: (382,19) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (388,3) delta::hull::MEM_Release(delta::hull::MEM *)
+  -> EXTERN: (389,3) free(void *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/hull.cpp(295,3)
+   remark #15382: vectorization support: call to function delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare) cannot be vectorized   [ delta/hull/hull.cpp(297,5) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(306,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+
+   LOOP BEGIN at delta/hull/hull.cpp(308,5)
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+
+      LOOP BEGIN at delta/hull/hull.cpp(310,7)
+         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+      LOOP END
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(325,3)
+   remark #15523: loop was not vectorized: loop control variable pp was found, but loop iteration count cannot be computed before executing the loop
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(332,3)
+   remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+
+   LOOP BEGIN at delta/hull/hull.cpp(334,5)
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/hull.cpp(380,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::simplex(delta::hull::MEM *, delta::hull::MEM *, double *, double *, double *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::simplex(delta::hull::MEM *, delta::hull::MEM *, double *, double *, double *, double *)) [15/15=100.0%] delta/hull/hull.cpp(395,1)
+  -> EXTERN: (398,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (399,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (400,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (401,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (402,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (403,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (404,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (405,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (406,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (407,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (408,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (409,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (417,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (418,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (419,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (420,13) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> INLINE: (495,10) delta::hull::setplane(delta::hull::face *) (isz = 146) (sz = 154)
+  -> INLINE: (497,9) delta::hull::orient(delta::hull::face *, double *) (isz = 16) (sz = 25)
+    -> EXTERN: (76,10) delta::hull::orient3d(double *, double *, double *, double *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/hull.cpp(490,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at delta/hull/hull.cpp(499,7)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+      remark #25478: While Loop Unrolled by 8  
+   LOOP END
+
+   LOOP BEGIN at delta/hull/hull.cpp(508,7)
+      remark #15389: vectorization support: reference f has unaligned access
+      remark #15389: vectorization support: reference f has unaligned access
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15305: vectorization support: vector length 4
+      remark #15427: loop was completely unrolled
+      remark #15309: vectorization support: normalized vectorization overhead 0.857
+      remark #15301: MATERIALIZED LOOP WAS VECTORIZED
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15451: unmasked unaligned unit stride stores: 1 
+      remark #15475: --- begin vector loop cost summary ---
+      remark #15476: scalar loop cost: 5 
+      remark #15477: vector loop cost: 1.750 
+      remark #15478: estimated potential speedup: 1.530 
+      remark #15488: --- end vector loop cost summary ---
+   LOOP END
+LOOP END
+===========================================================================
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING FOOTNOTES:
+
+<1> The function is larger than the inliner would normally inline.  Use the
+    option -inline-max-size to increase the size of any function that would
+    normally be inlined, add "inline __attribute__((always_inline))" to the
+    declaration of the called function, or add "#pragma forceinline" before
+    the call site.
+
+<2> The compiler's heuristics indicate that the function is not profitable to 
+    inline.  Override this decision by adding "inline 
+    __attribute__((always_inline))" to the declaration of the called function, 
+    or add "#pragma forceinline" before the call site.
+

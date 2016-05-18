@@ -21,8 +21,11 @@
 
 #include <limits.h>
 
-#ifndef __lis__
-#define __lis__
+#ifndef __DELTA_HULL_lis__
+#define __DELTA_HULL_lis__
+
+namespace delta {
+  namespace hull {
 
 #define DOUBLY_LINKED(PREV, NEXT) for (i = list; i; j = i, i = i->NEXT) i->PREV = j;
 
@@ -94,6 +97,9 @@ static LIST* CALL (LIST *list)\
   }\
 \
   return list;\
+}
+
+  }
 }
 
 #endif

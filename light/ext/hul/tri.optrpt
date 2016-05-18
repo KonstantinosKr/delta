@@ -1,0 +1,652 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: delta::hull::ppcmp(delta::hull::pp *, delta::hull::pp *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::ppcmp(delta::hull::pp *, delta::hull::pp *)) [1/16=6.2%] delta/hull/tri.cpp(41,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::hasedge(delta::hull::TRI *, double *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::hasedge(delta::hull::TRI *, double *, double *)) delta/hull/tri.cpp(50,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::nextaround(delta::hull::TRI *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (delta::hull::nextaround(delta::hull::TRI *, double *)) delta/hull/tri.cpp(62,1)
+
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Sortadj(delta::hull::TRI *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Sortadj(delta::hull::TRI *)) [4/16=25.0%] delta/hull/tri.cpp(82,1)
+  -> EXTERN: (87,16) _?1memset
+  -> INLINE (MANUAL): (95,22) delta::hull::hasedge(delta::hull::TRI *, double *, double *) (isz = 29) (sz = 40)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(91,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between adj line 95 and adj line 98
+   remark #15346: vector dependence: assumed FLOW dependence between adj line 98 and adj line 95
+
+   LOOP BEGIN at delta/hull/tri.cpp(93,5)
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+      remark #15346: vector dependence: assumed ANTI dependence between tri_730 line 51 and adj line 98
+      remark #15346: vector dependence: assumed FLOW dependence between adj line 98 and tri_730 line 51
+
+      LOOP BEGIN at delta/hull/tri.cpp(54,3) inlined into delta/hull/tri.cpp(95,22)
+         remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+         remark #15305: vectorization support: vector length 2
+         remark #15309: vectorization support: normalized vectorization overhead 0.450
+         remark #15450: unmasked unaligned unit stride loads: 1 
+         remark #15475: --- begin vector loop cost summary ---
+         remark #15476: scalar loop cost: 15 
+         remark #15477: vector loop cost: 20.000 
+         remark #15478: estimated potential speedup: 0.610 
+         remark #15488: --- end vector loop cost summary ---
+         remark #25436: completely unrolled by 3  
+      LOOP END
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+delta/hull/tri.cpp(87,16):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (32, 0)
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Addadj(delta::hull::TRI *, delta::hull::TRI *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Addadj(delta::hull::TRI *, delta::hull::TRI *)) [5/16=31.2%] delta/hull/tri.cpp(110,1)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(113,3)
+   remark #15524: loop was not vectorized: search loop cannot be vectorized unless all memory references can be aligned vector load. 
+   remark #15305: vectorization support: vector length 2
+   remark #15450: unmasked unaligned unit stride loads: 1 
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(114,3)
+   remark #15524: loop was not vectorized: search loop cannot be vectorized unless all memory references can be aligned vector load. 
+   remark #15305: vectorization support: vector length 2
+   remark #15450: unmasked unaligned unit stride loads: 1 
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Copy(delta::hull::TRI *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Copy(delta::hull::TRI *, int)) [6/16=37.5%] delta/hull/tri.cpp(123,1)
+  -> EXTERN: (131,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> EXTERN: (140,13) delta::hull::MAP_Find_Node(delta::hull::MAP *, void *, delta::hull::MAP_Compare)
+  -> EXTERN: (143,2) delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare)
+  -> EXTERN: (149,14) malloc(size_t)
+  -> EXTERN: (153,20) delta::hull::MAP_First(delta::hull::MAP *)
+  -> EXTERN: (153,45) delta::hull::MAP_Next(delta::hull::MAP *)
+  -> EXTERN: (163,31) delta::hull::MAP_Find(delta::hull::MAP *, void *, delta::hull::MAP_Compare)
+  -> EXTERN: (167,3) delta::hull::MEM_Release(delta::hull::MEM *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(136,3)
+   remark #25095: Loop Interchange not done due to: User Function Inside Loop Nest
+   remark #25452: Original Order found to be proper, but by a close margin
+   remark #15382: vectorization support: call to function delta::hull::MAP_Find_Node(delta::hull::MAP *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(140,13) ]
+   remark #15382: vectorization support: call to function delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(143,2) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::MAP_Find_Node( line 140 and call:delta::hull::MAP_Insert(del line 143
+   remark #15346: vector dependence: assumed OUTPUT dependence between  line 143 and  line 140
+
+   LOOP BEGIN at delta/hull/tri.cpp(138,5)
+      remark #15382: vectorization support: call to function delta::hull::MAP_Find_Node(delta::hull::MAP *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(140,13) ]
+      remark #15382: vectorization support: call to function delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(143,2) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(153,3)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(155,3)
+   remark #15382: vectorization support: call to function delta::hull::MAP_Find(delta::hull::MAP *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(163,31) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between t line 157 and call:delta::hull::MAP_Find(delta line 163
+   remark #15346: vector dependence: assumed FLOW dependence between  line 163 and t line 157
+
+   LOOP BEGIN at delta/hull/tri.cpp(160,5)
+      remark #15382: vectorization support: call to function delta::hull::MAP_Find(delta::hull::MAP *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(163,31) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+      remark #15346: vector dependence: assumed ANTI dependence between t line 162 and call:delta::hull::MAP_Find(delta line 163
+      remark #15346: vector dependence: assumed FLOW dependence between  line 163 and t line 162
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Merge(delta::hull::TRI *, int, delta::hull::TRI *, int, int *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Merge(delta::hull::TRI *, int, delta::hull::TRI *, int, int *)) [7/16=43.8%] delta/hull/tri.cpp(174,1)
+  -> EXTERN: (182,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> EXTERN: (187,30) delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare)
+  -> EXTERN: (192,30) delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare)
+  -> EXTERN: (195,7) delta::hull::SET_Size(delta::hull::SET *)
+  -> EXTERN: (196,17) malloc(size_t)
+  -> EXTERN: (197,15) delta::hull::SET_First(delta::hull::SET *)
+  -> EXTERN: (197,52) delta::hull::SET_Next(delta::hull::SET *)
+  -> EXTERN: (202,12) delta::hull::KDT_Create(int, double *, double)
+  -> EXTERN: (203,3) free(void *)
+  -> EXTERN: (204,7) delta::hull::KDT_Size(delta::hull::KDT *)
+  -> EXTERN: (205,16) delta::hull::MEM_CALLOC(size_t)
+  -> EXTERN: (209,13) delta::hull::KDT_First(delta::hull::KDT *)
+  -> EXTERN: (209,42) delta::hull::KDT_Next(delta::hull::KDT *)
+  -> EXTERN: (221,12) delta::hull::KDT_Nearest(delta::hull::KDT *, double *, double)
+  -> EXTERN: (239,12) delta::hull::KDT_Nearest(delta::hull::KDT *, double *, double)
+  -> EXTERN: (255,3) delta::hull::MEM_Release(delta::hull::MEM *)
+  -> EXTERN: (256,3) delta::hull::KDT_Destroy(delta::hull::KDT *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(185,3)
+   remark #25095: Loop Interchange not done due to: User Function Inside Loop Nest
+   remark #25452: Original Order found to be proper, but by a close margin
+   remark #15382: vectorization support: call to function delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare) cannot be vectorized   [ delta/hull/tri.cpp(187,30) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::SET_Insert(del line 187 and call:delta::hull::SET_Insert(del line 187
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::SET_Insert(del line 187 and call:delta::hull::SET_Insert(del line 187
+
+   LOOP BEGIN at delta/hull/tri.cpp(187,5)
+      remark #15382: vectorization support: call to function delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare) cannot be vectorized   [ delta/hull/tri.cpp(187,30) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(190,3)
+   remark #25095: Loop Interchange not done due to: User Function Inside Loop Nest
+   remark #25452: Original Order found to be proper, but by a close margin
+   remark #15382: vectorization support: call to function delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare) cannot be vectorized   [ delta/hull/tri.cpp(192,30) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::SET_Insert(del line 192 and call:delta::hull::SET_Insert(del line 192
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::SET_Insert(del line 192 and call:delta::hull::SET_Insert(del line 192
+
+   LOOP BEGIN at delta/hull/tri.cpp(192,5)
+      remark #15382: vectorization support: call to function delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare) cannot be vectorized   [ delta/hull/tri.cpp(192,30) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(197,3)
+   remark #15523: loop was not vectorized: loop control variable w was found, but loop iteration count cannot be computed before executing the loop
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(209,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(217,3)
+   remark #25096: Loop Interchange not done due to: Imperfect Loop Nest (Either at Source or due to other Compiler Transformations)
+   remark #25451: Advice: Loop Interchange, if possible, might help loopnest. Suggested Permutation : ( 1 2 3 ) --> ( 1 3 2 ) 
+   remark #15382: vectorization support: call to function delta::hull::KDT_Nearest(delta::hull::KDT *, double *, double) cannot be vectorized   [ delta/hull/tri.cpp(221,12) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::KDT_Nearest(de line 221 and call:delta::hull::KDT_Nearest(de line 221
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::KDT_Nearest(de line 221 and call:delta::hull::KDT_Nearest(de line 221
+
+   LOOP BEGIN at delta/hull/tri.cpp(219,5)
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+      remark #25015: Estimate of max trip count of loop=3
+
+      LOOP BEGIN at delta/hull/tri.cpp(223,7)
+         remark #15524: loop was not vectorized: search loop cannot be vectorized unless all memory references can be aligned vector load. 
+         remark #15305: vectorization support: vector length 2
+         remark #15450: unmasked unaligned unit stride loads: 1 
+         remark #25015: Estimate of max trip count of loop=3
+      LOOP END
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(235,3)
+   remark #25096: Loop Interchange not done due to: Imperfect Loop Nest (Either at Source or due to other Compiler Transformations)
+   remark #25451: Advice: Loop Interchange, if possible, might help loopnest. Suggested Permutation : ( 1 2 3 ) --> ( 1 3 2 ) 
+   remark #15382: vectorization support: call to function delta::hull::KDT_Nearest(delta::hull::KDT *, double *, double) cannot be vectorized   [ delta/hull/tri.cpp(239,12) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::KDT_Nearest(de line 239 and call:delta::hull::KDT_Nearest(de line 239
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::KDT_Nearest(de line 239 and call:delta::hull::KDT_Nearest(de line 239
+
+   LOOP BEGIN at delta/hull/tri.cpp(237,5)
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+      remark #25015: Estimate of max trip count of loop=3
+
+      LOOP BEGIN at delta/hull/tri.cpp(241,7)
+         remark #15524: loop was not vectorized: search loop cannot be vectorized unless all memory references can be aligned vector load. 
+         remark #15305: vectorization support: vector length 2
+         remark #15450: unmasked unaligned unit stride loads: 1 
+         remark #25015: Estimate of max trip count of loop=3
+      LOOP END
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Compadj(delta::hull::TRI *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Compadj(delta::hull::TRI *, int)) [8/16=50.0%] delta/hull/tri.cpp(263,1)
+  -> EXTERN: (269,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> EXTERN: (270,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> EXTERN: (286,25) delta::hull::MAP_Find(delta::hull::MAP *, void *, delta::hull::MAP_Compare)
+  -> EXTERN: (290,12) delta::hull::MEM_Alloc(delta::hull::MEM *)
+  -> EXTERN: (291,2) delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare)
+  -> EXTERN: (296,3) delta::hull::MEM_Release(delta::hull::MEM *)
+  -> EXTERN: (297,3) delta::hull::MEM_Release(delta::hull::MEM *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(275,3)
+   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15462: unmasked indexed (or gather) loads: 3 
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 8 
+   remark #15477: vector loop cost: 14.000 
+   remark #15478: estimated potential speedup: 0.570 
+   remark #15488: --- end vector loop cost summary ---
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(279,3)
+   remark #25095: Loop Interchange not done due to: User Function Inside Loop Nest
+   remark #25452: Original Order found to be proper, but by a close margin
+   remark #15382: vectorization support: call to function delta::hull::MAP_Find(delta::hull::MAP *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(286,25) ]
+   remark #15382: vectorization support: call to function delta::hull::MEM_Alloc(delta::hull::MEM *) cannot be vectorized   [ delta/hull/tri.cpp(290,12) ]
+   remark #15382: vectorization support: call to function delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(291,2) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between t line 283 and call:delta::hull::MAP_Insert(del line 291
+   remark #15346: vector dependence: assumed FLOW dependence between  line 291 and t line 283
+
+   LOOP BEGIN at delta/hull/tri.cpp(281,5)
+      remark #15382: vectorization support: call to function delta::hull::MAP_Find(delta::hull::MAP *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(286,25) ]
+      remark #15382: vectorization support: call to function delta::hull::MEM_Alloc(delta::hull::MEM *) cannot be vectorized   [ delta/hull/tri.cpp(290,12) ]
+      remark #15382: vectorization support: call to function delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(291,2) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+      remark #15346: vector dependence: assumed ANTI dependence between t line 283 and call:delta::hull::MAP_Insert(del line 291
+      remark #15346: vector dependence: assumed FLOW dependence between  line 291 and t line 283
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Topoadj(delta::hull::TRI *, int, double *, int *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Topoadj(delta::hull::TRI *, int, double *, int *)) [9/16=56.2%] delta/hull/tri.cpp(306,1)
+  -> EXTERN: (314,9) delta::hull::TSI_Status(double *, double *, double *, double *, double)
+  -> INLINE: (325,3) delta::hull::markadj(delta::hull::TRI *, int) (isz = 19) (sz = 26)
+    -> (74,5) delta::hull::markadj(delta::hull::TRI *, int) (isz = 19) (sz = 26)
+       [[ Callee not marked with inlining pragma  <1>]]
+    -> (75,5) delta::hull::markadj(delta::hull::TRI *, int) (isz = 19) (sz = 26)
+       [[ Callee not marked with inlining pragma  <1>]]
+    -> (76,5) delta::hull::markadj(delta::hull::TRI *, int) (isz = 19) (sz = 26)
+       [[ Callee not marked with inlining pragma  <1>]]
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(312,3)
+   remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(323,3)
+   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15329: vectorization support: scatter was emulated for the variable s:  strided by 22   [ delta/hull/tri.cpp(323,32) ]
+   remark #15305: vectorization support: vector length 4
+   remark #15462: unmasked indexed (or gather) loads: 1 
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 2 
+   remark #15477: vector loop cost: 3.000 
+   remark #15478: estimated potential speedup: 0.660 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25439: unrolled with remainder by 2  
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(323,3)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(327,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between m line 329 and t line 329
+   remark #15346: vector dependence: assumed ANTI dependence between t line 329 and m line 329
+   remark #25439: unrolled with remainder by 2  
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(327,3)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(334,5)
+   remark #15523: loop was not vectorized: loop control variable t was found, but loop iteration count cannot be computed before executing the loop
+
+   LOOP BEGIN at delta/hull/tri.cpp(336,7)
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+   LOOP END
+
+   LOOP BEGIN at delta/hull/tri.cpp(337,31)
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+delta/hull/tri.cpp(340,9):remark #34014: optimization advice for memcpy: increase the source's alignment to 32 (and use __assume_aligned) to increase the width of loads
+delta/hull/tri.cpp(340,9):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (1, 0), and destination (alignment, offset): (32, 0)
+delta/hull/tri.cpp(341,8):remark #34014: optimization advice for memcpy: increase the source's alignment to 32 (and use __assume_aligned) to increase the width of loads
+delta/hull/tri.cpp(341,8):remark #34014: optimization advice for memcpy: increase the destination's alignment to 32 (and use __assume_aligned) to increase the width of stores
+delta/hull/tri.cpp(341,8):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (1, 0), and destination (alignment, offset): (1, 0)
+delta/hull/tri.cpp(342,7):remark #34014: optimization advice for memcpy: increase the destination's alignment to 32 (and use __assume_aligned) to increase the width of stores
+delta/hull/tri.cpp(342,7):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (32, 0), and destination (alignment, offset): (1, 0)
+===========================================================================
+
+Begin optimization report for: delta::hull::markadj(delta::hull::TRI *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::markadj(delta::hull::TRI *, int)) [10/16=62.5%] delta/hull/tri.cpp(70,1)
+  -> (74,5) delta::hull::markadj(delta::hull::TRI *, int) (isz = 19) (sz = 26)
+     [[ Callee not marked with inlining pragma  <1>]]
+  -> (75,5) delta::hull::markadj(delta::hull::TRI *, int) (isz = 19) (sz = 26)
+     [[ Callee not marked with inlining pragma  <1>]]
+  -> (76,5) delta::hull::markadj(delta::hull::TRI *, int) (isz = 19) (sz = 26)
+     [[ Callee not marked with inlining pragma  <1>]]
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(70,1)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Polarise(delta::hull::TRI *, int, int *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Polarise(delta::hull::TRI *, int, int *)) [11/16=68.8%] delta/hull/tri.cpp(352,1)
+  -> EXTERN: (361,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> EXTERN: (371,13) delta::hull::MAP_Find(delta::hull::MAP *, void *, delta::hull::MAP_Compare)
+  -> INLINE (MANUAL): (376,18) delta::hull::nextaround(delta::hull::TRI *, double *) (isz = 13) (sz = 24)
+  -> INLINE (MANUAL): (376,70) delta::hull::nextaround(delta::hull::TRI *, double *) (isz = 13) (sz = 24)
+  -> EXTERN: (384,2) delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare)
+  -> EXTERN: (390,16) malloc(size_t)
+  -> EXTERN: (411,20) delta::hull::MAP_First(delta::hull::MAP *)
+  -> EXTERN: (411,45) delta::hull::MAP_Next(delta::hull::MAP *)
+  -> INLINE (MANUAL): (419,21) delta::hull::nextaround(delta::hull::TRI *, double *) (isz = 13) (sz = 24)
+  -> INLINE (MANUAL): (420,15) delta::hull::nextaround(delta::hull::TRI *, double *) (isz = 13) (sz = 24)
+  -> EXTERN: (437,12) free(void *)
+  -> EXTERN: (442,3) delta::hull::MEM_Release(delta::hull::MEM *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(369,5)
+   remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/tri.cpp(376,9) ]
+
+   LOOP BEGIN at delta/hull/tri.cpp(376,9)
+      remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(394,3)
+   remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
+
+   LOOP BEGIN at delta/hull/tri.cpp(397,5)
+      remark #15389: vectorization support: reference t has unaligned access   [ delta/hull/tri.cpp(397,71) ]
+      remark #15389: vectorization support: reference t has unaligned access   [ delta/hull/tri.cpp(397,71) ]
+      remark #15389: vectorization support: reference t has unaligned access   [ delta/hull/tri.cpp(397,71) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 0.550
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15458: masked indexed (or gather) loads: 3 
+      remark #15475: --- begin vector loop cost summary ---
+      remark #15476: scalar loop cost: 29 
+      remark #15477: vector loop cost: 20.000 
+      remark #15478: estimated potential speedup: 0.950 
+      remark #15488: --- end vector loop cost summary ---
+      remark #25436: completely unrolled by 3  
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(411,3)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+
+   LOOP BEGIN at delta/hull/tri.cpp(419,5)
+      remark #15523: loop was not vectorized: loop control variable q was found, but loop iteration count cannot be computed before executing the loop
+      remark #25478: While Loop Unrolled by 4  
+   LOOP END
+LOOP END
+
+
+Non-optimizable loops:
+
+
+LOOP BEGIN at delta/hull/tri.cpp(367,3)
+   remark #15522: loop was not vectorized: loop control flow is too complex. Try using canonical loop form
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Vertices(delta::hull::TRI *, int, int *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Vertices(delta::hull::TRI *, int, int *)) [12/16=75.0%] delta/hull/tri.cpp(450,1)
+  -> EXTERN: (458,3) delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
+  -> EXTERN: (467,13) delta::hull::MAP_Find_Node(delta::hull::MAP *, void *, delta::hull::MAP_Compare)
+  -> EXTERN: (469,2) delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare)
+  -> EXTERN: (476,17) malloc(size_t)
+  -> EXTERN: (479,13) delta::hull::MAP_First(delta::hull::MAP *)
+  -> EXTERN: (479,38) delta::hull::MAP_Next(delta::hull::MAP *)
+  -> EXTERN: (487,3) delta::hull::MEM_Release(delta::hull::MEM *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(463,3)
+   remark #25095: Loop Interchange not done due to: User Function Inside Loop Nest
+   remark #25452: Original Order found to be proper, but by a close margin
+   remark #15382: vectorization support: call to function delta::hull::MAP_Find_Node(delta::hull::MAP *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(467,13) ]
+   remark #15382: vectorization support: call to function delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(469,2) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:delta::hull::MAP_Find_Node( line 467 and call:delta::hull::MAP_Insert(del line 469
+   remark #15346: vector dependence: assumed OUTPUT dependence between  line 469 and  line 467
+
+   LOOP BEGIN at delta/hull/tri.cpp(465,5)
+      remark #15382: vectorization support: call to function delta::hull::MAP_Find_Node(delta::hull::MAP *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(467,13) ]
+      remark #15382: vectorization support: call to function delta::hull::MAP_Insert(delta::hull::MEM *, delta::hull::MAP **, void *, void *, delta::hull::MAP_Compare) cannot be vectorized   [ delta/hull/tri.cpp(469,2) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(479,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Planes(delta::hull::TRI *, int, int *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Planes(delta::hull::TRI *, int, int *)) [13/16=81.2%] delta/hull/tri.cpp(495,1)
+  -> EXTERN: (499,18) malloc(size_t)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(502,3)
+   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15458: masked indexed (or gather) loads: 3 
+   remark #15460: masked strided loads: 4 
+   remark #15462: unmasked indexed (or gather) loads: 6 
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 28 
+   remark #15477: vector loop cost: 50.000 
+   remark #15478: estimated potential speedup: 0.560 
+   remark #15488: --- end vector loop cost summary ---
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Char(delta::hull::TRI *, int, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Char(delta::hull::TRI *, int, double *)) [14/16=87.5%] delta/hull/tri.cpp(514,1)
+  -> EXTERN: (515,19) _?1memset
+  -> EXTERN: (527,9) delta::hull::simplex_J(double *, double *, double *, double *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(521,3)
+   remark #15382: vectorization support: call to function delta::hull::simplex_J(double *, double *, double *, double *) cannot be vectorized   [ delta/hull/tri.cpp(527,9) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between t line 523 and call:delta::hull::simplex_J(doub line 527
+   remark #15346: vector dependence: assumed FLOW dependence between  line 527 and t line 523
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(550,7)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ delta/hull/tri.cpp(555,2) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ delta/hull/tri.cpp(555,2) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ delta/hull/tri.cpp(555,2) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between a line 555 and center line 556
+   remark #15346: vector dependence: assumed FLOW dependence between center line 556 and a line 555
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+delta/hull/tri.cpp(515,19):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (32, 0)
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Kdtree(delta::hull::TRI *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Kdtree(delta::hull::TRI *, int)) [15/16=93.8%] delta/hull/tri.cpp(569,1)
+  -> EXTERN: (575,18) malloc(size_t)
+  -> EXTERN: (587,8) delta::hull::KDT_Create(int, double *, double)
+  -> INLINE: (591,5) delta::hull::TRI_Extents(delta::hull::TRI *, double *) (isz = 92) (sz = 99)
+  -> EXTERN: (592,5) delta::hull::KDT_Drop(delta::hull::KDT *, double *, void *)
+  -> EXTERN: (595,3) free(void *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(577,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between q line 582 and a line 584
+   remark #15346: vector dependence: assumed ANTI dependence between a line 584 and q line 582
+LOOP END
+
+LOOP BEGIN at delta/hull/tri.cpp(589,3)
+   remark #25096: Loop Interchange not done due to: Imperfect Loop Nest (Either at Source or due to other Compiler Transformations)
+   remark #25452: Original Order found to be proper, but by a close margin
+   remark #15382: vectorization support: call to function delta::hull::KDT_Drop(delta::hull::KDT *, double *, void *) cannot be vectorized   [ delta/hull/tri.cpp(592,5) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between t line 606 and call:delta::hull::KDT_Drop(delta line 592
+   remark #15346: vector dependence: assumed FLOW dependence between  line 592 and t line 606
+
+   LOOP BEGIN at delta/hull/tri.cpp(610,3) inlined into delta/hull/tri.cpp(591,5)
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+      remark #15346: vector dependence: assumed ANTI dependence between _v line 613 and extents line 618
+      remark #15346: vector dependence: assumed FLOW dependence between extents line 618 and _v line 613
+      remark #25436: completely unrolled by 2  
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: delta::hull::TRI_Extents(delta::hull::TRI *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TRI_Extents(delta::hull::TRI *, double *)) [16/16=100.0%] delta/hull/tri.cpp(602,1)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/hull/tri.cpp(610,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between v line 613 and extents line 618
+   remark #15346: vector dependence: assumed FLOW dependence between extents line 618 and v line 613
+   remark #25436: completely unrolled by 2  
+LOOP END
+===========================================================================
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING FOOTNOTES:
+
+<1> The compiler's heuristics indicate that the function is not profitable to 
+    inline.  Override this decision by adding "inline 
+    __attribute__((always_inline))" to the declaration of the called function, 
+    or add "#pragma forceinline" before the call site.
+

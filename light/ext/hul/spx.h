@@ -19,8 +19,11 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Solfec. If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef __spx__
-#define __spx__
+#ifndef __DELTA_HULL_spx__
+#define __DELTA_HULL_spx__
+
+namespace delta {
+  namespace hull {
 
 /* simplex integration of few
  * usefull global coordinate functions;
@@ -84,5 +87,8 @@ double simplex_J (double *a, double *b, double *c, double *d);
 (c) [2]*(a) [2] + (c) [2]*(b) [2] + 2.*(c) [2]*(c) [2] + (c) [2]*(d) [2] +\
 (d) [2]*(a) [2] + (d) [2]*(b) [2] + (d) [2]*(c) [2] + 2.*(d) [2]*(d) [2] \
 ))
+
+  }
+}
 
 #endif

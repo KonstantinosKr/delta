@@ -21,8 +21,11 @@
 
 #include <stdlib.h>
 
-#ifndef __mem__
-#define __mem__
+#ifndef __DELTA_HULL_mem__
+#define __DELTA_HULL_mem__
+
+namespace delta {
+  namespace hull {
 
 typedef struct memory_pool MEM;
 
@@ -53,5 +56,8 @@ size_t MEM_Size (MEM *pool);
 
 /* release memory pool memory back to system */
 void MEM_Release (MEM *pool);
+
+  }
+}
 
 #endif

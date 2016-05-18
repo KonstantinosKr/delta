@@ -22,8 +22,13 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Solfec. If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef __hyb__
-#define __hyb__
+#ifndef __DELTA_HULL_hyb__
+#define __DELTA_HULL_hyb__
+
+
+
+namespace delta {
+  namespace hull {
 
 typedef struct box BOX; /* axis aligned box */
 
@@ -46,5 +51,8 @@ void hybrid (BOX **boxes, int n, void *data, BOX_Overlap_Create create);
 
 /* report overlaps between two sets of boxes */
 void hybrid_ext (BOX **seta, int na, BOX **setb, int nb, void *data, BOX_Overlap_Create create);
+
+  }
+}
 
 #endif

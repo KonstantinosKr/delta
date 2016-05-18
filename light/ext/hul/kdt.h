@@ -21,8 +21,11 @@
 
 #include "set.h"
 
-#ifndef __kdt__
-#define __kdt__
+#ifndef __DELTA_HULL_kdt__
+#define __DELTA_HULL_kdt__
+
+namespace delta {
+  namespace hull {
 
 typedef struct kdt KDT;
 
@@ -67,5 +70,8 @@ KDT* KDT_Next (KDT *kd);
 
 /* destroy kd-tree */
 void KDT_Destroy (KDT *kd);
+
+  }
+}
 
 #endif

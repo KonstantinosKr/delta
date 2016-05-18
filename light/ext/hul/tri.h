@@ -21,8 +21,11 @@
 
 #include "kdt.h"
 
-#ifndef __tri__
-#define __tri__
+#ifndef __DELTA_HULL_tri__
+#define __DELTA_HULL_tri__
+
+namespace delta {
+  namespace hull {
 
 typedef struct triangle TRI; /* surface triangle */
 struct triangle
@@ -100,5 +103,8 @@ KDT* TRI_Kdtree (TRI *tri, int n);
 
 /* compute extents of a single triangle */
 void TRI_Extents (TRI *t, double *extents);
+
+  }
+}
 
 #endif

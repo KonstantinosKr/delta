@@ -25,7 +25,7 @@
 #ifndef HEADER_FILE
 #define HEADER_FILE
 
-#include "bf.h"
+#include "collision/bf.h"
 #include "algo.h"
 #include "stdio.h"
 #include <vector>

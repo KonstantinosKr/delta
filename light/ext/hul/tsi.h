@@ -19,8 +19,11 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Solfec. If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef __tsi__
-#define __tsi__
+#ifndef __DELTA_HULL_tsi__
+#define __DELTA_HULL_tsi__
+
+namespace delta {
+  namespace hull {
 
 enum
 {
@@ -53,5 +56,8 @@ int TSI_Status (double *a, double *b, double *c, double *p, double r);
  * output triangulation 'tt' contains 'ntt' 6-vertex second order triangle vertex numbers, refering to 'cc';
  * output arrays are dynamically allocated; the status of the intersection is returned */
 int TSI_Approx (double *a, double *b, double *c, double *p, double r, double **cc, int *ncc, int **tt, int *ntt);
+
+  }
+}
 
 #endif

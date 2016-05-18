@@ -22,8 +22,11 @@
 #include <stdlib.h>
 #include <math.h>
 
-#ifndef __alg__
-#define __alg__
+#ifndef __DELTA_HULL_alg__
+#define __DELTA_HULL_alg__
+
+namespace delta {
+  namespace hull {
 
 /* using geometric tollerance is
  * an Ahilles heal of Solfec */
@@ -1414,4 +1417,6 @@ if (((DET) =\
   EXPMAP (omega, R);\
 }
 
+  }
+}
 #endif

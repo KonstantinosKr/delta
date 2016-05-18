@@ -5,25 +5,40 @@ include Flags.mak
 CFLAGS = $(STD) $(DEBUG) $(PROFILE) $(NOTHROW) $(MEMDEBUG) $(GEOMDEBUG)
 
 OBJ =   err.o \
-	alg.o \
-	mem.o \
-	kdt.o \
-	map.o \
-	set.o \
-	hul.o \
-	tri.o \
-	hyb.o \
-	spx.o \
-	tsi.o \
-	predicates.o
+        alg.o \
+        mem.o \
+        kdt.o \
+        map.o \
+        set.o \
+        hul.o \
+        tri.o \
+        hyb.o \
+        spx.o \
+        tsi.o \
+        predicates.o
 
-libhul.a: $(OBJ)
-	ar rcv $@ $(OBJ)
-	ranlib $@ 
+
+default:
+	@echo Please select target:
+	@echo
+	@echo " clean       Clean up project"
+	@echo " release     Build release library"
+	@echo " debug       Build debug library"
 
 clean:
-	rm -f libhul
+	rm -f lirm -f *.o
 	rm -f *.o
+
+
+release: $(OBJ)
+	ar rcv libhul.a $(OBJ)
+	ranlib libhul.a
+
+debug: STD+=-g3
+debug: $(OBJ)
+	ar rcv libhul-debug.a $(OBJ)
+	ranlib libhul-debug.a
+
 
 err.o: err.c err.h
 	$(CC) $(CFLAGS) -c -o $@ $<

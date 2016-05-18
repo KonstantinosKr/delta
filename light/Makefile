@@ -1,61 +1,56 @@
-CPP_SRC = input.cpp geom.cpp material.cpp output.cpp delta.cpp bf.cpp contact.cpp forces.cpp dynamics.cpp log.cpp
 
-CC=gcc
-CXX=g++
+-include files.mk
 
-HULLINC = -Iext/hul
-HULLLIB = -Lext/hul -lhul
+PROJECT_HOME = .
 
-# Python paths
-#PYTHONINC=-I/usr/include/python2.7
-#PYTHONLIB=-L/usr/lib -lpython2.7
 
-PYTHONINC = -I/Library/Frameworks/Python.framework/Versions/3.4/include/python3.4m/
-PYTHONLIB = -L/Library/Frameworks/Python.framework/Versions/3.4/lib -lpython3.4
+default: header
+	@echo Please specify build target. Available targets are:
+	@echo clean
+	@echo dim3-gcc-asserts
+	@echo dim3-gcc-release
 
-# Program name
-EXE=delta
 
-REAL=double
+dim3-gcc-asserts: CC=g++ -std=c++0x
+dim3-gcc-asserts: DIM=-DDim3 -DAsserts
+dim3-gcc-asserts: CFLAGS=-DiREAL=double -Wall -pedantic -pedantic-errors -O3
+dim3-gcc-asserts: LFLAGS=
+dim3-gcc-asserts: EXECUTABLE=dem-3d-asserts
+dim3-gcc-asserts: header build
 
-DEBUG=yes
+dim3-gcc-release: CC=g++ -std=c++0x
+dim3-gcc-release: DIM=-DDim3
+dim3-gcc-release: CFLAGS=-DiREAL=double -Wall -pedantic -pedantic-errors -O3
+dim3-gcc-release: LFLAGS=
+dim3-gcc-release: EXECUTABLE=dem-3d-release
+dim3-gcc-release: header build
 
-ifeq ($(REAL),double)
-  REAL=-DiREAL=double
-else
-  REAL=-DiREAL=float
-endif
 
-ifeq ($(DEBUG),yes)
-  CFLAGS=-Iobjs/ -g -Wall -O0 -pedantic -pedantic-errors -m64 $(REAL) $(HULLINC) -DDEBUG
-else
-  CFLAGS=-Iobjs/ -03 -m64 $(REAL) $(HULLINC)
-endif
+OBJECTS=$(SOURCES:.cpp=.o)
 
-CPP_OBJS=$(addprefix objs/, $(CPP_SRC:.cpp=.o))
-C_OBJS=$(addprefix objs/, $(C_SRC:.c=.o))
-LIBS=-lm -lstdc++ $(HULLLIB) 
 
-default: dirs $(CPP_OBJS) $(EXE)
+files.mk:
+	touch files.mk
+	echo SOURCES=\\ > files.mk
+	find -L $(PROJECT_HOME) -name '*.cpp' | tr '\n' ' ' >> files.mk
 
-.PHONY: dirs clean print
 
-print:
-	@echo $(CPP_OBJS)
+header:
+	@echo  --- This is Delta @ LIGHT ---
 
-dirs:
-	/bin/mkdir -p objs/
 
-del:
-	find ./ -iname "*.dump" -exec rm '{}' ';'
+build: files.mk $(OBJECTS)
+	$(CC) $(OBJECTS) -o $(EXECUTABLE) $(LFLAGS) 
+	@echo
+	@echo build of LIGHT successful
+
 
 clean:
-	/bin/rm -rf objs *~ $(EXE)
-	/bin/rm -rf output/*
-	find ./ -iname "*.dump" -exec rm '{}' ';'
+	rm -f $(EXECUTABLE)
+	rm -f $(OBJECTS)
+	rm -f files.mk
+	rm -f compiler-minutes.txt
 
-$(EXE): $(CPP_OBJS) 
-	$(CXX) -o $@ $^ $(LIBS)
 
-objs/%.o: %.cpp
-	$(CXX) $(CFLAGS) $< -c -o $@
+$(OBJECTS): %.o : %.cpp
+	$(CC) $(DIM) $(CFLAGS) -I$(PROJECT_HOME) -c $< -o $@

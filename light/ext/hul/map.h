@@ -21,8 +21,11 @@
 
 #include "mem.h"
 
-#ifndef __map__
-#define __map__
+#ifndef __DELTA_HULL_map__
+#define __DELTA_HULL_map__
+
+namespace delta {
+  namespace hull {
 
 typedef struct map MAP; /* map type */
 typedef int (*MAP_Compare) (void*, void*); /* comparison callback */
@@ -68,5 +71,8 @@ MAP* MAP_Prev (MAP *node);
 
 /* next element */
 MAP* MAP_Next (MAP *node);
+
+  }
+}
 
 #endif

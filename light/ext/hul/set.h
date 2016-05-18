@@ -21,8 +21,11 @@
 
 #include "mem.h"
 
-#ifndef __set__
-#define __set__
+#ifndef __DELTA_HULL_set__
+#define __DELTA_HULL_set__
+
+namespace delta {
+  namespace hull {
 
 typedef struct set SET; /* set type */
 typedef int (*SET_Compare) (void*, void*); /* comparison callback */
@@ -72,5 +75,8 @@ SET* SET_Prev (SET *node);
 
 /* next element */
 SET* SET_Next (SET *node);
+
+  }
+}
 
 #endif

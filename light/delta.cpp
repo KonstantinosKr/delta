@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-#include "tmr.h"
-#include "input.h"
-#include "output.h"
+#include "ext/tmr.h"
+#include "io/input.h"
+#include "io/output.h"
 #include "contact.h"
 #include "dynamics.h"
-#include "forces.h"
+#include "forces/forces.h"
 #include <iostream>
 #include <vector>
 #include <ctime>
