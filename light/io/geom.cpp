@@ -99,9 +99,6 @@ void geometry::nonsphericalparticle(iREAL eps, iREAL radius,
     v[i][2] = myradius*cos(phi);
   }
   
-  delta::hull::GEOMETRIC_EPSILON = 1e-10;
-  
-  
   delta::hull::TRI* tr = NULL;
   free(tr);int pointlength = 0;
   tr = delta::hull::hull((double *)v, pointsize, &pointlength);

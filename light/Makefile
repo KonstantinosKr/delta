@@ -3,7 +3,6 @@
 
 PROJECT_HOME = .
 
-
 default: header
 	@echo Please specify build target. Available targets are:
 	@echo clean
@@ -25,31 +24,25 @@ dim3-gcc-release: LFLAGS=
 dim3-gcc-release: EXECUTABLE=dem-3d-release
 dim3-gcc-release: header build
 
-
 OBJECTS=$(SOURCES:.cpp=.o)
-
 
 files.mk:
 	touch files.mk
 	echo SOURCES=\\ > files.mk
 	find -L $(PROJECT_HOME) -name '*.cpp' | tr '\n' ' ' >> files.mk
 
-
 header:
 	@echo  --- This is Delta @ LIGHT ---
-
 
 build: files.mk $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(EXECUTABLE) $(LFLAGS) 
 	@echo
 	@echo build of LIGHT successful
 
-
 clean:
 	rm -f $(EXECUTABLE)
 	rm -f $(OBJECTS)
 	rm -f files.mk
-	rm -f compiler-minutes.txt
 
 
 $(OBJECTS): %.o : %.cpp
