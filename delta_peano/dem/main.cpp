@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
               << "  no-grid" << std::endl
               << "  regular-grid" << std::endl
               << "  adaptive-grid" << std::endl
-              << "  reluctant-adaptive-grid" << std::endl
+              << "  adaptive-grid" << std::endl
               << "Plot variants" << std::endl
               << "=============" << std::endl
               << "  never" << std::endl
@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
   else if (gridTypeIdentifier=="adaptive-grid") {
     gridType = dem::mappings::CreateGrid::AdaptiveGrid;
   }
-  else if (gridTypeIdentifier=="reluctant-adaptive-grid") {
+  else if (gridTypeIdentifier=="adaptive-grid") {
     gridType = dem::mappings::CreateGrid::ReluctantAdaptiveGrid;
   }
   else {
