@@ -1,0 +1,42 @@
+/**
+ 
+ @mainpage "An efficient, triangle-based discrete element implementation @ Peano"
+
+
+ <h1>Prepare environment</h1>
+ 
+ If you haven't done so, you have to download/checkout Peano to some place in 
+ your system. See www.peano-framework.org for details. Afterwards, please 
+ change into your git directory applications/peano and do the following steps:
+
+ \code
+ ln -s your-peano-path/peano peano
+ ln -s your-peano-path/tarch tarch
+ ln -s ../../src/delta delta
+ \endcode
+ 
+ Afterward, make should do the job.
+
+ <h1>Regenerate all the generated/glue code</h1>
+ 
+ Please change into the directory holding peano, tarch, dem, and so forth. Type in
+ 
+ \code
+ java -jar ~/workspace/peano/pdt/pdt.jar --create-project dem dem
+ java -jar ~/workspace/peano/pdt/pdt.jar --generate-gluecode dem/project.peano-specification dem ~/workspace/peano/pdt/usrtemplates
+ \endcode
+ 
+ You do need Peano's pdt (Peano Development Toolkit) to run this operation though. 
+ 
+ 
+ <h1>Compiler settings (if you want to write your own makefile)</h1>
+ 
+ - Compile with -DDim3 at least. -DAsserts is recommended for non-production runs.
+ - Set the compile flag -DiREAL=double
+ - Set search directory to src, i.e. adopt -I...
+ - Change C++ standard to C++11 (in GNU it is -std=c++0x)
+ - If you use Eclipse rather than the makefile, you might want to exclude insituvis from your build (see Resource Configuration dialogue)
+ 
+ 
+ */
+ 

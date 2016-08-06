@@ -1,0 +1,75 @@
+\section{Introduction}
+
+\marginpar{\footnotesize What is DEM. Why does DEM matter (application areas)?}
+Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum.
+Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. 
+
+\marginpar{\footnotesize There are two important shortcomings of many codes:
+only spheres and too few of them. Furthermore, many codes suffer if spheres
+are of different orders of magnitudes. Why does it make sense to tackle this?}
+Lorem ipsum.
+Lorem ipsum.
+Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum.
+Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. 
+
+\marginpar{\footnotesize Major objective/contribution of this paper.}
+Upscaling a DEM code with respect to particle count and machine size 
+challenges the objective to work with triangulated particles from a vast range
+of particle sizes.
+DEM codes spend a majority of their compute time in collision detection.
+\marginpar{\footnotesize Tomek: citation.} 
+This phase becomes significantly more complicated if we switch from
+sphere-to-sphere checks to the comparison of billions of triangles.
+Geometric comparisons suffer from poor SIMDability if realised
+straightforwardly.
+Multiple contact points between any pair of particles may exist, and it is
+impossible to predict statically how this computational workload distributes
+between ranks if particles are distributed among ranks. 
+The distribution itself is non-trivial if there are particles from a vast range
+of scales, which in turn again makes the contact point relation more complicated
+than for particle sets of (roughly) the same size.
+Finally, the amount of data to be exchanged per particle is higher
+than for spherical data where a centre and a radius describe the object of interest. 
+The computational work thus increases significantly with any increase of
+particle counts.
+The scalability of this computational work in turn is not given by construction.
+The present paper introduces realisation idioms of a triangle-based DEM code
+that fuses efficiency and scalability on all levels of the machine architecture spanning from
+vectorisation and memory access characteristics over manycore to inter-node
+data exchange.
+It shows that the upcoming massively parallel era will allow us to
+simulate non-sperical DEM formulations with unpreceded speed.   
+
+\marginpar{\footnotesize What do we do and how does it differ/fit to others'
+work?}
+Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum.
+Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. 
+
+\marginpar{\footnotesize Shortcomings and limitations of the present approach.}
+Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum.
+Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. 
+
+
+- Non-spherical particles reduce efficiency significantly [78,104] in Samiei
+- Analytical shape functions besides spheres [41,56,61,118] in Semiei und er
+selbst
+- Generic shape composition with spheres [75] und Samiei selber
+
+
+\marginpar{\footnotesize Structure of work.}
+The remainder of the paper is organised as follows: 
+We start from a brief sketch the overall DEM simulation with
+explicit time stepping in Section \ref{section:algorithm}. 
+A multiscale grid meta data structure (Section \ref{section:grid}) helps us to
+reduce the algorithms complexity to linear.
+Starting from this, the main part of the contribution studies a proper data
+layout of particle and collision data (Section \ref{section:vectorisation}) that is well-suited for
+vectorisation, allows us to exploit multi- and manycore
+architectures in various ways (Section \ref{section:shared-memory}) as well as
+classic parallel architectures via MPI and domain decomposition (Section
+\ref{section:domain-decomposition}).
+In Section \ref{section:benchmarks}, we use all algorithmic ingredients to run some benchmarks
+that reveal the potential and impact of a technology supporting non-spherical
+particles efficiently, before we present performance studies (Section
+\ref{section:results}).
+A brief summary and an outlook close the discussion.
