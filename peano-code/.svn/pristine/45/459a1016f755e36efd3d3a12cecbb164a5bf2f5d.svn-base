@@ -1,7 +1,0 @@
-Packed-Type: short int;
-
-#include "peano/utils/Globals.h"
-
-class peano::heap::records::IntegerHeapData {
-  persistent expose parallelise int  u;
-};

@@ -1,6 +1,0 @@
-Packed-Type: short int;
-
-
-class myproject::dastgen::Cell {  
-  persistent double epsilon;
-};
