@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
               << " time-step-size      floating point number" << std::endl
               << " plot                see plot variants below" << std::endl
               << " gravity             floating point number" << std::endl
-              << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, sphere-hybrid-on-triangle-pairs, sphere-hybrid-on-batches, sphere-bf, sphere-penalty, gjk" << std::endl
+              << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, sphere-hybrid-on-triangle-pairs, sphere-hybrid-on-batches, bf, sphere-penalty, gjk" << std::endl
               << " [core-count]        only required if you have translated the code with TBBs" << std::endl
               << std::endl << std::endl << std::endl << std::endl
               << "Scenarios" << std::endl
@@ -209,7 +209,7 @@ int main(int argc, char** argv) {
   else if (collisionModel=="sphere-hybrid-on-batches") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereHybridOnBatches;
   }
-  else if (collisionModel=="sphere-bf") {
+  else if (collisionModel=="bf") {
   	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereBruteForce;
   }
   else if (collisionModel=="sphere-penalty") {

@@ -9,13 +9,13 @@ Three levels of multicore parallelisation:
 
 We introduce three levels of shared memory parallelisation. On the highest level, we exploit the cell level decomposition and assign work within each cell to cores. Within the cell we assign work per particle pair  to an inner level of threads. Lastly within each particle pair the innermost level of parallelisation is utilised to exploit tessellation level parallelisation by the contact solver.
 
+//describe the setup
+For the setups we run scaling experiments that use the hybrid solver and the brute force solver. To enhance the runtime to solution we use an spheres to minimize the number of mesh to mesh contact solving per timestep per cell per vertex.
+  
+
 In the innermost level of parallesation we experimenting with three methods to resolve contact points in parallel. The first method is the brute force method where
 
-
-\begin{figure}[!h]
-\centering
-\includegraphics[width=1\textwidth]{experiments/random/newton_histogram} \protect\caption{\label{fig17}Newton solver histogram of number of iterations for convergence.}
-\end{figure} 
+-talk about mesh based parallelism (innermost level of parallelism)
 
 
 \begin{figure}[!h]
@@ -35,7 +35,12 @@ In the innermost level of parallesation we experimenting with three methods to r
 \includegraphics[width=1\textwidth]{experiments/random/particle_triangle_based_x0_based_x0} \protect\caption{\label{fig17}Particle and Triangle based nested shared memory parallelism using openMP.}
 \end{figure} 
 
+Particle and Triangle parallelism nests both particle and triangle shared memory threads. The performance is slightly slower (put plot showing difference) than particle based only parallelism due to overhead and thread forking. (quantify with plot).
+
+
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\textwidth]{experiments/random/tbb_vs_serial} \protect\caption{\label{fig17}Cell based parallelism compared to serial runs.}
 \end{figure} 
+
+

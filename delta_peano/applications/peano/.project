@@ -24,4 +24,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>dem/adapters/xadaptivity</name>
+			<type>2</type>
+			<location>/Users/konstantinos/Devel/terminals/hamilton/xadaptivity</location>
+		</link>
+	</linkedResources>
 </projectDescription>

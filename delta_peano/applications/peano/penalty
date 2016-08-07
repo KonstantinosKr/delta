@@ -1,0 +1,103 @@
+ -23          07:25:38     [kkmb.local]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[vertex] the free tag 1
+ -22          07:25:38     [kkmb.local]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell] the free tag 2
+ -21          07:25:38     [kkmb.local]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell-marker] the free tag 3
+ -24          07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "dem.tests" .... ok
+ 1.48641e+09  07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "dem"  ok
+ -24          07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.datatraversal.tests" .... ok
+ 1.48641e+09  07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.datatraversal"  ok
+ -24          07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.grid.tests" .................... ok
+ 1.48641e+09  07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.grid"  ok
+ 3.90217e+09  07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.heap.tests" .. ok
+ 1.48641e+09  07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.heap"  ok
+ 1.48641e+09  07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano"  ok
+ -22.9263     07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "tarch.la" ............ ok
+ 1.48641e+09  07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "tarch"  ok
+ -24          07:25:38     [kkmb.local]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running global test case collection  ok
+ 1.58355e+09  07:25:38     [kkmb.local]rank:0 info         peano::utils::UserInterface::writeHeader()             
+ 1.58355e+09  07:25:38     [kkmb.local]rank:0 info         peano::utils::UserInterface::writeHeader()              Application based upon the PDE framework Peano - Release P3
+ 1.4864e+09   07:25:38     [kkmb.local]rank:0 info         peano::utils::UserInterface::writeHeader()              build: dim=3
+ 1.4864e+09   07:25:38     [kkmb.local]rank:0 info         peano::utils::UserInterface::writeHeader()              optimisations: d-loop persistent-attributes packed opt-static-subtrees recursion-unrolling 
+ 1.4864e+09   07:25:38     [kkmb.local]rank:0 info         peano::utils::UserInterface::writeHeader()              (C) 2005 - 2015   www.peano-framework.org
+ -23          07:25:38     [kkmb.local]rank:0 info         peano::utils::UserInterface::writeHeader()              processes: 1, threads: 1
+ 1.48641e+09  07:25:38     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  create grid 
+ 1.24702e+08  07:25:38     [kkmb.local]rank:0 info         dem::mappings::CreateGrid::beginIteration()             maxH=0.5    
+ 1.4864e+09   07:25:38     [kkmb.local]rank:0 info         dem::mappings::CreateGrid::endIteration(State)          created 27 particles with 18470 triangles
+ 1.24702e+08  07:25:38     [kkmb.local]rank:0 info         dem::mappings::CreateGrid::beginIteration()             maxH=0.5    
+ 1.4864e+09   07:25:38     [kkmb.local]rank:0 info         dem::mappings::CreateGrid::endIteration(State)          created 0 particles with 0 triangles
+ 1.48641e+09  07:25:38     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  start time stepping
+ 8            07:25:38     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=0, no-of-reassignments=0, no-of-triangle-comparisons=0, grid-vertices=16
+ 4.16075e+09  07:26:56     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1, no-of-reassignments=36, no-of-triangle-comparisons=2.65727e+08, grid-vertices=16
+ 1.07374e+09  07:27:12     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2, no-of-reassignments=78, no-of-triangle-comparisons=6.78311e+07, grid-vertices=16
+ 8.05306e+08  07:27:34     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3, no-of-reassignments=81, no-of-triangle-comparisons=1.06402e+08, grid-vertices=16
+ 5.36871e+08  07:28:00     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4, no-of-reassignments=88, no-of-triangle-comparisons=1.25925e+08, grid-vertices=16
+ 3.22123e+09  07:28:26     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=5, no-of-reassignments=71, no-of-triangle-comparisons=1.26705e+08, grid-vertices=16
+ 8.05306e+08  07:28:52     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=6, no-of-reassignments=60, no-of-triangle-comparisons=1.22987e+08, grid-vertices=16
+ 4.02653e+08  07:29:28     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=7, no-of-reassignments=47, no-of-triangle-comparisons=1.6694e+08, grid-vertices=16
+ 1.07374e+09  07:30:01     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=8, no-of-reassignments=12, no-of-triangle-comparisons=1.52943e+08, grid-vertices=16
+ 1.07374e+09  07:30:32     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=9, no-of-reassignments=1, no-of-triangle-comparisons=1.52421e+08, grid-vertices=16
+ 3.7581e+09   07:31:07     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=10, no-of-reassignments=7, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:31:41     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=11, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:32:15     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=12, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:32:50     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=13, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:33:25     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=14, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:34:03     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=15, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:34:38     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=16, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:35:13     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=17, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:35:47     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=18, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:36:21     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=19, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:36:54     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=20, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:37:29     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=21, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:38:05     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=22, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:38:42     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=23, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:39:19     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=24, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:39:54     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=25, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:40:29     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=26, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:41:04     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=27, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:41:39     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=28, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:42:14     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=29, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:42:49     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=30, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:43:23     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=31, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:43:56     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=32, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:44:30     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=33, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:45:04     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=34, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:45:38     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=35, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:46:14     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=36, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:46:48     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=37, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:47:23     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=38, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:47:57     [kkmbp]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=39, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:48:33     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=40, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:49:08     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=41, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:49:45     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=42, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:50:23     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=43, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:50:57     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=44, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:51:34     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=45, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:52:11     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=46, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:52:48     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=47, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:53:26     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=48, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:54:01     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=49, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:54:39     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=50, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:55:16     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=51, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:55:53     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=52, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:56:29     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=53, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:57:05     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=54, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:57:40     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=55, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:58:16     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=56, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:58:53     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=57, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   07:59:31     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=58, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:00:09     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=59, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:00:47     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=60, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:01:24     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=61, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:02:00     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=62, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:02:38     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=63, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:03:16     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=64, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:03:52     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=65, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:04:27     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=66, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:05:01     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=67, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:05:35     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=68, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:06:10     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=69, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:06:46     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=70, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:08:39     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=71, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:09:14     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=72, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:09:49     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=73, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:10:24     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=74, no-of-reassignments=0, no-of-triangle-comparisons=1.64244e+08, grid-vertices=16
+ 3.7581e+09   08:11:02     [kkmb.local]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=75, no-of-reassignments=0, no-of-triangle-c
