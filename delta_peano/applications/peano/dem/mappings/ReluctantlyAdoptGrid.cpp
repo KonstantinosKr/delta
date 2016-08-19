@@ -4,15 +4,12 @@
 #include "peano/utils/Loop.h"
 
 
-
-
 /**
  * @todo Please tailor the parameters to your mapping's properties.
  */
 peano::CommunicationSpecification   dem::mappings::ReluctantlyAdoptGrid::communicationSpecification() {
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
-
 
 /**
  * @see AdoptGrid::restrictCoarseningVetoToCoarseGrid() for an explanation.
@@ -32,8 +29,6 @@ peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::touchVertexFi
 peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::enterCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces);
 }
-
-
 
 peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::leaveCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);

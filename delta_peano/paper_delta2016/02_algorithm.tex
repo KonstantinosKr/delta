@@ -1,11 +1,9 @@
 \section{Algorithm outline}
 \label{section:algorithm}
  
-
-\marginpar{\footnotesize KK: Please insert algorithmic blueprint.}
 \begin{algorithm}
  
-   Blueprint of our explicit DEM code's overall structure.
+   Blueprint of explicit DEM code's overall structure.
  
  \label{algorithm:dem-blueprint}
 % \SetAlgoNoLine
@@ -48,29 +46,20 @@
 
 We focus on DEM with explicit time stepping (Algorithm \ref{algorithm:dem-blueprint}). 
 A straightforward implementation consists of one outer time stepping loop
-hosting three inner loops. 
-The first inner loop detects contact points between particles' triangles and
-check each triangle vs.~the others.
-It thus has to loop over the particles.
+hosting two inner loops. 
+The first inner loop detects contact points between particles' triangles.
+It thus has to loop over all particles.
 The second loop runs over these contact points and translates them into forces.
 While contact points could in principle be translated into forces straightaway,
 it makes sense to outsource the force computation into a separate algorithm
 phase.
-The third loop applies the forces to the particles and updates the particle
-positions.
-It has to loop over all particles.
-
+The third loop applies the forces to the particles that are in contact and updates the particles
+position.
 
 {\bf Contact detection.}
-We employ a visco-elastic particle model with spring forces here, where the
-actual particle is incompressible.
-However, it is equipped with a small halo layer of size $\epsilon >0$:
-While the particles are rigid bodies, two particles are assumed to contact each
-other if their distance is smaller than $2\epsilon$. 
+Equipped with a small halo layer of size $\epsilon >0$ two particles are assumed to contact each other if their distance is smaller than $2\epsilon$. 
 However, the distance always is positive.
-Such an approach equals a Minkowsi sum approach where the actual particles are
-blown up by a circle with radius $\epsilon$ and may penetrate each other up to
-depth of $\epsilon $.
+Such an approach equals a Minkowsi sum approach \cite{Ericson2005} where the actual particles are extended by a circle with radius $\epsilon$ and may penetrate each other up to a depth of $\epsilon $.
 
 
 \begin{figure}[htb]
@@ -78,28 +67,21 @@ depth of $\epsilon $.
     \includegraphics[width=0.45\textwidth]{sketches/minkowski.pdf}
   \end{center}
   \caption{
-    Left: Three particles with their $\epsilon $ environment. The particles do
+    Three particles with their $\epsilon $ environment. The particles do
     not penetrate each other, but two particles plus their $\epsilon $
-    environment penetrate and create one contact point with a normal. 
+    environment penetrate and create one contact point (diamond point) with a normal. 
   }
   \label{figure:minkowski}
 \end{figure}
 
-As we apply a solid particle model, contact always is a unique point. 
-We define it to be the centre of an overlap region (Figure \ref{figure:minkowski}), i.e.~the
-distance $d$ between a particle $A$ and its contact point with a second particle
-is $0 < d \leq \epsilon$.
 Each contact point is equipped with a normal $n$ pointing from the contact point
 to the surface of the contacting body's surface.
-As the distance is positive, the normal is well-defined and we have $|n| \leq
-\epsilon $.
-Please note that the normal direction depends on whether we make particle $A$
+The normal direction depends on whether we make particle $A$
 being hit by particle $B$ or the other way round: each normal associated with a
 particle points along the outer normal of the body.
 Despite the fact that we employ a rigid body model, multiple contact points
 between two bodies may exist as particles may be concave and their Minkowsi sum
 may overlap.
-
 
 For two given particles $A$ and $B$ with corresponding sets of triangles
 $\mathbb{T}_A$ and $\mathbb{T}_B$, the contact detection thus reads:
@@ -119,7 +101,7 @@ is the maximum number of triangles per particle.
 
 {\bf Force model.}
 We apply the linear spring-dashpot force model from Cundall and
-Strack \cite{19,Samiei} to study the efficiency of our implementation.
+Strack \cite{cundall-strack-79} to study the efficiency of our implementation.
 Per particle $A$, it accumulates all contact points in $\mathbb{C}_A$ into one
 translational and one rotational repulsive force with some damping.
 We make $\mathbb{C}_A$ subject to a postprocessing which eliminates all
@@ -140,7 +122,7 @@ On the preprocessed contact point set $\mathbb{C}_A$ we then determine
   f_{rot} = \sum _{c \in \mathbb{C}_A}
   \label{equation:forces:rotational}
 \end{eqnarray}
-\marginpar{\footnotesize TK,KK: Please add/check formula.}
+
 %What are the expensive phases 
 \noindent
 $k_{repulsive}$ and $k_{damp}$ are material coefficients. 
@@ -149,12 +131,10 @@ change rate of this depth is derives from the projection of the relative
 velocity between the two particles onto the normal vector.
 We use the the particles' velocities $v_A$ and $v_B$ here.
 The $\min $ function ensures that the force always pulls particle away from each
-other. 
-There is no particle attraction.
-
+other. There is no particle attraction.
 
 Our Newtonian DEM code relies solely on pair-wise interactions so far. 
-With a modifcation of
+With a modification of
 ($\ref{equation:forces:rotational}$,$\ref{equation:forces:rotational}$), it is
 however possible to introduce more sophisticated force patterns.
 We note that the complexity of the force computation depends solely on the size
@@ -167,13 +147,4 @@ contact forces from many small particles.
 In this case, there are however few large particles compared to the overall
 number of particles.
 
-
-{\bf Time stepping.}
-For the present work, we rely on an explicit Euler as simplest time stepping
-scheme possible.
-We implement a symplectic scheme where the velocity is updated with the forces
-before the position is updated with the new velocity \cite{Samiei,37}. 
-While the extension to implicit schemes is beyond scope \cite{xxx}, our outlook
-does discuss more sophisticated and adaptive time step choices which translate
-the present time-driven scheme into an event-driven algorithm \cite{xxx}.
 

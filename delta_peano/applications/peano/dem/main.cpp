@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
               << " time-step-size      floating point number" << std::endl
               << " plot                see plot variants below" << std::endl
               << " gravity             floating point number" << std::endl
-              << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, sphere-hybrid-on-triangle-pairs, sphere-hybrid-on-batches, bf, sphere-penalty, gjk" << std::endl
+              << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, sphere-hybrid-on-triangle-pairs, sphere-hybrid-on-batches, bf, sphere-bf, sphere-penalty, gjk" << std::endl
               << " [core-count]        only required if you have translated the code with TBBs" << std::endl
               << std::endl << std::endl << std::endl << std::endl
               << "Scenarios" << std::endl
@@ -75,7 +75,8 @@ int main(int argc, char** argv) {
               << "=============" << std::endl
               << "  never" << std::endl
               << "  every-iteration" << std::endl
-              << "  upon-change" << std::endl;
+              << "  upon-change" << std::endl
+    		  << "  every-batch" << std::endl;
 
     return -1;
   }
@@ -175,6 +176,9 @@ int main(int argc, char** argv) {
   else if (plotIdentifier=="upon-change") {
     plot = dem::runners::Runner::UponChange;
   }
+  else if (plotIdentifier=="every-batch") {
+	plot = dem::runners::Runner::EveryBatch;
+  }
   else {
     std::cerr << "invalid plot option. Please run without arguments to see list of valid plot variants" << std::endl;
     programExitCode = 2;
@@ -209,7 +213,7 @@ int main(int argc, char** argv) {
   else if (collisionModel=="sphere-hybrid-on-batches") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereHybridOnBatches;
   }
-  else if (collisionModel=="bf") {
+  else if (collisionModel=="sphere-bf") {
   	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereBruteForce;
   }
   else if (collisionModel=="sphere-penalty") {

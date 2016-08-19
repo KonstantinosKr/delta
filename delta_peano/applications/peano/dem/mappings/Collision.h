@@ -50,7 +50,7 @@ class dem::mappings::Collision {
 
     State   _state;
 
-    const double epsilon = 1e-4;
+
 
     void collideParticlesOfTwoDifferentVertices(
       dem::Vertex&  vertexA,
@@ -69,16 +69,18 @@ class dem::mappings::Collision {
     	BruteForce,
     	Penalty,
     	PenaltyStat,
-	HybridOnTrianglePairs,
+		HybridOnTrianglePairs,
     	HybridOnBatches,
     	HybridOnTrianglePairsStats,
     	HybridOnBatchesStats,
     	SphereHybridOnTrianglePairs,
         SphereHybridOnBatches,
     	SphereBruteForce,
-	SpherePenalty,
+		SpherePenalty,
     	GJK
     };
+
+    const double epsilon = 5E-3;
 
     struct Collisions {
       records::Particle                            _copyOfPartnerParticle;

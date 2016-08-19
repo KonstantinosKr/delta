@@ -1,0 +1,95 @@
+\begin{thebibliography}{10}
+
+\bibitem{Weinzierl:15:Compression}
+W.~Eckhardt, R.~Glas, D.~Korzh, S.~Wallner, and T.~Weinzierl.
+\newblock On-the-fly memory compression for multibody algorithms.
+\newblock In {\em Advances in Parallel Computing}. IOS Press, 2015.
+\newblock (in press).
+
+\bibitem{Eckhardt2014}
+Wolfgang Eckhardt.
+\newblock {Efficient HPC Implementations for Large-Scale Molecular Simulation
+  in Process Engineering}.
+\newblock 2014.
+
+\bibitem{Eichenberger2004}
+Alexandre~E. Eichenberger, Peng Wu, and Kevin O'Brien.
+\newblock {Vectorization for SIMD architectures with alignment constraints}.
+\newblock {\em ACM SIGPLAN Notices}, 39(6):82, 2004.
+
+\bibitem{Ericson2005}
+C~Ericson.
+\newblock {The Gilbert-Johnson-Keerthi algorithm}, 2005.
+
+\bibitem{Fleissner}
+Florian Fleissner and Peter Eberhard.
+\newblock {Parallel Load Balanced Particle Simulation with Hierarchical
+  Particle Grouping Strategies}.
+\newblock pages 33--44.
+
+\bibitem{Software:Delta}
+K.~Krestenitis, T.~Koziara, and T.~Weinzierl.
+\newblock Delta, 2016.
+\newblock github.com/KonstantinosKr/delta.
+
+\bibitem{Parteli2013}
+Eric J~R Parteli.
+\newblock {DEM simulation of particles of complex shapes using the multisphere
+  method: Application for additive manufacturing}.
+\newblock {\em AIP Conference Proceedings}, 1542:185--188, 2013.
+
+\bibitem{Plimpton1995}
+Steve Plimpton.
+\newblock {Fast Parallel Algorithms for Short -- Range Molecular Dynamics}.
+\newblock {\em Jounal of Computational Physics}, 117(June 1994):1--42, 1995.
+
+\bibitem{Rycroft2012}
+Chris~H Rycroft, Terttaliisa Lind, Salih G{\"{u}}ntay, and Abdel Dehbi.
+\newblock {Granular flow in pebble bed reactors : dust generation and scaling}.
+\newblock pages 447--455, 2012.
+
+\bibitem{Treibig:10:Likwid}
+J.~Treibig, G.~Hager, and G.~Wellein.
+\newblock {LIKWID}: {A} {L}ightweight {P}erformance-{O}riented {T}ool {S}uite
+  for x86 {M}ulticore {E}nvironments.
+\newblock In {\em Proceedings of the 2010 39th International Conference on
+  Parallel Processing Workshops}, ICPPW '10, pages 207--216. IEEE Computer
+  Society, 2010.
+
+\bibitem{Wachs2012}
+Anthony Wachs, Laurence Girolami, Guillaume Vinay, and Gilles Ferrer.
+\newblock {Grains3D, a flexible DEM approach for particles of arbitrary convex
+  shape - Part I: Numerical model and validations}.
+\newblock {\em Powder Technology}, 224:374--389, 2012.
+
+\bibitem{Wachs2012a}
+Anthony Wachs and Andriarimina~Daniel Rakotonirina.
+\newblock {A MPI / domain decomposition strategy for large-scale simulations of
+  granular media made of particles of arbitrary shape}.
+\newblock 130(2011):69360, 2012.
+
+\bibitem{Weinzierl:2009:Diss}
+T.~Weinzierl.
+\newblock {\em A {F}ramework for {P}arallel {PDE} {S}olvers on {M}ultiscale
+  {A}daptive {C}artesian {G}rids}.
+\newblock Verlag Dr. Hut, M{\"{u}}nchen, 2009.
+
+\bibitem{Software:Peano}
+T.~Weinzierl et~al.
+\newblock Peano---a {F}ramework for {PDE} {S}olvers on {S}pacetree {G}rids,
+  2016.
+\newblock www.peano-framework.org.
+
+\bibitem{Weinzierl:11:Peano}
+T.~Weinzierl and M.~Mehl.
+\newblock {Peano -- A Traversal and Storage Scheme for Octree-Like Adaptive
+  Cartesian Multiscale Grids}.
+\newblock {\em SIAM Journal on Scientific Computing}, 33(5):2732--2760, October
+  2011.
+
+\bibitem{Weinzierl:16:PIC}
+T.~Weinzierl, B.~Verleye, P.~Henri, and D.~Roose.
+\newblock Two particle-in-grid realisations on spacetrees.
+\newblock {\em Parallel Computing}, 52:42--64, 2016.
+
+\end{thebibliography}

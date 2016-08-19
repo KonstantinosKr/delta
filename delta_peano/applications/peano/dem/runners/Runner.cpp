@@ -81,7 +81,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
         ( repository.getState().getNumberOfContactPoints()>0 ||
           !repository.getState().isGridStationary() || i%50==0 ||
           repository.getState().getNumberOfParticleReassignments()>0
-        ));
+        )) || (plot == EveryBatch && i%50 == 0);
 
     if (plotThisTraversal)
     {

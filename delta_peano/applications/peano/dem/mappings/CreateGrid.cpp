@@ -175,8 +175,6 @@ void dem::mappings::CreateGrid::createCell(
 	case hopper:
 		if (coarseGridCell.isRoot() )
 		{
-			int particlesInCellPerAxis = std::floor(fineGridVerticesEnumerator.getCellSize()(0) / _particleDiamMax);
-
 			std::vector<double>  xCoordinates;
 			std::vector<double>  yCoordinates;
 			std::vector<double>  zCoordinates;
@@ -372,7 +370,7 @@ void dem::mappings::CreateGrid::createCell(
 			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 
 			vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
-			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = particleDiameter;
+			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = particleDiameter * 1.5;
 			vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
 			assertion( tarch::la::greater(vertex.getParticle(newParticleNumber)._persistentRecords._hMin,0.0) );

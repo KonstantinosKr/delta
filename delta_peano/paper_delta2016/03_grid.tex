@@ -1,17 +1,14 @@
 \section{Grid meta data structures}
 \label{section:grid}
 
-Various speedup techniques such as linked-cell lists \cite{xxx} and Verlet lists
-\cite{xxxx} reduce the quadratic complexity in DEM codes.
-Notably inspiration in this context stems from the molecular dynamics community
-\cite{mattutis:24,wolfgang}. 
-In the present paper, we propose to rely on a generalised tree-based linked-cell
-technique that allows us to efficiently treat particles of a vast range of diameters.
+Various speedup techniques such as linked-cell lists \cite{Eckhardt2014} and Verlet lists
+\cite{Fleissner, Eckhardt2014} reduce the quadratic complexity in DEM codes.
+We propose to rely on a generalised tree-based linked-cell
+technique that allows us to efficiently treat particles from a vast range of diameters.
 Three observations support this design decision:
 First, particles colliding with other particles are close to these particles.
-It thus is sufficient to scan a certain environment around each particle for
+It is sufficient to scan a certain environment around each particle for
 potential collision partners.
-We do not have to run through all particles per particle.
 We thus split up the domain into control volumes.
 They are cubic as this simplifies the implementation compared to control volumes
 of more flexible shapes.
@@ -24,7 +21,7 @@ $d$ is the spatial dimension.
 Third, the previous decision is problematic if the particles are of extremely
 different size. 
 The cell size is determined by the largest particle diameter. 
-If we use a uniform cell size, many uneccessary collision checks are performed
+If we use a uniform cell size, many unnecessary collision checks are performed
 for small particles.
 If we use an adaptive grid, it is tricky to design the grid such that only
 direct neighbouring cells have to be studied.
@@ -38,17 +35,6 @@ There is no need to check a particle of one grid resolution with particles of a
 finer grid resolution---if a particle $A$ collides with a particle $B$, particle
 $B$ also collides with particle $A$ and such relations thus are already
 detected.
-
-
-Alternative approaches select the mesh size to accomodate the minimal particle
-diameter \cite{mattutis}.
-In this case, larger particles overlap multiple cells.
-Such an approach requires more sophisticated bookkeeping of particle-cell
-relations. 
-The idea is not followed up here.
-Instead, we prioritise algorithm simplicity---a property that is notably enabled
-through trees decomposing the computational domain.
-
 
 A spacetree is a space-partitioning data structure constructed recursively.
 The computational domain is embedded into a unit cube.
@@ -82,8 +68,6 @@ geometric data in memory.
 
 
 \input{03a_grid-traversal}
-
-
 
 {\bf Regular grid.}
 The spacetree formalism allows us to realise at least three grid variants. 

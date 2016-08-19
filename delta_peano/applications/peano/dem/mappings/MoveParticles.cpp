@@ -61,7 +61,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
     records::Particle&  particle = fineGridVertex.getParticle(i);
     if(particle._persistentRecords._globalParticleNumber <= 0){continue;}
 
-    particle._persistentRecords._velocity(1) -= timeStepSize * (gravity/ particle._persistentRecords._mass);
+    particle._persistentRecords._velocity(1) += -(timeStepSize * (gravity/ particle._persistentRecords._mass));
 
     particle._persistentRecords._centre(0)   += timeStepSize * particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1)   += timeStepSize * particle._persistentRecords._velocity(1);
@@ -89,9 +89,9 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 
     tarch::la::Matrix<3,3,double> rotationMatrix;
     rotationMatrix =
-      cos(beta) * cos(gamma), cos(gamma) * sin(alpha) * sin(beta) - cos(alpha) * sin(gamma), cos(alpha)*cos(gamma)*sin(beta) + sin(alpha)*sin(gamma),
-      cos(beta)*sin(gamma), cos(alpha)*cos(gamma)+sin(alpha)*sin(beta)*sin(gamma),-cos(gamma)*sin(alpha)+cos(alpha)*sin(beta)*sin(gamma),
-      -sin(beta), cos(beta)*sin(alpha),cos(alpha)*cos(beta);
+      cos(beta) * cos(gamma), 	cos(gamma) * sin(alpha) * sin(beta) - cos(alpha) * sin(gamma), 		cos(alpha)*cos(gamma)*sin(beta) + sin(alpha)*sin(gamma),
+      cos(beta)*sin(gamma), 	cos(alpha)*cos(gamma)+sin(alpha)*sin(beta)*sin(gamma),				-cos(gamma)*sin(alpha)+cos(alpha)*sin(beta)*sin(gamma),
+      -sin(beta), 				cos(beta)*sin(alpha),												cos(alpha)*cos(beta);
 
     rotationMatrix = 1, 0, 0,
                      0, 1, 0,
@@ -100,17 +100,17 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
     for (int j=0; j<particle._persistentRecords._numberOfTriangles*DIMENSIONS; j++)
     {
       tarch::la::Vector<3,double> relativePosition;
-      relativePosition = x[j]-particle._persistentRecords._centreOfMass(0),
-                         y[j]-particle._persistentRecords._centreOfMass(1),
-                         z[j]-particle._persistentRecords._centreOfMass(2);
+      relativePosition = x[j] - particle._persistentRecords._centreOfMass(0),
+                         y[j] - particle._persistentRecords._centreOfMass(1),
+                         z[j] - particle._persistentRecords._centreOfMass(2);
 
-      assertionNumericalEquals5( x[j], particle._persistentRecords._centreOfMass(0)  + (relativePosition)(0), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
+      /*assertionNumericalEquals5( x[j], particle._persistentRecords._centreOfMass(0)  + (relativePosition)(0), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
       assertionNumericalEquals5( y[j], particle._persistentRecords._centreOfMass(1)  + (relativePosition)(1), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
-      assertionNumericalEquals5( z[j], particle._persistentRecords._centreOfMass(2)  + (relativePosition)(2), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
+      assertionNumericalEquals5( z[j], particle._persistentRecords._centreOfMass(2)  + (relativePosition)(2), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);*/
 
-      x[j] = particle._persistentRecords._centreOfMass(0)  + (rotationMatrix * relativePosition)(0);
+      /*x[j] = particle._persistentRecords._centreOfMass(0)  + (rotationMatrix * relativePosition)(0);
       y[j] = particle._persistentRecords._centreOfMass(1)  + (rotationMatrix * relativePosition)(1);
-      z[j] = particle._persistentRecords._centreOfMass(2)  + (rotationMatrix * relativePosition)(2);
+      z[j] = particle._persistentRecords._centreOfMass(2)  + (rotationMatrix * relativePosition)(2);*/
     }
   }
 }

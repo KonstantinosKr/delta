@@ -6,19 +6,17 @@ setup.
 Granulates of various diameters between $diam_{min}$ and $diam_{max}$ are
 randomly distributed in a unit cube.
 They are assigned random velocity and fixed density. 
-If particles bump into the unit cube wall, they are reflected. 
-We apply a full elastic collision model here.
-If particles collide with each other, we realise XXX from (\ref{xxx}).
-\marginpar{\footnotesize KK please update}
+If particles bump into the unit cube wall, they are reflected by applying an opposite direction in the velocities. 
+We apply a full elastic collision model by allowing virtual penetration using the DEM spring-dashpot penalty force function (\ref{xxx}).
 Each particle is created by a randomised algorithm that places a random number
 of 50 points within the unit sphere. 
-We then use the hull algorithm \cite{xxxx} using a delaunay triangulation to
+We then use the hull algorithm \cite{xxxx} using a Delaunay triangulation to
 create the particle that is finally shrinked to fit into the prescribed
 diameter.
-On average, we obtain around 60--65 triangles per particle.
+On average, we obtain around 60-65 triangles per non-spherical particle.
 
 
-The underlying spacetree is based upon three-partioning as we rely on the AMR
+The underlying spacetree is based upon tree-partitioning as we rely on the AMR
 framework Peano \cite{Software:Peano}.
 All experiments are realised with double precision. 
 We note that the combination of the present work with reduced
@@ -56,6 +54,61 @@ We use Intel(R) MPI Library for Linux* OS, 64-bit applications, Version 5.0 Upda
 For performance statements, we rely on the Intel 16 compiler.
 
 
+%brute force vectorization
+
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{experiments/vectorisation/plots/log_bf_simd.png}
+  \end{center}
+  \caption{Brute Force SIMD runtimes.}
+  \label{figure:triangle_omp}
+\end{figure}
+
+
+penalty vectorization
+
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{experiments/vectorisation/plots/log_penalty_simd.png}
+  \end{center}
+  \caption{Penalty SIMD runtimes.}
+  \label{figure:triangle_omp}
+\end{figure}
+
+hybrid vectorization
+
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{experiments/vectorisation/plots/log_sphere-hybrid-on-batchesSIMD.png}
+  \end{center}
+  \caption{Hybrid-on-batches SIMD runtimes.}
+  \label{figure:triangle_omp}
+\end{figure}
+
+
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{experiments/vectorisation/plots/log_sphere-hybrid-triangle-pairs-SIMD.png}
+  \end{center}
+  \caption{Hybrid-on-triangle-pairs SIMD runtimes.}
+  \label{figure:triangle_omp}
+\end{figure}
+
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{experiments/vectorisation/plots/serial.png}
+    \hspace{0.2cm}
+    \includegraphics[width=0.4\textwidth]{experiments/vectorisation/plots/simd.png}
+  \end{center}
+  \caption{
+    Left: Serial runtime comparison.
+    Right: SIMD runtime comparison.
+  }
+  \label{figure:particle_hull}
+\end{figure}
+
+\clearpage
 
 \subsection{Impact of multiscale grid management}
 
@@ -75,8 +128,6 @@ From hereon, the characteristic triangle-to-triangle comparison counts from the
 multiscale algorithm are used.
 For the performance engineering, this is a worst-case choice as the arithmetic
 work is minimalised.
-
-
 
 
 

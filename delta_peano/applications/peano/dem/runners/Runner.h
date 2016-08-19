@@ -34,7 +34,8 @@ class dem::runners::Runner {
     enum Plot {
       EveryIteration,
       Never,
-      UponChange
+      UponChange,
+	  EveryBatch
     };
   private:
     static tarch::logging::Log _log;

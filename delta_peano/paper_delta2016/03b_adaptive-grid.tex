@@ -37,15 +37,12 @@ The scheme successively drops the particles down the grid hierarchies.
  \label{figure:adaptive-vs-reluctant-grid}
 \end{figure}
 
-
 We define two multiscale relationships between vertices (Figure
 \ref{figure:collision-cube}).
 A vertex $a$ is a child of a vertex $b$ if all adjacent cells of $a$ are
-children of adjacent cells of $b$.
-$b$ is the parent vertex of $a$.
+children of adjacent cells of $b$. $b$ is the parent vertex of $a$.
 A vertex $a$ is a descendant of $b$ if at least one adjacent cell of $a$ is a
-child of an adjacent cell of $b$.
-$b$ is an ancestor of $a$.
+child of an adjacent cell of $b$. $b$ is an ancestor of $a$.
 If we delete a vertex $a$ that holds particles, its particles are moved to the
 next coarser level and assigned there to the nearest parent of $a$.
 Each vertex holds a boolean marker that is set $\bot $ before the vertex is
@@ -56,7 +53,7 @@ If a vertex whose adjacent cells all are refined holds $\bot$ at the end of the
 multiscale traversal, we coarsen these refined adjacent cells.
 We rely on a top-down tree traversal.
 The refinement/coarsening procedure then can be evaluated on-the-fly.
-It equals an analysed tree grammar \cite{knuth}.
+It equals an analysed tree grammar \cite{Knuth71}.
 
 For the multiscale contact detection, we extend the list of particles associated
 to a vertex. 
@@ -69,11 +66,10 @@ If we compare all particles with each other that are held by the same vertex, we
 do compare the actual particles with all other real particles as well as all
 virtual particles.
 
-
 {\bf A reluctant adaptive grid.}
 The dynamically adaptive grid refines rather aggressive: Particles are always
 dropped to their corresponing refinement level immediately. 
-Fine grid regions thus follow `their' particles (Figure
+Fine grid regions thus follow 'their' particles (Figure
 \ref{figure:adaptive-vs-reluctant-grid}).
 This might introduce finer grids than actually required for contact detection
 which is an overhead.
@@ -84,7 +80,6 @@ small time step sizes globally.
 For schemes with local time stepping, it however is important, besides overhead
 discussions, to keep the grid as coarse as possible as this facilitates big
 time step sizes.
-
 
 Our reluctant adaptive grid works with coarser adaptive grids than the plain
 variant through two modifications of the refinement procedure: 

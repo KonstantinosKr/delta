@@ -37,7 +37,7 @@ operations are performed if a vertex is read for the very first time \linebreak
 (\texttt{touchVertexFirstTime}), if a cell is entered
 (\texttt{enterCell}), and so forth.
 Besides the actual grid hosting the particles, the grid sweeps build and
-maintain two further sets of collision points (Algorithm \ref{algorithm:grid-based-dem}).
+maintain two further sets of collision points (algorithm \ref{algorithm:grid-based-dem}).
 
 \begin{algorithm}
  \caption{A grid-based DEM implementation.}
@@ -50,11 +50,8 @@ maintain two further sets of collision points (Algorithm \ref{algorithm:grid-bas
     \If{\texttt{touchVertexFirstTime}}
      \ForAll{particles $p$ associated to vertex}
       \ForAll{contact points $c \in \mathcal{C}_{old}$ associated to $p$}
-       \State Update $f_{trans}(p)$ through $c$
-       \State Update $f_{rot}(p)$ through $c$
+       \State Update $f(p)$ through $c$
       \EndFor
-     \EndFor
-     \ForAll{particles $p$ associated to vertex}
       \State Update particle incl.~its triangles
      \EndFor
      \ForAll{particle pairs $(p_i,p_j)$ associated to vertex}
@@ -78,14 +75,14 @@ maintain two further sets of collision points (Algorithm \ref{algorithm:grid-bas
    \EndWhile
   \EndFunction
 
-  \Function{main}{$T$}   
-   \State $\mathcal{C} \gets \emptyset $
-   \State $t \gets 0 $
-   \For{$t < T$}
-    \State \Call{traverseGrid}{$\mathcal{C}$}
-    \State $t \gets t + \Delta t$
-   \EndFor
-  \EndFunction
+  %\Function{main}{$T$}   
+  % \State $\mathcal{C} \gets \emptyset $
+  % \State $t \gets 0 $
+  % \For{$t < T$}
+  %  \State \Call{traverseGrid}{$\mathcal{C}$}
+  %  \State $t \gets t + \Delta t$
+  % \EndFor
+  %\EndFunction
  \end{algorithmic}
 \end{algorithm} 
 
@@ -113,7 +110,7 @@ Our grid-based realisation is characterised by few properties:
   persistent for the subsequent traversal: one time step of the scheme is
   realised per two grid traversal. The amortised cost however still is one time
   step per grid traversal. This scheme picks up the idea of pipelining
-  \cite{xxx,xxx,xxx}. Collision data is mapped onto the particles when we read a
+  \cite{Plimpton1995}. Collision data is mapped onto the particles when we read a
   particle for the first time in the subsequent traversal. Immediately after the
   forces acting on a particle are determined, we do update the particle's
   property and also update the geometric data due to translation and rotation.
@@ -146,10 +143,4 @@ guarantee such a two-fold locality.
 \noindent
 More sophisticated explicit schemes can be realised with the same single-touch
 policy if we hold additional data per particle (acceleration, e.g.).
-Such an approach picks up ideas of pipelining \cite{xxx}.
-The GEAR algorithm \cite{33,34} is an example for such a scheme.
-However, the class of predicator-corrector schemes fits if and only if we shift
-them by half a grid traversal, i.e.~perform the prediction right after a
-corrector in the same traversal.
-We introduce such a shift for equation system solvers in \cite{Reps} and extend
-them to hyperbolic equation system solvers in \cite{Charrier}.
+Such an approach picks up ideas of pipelining \cite{Plimpton1995}.

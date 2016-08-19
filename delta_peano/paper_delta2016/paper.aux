@@ -1,0 +1,142 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Algorithm outline}{2}}
+\newlabel{section:algorithm}{{2}{2}}
+\newlabel{algorithm:dem-blueprint}{{1}{2}}
+\citation{Ericson2005}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Three particles with their $\epsilon $ environment. The particles do not penetrate each other, but two particles plus their $\epsilon $ environment penetrate and create one contact point (diamond point) with a normal. \relax }}{3}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{figure:minkowski}{{1}{3}}
+\citation{cundall-strack-79}
+\citation{Eckhardt2014}
+\citation{Fleissner}
+\citation{Eckhardt2014}
+\newlabel{equation:forces:translational}{{1}{4}}
+\newlabel{equation:forces:rotational}{{2}{4}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Grid meta data structures}{4}}
+\newlabel{section:grid}{{3}{4}}
+\citation{Software:Peano}
+\citation{Weinzierl:16:PIC}
+\citation{Weinzierl:2009:Diss}
+\citation{Weinzierl:11:Peano}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Left: Whenever the grid traversal enters a cell, it checks whether particles assigned to one vertex do collide with particles assigned to another vertex. To avoid redundant collision computations, we check only some vertex pairs (dotted, larger lines). Middle: Two particles approach each other. As they are of different size, they might be held on different spacetree resolution levels. Right: In the adaptive case, particles are dropped from the coarse levels into the fine grid (rectangular marker) if new grid levels are added. The bright round vertices are children of the marked coarse grid vertex. The bright and the dark round markers' vertices together are the descendants of the marked coarse grid vertex. \relax }}{6}}
+\newlabel{figure:collision-cube}{{2}{6}}
+\newlabel{algorithm:grid-based-dem}{{2}{6}}
+\citation{Plimpton1995}
+\citation{dime}
+\citation{Weinzierl:2009:Diss}
+\citation{Weinzierl:11:Peano}
+\citation{Plimpton1995}
+\citation{Knuth71}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  Two particles crash into each other. The adaptive grid refining around each particle while its diameter constrains the mesh size (left column). The reluctant adaptive grid works with a coarser resolution as long as particles are far away from each other (right column). Just before they collide, the grid is refined and particles are dropped down the resolution levels. \relax }}{9}}
+\newlabel{figure:adaptive-vs-reluctant-grid}{{3}{9}}
+\citation{Wachs2012}
+\citation{Wachs2012a}
+\citation{Rycroft2012}
+\citation{Parteli2013}
+\citation{Eichenberger2004}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  Right: The two layer data layout of our DEM code with an AoS on the particle level but SoA for the vector entries with replicated vector entries. \relax }}{11}}
+\newlabel{figure:data-structure}{{4}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Particle storage and vectorisation}{11}}
+\newlabel{section:vectorisation}{{4}{11}}
+\citation{Ericson2005}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Brute force geometric comparison}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces (s,t) parameter space with G boundary box C for global minimum\relax }}{12}}
+\newlabel{figure:ss_regions}{{5}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Regions based on the (s,t) parameters plane\relax }}{13}}
+\newlabel{figure:pt_regions}{{6}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Penalty-based formalism}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces  Triangle X:T1 (Vertices A, B, C) with barymetric parameters a,b that point $x$ point on the triangle. Triangle Y:T2 (D,E,F) with g,d parameters. The two barymetric points define the $P,Q$ points of the minimum distance between the two triangles in 3D. \relax }}{14}}
+\newlabel{figure:barycentric_contact}{{7}{14}}
+\newlabel{eq:penalty}{{3}{14}}
+\newlabel{algorithm:penalty}{{3}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Hybrid approach}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Histogram of number of iterations required by Newton Method for convergence on a sample of twenty four million triangle pair configurations.\relax }}{16}}
+\newlabel{figure:newton_hist}{{8}{16}}
+\newlabel{algorithm:hybridTriangle}{{4}{16}}
+\newlabel{algorithm:hybridBatches}{{5}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Shared memory parallelisation}{18}}
+\newlabel{section:shared-memory}{{5}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Triangle based shared memory parallelism using openMP running brute force (bf), hybrid-on-batches (HBatches) and hybrid-on-triangle-pairs (HTriangles) methods.\relax }}{19}}
+\newlabel{figure:triangle_omp}{{9}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Particle based shared memory parallelism using openMP running brute force (bf), hybrid-on-batches (HBatches) and hybrid-on-triangle-pairs (HTriangles) methods.\relax }}{19}}
+\newlabel{figure:particle_omp}{{10}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Particle and Triangle based nested shared memory parallelism using openMP running brute force (bf), hybrid-on-batches (HBatches) and hybrid-on-triangle-pairs (HTriangles) methods.\relax }}{20}}
+\newlabel{figure:particletriangle_omp}{{11}{20}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Cell based parallelism on Peano compared to serial runs using Intel TBB\relax }}{21}}
+\newlabel{figure:tbb_vs_serial}{{12}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Cell based parallelism on Peano compared to serial runs using Intel TBB\relax }}{22}}
+\newlabel{figure:tbb_scaling}{{13}{22}}
+\citation{xxxx}
+\citation{Software:Peano}
+\citation{Weinzierl:15:Compression}
+\citation{Weinzierl:16:PIC}
+\citation{xxx}
+\citation{Treibig:10:Likwid}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Application benchmarks}{23}}
+\newlabel{section:benchmarks}{{6}{23}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Performance results}{23}}
+\newlabel{section:results}{{7}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Brute Force SIMD runtimes.\relax }}{24}}
+\newlabel{figure:triangle_omp}{{14}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Penalty SIMD runtimes.\relax }}{24}}
+\newlabel{figure:triangle_omp}{{15}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Hybrid-on-batches SIMD runtimes.\relax }}{25}}
+\newlabel{figure:triangle_omp}{{16}{25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Hybrid-on-triangle-pairs SIMD runtimes.\relax }}{25}}
+\newlabel{figure:triangle_omp}{{17}{25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces  Left: Serial runtime comparison. Right: SIMD runtime comparison. \relax }}{25}}
+\newlabel{figure:particle_hull}{{18}{25}}
+\bibstyle{plain}
+\bibdata{./paper}
+\bibcite{Weinzierl:15:Compression}{1}
+\bibcite{Eckhardt2014}{2}
+\bibcite{Eichenberger2004}{3}
+\bibcite{Ericson2005}{4}
+\bibcite{Fleissner}{5}
+\bibcite{Software:Delta}{6}
+\bibcite{Parteli2013}{7}
+\bibcite{Plimpton1995}{8}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Impact of multiscale grid management}{26}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{26}}
+\newlabel{section:conclusion}{{8}{26}}
+\bibcite{Rycroft2012}{9}
+\bibcite{Treibig:10:Likwid}{10}
+\bibcite{Wachs2012}{11}
+\bibcite{Wachs2012a}{12}
+\bibcite{Weinzierl:2009:Diss}{13}
+\bibcite{Software:Peano}{14}
+\bibcite{Weinzierl:11:Peano}{15}
+\bibcite{Weinzierl:16:PIC}{16}
+\citation{Software:Delta}
+\citation{Software:Peano}
+\citation{Weinzierl:2009:Diss}
+\citation{Weinzierl:11:Peano}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Software}{27}}
+\newlabel{section:software}{{A}{27}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Acknowledgements}{28}}
+\newlabel{section:acknowledgements}{{B}{28}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Experiment: Two particles}{28}}
+\newlabel{section:experiment:two-particles}{{C}{28}}
+\@writefile{toc}{\contentsline {section}{\numberline {D}Experiment: Some comparison statistics}{29}}
+\newlabel{section:experiment:comparison-statistics}{{D}{29}}
+\citation{mattutis}
+\citation{3}
+\citation{5}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Xeon Phi scaling OpenMP dynamic scheduling triangle-based shared memory.\relax }}{30}}
+\newlabel{figure:triangle_omp}{{19}{30}}
+\@writefile{toc}{\contentsline {section}{\numberline {E}Randomised particle generation}{30}}
+\newlabel{section:randomised-particle-generation}{{E}{30}}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Xeon Phi scaling OpenMP static scheduling triangle-based shared memory.\relax }}{31}}
+\newlabel{figure:triangle_omp}{{20}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Xeon Phi scaling OpenMP dynamic scheduling particle-based shared memory.\relax }}{31}}
+\newlabel{figure:triangle_omp}{{21}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Xeon Phi scaling OpenMP static scheduling particle-based shared memory..\relax }}{32}}
+\newlabel{figure:triangle_omp}{{22}{32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces  Left: Coarse non-spherical particle triangulation using Hull and Delaney algorithm. Right: Fine spherical particle triangulation using Hull and Delaney algorithm. \relax }}{32}}
+\newlabel{figure:particle_hull}{{23}{32}}
+\@writefile{toc}{\contentsline {section}{\numberline {F}Appendix Algorithms}{33}}
+\newlabel{section:appendix-algorithms}{{F}{33}}
+\newlabel{algorithm:bf}{{6}{33}}
+\newlabel{algorithm:point_to_triangle}{{7}{33}}
+\newlabel{algorithm:seg_seg}{{8}{33}}
