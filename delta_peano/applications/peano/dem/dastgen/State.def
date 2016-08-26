@@ -10,6 +10,7 @@ Constant: DIMENSIONS hint-value 4;
 
 
 class dem::records::State { 
+  #ifdef TrackGridStatistics
   /**
    * Statistics. All of this information is prolongated bottom-up.
    */
@@ -28,7 +29,8 @@ class dem::records::State {
   persistent parallelise double numberOfOuterLeafCells;
 
   persistent parallelise int    maxLevel;
-  
+  #endif
+    
   persistent packed parallelise bool hasRefined;
   persistent packed parallelise bool hasTriggeredRefinementForNextIteration;
   persistent packed parallelise bool hasErased;

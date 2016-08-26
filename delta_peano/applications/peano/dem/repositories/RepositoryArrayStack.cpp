@@ -5,9 +5,10 @@
 
 #include "tarch/compiler/CompilerSpecificSettings.h"
 
-#ifdef Parallel
 #include "tarch/parallel/Node.h"
 #include "tarch/parallel/NodePool.h"
+
+#ifdef Parallel
 #include "peano/parallel/SendReceiveBufferPool.h"
 #include "peano/parallel/loadbalancing/Oracle.h"
 #endif
@@ -109,7 +110,7 @@ void dem::repositories::RepositoryArrayStack::restart(
   assertion( !tarch::parallel::Node::getInstance().isGlobalMaster());
   #endif
   
-  logInfo( "restart(...)", "start node for subdomain " << domainOffset << "x" << domainSize << " on level " << domainLevel );
+  logInfo( "restart(...)", "start node for subdomain " << domainOffset << "x" << domainSize << " on level " << domainLevel << " with master " << tarch::parallel::NodePool::getInstance().getMasterRank() );
   
   assertion( _repositoryState.getAction() == dem::records::RepositoryState::Terminate );
 

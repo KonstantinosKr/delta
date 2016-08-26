@@ -54,6 +54,8 @@ void dem::mappings::Plot::beginIteration(
   _faceVertexAssociation = _writer->createCellDataWriter( "face-vertex-association", 1 );
   _type                  = _writer->createCellDataWriter( "type(particle-centre=0,triangle=1,collision-point=2,link=3)", 1 );
   _velocitiesAndNormals  = _writer->createVertexDataWriter( "velocities-and-contact-normals", DIMENSIONS );
+  _particleRadius  = _writer->createVertexDataWriter( "particle-radius", 1);
+  _particleRadiusPlusEpsilon  = _writer->createVertexDataWriter( "particle-radius-plus-epsilon", 1);
   _level                 = _writer->createCellDataWriter( "level", 1 );
 
   _vertexCounter         = 0;
@@ -163,6 +165,12 @@ void dem::mappings::Plot::touchVertexLastTime(
     particleVertexLink[1]            = _vertexWriter->plotVertex( particle._persistentRecords._centre );
     _velocitiesAndNormals->plotVertex(particleVertexLink[1],0);
 
+    /*int radiusplusepsilon = _vertexWriter->plotVertex((particle._persistentRecords._radius)+particle._persistentRecords._epsilonMargin);
+    int radius = _vertexWriter->plotVertex((particle._persistentRecords._radius));
+
+    _particleRadiusPlusEpsilon->plotVertex(radiusplusepsilon, 1);
+    _particleRadius->plotVertex(radius, 1);
+*/
     int lineFromParticleToHostVertex = _cellWriter->plotLine(particleVertexLink);
     _faceVertexAssociation->plotCell(lineFromParticleToHostVertex,_vertexCounter);
     _type->plotCell(lineFromParticleToHostVertex,3);

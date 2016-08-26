@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   01/04/2016 13:45
+    * @date   26/08/2016 13:52
     */
    class dem::records::Particle { 
       
@@ -53,6 +53,8 @@ namespace dem {
             tarch::la::Vector<DIMENSIONS,double> _velocity;
             #endif
             double _diameter;
+            double _radius;
+            double _epsilon;
             double _mass;
             double _hMin;
             #ifdef UseManualAlignment
@@ -75,7 +77,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
             
             
             /**
@@ -210,6 +212,46 @@ namespace dem {
  #endif 
  {
                _diameter = diameter;
+            }
+            
+            
+            
+            inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _radius;
+            }
+            
+            
+            
+            inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _radius = radius;
+            }
+            
+            
+            
+            inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _epsilon;
+            }
+            
+            
+            
+            inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _epsilon = epsilon;
             }
             
             
@@ -433,7 +475,7 @@ namespace dem {
          /**
           * Generated
           */
-         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
          
          /**
           * Generated
@@ -625,6 +667,46 @@ namespace dem {
  #endif 
  {
             _persistentRecords._diameter = diameter;
+         }
+         
+         
+         
+         inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._radius;
+         }
+         
+         
+         
+         inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._radius = radius;
+         }
+         
+         
+         
+         inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._epsilon;
+         }
+         
+         
+         
+         inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._epsilon = epsilon;
          }
          
          
@@ -949,7 +1031,7 @@ namespace dem {
              *
              * 		   build date: 09-02-2014 14:40
              *
-             * @date   01/04/2016 13:45
+             * @date   26/08/2016 13:52
              */
             class dem::records::ParticlePacked { 
                
@@ -959,6 +1041,8 @@ namespace dem {
                      tarch::la::Vector<DIMENSIONS,double> _centre;
                      tarch::la::Vector<DIMENSIONS,double> _velocity;
                      double _diameter;
+                     double _radius;
+                     double _epsilon;
                      double _mass;
                      double _hMin;
                      tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
@@ -973,7 +1057,7 @@ namespace dem {
                      /**
                       * Generated
                       */
-                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                      
                      
                      /**
@@ -1108,6 +1192,46 @@ namespace dem {
  #endif 
  {
                         _diameter = diameter;
+                     }
+                     
+                     
+                     
+                     inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        return _radius;
+                     }
+                     
+                     
+                     
+                     inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        _radius = radius;
+                     }
+                     
+                     
+                     
+                     inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        return _epsilon;
+                     }
+                     
+                     
+                     
+                     inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        _epsilon = epsilon;
                      }
                      
                      
@@ -1327,7 +1451,7 @@ namespace dem {
                   /**
                    * Generated
                    */
-                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                   
                   /**
                    * Generated
@@ -1519,6 +1643,46 @@ namespace dem {
  #endif 
  {
                      _persistentRecords._diameter = diameter;
+                  }
+                  
+                  
+                  
+                  inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     return _persistentRecords._radius;
+                  }
+                  
+                  
+                  
+                  inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     _persistentRecords._radius = radius;
+                  }
+                  
+                  
+                  
+                  inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     return _persistentRecords._epsilon;
+                  }
+                  
+                  
+                  
+                  inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     _persistentRecords._epsilon = epsilon;
                   }
                   
                   
@@ -1840,7 +2004,7 @@ namespace dem {
                       *
                       * 		   build date: 09-02-2014 14:40
                       *
-                      * @date   01/04/2016 13:45
+                      * @date   26/08/2016 13:52
                       */
                      class dem::records::Particle { 
                         
@@ -1860,6 +2024,8 @@ namespace dem {
                               tarch::la::Vector<DIMENSIONS,double> _velocity;
                               #endif
                               double _diameter;
+                              double _radius;
+                              double _epsilon;
                               double _mass;
                               double _hMin;
                               #ifdef UseManualAlignment
@@ -1888,7 +2054,7 @@ namespace dem {
                               /**
                                * Generated
                                */
-                              PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                              PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                               
                               
                               /**
@@ -2023,6 +2189,46 @@ namespace dem {
  #endif 
  {
                                  _diameter = diameter;
+                              }
+                              
+                              
+                              
+                              inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _radius;
+                              }
+                              
+                              
+                              
+                              inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _radius = radius;
+                              }
+                              
+                              
+                              
+                              inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _epsilon;
+                              }
+                              
+                              
+                              
+                              inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _epsilon = epsilon;
                               }
                               
                               
@@ -2324,7 +2530,7 @@ namespace dem {
                            /**
                             * Generated
                             */
-                           Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                           Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                            
                            /**
                             * Generated
@@ -2516,6 +2722,46 @@ namespace dem {
  #endif 
  {
                               _persistentRecords._diameter = diameter;
+                           }
+                           
+                           
+                           
+                           inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._radius;
+                           }
+                           
+                           
+                           
+                           inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._radius = radius;
+                           }
+                           
+                           
+                           
+                           inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._epsilon;
+                           }
+                           
+                           
+                           
+                           inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._epsilon = epsilon;
                            }
                            
                            
@@ -2944,7 +3190,7 @@ namespace dem {
                                *
                                * 		   build date: 09-02-2014 14:40
                                *
-                               * @date   01/04/2016 13:45
+                               * @date   26/08/2016 13:52
                                */
                               class dem::records::ParticlePacked { 
                                  
@@ -2954,6 +3200,8 @@ namespace dem {
                                        tarch::la::Vector<DIMENSIONS,double> _centre;
                                        tarch::la::Vector<DIMENSIONS,double> _velocity;
                                        double _diameter;
+                                       double _radius;
+                                       double _epsilon;
                                        double _mass;
                                        double _hMin;
                                        tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
@@ -2970,7 +3218,7 @@ namespace dem {
                                        /**
                                         * Generated
                                         */
-                                       PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                       PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                        
                                        
                                        /**
@@ -3105,6 +3353,46 @@ namespace dem {
  #endif 
  {
                                           _diameter = diameter;
+                                       }
+                                       
+                                       
+                                       
+                                       inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _radius;
+                                       }
+                                       
+                                       
+                                       
+                                       inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _radius = radius;
+                                       }
+                                       
+                                       
+                                       
+                                       inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _epsilon;
+                                       }
+                                       
+                                       
+                                       
+                                       inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _epsilon = epsilon;
                                        }
                                        
                                        
@@ -3402,7 +3690,7 @@ namespace dem {
                                     /**
                                      * Generated
                                      */
-                                    ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                    ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                     
                                     /**
                                      * Generated
@@ -3594,6 +3882,46 @@ namespace dem {
  #endif 
  {
                                        _persistentRecords._diameter = diameter;
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._radius;
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._radius = radius;
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._epsilon;
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._epsilon = epsilon;
                                     }
                                     
                                     
@@ -4020,7 +4348,7 @@ namespace dem {
                                      *
                                      * 		   build date: 09-02-2014 14:40
                                      *
-                                     * @date   01/04/2016 13:45
+                                     * @date   26/08/2016 13:52
                                      */
                                     class dem::records::Particle { 
                                        
@@ -4040,6 +4368,8 @@ namespace dem {
                                              tarch::la::Vector<DIMENSIONS,double> _velocity;
                                              #endif
                                              double _diameter;
+                                             double _radius;
+                                             double _epsilon;
                                              double _mass;
                                              double _hMin;
                                              #ifdef UseManualAlignment
@@ -4063,7 +4393,7 @@ namespace dem {
                                              /**
                                               * Generated
                                               */
-                                             PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                             PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                              
                                              
                                              /**
@@ -4198,6 +4528,46 @@ namespace dem {
  #endif 
  {
                                                 _diameter = diameter;
+                                             }
+                                             
+                                             
+                                             
+                                             inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _radius;
+                                             }
+                                             
+                                             
+                                             
+                                             inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _radius = radius;
+                                             }
+                                             
+                                             
+                                             
+                                             inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _epsilon;
+                                             }
+                                             
+                                             
+                                             
+                                             inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _epsilon = epsilon;
                                              }
                                              
                                              
@@ -4441,7 +4811,7 @@ namespace dem {
                                           /**
                                            * Generated
                                            */
-                                          Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                          Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                           
                                           /**
                                            * Generated
@@ -4633,6 +5003,46 @@ namespace dem {
  #endif 
  {
                                              _persistentRecords._diameter = diameter;
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._radius;
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._radius = radius;
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._epsilon;
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._epsilon = epsilon;
                                           }
                                           
                                           
@@ -4977,7 +5387,7 @@ namespace dem {
                                               *
                                               * 		   build date: 09-02-2014 14:40
                                               *
-                                              * @date   01/04/2016 13:45
+                                              * @date   26/08/2016 13:52
                                               */
                                              class dem::records::ParticlePacked { 
                                                 
@@ -4987,6 +5397,8 @@ namespace dem {
                                                       tarch::la::Vector<DIMENSIONS,double> _centre;
                                                       tarch::la::Vector<DIMENSIONS,double> _velocity;
                                                       double _diameter;
+                                                      double _radius;
+                                                      double _epsilon;
                                                       double _mass;
                                                       double _hMin;
                                                       tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
@@ -5002,7 +5414,7 @@ namespace dem {
                                                       /**
                                                        * Generated
                                                        */
-                                                      PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                      PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                       
                                                       
                                                       /**
@@ -5137,6 +5549,46 @@ namespace dem {
  #endif 
  {
                                                          _diameter = diameter;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _radius;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _radius = radius;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _epsilon;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _epsilon = epsilon;
                                                       }
                                                       
                                                       
@@ -5376,7 +5828,7 @@ namespace dem {
                                                    /**
                                                     * Generated
                                                     */
-                                                   ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                   ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                    
                                                    /**
                                                     * Generated
@@ -5568,6 +6020,46 @@ namespace dem {
  #endif 
  {
                                                       _persistentRecords._diameter = diameter;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._radius;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._radius = radius;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._epsilon;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._epsilon = epsilon;
                                                    }
                                                    
                                                    
@@ -5910,7 +6402,7 @@ namespace dem {
                                                     *
                                                     * 		   build date: 09-02-2014 14:40
                                                     *
-                                                    * @date   01/04/2016 13:45
+                                                    * @date   26/08/2016 13:52
                                                     */
                                                    class dem::records::Particle { 
                                                       
@@ -5930,6 +6422,8 @@ namespace dem {
                                                             tarch::la::Vector<DIMENSIONS,double> _velocity;
                                                             #endif
                                                             double _diameter;
+                                                            double _radius;
+                                                            double _epsilon;
                                                             double _mass;
                                                             double _hMin;
                                                             #ifdef UseManualAlignment
@@ -5957,7 +6451,7 @@ namespace dem {
                                                             /**
                                                              * Generated
                                                              */
-                                                            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                             
                                                             
                                                             /**
@@ -6092,6 +6586,46 @@ namespace dem {
  #endif 
  {
                                                                _diameter = diameter;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _radius;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _radius = radius;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _epsilon;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _epsilon = epsilon;
                                                             }
                                                             
                                                             
@@ -6373,7 +6907,7 @@ namespace dem {
                                                          /**
                                                           * Generated
                                                           */
-                                                         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                          
                                                          /**
                                                           * Generated
@@ -6565,6 +7099,46 @@ namespace dem {
  #endif 
  {
                                                             _persistentRecords._diameter = diameter;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._radius;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._radius = radius;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._epsilon;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._epsilon = epsilon;
                                                          }
                                                          
                                                          
@@ -6973,7 +7547,7 @@ namespace dem {
                                                              *
                                                              * 		   build date: 09-02-2014 14:40
                                                              *
-                                                             * @date   01/04/2016 13:45
+                                                             * @date   26/08/2016 13:52
                                                              */
                                                             class dem::records::ParticlePacked { 
                                                                
@@ -6983,6 +7557,8 @@ namespace dem {
                                                                      tarch::la::Vector<DIMENSIONS,double> _centre;
                                                                      tarch::la::Vector<DIMENSIONS,double> _velocity;
                                                                      double _diameter;
+                                                                     double _radius;
+                                                                     double _epsilon;
                                                                      double _mass;
                                                                      double _hMin;
                                                                      tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
@@ -6998,7 +7574,7 @@ namespace dem {
                                                                      /**
                                                                       * Generated
                                                                       */
-                                                                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                                      
                                                                      
                                                                      /**
@@ -7133,6 +7709,46 @@ namespace dem {
  #endif 
  {
                                                                         _diameter = diameter;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _radius;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _radius = radius;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _epsilon;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _epsilon = epsilon;
                                                                      }
                                                                      
                                                                      
@@ -7410,7 +8026,7 @@ namespace dem {
                                                                   /**
                                                                    * Generated
                                                                    */
-                                                                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& radius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                                   
                                                                   /**
                                                                    * Generated
@@ -7602,6 +8218,46 @@ namespace dem {
  #endif 
  {
                                                                      _persistentRecords._diameter = diameter;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getRadius() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._radius;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setRadius(const double& radius) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._radius = radius;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getEpsilon() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._epsilon;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setEpsilon(const double& epsilon) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._epsilon = epsilon;
                                                                   }
                                                                   
                                                                   

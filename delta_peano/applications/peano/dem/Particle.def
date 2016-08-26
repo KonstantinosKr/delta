@@ -14,6 +14,8 @@ class dem::records::Particle {
   persistent expose double centre[DIMENSIONS];
   persistent expose double velocity[DIMENSIONS];
   persistent expose double diameter;
+  persistent expose double radius;
+  persistent expose double epsilon;
 
   persistent expose double mass;
   persistent expose double hMin;

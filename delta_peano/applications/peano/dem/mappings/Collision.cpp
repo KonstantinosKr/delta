@@ -231,18 +231,51 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				switch (_collisionModel) {
 				case CollisionModel::Sphere:
 				{
-					newContactPoints = delta::collision::sphere(
-							fineGridVertex.getParticle(i).getCentre(0),
-							fineGridVertex.getParticle(i).getCentre(1),
-							fineGridVertex.getParticle(i).getCentre(2),
-							fineGridVertex.getParticle(i).getDiameter(),
+					if(fineGridVertex.getParticle(i)._persistentRecords._globalParticleNumber <= 0 )
+					{
+						newContactPoints = delta::collision::sphereWithBarrier(
+								fineGridVertex.getParticle(j).getCentre(0),
+								fineGridVertex.getParticle(j).getCentre(1),
+								fineGridVertex.getParticle(j).getCentre(2),
+								fineGridVertex.getParticle(j).getDiameter(),
 
-							fineGridVertex.getParticle(j).getCentre(0),
-							fineGridVertex.getParticle(j).getCentre(1),
-							fineGridVertex.getParticle(j).getCentre(2),
-							fineGridVertex.getParticle(j).getDiameter(),
-							epsilon
-					);
+								fineGridVertex.getXCoordinates(i),
+								fineGridVertex.getYCoordinates(i),
+								fineGridVertex.getZCoordinates(i),
+								fineGridVertex.getNumberOfTriangles( i ),
+								epsilon
+						);
+					}
+					else if(fineGridVertex.getParticle(j)._persistentRecords._globalParticleNumber <= 0)
+					{
+						newContactPoints = delta::collision::sphereWithBarrier(
+								fineGridVertex.getParticle(i).getCentre(0),
+								fineGridVertex.getParticle(i).getCentre(1),
+								fineGridVertex.getParticle(i).getCentre(2),
+								fineGridVertex.getParticle(i).getDiameter(),
+
+								fineGridVertex.getXCoordinates(j),
+								fineGridVertex.getYCoordinates(j),
+								fineGridVertex.getZCoordinates(j),
+								fineGridVertex.getNumberOfTriangles( j ),
+								epsilon
+						);
+					}//else if barrier to barrier
+					else
+					{
+						newContactPoints = delta::collision::sphere(
+								fineGridVertex.getParticle(i).getCentre(0),
+								fineGridVertex.getParticle(i).getCentre(1),
+								fineGridVertex.getParticle(i).getCentre(2),
+								fineGridVertex.getParticle(i).getDiameter(),
+
+								fineGridVertex.getParticle(j).getCentre(0),
+								fineGridVertex.getParticle(j).getCentre(1),
+								fineGridVertex.getParticle(j).getCentre(2),
+								fineGridVertex.getParticle(j).getDiameter(),
+								epsilon
+						);
+					}
 					break;
 				}
 				case CollisionModel::BruteForce:

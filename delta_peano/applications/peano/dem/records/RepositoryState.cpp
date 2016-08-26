@@ -16,15 +16,18 @@ dem::records::RepositoryState::RepositoryState() {
    
 }
 
+
 dem::records::RepositoryState::RepositoryState(const PersistentRecords& persistentRecords):
 _persistentRecords(persistentRecords._action, persistentRecords._numberOfIterations, persistentRecords._exchangeBoundaryVertices) {
    
 }
 
+
 dem::records::RepositoryState::RepositoryState(const Action& action, const int& numberOfIterations, const bool& exchangeBoundaryVertices):
 _persistentRecords(action, numberOfIterations, exchangeBoundaryVertices) {
    
 }
+
 
 dem::records::RepositoryState::~RepositoryState() { }
 
