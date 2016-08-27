@@ -19,6 +19,7 @@
 #include "tarch/multicore/MulticoreDefinitions.h"
 
 #include "tarch/plotter/griddata/unstructured/vtk/VTKBinaryFileWriter.h"
+#include "tarch/plotter/griddata/unstructured/vtk/VTKTextFileWriter.h"
 
 #ifdef UseInSituVisualiser
 #include "insituvis/Visualiser.h"
@@ -68,7 +69,8 @@ class dem::mappings::Plot {
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _level;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _velocitiesAndNormals;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleRadius;
-    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleRadiusPlusEpsilon;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleEpsilon;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _vertexColoring;
 
     int _vertexCounter;
 

@@ -54,8 +54,9 @@ void dem::mappings::Plot::beginIteration(
   _faceVertexAssociation = _writer->createCellDataWriter( "face-vertex-association", 1 );
   _type                  = _writer->createCellDataWriter( "type(particle-centre=0,triangle=1,collision-point=2,link=3)", 1 );
   _velocitiesAndNormals  = _writer->createVertexDataWriter( "velocities-and-contact-normals", DIMENSIONS );
-  _particleRadius  = _writer->createVertexDataWriter( "particle-radius", 1);
-  _particleRadiusPlusEpsilon  = _writer->createVertexDataWriter( "particle-radius-plus-epsilon", 1);
+  _particleRadius  		 = _writer->createVertexDataWriter( "particle-radius", 1);
+  _particleEpsilon  	 = _writer->createVertexDataWriter( "epsilon-margin", 1);
+  _vertexColoring 		 = _writer->createVertexDataWriter( "vertex-coloring", 1);
   _level                 = _writer->createCellDataWriter( "level", 1 );
 
   _vertexCounter         = 0;
@@ -111,7 +112,11 @@ void dem::mappings::Plot::endIteration(
   _faceVertexAssociation->close();
   _type->close();
   _velocitiesAndNormals->close();
+  _particleRadius->close();
+  _particleEpsilon->close();
+  _vertexColoring->close();
   _level->close();
+
 
   std::ostringstream snapshotFileName;
   snapshotFileName << "geometry"
@@ -130,6 +135,9 @@ void dem::mappings::Plot::endIteration(
   delete _faceVertexAssociation;
   delete _type;
   delete _velocitiesAndNormals;
+  delete _particleRadius;
+  delete _particleEpsilon;
+  delete _vertexColoring;
   delete _level;
 
   #ifdef Asserts
@@ -157,20 +165,25 @@ void dem::mappings::Plot::touchVertexLastTime(
   particleVertexLink[0] = _vertexWriter->plotVertex( fineGridX );
   _velocitiesAndNormals->plotVertex(particleVertexLink[0],0);
 
+  _particleRadius->plotVertex(particleVertexLink[0],0);
+  _particleEpsilon->plotVertex(particleVertexLink[0],0);
+  _vertexColoring->plotVertex(particleVertexLink[0], 0);
+
+
   logDebug( "touchVertexLastTime(...)", "vertex holds " << fineGridVertex.getNumberOfParticles() << " particles" );
+
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
     _particleCounter++;
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
     particleVertexLink[1]            = _vertexWriter->plotVertex( particle._persistentRecords._centre );
+
     _velocitiesAndNormals->plotVertex(particleVertexLink[1],0);
 
-    /*int radiusplusepsilon = _vertexWriter->plotVertex((particle._persistentRecords._radius)+particle._persistentRecords._epsilonMargin);
-    int radius = _vertexWriter->plotVertex((particle._persistentRecords._radius));
+    _particleEpsilon->plotVertex(particleVertexLink[1], particle._persistentRecords._radius+particle._persistentRecords._epsilon);
+    _particleRadius->plotVertex(particleVertexLink[1], particle._persistentRecords._radius);
+    _vertexColoring->plotVertex(particleVertexLink[1], particle._persistentRecords._globalParticleNumber);
 
-    _particleRadiusPlusEpsilon->plotVertex(radiusplusepsilon, 1);
-    _particleRadius->plotVertex(radius, 1);
-*/
     int lineFromParticleToHostVertex = _cellWriter->plotLine(particleVertexLink);
     _faceVertexAssociation->plotCell(lineFromParticleToHostVertex,_vertexCounter);
     _type->plotCell(lineFromParticleToHostVertex,3);
@@ -194,6 +207,8 @@ void dem::mappings::Plot::touchVertexLastTime(
 
       _velocitiesAndNormals->plotVertex(vertexIndex[0],particle._persistentRecords._velocity);
       _velocitiesAndNormals->plotVertex(vertexIndex[1],particle._persistentRecords._velocity);
+      _vertexColoring->plotVertex(vertexIndex[0], 0);
+      _vertexColoring->plotVertex(vertexIndex[1], 0);
       #else
       const double* x = fineGridVertex.getXCoordinates( i );
       const double* y = fineGridVertex.getYCoordinates( i );
@@ -220,6 +235,18 @@ void dem::mappings::Plot::touchVertexLastTime(
       _velocitiesAndNormals->plotVertex(vertexIndex[0],particle._persistentRecords._velocity);
       _velocitiesAndNormals->plotVertex(vertexIndex[1],particle._persistentRecords._velocity);
       _velocitiesAndNormals->plotVertex(vertexIndex[2],particle._persistentRecords._velocity);
+
+      _particleEpsilon->plotVertex(vertexIndex[0], 0);
+      _particleEpsilon->plotVertex(vertexIndex[1], 0);
+      _particleEpsilon->plotVertex(vertexIndex[2], 0);
+
+      _particleRadius->plotVertex(vertexIndex[0], 0);
+      _particleRadius->plotVertex(vertexIndex[1], 0);
+      _particleRadius->plotVertex(vertexIndex[2], 0);
+
+      _vertexColoring->plotVertex(vertexIndex[0], 0);
+      _vertexColoring->plotVertex(vertexIndex[1], 0);
+      _vertexColoring->plotVertex(vertexIndex[2], 0);
       #endif
 
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
@@ -243,6 +270,9 @@ dem::mappings::Plot::Plot(const Plot&  masterThread):
   _type(masterThread._type),
   _level(masterThread._level),
   _velocitiesAndNormals(masterThread._velocitiesAndNormals),
+  _particleEpsilon(masterThread._particleEpsilon),
+  _particleRadius(masterThread._particleRadius),
+  _vertexColoring(masterThread._vertexColoring),
   _vertexCounter(masterThread._vertexCounter),
   _particleCounter(masterThread._particleCounter),
   _collisionPointCounter(masterThread._collisionPointCounter) {

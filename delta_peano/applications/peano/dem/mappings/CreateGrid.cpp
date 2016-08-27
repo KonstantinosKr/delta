@@ -371,6 +371,9 @@ void dem::mappings::CreateGrid::createCell(
 
 			vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
 			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = particleDiameter * 1.5;
+			vertex.getParticle(newParticleNumber)._persistentRecords._radius               = particleDiameter/2;
+			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = 5E-3;
+
 			vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
 			assertion( tarch::la::greater(vertex.getParticle(newParticleNumber)._persistentRecords._hMin,0.0) );
