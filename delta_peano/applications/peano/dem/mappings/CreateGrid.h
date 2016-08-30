@@ -18,6 +18,8 @@
 
 #include "tarch/multicore/MulticoreDefinitions.h"
 
+#include "dem/mappings/Collision.h"
+
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"

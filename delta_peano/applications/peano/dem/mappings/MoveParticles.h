@@ -22,7 +22,6 @@
 #include "dem/Cell.h"
 #include "dem/State.h"
 
-
 namespace dem {
   namespace mappings {
     class MoveParticles;

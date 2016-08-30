@@ -68,7 +68,8 @@ class dem::mappings::Plot {
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _type;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _level;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _velocitiesAndNormals;
-    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleRadius;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleDiameter;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleInfluence;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleEpsilon;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _vertexColoring;
 

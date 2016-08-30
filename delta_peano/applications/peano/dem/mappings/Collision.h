@@ -50,8 +50,6 @@ class dem::mappings::Collision {
 
     State   _state;
 
-
-
     void collideParticlesOfTwoDifferentVertices(
       dem::Vertex&  vertexA,
       dem::Vertex&  vertexB
@@ -80,7 +78,9 @@ class dem::mappings::Collision {
     	GJK
     };
 
-    const double epsilon = 5E-3;
+    static const double _epsilon = 0.001;
+
+    static std::vector<int> _penetrationTable;
 
     struct Collisions {
       records::Particle                            _copyOfPartnerParticle;

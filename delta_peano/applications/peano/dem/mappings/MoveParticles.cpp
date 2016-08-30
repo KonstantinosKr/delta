@@ -5,6 +5,9 @@
 #include "tarch/la/Matrix.h"
 
 
+#include "dem/mappings/Collision.h"
+
+
 
 /**
  * @todo Please tailor the parameters to your mapping's properties.
@@ -12,7 +15,6 @@
 peano::CommunicationSpecification   dem::mappings::MoveParticles::communicationSpecification() {
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
-
 
 /**
  * Reflect
@@ -71,6 +73,19 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
     particle._persistentRecords._centreOfMass(1)   += timeStepSize * particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2)   += timeStepSize * particle._persistentRecords._velocity(2);
 
+    int skip = 0;
+    for (std::vector<int>::const_iterator it = Collision::_penetrationTable.begin() ; it != Collision::_penetrationTable.end(); ++it)
+    {
+    	if(*it == particle._persistentRecords._globalParticleNumber)
+    	{
+    		//printf("penatration :%d\n", *it);
+    		skip = 1;
+    		break;
+    	}
+    }
+
+    if(skip)continue;
+
     double* x = fineGridVertex.getXCoordinates(i);
     double* y = fineGridVertex.getYCoordinates(i);
     double* z = fineGridVertex.getZCoordinates(i);
@@ -104,13 +119,13 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
                          y[j] - particle._persistentRecords._centreOfMass(1),
                          z[j] - particle._persistentRecords._centreOfMass(2);
 
-      /*assertionNumericalEquals5( x[j], particle._persistentRecords._centreOfMass(0)  + (relativePosition)(0), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
+      assertionNumericalEquals5( x[j], particle._persistentRecords._centreOfMass(0)  + (relativePosition)(0), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
       assertionNumericalEquals5( y[j], particle._persistentRecords._centreOfMass(1)  + (relativePosition)(1), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
-      assertionNumericalEquals5( z[j], particle._persistentRecords._centreOfMass(2)  + (relativePosition)(2), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);*/
+      assertionNumericalEquals5( z[j], particle._persistentRecords._centreOfMass(2)  + (relativePosition)(2), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
 
-      /*x[j] = particle._persistentRecords._centreOfMass(0)  + (rotationMatrix * relativePosition)(0);
+      x[j] = particle._persistentRecords._centreOfMass(0)  + (rotationMatrix * relativePosition)(0);
       y[j] = particle._persistentRecords._centreOfMass(1)  + (rotationMatrix * relativePosition)(1);
-      z[j] = particle._persistentRecords._centreOfMass(2)  + (rotationMatrix * relativePosition)(2);*/
+      z[j] = particle._persistentRecords._centreOfMass(2)  + (rotationMatrix * relativePosition)(2);
     }
   }
 }
