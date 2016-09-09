@@ -4,10 +4,7 @@
 
 #include "tarch/la/Matrix.h"
 
-
 #include "dem/mappings/Collision.h"
-
-
 
 /**
  * @todo Please tailor the parameters to your mapping's properties.
@@ -46,13 +43,9 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces);
 }
 
-
 tarch::logging::Log                dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" ); 
 
-
-double    dem::mappings::MoveParticles::timeStepSize = 0.0;
 double    dem::mappings::MoveParticles::gravity      = 0.0;
-
 
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
   dem::Vertex&               fineGridVertex
@@ -61,9 +54,23 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
   {
     // Each particle is assigned to exactly one vertex.
     records::Particle&  particle = fineGridVertex.getParticle(i);
-    if(particle._persistentRecords._globalParticleNumber <= 0){continue;}
+
+    assertion1( particle._persistentRecords._centre(0)==particle._persistentRecords._centre(0), particle.toString() );
+    /*logInfo(
+      "runAsMaster(...)",
+      "iteration i=" << i
+      << ", center[0] =" << particle._persistentRecords._centre(0)
+		<< ", center[1] =" << particle._persistentRecords._centre(1)
+		<< ", center[2] =" << particle._persistentRecords._centre(2));*/
+
+    if(particle._persistentRecords._globalParticleNumber == 0){continue;}
+
+    double timeStepSize = _state.getTimeStepSize();
 
     particle._persistentRecords._velocity(1) += -(timeStepSize * (gravity/ particle._persistentRecords._mass));
+
+    double velocity = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0))+(particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1))+(particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
+    particle._persistentRecords._epsilon = dem::mappings::Collision::_epsilon + (particle._persistentRecords._epsilon * (velocity*0.01));
 
     particle._persistentRecords._centre(0)   += timeStepSize * particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1)   += timeStepSize * particle._persistentRecords._velocity(1);
@@ -72,19 +79,6 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
     particle._persistentRecords._centreOfMass(0)   += timeStepSize * particle._persistentRecords._velocity(0);
     particle._persistentRecords._centreOfMass(1)   += timeStepSize * particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2)   += timeStepSize * particle._persistentRecords._velocity(2);
-
-    int skip = 0;
-    for (std::vector<int>::const_iterator it = Collision::_penetrationTable.begin() ; it != Collision::_penetrationTable.end(); ++it)
-    {
-    	if(*it == particle._persistentRecords._globalParticleNumber)
-    	{
-    		//printf("penatration :%d\n", *it);
-    		skip = 1;
-    		break;
-    	}
-    }
-
-    if(skip)continue;
 
     double* x = fineGridVertex.getXCoordinates(i);
     double* y = fineGridVertex.getYCoordinates(i);
@@ -97,6 +91,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
       z[j] += timeStepSize * particle._persistentRecords._velocity(2);
     }
 
+    /*
     // rotation
     const double alpha = timeStepSize * particle._persistentRecords._angularVelocity(0);
     const double beta  = timeStepSize * particle._persistentRecords._angularVelocity(1);
@@ -126,7 +121,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
       x[j] = particle._persistentRecords._centreOfMass(0)  + (rotationMatrix * relativePosition)(0);
       y[j] = particle._persistentRecords._centreOfMass(1)  + (rotationMatrix * relativePosition)(1);
       z[j] = particle._persistentRecords._centreOfMass(2)  + (rotationMatrix * relativePosition)(2);
-    }
+    }*/
   }
 }
 
@@ -169,13 +164,33 @@ void dem::mappings::MoveParticles::reflectParticles(
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
-    for (int d=0; d<DIMENSIONS; d++) {
-      if (particle._persistentRecords._centre(d)-particle._persistentRecords._diameter/2<0.0) {
-        particle._persistentRecords._velocity(d) = std::abs(particle._persistentRecords._centre(d)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(d));
-      }
-      if (particle._persistentRecords._centre(d)-particle._persistentRecords._diameter/2>1.0) {
-        particle._persistentRecords._velocity(d) = std::abs(particle._persistentRecords._centre(d)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(d));
-      }
+    if (particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2<0.0)
+    {
+	 particle._persistentRecords._velocity(0) = std::abs(particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(0));
+    }
+    if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2<0.0)
+    {
+      const double FrictionDamping = 0.8;
+      particle._persistentRecords._velocity(0) = particle._persistentRecords._velocity(0) * FrictionDamping;
+      particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(1));
+      particle._persistentRecords._velocity(2) = particle._persistentRecords._velocity(2) * FrictionDamping;
+    }
+    if (particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2<0.0)
+    {
+	 particle._persistentRecords._velocity(2) = std::abs(particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(2));
+    }
+
+    if (particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2>1.0)
+    {
+	  particle._persistentRecords._velocity(0) = std::abs(particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(0));
+    }
+    if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2>1.0)
+    {
+    	particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(1));
+    }
+    if (particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2>1.0)
+    {
+    	particle._persistentRecords._velocity(2) = std::abs(particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(2));
     }
   }
 }

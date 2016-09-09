@@ -79,12 +79,20 @@ class dem::State: public peano::grid::State< dem::records::State > {
     void clearAccumulatedData();
 
     void incNumberOfContactPoints(int delta);
+    void decNumberOfContactPoints(int delta);
     void incNumberOfParticleReassignments(int delta);
     void incNumberOfTriangleComparisons(int delta);
 
     double getNumberOfContactPoints() const;
     double getNumberOfParticleReassignments() const;
     double getNumberOfTriangleComparisons() const;
+
+    double getTimeStepSize() const;
+    double getTime() const;
+    void setInitialTimeStepSize(double value);
+
+    void informStateThatTwoParticlesAreClose();
+    void finishedTimeStep();
 };
 
 

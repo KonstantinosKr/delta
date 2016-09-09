@@ -62,10 +62,9 @@ class dem::mappings::MoveParticles {
     void reflectParticles(
       dem::Vertex&                               fineGridVertices
     );
-  public:
-    static double    timeStepSize;
-    static double    gravity;
 
+  public:
+    static double    gravity;
 
     /**
      * These flags are used to inform Peano about your operation. It tells the 

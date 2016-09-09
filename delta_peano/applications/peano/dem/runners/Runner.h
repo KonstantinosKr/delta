@@ -35,12 +35,13 @@ class dem::runners::Runner {
       EveryIteration,
       Never,
       UponChange,
-	  EveryBatch
+	  EveryBatch,
+	  Adaptive
     };
   private:
     static tarch::logging::Log _log;
 
-    int runAsMaster(dem::repositories::Repository& repository, int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType);
+    int runAsMaster(dem::repositories::Repository& repository, int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, double timeStepSize);
     
     #ifdef Parallel
     int runAsWorker(dem::repositories::Repository& repository);
@@ -61,7 +62,7 @@ class dem::runners::Runner {
     /**
      * Run
      */
-    int run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads);
+    int run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads, double initialTimeStepSize);
 };
 
 #endif

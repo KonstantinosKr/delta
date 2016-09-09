@@ -32,6 +32,7 @@ void dem::State::clearAccumulatedData() {
   _stateData.setNumberOfContactPoints(0.0);
   _stateData.setNumberOfParticleReassignments(0.0);
   _stateData.setNumberOfTriangleComparisons(0.0);
+  _stateData.setTwoParticlesAreClose(false);
 }
 
 
@@ -49,11 +50,13 @@ double dem::State::getNumberOfTriangleComparisons() const {
   return _stateData.getNumberOfTriangleComparisons();
 }
 
-
 void dem::State::incNumberOfContactPoints(int delta) {
   _stateData.setNumberOfContactPoints( _stateData.getNumberOfContactPoints() + delta );
 }
 
+void dem::State::decNumberOfContactPoints(int delta) {
+  _stateData.setNumberOfContactPoints( _stateData.getNumberOfContactPoints() - delta );
+}
 
 void dem::State::incNumberOfParticleReassignments(int delta) {
   _stateData.setNumberOfParticleReassignments( _stateData.getNumberOfParticleReassignments() + delta );
@@ -64,9 +67,35 @@ void dem::State::incNumberOfTriangleComparisons(int delta) {
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + delta );
 }
 
-
 void dem::State::merge( const State& otherState ) {
   _stateData.setNumberOfContactPoints( _stateData.getNumberOfContactPoints() + otherState._stateData.getNumberOfContactPoints() );
   _stateData.setNumberOfParticleReassignments( _stateData.getNumberOfParticleReassignments() + otherState._stateData.getNumberOfParticleReassignments() );
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + otherState._stateData.getNumberOfTriangleComparisons() );
+}
+
+double dem::State::getTimeStepSize() const {
+  return _stateData.getTimeStepSize();
+}
+
+double dem::State::getTime() const {
+  return _stateData.getCurrentTime();
+}
+
+void dem::State::setInitialTimeStepSize(double value) {
+  _stateData.setTimeStepSize(value);
+  _stateData.setCurrentTime(0.0);
+}
+
+void dem::State::informStateThatTwoParticlesAreClose() {
+  _stateData.setTwoParticlesAreClose(true);
+}
+
+void dem::State::finishedTimeStep() {
+  _stateData.setCurrentTime( _stateData.getCurrentTime() + _stateData.getTimeStepSize() );
+  if (_stateData.getTwoParticlesAreClose()) {
+	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()/2.0);
+  }
+  else {
+	  //_stateData.setTimeStepSize(_stateData.getTimeStepSize()*1.2);
+  }
 }

@@ -15,6 +15,8 @@
 
 #include "peano/geometry/Hexahedron.h" 
 
+#include "dem/mappings/MoveParticles.h"
+
 tarch::logging::Log dem::runners::Runner::_log( "dem::runners::Runner" );
 
 dem::runners::Runner::Runner() {
@@ -24,7 +26,7 @@ dem::runners::Runner::Runner() {
 dem::runners::Runner::~Runner() {
 }
 
-int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads) {
+int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads, double timeStepSize) {
   peano::geometry::Hexahedron geometry(
     tarch::la::Vector<DIMENSIONS,double>(1.0),
     tarch::la::Vector<DIMENSIONS,double>(0.0)
@@ -47,7 +49,7 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
 
   int result = 0;
   if (tarch::parallel::Node::getInstance().isGlobalMaster()) {
-    result = runAsMaster( *repository, numberOfTimeSteps, plot, gridType );
+    result = runAsMaster( *repository, numberOfTimeSteps, plot, gridType, timeStepSize );
   }
   #ifdef Parallel
   else {
@@ -60,75 +62,68 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
   return result;
 }
 
-int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository, int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType) {
-  peano::utils::UserInterface userInterface;
-  userInterface.writeHeader();
+int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository, int iterations, Plot plot, dem::mappings::CreateGrid::GridType gridType, double initialTimeStepSize) {
+  peano::utils::UserInterface::writeHeader();
 
   logInfo( "runAsMaster(...)", "create grid" );
   repository.switchToCreateGrid();
 
-  do {
-    repository.iterate();
-  } while ( !repository.getState().isGridStationary() );
+  do { repository.iterate(); } while ( !repository.getState().isGridStationary() );
 
   assertion( repository.getState().isGridStationary() );
 
   logInfo( "runAsMaster(...)", "start time stepping" );
   repository.getState().clearAccumulatedData();
-  for (int i=0; i<numberOfTimeSteps; i++) {
-    bool plotThisTraversal =
-      (plot == EveryIteration) || ( plot == UponChange &&
-        ( repository.getState().getNumberOfContactPoints()>0 ||
-          !repository.getState().isGridStationary() || i%50==0 ||
-          repository.getState().getNumberOfParticleReassignments()>0
-        )) || (plot == EveryBatch && i%50 == 0);
+
+  repository.getState().setInitialTimeStepSize(0.0001);
+
+  for (int i=0; i<iterations; i++)
+  {
+    bool plotThisTraversal = (plot == EveryIteration) || ( plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
+    						  !repository.getState().isGridStationary() || i%50==0 || repository.getState().getNumberOfParticleReassignments()>0 )) ||
+							  (plot == EveryBatch && i%50 == 0) || (plot == Adaptive);
 
     if (plotThisTraversal)
     {
-      logInfo(
-        "runAsMaster(...)",
-        "iteration i=" << i
-        << ", no-of-reassignments=" << repository.getState().getNumberOfParticleReassignments()
-        << ", no-of-triangle-comparisons=" << repository.getState().getNumberOfTriangleComparisons()
-        << ", no-of-contact-points=" << repository.getState().getNumberOfContactPoints()
+      logInfo("runAsMaster(...)", "iteration i=" << i
+        << ", reassignments=" << repository.getState().getNumberOfParticleReassignments()
+        << ", triangle-comparisons=" << repository.getState().getNumberOfTriangleComparisons()
+        << ", contact-points=" << repository.getState().getNumberOfContactPoints()
         << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
         << ", create snapshot");
 
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {
         repository.switchToTimeStepAndPlotOnDynamicGrid();
-      }
-      else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
+      }else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
       {
         repository.switchToTimeStepAndPlotOnReluctantDynamicGrid();
-      }
-      else
+      }else
       {
         repository.switchToTimeStepAndPlot();
       }
 
     } else {
-      logInfo(
-        "runAsMaster(...)",
-        "iteration i=" << i
-        << ", no-of-reassignments=" << repository.getState().getNumberOfParticleReassignments()
-        << ", no-of-triangle-comparisons=" << repository.getState().getNumberOfTriangleComparisons()
-        << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices());
+      logInfo("runAsMaster(...)", "iteration i=" << i
+        << ", reassignments=" << repository.getState().getNumberOfParticleReassignments()
+        << ", triangle-comparisons=" << repository.getState().getNumberOfTriangleComparisons()
+        << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
+		<< ", t=" << repository.getState().getTime()
+		<< ", dt=" << repository.getState().getTimeStepSize());
 
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {
         repository.switchToTimeStepOnDynamicGrid();
-      }
-      else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
+      }else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
       {
         repository.switchToTimeStepOnReluctantDynamicGrid();
-      }
-      else
+      }else
       {
         repository.switchToTimeStep();
       }
     }
 
+    if(plot==Adaptive)  repository.getState().finishedTimeStep();
     repository.getState().clearAccumulatedData();
     repository.iterate();
   }

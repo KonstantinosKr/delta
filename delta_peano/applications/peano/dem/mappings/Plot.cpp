@@ -52,12 +52,13 @@ void dem::mappings::Plot::beginIteration(
   _cellWriter   = _writer->createCellWriter();
 
   _faceVertexAssociation = _writer->createCellDataWriter( "face-vertex-association", 1 );
-  _type                  = _writer->createCellDataWriter( "type(particle-centre=0,triangle=1,collision-point=2,link=3)", 1 );
+  _type                  = _writer->createCellDataWriter( "type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4)", 1 );
   _velocitiesAndNormals  = _writer->createVertexDataWriter( "velocities-and-contact-normals", DIMENSIONS );
+  _particleVelocity		 = _writer->createVertexDataWriter( "particle-velocity", 1);
   _particleDiameter  	 = _writer->createVertexDataWriter( "particle-radius", 1);
   _particleInfluence     = _writer->createVertexDataWriter( "particle-influence", 1);
-  _particleEpsilon  	 = _writer->createVertexDataWriter( "epsilon-margin", 1);
-  _vertexColoring 		 = _writer->createVertexDataWriter( "vertex-coloring", 1);
+  _particleEpsilon  	 = _writer->createVertexDataWriter( "particle-epsilon", 1);
+  _vertexColoring 		 = _writer->createVertexDataWriter( "particle-coloring", 1);
   _level                 = _writer->createCellDataWriter( "level", 1 );
 
   _vertexCounter         = 0;
@@ -79,12 +80,16 @@ void dem::mappings::Plot::endIteration(
   for (std::map<int, std::vector<Collision::Collisions> >::const_iterator p = Collision::_activeCollisions.begin();
       p != Collision::_activeCollisions.end(); p++)
   {
-    for (std::vector<Collision::Collisions>::const_iterator pp = p->second.begin(); pp != p->second.end(); pp++)
+	int collisionsCounter = 1;
+	for (std::vector<Collision::Collisions>::const_iterator pp = p->second.begin(); pp != p->second.end(); pp++)
     {
+	  int contacts = 1;
       for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp->_contactPoints.begin();
         ppp != pp->_contactPoints.end(); ppp++)
       {
-        tarch::la::Vector<3,double> v;
+    	//printf("Contacts:%d, between:%d and %d\n", contacts++, p->first, pp->_copyOfPartnerParticle._persistentRecords._globalParticleNumber);
+
+    	tarch::la::Vector<3,double> v;
         v = ppp->x[0], ppp->x[1], ppp->x[2];
         int contactPointVertexIndex = _vertexWriter->plotVertex( v );
         int contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
@@ -93,14 +98,13 @@ void dem::mappings::Plot::endIteration(
         _velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
         _particleDiameter->plotVertex(contactPointVertexIndex,0);
         _particleEpsilon->plotVertex(contactPointVertexIndex,0);
-        _vertexColoring->plotVertex(contactPointVertexIndex,0);
+        _vertexColoring->plotVertex(contactPointVertexIndex,p->first);
         _particleInfluence->plotVertex(contactPointVertexIndex,0);
+        _particleVelocity->plotVertex(contactPointVertexIndex,0);
 
         _faceVertexAssociation->plotCell(contactPointIndex,-1);
         _type->plotCell(contactPointIndex,2);
         _level->plotCell(contactPointIndex,-1);
-
-
 
         v = ppp->P[0], ppp->P[1], ppp->P[2];
         contactPointVertexIndex = _vertexWriter->plotVertex( v );
@@ -110,8 +114,10 @@ void dem::mappings::Plot::endIteration(
         _particleInfluence->plotVertex(contactPointVertexIndex,0);
         _particleEpsilon->plotVertex(contactPointVertexIndex,0);
         _vertexColoring->plotVertex(contactPointVertexIndex,0);
+        _particleVelocity->plotVertex(contactPointVertexIndex,0);
+
         _faceVertexAssociation->plotCell(contactPointIndex,-1);
-        _type->plotCell(contactPointIndex,2);
+        _type->plotCell(contactPointIndex,4);
         _level->plotCell(contactPointIndex,-1);
 
         v = ppp->Q[0], ppp->Q[1], ppp->Q[2];
@@ -122,10 +128,11 @@ void dem::mappings::Plot::endIteration(
         _particleInfluence->plotVertex(contactPointVertexIndex,0);
         _particleEpsilon->plotVertex(contactPointVertexIndex,0);
         _vertexColoring->plotVertex(contactPointVertexIndex,0);
-        _faceVertexAssociation->plotCell(contactPointIndex,-1);
-        _type->plotCell(contactPointIndex,2);
-        _level->plotCell(contactPointIndex,-1);
+        _particleVelocity->plotVertex(contactPointVertexIndex,0);
 
+        _faceVertexAssociation->plotCell(contactPointIndex,-1);
+        _type->plotCell(contactPointIndex,4);
+        _level->plotCell(contactPointIndex,-1);
 
         _collisionPointCounter++;
       }
@@ -140,6 +147,7 @@ void dem::mappings::Plot::endIteration(
   _particleDiameter->close();
   _particleInfluence->close();
   _particleEpsilon->close();
+  _particleVelocity->close();
   _vertexColoring->close();
   _level->close();
 
@@ -164,6 +172,7 @@ void dem::mappings::Plot::endIteration(
   delete _particleDiameter;
   delete _particleInfluence;
   delete _particleEpsilon;
+  delete _particleVelocity;
   delete _vertexColoring;
   delete _level;
 
@@ -196,29 +205,36 @@ void dem::mappings::Plot::touchVertexLastTime(
   _particleEpsilon->plotVertex(particleVertexLink[0],0);
   _vertexColoring->plotVertex(particleVertexLink[0],0);
   _particleInfluence->plotVertex(particleVertexLink[0],0);
-
+  _particleVelocity->plotVertex(particleVertexLink[0],0);
 
   logDebug( "touchVertexLastTime(...)", "vertex holds " << fineGridVertex.getNumberOfParticles() << " particles" );
 
-  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
+  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  {
     _particleCounter++;
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
+    assertion1( particle._persistentRecords._centre(0)==particle._persistentRecords._centre(0), particle.toString() );
     particleVertexLink[1]            = _vertexWriter->plotVertex( particle._persistentRecords._centre );
 
-    _velocitiesAndNormals->plotVertex(particleVertexLink[1],0);
-
-    if(!particle._persistentRecords._globalParticleNumber <= 0)
+    if(particle._persistentRecords._globalParticleNumber > 0)
     {
     	//it will only accept diameter not radius to plot the sphere thus divide epsilon by 2
-    	_particleEpsilon->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter+(particle._persistentRecords._epsilon*4));
+    	_particleEpsilon->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter+(particle._persistentRecords._epsilon*2));
     	_particleDiameter->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter);
     	_particleInfluence->plotVertex(particleVertexLink[1], particle._persistentRecords._influenceRadius*2);
+        tarch::la::Vector<3,double> v;
+        double mag = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0)+particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1)+particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
+        v = particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2);
+    	_velocitiesAndNormals->plotVertex(particleVertexLink[1],v);
+    	_particleVelocity->plotVertex(particleVertexLink[1],mag);
     } else
     {
     	_particleEpsilon->plotVertex(particleVertexLink[1], 0);
     	_particleDiameter->plotVertex(particleVertexLink[1], 0);
     	_particleInfluence->plotVertex(particleVertexLink[1], 0);
+    	_velocitiesAndNormals->plotVertex(particleVertexLink[1],0);
+    	_particleVelocity->plotVertex(particleVertexLink[1],0);
     }
 
 	_vertexColoring->plotVertex(particleVertexLink[1], particle._persistentRecords._globalParticleNumber);
@@ -271,9 +287,9 @@ void dem::mappings::Plot::touchVertexLastTime(
       vertexIndex[2] = _vertexWriter->plotVertex( p );
       int faceIndex = _cellWriter->plotTriangle(vertexIndex);
 
-      _velocitiesAndNormals->plotVertex(vertexIndex[0],particle._persistentRecords._velocity);
-      _velocitiesAndNormals->plotVertex(vertexIndex[1],particle._persistentRecords._velocity);
-      _velocitiesAndNormals->plotVertex(vertexIndex[2],particle._persistentRecords._velocity);
+      _velocitiesAndNormals->plotVertex(vertexIndex[0],0);
+      _velocitiesAndNormals->plotVertex(vertexIndex[1],0);
+      _velocitiesAndNormals->plotVertex(vertexIndex[2],0);
 
       _particleEpsilon->plotVertex(vertexIndex[0], 0);
       _particleEpsilon->plotVertex(vertexIndex[1], 0);
@@ -291,6 +307,10 @@ void dem::mappings::Plot::touchVertexLastTime(
   	  _particleInfluence->plotVertex(vertexIndex[0], 0);
   	  _particleInfluence->plotVertex(vertexIndex[1], 0);
 	  _particleInfluence->plotVertex(vertexIndex[2], 0);
+
+	  _particleVelocity->plotVertex(vertexIndex[0],0);
+	  _particleVelocity->plotVertex(vertexIndex[1],0);
+	  _particleVelocity->plotVertex(vertexIndex[2],0);
       #endif
 
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
@@ -302,8 +322,6 @@ void dem::mappings::Plot::touchVertexLastTime(
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
-
-
 
 #if defined(SharedMemoryParallelisation)
 dem::mappings::Plot::Plot(const Plot&  masterThread):
@@ -317,6 +335,7 @@ dem::mappings::Plot::Plot(const Plot&  masterThread):
   _particleEpsilon(masterThread._particleEpsilon),
   _particleDiameter(masterThread._particleDiameter),
   _particleInfluence(masterThread._particleInfluence),
+  _particleVelocity(masterThread._particleVelocity),
   _vertexColoring(masterThread._vertexColoring),
   _vertexCounter(masterThread._vertexCounter),
   _particleCounter(masterThread._particleCounter),

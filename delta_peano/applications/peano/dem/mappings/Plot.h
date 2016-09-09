@@ -71,6 +71,7 @@ class dem::mappings::Plot {
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleDiameter;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleInfluence;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleEpsilon;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleVelocity;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _vertexColoring;
 
     int _vertexCounter;

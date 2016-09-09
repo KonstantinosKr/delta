@@ -47,6 +47,7 @@ class dem::mappings::Collision {
      * Logging device for the trace macros.
      */
     static tarch::logging::Log  _log;
+    static int _isNearToPenetration;
 
     State   _state;
 
@@ -55,7 +56,7 @@ class dem::mappings::Collision {
       dem::Vertex&  vertexB
     );
 
-    void addCollision(
+    int addCollision(
       std::vector<delta::collision::contactpoint> newContactPoints,
       const records::Particle&                    particleA,
       const records::Particle&                    particleB
@@ -78,9 +79,7 @@ class dem::mappings::Collision {
     	GJK
     };
 
-    static const double _epsilon = 0.001;
-
-    static std::vector<int> _penetrationTable;
+    static const double _epsilon = 0.004;
 
     struct Collisions {
       records::Particle                            _copyOfPartnerParticle;

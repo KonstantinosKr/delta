@@ -50,7 +50,10 @@ class dem::mappings::CreateGrid {
       Random,
       TwoParticlesCrash,
 	  hopper,
-	  freefall
+	  hopperBricks,
+	  freefall,
+	  flatwall,
+	  icecube
     };
 
     enum GridType {
@@ -62,6 +65,7 @@ class dem::mappings::CreateGrid {
 
     static void setScenario(Scenario scenario, double minH, double particleDiamMax, double particleDiamMin, GridType gridType);
     static double   _hopperWidth;
+    static double   _wallWidth;
     static double   _hopperHatch;
   private:
     /**

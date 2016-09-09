@@ -10,9 +10,7 @@
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
 
-
 tarch::logging::Log _log("");
-
 
 int main(int argc, char** argv) {
   peano::fillLookupTables();
@@ -47,7 +45,7 @@ int main(int argc, char** argv) {
               << " particle_diam_max   maximal diameter of particles" << std::endl
               << " particle_diam_min   minimal diameter of particles" << std::endl
               << " scenario            which scenario to use. See list below for valid configurations " << std::endl
-              << " no-of-time-steps    number of time steps" << std::endl
+              << " no-of-iterations    number of iterations or time steps depending on scheme" << std::endl
               << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
               << " time-step-size      floating point number" << std::endl
               << " plot                see plot variants below" << std::endl
@@ -65,6 +63,11 @@ int main(int argc, char** argv) {
               << "  random-velocities" << std::endl
               << "  two-particles-crash" << std::endl
 			  << "  hopper" << std::endl
+			  << "  hopper100" << std::endl
+			  << "  hopperBrick" << std::endl
+			  << "  freefall" << std::endl
+			  << "  flatwall" << std::endl
+			  << "  icecube" << std::endl
               << "Grid types" << std::endl
               << "==========" << std::endl
               << "  no-grid" << std::endl
@@ -76,7 +79,8 @@ int main(int argc, char** argv) {
               << "  never" << std::endl
               << "  every-iteration" << std::endl
               << "  upon-change" << std::endl
-    		  << "  every-batch" << std::endl;
+    		  << "  every-batch" << std::endl
+			  << "  every-checkpoint" << std::endl;
 
     return -1;
   }
@@ -87,7 +91,7 @@ int main(int argc, char** argv) {
   const std::string  scenario            = argv[4];
   const int          numberOfTimeSteps   = atoi( argv[5] );
   const std::string  gridTypeIdentifier  = argv[6];
-  const double       timeStepSize        = atof( argv[7] );
+  const double       iterations        = atof( argv[7] );
   const std::string  plotIdentifier      = argv[8];
   const double       gravity             = atof( argv[9] );
   const std::string  collisionModel      = argv[10];
@@ -156,10 +160,28 @@ int main(int argc, char** argv) {
 	dem::mappings::CreateGrid::_hopperHatch = 0.15;
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.15, 0.15, 0.15, gridType );
   }
+  else if (scenario=="hopper100") {
+	dem::mappings::CreateGrid::_hopperWidth = 0.28;
+	dem::mappings::CreateGrid::_hopperHatch = 0.15;
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.1, 0.1, 0.1, gridType );
+  }
+  else if (scenario=="hopperBricks") {
+	dem::mappings::CreateGrid::_hopperWidth = 0.3;
+	dem::mappings::CreateGrid::_hopperHatch = 0.15;
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.15, 0.15, 0.15, gridType );
+  }
   else if (scenario=="freefall") {
-		dem::mappings::CreateGrid::_hopperWidth = 0.3;
-		dem::mappings::CreateGrid::_hopperHatch = 0.15;
+	dem::mappings::CreateGrid::_hopperWidth = 0.3;
+	dem::mappings::CreateGrid::_hopperHatch = 0.15;
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, 0.15, 0.15, 0.15, gridType );
+  }
+  else if (scenario=="flatwall") {
+	dem::mappings::CreateGrid::_wallWidth = 0.3;
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::flatwall, 0.15, 0.15, 0.15, gridType );
+  }
+  else if (scenario=="icecube"){
+	dem::mappings::CreateGrid::_wallWidth = 0.3;
+	dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::icecube, 0.15, 0.15, 0.15, gridType );
   }
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;
@@ -178,6 +200,9 @@ int main(int argc, char** argv) {
   }
   else if (plotIdentifier=="every-batch") {
 	plot = dem::runners::Runner::EveryBatch;
+  }
+  else if (plotIdentifier=="adaptive") {
+	plot = dem::runners::Runner::Adaptive;
   }
   else {
     std::cerr << "invalid plot option. Please run without arguments to see list of valid plot variants" << std::endl;
@@ -227,7 +252,6 @@ int main(int argc, char** argv) {
     programExitCode = 2;
   }
 
-  dem::mappings::MoveParticles::timeStepSize = timeStepSize;
   dem::mappings::MoveParticles::gravity      = gravity;
 
   // Configure the output
@@ -247,7 +271,7 @@ int main(int argc, char** argv) {
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano", true ) );
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano::utils", false ) );
     dem::runners::Runner runner;
-    programExitCode = runner.run( numberOfTimeSteps, plot, gridType, numberOfCores );
+    programExitCode = runner.run( numberOfTimeSteps, plot, gridType, numberOfCores, iterations );
   }
   
   if (programExitCode==0)
