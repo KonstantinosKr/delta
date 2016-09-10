@@ -56,7 +56,7 @@ class dem::mappings::Collision {
       dem::Vertex&  vertexB
     );
 
-    int addCollision(
+    void addCollision(
       std::vector<delta::collision::contactpoint> newContactPoints,
       const records::Particle&                    particleA,
       const records::Particle&                    particleB

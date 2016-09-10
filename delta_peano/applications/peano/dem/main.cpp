@@ -117,7 +117,7 @@ int main(int argc, char** argv) {
 
   dem::mappings::CreateGrid::GridType gridType;
 
-       if (gridTypeIdentifier=="no-grid") {
+  if (gridTypeIdentifier=="no-grid") {
     gridType = dem::mappings::CreateGrid::NoGrid;
   }
   else if (gridTypeIdentifier=="regular-grid") {

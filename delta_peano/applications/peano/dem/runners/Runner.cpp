@@ -75,7 +75,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   logInfo( "runAsMaster(...)", "start time stepping" );
   repository.getState().clearAccumulatedData();
 
-  repository.getState().setInitialTimeStepSize(0.0001);
+  repository.getState().setInitialTimeStepSize(initialTimeStepSize);
 
   for (int i=0; i<iterations; i++)
   {

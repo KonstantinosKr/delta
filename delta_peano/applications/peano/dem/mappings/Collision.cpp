@@ -88,7 +88,7 @@ void dem::mappings::Collision::endIteration(
 }
 
 
-int dem::mappings::Collision::addCollision(
+void dem::mappings::Collision::addCollision(
 		std::vector<delta::collision::contactpoint> newContactPoints,
 		const records::Particle&                    particleA,
 		const records::Particle&                    particleB
@@ -163,7 +163,11 @@ int dem::mappings::Collision::addCollision(
 
 	dataSetB->_contactPoints.insert( dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
 	//logInfo( "addCollision(...)", "add collision for particles " << particleA._persistentRecords._globalParticleNumber << " and " << particleB._persistentRecords._globalParticleNumber);
-	return 1;
+
+	#ifdef ompParticle
+		#pragma omp critical
+	#endif
+	_state.incNumberOfContactPoints(newContactPoints.size());
 }
 
 #define DOT(a, b)\
@@ -574,13 +578,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				#ifdef ompParticle
 					#pragma omp critical
 				#endif
-				if(addCollision( newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) ))
-				{
-					#ifdef ompParticle
-						#pragma omp critical
-					#endif
-					_state.incNumberOfContactPoints(newContactPoints.size());
-				}
+				addCollision( newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) );
 			}
 			#ifdef ompParticle
 				#pragma omp critical
@@ -937,13 +935,8 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 					#ifdef ompParticle
 						#pragma omp critical
 					#endif
-					if(addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j) ))
-					{
-						#ifdef ompParticle
-							#pragma omp critical
-						#endif
-						_state.incNumberOfContactPoints(newContactPoints.size());
-					}
+					addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j) );
+				}
 
 					//printf("DifferentVertexContact:%d\n", newContactPoints.size());
 					//printf("VertexANoParticles:%d VertexBNoParticles:%d\n", vertexA.getNumberOfRealAndVirtualParticles(), vertexB.getNumberOfRealAndVirtualParticles());
@@ -952,7 +945,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 						#pragma omp critical
 					#endif
 					_state.incNumberOfTriangleComparisons( vertexA.getNumberOfTriangles( i ) * vertexB.getNumberOfTriangles( j ) );
-				}
 			}
 		}
 	}
