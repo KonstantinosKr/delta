@@ -96,6 +96,6 @@ void dem::State::finishedTimeStep() {
 	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()/2.0);
   }
   else {
-	  //_stateData.setTimeStepSize(_stateData.getTimeStepSize()*1.2);
+	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()*1.2);
   }
 }

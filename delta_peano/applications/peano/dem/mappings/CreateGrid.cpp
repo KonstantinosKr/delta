@@ -141,6 +141,7 @@ void dem::mappings::CreateGrid::createCell(
 	bool freefallcase = false;
 	bool flatwallcase = false;
 	bool icecubecase = false;
+	bool frictioncase = false;
 
 	switch (_scenario)
 	{
@@ -194,7 +195,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
 				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _wallWidth;
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.8;
-				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = dem::mappings::Collision::_epsilon-0.001;
+				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = dem::mappings::Collision::_epsilon-0.0005;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = 0;
 
@@ -236,7 +237,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
 				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _wallWidth;
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.8;
-				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = dem::mappings::Collision::_epsilon-0.001;
+				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = dem::mappings::Collision::_epsilon-0.0005;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = 0;
 
@@ -261,7 +262,7 @@ void dem::mappings::CreateGrid::createCell(
 				std::vector<double>  zCoordinates;
 
 				dem::Vertex&  vertex  = fineGridVertices[ fineGridVerticesEnumerator(0) ];
-				const int     newParticleNumber = vertex.createNewParticle(fineGridVerticesEnumerator.getVertexPosition());
+				int	newParticleNumber = vertex.createNewParticle(fineGridVerticesEnumerator.getVertexPosition());
 
 				double centreAsArray[] = {fineGridVerticesEnumerator.getCellCenter()(0), fineGridVerticesEnumerator.getCellCenter()(1), fineGridVerticesEnumerator.getCellCenter()(2)};
 				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
@@ -277,7 +278,54 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
 				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _hopperWidth*1.8;
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _hopperWidth * 1.8;
-				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = dem::mappings::Collision::_epsilon-0.001;
+				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = dem::mappings::Collision::_epsilon-0.0005;
+				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = 0;
+
+				assertion( tarch::la::greater(vertex.getParticle(newParticleNumber)._persistentRecords._hMin,0.0) );
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(0) = fineGridVerticesEnumerator.getCellCenter()(0);
+				vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(1) = fineGridVerticesEnumerator.getCellCenter()(1);
+				vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(2) = fineGridVerticesEnumerator.getCellCenter()(2);
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._centre(0) = fineGridVerticesEnumerator.getCellCenter()(0);
+				vertex.getParticle(newParticleNumber)._persistentRecords._centre(1) = fineGridVerticesEnumerator.getCellCenter()(1);
+				vertex.getParticle(newParticleNumber)._persistentRecords._centre(2) = fineGridVerticesEnumerator.getCellCenter()(2);
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = 0;
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._angularVelocity(0) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._angularVelocity(1) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._angularVelocity(2) = 0;
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._mass = 0;
+
+
+
+				xCoordinates.clear();
+				yCoordinates.clear();
+				zCoordinates.clear();
+
+				newParticleNumber = vertex.createNewParticle(fineGridVerticesEnumerator.getVertexPosition());
+
+				centreAsArray[1] = 0;
+
+				delta::primitives::generateSurface( centreAsArray, 1, xCoordinates, yCoordinates, zCoordinates);
+
+				for (int i=0; i<static_cast<int>(xCoordinates.size()); i++) {
+					vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
+					vertex.getYCoordinatesAsVector(newParticleNumber).push_back( yCoordinates[i] );
+					vertex.getZCoordinatesAsVector(newParticleNumber).push_back( zCoordinates[i] );
+				}
+
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
+				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _hopperWidth*1.8;
+				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _hopperWidth * 1.8;
+				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = 0;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = 0;
 
@@ -330,7 +378,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
 				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _hopperWidth*1.8;
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _hopperWidth * 1.8;
-				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = dem::mappings::Collision::_epsilon-0.001;
+				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = dem::mappings::Collision::_epsilon-0.0005;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = 0;
 				assertion( tarch::la::greater(vertex.getParticle(newParticleNumber)._persistentRecords._hMin,0.0) );
@@ -348,6 +396,48 @@ void dem::mappings::CreateGrid::createCell(
 				return;
 			}
 			bricksInHopper = true;
+			break;
+		case friction:
+			if (coarseGridCell.isRoot() )
+			{
+				std::vector<double>  xCoordinates;
+				std::vector<double>  yCoordinates;
+				std::vector<double>  zCoordinates;
+
+				dem::Vertex&  vertex  = fineGridVertices[ fineGridVerticesEnumerator(0) ];
+				const int     newParticleNumber = vertex.createNewParticle(fineGridVerticesEnumerator.getVertexPosition());
+
+				double centreAsArray[] = {fineGridVerticesEnumerator.getCellCenter()(0), fineGridVerticesEnumerator.getCellCenter()(1), fineGridVerticesEnumerator.getCellCenter()(2)};
+				delta::primitives::generateSurface( centreAsArray, _wallWidth, xCoordinates, yCoordinates, zCoordinates);
+
+				for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
+				{
+					vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
+					vertex.getYCoordinatesAsVector(newParticleNumber).push_back( yCoordinates[i] );
+					vertex.getZCoordinatesAsVector(newParticleNumber).push_back( zCoordinates[i] );
+				}
+
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
+				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _wallWidth;
+				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.8;
+				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = 0;
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(0) = fineGridVerticesEnumerator.getCellCenter()(0);
+				vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(1) = fineGridVerticesEnumerator.getCellCenter()(1);
+				vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(2) = fineGridVerticesEnumerator.getCellCenter()(2);
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._centre(0) = fineGridVerticesEnumerator.getCellCenter()(0);
+				vertex.getParticle(newParticleNumber)._persistentRecords._centre(1) = fineGridVerticesEnumerator.getCellCenter()(1);
+				vertex.getParticle(newParticleNumber)._persistentRecords._centre(2) = fineGridVerticesEnumerator.getCellCenter()(2);
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._mass = 1;
+				return;
+			}
+			frictioncase = true;
 			break;
 	}
 
@@ -487,6 +577,20 @@ void dem::mappings::CreateGrid::createCell(
 			{
 
 			}
+			else if(frictioncase)
+			{
+				if(centreAsArray[0] < 0.45 && centreAsArray[0] > 0.30 &&
+				   centreAsArray[1] < 1-0.30 && centreAsArray[1] > 1-0.45 &&
+				   centreAsArray[2] < 1-0.30 && centreAsArray[2] > 1-0.45)
+				{
+					newParticleNumber = vertex.createNewParticle( centre );
+					delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates );
+				}
+				else
+				{
+					return;
+				}
+			}
 
 			for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
 			{
@@ -516,7 +620,7 @@ void dem::mappings::CreateGrid::createCell(
 
 			vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
 			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = particleDiameter;
-			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = particleDiameter/35;//ratio based on 0.15/0.005 = 30 of hopper particles
+			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = dem::mappings::Collision::_epsilon;
 			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius 	   = (particleDiameter/2) + (vertex.getParticle(newParticleNumber)._persistentRecords._epsilon * 6);
 			vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
@@ -547,6 +651,11 @@ void dem::mappings::CreateGrid::createCell(
 						static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
 						static_cast<double>( rand() ) / static_cast<double>(RAND_MAX);
 					break;
+				case friction:
+					vertex.getParticle(newParticleNumber)._persistentRecords._velocity = tarch::la::Vector<DIMENSIONS,double>(0.5) - fineGridVerticesEnumerator.getVertexPosition(k);
+					vertex.getParticle(newParticleNumber)._persistentRecords._angularVelocity = tarch::la::Vector<DIMENSIONS,double>(0.0);
+					break;
+
 			}
 		}
 	}

@@ -53,7 +53,8 @@ class dem::mappings::CreateGrid {
 	  hopperBricks,
 	  freefall,
 	  flatwall,
-	  icecube
+	  icecube,
+	  friction
     };
 
     enum GridType {

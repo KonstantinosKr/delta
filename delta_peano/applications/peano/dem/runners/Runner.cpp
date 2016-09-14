@@ -81,7 +81,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   {
     bool plotThisTraversal = (plot == EveryIteration) || ( plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
     						  !repository.getState().isGridStationary() || i%50==0 || repository.getState().getNumberOfParticleReassignments()>0 )) ||
-							  (plot == EveryBatch && i%50 == 0) || (plot == Adaptive);
+							  (plot == EveryBatch && i%50 == 0) || (plot == Adaptive && i%50);//fmod(repository.getState().getTime(),0.01) == 0);
 
     if (plotThisTraversal)
     {

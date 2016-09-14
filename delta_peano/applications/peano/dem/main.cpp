@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
 			  << "  freefall" << std::endl
 			  << "  flatwall" << std::endl
 			  << "  icecube" << std::endl
+			  << "  friction" << std::endl
               << "Grid types" << std::endl
               << "==========" << std::endl
               << "  no-grid" << std::endl
@@ -182,6 +183,10 @@ int main(int argc, char** argv) {
   else if (scenario=="icecube"){
 	dem::mappings::CreateGrid::_wallWidth = 0.3;
 	dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::icecube, 0.15, 0.15, 0.15, gridType );
+  }
+  else if (scenario=="friction") {
+	dem::mappings::CreateGrid::_wallWidth = 1;
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::friction, 0.15, 0.15, 0.15, gridType );
   }
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;

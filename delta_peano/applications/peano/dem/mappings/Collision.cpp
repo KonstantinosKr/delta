@@ -138,8 +138,25 @@ void dem::mappings::Collision::addCollision(
 		dataSetB->_copyOfPartnerParticle = particleA;
 	}
 
-	delta::collision::filter(newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+	delta::collision::filter(dataSetA->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
 
+	//for debugging/plotting only
+	if(particleA._persistentRecords._globalParticleNumber == 0 || particleB._persistentRecords._globalParticleNumber == 0)
+	for (std::vector<delta::collision::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
+	{
+		  double linearVelocityA[3];
+		  linearVelocityA[0] = particleA._persistentRecords._velocity(0);
+		  linearVelocityA[1] = particleA._persistentRecords._velocity(1);
+	      linearVelocityA[2] = particleA._persistentRecords._velocity(2);
+
+	      double velocity = sqrt(linearVelocityA[0]*linearVelocityA[0]+linearVelocityA[1]*linearVelocityA[1]+linearVelocityA[2]*linearVelocityA[2]);
+
+	      p->friction[0] = -(((linearVelocityA[0]/velocity)-(linearVelocityA[0]*p->normal[0]))/velocity);
+	      p->friction[1] = -(((linearVelocityA[1]/velocity)-(linearVelocityA[1]*p->normal[1]))/velocity);
+	      p->friction[2] = -(((linearVelocityA[2]/velocity)-(linearVelocityA[2]*p->normal[2]))/velocity);
+
+	      p->isThereFriction = true;
+	 }
 	/*
 	 * Problem here was:
 	 * Although all normals were pointing to opposite direction for each particle due to how we loop particles
@@ -198,20 +215,19 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				double force[3]  = {0.0,0.0,0.0};
 				double torque[3] = {0.0,0.0,0.0};
 
-				 delta::forces::getForces(
+				 delta::forces::getContactForces(
 					p->_contactPoints,
 					&(currentParticle._persistentRecords._centreOfMass(0)),
 					&(currentParticle._persistentRecords._angularVelocity(0)),
 					&(currentParticle._persistentRecords._velocity(0)),
 					currentParticle._persistentRecords._mass,
-					currentParticle._persistentRecords._epsilon,
 					&(p->_copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
 					&(p->_copyOfPartnerParticle._persistentRecords._angularVelocity(0)),
 					&(p->_copyOfPartnerParticle._persistentRecords._velocity(0)),
 					p->_copyOfPartnerParticle._persistentRecords._mass,
-					p->_copyOfPartnerParticle._persistentRecords._epsilon,
 					force,
 					torque);
+
 				 	//logInfo( "touchVertexFirstTime(...)", "add force f=" << force[0] << ", " << force[1] << ", " << force[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
 
 				if (currentParticle._persistentRecords.getGlobalParticleNumber() != 0)
@@ -225,6 +241,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 					currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle._persistentRecords._mass);
 					currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle._persistentRecords._mass);
 					currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle._persistentRecords._mass);
+
 					//logInfo( "touchVertexFirstTime(...)", "add angvel av=" << currentParticle._persistentRecords._angularVelocity(0) << ", " << currentParticle._persistentRecords._angularVelocity(1) << ", " << currentParticle._persistentRecords._angularVelocity(2) << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
 					//logInfo( "touchVertexFirstTime(...)", "add vel av=" << currentParticle._persistentRecords._velocity(0) << ", " << currentParticle._persistentRecords._velocity(1) << ", " << currentParticle._persistentRecords._velocity(2) << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
 				}
@@ -255,7 +272,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				{
 					if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= 0 && fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= 0)
 					{
-						printf("entered - Obstacle to Obstacle\n");
+						//printf("entered - Obstacle to Obstacle\n");
 						//obstacle to obstacle
 					} else if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= 0 && fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() > 0)
 					{
@@ -624,7 +641,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 					{
 						if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= 0 && vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= 0)
 						{
-							printf("entered - Obstacle to Obstacle\n");
+							//printf("entered - Obstacle to Obstacle\n");
 							//obstacle to obstacle
 						} else if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= 0 && vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() > 0)
 						{

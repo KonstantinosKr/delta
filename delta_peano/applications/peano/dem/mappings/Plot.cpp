@@ -1,6 +1,5 @@
 #include "dem/mappings/Plot.h"
 #include "dem/mappings/Collision.h"
-#include "delta/collision/bf.h"
 
 
 /**
@@ -9,7 +8,6 @@
 peano::CommunicationSpecification   dem::mappings::Plot::communicationSpecification() {
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
-
 
 /**
  * This is the only routine that we actually use.
@@ -54,6 +52,7 @@ void dem::mappings::Plot::beginIteration(
   _faceVertexAssociation = _writer->createCellDataWriter( "face-vertex-association", 1 );
   _type                  = _writer->createCellDataWriter( "type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4)", 1 );
   _velocitiesAndNormals  = _writer->createVertexDataWriter( "velocities-and-contact-normals", DIMENSIONS );
+  _frictionNormals 		 = _writer->createVertexDataWriter( "friction-normals", DIMENSIONS );
   _particleVelocity		 = _writer->createVertexDataWriter( "particle-velocity", 1);
   _particleDiameter  	 = _writer->createVertexDataWriter( "particle-radius", 1);
   _particleInfluence     = _writer->createVertexDataWriter( "particle-influence", 1);
@@ -80,11 +79,9 @@ void dem::mappings::Plot::endIteration(
   for (std::map<int, std::vector<Collision::Collisions> >::const_iterator p = Collision::_activeCollisions.begin();
       p != Collision::_activeCollisions.end(); p++)
   {
-	int collisionsCounter = 1;
 	for (std::vector<Collision::Collisions>::const_iterator pp = p->second.begin(); pp != p->second.end(); pp++)
     {
-	  int contacts = 1;
-      for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp->_contactPoints.begin();
+	    for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp->_contactPoints.begin();
         ppp != pp->_contactPoints.end(); ppp++)
       {
     	//printf("Contacts:%d, between:%d and %d\n", contacts++, p->first, pp->_copyOfPartnerParticle._persistentRecords._globalParticleNumber);
@@ -96,6 +93,8 @@ void dem::mappings::Plot::endIteration(
 
         v = ppp->normal[0], ppp->normal[1], ppp->normal[2];
         _velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
+        v = ppp->friction[0], ppp->friction[1], ppp->friction[2];
+        _frictionNormals->plotVertex(contactPointVertexIndex, v);
         _particleDiameter->plotVertex(contactPointVertexIndex,0);
         _particleEpsilon->plotVertex(contactPointVertexIndex,0);
         _vertexColoring->plotVertex(contactPointVertexIndex,p->first);
@@ -110,6 +109,7 @@ void dem::mappings::Plot::endIteration(
         contactPointVertexIndex = _vertexWriter->plotVertex( v );
         contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
         _velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
+        _frictionNormals->plotVertex(contactPointVertexIndex, 0);
         _particleDiameter->plotVertex(contactPointVertexIndex,0);
         _particleInfluence->plotVertex(contactPointVertexIndex,0);
         _particleEpsilon->plotVertex(contactPointVertexIndex,0);
@@ -123,6 +123,7 @@ void dem::mappings::Plot::endIteration(
         v = ppp->Q[0], ppp->Q[1], ppp->Q[2];
         contactPointVertexIndex = _vertexWriter->plotVertex( v );
         contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
+        _frictionNormals->plotVertex(contactPointVertexIndex, 0);
         _velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
         _particleDiameter->plotVertex(contactPointVertexIndex,0);
         _particleInfluence->plotVertex(contactPointVertexIndex,0);
@@ -144,13 +145,13 @@ void dem::mappings::Plot::endIteration(
   _faceVertexAssociation->close();
   _type->close();
   _velocitiesAndNormals->close();
+  _frictionNormals->close();
   _particleDiameter->close();
   _particleInfluence->close();
   _particleEpsilon->close();
   _particleVelocity->close();
   _vertexColoring->close();
   _level->close();
-
 
   std::ostringstream snapshotFileName;
   snapshotFileName << "geometry"
@@ -169,6 +170,7 @@ void dem::mappings::Plot::endIteration(
   delete _faceVertexAssociation;
   delete _type;
   delete _velocitiesAndNormals;
+  delete _frictionNormals;
   delete _particleDiameter;
   delete _particleInfluence;
   delete _particleEpsilon;
@@ -200,6 +202,7 @@ void dem::mappings::Plot::touchVertexLastTime(
   int particleVertexLink[2];
   particleVertexLink[0] = _vertexWriter->plotVertex( fineGridX );
   _velocitiesAndNormals->plotVertex(particleVertexLink[0],0);
+  _frictionNormals->plotVertex(particleVertexLink[0],0);
 
   _particleDiameter->plotVertex(particleVertexLink[0],0);
   _particleEpsilon->plotVertex(particleVertexLink[0],0);
@@ -219,7 +222,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 
     if(particle._persistentRecords._globalParticleNumber > 0)
     {
-    	//it will only accept diameter not radius to plot the sphere thus divide epsilon by 2
+    	//it will only accept diameter not radius to plot the sphere thus multiply epsilon by 2
     	_particleEpsilon->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter+(particle._persistentRecords._epsilon*2));
     	_particleDiameter->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter);
     	_particleInfluence->plotVertex(particleVertexLink[1], particle._persistentRecords._influenceRadius*2);
@@ -227,6 +230,7 @@ void dem::mappings::Plot::touchVertexLastTime(
         double mag = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0)+particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1)+particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
         v = particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2);
     	_velocitiesAndNormals->plotVertex(particleVertexLink[1],v);
+    	_frictionNormals->plotVertex(particleVertexLink[1],0);
     	_particleVelocity->plotVertex(particleVertexLink[1],mag);
     } else
     {
@@ -235,6 +239,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     	_particleInfluence->plotVertex(particleVertexLink[1], 0);
     	_velocitiesAndNormals->plotVertex(particleVertexLink[1],0);
     	_particleVelocity->plotVertex(particleVertexLink[1],0);
+    	_frictionNormals->plotVertex(particleVertexLink[1],0);
     }
 
 	_vertexColoring->plotVertex(particleVertexLink[1], particle._persistentRecords._globalParticleNumber);
@@ -291,6 +296,10 @@ void dem::mappings::Plot::touchVertexLastTime(
       _velocitiesAndNormals->plotVertex(vertexIndex[1],0);
       _velocitiesAndNormals->plotVertex(vertexIndex[2],0);
 
+      _frictionNormals->plotVertex(vertexIndex[0],0);
+      _frictionNormals->plotVertex(vertexIndex[1],0);
+      _frictionNormals->plotVertex(vertexIndex[2],0);
+
       _particleEpsilon->plotVertex(vertexIndex[0], 0);
       _particleEpsilon->plotVertex(vertexIndex[1], 0);
       _particleEpsilon->plotVertex(vertexIndex[2], 0);
@@ -332,6 +341,7 @@ dem::mappings::Plot::Plot(const Plot&  masterThread):
   _type(masterThread._type),
   _level(masterThread._level),
   _velocitiesAndNormals(masterThread._velocitiesAndNormals),
+  _frictionNormals(masterThread._frictionNormals),
   _particleEpsilon(masterThread._particleEpsilon),
   _particleDiameter(masterThread._particleDiameter),
   _particleInfluence(masterThread._particleInfluence),

@@ -79,7 +79,7 @@ class dem::mappings::Collision {
     	GJK
     };
 
-    static const double _epsilon = 0.004;
+    static const double _epsilon = 0.002;
 
     struct Collisions {
       records::Particle                            _copyOfPartnerParticle;

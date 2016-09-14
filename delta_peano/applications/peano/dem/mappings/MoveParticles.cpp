@@ -50,18 +50,12 @@ double    dem::mappings::MoveParticles::gravity      = 0.0;
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
   dem::Vertex&               fineGridVertex
 ) {
+
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
-    // Each particle is assigned to exactly one vertex.
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
     assertion1( particle._persistentRecords._centre(0)==particle._persistentRecords._centre(0), particle.toString() );
-    /*logInfo(
-      "runAsMaster(...)",
-      "iteration i=" << i
-      << ", center[0] =" << particle._persistentRecords._centre(0)
-		<< ", center[1] =" << particle._persistentRecords._centre(1)
-		<< ", center[2] =" << particle._persistentRecords._centre(2));*/
 
     if(particle._persistentRecords._globalParticleNumber == 0){continue;}
 
@@ -70,7 +64,8 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
     particle._persistentRecords._velocity(1) += -(timeStepSize * (gravity/ particle._persistentRecords._mass));
 
     double velocity = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0))+(particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1))+(particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
-    particle._persistentRecords._epsilon = dem::mappings::Collision::_epsilon + (particle._persistentRecords._epsilon * (velocity*0.01));
+    particle._persistentRecords._epsilon += dem::mappings::Collision::_epsilon*velocity*timeStepSize;
+    particle._persistentRecords._influenceRadius += particle._persistentRecords._influenceRadius*velocity*timeStepSize;
 
     particle._persistentRecords._centre(0)   += timeStepSize * particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1)   += timeStepSize * particle._persistentRecords._velocity(1);
@@ -91,8 +86,8 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
       z[j] += timeStepSize * particle._persistentRecords._velocity(2);
     }
 
-    /*
     // rotation
+    /*
     const double alpha = timeStepSize * particle._persistentRecords._angularVelocity(0);
     const double beta  = timeStepSize * particle._persistentRecords._angularVelocity(1);
     const double gamma = timeStepSize * particle._persistentRecords._angularVelocity(2);
@@ -161,37 +156,38 @@ void dem::mappings::MoveParticles::reflectParticles(
 ) {
   assertion(fineGridVertex.isBoundary());
 
-  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
-    records::Particle&  particle = fineGridVertex.getParticle(i);
+  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  {
+	  records::Particle&  particle = fineGridVertex.getParticle(i);
 
-    if (particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2<0.0)
-    {
-	 particle._persistentRecords._velocity(0) = std::abs(particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(0));
-    }
-    if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2<0.0)
-    {
-      const double FrictionDamping = 0.8;
-      particle._persistentRecords._velocity(0) = particle._persistentRecords._velocity(0) * FrictionDamping;
-      particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(1));
-      particle._persistentRecords._velocity(2) = particle._persistentRecords._velocity(2) * FrictionDamping;
-    }
-    if (particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2<0.0)
-    {
-	 particle._persistentRecords._velocity(2) = std::abs(particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(2));
-    }
+	  if (particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2<0.0)
+	  {
+		  particle._persistentRecords._velocity(0) = std::abs(particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(0));
+	  }
+	  if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2<0.0)
+	  {
+		  const double FrictionDamping = 1;
+		  particle._persistentRecords._velocity(0) = particle._persistentRecords._velocity(0) * FrictionDamping;
+		  particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(1));
+		  particle._persistentRecords._velocity(2) = particle._persistentRecords._velocity(2) * FrictionDamping;
+	  }
+	  if (particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2<0.0)
+	  {
+		  particle._persistentRecords._velocity(2) = std::abs(particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(2));
+	  }
 
-    if (particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2>1.0)
-    {
-	  particle._persistentRecords._velocity(0) = std::abs(particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(0));
-    }
-    if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2>1.0)
-    {
-    	particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(1));
-    }
-    if (particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2>1.0)
-    {
-    	particle._persistentRecords._velocity(2) = std::abs(particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(2));
-    }
+	  if (particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2>1.0)
+	  {
+		  particle._persistentRecords._velocity(0) = std::abs(particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(0));
+	  }
+	  if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2>1.0)
+	  {
+		  particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(1));
+	  }
+	  if (particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2>1.0)
+	  {
+		  particle._persistentRecords._velocity(2) = std::abs(particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(2));
+	  }
   }
 }
 
