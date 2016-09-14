@@ -57,7 +57,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 
     assertion1( particle._persistentRecords._centre(0)==particle._persistentRecords._centre(0), particle.toString() );
 
-    if(particle._persistentRecords._globalParticleNumber == 0){continue;}
+    if(particle._persistentRecords._globalParticleNumber < _state.getNumberOfObstacles()){continue;}
 
     double timeStepSize = _state.getTimeStepSize();
 
@@ -86,7 +86,6 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
       z[j] += timeStepSize * particle._persistentRecords._velocity(2);
     }
 
-    // rotation
     /*
     const double alpha = timeStepSize * particle._persistentRecords._angularVelocity(0);
     const double beta  = timeStepSize * particle._persistentRecords._angularVelocity(1);

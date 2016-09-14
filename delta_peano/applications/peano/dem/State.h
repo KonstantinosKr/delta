@@ -93,6 +93,12 @@ class dem::State: public peano::grid::State< dem::records::State > {
 
     void informStateThatTwoParticlesAreClose();
     void finishedTimeStep();
+
+    void incNumberOfParticles(int delta);
+    int getNumberOfParticles() const;
+
+    void incNumberOfObstacles(int delta);
+    int getNumberOfObstacles() const;
 };
 
 

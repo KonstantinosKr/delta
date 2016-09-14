@@ -47,9 +47,10 @@ class dem::mappings::Collision {
      * Logging device for the trace macros.
      */
     static tarch::logging::Log  _log;
-    static int _isNearToPenetration;
 
     State   _state;
+
+    static int _obstacleThresholdID;
 
     void collideParticlesOfTwoDifferentVertices(
       dem::Vertex&  vertexA,

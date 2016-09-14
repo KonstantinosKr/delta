@@ -20,7 +20,8 @@ class dem::records::Particle {
   persistent expose double mass;
   persistent expose double hMin;
   persistent expose double centreOfMass[DIMENSIONS];
-  persistent expose int    globalParticleNumber;
+  persistent expose int globalParticleNumber;
+  persistent expose int material;
   
   #ifdef Dim2
   persistent expose double angularVelocity;

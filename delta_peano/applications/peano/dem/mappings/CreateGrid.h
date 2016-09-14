@@ -81,8 +81,9 @@ class dem::mappings::CreateGrid {
 
     static GridType _gridType;
 
-    int   _numberOfParticles;
-    int   _numberOfTriangles;
+    static int   _numberOfParticles;
+    static int   _numberOfObstacles;
+    static int   _numberOfTriangles;
   public:
     /**
      * These flags are used to inform Peano about your operation. It tells the 

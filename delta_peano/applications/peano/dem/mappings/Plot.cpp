@@ -36,6 +36,7 @@ peano::MappingSpecification   dem::mappings::Plot::descendSpecification() {
 
 tarch::logging::Log  dem::mappings::Plot::_log( "dem::mappings::Plot" );
 int                  dem::mappings::Plot::_snapshotCounter( 0 );
+int					 dem::mappings::Plot::_obstacleThresholdID;
 
 
 
@@ -63,6 +64,8 @@ void dem::mappings::Plot::beginIteration(
   _vertexCounter         = 0;
   _particleCounter       = 0;
   _collisionPointCounter = 0;
+
+  _obstacleThresholdID = solverState.getNumberOfObstacles();
 
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
@@ -218,9 +221,12 @@ void dem::mappings::Plot::touchVertexLastTime(
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
     assertion1( particle._persistentRecords._centre(0)==particle._persistentRecords._centre(0), particle.toString() );
+
+    assertion1( particle._persistentRecords._epsilon==particle._persistentRecords._epsilon, particle.toString() );
+
     particleVertexLink[1]            = _vertexWriter->plotVertex( particle._persistentRecords._centre );
 
-    if(particle._persistentRecords._globalParticleNumber > 0)
+    if(particle._persistentRecords._globalParticleNumber > _obstacleThresholdID)
     {
     	//it will only accept diameter not radius to plot the sphere thus multiply epsilon by 2
     	_particleEpsilon->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter+(particle._persistentRecords._epsilon*2));
@@ -311,7 +317,6 @@ void dem::mappings::Plot::touchVertexLastTime(
       _vertexColoring->plotVertex(vertexIndex[0], 0);
       _vertexColoring->plotVertex(vertexIndex[1], 0);
       _vertexColoring->plotVertex(vertexIndex[2], 0);
-
 
   	  _particleInfluence->plotVertex(vertexIndex[0], 0);
   	  _particleInfluence->plotVertex(vertexIndex[1], 0);

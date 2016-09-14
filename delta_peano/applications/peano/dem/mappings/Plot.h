@@ -79,6 +79,8 @@ class dem::mappings::Plot {
 
     int _particleCounter;
     int _collisionPointCounter;
+
+    static int _obstacleThresholdID;
   public:
     /**
      * These flags are used to inform Peano about your operation. It tells the 

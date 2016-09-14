@@ -99,3 +99,19 @@ void dem::State::finishedTimeStep() {
 	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()*1.2);
   }
 }
+
+void dem::State::incNumberOfParticles(int delta) {
+	_stateData.setNumberOfParticles(_stateData.getNumberOfParticles()+delta);
+}
+
+void dem::State::incNumberOfObstacles(int delta) {
+	_stateData.setNumberOfObstacles(_stateData.getNumberOfObstacles()+delta);
+}
+
+int dem::State::getNumberOfParticles() const {
+	return _stateData.getNumberOfParticles();
+}
+
+int dem::State::getNumberOfObstacles() const {
+	return _stateData.getNumberOfObstacles();
+}

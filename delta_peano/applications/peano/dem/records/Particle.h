@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   09/09/2016 09:44
+    * @date   14/09/2016 19:48
     */
    class dem::records::Particle { 
       
@@ -63,6 +63,7 @@ namespace dem {
             tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
             #endif
             int _globalParticleNumber;
+            int _material;
             int _numberOfTriangles;
             #ifdef UseManualAlignment
             tarch::la::Vector<DIMENSIONS,int> _vertices __attribute__((aligned(VectorisationAlignment)));
@@ -77,7 +78,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
             
             
             /**
@@ -374,6 +375,26 @@ namespace dem {
             
             
             
+            inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _material;
+            }
+            
+            
+            
+            inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _material = material;
+            }
+            
+            
+            
             inline int getNumberOfTriangles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -475,7 +496,7 @@ namespace dem {
          /**
           * Generated
           */
-         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
          
          /**
           * Generated
@@ -855,6 +876,26 @@ namespace dem {
          
          
          
+         inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._material;
+         }
+         
+         
+         
+         inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._material = material;
+         }
+         
+         
+         
          inline int getNumberOfTriangles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1031,7 +1072,7 @@ namespace dem {
              *
              * 		   build date: 09-02-2014 14:40
              *
-             * @date   09/09/2016 09:44
+             * @date   14/09/2016 19:48
              */
             class dem::records::ParticlePacked { 
                
@@ -1047,6 +1088,7 @@ namespace dem {
                      double _hMin;
                      tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                      int _globalParticleNumber;
+                     int _material;
                      int _numberOfTriangles;
                      tarch::la::Vector<DIMENSIONS,int> _vertices;
                      /**
@@ -1057,7 +1099,7 @@ namespace dem {
                      /**
                       * Generated
                       */
-                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                      
                      
                      /**
@@ -1354,6 +1396,26 @@ namespace dem {
                      
                      
                      
+                     inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        return _material;
+                     }
+                     
+                     
+                     
+                     inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        _material = material;
+                     }
+                     
+                     
+                     
                      inline int getNumberOfTriangles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1451,7 +1513,7 @@ namespace dem {
                   /**
                    * Generated
                    */
-                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                   
                   /**
                    * Generated
@@ -1831,6 +1893,26 @@ namespace dem {
                   
                   
                   
+                  inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     return _persistentRecords._material;
+                  }
+                  
+                  
+                  
+                  inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     _persistentRecords._material = material;
+                  }
+                  
+                  
+                  
                   inline int getNumberOfTriangles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -2004,7 +2086,7 @@ namespace dem {
                       *
                       * 		   build date: 09-02-2014 14:40
                       *
-                      * @date   09/09/2016 09:44
+                      * @date   14/09/2016 19:48
                       */
                      class dem::records::Particle { 
                         
@@ -2034,6 +2116,7 @@ namespace dem {
                               tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                               #endif
                               int _globalParticleNumber;
+                              int _material;
                               double _angularVelocity;
                               #ifdef UseManualAlignment
                               tarch::la::Vector<DIMENSIONS,double> _angularVelocity __attribute__((aligned(VectorisationAlignment)));
@@ -2054,7 +2137,7 @@ namespace dem {
                               /**
                                * Generated
                                */
-                              PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                              PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                               
                               
                               /**
@@ -2351,6 +2434,26 @@ namespace dem {
                               
                               
                               
+                              inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _material;
+                              }
+                              
+                              
+                              
+                              inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _material = material;
+                              }
+                              
+                              
+                              
                               inline double getAngularVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -2530,7 +2633,7 @@ namespace dem {
                            /**
                             * Generated
                             */
-                           Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                           Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                            
                            /**
                             * Generated
@@ -2910,6 +3013,26 @@ namespace dem {
                            
                            
                            
+                           inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._material;
+                           }
+                           
+                           
+                           
+                           inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._material = material;
+                           }
+                           
+                           
+                           
                            /**
                             * Generated and optimized
                             * 
@@ -3190,7 +3313,7 @@ namespace dem {
                                *
                                * 		   build date: 09-02-2014 14:40
                                *
-                               * @date   09/09/2016 09:44
+                               * @date   14/09/2016 19:48
                                */
                               class dem::records::ParticlePacked { 
                                  
@@ -3206,6 +3329,7 @@ namespace dem {
                                        double _hMin;
                                        tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                                        int _globalParticleNumber;
+                                       int _material;
                                        double _angularVelocity;
                                        tarch::la::Vector<DIMENSIONS,double> _angularVelocity;
                                        int _numberOfTriangles;
@@ -3218,7 +3342,7 @@ namespace dem {
                                        /**
                                         * Generated
                                         */
-                                       PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                       PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                        
                                        
                                        /**
@@ -3515,6 +3639,26 @@ namespace dem {
                                        
                                        
                                        
+                                       inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _material;
+                                       }
+                                       
+                                       
+                                       
+                                       inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _material = material;
+                                       }
+                                       
+                                       
+                                       
                                        inline double getAngularVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -3690,7 +3834,7 @@ namespace dem {
                                     /**
                                      * Generated
                                      */
-                                    ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                    ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                     
                                     /**
                                      * Generated
@@ -4070,6 +4214,26 @@ namespace dem {
                                     
                                     
                                     
+                                    inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._material;
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._material = material;
+                                    }
+                                    
+                                    
+                                    
                                     /**
                                      * Generated and optimized
                                      * 
@@ -4348,7 +4512,7 @@ namespace dem {
                                      *
                                      * 		   build date: 09-02-2014 14:40
                                      *
-                                     * @date   09/09/2016 09:44
+                                     * @date   14/09/2016 19:48
                                      */
                                     class dem::records::Particle { 
                                        
@@ -4378,6 +4542,7 @@ namespace dem {
                                              tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                                              #endif
                                              int _globalParticleNumber;
+                                             int _material;
                                              double _angularVelocity;
                                              int _numberOfTriangles;
                                              #ifdef UseManualAlignment
@@ -4393,7 +4558,7 @@ namespace dem {
                                              /**
                                               * Generated
                                               */
-                                             PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                             PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                              
                                              
                                              /**
@@ -4690,6 +4855,26 @@ namespace dem {
                                              
                                              
                                              
+                                             inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _material;
+                                             }
+                                             
+                                             
+                                             
+                                             inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _material = material;
+                                             }
+                                             
+                                             
+                                             
                                              inline double getAngularVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -4811,7 +4996,7 @@ namespace dem {
                                           /**
                                            * Generated
                                            */
-                                          Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                          Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                           
                                           /**
                                            * Generated
@@ -5191,6 +5376,26 @@ namespace dem {
                                           
                                           
                                           
+                                          inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._material;
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._material = material;
+                                          }
+                                          
+                                          
+                                          
                                           inline double getAngularVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -5387,7 +5592,7 @@ namespace dem {
                                               *
                                               * 		   build date: 09-02-2014 14:40
                                               *
-                                              * @date   09/09/2016 09:44
+                                              * @date   14/09/2016 19:48
                                               */
                                              class dem::records::ParticlePacked { 
                                                 
@@ -5403,6 +5608,7 @@ namespace dem {
                                                       double _hMin;
                                                       tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                                                       int _globalParticleNumber;
+                                                      int _material;
                                                       double _angularVelocity;
                                                       int _numberOfTriangles;
                                                       tarch::la::Vector<DIMENSIONS,int> _vertices;
@@ -5414,7 +5620,7 @@ namespace dem {
                                                       /**
                                                        * Generated
                                                        */
-                                                      PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                      PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                       
                                                       
                                                       /**
@@ -5711,6 +5917,26 @@ namespace dem {
                                                       
                                                       
                                                       
+                                                      inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _material;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _material = material;
+                                                      }
+                                                      
+                                                      
+                                                      
                                                       inline double getAngularVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -5828,7 +6054,7 @@ namespace dem {
                                                    /**
                                                     * Generated
                                                     */
-                                                   ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                   ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                    
                                                    /**
                                                     * Generated
@@ -6208,6 +6434,26 @@ namespace dem {
                                                    
                                                    
                                                    
+                                                   inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._material;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._material = material;
+                                                   }
+                                                   
+                                                   
+                                                   
                                                    inline double getAngularVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -6402,7 +6648,7 @@ namespace dem {
                                                     *
                                                     * 		   build date: 09-02-2014 14:40
                                                     *
-                                                    * @date   09/09/2016 09:44
+                                                    * @date   14/09/2016 19:48
                                                     */
                                                    class dem::records::Particle { 
                                                       
@@ -6432,6 +6678,7 @@ namespace dem {
                                                             tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                                                             #endif
                                                             int _globalParticleNumber;
+                                                            int _material;
                                                             #ifdef UseManualAlignment
                                                             tarch::la::Vector<DIMENSIONS,double> _angularVelocity __attribute__((aligned(VectorisationAlignment)));
                                                             #else
@@ -6451,7 +6698,7 @@ namespace dem {
                                                             /**
                                                              * Generated
                                                              */
-                                                            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                             
                                                             
                                                             /**
@@ -6748,6 +6995,26 @@ namespace dem {
                                                             
                                                             
                                                             
+                                                            inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _material;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _material = material;
+                                                            }
+                                                            
+                                                            
+                                                            
                                                             /**
                                                              * Generated and optimized
                                                              * 
@@ -6907,7 +7174,7 @@ namespace dem {
                                                          /**
                                                           * Generated
                                                           */
-                                                         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                          
                                                          /**
                                                           * Generated
@@ -7287,6 +7554,26 @@ namespace dem {
                                                          
                                                          
                                                          
+                                                         inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._material;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._material = material;
+                                                         }
+                                                         
+                                                         
+                                                         
                                                          /**
                                                           * Generated and optimized
                                                           * 
@@ -7547,7 +7834,7 @@ namespace dem {
                                                              *
                                                              * 		   build date: 09-02-2014 14:40
                                                              *
-                                                             * @date   09/09/2016 09:44
+                                                             * @date   14/09/2016 19:48
                                                              */
                                                             class dem::records::ParticlePacked { 
                                                                
@@ -7563,6 +7850,7 @@ namespace dem {
                                                                      double _hMin;
                                                                      tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                                                                      int _globalParticleNumber;
+                                                                     int _material;
                                                                      tarch::la::Vector<DIMENSIONS,double> _angularVelocity;
                                                                      int _numberOfTriangles;
                                                                      tarch::la::Vector<DIMENSIONS,int> _vertices;
@@ -7574,7 +7862,7 @@ namespace dem {
                                                                      /**
                                                                       * Generated
                                                                       */
-                                                                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                                      
                                                                      
                                                                      /**
@@ -7871,6 +8159,26 @@ namespace dem {
                                                                      
                                                                      
                                                                      
+                                                                     inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _material;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _material = material;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
                                                                      /**
                                                                       * Generated and optimized
                                                                       * 
@@ -8026,7 +8334,7 @@ namespace dem {
                                                                   /**
                                                                    * Generated
                                                                    */
-                                                                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
                                                                   
                                                                   /**
                                                                    * Generated
@@ -8402,6 +8710,26 @@ namespace dem {
  #endif 
  {
                                                                      _persistentRecords._globalParticleNumber = globalParticleNumber;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline int getMaterial() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._material;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setMaterial(const int& material) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._material = material;
                                                                   }
                                                                   
                                                                   

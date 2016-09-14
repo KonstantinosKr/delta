@@ -6,13 +6,15 @@
    }
    
    
-   dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
    _numberOfContactPoints(numberOfContactPoints),
    _numberOfParticleReassignments(numberOfParticleReassignments),
    _numberOfTriangleComparisons(numberOfTriangleComparisons),
    _timeStepSize(timeStepSize),
    _currentTime(currentTime),
    _twoParticlesAreClose(twoParticlesAreClose),
+   _numberOfParticles(numberOfParticles),
+   _numberOfObstacles(numberOfObstacles),
    _hasRefined(hasRefined),
    _hasTriggeredRefinementForNextIteration(hasTriggeredRefinementForNextIteration),
    _hasErased(hasErased),
@@ -29,13 +31,13 @@
    
    
    dem::records::State::State(const PersistentRecords& persistentRecords):
-   _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted) {
+   _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted) {
       
    }
    
    
-   dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
-   _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
+   dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
       
    }
    
@@ -63,6 +65,10 @@
       out << "currentTime:" << getCurrentTime();
       out << ",";
       out << "twoParticlesAreClose:" << getTwoParticlesAreClose();
+      out << ",";
+      out << "numberOfParticles:" << getNumberOfParticles();
+      out << ",";
+      out << "numberOfObstacles:" << getNumberOfObstacles();
       out << ",";
       out << "hasRefined:" << getHasRefined();
       out << ",";
@@ -93,6 +99,8 @@
          getTimeStepSize(),
          getCurrentTime(),
          getTwoParticlesAreClose(),
+         getNumberOfParticles(),
+         getNumberOfObstacles(),
          getHasRefined(),
          getHasTriggeredRefinementForNextIteration(),
          getHasErased(),
@@ -114,7 +122,7 @@
          {
             State dummyState[2];
             
-            const int Attributes = 14;
+            const int Attributes = 16;
             MPI_Datatype subtypes[Attributes] = {
                MPI_DOUBLE,		 //numberOfContactPoints
                MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -122,6 +130,8 @@
                MPI_DOUBLE,		 //timeStepSize
                MPI_DOUBLE,		 //currentTime
                MPI_CHAR,		 //twoParticlesAreClose
+               MPI_INT,		 //numberOfParticles
+               MPI_INT,		 //numberOfObstacles
                MPI_CHAR,		 //hasRefined
                MPI_CHAR,		 //hasTriggeredRefinementForNextIteration
                MPI_CHAR,		 //hasErased
@@ -139,6 +149,8 @@
                1,		 //timeStepSize
                1,		 //currentTime
                1,		 //twoParticlesAreClose
+               1,		 //numberOfParticles
+               1,		 //numberOfObstacles
                1,		 //hasRefined
                1,		 //hasTriggeredRefinementForNextIteration
                1,		 //hasErased
@@ -159,14 +171,16 @@
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._timeStepSize))), 		&disp[3] );
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._currentTime))), 		&disp[4] );
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[6] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[7] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[8] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[9] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[10] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[11] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[12] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[13] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[8] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[9] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[10] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[11] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[12] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[13] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[14] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[15] );
             
             for (int i=1; i<Attributes; i++) {
                assertion1( disp[i] > disp[i-1], i );
@@ -181,7 +195,7 @@
          {
             State dummyState[2];
             
-            const int Attributes = 14;
+            const int Attributes = 16;
             MPI_Datatype subtypes[Attributes] = {
                MPI_DOUBLE,		 //numberOfContactPoints
                MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -189,6 +203,8 @@
                MPI_DOUBLE,		 //timeStepSize
                MPI_DOUBLE,		 //currentTime
                MPI_CHAR,		 //twoParticlesAreClose
+               MPI_INT,		 //numberOfParticles
+               MPI_INT,		 //numberOfObstacles
                MPI_CHAR,		 //hasRefined
                MPI_CHAR,		 //hasTriggeredRefinementForNextIteration
                MPI_CHAR,		 //hasErased
@@ -206,6 +222,8 @@
                1,		 //timeStepSize
                1,		 //currentTime
                1,		 //twoParticlesAreClose
+               1,		 //numberOfParticles
+               1,		 //numberOfObstacles
                1,		 //hasRefined
                1,		 //hasTriggeredRefinementForNextIteration
                1,		 //hasErased
@@ -226,14 +244,16 @@
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._timeStepSize))), 		&disp[3] );
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._currentTime))), 		&disp[4] );
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[6] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[7] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[8] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[9] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[10] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[11] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[12] );
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[13] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[8] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[9] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[10] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[11] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[12] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[13] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[14] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[15] );
             
             for (int i=1; i<Attributes; i++) {
                assertion1( disp[i] > disp[i-1], i );
@@ -494,13 +514,15 @@ dem::records::StatePacked::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
 _numberOfContactPoints(numberOfContactPoints),
 _numberOfParticleReassignments(numberOfParticleReassignments),
 _numberOfTriangleComparisons(numberOfTriangleComparisons),
 _timeStepSize(timeStepSize),
 _currentTime(currentTime),
 _twoParticlesAreClose(twoParticlesAreClose),
+_numberOfParticles(numberOfParticles),
+_numberOfObstacles(numberOfObstacles),
 _isTraversalInverted(isTraversalInverted) {
    setHasRefined(hasRefined);
    setHasTriggeredRefinementForNextIteration(hasTriggeredRefinementForNextIteration);
@@ -529,7 +551,7 @@ dem::records::StatePacked::StatePacked() {
 
 
 dem::records::StatePacked::StatePacked(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted) {
+_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted) {
    if ((6 >= (8 * sizeof(short int)))) {
       std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
       std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -540,8 +562,8 @@ _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._
 }
 
 
-dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
-_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
+dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
    if ((6 >= (8 * sizeof(short int)))) {
       std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
       std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -576,6 +598,10 @@ void dem::records::StatePacked::toString (std::ostream& out) const {
    out << ",";
    out << "twoParticlesAreClose:" << getTwoParticlesAreClose();
    out << ",";
+   out << "numberOfParticles:" << getNumberOfParticles();
+   out << ",";
+   out << "numberOfObstacles:" << getNumberOfObstacles();
+   out << ",";
    out << "hasRefined:" << getHasRefined();
    out << ",";
    out << "hasTriggeredRefinementForNextIteration:" << getHasTriggeredRefinementForNextIteration();
@@ -605,6 +631,8 @@ dem::records::State dem::records::StatePacked::convert() const{
       getTimeStepSize(),
       getCurrentTime(),
       getTwoParticlesAreClose(),
+      getNumberOfParticles(),
+      getNumberOfObstacles(),
       getHasRefined(),
       getHasTriggeredRefinementForNextIteration(),
       getHasErased(),
@@ -626,7 +654,7 @@ dem::records::State dem::records::StatePacked::convert() const{
       {
          StatePacked dummyStatePacked[2];
          
-         const int Attributes = 9;
+         const int Attributes = 11;
          MPI_Datatype subtypes[Attributes] = {
             MPI_DOUBLE,		 //numberOfContactPoints
             MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -634,6 +662,8 @@ dem::records::State dem::records::StatePacked::convert() const{
             MPI_DOUBLE,		 //timeStepSize
             MPI_DOUBLE,		 //currentTime
             MPI_CHAR,		 //twoParticlesAreClose
+            MPI_INT,		 //numberOfParticles
+            MPI_INT,		 //numberOfObstacles
             MPI_CHAR,		 //isTraversalInverted
             MPI_SHORT,		 //_packedRecords0
             MPI_UB		 // end/displacement flag
@@ -646,6 +676,8 @@ dem::records::State dem::records::StatePacked::convert() const{
             1,		 //timeStepSize
             1,		 //currentTime
             1,		 //twoParticlesAreClose
+            1,		 //numberOfParticles
+            1,		 //numberOfObstacles
             1,		 //isTraversalInverted
             1,		 //_packedRecords0
             1		 // end/displacement flag
@@ -661,9 +693,11 @@ dem::records::State dem::records::StatePacked::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._timeStepSize))), 		&disp[3] );
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._currentTime))), 		&disp[4] );
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[6] );
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[7] );
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[8] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[8] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[9] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[10] );
          
          for (int i=1; i<Attributes; i++) {
             assertion1( disp[i] > disp[i-1], i );
@@ -678,7 +712,7 @@ dem::records::State dem::records::StatePacked::convert() const{
       {
          StatePacked dummyStatePacked[2];
          
-         const int Attributes = 9;
+         const int Attributes = 11;
          MPI_Datatype subtypes[Attributes] = {
             MPI_DOUBLE,		 //numberOfContactPoints
             MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -686,6 +720,8 @@ dem::records::State dem::records::StatePacked::convert() const{
             MPI_DOUBLE,		 //timeStepSize
             MPI_DOUBLE,		 //currentTime
             MPI_CHAR,		 //twoParticlesAreClose
+            MPI_INT,		 //numberOfParticles
+            MPI_INT,		 //numberOfObstacles
             MPI_CHAR,		 //isTraversalInverted
             MPI_SHORT,		 //_packedRecords0
             MPI_UB		 // end/displacement flag
@@ -698,6 +734,8 @@ dem::records::State dem::records::StatePacked::convert() const{
             1,		 //timeStepSize
             1,		 //currentTime
             1,		 //twoParticlesAreClose
+            1,		 //numberOfParticles
+            1,		 //numberOfObstacles
             1,		 //isTraversalInverted
             1,		 //_packedRecords0
             1		 // end/displacement flag
@@ -713,9 +751,11 @@ dem::records::State dem::records::StatePacked::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._timeStepSize))), 		&disp[3] );
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._currentTime))), 		&disp[4] );
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[6] );
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[7] );
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[8] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[8] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[9] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[10] );
          
          for (int i=1; i<Attributes; i++) {
             assertion1( disp[i] > disp[i-1], i );
@@ -972,13 +1012,15 @@ dem::records::State::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
 _numberOfContactPoints(numberOfContactPoints),
 _numberOfParticleReassignments(numberOfParticleReassignments),
 _numberOfTriangleComparisons(numberOfTriangleComparisons),
 _timeStepSize(timeStepSize),
 _currentTime(currentTime),
 _twoParticlesAreClose(twoParticlesAreClose),
+_numberOfParticles(numberOfParticles),
+_numberOfObstacles(numberOfObstacles),
 _minMeshWidth(minMeshWidth),
 _maxMeshWidth(maxMeshWidth),
 _numberOfInnerVertices(numberOfInnerVertices),
@@ -1011,13 +1053,13 @@ dem::records::State::State() {
 
 
 dem::records::State::State(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted, persistentRecords._reduceStateAndCell, persistentRecords._couldNotEraseDueToDecompositionFlag, persistentRecords._subWorkerIsInvolvedInJoinOrFork) {
+_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted, persistentRecords._reduceStateAndCell, persistentRecords._couldNotEraseDueToDecompositionFlag, persistentRecords._subWorkerIsInvolvedInJoinOrFork) {
 
 }
 
 
-dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
-_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
+dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
 
 }
 
@@ -1045,6 +1087,10 @@ out << ",";
 out << "currentTime:" << getCurrentTime();
 out << ",";
 out << "twoParticlesAreClose:" << getTwoParticlesAreClose();
+out << ",";
+out << "numberOfParticles:" << getNumberOfParticles();
+out << ",";
+out << "numberOfObstacles:" << getNumberOfObstacles();
 out << ",";
 out << "minMeshWidth:[";
    for (int i = 0; i < DIMENSIONS-1; i++) {
@@ -1115,6 +1161,8 @@ return StatePacked(
    getTimeStepSize(),
    getCurrentTime(),
    getTwoParticlesAreClose(),
+   getNumberOfParticles(),
+   getNumberOfObstacles(),
    getMinMeshWidth(),
    getMaxMeshWidth(),
    getNumberOfInnerVertices(),
@@ -1152,7 +1200,7 @@ void dem::records::State::initDatatype() {
    {
       State dummyState[2];
       
-      const int Attributes = 30;
+      const int Attributes = 32;
       MPI_Datatype subtypes[Attributes] = {
          MPI_DOUBLE,		 //numberOfContactPoints
          MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -1160,6 +1208,8 @@ void dem::records::State::initDatatype() {
          MPI_DOUBLE,		 //timeStepSize
          MPI_DOUBLE,		 //currentTime
          MPI_CHAR,		 //twoParticlesAreClose
+         MPI_INT,		 //numberOfParticles
+         MPI_INT,		 //numberOfObstacles
          MPI_DOUBLE,		 //minMeshWidth
          MPI_DOUBLE,		 //maxMeshWidth
          MPI_DOUBLE,		 //numberOfInnerVertices
@@ -1193,6 +1243,8 @@ void dem::records::State::initDatatype() {
          1,		 //timeStepSize
          1,		 //currentTime
          1,		 //twoParticlesAreClose
+         1,		 //numberOfParticles
+         1,		 //numberOfObstacles
          DIMENSIONS,		 //minMeshWidth
          DIMENSIONS,		 //maxMeshWidth
          1,		 //numberOfInnerVertices
@@ -1229,30 +1281,32 @@ void dem::records::State::initDatatype() {
       MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._timeStepSize))), 		&disp[3] );
       MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._currentTime))), 		&disp[4] );
       MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[6] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[7] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerVertices))), 		&disp[8] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[9] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterVertices))), 		&disp[10] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerCells))), 		&disp[11] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterCells))), 		&disp[12] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[13] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[14] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[15] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[16] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[17] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxLevel))), 		&disp[18] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[19] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[20] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[21] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[22] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[23] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[24] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[25] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._reduceStateAndCell))), 		&disp[26] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._couldNotEraseDueToDecompositionFlag))), 		&disp[27] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._subWorkerIsInvolvedInJoinOrFork))), 		&disp[28] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[29] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[8] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[9] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerVertices))), 		&disp[10] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[11] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterVertices))), 		&disp[12] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerCells))), 		&disp[13] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterCells))), 		&disp[14] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[15] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[16] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[17] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[18] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[19] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxLevel))), 		&disp[20] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[21] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[22] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[23] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[24] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[25] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[26] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[27] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._reduceStateAndCell))), 		&disp[28] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._couldNotEraseDueToDecompositionFlag))), 		&disp[29] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._subWorkerIsInvolvedInJoinOrFork))), 		&disp[30] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[31] );
       
       for (int i=1; i<Attributes; i++) {
          assertion1( disp[i] > disp[i-1], i );
@@ -1267,7 +1321,7 @@ void dem::records::State::initDatatype() {
    {
       State dummyState[2];
       
-      const int Attributes = 30;
+      const int Attributes = 32;
       MPI_Datatype subtypes[Attributes] = {
          MPI_DOUBLE,		 //numberOfContactPoints
          MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -1275,6 +1329,8 @@ void dem::records::State::initDatatype() {
          MPI_DOUBLE,		 //timeStepSize
          MPI_DOUBLE,		 //currentTime
          MPI_CHAR,		 //twoParticlesAreClose
+         MPI_INT,		 //numberOfParticles
+         MPI_INT,		 //numberOfObstacles
          MPI_DOUBLE,		 //minMeshWidth
          MPI_DOUBLE,		 //maxMeshWidth
          MPI_DOUBLE,		 //numberOfInnerVertices
@@ -1308,6 +1364,8 @@ void dem::records::State::initDatatype() {
          1,		 //timeStepSize
          1,		 //currentTime
          1,		 //twoParticlesAreClose
+         1,		 //numberOfParticles
+         1,		 //numberOfObstacles
          DIMENSIONS,		 //minMeshWidth
          DIMENSIONS,		 //maxMeshWidth
          1,		 //numberOfInnerVertices
@@ -1344,30 +1402,32 @@ void dem::records::State::initDatatype() {
       MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._timeStepSize))), 		&disp[3] );
       MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._currentTime))), 		&disp[4] );
       MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[6] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[7] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerVertices))), 		&disp[8] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[9] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterVertices))), 		&disp[10] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerCells))), 		&disp[11] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterCells))), 		&disp[12] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[13] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[14] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[15] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[16] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[17] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxLevel))), 		&disp[18] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[19] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[20] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[21] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[22] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[23] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[24] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[25] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._reduceStateAndCell))), 		&disp[26] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._couldNotEraseDueToDecompositionFlag))), 		&disp[27] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._subWorkerIsInvolvedInJoinOrFork))), 		&disp[28] );
-      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[29] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[8] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[9] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerVertices))), 		&disp[10] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[11] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterVertices))), 		&disp[12] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerCells))), 		&disp[13] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterCells))), 		&disp[14] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[15] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[16] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[17] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[18] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[19] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxLevel))), 		&disp[20] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[21] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[22] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[23] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[24] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[25] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[26] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[27] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._reduceStateAndCell))), 		&disp[28] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._couldNotEraseDueToDecompositionFlag))), 		&disp[29] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._subWorkerIsInvolvedInJoinOrFork))), 		&disp[30] );
+      MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[31] );
       
       for (int i=1; i<Attributes; i++) {
          assertion1( disp[i] > disp[i-1], i );
@@ -1628,13 +1688,15 @@ assertion((9 < (8 * sizeof(short int))));
 }
 
 
-dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
 _numberOfContactPoints(numberOfContactPoints),
 _numberOfParticleReassignments(numberOfParticleReassignments),
 _numberOfTriangleComparisons(numberOfTriangleComparisons),
 _timeStepSize(timeStepSize),
 _currentTime(currentTime),
 _twoParticlesAreClose(twoParticlesAreClose),
+_numberOfParticles(numberOfParticles),
+_numberOfObstacles(numberOfObstacles),
 _minMeshWidth(minMeshWidth),
 _maxMeshWidth(maxMeshWidth),
 _numberOfInnerVertices(numberOfInnerVertices),
@@ -1679,7 +1741,7 @@ assertion((9 < (8 * sizeof(short int))));
 
 
 dem::records::StatePacked::StatePacked(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted, persistentRecords.getReduceStateAndCell(), persistentRecords.getCouldNotEraseDueToDecompositionFlag(), persistentRecords.getSubWorkerIsInvolvedInJoinOrFork()) {
+_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted, persistentRecords.getReduceStateAndCell(), persistentRecords.getCouldNotEraseDueToDecompositionFlag(), persistentRecords.getSubWorkerIsInvolvedInJoinOrFork()) {
 if ((9 >= (8 * sizeof(short int)))) {
 std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
 std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -1690,8 +1752,8 @@ assertion((9 < (8 * sizeof(short int))));
 }
 
 
-dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
-_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
+dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
 if ((9 >= (8 * sizeof(short int)))) {
 std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
 std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -1725,6 +1787,10 @@ out << ",";
 out << "currentTime:" << getCurrentTime();
 out << ",";
 out << "twoParticlesAreClose:" << getTwoParticlesAreClose();
+out << ",";
+out << "numberOfParticles:" << getNumberOfParticles();
+out << ",";
+out << "numberOfObstacles:" << getNumberOfObstacles();
 out << ",";
 out << "minMeshWidth:[";
    for (int i = 0; i < DIMENSIONS-1; i++) {
@@ -1795,6 +1861,8 @@ getNumberOfTriangleComparisons(),
 getTimeStepSize(),
 getCurrentTime(),
 getTwoParticlesAreClose(),
+getNumberOfParticles(),
+getNumberOfObstacles(),
 getMinMeshWidth(),
 getMaxMeshWidth(),
 getNumberOfInnerVertices(),
@@ -1832,7 +1900,7 @@ void dem::records::StatePacked::initDatatype() {
 {
    StatePacked dummyStatePacked[2];
    
-   const int Attributes = 22;
+   const int Attributes = 24;
    MPI_Datatype subtypes[Attributes] = {
       MPI_DOUBLE,		 //numberOfContactPoints
       MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -1840,6 +1908,8 @@ void dem::records::StatePacked::initDatatype() {
       MPI_DOUBLE,		 //timeStepSize
       MPI_DOUBLE,		 //currentTime
       MPI_CHAR,		 //twoParticlesAreClose
+      MPI_INT,		 //numberOfParticles
+      MPI_INT,		 //numberOfObstacles
       MPI_DOUBLE,		 //minMeshWidth
       MPI_DOUBLE,		 //maxMeshWidth
       MPI_DOUBLE,		 //numberOfInnerVertices
@@ -1865,6 +1935,8 @@ void dem::records::StatePacked::initDatatype() {
       1,		 //timeStepSize
       1,		 //currentTime
       1,		 //twoParticlesAreClose
+      1,		 //numberOfParticles
+      1,		 //numberOfObstacles
       DIMENSIONS,		 //minMeshWidth
       DIMENSIONS,		 //maxMeshWidth
       1,		 //numberOfInnerVertices
@@ -1893,22 +1965,24 @@ void dem::records::StatePacked::initDatatype() {
    MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._timeStepSize))), 		&disp[3] );
    MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._currentTime))), 		&disp[4] );
    MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[6] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[7] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerVertices))), 		&disp[8] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[9] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterVertices))), 		&disp[10] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerCells))), 		&disp[11] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterCells))), 		&disp[12] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[13] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[14] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[15] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[16] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[17] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxLevel))), 		&disp[18] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[19] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[20] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[21] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[8] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[9] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerVertices))), 		&disp[10] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[11] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterVertices))), 		&disp[12] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerCells))), 		&disp[13] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterCells))), 		&disp[14] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[15] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[16] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[17] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[18] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[19] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxLevel))), 		&disp[20] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[21] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[22] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[23] );
    
    for (int i=1; i<Attributes; i++) {
       assertion1( disp[i] > disp[i-1], i );
@@ -1923,7 +1997,7 @@ void dem::records::StatePacked::initDatatype() {
 {
    StatePacked dummyStatePacked[2];
    
-   const int Attributes = 22;
+   const int Attributes = 24;
    MPI_Datatype subtypes[Attributes] = {
       MPI_DOUBLE,		 //numberOfContactPoints
       MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -1931,6 +2005,8 @@ void dem::records::StatePacked::initDatatype() {
       MPI_DOUBLE,		 //timeStepSize
       MPI_DOUBLE,		 //currentTime
       MPI_CHAR,		 //twoParticlesAreClose
+      MPI_INT,		 //numberOfParticles
+      MPI_INT,		 //numberOfObstacles
       MPI_DOUBLE,		 //minMeshWidth
       MPI_DOUBLE,		 //maxMeshWidth
       MPI_DOUBLE,		 //numberOfInnerVertices
@@ -1956,6 +2032,8 @@ void dem::records::StatePacked::initDatatype() {
       1,		 //timeStepSize
       1,		 //currentTime
       1,		 //twoParticlesAreClose
+      1,		 //numberOfParticles
+      1,		 //numberOfObstacles
       DIMENSIONS,		 //minMeshWidth
       DIMENSIONS,		 //maxMeshWidth
       1,		 //numberOfInnerVertices
@@ -1984,22 +2062,24 @@ void dem::records::StatePacked::initDatatype() {
    MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._timeStepSize))), 		&disp[3] );
    MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._currentTime))), 		&disp[4] );
    MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[6] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[7] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerVertices))), 		&disp[8] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[9] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterVertices))), 		&disp[10] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerCells))), 		&disp[11] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterCells))), 		&disp[12] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[13] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[14] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[15] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[16] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[17] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxLevel))), 		&disp[18] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[19] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[20] );
-   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[21] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[8] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[9] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerVertices))), 		&disp[10] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[11] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterVertices))), 		&disp[12] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerCells))), 		&disp[13] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterCells))), 		&disp[14] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[15] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[16] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[17] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[18] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[19] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxLevel))), 		&disp[20] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[21] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[22] );
+   MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[23] );
    
    for (int i=1; i<Attributes; i++) {
       assertion1( disp[i] > disp[i-1], i );
@@ -2257,13 +2337,15 @@ dem::records::State::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
 _numberOfContactPoints(numberOfContactPoints),
 _numberOfParticleReassignments(numberOfParticleReassignments),
 _numberOfTriangleComparisons(numberOfTriangleComparisons),
 _timeStepSize(timeStepSize),
 _currentTime(currentTime),
 _twoParticlesAreClose(twoParticlesAreClose),
+_numberOfParticles(numberOfParticles),
+_numberOfObstacles(numberOfObstacles),
 _minMeshWidth(minMeshWidth),
 _maxMeshWidth(maxMeshWidth),
 _numberOfInnerVertices(numberOfInnerVertices),
@@ -2293,13 +2375,13 @@ dem::records::State::State() {
 
 
 dem::records::State::State(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted) {
+_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted) {
 
 }
 
 
-dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
-_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
+dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
 
 }
 
@@ -2327,6 +2409,10 @@ out << ",";
 out << "currentTime:" << getCurrentTime();
 out << ",";
 out << "twoParticlesAreClose:" << getTwoParticlesAreClose();
+out << ",";
+out << "numberOfParticles:" << getNumberOfParticles();
+out << ",";
+out << "numberOfObstacles:" << getNumberOfObstacles();
 out << ",";
 out << "minMeshWidth:[";
    for (int i = 0; i < DIMENSIONS-1; i++) {
@@ -2391,6 +2477,8 @@ getNumberOfTriangleComparisons(),
 getTimeStepSize(),
 getCurrentTime(),
 getTwoParticlesAreClose(),
+getNumberOfParticles(),
+getNumberOfObstacles(),
 getMinMeshWidth(),
 getMaxMeshWidth(),
 getNumberOfInnerVertices(),
@@ -2425,7 +2513,7 @@ void dem::records::State::initDatatype() {
 {
 State dummyState[2];
 
-const int Attributes = 27;
+const int Attributes = 29;
 MPI_Datatype subtypes[Attributes] = {
 MPI_DOUBLE,		 //numberOfContactPoints
 MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -2433,6 +2521,8 @@ MPI_DOUBLE,		 //numberOfTriangleComparisons
 MPI_DOUBLE,		 //timeStepSize
 MPI_DOUBLE,		 //currentTime
 MPI_CHAR,		 //twoParticlesAreClose
+MPI_INT,		 //numberOfParticles
+MPI_INT,		 //numberOfObstacles
 MPI_DOUBLE,		 //minMeshWidth
 MPI_DOUBLE,		 //maxMeshWidth
 MPI_DOUBLE,		 //numberOfInnerVertices
@@ -2463,6 +2553,8 @@ int blocklen[Attributes] = {
 1,		 //timeStepSize
 1,		 //currentTime
 1,		 //twoParticlesAreClose
+1,		 //numberOfParticles
+1,		 //numberOfObstacles
 DIMENSIONS,		 //minMeshWidth
 DIMENSIONS,		 //maxMeshWidth
 1,		 //numberOfInnerVertices
@@ -2496,27 +2588,29 @@ MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persist
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._timeStepSize))), 		&disp[3] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._currentTime))), 		&disp[4] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[6] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[7] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerVertices))), 		&disp[8] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[9] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterVertices))), 		&disp[10] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerCells))), 		&disp[11] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterCells))), 		&disp[12] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[13] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[14] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[15] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[16] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[17] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxLevel))), 		&disp[18] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[19] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[20] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[21] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[22] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[23] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[24] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[25] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[26] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[9] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerVertices))), 		&disp[10] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[11] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterVertices))), 		&disp[12] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerCells))), 		&disp[13] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterCells))), 		&disp[14] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[15] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[16] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[17] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[18] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[19] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxLevel))), 		&disp[20] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[21] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[22] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[23] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[24] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[25] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[26] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[27] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[28] );
 
 for (int i=1; i<Attributes; i++) {
 assertion1( disp[i] > disp[i-1], i );
@@ -2531,7 +2625,7 @@ MPI_Type_commit( &State::Datatype );
 {
 State dummyState[2];
 
-const int Attributes = 27;
+const int Attributes = 29;
 MPI_Datatype subtypes[Attributes] = {
 MPI_DOUBLE,		 //numberOfContactPoints
 MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -2539,6 +2633,8 @@ MPI_DOUBLE,		 //numberOfTriangleComparisons
 MPI_DOUBLE,		 //timeStepSize
 MPI_DOUBLE,		 //currentTime
 MPI_CHAR,		 //twoParticlesAreClose
+MPI_INT,		 //numberOfParticles
+MPI_INT,		 //numberOfObstacles
 MPI_DOUBLE,		 //minMeshWidth
 MPI_DOUBLE,		 //maxMeshWidth
 MPI_DOUBLE,		 //numberOfInnerVertices
@@ -2569,6 +2665,8 @@ int blocklen[Attributes] = {
 1,		 //timeStepSize
 1,		 //currentTime
 1,		 //twoParticlesAreClose
+1,		 //numberOfParticles
+1,		 //numberOfObstacles
 DIMENSIONS,		 //minMeshWidth
 DIMENSIONS,		 //maxMeshWidth
 1,		 //numberOfInnerVertices
@@ -2602,27 +2700,29 @@ MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persist
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._timeStepSize))), 		&disp[3] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._currentTime))), 		&disp[4] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[6] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[7] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerVertices))), 		&disp[8] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[9] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterVertices))), 		&disp[10] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerCells))), 		&disp[11] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterCells))), 		&disp[12] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[13] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[14] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[15] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[16] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[17] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxLevel))), 		&disp[18] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[19] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[20] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[21] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[22] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[23] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[24] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[25] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[26] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[9] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerVertices))), 		&disp[10] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[11] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterVertices))), 		&disp[12] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerCells))), 		&disp[13] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterCells))), 		&disp[14] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[15] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[16] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[17] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[18] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[19] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maxLevel))), 		&disp[20] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[21] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[22] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[23] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[24] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[25] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[26] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[27] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[28] );
 
 for (int i=1; i<Attributes; i++) {
 assertion1( disp[i] > disp[i-1], i );
@@ -2883,13 +2983,15 @@ assertion((6 < (8 * sizeof(short int))));
 }
 
 
-dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
 _numberOfContactPoints(numberOfContactPoints),
 _numberOfParticleReassignments(numberOfParticleReassignments),
 _numberOfTriangleComparisons(numberOfTriangleComparisons),
 _timeStepSize(timeStepSize),
 _currentTime(currentTime),
 _twoParticlesAreClose(twoParticlesAreClose),
+_numberOfParticles(numberOfParticles),
+_numberOfObstacles(numberOfObstacles),
 _minMeshWidth(minMeshWidth),
 _maxMeshWidth(maxMeshWidth),
 _numberOfInnerVertices(numberOfInnerVertices),
@@ -2931,7 +3033,7 @@ assertion((6 < (8 * sizeof(short int))));
 
 
 dem::records::StatePacked::StatePacked(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted) {
+_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted) {
 if ((6 >= (8 * sizeof(short int)))) {
 std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
 std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -2942,8 +3044,8 @@ assertion((6 < (8 * sizeof(short int))));
 }
 
 
-dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
-_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
+dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
 if ((6 >= (8 * sizeof(short int)))) {
 std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
 std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -2977,6 +3079,10 @@ out << ",";
 out << "currentTime:" << getCurrentTime();
 out << ",";
 out << "twoParticlesAreClose:" << getTwoParticlesAreClose();
+out << ",";
+out << "numberOfParticles:" << getNumberOfParticles();
+out << ",";
+out << "numberOfObstacles:" << getNumberOfObstacles();
 out << ",";
 out << "minMeshWidth:[";
    for (int i = 0; i < DIMENSIONS-1; i++) {
@@ -3041,6 +3147,8 @@ getNumberOfTriangleComparisons(),
 getTimeStepSize(),
 getCurrentTime(),
 getTwoParticlesAreClose(),
+getNumberOfParticles(),
+getNumberOfObstacles(),
 getMinMeshWidth(),
 getMaxMeshWidth(),
 getNumberOfInnerVertices(),
@@ -3075,7 +3183,7 @@ void dem::records::StatePacked::initDatatype() {
 {
 StatePacked dummyStatePacked[2];
 
-const int Attributes = 22;
+const int Attributes = 24;
 MPI_Datatype subtypes[Attributes] = {
 MPI_DOUBLE,		 //numberOfContactPoints
 MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -3083,6 +3191,8 @@ MPI_DOUBLE,		 //numberOfTriangleComparisons
 MPI_DOUBLE,		 //timeStepSize
 MPI_DOUBLE,		 //currentTime
 MPI_CHAR,		 //twoParticlesAreClose
+MPI_INT,		 //numberOfParticles
+MPI_INT,		 //numberOfObstacles
 MPI_DOUBLE,		 //minMeshWidth
 MPI_DOUBLE,		 //maxMeshWidth
 MPI_DOUBLE,		 //numberOfInnerVertices
@@ -3108,6 +3218,8 @@ int blocklen[Attributes] = {
 1,		 //timeStepSize
 1,		 //currentTime
 1,		 //twoParticlesAreClose
+1,		 //numberOfParticles
+1,		 //numberOfObstacles
 DIMENSIONS,		 //minMeshWidth
 DIMENSIONS,		 //maxMeshWidth
 1,		 //numberOfInnerVertices
@@ -3136,22 +3248,24 @@ MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._p
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._timeStepSize))), 		&disp[3] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._currentTime))), 		&disp[4] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[6] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[7] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerVertices))), 		&disp[8] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[9] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterVertices))), 		&disp[10] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerCells))), 		&disp[11] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterCells))), 		&disp[12] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[13] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[14] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[15] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[16] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[17] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxLevel))), 		&disp[18] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[19] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[20] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[21] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[9] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerVertices))), 		&disp[10] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[11] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterVertices))), 		&disp[12] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerCells))), 		&disp[13] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterCells))), 		&disp[14] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[15] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[16] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[17] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[18] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[19] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxLevel))), 		&disp[20] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[21] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[22] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[23] );
 
 for (int i=1; i<Attributes; i++) {
 assertion1( disp[i] > disp[i-1], i );
@@ -3166,7 +3280,7 @@ MPI_Type_commit( &StatePacked::Datatype );
 {
 StatePacked dummyStatePacked[2];
 
-const int Attributes = 22;
+const int Attributes = 24;
 MPI_Datatype subtypes[Attributes] = {
 MPI_DOUBLE,		 //numberOfContactPoints
 MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -3174,6 +3288,8 @@ MPI_DOUBLE,		 //numberOfTriangleComparisons
 MPI_DOUBLE,		 //timeStepSize
 MPI_DOUBLE,		 //currentTime
 MPI_CHAR,		 //twoParticlesAreClose
+MPI_INT,		 //numberOfParticles
+MPI_INT,		 //numberOfObstacles
 MPI_DOUBLE,		 //minMeshWidth
 MPI_DOUBLE,		 //maxMeshWidth
 MPI_DOUBLE,		 //numberOfInnerVertices
@@ -3199,6 +3315,8 @@ int blocklen[Attributes] = {
 1,		 //timeStepSize
 1,		 //currentTime
 1,		 //twoParticlesAreClose
+1,		 //numberOfParticles
+1,		 //numberOfObstacles
 DIMENSIONS,		 //minMeshWidth
 DIMENSIONS,		 //maxMeshWidth
 1,		 //numberOfInnerVertices
@@ -3227,22 +3345,24 @@ MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._p
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._timeStepSize))), 		&disp[3] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._currentTime))), 		&disp[4] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[6] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[7] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerVertices))), 		&disp[8] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[9] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterVertices))), 		&disp[10] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerCells))), 		&disp[11] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterCells))), 		&disp[12] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[13] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[14] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[15] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[16] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[17] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxLevel))), 		&disp[18] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[19] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[20] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[21] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxMeshWidth[0]))), 		&disp[9] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerVertices))), 		&disp[10] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryVertices))), 		&disp[11] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterVertices))), 		&disp[12] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerCells))), 		&disp[13] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterCells))), 		&disp[14] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafVertices))), 		&disp[15] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfBoundaryLeafVertices))), 		&disp[16] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafVertices))), 		&disp[17] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfInnerLeafCells))), 		&disp[18] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfOuterLeafCells))), 		&disp[19] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maxLevel))), 		&disp[20] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[21] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[22] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[23] );
 
 for (int i=1; i<Attributes; i++) {
 assertion1( disp[i] > disp[i-1], i );
@@ -3500,13 +3620,15 @@ dem::records::State::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
 _numberOfContactPoints(numberOfContactPoints),
 _numberOfParticleReassignments(numberOfParticleReassignments),
 _numberOfTriangleComparisons(numberOfTriangleComparisons),
 _timeStepSize(timeStepSize),
 _currentTime(currentTime),
 _twoParticlesAreClose(twoParticlesAreClose),
+_numberOfParticles(numberOfParticles),
+_numberOfObstacles(numberOfObstacles),
 _hasRefined(hasRefined),
 _hasTriggeredRefinementForNextIteration(hasTriggeredRefinementForNextIteration),
 _hasErased(hasErased),
@@ -3526,13 +3648,13 @@ dem::records::State::State() {
 
 
 dem::records::State::State(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted, persistentRecords._reduceStateAndCell, persistentRecords._couldNotEraseDueToDecompositionFlag, persistentRecords._subWorkerIsInvolvedInJoinOrFork) {
+_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted, persistentRecords._reduceStateAndCell, persistentRecords._couldNotEraseDueToDecompositionFlag, persistentRecords._subWorkerIsInvolvedInJoinOrFork) {
 
 }
 
 
-dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
-_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
+dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
 
 }
 
@@ -3560,6 +3682,10 @@ out << ",";
 out << "currentTime:" << getCurrentTime();
 out << ",";
 out << "twoParticlesAreClose:" << getTwoParticlesAreClose();
+out << ",";
+out << "numberOfParticles:" << getNumberOfParticles();
+out << ",";
+out << "numberOfObstacles:" << getNumberOfObstacles();
 out << ",";
 out << "hasRefined:" << getHasRefined();
 out << ",";
@@ -3596,6 +3722,8 @@ getNumberOfTriangleComparisons(),
 getTimeStepSize(),
 getCurrentTime(),
 getTwoParticlesAreClose(),
+getNumberOfParticles(),
+getNumberOfObstacles(),
 getHasRefined(),
 getHasTriggeredRefinementForNextIteration(),
 getHasErased(),
@@ -3620,7 +3748,7 @@ void dem::records::State::initDatatype() {
 {
 State dummyState[2];
 
-const int Attributes = 17;
+const int Attributes = 19;
 MPI_Datatype subtypes[Attributes] = {
 MPI_DOUBLE,		 //numberOfContactPoints
 MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -3628,6 +3756,8 @@ MPI_DOUBLE,		 //numberOfTriangleComparisons
 MPI_DOUBLE,		 //timeStepSize
 MPI_DOUBLE,		 //currentTime
 MPI_CHAR,		 //twoParticlesAreClose
+MPI_INT,		 //numberOfParticles
+MPI_INT,		 //numberOfObstacles
 MPI_CHAR,		 //hasRefined
 MPI_CHAR,		 //hasTriggeredRefinementForNextIteration
 MPI_CHAR,		 //hasErased
@@ -3648,6 +3778,8 @@ int blocklen[Attributes] = {
 1,		 //timeStepSize
 1,		 //currentTime
 1,		 //twoParticlesAreClose
+1,		 //numberOfParticles
+1,		 //numberOfObstacles
 1,		 //hasRefined
 1,		 //hasTriggeredRefinementForNextIteration
 1,		 //hasErased
@@ -3671,17 +3803,19 @@ MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persist
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._timeStepSize))), 		&disp[3] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._currentTime))), 		&disp[4] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[6] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[7] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[8] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[9] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[10] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[11] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[12] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._reduceStateAndCell))), 		&disp[13] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._couldNotEraseDueToDecompositionFlag))), 		&disp[14] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._subWorkerIsInvolvedInJoinOrFork))), 		&disp[15] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[16] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[9] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[10] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[11] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[12] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[13] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[14] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._reduceStateAndCell))), 		&disp[15] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._couldNotEraseDueToDecompositionFlag))), 		&disp[16] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._subWorkerIsInvolvedInJoinOrFork))), 		&disp[17] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[18] );
 
 for (int i=1; i<Attributes; i++) {
 assertion1( disp[i] > disp[i-1], i );
@@ -3696,7 +3830,7 @@ MPI_Type_commit( &State::Datatype );
 {
 State dummyState[2];
 
-const int Attributes = 17;
+const int Attributes = 19;
 MPI_Datatype subtypes[Attributes] = {
 MPI_DOUBLE,		 //numberOfContactPoints
 MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -3704,6 +3838,8 @@ MPI_DOUBLE,		 //numberOfTriangleComparisons
 MPI_DOUBLE,		 //timeStepSize
 MPI_DOUBLE,		 //currentTime
 MPI_CHAR,		 //twoParticlesAreClose
+MPI_INT,		 //numberOfParticles
+MPI_INT,		 //numberOfObstacles
 MPI_CHAR,		 //hasRefined
 MPI_CHAR,		 //hasTriggeredRefinementForNextIteration
 MPI_CHAR,		 //hasErased
@@ -3724,6 +3860,8 @@ int blocklen[Attributes] = {
 1,		 //timeStepSize
 1,		 //currentTime
 1,		 //twoParticlesAreClose
+1,		 //numberOfParticles
+1,		 //numberOfObstacles
 1,		 //hasRefined
 1,		 //hasTriggeredRefinementForNextIteration
 1,		 //hasErased
@@ -3747,17 +3885,19 @@ MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persist
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._timeStepSize))), 		&disp[3] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._currentTime))), 		&disp[4] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[6] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[7] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[8] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[9] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[10] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[11] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[12] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._reduceStateAndCell))), 		&disp[13] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._couldNotEraseDueToDecompositionFlag))), 		&disp[14] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._subWorkerIsInvolvedInJoinOrFork))), 		&disp[15] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[16] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredRefinementForNextIteration))), 		&disp[9] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasErased))), 		&disp[10] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasTriggeredEraseForNextIteration))), 		&disp[11] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasChangedVertexOrCellState))), 		&disp[12] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasModifiedGridInPreviousIteration))), 		&disp[13] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._isTraversalInverted))), 		&disp[14] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._reduceStateAndCell))), 		&disp[15] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._couldNotEraseDueToDecompositionFlag))), 		&disp[16] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._subWorkerIsInvolvedInJoinOrFork))), 		&disp[17] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[1]._persistentRecords._numberOfContactPoints))), 		&disp[18] );
 
 for (int i=1; i<Attributes; i++) {
 assertion1( disp[i] > disp[i-1], i );
@@ -4018,13 +4158,15 @@ assertion((9 < (8 * sizeof(short int))));
 }
 
 
-dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
 _numberOfContactPoints(numberOfContactPoints),
 _numberOfParticleReassignments(numberOfParticleReassignments),
 _numberOfTriangleComparisons(numberOfTriangleComparisons),
 _timeStepSize(timeStepSize),
 _currentTime(currentTime),
 _twoParticlesAreClose(twoParticlesAreClose),
+_numberOfParticles(numberOfParticles),
+_numberOfObstacles(numberOfObstacles),
 _isTraversalInverted(isTraversalInverted) {
 setHasRefined(hasRefined);
 setHasTriggeredRefinementForNextIteration(hasTriggeredRefinementForNextIteration);
@@ -4056,7 +4198,7 @@ assertion((9 < (8 * sizeof(short int))));
 
 
 dem::records::StatePacked::StatePacked(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted, persistentRecords.getReduceStateAndCell(), persistentRecords.getCouldNotEraseDueToDecompositionFlag(), persistentRecords.getSubWorkerIsInvolvedInJoinOrFork()) {
+_persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted, persistentRecords.getReduceStateAndCell(), persistentRecords.getCouldNotEraseDueToDecompositionFlag(), persistentRecords.getSubWorkerIsInvolvedInJoinOrFork()) {
 if ((9 >= (8 * sizeof(short int)))) {
 std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
 std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -4067,8 +4209,8 @@ assertion((9 < (8 * sizeof(short int))));
 }
 
 
-dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
-_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
+dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+_persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, timeStepSize, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
 if ((9 >= (8 * sizeof(short int)))) {
 std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
 std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -4102,6 +4244,10 @@ out << ",";
 out << "currentTime:" << getCurrentTime();
 out << ",";
 out << "twoParticlesAreClose:" << getTwoParticlesAreClose();
+out << ",";
+out << "numberOfParticles:" << getNumberOfParticles();
+out << ",";
+out << "numberOfObstacles:" << getNumberOfObstacles();
 out << ",";
 out << "hasRefined:" << getHasRefined();
 out << ",";
@@ -4138,6 +4284,8 @@ getNumberOfTriangleComparisons(),
 getTimeStepSize(),
 getCurrentTime(),
 getTwoParticlesAreClose(),
+getNumberOfParticles(),
+getNumberOfObstacles(),
 getHasRefined(),
 getHasTriggeredRefinementForNextIteration(),
 getHasErased(),
@@ -4162,7 +4310,7 @@ void dem::records::StatePacked::initDatatype() {
 {
 StatePacked dummyStatePacked[2];
 
-const int Attributes = 9;
+const int Attributes = 11;
 MPI_Datatype subtypes[Attributes] = {
 MPI_DOUBLE,		 //numberOfContactPoints
 MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -4170,6 +4318,8 @@ MPI_DOUBLE,		 //numberOfTriangleComparisons
 MPI_DOUBLE,		 //timeStepSize
 MPI_DOUBLE,		 //currentTime
 MPI_CHAR,		 //twoParticlesAreClose
+MPI_INT,		 //numberOfParticles
+MPI_INT,		 //numberOfObstacles
 MPI_CHAR,		 //isTraversalInverted
 MPI_SHORT,		 //_packedRecords0
 MPI_UB		 // end/displacement flag
@@ -4182,6 +4332,8 @@ int blocklen[Attributes] = {
 1,		 //timeStepSize
 1,		 //currentTime
 1,		 //twoParticlesAreClose
+1,		 //numberOfParticles
+1,		 //numberOfObstacles
 1,		 //isTraversalInverted
 1,		 //_packedRecords0
 1		 // end/displacement flag
@@ -4197,9 +4349,11 @@ MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._p
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._timeStepSize))), 		&disp[3] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._currentTime))), 		&disp[4] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[6] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[7] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[9] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[10] );
 
 for (int i=1; i<Attributes; i++) {
 assertion1( disp[i] > disp[i-1], i );
@@ -4214,7 +4368,7 @@ MPI_Type_commit( &StatePacked::Datatype );
 {
 StatePacked dummyStatePacked[2];
 
-const int Attributes = 9;
+const int Attributes = 11;
 MPI_Datatype subtypes[Attributes] = {
 MPI_DOUBLE,		 //numberOfContactPoints
 MPI_DOUBLE,		 //numberOfParticleReassignments
@@ -4222,6 +4376,8 @@ MPI_DOUBLE,		 //numberOfTriangleComparisons
 MPI_DOUBLE,		 //timeStepSize
 MPI_DOUBLE,		 //currentTime
 MPI_CHAR,		 //twoParticlesAreClose
+MPI_INT,		 //numberOfParticles
+MPI_INT,		 //numberOfObstacles
 MPI_CHAR,		 //isTraversalInverted
 MPI_SHORT,		 //_packedRecords0
 MPI_UB		 // end/displacement flag
@@ -4234,6 +4390,8 @@ int blocklen[Attributes] = {
 1,		 //timeStepSize
 1,		 //currentTime
 1,		 //twoParticlesAreClose
+1,		 //numberOfParticles
+1,		 //numberOfObstacles
 1,		 //isTraversalInverted
 1,		 //_packedRecords0
 1		 // end/displacement flag
@@ -4249,9 +4407,11 @@ MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._p
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._timeStepSize))), 		&disp[3] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._currentTime))), 		&disp[4] );
 MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._twoParticlesAreClose))), 		&disp[5] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[6] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[7] );
-MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfParticles))), 		&disp[6] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[7] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[8] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._packedRecords0))), 		&disp[9] );
+MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[1]._persistentRecords._numberOfContactPoints))), 		&disp[10] );
 
 for (int i=1; i<Attributes; i++) {
 assertion1( disp[i] > disp[i-1], i );
