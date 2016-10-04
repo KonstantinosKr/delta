@@ -28,7 +28,6 @@ namespace dem {
       } 
 }
 
-
 /**
  * This is an adapter plotting a vtk grid file. Please set
  *
@@ -52,7 +51,7 @@ class dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 {
     #if defined(Debug) || defined(Asserts)    
     typedef  tarch::plotter::griddata::unstructured::vtk::VTKTextFileWriter         UsedWriter;
     #else
-    typedef  tarch::plotter::griddata::unstructured::vtk::VTKBinaryFileWriter       UsedWriter;
+    typedef  tarch::plotter::griddata::unstructured::vtk::VTKTextFileWriter       UsedWriter;
     #endif
 
     UsedWriter*                                                                     _vtkWriter;

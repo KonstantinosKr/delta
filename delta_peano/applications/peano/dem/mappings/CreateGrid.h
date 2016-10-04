@@ -24,7 +24,6 @@
 #include "dem/Cell.h"
 #include "dem/State.h"
 
-
 namespace dem {
   namespace mappings {
     class CreateGrid;
@@ -51,10 +50,18 @@ class dem::mappings::CreateGrid {
       TwoParticlesCrash,
 	  hopper,
 	  hopperBricks,
+	  hopperKeys,
 	  freefall,
+	  freefallBricks,
+	  freefallKeys,
 	  flatwall,
 	  icecube,
-	  friction
+	  friction,
+	  frictionSlide,
+	  domino,
+	  stability,
+	  sla
+
     };
 
     enum GridType {
@@ -64,10 +71,8 @@ class dem::mappings::CreateGrid {
       ReluctantAdaptiveGrid
     };
 
-    static void setScenario(Scenario scenario, double minH, double particleDiamMax, double particleDiamMin, GridType gridType);
-    static double   _hopperWidth;
-    static double   _wallWidth;
-    static double   _hopperHatch;
+    static void setScenario(Scenario scenario, double minH, double particleDiamMax, double particleDiamMin, GridType gridType, double epsilon);
+
   private:
     /**
      * Logging device for the trace macros.
@@ -78,12 +83,13 @@ class dem::mappings::CreateGrid {
     static double   _maxH;
     static double   _particleDiamMax;
     static double   _particleDiamMin;
+    static double 	_epsilon;
 
     static GridType _gridType;
 
-    static int   _numberOfParticles;
-    static int   _numberOfObstacles;
-    static int   _numberOfTriangles;
+    int   _numberOfParticles;
+    int   _numberOfObstacles;
+    int   _numberOfTriangles;
   public:
     /**
      * These flags are used to inform Peano about your operation. It tells the 

@@ -6,6 +6,11 @@
 
 #include "dem/mappings/Collision.h"
 
+#include "dem/mappings/CreateGrid.h"
+
+#include "delta/dynamics/dynamics.h"
+
+
 /**
  * @todo Please tailor the parameters to your mapping's properties.
  */
@@ -32,7 +37,6 @@ peano::MappingSpecification   dem::mappings::MoveParticles::enterCellSpecificati
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces);
 }
 
-
 peano::MappingSpecification   dem::mappings::MoveParticles::leaveCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);
 }
@@ -57,68 +61,44 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 
     assertion1( particle._persistentRecords._centre(0)==particle._persistentRecords._centre(0), particle.toString() );
 
-    if(particle._persistentRecords._globalParticleNumber < _state.getNumberOfObstacles()){continue;}
+    if(particle._persistentRecords._globalParticleNumber <= _state.getNumberOfObstacles()){continue;}
 
     double timeStepSize = _state.getTimeStepSize();
 
     particle._persistentRecords._velocity(1) += -(timeStepSize * (gravity/ particle._persistentRecords._mass));
 
     double velocity = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0))+(particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1))+(particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
-    particle._persistentRecords._epsilon += dem::mappings::Collision::_epsilon*velocity*timeStepSize;
-    particle._persistentRecords._influenceRadius += particle._persistentRecords._influenceRadius*velocity*timeStepSize;
+    //particle._persistentRecords._epsilon = dem::mappings::CreateGrid::epsilon + (particle._persistentRecords._influenceRadius*velocity*timeStepSize);
+    //particle._persistentRecords._influenceRadius = particle._persistentRecords._influenceRadius + (particle._persistentRecords._influenceRadius*(timeStepSize*velocity));
 
-    particle._persistentRecords._centre(0)   += timeStepSize * particle._persistentRecords._velocity(0);
-    particle._persistentRecords._centre(1)   += timeStepSize * particle._persistentRecords._velocity(1);
-    particle._persistentRecords._centre(2)   += timeStepSize * particle._persistentRecords._velocity(2);
+	delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0), &particle._persistentRecords._orientation(0), timeStepSize);
 
-    particle._persistentRecords._centreOfMass(0)   += timeStepSize * particle._persistentRecords._velocity(0);
-    particle._persistentRecords._centreOfMass(1)   += timeStepSize * particle._persistentRecords._velocity(1);
-    particle._persistentRecords._centreOfMass(2)   += timeStepSize * particle._persistentRecords._velocity(2);
+    particle._persistentRecords._centreOfMass(0) += timeStepSize*particle._persistentRecords._velocity(0);
+    particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
+    particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
+
+    particle._persistentRecords._centre(0)   = particle._persistentRecords._centreOfMass(0);
+    particle._persistentRecords._centre(1)   = particle._persistentRecords._centreOfMass(1);
+    particle._persistentRecords._centre(2)   = particle._persistentRecords._centreOfMass(2);
 
     double* x = fineGridVertex.getXCoordinates(i);
     double* y = fineGridVertex.getYCoordinates(i);
     double* z = fineGridVertex.getZCoordinates(i);
 
+    double* refx = fineGridVertex.getXRefCoordinates(i);
+    double* refy = fineGridVertex.getYRefCoordinates(i);
+    double* refz = fineGridVertex.getZRefCoordinates(i);
+
     for (int j=0; j<particle._persistentRecords._numberOfTriangles*DIMENSIONS; j++)
     {
-      x[j] += timeStepSize * particle._persistentRecords._velocity(0);
-      y[j] += timeStepSize * particle._persistentRecords._velocity(1);
-      z[j] += timeStepSize * particle._persistentRecords._velocity(2);
+    	delta::dynamics::updateVertices(&x[j], &y[j], &z[j],
+									&refx[j], &refy[j], &refz[j],
+									&particle._persistentRecords._orientation(0),
+									&particle._persistentRecords._centreOfMass(0),
+									&particle._persistentRecords._referentialCentreOfMass(0));
     }
-
-    /*
-    const double alpha = timeStepSize * particle._persistentRecords._angularVelocity(0);
-    const double beta  = timeStepSize * particle._persistentRecords._angularVelocity(1);
-    const double gamma = timeStepSize * particle._persistentRecords._angularVelocity(2);
-
-    tarch::la::Matrix<3,3,double> rotationMatrix;
-    rotationMatrix =
-      cos(beta) * cos(gamma), 	cos(gamma) * sin(alpha) * sin(beta) - cos(alpha) * sin(gamma), 		cos(alpha)*cos(gamma)*sin(beta) + sin(alpha)*sin(gamma),
-      cos(beta)*sin(gamma), 	cos(alpha)*cos(gamma)+sin(alpha)*sin(beta)*sin(gamma),				-cos(gamma)*sin(alpha)+cos(alpha)*sin(beta)*sin(gamma),
-      -sin(beta), 				cos(beta)*sin(alpha),												cos(alpha)*cos(beta);
-
-    rotationMatrix = 1, 0, 0,
-                     0, 1, 0,
-                     0, 0, 1;
-
-    for (int j=0; j<particle._persistentRecords._numberOfTriangles*DIMENSIONS; j++)
-    {
-      tarch::la::Vector<3,double> relativePosition;
-      relativePosition = x[j] - particle._persistentRecords._centreOfMass(0),
-                         y[j] - particle._persistentRecords._centreOfMass(1),
-                         z[j] - particle._persistentRecords._centreOfMass(2);
-
-      assertionNumericalEquals5( x[j], particle._persistentRecords._centreOfMass(0)  + (relativePosition)(0), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
-      assertionNumericalEquals5( y[j], particle._persistentRecords._centreOfMass(1)  + (relativePosition)(1), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
-      assertionNumericalEquals5( z[j], particle._persistentRecords._centreOfMass(2)  + (relativePosition)(2), particle._persistentRecords._centreOfMass, relativePosition, x, y, z);
-
-      x[j] = particle._persistentRecords._centreOfMass(0)  + (rotationMatrix * relativePosition)(0);
-      y[j] = particle._persistentRecords._centreOfMass(1)  + (rotationMatrix * relativePosition)(1);
-      z[j] = particle._persistentRecords._centreOfMass(2)  + (rotationMatrix * relativePosition)(2);
-    }*/
   }
 }
-
 
 void dem::mappings::MoveParticles::reassignParticles(
   dem::Vertex * const                        fineGridVertices,
@@ -149,7 +129,6 @@ void dem::mappings::MoveParticles::reassignParticles(
   _state.incNumberOfParticleReassignments(numberOfReassignments);
 }
 
-
 void dem::mappings::MoveParticles::reflectParticles(
   dem::Vertex&                               fineGridVertex
 ) {
@@ -165,7 +144,7 @@ void dem::mappings::MoveParticles::reflectParticles(
 	  }
 	  if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2<0.0)
 	  {
-		  const double FrictionDamping = 1;
+		  const double FrictionDamping = 0.7;
 		  particle._persistentRecords._velocity(0) = particle._persistentRecords._velocity(0) * FrictionDamping;
 		  particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(1));
 		  particle._persistentRecords._velocity(2) = particle._persistentRecords._velocity(2) * FrictionDamping;
@@ -190,7 +169,6 @@ void dem::mappings::MoveParticles::reflectParticles(
   }
 }
 
-
 void dem::mappings::MoveParticles::touchVertexFirstTime(
   dem::Vertex&               fineGridVertex,
   const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
@@ -206,8 +184,6 @@ void dem::mappings::MoveParticles::touchVertexFirstTime(
 
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
-
-
 
 void dem::mappings::MoveParticles::enterCell(
   dem::Cell&                                 fineGridCell,
@@ -267,19 +243,11 @@ void dem::mappings::MoveParticles::endIteration(
   logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
 
-
-
-//
-//   NOP
-// =======
-//
 dem::mappings::MoveParticles::MoveParticles() {
 }
 
-
 dem::mappings::MoveParticles::~MoveParticles() {
 }
-
 
 #if defined(SharedMemoryParallelisation)
 dem::mappings::MoveParticles::MoveParticles(const MoveParticles&  masterThread):

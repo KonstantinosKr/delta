@@ -24,45 +24,21 @@
 
 #include "bf.h"
 void bf(
-        iREAL  xCoordinatesOfPointsOfGeometryA[3],
-        iREAL  yCoordinatesOfPointsOfGeometryA[3],
-        iREAL  zCoordinatesOfPointsOfGeometryA[3],
-        iREAL  xCoordinatesOfPointsOfGeometryB[3],
-        iREAL  yCoordinatesOfPointsOfGeometryB[3],
-        iREAL  zCoordinatesOfPointsOfGeometryB[3],
-        iREAL&  xPA,
-        iREAL&  yPA,
-        iREAL&  zPA,
-        iREAL&  xPB,
-        iREAL&  yPB,
-        iREAL&  zPB)
-{
+                          double   xCoordinatesOfPointsOfGeometryA[3],
+                          double   yCoordinatesOfPointsOfGeometryA[3],
+                          double   zCoordinatesOfPointsOfGeometryA[3],
+                          double   xCoordinatesOfPointsOfGeometryB[3],
+                          double   yCoordinatesOfPointsOfGeometryB[3],
+                          double   zCoordinatesOfPointsOfGeometryB[3],
+                          double&  xPA,
+                          double&  yPA,
+                          double&  zPA,
+                          double&  xPB,
+                          double&  yPB,
+                          double&  zPB
+                          ) {
   
   iREAL u[3], v[3], nn[3][2], w[3], w0[3][6], dir[3][6], pointArray[3][6];
-  
-  //xCoordinatesOfPointsOfGeometryA[0];//A
-  //yCoordinatesOfPointsOfGeometryA[0];
-  //zCoordinatesOfPointsOfGeometryA[0];
-  
-  //xCoordinatesOfPointsOfGeometryA[1];//B
-  //yCoordinatesOfPointsOfGeometryA[1];
-  //zCoordinatesOfPointsOfGeometryA[1];
-  
-  //xCoordinatesOfPointsOfGeometryA[2];//C
-  //yCoordinatesOfPointsOfGeometryA[2];
-  //zCoordinatesOfPointsOfGeometryA[2];
-  
-  //xCoordinatesOfPointsOfGeometryB[0];//D
-  //yCoordinatesOfPointsOfGeometryB[0];
-  //zCoordinatesOfPointsOfGeometryB[0];
-  
-  //xCoordinatesOfPointsOfGeometryB[1];//E
-  //yCoordinatesOfPointsOfGeometryB[1];
-  //zCoordinatesOfPointsOfGeometryB[1];
-  
-  //xCoordinatesOfPointsOfGeometryB[2];//F
-  //yCoordinatesOfPointsOfGeometryB[2];
-  //zCoordinatesOfPointsOfGeometryB[2];
   
   u[0] = xCoordinatesOfPointsOfGeometryB[1] - xCoordinatesOfPointsOfGeometryB[0];
   u[1] = yCoordinatesOfPointsOfGeometryB[1] - yCoordinatesOfPointsOfGeometryB[0];
@@ -75,9 +51,7 @@ void bf(
   nn[0][0] = u[1]*v[2] - u[2]*v[1];
   nn[1][0] = u[2]*v[0] - u[0]*v[2];
   nn[2][0] = u[0]*v[1] - u[1]*v[0];
-  if(nn[0][0]==0 && nn[1][0]==0 && nn[2][0]==0){
-    return;
-  }
+  if(nn[0][0]==0 && nn[1][0]==0 && nn[2][0]==0){return;}
   dir[0][0] = xCoordinatesOfPointsOfGeometryA[1] - xCoordinatesOfPointsOfGeometryA[0];
   dir[1][0] = yCoordinatesOfPointsOfGeometryA[1] - yCoordinatesOfPointsOfGeometryA[0];
   dir[2][0] = zCoordinatesOfPointsOfGeometryA[1] - zCoordinatesOfPointsOfGeometryA[0];
@@ -154,8 +128,7 @@ void bf(
       b= DOT(nn[1],dir[0]);
     }
     if (abs(b) < 1E-30 && a==0) {
-      //segment in triangle plane
-      break;
+      break; //segment in triangle plane
     }
     
     iREAL r = a / b;
@@ -168,9 +141,7 @@ void bf(
     yPB = yPA;
     zPB = zPA;
     
-    if (r < 0.0 || r > 1.0 || r != r) {
-      break;
-    }
+    if (r < 0.0 || r > 1.0 || r != r) { break;}
     
     if(j<3){
       w[0] = xPA - xCoordinatesOfPointsOfGeometryB[0];
@@ -537,6 +508,7 @@ void bf(
       xPB = p6[0] + (v[0] * ttc);
       yPB = p6[1] + (v[1] * ttc);
       zPB = p6[2] + (v[2] * ttc);
+      break;
     case 2:
       u[0] = (p1[0] - p2[0]);
       u[1] = (p1[1] - p2[1]);
@@ -559,7 +531,6 @@ void bf(
       u[0] = (p2[0] - p3[0]);
       u[1] = (p2[1] - p3[1]);
       u[2] = (p2[2] - p3[2]);
-      
       
       v[0] = (p4[0] - p5[0]);
       v[1] = (p4[1] - p5[1]);
@@ -710,7 +681,7 @@ void bf(
   int id=0;
   for( int j=0; j<6;j++)
   {
-    iREAL det = a[j]*c[j] - b[j]*b[j]; //do we have to use abs here?
+    iREAL det = a[j]*c[j] - b[j]*b[j];
     iREAL s   = b[j]*e[j] - c[j]*d[j];
     iREAL t   = b[j]*d[j] - a[j]*e[j];
     
@@ -887,11 +858,7 @@ void bf(
       id = j;
     }
   }
-  if(ptmin > ssmin)
-  {
-    return;
-  }
-  
+  if(ptmin > ssmin) {return;}
   
   switch(id)
   {
@@ -912,6 +879,7 @@ void bf(
       xPB = p5[0];
       yPB = p5[1];
       zPB = p5[2];
+      break;
     case 2:
       xPA = p1[0] + ((p3[0] - p1[0]) * tt) + ((p2[0] - p1[0]) * ss);
       yPA = p1[1] + ((p3[1] - p1[1]) * tt) + ((p2[1] - p1[1]) * ss);
@@ -950,5 +918,6 @@ void bf(
       break;
   }
 }
+
 
 

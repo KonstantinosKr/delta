@@ -54,29 +54,28 @@ class dem::mappings::Plot {
 
     static int  _snapshotCounter;
 
-
     #ifdef UseInSituVisualiser
     typedef insituvis::Visualiser                                                       Writer;
     #else
-    typedef tarch::plotter::griddata::unstructured::vtk::VTKBinaryFileWriter            Writer;
+    typedef tarch::plotter::griddata::unstructured::vtk::VTKTextFileWriter            Writer;
     #endif
 
     Writer*                                                                             _writer;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexWriter*       _vertexWriter;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellWriter*         _cellWriter;
-    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _faceVertexAssociation;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _type;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _level;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _faceVertexAssociation;
+
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _velocitiesAndNormals;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _frictionNormals;
-    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleDiameter;
-    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleInfluence;
-    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleEpsilon;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleVelocity;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleDiameter;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleEpsilon;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleInfluence;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _vertexColoring;
 
     int _vertexCounter;
-
     int _particleCounter;
     int _collisionPointCounter;
 

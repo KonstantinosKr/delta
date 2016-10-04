@@ -76,7 +76,7 @@ void dynamics::update (std::vector<contactpoint> conpnt[],
   {
     //printf("POSITION[%i]: %f %f %f \n", i, position[0][i], position[1][i], position[2][i]);
     
-    iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], t[3], T[3], DL[9], L2[9], A[3], B[3];
+    iREAL O[3], o[3], v[3], L1[9], J[9], I[9], im, f[3], to[3], T[3], DL[9], L2[9], A[3], B[3];
 
     O[0] = angular[0][i];
     O[1] = angular[1][i];
@@ -118,13 +118,13 @@ void dynamics::update (std::vector<contactpoint> conpnt[],
 
     im = 1/mass[i];
 
-    f[0] = force[0][i];
-    f[1] = force[1][i];
-    f[2] = force[2][i];
+    f[0] = 0;//force[0][i];
+    f[1] = 0;//force[1][i];
+    f[2] = 0;//force[2][i];
 
-    t[0] = torque[0][i];
-    t[1] = torque[1][i];
-    t[2] = torque[2][i];
+    to[0] = 0;//torque[0][i];
+    to[1] = 0;//torque[1][i];
+    to[2] = 0;//torque[2][i];
     
     force[0][i] = 0.0;
     force[1][i] = 0.0;
@@ -134,7 +134,7 @@ void dynamics::update (std::vector<contactpoint> conpnt[],
     torque[1][i] = 0.0;
     torque[2][i] = 0.0;
     
-    TVMUL (L1, t, T);
+    TVMUL (L1, to, T);
 
     expmap (-half*O[0], -half*O[1], -half*O[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
 
@@ -246,28 +246,7 @@ void dynamics::update (std::vector<contactpoint> conpnt[],
     t[2][0][i] = c[0];
     t[2][1][i] = c[1];
     t[2][2][i] = c[2];
-   /* 
-    if (t[0][0][i] < lo[0]) linear[0][j] *= -1;
-    if (t[0][1][i] < lo[1]) linear[1][j] *= -1;
-    if (t[0][2][i] < lo[2]) linear[2][j] *= -1;
-    if (t[0][0][i] > hi[0]) linear[0][j] *= -1;
-    if (t[0][1][i] > hi[1]) linear[1][j] *= -1;
-    if (t[0][2][i] > hi[2]) linear[2][j] *= -1;
-    
-    if (t[1][0][i] < lo[0]) linear[0][j] *= -1;
-    if (t[1][1][i] < lo[1]) linear[1][j] *= -1;
-    if (t[1][2][i] < lo[2]) linear[2][j] *= -1;
-    if (t[1][0][i] > hi[0]) linear[0][j] *= -1;
-    if (t[1][1][i] > hi[1]) linear[1][j] *= -1;
-    if (t[1][2][i] > hi[2]) linear[2][j] *= -1;
-    
-    if (t[2][0][i] < lo[0]) linear[0][j] *= -1;
-    if (t[2][1][i] < lo[1]) linear[1][j] *= -1;
-    if (t[2][2][i] < lo[2]) linear[2][j] *= -1;
-    if (t[2][0][i] > hi[0]) linear[0][j] *= -1;
-    if (t[2][1][i] > hi[1]) linear[1][j] *= -1;
-    if (t[2][2][i] > hi[2]) linear[2][j] *= -1; 
-  */}
+  }
 }
 
 void dynamics::euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)
@@ -355,81 +334,3 @@ void dynamics::integrate (iREAL step, iREAL lo[3], iREAL hi[3], int nt, iREAL * 
 }
 
 
-/* vectorizable exponential map */
-void dynamics::expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
-                iREAL &Lambda1, iREAL &Lambda2, iREAL &Lambda3,
-			          iREAL &Lambda4, iREAL &Lambda5, iREAL &Lambda6,
-			          iREAL &Lambda7, iREAL &Lambda8, iREAL &Lambda9)
-{
-  iREAL angsq, sx, cx, v0, v1, v2, v01, v02, v12, s0, s1, s2;
-
-  v0 = Omega1 * Omega1;
-  v1 = Omega2 * Omega2;
-  v2 = Omega3 * Omega3;
-
-  angsq = v0 + v1 + v2;
-
-  if (angsq < 3.0461741978671E-02) // use Taylor expansion if |Omega| < 10 deg
-  {
-    sx = 1.0 +
-    (-1.666666666666667E-1 +
-    (8.333333333333333E-3 +
-    (-1.984126984126984E-4 +
-    (2.755731922398589E-6 +
-    (-2.505210838544172E-8 +
-     1.605904383682161E-10 * angsq
-    )*angsq
-    )*angsq
-    )*angsq
-    )*angsq
-    )*angsq;
-  cx = 0.5 +
-    (-4.166666666666667E-2 +
-    (1.388888888888889E-3 +
-    (-2.480158730158730E-5 +
-    (2.755731922398589E-7 +
-    (-2.087675698786810E-9 +
-     1.147074559772972E-11 * angsq
-    )*angsq
-    )*angsq
-    )*angsq
-    )*angsq
-    )*angsq;
-  }
-  else
-  {
-    iREAL t, s, c;
-    t = angsq;
-    angsq = sqrt (angsq);
-    s = sin (angsq);
-    c = cos (angsq);
-    sx = s / angsq;
-    cx = (1.0 - c) / t;
-  }
-
-  v01 = Omega1 * Omega2;
-  v02 = Omega2 * Omega3;
-  v12 = Omega2 * Omega3;
-  s0 = sx * Omega1;
-  s1 = sx * Omega2;
-  s2 = sx * Omega3;
-
-  Lambda1 = -cx*(v2+v1);
-  Lambda2 = cx*v01;
-  Lambda3 = cx*v02;
-  Lambda4 = Lambda2;
-  Lambda5 = -cx*(v2+v0);
-  Lambda6 = cx*v12;
-  Lambda7 = Lambda3;
-  Lambda8 = Lambda6;
-  Lambda9 = -cx*(v1+v0);
-  Lambda1 += 1.0;
-  Lambda2 += s2;
-  Lambda3 -= s1;
-  Lambda4 -= s2;
-  Lambda5 += 1.0;
-  Lambda6 += s0;
-  Lambda7 += s1;
-  Lambda8 -= s0;
-  Lambda9 += 1.0;
-}

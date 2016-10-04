@@ -4,29 +4,23 @@
 
 #include "peano/grid/Checkpoint.h"
 
-
-
 dem::State::State():
   Base() { 
   // @todo Insert your code here
 }
-
 
 dem::State::State(const Base::PersistentState& argument):
   Base(argument) {
   // @todo Insert your code here
 }
 
-
 void dem::State::writeToCheckpoint( peano::grid::Checkpoint<dem::Vertex,dem::Cell>& checkpoint ) const {
   // @todo Insert your code here
 }
-
     
 void dem::State::readFromCheckpoint( const peano::grid::Checkpoint<dem::Vertex,dem::Cell>& checkpoint ) {
   // @todo Insert your code here
 }
-
 
 void dem::State::clearAccumulatedData() {
   _stateData.setNumberOfContactPoints(0.0);
@@ -35,16 +29,13 @@ void dem::State::clearAccumulatedData() {
   _stateData.setTwoParticlesAreClose(false);
 }
 
-
 double dem::State::getNumberOfContactPoints() const {
   return _stateData.getNumberOfContactPoints();
 }
 
-
 double dem::State::getNumberOfParticleReassignments() const {
   return _stateData.getNumberOfParticleReassignments();
 }
-
 
 double dem::State::getNumberOfTriangleComparisons() const {
   return _stateData.getNumberOfTriangleComparisons();
@@ -61,7 +52,6 @@ void dem::State::decNumberOfContactPoints(int delta) {
 void dem::State::incNumberOfParticleReassignments(int delta) {
   _stateData.setNumberOfParticleReassignments( _stateData.getNumberOfParticleReassignments() + delta );
 }
-
 
 void dem::State::incNumberOfTriangleComparisons(int delta) {
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + delta );
@@ -93,10 +83,12 @@ void dem::State::informStateThatTwoParticlesAreClose() {
 void dem::State::finishedTimeStep() {
   _stateData.setCurrentTime( _stateData.getCurrentTime() + _stateData.getTimeStepSize() );
   if (_stateData.getTwoParticlesAreClose()) {
+	  if(_stateData.getTimeStepSize() < 1E-5) return;
 	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()/2.0);
   }
   else {
-	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()*1.2);
+	  if(_stateData.getTimeStepSize() > 1E-3) return;
+	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()*1.01);
   }
 }
 

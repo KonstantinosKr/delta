@@ -10,9 +10,12 @@
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
 
+#define epsilon 0.002
+
 tarch::logging::Log _log("");
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
   peano::fillLookupTables();
 
   int parallelSetup = peano::initParallelEnvironment(&argc,&argv);
@@ -33,9 +36,9 @@ int main(int argc, char** argv) {
   }
 
   #ifdef SharedMemoryParallelisation
-  const int NumberOfArguments = 12;
+  const int NumberOfArguments = 13;
   #else
-  const int NumberOfArguments = 11;
+  const int NumberOfArguments = 12;
   #endif
 
   if (argc!=NumberOfArguments) {
@@ -69,6 +72,8 @@ int main(int argc, char** argv) {
 			  << "  flatwall" << std::endl
 			  << "  icecube" << std::endl
 			  << "  friction" << std::endl
+			  << "  frictionSlide" << std::endl
+			  << "  twoBricksCrash" << std::endl
               << "Grid types" << std::endl
               << "==========" << std::endl
               << "  no-grid" << std::endl
@@ -86,18 +91,19 @@ int main(int argc, char** argv) {
     return -1;
   }
 
-  const double       gridHMax            = atof( argv[1] );
-  const double       particleDiamMax     = atof( argv[2] );
-  const double       particleDiamMin     = atof( argv[3] );
+  const double       gridHMax            = atof(argv[1]);
+  const double       particleDiamMax     = atof(argv[2]);
+  const double       particleDiamMin     = atof(argv[3]);
   const std::string  scenario            = argv[4];
-  const int          numberOfTimeSteps   = atoi( argv[5] );
+  const int          numberOfTimeSteps   = atoi(argv[5]);
   const std::string  gridTypeIdentifier  = argv[6];
-  const double       iterations        = atof( argv[7] );
+  const double       iterations        = atof(argv[7]);
   const std::string  plotIdentifier      = argv[8];
-  const double       gravity             = atof( argv[9] );
+  const double       gravity             = atof(argv[9]);
   const std::string  collisionModel      = argv[10];
+  const double		 realSnapshot		 = atof(argv[11]);
   #ifdef SharedMemoryParallelisation
-  const int          numberOfCores       = atoi( argv[11] );
+  const int          numberOfCores       = atoi(argv[12]);
   #else
   const int          numberOfCores       = 0;
   #endif
@@ -136,57 +142,70 @@ int main(int argc, char** argv) {
   }
 
   if (scenario=="black-hole-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
   }
   else if (scenario=="black-hole-with-aligned-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithAlignedCubes, gridHMax, particleDiamMax, particleDiamMin, gridType);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithAlignedCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
   }
   else if (scenario=="black-hole") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHole, gridHMax, particleDiamMax, particleDiamMin, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHole, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
   }
   else if (scenario=="random-velocities-with-aligned-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithAlignedCubes, gridHMax, particleDiamMax, particleDiamMin, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithAlignedCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
   }
   else if (scenario=="random-velocities-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
   }
   else if (scenario=="random-velocities") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::Random, gridHMax, particleDiamMax, particleDiamMin, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::Random, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
   }
   else if (scenario=="two-particles-crash") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash, gridHMax, particleDiamMax, particleDiamMin, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
   }
   else if (scenario=="hopper") {
-	dem::mappings::CreateGrid::_hopperWidth = 0.3;
-	dem::mappings::CreateGrid::_hopperHatch = 0.15;
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.15, 0.15, 0.15, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.15, 0.15, 0.15, gridType, epsilon);
   }
-  else if (scenario=="hopper100") {
-	dem::mappings::CreateGrid::_hopperWidth = 0.28;
-	dem::mappings::CreateGrid::_hopperHatch = 0.15;
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.1, 0.1, 0.1, gridType );
+  else if (scenario=="hopper300") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.11, 0.11, 0.11, gridType, epsilon);
+  }
+  else if (scenario=="hopper1000") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.11, 0.11, 0.11, gridType, epsilon);
   }
   else if (scenario=="hopperBricks") {
-	dem::mappings::CreateGrid::_hopperWidth = 0.3;
-	dem::mappings::CreateGrid::_hopperHatch = 0.15;
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.15, 0.15, 0.15, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperBricks, 0.15, 0.15, 0.15, gridType, epsilon);
+  }
+  else if (scenario=="hopperKeys") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperKeys, 0.10, 0.10, 0.10, gridType, epsilon);
   }
   else if (scenario=="freefall") {
-	dem::mappings::CreateGrid::_hopperWidth = 0.3;
-	dem::mappings::CreateGrid::_hopperHatch = 0.15;
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, 0.15, 0.15, 0.15, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, 0.15, 0.15, 0.15, gridType, epsilon);
   }
+  else if (scenario=="freefallBricks") {
+     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallBricks, 0.15, 0.15, 0.15, gridType, epsilon);
+  }
+  else if (scenario=="freefallKeys") {
+       dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallKeys, 0.15, 0.15, 0.15, gridType, epsilon);
+   }
   else if (scenario=="flatwall") {
-	dem::mappings::CreateGrid::_wallWidth = 0.3;
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::flatwall, 0.15, 0.15, 0.15, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::flatwall, 0.15, 0.15, 0.15, gridType, epsilon);
   }
   else if (scenario=="icecube"){
-	dem::mappings::CreateGrid::_wallWidth = 0.3;
-	dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::icecube, 0.15, 0.15, 0.15, gridType );
+	dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::icecube, 0.15, 0.15, 0.15, gridType, epsilon);
   }
   else if (scenario=="friction") {
-	dem::mappings::CreateGrid::_wallWidth = 1;
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::friction, 0.15, 0.15, 0.15, gridType );
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::friction, 0.15, 0.15, 0.15, gridType, epsilon);
+  }
+  else if (scenario=="frictionSlide") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide, 0.15, 0.15, 0.15, gridType, epsilon);
+  }
+  else if (scenario=="domino") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::domino, 0.15, 0.15, 0.15, gridType, epsilon);
+  }
+  else if (scenario=="stability") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::stability, 0.15, 0.15, 0.15, gridType, epsilon);
+  }
+  else if (scenario=="sla") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla, 0.15, 0.15, 0.15, gridType, epsilon);
   }
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;
@@ -194,7 +213,7 @@ int main(int argc, char** argv) {
   }
 
   dem::runners::Runner::Plot plot;
-       if (plotIdentifier=="never") {
+  if (plotIdentifier=="never") {
     plot = dem::runners::Runner::Never;
   }
   else if (plotIdentifier=="every-iteration") {
@@ -276,7 +295,7 @@ int main(int argc, char** argv) {
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano", true ) );
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano::utils", false ) );
     dem::runners::Runner runner;
-    programExitCode = runner.run( numberOfTimeSteps, plot, gridType, numberOfCores, iterations );
+    programExitCode = runner.run( numberOfTimeSteps, plot, gridType, numberOfCores, iterations, realSnapshot);
   }
   
   if (programExitCode==0)

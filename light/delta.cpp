@@ -120,7 +120,7 @@ int main (int argc, char **argv)
    
   for(int time = 0; time < timesteps; time++)
   {
-    contact::detection (0, nt, t, tid, pid, linear, conpnt);
+    contact::detection (0, nt, t, tid, pid, conpnt);
 		
     forces::force(conpnt, nb, position, angular, linear, mass, force, torque, gravity, parmat);
     

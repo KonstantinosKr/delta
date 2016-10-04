@@ -44,10 +44,6 @@ struct contactpoint {
 
 namespace contact
 {
-	// calculate distances all-to-all
-	void detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contactpoint> conpnt[]);
-
-	// calculate distances all-to-small
-	void detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contactpoint> conpnt[]);
+	void detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], std::vector<contactpoint> conpnt[]);
 }
 #endif

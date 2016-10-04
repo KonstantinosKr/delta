@@ -12,6 +12,7 @@
 #include "tarch/parallel/Node.h"
 #include "tarch/parallel/NodePool.h"
 #include "tarch/multicore/Core.h"
+#include "tarch/logging/Log.h"
 
 #include "peano/geometry/Hexahedron.h" 
 
@@ -22,21 +23,17 @@ tarch::logging::Log dem::runners::Runner::_log( "dem::runners::Runner" );
 dem::runners::Runner::Runner() {
 }
 
-
 dem::runners::Runner::~Runner() {
 }
 
-int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads, double timeStepSize) {
-  peano::geometry::Hexahedron geometry(
-    tarch::la::Vector<DIMENSIONS,double>(1.0),
-    tarch::la::Vector<DIMENSIONS,double>(0.0)
-   );
-  dem::repositories::Repository* repository = 
-    dem::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(
-      geometry,
-      tarch::la::Vector<DIMENSIONS,double>(1.0),   // domainSize,
-      tarch::la::Vector<DIMENSIONS,double>(0.0)    // computationalDomainOffset
-    );
+int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads, double timeStepSize, double realSnapshot)
+{
+
+  peano::geometry::Hexahedron geometry(tarch::la::Vector<DIMENSIONS,double>(1.0), tarch::la::Vector<DIMENSIONS,double>(0.0));
+  dem::repositories::Repository* repository = dem::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(geometry,
+												  tarch::la::Vector<DIMENSIONS,double>(1.0),   // domainSize,
+												  tarch::la::Vector<DIMENSIONS,double>(0.0)    // computationalDomainOffset
+												  );
   
   #ifdef SharedMemoryParallelisation
   tarch::multicore::Core::getInstance().configure(tbbThreads);
@@ -48,8 +45,9 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
   #endif
 
   int result = 0;
-  if (tarch::parallel::Node::getInstance().isGlobalMaster()) {
-    result = runAsMaster( *repository, numberOfTimeSteps, plot, gridType, timeStepSize );
+  if (tarch::parallel::Node::getInstance().isGlobalMaster())
+  {
+    result = runAsMaster( *repository, numberOfTimeSteps, plot, gridType, timeStepSize, realSnapshot);
   }
   #ifdef Parallel
   else {
@@ -62,7 +60,8 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
   return result;
 }
 
-int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository, int iterations, Plot plot, dem::mappings::CreateGrid::GridType gridType, double initialTimeStepSize) {
+int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository, int iterations, Plot plot, dem::mappings::CreateGrid::GridType gridType, double initialTimeStepSize, double realSnapshot)
+{
   peano::utils::UserInterface::writeHeader();
 
   logInfo( "runAsMaster(...)", "create grid" );
@@ -70,27 +69,30 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
   do { repository.iterate(); } while ( !repository.getState().isGridStationary() );
 
-  assertion( repository.getState().isGridStationary() );
-
   logInfo( "runAsMaster(...)", "start time stepping" );
   repository.getState().clearAccumulatedData();
 
   repository.getState().setInitialTimeStepSize(initialTimeStepSize);
 
+  double elapsed = 0.0;
+  double timestamp = 0.0;
+
   for (int i=0; i<iterations; i++)
   {
-    bool plotThisTraversal = (plot == EveryIteration) || ( plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
+	bool plotThisTraversal = (plot == EveryIteration) || ( plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
     						  !repository.getState().isGridStationary() || i%50==0 || repository.getState().getNumberOfParticleReassignments()>0 )) ||
-							  (plot == EveryBatch && i%50 == 0) || (plot == Adaptive && i%50);//fmod(repository.getState().getTime(),0.01) == 0);
+							  (plot == EveryBatch && i%50 == 0) || ((plot == Adaptive && elapsed > realSnapshot) || i == 0);
 
-    if (plotThisTraversal)
+	if(plotThisTraversal)
     {
       logInfo("runAsMaster(...)", "iteration i=" << i
         << ", reassignments=" << repository.getState().getNumberOfParticleReassignments()
-        << ", triangle-comparisons=" << repository.getState().getNumberOfTriangleComparisons()
+        << ", triangle-cmp=" << repository.getState().getNumberOfTriangleComparisons()
         << ", contact-points=" << repository.getState().getNumberOfContactPoints()
         << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
-        << ", create snapshot");
+        << " | snapshot");
+
+      timestamp = repository.getState().getTime();
 
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {
@@ -102,11 +104,11 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       {
         repository.switchToTimeStepAndPlot();
       }
-
-    } else {
+    } else
+    {
       logInfo("runAsMaster(...)", "iteration i=" << i
         << ", reassignments=" << repository.getState().getNumberOfParticleReassignments()
-        << ", triangle-comparisons=" << repository.getState().getNumberOfTriangleComparisons()
+        << ", triangle-cmp=" << repository.getState().getNumberOfTriangleComparisons()
         << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
 		<< ", t=" << repository.getState().getTime()
 		<< ", dt=" << repository.getState().getTimeStepSize());
@@ -123,7 +125,9 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       }
     }
 
-    if(plot==Adaptive)  repository.getState().finishedTimeStep();
+    if(plot==Adaptive) repository.getState().finishedTimeStep();
+    elapsed = repository.getState().getTime() - timestamp;
+
     repository.getState().clearAccumulatedData();
     repository.iterate();
   }

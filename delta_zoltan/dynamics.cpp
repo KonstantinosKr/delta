@@ -246,28 +246,7 @@ void dynamics::update (struct loba *lb, int myrank, std::vector<contactpoint> co
     t[2][0][i] = c[0];
     t[2][1][i] = c[1];
     t[2][2][i] = c[2];
-    /*
-     if (t[0][0][i] < lo[0]) linear[0][j] *= -1;
-     if (t[0][1][i] < lo[1]) linear[1][j] *= -1;
-     if (t[0][2][i] < lo[2]) linear[2][j] *= -1;
-     if (t[0][0][i] > hi[0]) linear[0][j] *= -1;
-     if (t[0][1][i] > hi[1]) linear[1][j] *= -1;
-     if (t[0][2][i] > hi[2]) linear[2][j] *= -1;
-     
-     if (t[1][0][i] < lo[0]) linear[0][j] *= -1;
-     if (t[1][1][i] < lo[1]) linear[1][j] *= -1;
-     if (t[1][2][i] < lo[2]) linear[2][j] *= -1;
-     if (t[1][0][i] > hi[0]) linear[0][j] *= -1;
-     if (t[1][1][i] > hi[1]) linear[1][j] *= -1;
-     if (t[1][2][i] > hi[2]) linear[2][j] *= -1;
-     
-     if (t[2][0][i] < lo[0]) linear[0][j] *= -1;
-     if (t[2][1][i] < lo[1]) linear[1][j] *= -1;
-     if (t[2][2][i] < lo[2]) linear[2][j] *= -1;
-     if (t[2][0][i] > hi[0]) linear[0][j] *= -1;
-     if (t[2][1][i] > hi[1]) linear[1][j] *= -1;
-     if (t[2][2][i] > hi[2]) linear[2][j] *= -1; 
-     */}
+  }
 }
 
 void dynamics::euler(int nb, iREAL * angular[6], iREAL * linear[3], iREAL * rotation[9], iREAL * position[6], iREAL step)

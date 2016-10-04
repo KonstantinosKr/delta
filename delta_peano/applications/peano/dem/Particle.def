@@ -11,26 +11,35 @@ Packed-Type: short int;
  * Can either be a particle or a particle fragment
  */
 class dem::records::Particle {  
+
+  #ifdef Dim3
+  persistent expose int vertices[6];
+  persistent expose double orientation[9];
+  persistent expose double inertia[9];
+  persistent expose double inverse[9];
+  #endif
+ 
+  #ifdef Dim2
+  persistent expose int vertices[4];
+  persistent expose double orientation[4];
+  persistent expose double inertia[4];
+  persistent expose double inverse[4];
+  #endif
+  
   persistent expose double centre[DIMENSIONS];
+  persistent expose double centreOfMass[DIMENSIONS];
+  
+  persistent expose double referentialCentreOfMass[DIMENSIONS];
+  
   persistent expose double velocity[DIMENSIONS];
+  persistent expose double angular[DIMENSIONS];
+  
   persistent expose double diameter;
   persistent expose double influenceRadius;
   persistent expose double epsilon;
-
   persistent expose double mass;
   persistent expose double hMin;
-  persistent expose double centreOfMass[DIMENSIONS];
   persistent expose int globalParticleNumber;
-  persistent expose int material;
-  
-  #ifdef Dim2
-  persistent expose double angularVelocity;
-  #endif
-  
-  #ifdef Dim3
-  persistent expose double angularVelocity[DIMENSIONS];
-  #endif
-  
   persistent expose int numberOfTriangles;
-  persistent expose int vertices[DIMENSIONS];
+  persistent expose int material;
 };

@@ -1,2 +1,0 @@
-SOURCES=\
-./collision/bf.cpp ./collision/hybrid.cpp ./collision/penalty.cpp ./contact.cpp ./delta.cpp ./dynamics.cpp ./ext/hul/alg.cpp ./ext/hul/hull.cpp ./ext/hul/hyb.cpp ./ext/hul/kdt.cpp ./ext/hul/map.cpp ./ext/hul/mem.cpp ./ext/hul/predicates.cpp ./ext/hul/set.cpp ./ext/hul/spx.cpp ./ext/hul/tri.cpp ./ext/hul/tsi.cpp ./forces/forces.cpp ./io/geom.cpp ./io/input.cpp ./io/log.cpp ./io/output.cpp ./material.cpp 

@@ -112,14 +112,25 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
     double* getYCoordinates( int particleNumber );
     double* getZCoordinates( int particleNumber );
 
+    double* getXRefCoordinates( int particleNumber );
+    double* getYRefCoordinates( int particleNumber );
+    double* getZRefCoordinates( int particleNumber );
+
     DEMDoubleHeap::HeapEntries&  getXCoordinatesAsVector( int particleNumber );
     DEMDoubleHeap::HeapEntries&  getYCoordinatesAsVector( int particleNumber );
     DEMDoubleHeap::HeapEntries&  getZCoordinatesAsVector( int particleNumber );
+
+    DEMDoubleHeap::HeapEntries&  getXRefCoordinatesAsVector( int particleNumber );
+    DEMDoubleHeap::HeapEntries&  getYRefCoordinatesAsVector( int particleNumber );
+    DEMDoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber );
 
     const DEMDoubleHeap::HeapEntries&  getXCoordinatesAsVector( int particleNumber ) const;
     const DEMDoubleHeap::HeapEntries&  getYCoordinatesAsVector( int particleNumber ) const;
     const DEMDoubleHeap::HeapEntries&  getZCoordinatesAsVector( int particleNumber ) const;
 
+    const DEMDoubleHeap::HeapEntries&  getXRefCoordinatesAsVector( int particleNumber ) const;
+    const DEMDoubleHeap::HeapEntries&  getYRefCoordinatesAsVector( int particleNumber ) const;
+    const DEMDoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber ) const;
 
     /**
      * Part of the dynamic AMR.

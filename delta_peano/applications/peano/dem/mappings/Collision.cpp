@@ -11,6 +11,8 @@
 
 #include "peano/utils/Loop.h"
 
+#include "delta/dynamics/dynamics.h"
+
 peano::CommunicationSpecification   dem::mappings::Collision::communicationSpecification() {
 	return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
@@ -141,6 +143,33 @@ void dem::mappings::Collision::addCollision(
 	}
 
 	delta::collision::filter(dataSetA->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+	delta::collision::filter(dataSetB->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+
+	for(unsigned int k = 0; k<newContactPoints.size(); k++)
+	{
+		iREAL z[3], vi[3], vj[3], vij[3];
+
+		//contact point - position i
+		z[0] = newContactPoints[k].x[0]-particleA._persistentRecords._centreOfMass[0];
+		z[1] = newContactPoints[k].x[1]-particleA._persistentRecords._centreOfMass[1];
+		z[2] = newContactPoints[k].x[2]-particleA._persistentRecords._centreOfMass[2];
+
+		//cross product - relative angular i to contact point plus linear i
+		vi[0] = particleA._persistentRecords._velocity[0];
+		vi[1] = particleA._persistentRecords._velocity[1];
+		vi[2] = particleA._persistentRecords._velocity[2];
+
+	   iREAL vt[3];
+	   vt[0] = vi[0] - newContactPoints[k].normal[0]*((vi[0]*newContactPoints[k].normal[0]) + (vi[1]*newContactPoints[k].normal[1]) + (vi[2]*newContactPoints[k].normal[2]));
+	   vt[1] = vi[1] - newContactPoints[k].normal[1]*((vi[0]*newContactPoints[k].normal[0]) + (vi[1]*newContactPoints[k].normal[1]) + (vi[2]*newContactPoints[k].normal[2]));
+	   vt[2] = vi[2] - newContactPoints[k].normal[2]*((vi[0]*newContactPoints[k].normal[0]) + (vi[1]*newContactPoints[k].normal[1]) + (vi[2]*newContactPoints[k].normal[2]));
+
+	   newContactPoints[k].friction[0] =  -vt[0]*1;
+	   newContactPoints[k].friction[1] =  -vt[1]*1;
+	   newContactPoints[k].friction[2] =  -vt[2]*1;
+
+	  //printf("ID: %d friction collision:%f %f %f\n", particleA._persistentRecords._globalParticleNumber, newContactPoints[k].friction[0], newContactPoints[k].friction[1], newContactPoints[k].friction[2]);
+	}
 
 	/*
 	 * Problem here was:
@@ -158,9 +187,6 @@ void dem::mappings::Collision::addCollision(
 		p->normal[0] = -1.0 * p->normal[0];
 		p->normal[1] = -1.0 * p->normal[1];
 		p->normal[2] = -1.0 * p->normal[2];
-
-		//check if depth is critical and adjust timestep
-        if(p->depth <= (particleA._persistentRecords._epsilon+particleB._persistentRecords._epsilon)/2) _state.informStateThatTwoParticlesAreClose();
 	}
 
 	dataSetB->_contactPoints.insert( dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
@@ -200,35 +226,44 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				double force[3]  = {0.0,0.0,0.0};
 				double torque[3] = {0.0,0.0,0.0};
 
+				if (currentParticle._persistentRecords.getGlobalParticleNumber() > _state.getNumberOfObstacles())
+				{
+
 				 delta::forces::getContactForces(
 					p->_contactPoints,
 					&(currentParticle._persistentRecords._centreOfMass(0)),
-					&(currentParticle._persistentRecords._angularVelocity(0)),
+					&(currentParticle._persistentRecords._angular(0)),
 					&(currentParticle._persistentRecords._velocity(0)),
 					currentParticle._persistentRecords._mass,
 					&(p->_copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
-					&(p->_copyOfPartnerParticle._persistentRecords._angularVelocity(0)),
+					&(p->_copyOfPartnerParticle._persistentRecords._angular(0)),
 					&(p->_copyOfPartnerParticle._persistentRecords._velocity(0)),
 					p->_copyOfPartnerParticle._persistentRecords._mass,
-					force,
-					torque);
+					force, torque);
+
+				 	//torque[0] *= 50;
+				 	//torque[1] *= 50;
+				 	//torque[2] *= 50;
 
 				 	//logInfo( "touchVertexFirstTime(...)", "add force f=" << force[0] << ", " << force[1] << ", " << force[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
-
+				}
 				if (currentParticle._persistentRecords.getGlobalParticleNumber() > _state.getNumberOfObstacles())
 				{
 					double timeStepSize = _state.getTimeStepSize();
-
-					currentParticle._persistentRecords._angularVelocity(0) += timeStepSize * (force[0] / currentParticle._persistentRecords._mass);
-					currentParticle._persistentRecords._angularVelocity(1) += timeStepSize * (force[1] / currentParticle._persistentRecords._mass);
-					currentParticle._persistentRecords._angularVelocity(2) += timeStepSize * (force[2] / currentParticle._persistentRecords._mass);
 
 					currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle._persistentRecords._mass);
 					currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle._persistentRecords._mass);
 					currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle._persistentRecords._mass);
 
-					//logInfo( "touchVertexFirstTime(...)", "add angvel av=" << currentParticle._persistentRecords._angularVelocity(0) << ", " << currentParticle._persistentRecords._angularVelocity(1) << ", " << currentParticle._persistentRecords._angularVelocity(2) << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
-					//logInfo( "touchVertexFirstTime(...)", "add vel av=" << currentParticle._persistentRecords._velocity(0) << ", " << currentParticle._persistentRecords._velocity(1) << ", " << currentParticle._persistentRecords._velocity(2) << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
+					delta::dynamics::updateAngular(&currentParticle._persistentRecords._angular(0),
+															&currentParticle._persistentRecords._orientation(0),
+															&currentParticle._persistentRecords._inertia(0),
+															&currentParticle._persistentRecords._inverse(0),
+															currentParticle._persistentRecords._mass,
+															torque, timeStepSize);
+
+					logInfo( "touchVertexFirstTime(...)", "add angvel av=" << currentParticle._persistentRecords._angular(0) << ", " << currentParticle._persistentRecords._angular(1) << ", " << currentParticle._persistentRecords._angular(2) );
+					//logInfo( "touchVertexFirstTime(...)", "add vel av=" << currentParticle._persistentRecords._velocity(0) << ", " << currentParticle._persistentRecords._velocity(1) << ", " << currentParticle._persistentRecords._velocity(2));
 				}
 			}
 			_activeCollisions.erase(currentParticle._persistentRecords._globalParticleNumber);
@@ -259,9 +294,11 @@ void dem::mappings::Collision::touchVertexFirstTime(
 					{
 						//printf("entered - Obstacle to Obstacle\n");
 						//obstacle to obstacle
+						break;
 					} else if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID && fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID)
 					{
-						if(delta::collision::isSphereOverlayInContact(
+						//printf("ENTERED fine grid sphere BA\n");
+						/*if(delta::collision::isSphereOverlayInContact(
 								fineGridVertex.getParticle(i).getCentre(0),
 								fineGridVertex.getParticle(i).getCentre(1),
 								fineGridVertex.getParticle(i).getCentre(2),
@@ -270,7 +307,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 								fineGridVertex.getParticle(j).getCentre(0),
 								fineGridVertex.getParticle(j).getCentre(1),
 								fineGridVertex.getParticle(j).getCentre(2),
-								fineGridVertex.getParticle(j).getInfluenceRadius()))
+								fineGridVertex.getParticle(j).getInfluenceRadius()))*/
 						{
 							newContactPoints = delta::collision::sphereWithBarrierBA(
 								fineGridVertex.getParticle(j).getCentre(0),
@@ -290,210 +327,12 @@ void dem::mappings::Collision::touchVertexFirstTime(
 								fineGridVertex.getParticle(i)._persistentRecords._epsilon,
 								fineGridVertex.getParticle(i)._persistentRecords._material);
 						}
+						break;
 
 					} else if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID && fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)
 					{
-						if(delta::collision::isSphereOverlayInContact(
-								fineGridVertex.getParticle(i).getCentre(0),
-								fineGridVertex.getParticle(i).getCentre(1),
-								fineGridVertex.getParticle(i).getCentre(2),
-								fineGridVertex.getParticle(i).getInfluenceRadius(),
-
-								fineGridVertex.getParticle(j).getCentre(0),
-								fineGridVertex.getParticle(j).getCentre(1),
-								fineGridVertex.getParticle(j).getCentre(2),
-								fineGridVertex.getParticle(j).getInfluenceRadius()))
-						{
-							newContactPoints = delta::collision::sphereWithBarrierAB(
-								fineGridVertex.getParticle(i).getCentre(0),
-								fineGridVertex.getParticle(i).getCentre(1),
-								fineGridVertex.getParticle(i).getCentre(2),
-								fineGridVertex.getParticle(i).getDiameter(),
-								fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-								fineGridVertex.getParticle(i)._persistentRecords._material,
-
-								fineGridVertex.getXCoordinates( j ),
-								fineGridVertex.getYCoordinates( j ),
-								fineGridVertex.getZCoordinates( j ),
-								fineGridVertex.getNumberOfTriangles( j ),
-								fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(j)._persistentRecords._material);
-						}
-					} else
-					{
-						newContactPoints = delta::collision::sphere(
-								fineGridVertex.getParticle(i).getCentre(0),
-								fineGridVertex.getParticle(i).getCentre(1),
-								fineGridVertex.getParticle(i).getCentre(2),
-								fineGridVertex.getParticle(i).getDiameter(),
-								fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-								fineGridVertex.getParticle(i)._persistentRecords._material,
-
-								fineGridVertex.getParticle(j).getCentre(0),
-								fineGridVertex.getParticle(j).getCentre(1),
-								fineGridVertex.getParticle(j).getCentre(2),
-								fineGridVertex.getParticle(j).getDiameter(),
-								fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(j)._persistentRecords._material);
-					}
-					break;
-				}
-				case CollisionModel::BruteForce:
-				{
-					newContactPoints = delta::collision::bf(
-							fineGridVertex.getNumberOfTriangles( i ),
-							fineGridVertex.getXCoordinates( i ),
-							fineGridVertex.getYCoordinates( i ),
-							fineGridVertex.getZCoordinates( i ),
-							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-							fineGridVertex.getParticle(i)._persistentRecords._material,
-
-							fineGridVertex.getNumberOfTriangles( j ),
-							fineGridVertex.getXCoordinates( j ),
-							fineGridVertex.getYCoordinates( j ),
-							fineGridVertex.getZCoordinates( j ),
-							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._material);
-					break;
-				}
-				case CollisionModel::Penalty:
-				{
-					newContactPoints = delta::collision::penalty(
-							fineGridVertex.getNumberOfTriangles( i ),
-							fineGridVertex.getXCoordinates( i ),
-							fineGridVertex.getYCoordinates( i ),
-							fineGridVertex.getZCoordinates( i ),
-							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-							fineGridVertex.getParticle(i)._persistentRecords._material,
-
-							fineGridVertex.getNumberOfTriangles( j ),
-							fineGridVertex.getXCoordinates( j ),
-							fineGridVertex.getYCoordinates( j ),
-							fineGridVertex.getZCoordinates( j ),
-							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._material);
-					break;
-				}
-				case CollisionModel::PenaltyStat:
-				{
-					newContactPoints = delta::collision::penaltyStat(
-							fineGridVertex.getNumberOfTriangles( i ),
-							fineGridVertex.getXCoordinates( i ),
-							fineGridVertex.getYCoordinates( i ),
-							fineGridVertex.getZCoordinates( i ),
-							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-							fineGridVertex.getParticle(i)._persistentRecords._material,
-
-							fineGridVertex.getNumberOfTriangles( j ),
-							fineGridVertex.getXCoordinates( j ),
-							fineGridVertex.getYCoordinates( j ),
-							fineGridVertex.getZCoordinates( j ),
-							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._material);
-					break;
-				}
-				case CollisionModel::HybridOnBatches:
-				{
-					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
-							fineGridVertex.getNumberOfTriangles( i ),
-							fineGridVertex.getXCoordinates( i ),
-							fineGridVertex.getYCoordinates( i ),
-							fineGridVertex.getZCoordinates( i ),
-							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-							fineGridVertex.getParticle(i)._persistentRecords._material,
-
-							fineGridVertex.getNumberOfTriangles( j ),
-							fineGridVertex.getXCoordinates( j ),
-							fineGridVertex.getYCoordinates( j ),
-							fineGridVertex.getZCoordinates( j ),
-							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._material);
-					break;
-				}
-				case CollisionModel::HybridOnTrianglePairsStats:
-				{
-					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
-							fineGridVertex.getNumberOfTriangles( i ),
-							fineGridVertex.getXCoordinates( i ),
-							fineGridVertex.getYCoordinates( i ),
-							fineGridVertex.getZCoordinates( i ),
-							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-							fineGridVertex.getParticle(i)._persistentRecords._material,
-
-							fineGridVertex.getNumberOfTriangles( j ),
-							fineGridVertex.getXCoordinates( j ),
-							fineGridVertex.getYCoordinates( j ),
-							fineGridVertex.getZCoordinates( j ),
-							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._material);
-					break;
-				}
-				case CollisionModel::HybridOnBatchesStats:
-				{
-					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
-							fineGridVertex.getNumberOfTriangles( i ),
-							fineGridVertex.getXCoordinates( i ),
-							fineGridVertex.getYCoordinates( i ),
-							fineGridVertex.getZCoordinates( i ),
-							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-							fineGridVertex.getParticle(i)._persistentRecords._material,
-
-							fineGridVertex.getNumberOfTriangles( j ),
-							fineGridVertex.getXCoordinates( j ),
-							fineGridVertex.getYCoordinates( j ),
-							fineGridVertex.getZCoordinates( j ),
-							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._material);
-					break;
-				}
-				case CollisionModel::HybridOnTrianglePairs:
-				{
-					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
-							fineGridVertex.getNumberOfTriangles( i ),
-							fineGridVertex.getXCoordinates( i ),
-							fineGridVertex.getYCoordinates( i ),
-							fineGridVertex.getZCoordinates( i ),
-							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-							fineGridVertex.getParticle(i)._persistentRecords._material,
-
-							fineGridVertex.getNumberOfTriangles( j ),
-							fineGridVertex.getXCoordinates( j ),
-							fineGridVertex.getYCoordinates( j ),
-							fineGridVertex.getZCoordinates( j ),
-							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._material);
-					break;
-				}
-				case CollisionModel::SphereHybridOnBatches:
-				{
-					if(delta::collision::isSphereOverlayInContact(
+						//printf("ENTERED fine grid sphere AB\n");
+						/*if(delta::collision::isSphereOverlayInContact(
 							fineGridVertex.getParticle(i).getCentre(0),
 							fineGridVertex.getParticle(i).getCentre(1),
 							fineGridVertex.getParticle(i).getCentre(2),
@@ -502,25 +341,226 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getCentre(0),
 							fineGridVertex.getParticle(j).getCentre(1),
 							fineGridVertex.getParticle(j).getCentre(2),
-							fineGridVertex.getParticle(j).getInfluenceRadius()))
+							fineGridVertex.getParticle(j).getInfluenceRadius()))*/
+						{
+						newContactPoints = delta::collision::sphereWithBarrierAB(
+							fineGridVertex.getParticle(i).getCentre(0),
+							fineGridVertex.getParticle(i).getCentre(1),
+							fineGridVertex.getParticle(i).getCentre(2),
+							fineGridVertex.getParticle(i).getDiameter(),
+							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+							fineGridVertex.getParticle(i)._persistentRecords._material,
+
+							fineGridVertex.getXCoordinates( j ),
+							fineGridVertex.getYCoordinates( j ),
+							fineGridVertex.getZCoordinates( j ),
+							fineGridVertex.getNumberOfTriangles( j ),
+							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(j)._persistentRecords._material);
+						}
+						break;
+					} else
+					{
+						newContactPoints = delta::collision::sphere(
+							fineGridVertex.getParticle(i).getCentre(0),
+							fineGridVertex.getParticle(i).getCentre(1),
+							fineGridVertex.getParticle(i).getCentre(2),
+							fineGridVertex.getParticle(i).getDiameter(),
+							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+							fineGridVertex.getParticle(i)._persistentRecords._material,
+
+							fineGridVertex.getParticle(j).getCentre(0),
+							fineGridVertex.getParticle(j).getCentre(1),
+							fineGridVertex.getParticle(j).getCentre(2),
+							fineGridVertex.getParticle(j).getDiameter(),
+							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(j)._persistentRecords._material);
+					}
+					break;
+				}
+				case CollisionModel::BruteForce:
+				{
+					newContactPoints = delta::collision::bf(
+						fineGridVertex.getNumberOfTriangles( i ),
+						fineGridVertex.getXCoordinates( i ),
+						fineGridVertex.getYCoordinates( i ),
+						fineGridVertex.getZCoordinates( i ),
+						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+						fineGridVertex.getParticle(i)._persistentRecords._material,
+
+						fineGridVertex.getNumberOfTriangles( j ),
+						fineGridVertex.getXCoordinates( j ),
+						fineGridVertex.getYCoordinates( j ),
+						fineGridVertex.getZCoordinates( j ),
+						fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(j)._persistentRecords._material);
+					break;
+				}
+				case CollisionModel::Penalty:
+				{
+					newContactPoints = delta::collision::penalty(
+						fineGridVertex.getNumberOfTriangles( i ),
+						fineGridVertex.getXCoordinates( i ),
+						fineGridVertex.getYCoordinates( i ),
+						fineGridVertex.getZCoordinates( i ),
+						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+						fineGridVertex.getParticle(i)._persistentRecords._material,
+
+						fineGridVertex.getNumberOfTriangles( j ),
+						fineGridVertex.getXCoordinates( j ),
+						fineGridVertex.getYCoordinates( j ),
+						fineGridVertex.getZCoordinates( j ),
+						fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(j)._persistentRecords._material);
+					break;
+				}
+				case CollisionModel::PenaltyStat:
+				{
+					newContactPoints = delta::collision::penaltyStat(
+						fineGridVertex.getNumberOfTriangles( i ),
+						fineGridVertex.getXCoordinates( i ),
+						fineGridVertex.getYCoordinates( i ),
+						fineGridVertex.getZCoordinates( i ),
+						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+						fineGridVertex.getParticle(i)._persistentRecords._material,
+
+						fineGridVertex.getNumberOfTriangles( j ),
+						fineGridVertex.getXCoordinates( j ),
+						fineGridVertex.getYCoordinates( j ),
+						fineGridVertex.getZCoordinates( j ),
+						fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(j)._persistentRecords._material);
+					break;
+				}
+				case CollisionModel::HybridOnBatches:
+				{
+					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
+						fineGridVertex.getNumberOfTriangles( i ),
+						fineGridVertex.getXCoordinates( i ),
+						fineGridVertex.getYCoordinates( i ),
+						fineGridVertex.getZCoordinates( i ),
+						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+						fineGridVertex.getParticle(i)._persistentRecords._material,
+
+						fineGridVertex.getNumberOfTriangles( j ),
+						fineGridVertex.getXCoordinates( j ),
+						fineGridVertex.getYCoordinates( j ),
+						fineGridVertex.getZCoordinates( j ),
+						fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(j)._persistentRecords._material);
+					break;
+				}
+				case CollisionModel::HybridOnTrianglePairsStats:
+				{
+					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
+						fineGridVertex.getNumberOfTriangles( i ),
+						fineGridVertex.getXCoordinates( i ),
+						fineGridVertex.getYCoordinates( i ),
+						fineGridVertex.getZCoordinates( i ),
+						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+						fineGridVertex.getParticle(i)._persistentRecords._material,
+
+						fineGridVertex.getNumberOfTriangles( j ),
+						fineGridVertex.getXCoordinates( j ),
+						fineGridVertex.getYCoordinates( j ),
+						fineGridVertex.getZCoordinates( j ),
+						fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(j)._persistentRecords._material);
+					break;
+				}
+				case CollisionModel::HybridOnBatchesStats:
+				{
+					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
+						fineGridVertex.getNumberOfTriangles( i ),
+						fineGridVertex.getXCoordinates( i ),
+						fineGridVertex.getYCoordinates( i ),
+						fineGridVertex.getZCoordinates( i ),
+						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+						fineGridVertex.getParticle(i)._persistentRecords._material,
+
+						fineGridVertex.getNumberOfTriangles( j ),
+						fineGridVertex.getXCoordinates( j ),
+						fineGridVertex.getYCoordinates( j ),
+						fineGridVertex.getZCoordinates( j ),
+						fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(j)._persistentRecords._material);
+					break;
+				}
+				case CollisionModel::HybridOnTrianglePairs:
+				{
+					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
+						fineGridVertex.getNumberOfTriangles( i ),
+						fineGridVertex.getXCoordinates( i ),
+						fineGridVertex.getYCoordinates( i ),
+						fineGridVertex.getZCoordinates( i ),
+						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+						fineGridVertex.getParticle(i)._persistentRecords._material,
+
+						fineGridVertex.getNumberOfTriangles( j ),
+						fineGridVertex.getXCoordinates( j ),
+						fineGridVertex.getYCoordinates( j ),
+						fineGridVertex.getZCoordinates( j ),
+						fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+						fineGridVertex.getParticle(j)._persistentRecords._material);
+					break;
+				}
+				case CollisionModel::SphereHybridOnBatches:
+				{
+					if(delta::collision::isSphereOverlayInContact(
+						fineGridVertex.getParticle(i).getCentre(0),
+						fineGridVertex.getParticle(i).getCentre(1),
+						fineGridVertex.getParticle(i).getCentre(2),
+						fineGridVertex.getParticle(i).getInfluenceRadius(),
+
+						fineGridVertex.getParticle(j).getCentre(0),
+						fineGridVertex.getParticle(j).getCentre(1),
+						fineGridVertex.getParticle(j).getCentre(2),
+						fineGridVertex.getParticle(j).getInfluenceRadius()))
 					{
 						newContactPoints = delta::collision::hybridWithPerBatchFallBack(
-								fineGridVertex.getNumberOfTriangles( i ),
-								fineGridVertex.getXCoordinates( i ),
-								fineGridVertex.getYCoordinates( i ),
-								fineGridVertex.getZCoordinates( i ),
-								fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-								fineGridVertex.getParticle(i)._persistentRecords._material,
+							fineGridVertex.getNumberOfTriangles( i ),
+							fineGridVertex.getXCoordinates( i ),
+							fineGridVertex.getYCoordinates( i ),
+							fineGridVertex.getZCoordinates( i ),
+							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+							fineGridVertex.getParticle(i)._persistentRecords._material,
 
-								fineGridVertex.getNumberOfTriangles( j ),
-								fineGridVertex.getXCoordinates( j ),
-								fineGridVertex.getYCoordinates( j ),
-								fineGridVertex.getZCoordinates( j ),
-								fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(j)._persistentRecords._material);
+							fineGridVertex.getNumberOfTriangles( j ),
+							fineGridVertex.getXCoordinates( j ),
+							fineGridVertex.getYCoordinates( j ),
+							fineGridVertex.getZCoordinates( j ),
+							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(j)._persistentRecords._material);
 					}
 					break;
 				}
@@ -538,22 +578,22 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getInfluenceRadius()))
 					{
 						newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
-								fineGridVertex.getNumberOfTriangles( i ),
-								fineGridVertex.getXCoordinates( i ),
-								fineGridVertex.getYCoordinates( i ),
-								fineGridVertex.getZCoordinates( i ),
-								fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-								fineGridVertex.getParticle(i)._persistentRecords._material,
+							fineGridVertex.getNumberOfTriangles( i ),
+							fineGridVertex.getXCoordinates( i ),
+							fineGridVertex.getYCoordinates( i ),
+							fineGridVertex.getZCoordinates( i ),
+							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+							fineGridVertex.getParticle(i)._persistentRecords._material,
 
-								fineGridVertex.getNumberOfTriangles( j ),
-								fineGridVertex.getXCoordinates( j ),
-								fineGridVertex.getYCoordinates( j ),
-								fineGridVertex.getZCoordinates( j ),
-								fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(j)._persistentRecords._material);
+							fineGridVertex.getNumberOfTriangles( j ),
+							fineGridVertex.getXCoordinates( j ),
+							fineGridVertex.getYCoordinates( j ),
+							fineGridVertex.getZCoordinates( j ),
+							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(j)._persistentRecords._material);
 					}
 					break;
 				}
@@ -570,23 +610,25 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getCentre(2),
 							fineGridVertex.getParticle(j).getInfluenceRadius()))
 					{
-						newContactPoints = delta::collision::bf(
-								fineGridVertex.getNumberOfTriangles( i ),
-								fineGridVertex.getXCoordinates( i ),
-								fineGridVertex.getYCoordinates( i ),
-								fineGridVertex.getZCoordinates( i ),
-								fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-								fineGridVertex.getParticle(i)._persistentRecords._material,
+				        _state.informStateThatTwoParticlesAreClose();
 
-								fineGridVertex.getNumberOfTriangles( j ),
-								fineGridVertex.getXCoordinates( j ),
-								fineGridVertex.getYCoordinates( j ),
-								fineGridVertex.getZCoordinates( j ),
-								fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(j)._persistentRecords._material);
+						newContactPoints = delta::collision::bf(
+							fineGridVertex.getNumberOfTriangles( i ),
+							fineGridVertex.getXCoordinates( i ),
+							fineGridVertex.getYCoordinates( i ),
+							fineGridVertex.getZCoordinates( i ),
+							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+							fineGridVertex.getParticle(i)._persistentRecords._material,
+
+							fineGridVertex.getNumberOfTriangles( j ),
+							fineGridVertex.getXCoordinates( j ),
+							fineGridVertex.getYCoordinates( j ),
+							fineGridVertex.getZCoordinates( j ),
+							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(j)._persistentRecords._material);
 					}
 					break;
 				}
@@ -604,22 +646,22 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getInfluenceRadius()))
 					{
 						newContactPoints = delta::collision::penalty(
-								fineGridVertex.getNumberOfTriangles( i ),
-								fineGridVertex.getXCoordinates( i ),
-								fineGridVertex.getYCoordinates( i ),
-								fineGridVertex.getZCoordinates( i ),
-								fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-								fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
-								fineGridVertex.getParticle(i)._persistentRecords._material,
+							fineGridVertex.getNumberOfTriangles( i ),
+							fineGridVertex.getXCoordinates( i ),
+							fineGridVertex.getYCoordinates( i ),
+							fineGridVertex.getZCoordinates( i ),
+							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
+							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
+							fineGridVertex.getParticle(i)._persistentRecords._material,
 
-								fineGridVertex.getNumberOfTriangles( j ),
-								fineGridVertex.getXCoordinates( j ),
-								fineGridVertex.getYCoordinates( j ),
-								fineGridVertex.getZCoordinates( j ),
-								fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(j)._persistentRecords._material);
+							fineGridVertex.getNumberOfTriangles( j ),
+							fineGridVertex.getXCoordinates( j ),
+							fineGridVertex.getYCoordinates( j ),
+							fineGridVertex.getZCoordinates( j ),
+							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
+							fineGridVertex.getParticle(j)._persistentRecords._material);
 					}
 					break;
 				}
@@ -677,7 +719,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 	#endif
 	for (int i=0; i<vertexA.getNumberOfRealAndVirtualParticles(); i++)
 	{
-		//if(vertexA.getParticle(i)._persistentRecords._globalParticleNumber == 0)continue;
 		for (int j=0; j<vertexB.getNumberOfRealAndVirtualParticles(); j++)
 		{
 			if((vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID) && (vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)) continue;
@@ -698,9 +739,11 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 						if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID && vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)
 						{
 							//printf("entered - Obstacle to Obstacle\n");
+							break;
 						} else if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID && vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID)
 						{
-							if(delta::collision::isSphereOverlayInContact(
+							//printf("ENTERED virtual grid sphere BA\n");
+							/*if(delta::collision::isSphereOverlayInContact(
 								vertexA.getParticle(i).getCentre(0),
 								vertexA.getParticle(i).getCentre(1),
 								vertexA.getParticle(i).getCentre(2),
@@ -709,7 +752,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexB.getParticle(j).getCentre(0),
 								vertexB.getParticle(j).getCentre(1),
 								vertexB.getParticle(j).getCentre(2),
-								vertexB.getParticle(j).getInfluenceRadius()))
+								vertexB.getParticle(j).getInfluenceRadius()))*/
 							{
 								newContactPoints = delta::collision::sphereWithBarrierBA(
 								vertexB.getParticle(j).getCentre(0),
@@ -730,10 +773,11 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexA.getParticle(i)._persistentRecords._material
 								);
 							}
-
+							break;
 						} else if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID && vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)
 						{
-							if(delta::collision::isSphereOverlayInContact(
+							//printf("ENTERED virtual grid sphere AB\n");
+							/*if(delta::collision::isSphereOverlayInContact(
 								vertexA.getParticle(i).getCentre(0),
 								vertexA.getParticle(i).getCentre(1),
 								vertexA.getParticle(i).getCentre(2),
@@ -742,7 +786,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexB.getParticle(j).getCentre(0),
 								vertexB.getParticle(j).getCentre(1),
 								vertexB.getParticle(j).getCentre(2),
-								vertexB.getParticle(j).getInfluenceRadius()))
+								vertexB.getParticle(j).getInfluenceRadius()))*/
 							{
 								newContactPoints = delta::collision::sphereWithBarrierAB(
 								vertexA.getParticle(i).getCentre(0),
@@ -1010,6 +1054,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexB.getParticle(j).getCentre(2),
 							vertexB.getParticle(j).getInfluenceRadius()))
 						{
+							_state.informStateThatTwoParticlesAreClose();
 							newContactPoints = delta::collision::bf(
 								vertexA.getNumberOfTriangles( i ),
 								vertexA.getXCoordinates( i ),

@@ -80,8 +80,6 @@ class dem::mappings::Collision {
     	GJK
     };
 
-    static const double _epsilon = 0.002;
-
     struct Collisions {
       records::Particle                            _copyOfPartnerParticle;
       std::vector<delta::collision::contactpoint>  _contactPoints;

@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   14/09/2016 19:48
+    * @date   24/09/2016 01:49
     */
    class dem::records::Particle { 
       
@@ -48,28 +48,38 @@ namespace dem {
             tarch::la::Vector<DIMENSIONS,double> _centre;
             #endif
             #ifdef UseManualAlignment
+            tarch::la::Vector<DIMENSIONS,double> _centreOfMass __attribute__((aligned(VectorisationAlignment)));
+            #else
+            tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
+            #endif
+            #ifdef UseManualAlignment
+            tarch::la::Vector<DIMENSIONS,double> _referencialAngular __attribute__((aligned(VectorisationAlignment)));
+            #else
+            tarch::la::Vector<DIMENSIONS,double> _referencialAngular;
+            #endif
+            #ifdef UseManualAlignment
+            tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass __attribute__((aligned(VectorisationAlignment)));
+            #else
+            tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
+            #endif
+            #ifdef UseManualAlignment
             tarch::la::Vector<DIMENSIONS,double> _velocity __attribute__((aligned(VectorisationAlignment)));
             #else
             tarch::la::Vector<DIMENSIONS,double> _velocity;
+            #endif
+            #ifdef UseManualAlignment
+            tarch::la::Vector<DIMENSIONS,double> _angular __attribute__((aligned(VectorisationAlignment)));
+            #else
+            tarch::la::Vector<DIMENSIONS,double> _angular;
             #endif
             double _diameter;
             double _influenceRadius;
             double _epsilon;
             double _mass;
             double _hMin;
-            #ifdef UseManualAlignment
-            tarch::la::Vector<DIMENSIONS,double> _centreOfMass __attribute__((aligned(VectorisationAlignment)));
-            #else
-            tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
-            #endif
             int _globalParticleNumber;
-            int _material;
             int _numberOfTriangles;
-            #ifdef UseManualAlignment
-            tarch::la::Vector<DIMENSIONS,int> _vertices __attribute__((aligned(VectorisationAlignment)));
-            #else
-            tarch::la::Vector<DIMENSIONS,int> _vertices;
-            #endif
+            int _material;
             /**
              * Generated
              */
@@ -78,7 +88,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
             
             
             /**
@@ -158,6 +168,180 @@ namespace dem {
              * 
              * @see convert()
              */
+            inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _centreOfMass;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _centreOfMass = (centreOfMass);
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _referencialAngular;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _referencialAngular = (referencialAngular);
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _referentialCentreOfMass;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _referentialCentreOfMass = (referentialCentreOfMass);
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
             inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -193,6 +377,64 @@ namespace dem {
  #endif 
  {
                _velocity = (velocity);
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _angular;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _angular = (angular);
             }
             
             
@@ -297,64 +539,6 @@ namespace dem {
             
             
             
-            /**
-             * Generated and optimized
-             * 
-             * If you realise a for loop using exclusively arrays (vectors) and compile 
-             * with -DUseManualAlignment you may add 
-             * \code
-             #pragma vector aligned
-             #pragma simd
-             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-             * 
-             * The alignment is tied to the unpacked records, i.e. for packed class
-             * variants the machine's natural alignment is switched off to recude the  
-             * memory footprint. Do not use any SSE/AVX operations or 
-             * vectorisation on the result for the packed variants, as the data is misaligned. 
-             * If you rely on vectorisation, convert the underlying record 
-             * into the unpacked version first. 
-             * 
-             * @see convert()
-             */
-            inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-               return _centreOfMass;
-            }
-            
-            
-            
-            /**
-             * Generated and optimized
-             * 
-             * If you realise a for loop using exclusively arrays (vectors) and compile 
-             * with -DUseManualAlignment you may add 
-             * \code
-             #pragma vector aligned
-             #pragma simd
-             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-             * 
-             * The alignment is tied to the unpacked records, i.e. for packed class
-             * variants the machine's natural alignment is switched off to recude the  
-             * memory footprint. Do not use any SSE/AVX operations or 
-             * vectorisation on the result for the packed variants, as the data is misaligned. 
-             * If you rely on vectorisation, convert the underlying record 
-             * into the unpacked version first. 
-             * 
-             * @see convert()
-             */
-            inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-               _centreOfMass = (centreOfMass);
-            }
-            
-            
-            
             inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -371,26 +555,6 @@ namespace dem {
  #endif 
  {
                _globalParticleNumber = globalParticleNumber;
-            }
-            
-            
-            
-            inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-               return _material;
-            }
-            
-            
-            
-            inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-               _material = material;
             }
             
             
@@ -415,60 +579,22 @@ namespace dem {
             
             
             
-            /**
-             * Generated and optimized
-             * 
-             * If you realise a for loop using exclusively arrays (vectors) and compile 
-             * with -DUseManualAlignment you may add 
-             * \code
-             #pragma vector aligned
-             #pragma simd
-             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-             * 
-             * The alignment is tied to the unpacked records, i.e. for packed class
-             * variants the machine's natural alignment is switched off to recude the  
-             * memory footprint. Do not use any SSE/AVX operations or 
-             * vectorisation on the result for the packed variants, as the data is misaligned. 
-             * If you rely on vectorisation, convert the underlying record 
-             * into the unpacked version first. 
-             * 
-             * @see convert()
-             */
-            inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+            inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               return _vertices;
+               return _material;
             }
             
             
             
-            /**
-             * Generated and optimized
-             * 
-             * If you realise a for loop using exclusively arrays (vectors) and compile 
-             * with -DUseManualAlignment you may add 
-             * \code
-             #pragma vector aligned
-             #pragma simd
-             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-             * 
-             * The alignment is tied to the unpacked records, i.e. for packed class
-             * variants the machine's natural alignment is switched off to recude the  
-             * memory footprint. Do not use any SSE/AVX operations or 
-             * vectorisation on the result for the packed variants, as the data is misaligned. 
-             * If you rely on vectorisation, convert the underlying record 
-             * into the unpacked version first. 
-             * 
-             * @see convert()
-             */
-            inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+            inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               _vertices = (vertices);
+               _material = material;
             }
             
             
@@ -496,7 +622,7 @@ namespace dem {
          /**
           * Generated
           */
-         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
          
          /**
           * Generated
@@ -607,6 +733,258 @@ namespace dem {
           * 
           * @see convert()
           */
+         inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._centreOfMass;
+         }
+         
+         
+         
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
+         inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._centreOfMass = (centreOfMass);
+         }
+         
+         
+         
+         inline double getCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            return _persistentRecords._centreOfMass[elementIndex];
+            
+         }
+         
+         
+         
+         inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
+            
+         }
+         
+         
+         
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
+         inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._referencialAngular;
+         }
+         
+         
+         
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
+         inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._referencialAngular = (referencialAngular);
+         }
+         
+         
+         
+         inline double getReferencialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            return _persistentRecords._referencialAngular[elementIndex];
+            
+         }
+         
+         
+         
+         inline void setReferencialAngular(int elementIndex, const double& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            _persistentRecords._referencialAngular[elementIndex]= referencialAngular;
+            
+         }
+         
+         
+         
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
+         inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._referentialCentreOfMass;
+         }
+         
+         
+         
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
+         inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._referentialCentreOfMass = (referentialCentreOfMass);
+         }
+         
+         
+         
+         inline double getReferentialCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            return _persistentRecords._referentialCentreOfMass[elementIndex];
+            
+         }
+         
+         
+         
+         inline void setReferentialCentreOfMass(int elementIndex, const double& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            _persistentRecords._referentialCentreOfMass[elementIndex]= referentialCentreOfMass;
+            
+         }
+         
+         
+         
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
          inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -667,6 +1045,90 @@ namespace dem {
             assertion(elementIndex>=0);
             assertion(elementIndex<DIMENSIONS);
             _persistentRecords._velocity[elementIndex]= velocity;
+            
+         }
+         
+         
+         
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
+         inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._angular;
+         }
+         
+         
+         
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
+         inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._angular = (angular);
+         }
+         
+         
+         
+         inline double getAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            return _persistentRecords._angular[elementIndex];
+            
+         }
+         
+         
+         
+         inline void setAngular(int elementIndex, const double& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            _persistentRecords._angular[elementIndex]= angular;
             
          }
          
@@ -772,90 +1234,6 @@ namespace dem {
          
          
          
-         /**
-          * Generated and optimized
-          * 
-          * If you realise a for loop using exclusively arrays (vectors) and compile 
-          * with -DUseManualAlignment you may add 
-          * \code
-          #pragma vector aligned
-          #pragma simd
-          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-          * 
-          * The alignment is tied to the unpacked records, i.e. for packed class
-          * variants the machine's natural alignment is switched off to recude the  
-          * memory footprint. Do not use any SSE/AVX operations or 
-          * vectorisation on the result for the packed variants, as the data is misaligned. 
-          * If you rely on vectorisation, convert the underlying record 
-          * into the unpacked version first. 
-          * 
-          * @see convert()
-          */
-         inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._centreOfMass;
-         }
-         
-         
-         
-         /**
-          * Generated and optimized
-          * 
-          * If you realise a for loop using exclusively arrays (vectors) and compile 
-          * with -DUseManualAlignment you may add 
-          * \code
-          #pragma vector aligned
-          #pragma simd
-          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-          * 
-          * The alignment is tied to the unpacked records, i.e. for packed class
-          * variants the machine's natural alignment is switched off to recude the  
-          * memory footprint. Do not use any SSE/AVX operations or 
-          * vectorisation on the result for the packed variants, as the data is misaligned. 
-          * If you rely on vectorisation, convert the underlying record 
-          * into the unpacked version first. 
-          * 
-          * @see convert()
-          */
-         inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._centreOfMass = (centreOfMass);
-         }
-         
-         
-         
-         inline double getCentreOfMass(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            assertion(elementIndex>=0);
-            assertion(elementIndex<DIMENSIONS);
-            return _persistentRecords._centreOfMass[elementIndex];
-            
-         }
-         
-         
-         
-         inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            assertion(elementIndex>=0);
-            assertion(elementIndex<DIMENSIONS);
-            _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
-            
-         }
-         
-         
-         
          inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -872,26 +1250,6 @@ namespace dem {
  #endif 
  {
             _persistentRecords._globalParticleNumber = globalParticleNumber;
-         }
-         
-         
-         
-         inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._material;
-         }
-         
-         
-         
-         inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._material = material;
          }
          
          
@@ -916,86 +1274,22 @@ namespace dem {
          
          
          
-         /**
-          * Generated and optimized
-          * 
-          * If you realise a for loop using exclusively arrays (vectors) and compile 
-          * with -DUseManualAlignment you may add 
-          * \code
-          #pragma vector aligned
-          #pragma simd
-          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-          * 
-          * The alignment is tied to the unpacked records, i.e. for packed class
-          * variants the machine's natural alignment is switched off to recude the  
-          * memory footprint. Do not use any SSE/AVX operations or 
-          * vectorisation on the result for the packed variants, as the data is misaligned. 
-          * If you rely on vectorisation, convert the underlying record 
-          * into the unpacked version first. 
-          * 
-          * @see convert()
-          */
-         inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+         inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            return _persistentRecords._vertices;
+            return _persistentRecords._material;
          }
          
          
          
-         /**
-          * Generated and optimized
-          * 
-          * If you realise a for loop using exclusively arrays (vectors) and compile 
-          * with -DUseManualAlignment you may add 
-          * \code
-          #pragma vector aligned
-          #pragma simd
-          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-          * 
-          * The alignment is tied to the unpacked records, i.e. for packed class
-          * variants the machine's natural alignment is switched off to recude the  
-          * memory footprint. Do not use any SSE/AVX operations or 
-          * vectorisation on the result for the packed variants, as the data is misaligned. 
-          * If you rely on vectorisation, convert the underlying record 
-          * into the unpacked version first. 
-          * 
-          * @see convert()
-          */
-         inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+         inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            _persistentRecords._vertices = (vertices);
-         }
-         
-         
-         
-         inline int getVertices(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            assertion(elementIndex>=0);
-            assertion(elementIndex<DIMENSIONS);
-            return _persistentRecords._vertices[elementIndex];
-            
-         }
-         
-         
-         
-         inline void setVertices(int elementIndex, const int& vertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            assertion(elementIndex>=0);
-            assertion(elementIndex<DIMENSIONS);
-            _persistentRecords._vertices[elementIndex]= vertices;
-            
+            _persistentRecords._material = material;
          }
          
          
@@ -1072,7 +1366,7 @@ namespace dem {
              *
              * 		   build date: 09-02-2014 14:40
              *
-             * @date   14/09/2016 19:48
+             * @date   24/09/2016 01:49
              */
             class dem::records::ParticlePacked { 
                
@@ -1080,17 +1374,19 @@ namespace dem {
                   
                   struct PersistentRecords {
                      tarch::la::Vector<DIMENSIONS,double> _centre;
+                     tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
+                     tarch::la::Vector<DIMENSIONS,double> _referencialAngular;
+                     tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                      tarch::la::Vector<DIMENSIONS,double> _velocity;
+                     tarch::la::Vector<DIMENSIONS,double> _angular;
                      double _diameter;
                      double _influenceRadius;
                      double _epsilon;
                      double _mass;
                      double _hMin;
-                     tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                      int _globalParticleNumber;
-                     int _material;
                      int _numberOfTriangles;
-                     tarch::la::Vector<DIMENSIONS,int> _vertices;
+                     int _material;
                      /**
                       * Generated
                       */
@@ -1099,7 +1395,7 @@ namespace dem {
                      /**
                       * Generated
                       */
-                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                      
                      
                      /**
@@ -1179,6 +1475,180 @@ namespace dem {
                       * 
                       * @see convert()
                       */
+                     inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        return _centreOfMass;
+                     }
+                     
+                     
+                     
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
+                     inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        _centreOfMass = (centreOfMass);
+                     }
+                     
+                     
+                     
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
+                     inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        return _referencialAngular;
+                     }
+                     
+                     
+                     
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
+                     inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        _referencialAngular = (referencialAngular);
+                     }
+                     
+                     
+                     
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
+                     inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        return _referentialCentreOfMass;
+                     }
+                     
+                     
+                     
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
+                     inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        _referentialCentreOfMass = (referentialCentreOfMass);
+                     }
+                     
+                     
+                     
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
                      inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1214,6 +1684,64 @@ namespace dem {
  #endif 
  {
                         _velocity = (velocity);
+                     }
+                     
+                     
+                     
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
+                     inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        return _angular;
+                     }
+                     
+                     
+                     
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
+                     inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        _angular = (angular);
                      }
                      
                      
@@ -1318,64 +1846,6 @@ namespace dem {
                      
                      
                      
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _centreOfMass;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _centreOfMass = (centreOfMass);
-                     }
-                     
-                     
-                     
                      inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1392,26 +1862,6 @@ namespace dem {
  #endif 
  {
                         _globalParticleNumber = globalParticleNumber;
-                     }
-                     
-                     
-                     
-                     inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _material;
-                     }
-                     
-                     
-                     
-                     inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _material = material;
                      }
                      
                      
@@ -1436,60 +1886,22 @@ namespace dem {
                      
                      
                      
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                     inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                        return _vertices;
+                        return _material;
                      }
                      
                      
                      
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                     inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                        _vertices = (vertices);
+                        _material = material;
                      }
                      
                      
@@ -1513,7 +1925,7 @@ namespace dem {
                   /**
                    * Generated
                    */
-                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                   
                   /**
                    * Generated
@@ -1624,6 +2036,258 @@ namespace dem {
                    * 
                    * @see convert()
                    */
+                  inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     return _persistentRecords._centreOfMass;
+                  }
+                  
+                  
+                  
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
+                  inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     _persistentRecords._centreOfMass = (centreOfMass);
+                  }
+                  
+                  
+                  
+                  inline double getCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     return _persistentRecords._centreOfMass[elementIndex];
+                     
+                  }
+                  
+                  
+                  
+                  inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
+                     
+                  }
+                  
+                  
+                  
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
+                  inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     return _persistentRecords._referencialAngular;
+                  }
+                  
+                  
+                  
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
+                  inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     _persistentRecords._referencialAngular = (referencialAngular);
+                  }
+                  
+                  
+                  
+                  inline double getReferencialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     return _persistentRecords._referencialAngular[elementIndex];
+                     
+                  }
+                  
+                  
+                  
+                  inline void setReferencialAngular(int elementIndex, const double& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     _persistentRecords._referencialAngular[elementIndex]= referencialAngular;
+                     
+                  }
+                  
+                  
+                  
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
+                  inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     return _persistentRecords._referentialCentreOfMass;
+                  }
+                  
+                  
+                  
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
+                  inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     _persistentRecords._referentialCentreOfMass = (referentialCentreOfMass);
+                  }
+                  
+                  
+                  
+                  inline double getReferentialCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     return _persistentRecords._referentialCentreOfMass[elementIndex];
+                     
+                  }
+                  
+                  
+                  
+                  inline void setReferentialCentreOfMass(int elementIndex, const double& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     _persistentRecords._referentialCentreOfMass[elementIndex]= referentialCentreOfMass;
+                     
+                  }
+                  
+                  
+                  
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
                   inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1684,6 +2348,90 @@ namespace dem {
                      assertion(elementIndex>=0);
                      assertion(elementIndex<DIMENSIONS);
                      _persistentRecords._velocity[elementIndex]= velocity;
+                     
+                  }
+                  
+                  
+                  
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
+                  inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     return _persistentRecords._angular;
+                  }
+                  
+                  
+                  
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
+                  inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     _persistentRecords._angular = (angular);
+                  }
+                  
+                  
+                  
+                  inline double getAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     return _persistentRecords._angular[elementIndex];
+                     
+                  }
+                  
+                  
+                  
+                  inline void setAngular(int elementIndex, const double& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     _persistentRecords._angular[elementIndex]= angular;
                      
                   }
                   
@@ -1789,90 +2537,6 @@ namespace dem {
                   
                   
                   
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._centreOfMass;
-                  }
-                  
-                  
-                  
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._centreOfMass = (centreOfMass);
-                  }
-                  
-                  
-                  
-                  inline double getCentreOfMass(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<DIMENSIONS);
-                     return _persistentRecords._centreOfMass[elementIndex];
-                     
-                  }
-                  
-                  
-                  
-                  inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<DIMENSIONS);
-                     _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
-                     
-                  }
-                  
-                  
-                  
                   inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1889,26 +2553,6 @@ namespace dem {
  #endif 
  {
                      _persistentRecords._globalParticleNumber = globalParticleNumber;
-                  }
-                  
-                  
-                  
-                  inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._material;
-                  }
-                  
-                  
-                  
-                  inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._material = material;
                   }
                   
                   
@@ -1933,86 +2577,22 @@ namespace dem {
                   
                   
                   
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                  inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                     return _persistentRecords._vertices;
+                     return _persistentRecords._material;
                   }
                   
                   
                   
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                  inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                     _persistentRecords._vertices = (vertices);
-                  }
-                  
-                  
-                  
-                  inline int getVertices(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<DIMENSIONS);
-                     return _persistentRecords._vertices[elementIndex];
-                     
-                  }
-                  
-                  
-                  
-                  inline void setVertices(int elementIndex, const int& vertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<DIMENSIONS);
-                     _persistentRecords._vertices[elementIndex]= vertices;
-                     
+                     _persistentRecords._material = material;
                   }
                   
                   
@@ -2086,7 +2666,7 @@ namespace dem {
                       *
                       * 		   build date: 09-02-2014 14:40
                       *
-                      * @date   14/09/2016 19:48
+                      * @date   24/09/2016 01:49
                       */
                      class dem::records::Particle { 
                         
@@ -2096,39 +2676,83 @@ namespace dem {
                            
                            struct PersistentRecords {
                               #ifdef UseManualAlignment
+                              tarch::la::Vector<6,int> _vertices __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<6,int> _vertices;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<9,double> _orientation __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<9,double> _orientation;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<9,double> _inertia __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<9,double> _inertia;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<9,double> _inverse __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<9,double> _inverse;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<4,int> _vertices __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<4,int> _vertices;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<4,double> _orientation __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<4,double> _orientation;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<4,double> _inertia __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<4,double> _inertia;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<4,double> _inverse __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<4,double> _inverse;
+                              #endif
+                              #ifdef UseManualAlignment
                               tarch::la::Vector<DIMENSIONS,double> _centre __attribute__((aligned(VectorisationAlignment)));
                               #else
                               tarch::la::Vector<DIMENSIONS,double> _centre;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<DIMENSIONS,double> _centreOfMass __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<DIMENSIONS,double> _referencialAngular __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<DIMENSIONS,double> _referencialAngular;
+                              #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                               #endif
                               #ifdef UseManualAlignment
                               tarch::la::Vector<DIMENSIONS,double> _velocity __attribute__((aligned(VectorisationAlignment)));
                               #else
                               tarch::la::Vector<DIMENSIONS,double> _velocity;
                               #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<DIMENSIONS,double> _angular __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<DIMENSIONS,double> _angular;
+                              #endif
                               double _diameter;
                               double _influenceRadius;
                               double _epsilon;
                               double _mass;
                               double _hMin;
-                              #ifdef UseManualAlignment
-                              tarch::la::Vector<DIMENSIONS,double> _centreOfMass __attribute__((aligned(VectorisationAlignment)));
-                              #else
-                              tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
-                              #endif
                               int _globalParticleNumber;
-                              int _material;
-                              double _angularVelocity;
-                              #ifdef UseManualAlignment
-                              tarch::la::Vector<DIMENSIONS,double> _angularVelocity __attribute__((aligned(VectorisationAlignment)));
-                              #else
-                              tarch::la::Vector<DIMENSIONS,double> _angularVelocity;
-                              #endif
                               int _numberOfTriangles;
-                              #ifdef UseManualAlignment
-                              tarch::la::Vector<DIMENSIONS,int> _vertices __attribute__((aligned(VectorisationAlignment)));
-                              #else
-                              tarch::la::Vector<DIMENSIONS,int> _vertices;
-                              #endif
+                              int _material;
                               /**
                                * Generated
                                */
@@ -2137,7 +2761,471 @@ namespace dem {
                               /**
                                * Generated
                                */
-                              PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                              PersistentRecords(const tarch::la::Vector<6,int>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<4,int>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<6,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _vertices;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setVertices(const tarch::la::Vector<6,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _vertices = (vertices);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<9,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _orientation;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setOrientation(const tarch::la::Vector<9,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _orientation = (orientation);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<9,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _inertia;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setInertia(const tarch::la::Vector<9,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _inertia = (inertia);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<9,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _inverse;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setInverse(const tarch::la::Vector<9,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _inverse = (inverse);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<4,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _vertices;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setVertices(const tarch::la::Vector<4,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _vertices = (vertices);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<4,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _orientation;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setOrientation(const tarch::la::Vector<4,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _orientation = (orientation);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<4,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _inertia;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setInertia(const tarch::la::Vector<4,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _inertia = (inertia);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<4,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _inverse;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setInverse(const tarch::la::Vector<4,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _inverse = (inverse);
+                              }
+                              
                               
                               
                               /**
@@ -2217,6 +3305,180 @@ namespace dem {
                                * 
                                * @see convert()
                                */
+                              inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _centreOfMass;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _centreOfMass = (centreOfMass);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _referencialAngular;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _referencialAngular = (referencialAngular);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _referentialCentreOfMass;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _referentialCentreOfMass = (referentialCentreOfMass);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
                               inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -2252,6 +3514,64 @@ namespace dem {
  #endif 
  {
                                  _velocity = (velocity);
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _angular;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _angular = (angular);
                               }
                               
                               
@@ -2356,64 +3676,6 @@ namespace dem {
                               
                               
                               
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _centreOfMass;
-                              }
-                              
-                              
-                              
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _centreOfMass = (centreOfMass);
-                              }
-                              
-                              
-                              
                               inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -2430,104 +3692,6 @@ namespace dem {
  #endif 
  {
                                  _globalParticleNumber = globalParticleNumber;
-                              }
-                              
-                              
-                              
-                              inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _material;
-                              }
-                              
-                              
-                              
-                              inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _material = material;
-                              }
-                              
-                              
-                              
-                              inline double getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _angularVelocity;
-                              }
-                              
-                              
-                              
-                              inline void setAngularVelocity(const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _angularVelocity = angularVelocity;
-                              }
-                              
-                              
-                              
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline tarch::la::Vector<DIMENSIONS,double> getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _angularVelocity;
-                              }
-                              
-                              
-                              
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline void setAngularVelocity(const tarch::la::Vector<DIMENSIONS,double>& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _angularVelocity = (angularVelocity);
                               }
                               
                               
@@ -2552,60 +3716,22 @@ namespace dem {
                               
                               
                               
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                              inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _vertices;
+                                 return _material;
                               }
                               
                               
                               
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                              inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _vertices = (vertices);
+                                 _material = material;
                               }
                               
                               
@@ -2633,12 +3759,684 @@ namespace dem {
                            /**
                             * Generated
                             */
-                           Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                           Particle(const tarch::la::Vector<4,int>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<6,int>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                            
                            /**
                             * Generated
                             */
                            ~Particle();
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<4,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._vertices;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setVertices(const tarch::la::Vector<4,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._vertices = (vertices);
+                           }
+                           
+                           
+                           
+                           inline int getVertices(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<4);
+                              return _persistentRecords._vertices[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setVertices(int elementIndex, const int& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<4);
+                              _persistentRecords._vertices[elementIndex]= vertices;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<4,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._orientation;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setOrientation(const tarch::la::Vector<4,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._orientation = (orientation);
+                           }
+                           
+                           
+                           
+                           inline double getOrientation(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<4);
+                              return _persistentRecords._orientation[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setOrientation(int elementIndex, const double& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<4);
+                              _persistentRecords._orientation[elementIndex]= orientation;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<4,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._inertia;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setInertia(const tarch::la::Vector<4,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._inertia = (inertia);
+                           }
+                           
+                           
+                           
+                           inline double getInertia(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<4);
+                              return _persistentRecords._inertia[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setInertia(int elementIndex, const double& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<4);
+                              _persistentRecords._inertia[elementIndex]= inertia;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<4,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._inverse;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setInverse(const tarch::la::Vector<4,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._inverse = (inverse);
+                           }
+                           
+                           
+                           
+                           inline double getInverse(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<4);
+                              return _persistentRecords._inverse[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setInverse(int elementIndex, const double& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<4);
+                              _persistentRecords._inverse[elementIndex]= inverse;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<6,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._vertices;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setVertices(const tarch::la::Vector<6,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._vertices = (vertices);
+                           }
+                           
+                           
+                           
+                           inline int getVertices(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<6);
+                              return _persistentRecords._vertices[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setVertices(int elementIndex, const int& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<6);
+                              _persistentRecords._vertices[elementIndex]= vertices;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<9,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._orientation;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setOrientation(const tarch::la::Vector<9,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._orientation = (orientation);
+                           }
+                           
+                           
+                           
+                           inline double getOrientation(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<9);
+                              return _persistentRecords._orientation[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setOrientation(int elementIndex, const double& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<9);
+                              _persistentRecords._orientation[elementIndex]= orientation;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<9,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._inertia;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setInertia(const tarch::la::Vector<9,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._inertia = (inertia);
+                           }
+                           
+                           
+                           
+                           inline double getInertia(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<9);
+                              return _persistentRecords._inertia[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setInertia(int elementIndex, const double& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<9);
+                              _persistentRecords._inertia[elementIndex]= inertia;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<9,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._inverse;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setInverse(const tarch::la::Vector<9,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._inverse = (inverse);
+                           }
+                           
+                           
+                           
+                           inline double getInverse(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<9);
+                              return _persistentRecords._inverse[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setInverse(int elementIndex, const double& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<9);
+                              _persistentRecords._inverse[elementIndex]= inverse;
+                              
+                           }
+                           
                            
                            
                            /**
@@ -2744,6 +4542,258 @@ namespace dem {
                             * 
                             * @see convert()
                             */
+                           inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._centreOfMass;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._centreOfMass = (centreOfMass);
+                           }
+                           
+                           
+                           
+                           inline double getCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              return _persistentRecords._centreOfMass[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._referencialAngular;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._referencialAngular = (referencialAngular);
+                           }
+                           
+                           
+                           
+                           inline double getReferencialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              return _persistentRecords._referencialAngular[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setReferencialAngular(int elementIndex, const double& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              _persistentRecords._referencialAngular[elementIndex]= referencialAngular;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._referentialCentreOfMass;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._referentialCentreOfMass = (referentialCentreOfMass);
+                           }
+                           
+                           
+                           
+                           inline double getReferentialCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              return _persistentRecords._referentialCentreOfMass[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setReferentialCentreOfMass(int elementIndex, const double& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              _persistentRecords._referentialCentreOfMass[elementIndex]= referentialCentreOfMass;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
                            inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -2804,6 +4854,90 @@ namespace dem {
                               assertion(elementIndex>=0);
                               assertion(elementIndex<DIMENSIONS);
                               _persistentRecords._velocity[elementIndex]= velocity;
+                              
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._angular;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._angular = (angular);
+                           }
+                           
+                           
+                           
+                           inline double getAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              return _persistentRecords._angular[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setAngular(int elementIndex, const double& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              _persistentRecords._angular[elementIndex]= angular;
                               
                            }
                            
@@ -2909,90 +5043,6 @@ namespace dem {
                            
                            
                            
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._centreOfMass;
-                           }
-                           
-                           
-                           
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._centreOfMass = (centreOfMass);
-                           }
-                           
-                           
-                           
-                           inline double getCentreOfMass(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion(elementIndex>=0);
-                              assertion(elementIndex<DIMENSIONS);
-                              return _persistentRecords._centreOfMass[elementIndex];
-                              
-                           }
-                           
-                           
-                           
-                           inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion(elementIndex>=0);
-                              assertion(elementIndex<DIMENSIONS);
-                              _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
-                              
-                           }
-                           
-                           
-                           
                            inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -3009,130 +5059,6 @@ namespace dem {
  #endif 
  {
                               _persistentRecords._globalParticleNumber = globalParticleNumber;
-                           }
-                           
-                           
-                           
-                           inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._material;
-                           }
-                           
-                           
-                           
-                           inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._material = material;
-                           }
-                           
-                           
-                           
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline tarch::la::Vector<DIMENSIONS,double> getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._angularVelocity;
-                           }
-                           
-                           
-                           
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline void setAngularVelocity(const tarch::la::Vector<DIMENSIONS,double>& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._angularVelocity = (angularVelocity);
-                           }
-                           
-                           
-                           
-                           inline double getAngularVelocity(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion(elementIndex>=0);
-                              assertion(elementIndex<DIMENSIONS);
-                              return _persistentRecords._angularVelocity[elementIndex];
-                              
-                           }
-                           
-                           
-                           
-                           inline void setAngularVelocity(int elementIndex, const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion(elementIndex>=0);
-                              assertion(elementIndex<DIMENSIONS);
-                              _persistentRecords._angularVelocity[elementIndex]= angularVelocity;
-                              
-                           }
-                           
-                           
-                           
-                           inline double getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._angularVelocity;
-                           }
-                           
-                           
-                           
-                           inline void setAngularVelocity(const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._angularVelocity = angularVelocity;
                            }
                            
                            
@@ -3157,86 +5083,22 @@ namespace dem {
                            
                            
                            
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                           inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _persistentRecords._vertices;
+                              return _persistentRecords._material;
                            }
                            
                            
                            
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                           inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _persistentRecords._vertices = (vertices);
-                           }
-                           
-                           
-                           
-                           inline int getVertices(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion(elementIndex>=0);
-                              assertion(elementIndex<DIMENSIONS);
-                              return _persistentRecords._vertices[elementIndex];
-                              
-                           }
-                           
-                           
-                           
-                           inline void setVertices(int elementIndex, const int& vertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion(elementIndex>=0);
-                              assertion(elementIndex<DIMENSIONS);
-                              _persistentRecords._vertices[elementIndex]= vertices;
-                              
+                              _persistentRecords._material = material;
                            }
                            
                            
@@ -3313,27 +5175,35 @@ namespace dem {
                                *
                                * 		   build date: 09-02-2014 14:40
                                *
-                               * @date   14/09/2016 19:48
+                               * @date   24/09/2016 01:49
                                */
                               class dem::records::ParticlePacked { 
                                  
                                  public:
                                     
                                     struct PersistentRecords {
+                                       tarch::la::Vector<6,int> _vertices;
+                                       tarch::la::Vector<9,double> _orientation;
+                                       tarch::la::Vector<9,double> _inertia;
+                                       tarch::la::Vector<9,double> _inverse;
+                                       tarch::la::Vector<4,int> _vertices;
+                                       tarch::la::Vector<4,double> _orientation;
+                                       tarch::la::Vector<4,double> _inertia;
+                                       tarch::la::Vector<4,double> _inverse;
                                        tarch::la::Vector<DIMENSIONS,double> _centre;
+                                       tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
+                                       tarch::la::Vector<DIMENSIONS,double> _referencialAngular;
+                                       tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                                        tarch::la::Vector<DIMENSIONS,double> _velocity;
+                                       tarch::la::Vector<DIMENSIONS,double> _angular;
                                        double _diameter;
                                        double _influenceRadius;
                                        double _epsilon;
                                        double _mass;
                                        double _hMin;
-                                       tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                                        int _globalParticleNumber;
-                                       int _material;
-                                       double _angularVelocity;
-                                       tarch::la::Vector<DIMENSIONS,double> _angularVelocity;
                                        int _numberOfTriangles;
-                                       tarch::la::Vector<DIMENSIONS,int> _vertices;
+                                       int _material;
                                        /**
                                         * Generated
                                         */
@@ -3342,7 +5212,471 @@ namespace dem {
                                        /**
                                         * Generated
                                         */
-                                       PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                       PersistentRecords(const tarch::la::Vector<6,int>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<4,int>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<6,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _vertices;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setVertices(const tarch::la::Vector<6,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _vertices = (vertices);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<9,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _orientation;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setOrientation(const tarch::la::Vector<9,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _orientation = (orientation);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<9,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _inertia;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setInertia(const tarch::la::Vector<9,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _inertia = (inertia);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<9,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _inverse;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setInverse(const tarch::la::Vector<9,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _inverse = (inverse);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<4,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _vertices;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setVertices(const tarch::la::Vector<4,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _vertices = (vertices);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<4,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _orientation;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setOrientation(const tarch::la::Vector<4,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _orientation = (orientation);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<4,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _inertia;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setInertia(const tarch::la::Vector<4,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _inertia = (inertia);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<4,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _inverse;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setInverse(const tarch::la::Vector<4,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _inverse = (inverse);
+                                       }
+                                       
                                        
                                        
                                        /**
@@ -3422,6 +5756,180 @@ namespace dem {
                                         * 
                                         * @see convert()
                                         */
+                                       inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _centreOfMass;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _centreOfMass = (centreOfMass);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _referencialAngular;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _referencialAngular = (referencialAngular);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _referentialCentreOfMass;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _referentialCentreOfMass = (referentialCentreOfMass);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
                                        inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -3457,6 +5965,64 @@ namespace dem {
  #endif 
  {
                                           _velocity = (velocity);
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _angular;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _angular = (angular);
                                        }
                                        
                                        
@@ -3561,64 +6127,6 @@ namespace dem {
                                        
                                        
                                        
-                                       /**
-                                        * Generated and optimized
-                                        * 
-                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                        * with -DUseManualAlignment you may add 
-                                        * \code
-                                        #pragma vector aligned
-                                        #pragma simd
-                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                        * 
-                                        * The alignment is tied to the unpacked records, i.e. for packed class
-                                        * variants the machine's natural alignment is switched off to recude the  
-                                        * memory footprint. Do not use any SSE/AVX operations or 
-                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                        * If you rely on vectorisation, convert the underlying record 
-                                        * into the unpacked version first. 
-                                        * 
-                                        * @see convert()
-                                        */
-                                       inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                          return _centreOfMass;
-                                       }
-                                       
-                                       
-                                       
-                                       /**
-                                        * Generated and optimized
-                                        * 
-                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                        * with -DUseManualAlignment you may add 
-                                        * \code
-                                        #pragma vector aligned
-                                        #pragma simd
-                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                        * 
-                                        * The alignment is tied to the unpacked records, i.e. for packed class
-                                        * variants the machine's natural alignment is switched off to recude the  
-                                        * memory footprint. Do not use any SSE/AVX operations or 
-                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                        * If you rely on vectorisation, convert the underlying record 
-                                        * into the unpacked version first. 
-                                        * 
-                                        * @see convert()
-                                        */
-                                       inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                          _centreOfMass = (centreOfMass);
-                                       }
-                                       
-                                       
-                                       
                                        inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -3635,104 +6143,6 @@ namespace dem {
  #endif 
  {
                                           _globalParticleNumber = globalParticleNumber;
-                                       }
-                                       
-                                       
-                                       
-                                       inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                          return _material;
-                                       }
-                                       
-                                       
-                                       
-                                       inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                          _material = material;
-                                       }
-                                       
-                                       
-                                       
-                                       inline double getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                          return _angularVelocity;
-                                       }
-                                       
-                                       
-                                       
-                                       inline void setAngularVelocity(const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                          _angularVelocity = angularVelocity;
-                                       }
-                                       
-                                       
-                                       
-                                       /**
-                                        * Generated and optimized
-                                        * 
-                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                        * with -DUseManualAlignment you may add 
-                                        * \code
-                                        #pragma vector aligned
-                                        #pragma simd
-                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                        * 
-                                        * The alignment is tied to the unpacked records, i.e. for packed class
-                                        * variants the machine's natural alignment is switched off to recude the  
-                                        * memory footprint. Do not use any SSE/AVX operations or 
-                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                        * If you rely on vectorisation, convert the underlying record 
-                                        * into the unpacked version first. 
-                                        * 
-                                        * @see convert()
-                                        */
-                                       inline tarch::la::Vector<DIMENSIONS,double> getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                          return _angularVelocity;
-                                       }
-                                       
-                                       
-                                       
-                                       /**
-                                        * Generated and optimized
-                                        * 
-                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                        * with -DUseManualAlignment you may add 
-                                        * \code
-                                        #pragma vector aligned
-                                        #pragma simd
-                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                        * 
-                                        * The alignment is tied to the unpacked records, i.e. for packed class
-                                        * variants the machine's natural alignment is switched off to recude the  
-                                        * memory footprint. Do not use any SSE/AVX operations or 
-                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                        * If you rely on vectorisation, convert the underlying record 
-                                        * into the unpacked version first. 
-                                        * 
-                                        * @see convert()
-                                        */
-                                       inline void setAngularVelocity(const tarch::la::Vector<DIMENSIONS,double>& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                          _angularVelocity = (angularVelocity);
                                        }
                                        
                                        
@@ -3757,60 +6167,22 @@ namespace dem {
                                        
                                        
                                        
-                                       /**
-                                        * Generated and optimized
-                                        * 
-                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                        * with -DUseManualAlignment you may add 
-                                        * \code
-                                        #pragma vector aligned
-                                        #pragma simd
-                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                        * 
-                                        * The alignment is tied to the unpacked records, i.e. for packed class
-                                        * variants the machine's natural alignment is switched off to recude the  
-                                        * memory footprint. Do not use any SSE/AVX operations or 
-                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                        * If you rely on vectorisation, convert the underlying record 
-                                        * into the unpacked version first. 
-                                        * 
-                                        * @see convert()
-                                        */
-                                       inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                       inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          return _vertices;
+                                          return _material;
                                        }
                                        
                                        
                                        
-                                       /**
-                                        * Generated and optimized
-                                        * 
-                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                        * with -DUseManualAlignment you may add 
-                                        * \code
-                                        #pragma vector aligned
-                                        #pragma simd
-                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                        * 
-                                        * The alignment is tied to the unpacked records, i.e. for packed class
-                                        * variants the machine's natural alignment is switched off to recude the  
-                                        * memory footprint. Do not use any SSE/AVX operations or 
-                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                        * If you rely on vectorisation, convert the underlying record 
-                                        * into the unpacked version first. 
-                                        * 
-                                        * @see convert()
-                                        */
-                                       inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                       inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          _vertices = (vertices);
+                                          _material = material;
                                        }
                                        
                                        
@@ -3834,12 +6206,684 @@ namespace dem {
                                     /**
                                      * Generated
                                      */
-                                    ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                    ParticlePacked(const tarch::la::Vector<4,int>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<6,int>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                     
                                     /**
                                      * Generated
                                      */
                                     ~ParticlePacked();
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<4,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._vertices;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setVertices(const tarch::la::Vector<4,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._vertices = (vertices);
+                                    }
+                                    
+                                    
+                                    
+                                    inline int getVertices(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<4);
+                                       return _persistentRecords._vertices[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setVertices(int elementIndex, const int& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<4);
+                                       _persistentRecords._vertices[elementIndex]= vertices;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<4,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._orientation;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setOrientation(const tarch::la::Vector<4,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._orientation = (orientation);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getOrientation(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<4);
+                                       return _persistentRecords._orientation[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setOrientation(int elementIndex, const double& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<4);
+                                       _persistentRecords._orientation[elementIndex]= orientation;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<4,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._inertia;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setInertia(const tarch::la::Vector<4,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._inertia = (inertia);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getInertia(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<4);
+                                       return _persistentRecords._inertia[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setInertia(int elementIndex, const double& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<4);
+                                       _persistentRecords._inertia[elementIndex]= inertia;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<4,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._inverse;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setInverse(const tarch::la::Vector<4,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._inverse = (inverse);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getInverse(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<4);
+                                       return _persistentRecords._inverse[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setInverse(int elementIndex, const double& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<4);
+                                       _persistentRecords._inverse[elementIndex]= inverse;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<6,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._vertices;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setVertices(const tarch::la::Vector<6,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._vertices = (vertices);
+                                    }
+                                    
+                                    
+                                    
+                                    inline int getVertices(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<6);
+                                       return _persistentRecords._vertices[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setVertices(int elementIndex, const int& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<6);
+                                       _persistentRecords._vertices[elementIndex]= vertices;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<9,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._orientation;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setOrientation(const tarch::la::Vector<9,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._orientation = (orientation);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getOrientation(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<9);
+                                       return _persistentRecords._orientation[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setOrientation(int elementIndex, const double& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<9);
+                                       _persistentRecords._orientation[elementIndex]= orientation;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<9,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._inertia;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setInertia(const tarch::la::Vector<9,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._inertia = (inertia);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getInertia(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<9);
+                                       return _persistentRecords._inertia[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setInertia(int elementIndex, const double& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<9);
+                                       _persistentRecords._inertia[elementIndex]= inertia;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<9,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._inverse;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setInverse(const tarch::la::Vector<9,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._inverse = (inverse);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getInverse(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<9);
+                                       return _persistentRecords._inverse[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setInverse(int elementIndex, const double& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<9);
+                                       _persistentRecords._inverse[elementIndex]= inverse;
+                                       
+                                    }
+                                    
                                     
                                     
                                     /**
@@ -3945,6 +6989,258 @@ namespace dem {
                                      * 
                                      * @see convert()
                                      */
+                                    inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._centreOfMass;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._centreOfMass = (centreOfMass);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       return _persistentRecords._centreOfMass[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._referencialAngular;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._referencialAngular = (referencialAngular);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getReferencialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       return _persistentRecords._referencialAngular[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setReferencialAngular(int elementIndex, const double& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       _persistentRecords._referencialAngular[elementIndex]= referencialAngular;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._referentialCentreOfMass;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._referentialCentreOfMass = (referentialCentreOfMass);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getReferentialCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       return _persistentRecords._referentialCentreOfMass[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setReferentialCentreOfMass(int elementIndex, const double& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       _persistentRecords._referentialCentreOfMass[elementIndex]= referentialCentreOfMass;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
                                     inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -4005,6 +7301,90 @@ namespace dem {
                                        assertion(elementIndex>=0);
                                        assertion(elementIndex<DIMENSIONS);
                                        _persistentRecords._velocity[elementIndex]= velocity;
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._angular;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._angular = (angular);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       return _persistentRecords._angular[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setAngular(int elementIndex, const double& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       _persistentRecords._angular[elementIndex]= angular;
                                        
                                     }
                                     
@@ -4110,90 +7490,6 @@ namespace dem {
                                     
                                     
                                     
-                                    /**
-                                     * Generated and optimized
-                                     * 
-                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                     * with -DUseManualAlignment you may add 
-                                     * \code
-                                     #pragma vector aligned
-                                     #pragma simd
-                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                     * 
-                                     * The alignment is tied to the unpacked records, i.e. for packed class
-                                     * variants the machine's natural alignment is switched off to recude the  
-                                     * memory footprint. Do not use any SSE/AVX operations or 
-                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                     * If you rely on vectorisation, convert the underlying record 
-                                     * into the unpacked version first. 
-                                     * 
-                                     * @see convert()
-                                     */
-                                    inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       return _persistentRecords._centreOfMass;
-                                    }
-                                    
-                                    
-                                    
-                                    /**
-                                     * Generated and optimized
-                                     * 
-                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                     * with -DUseManualAlignment you may add 
-                                     * \code
-                                     #pragma vector aligned
-                                     #pragma simd
-                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                     * 
-                                     * The alignment is tied to the unpacked records, i.e. for packed class
-                                     * variants the machine's natural alignment is switched off to recude the  
-                                     * memory footprint. Do not use any SSE/AVX operations or 
-                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                     * If you rely on vectorisation, convert the underlying record 
-                                     * into the unpacked version first. 
-                                     * 
-                                     * @see convert()
-                                     */
-                                    inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       _persistentRecords._centreOfMass = (centreOfMass);
-                                    }
-                                    
-                                    
-                                    
-                                    inline double getCentreOfMass(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       assertion(elementIndex>=0);
-                                       assertion(elementIndex<DIMENSIONS);
-                                       return _persistentRecords._centreOfMass[elementIndex];
-                                       
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       assertion(elementIndex>=0);
-                                       assertion(elementIndex<DIMENSIONS);
-                                       _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
-                                       
-                                    }
-                                    
-                                    
-                                    
                                     inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -4210,130 +7506,6 @@ namespace dem {
  #endif 
  {
                                        _persistentRecords._globalParticleNumber = globalParticleNumber;
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       return _persistentRecords._material;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       _persistentRecords._material = material;
-                                    }
-                                    
-                                    
-                                    
-                                    /**
-                                     * Generated and optimized
-                                     * 
-                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                     * with -DUseManualAlignment you may add 
-                                     * \code
-                                     #pragma vector aligned
-                                     #pragma simd
-                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                     * 
-                                     * The alignment is tied to the unpacked records, i.e. for packed class
-                                     * variants the machine's natural alignment is switched off to recude the  
-                                     * memory footprint. Do not use any SSE/AVX operations or 
-                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                     * If you rely on vectorisation, convert the underlying record 
-                                     * into the unpacked version first. 
-                                     * 
-                                     * @see convert()
-                                     */
-                                    inline tarch::la::Vector<DIMENSIONS,double> getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       return _persistentRecords._angularVelocity;
-                                    }
-                                    
-                                    
-                                    
-                                    /**
-                                     * Generated and optimized
-                                     * 
-                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                     * with -DUseManualAlignment you may add 
-                                     * \code
-                                     #pragma vector aligned
-                                     #pragma simd
-                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                     * 
-                                     * The alignment is tied to the unpacked records, i.e. for packed class
-                                     * variants the machine's natural alignment is switched off to recude the  
-                                     * memory footprint. Do not use any SSE/AVX operations or 
-                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                     * If you rely on vectorisation, convert the underlying record 
-                                     * into the unpacked version first. 
-                                     * 
-                                     * @see convert()
-                                     */
-                                    inline void setAngularVelocity(const tarch::la::Vector<DIMENSIONS,double>& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       _persistentRecords._angularVelocity = (angularVelocity);
-                                    }
-                                    
-                                    
-                                    
-                                    inline double getAngularVelocity(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       assertion(elementIndex>=0);
-                                       assertion(elementIndex<DIMENSIONS);
-                                       return _persistentRecords._angularVelocity[elementIndex];
-                                       
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setAngularVelocity(int elementIndex, const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       assertion(elementIndex>=0);
-                                       assertion(elementIndex<DIMENSIONS);
-                                       _persistentRecords._angularVelocity[elementIndex]= angularVelocity;
-                                       
-                                    }
-                                    
-                                    
-                                    
-                                    inline double getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       return _persistentRecords._angularVelocity;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setAngularVelocity(const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       _persistentRecords._angularVelocity = angularVelocity;
                                     }
                                     
                                     
@@ -4358,86 +7530,22 @@ namespace dem {
                                     
                                     
                                     
-                                    /**
-                                     * Generated and optimized
-                                     * 
-                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                     * with -DUseManualAlignment you may add 
-                                     * \code
-                                     #pragma vector aligned
-                                     #pragma simd
-                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                     * 
-                                     * The alignment is tied to the unpacked records, i.e. for packed class
-                                     * variants the machine's natural alignment is switched off to recude the  
-                                     * memory footprint. Do not use any SSE/AVX operations or 
-                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                     * If you rely on vectorisation, convert the underlying record 
-                                     * into the unpacked version first. 
-                                     * 
-                                     * @see convert()
-                                     */
-                                    inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                    inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _persistentRecords._vertices;
+                                       return _persistentRecords._material;
                                     }
                                     
                                     
                                     
-                                    /**
-                                     * Generated and optimized
-                                     * 
-                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                     * with -DUseManualAlignment you may add 
-                                     * \code
-                                     #pragma vector aligned
-                                     #pragma simd
-                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                     * 
-                                     * The alignment is tied to the unpacked records, i.e. for packed class
-                                     * variants the machine's natural alignment is switched off to recude the  
-                                     * memory footprint. Do not use any SSE/AVX operations or 
-                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                     * If you rely on vectorisation, convert the underlying record 
-                                     * into the unpacked version first. 
-                                     * 
-                                     * @see convert()
-                                     */
-                                    inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                    inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _persistentRecords._vertices = (vertices);
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getVertices(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       assertion(elementIndex>=0);
-                                       assertion(elementIndex<DIMENSIONS);
-                                       return _persistentRecords._vertices[elementIndex];
-                                       
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setVertices(int elementIndex, const int& vertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                       assertion(elementIndex>=0);
-                                       assertion(elementIndex<DIMENSIONS);
-                                       _persistentRecords._vertices[elementIndex]= vertices;
-                                       
+                                       _persistentRecords._material = material;
                                     }
                                     
                                     
@@ -4512,7 +7620,7 @@ namespace dem {
                                      *
                                      * 		   build date: 09-02-2014 14:40
                                      *
-                                     * @date   14/09/2016 19:48
+                                     * @date   24/09/2016 01:49
                                      */
                                     class dem::records::Particle { 
                                        
@@ -4522,34 +7630,63 @@ namespace dem {
                                           
                                           struct PersistentRecords {
                                              #ifdef UseManualAlignment
+                                             tarch::la::Vector<4,int> _vertices __attribute__((aligned(VectorisationAlignment)));
+                                             #else
+                                             tarch::la::Vector<4,int> _vertices;
+                                             #endif
+                                             #ifdef UseManualAlignment
+                                             tarch::la::Vector<4,double> _orientation __attribute__((aligned(VectorisationAlignment)));
+                                             #else
+                                             tarch::la::Vector<4,double> _orientation;
+                                             #endif
+                                             #ifdef UseManualAlignment
+                                             tarch::la::Vector<4,double> _inertia __attribute__((aligned(VectorisationAlignment)));
+                                             #else
+                                             tarch::la::Vector<4,double> _inertia;
+                                             #endif
+                                             #ifdef UseManualAlignment
+                                             tarch::la::Vector<4,double> _inverse __attribute__((aligned(VectorisationAlignment)));
+                                             #else
+                                             tarch::la::Vector<4,double> _inverse;
+                                             #endif
+                                             #ifdef UseManualAlignment
                                              tarch::la::Vector<DIMENSIONS,double> _centre __attribute__((aligned(VectorisationAlignment)));
                                              #else
                                              tarch::la::Vector<DIMENSIONS,double> _centre;
+                                             #endif
+                                             #ifdef UseManualAlignment
+                                             tarch::la::Vector<DIMENSIONS,double> _centreOfMass __attribute__((aligned(VectorisationAlignment)));
+                                             #else
+                                             tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
+                                             #endif
+                                             #ifdef UseManualAlignment
+                                             tarch::la::Vector<DIMENSIONS,double> _referencialAngular __attribute__((aligned(VectorisationAlignment)));
+                                             #else
+                                             tarch::la::Vector<DIMENSIONS,double> _referencialAngular;
+                                             #endif
+                                             #ifdef UseManualAlignment
+                                             tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass __attribute__((aligned(VectorisationAlignment)));
+                                             #else
+                                             tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                                              #endif
                                              #ifdef UseManualAlignment
                                              tarch::la::Vector<DIMENSIONS,double> _velocity __attribute__((aligned(VectorisationAlignment)));
                                              #else
                                              tarch::la::Vector<DIMENSIONS,double> _velocity;
                                              #endif
+                                             #ifdef UseManualAlignment
+                                             tarch::la::Vector<DIMENSIONS,double> _angular __attribute__((aligned(VectorisationAlignment)));
+                                             #else
+                                             tarch::la::Vector<DIMENSIONS,double> _angular;
+                                             #endif
                                              double _diameter;
                                              double _influenceRadius;
                                              double _epsilon;
                                              double _mass;
                                              double _hMin;
-                                             #ifdef UseManualAlignment
-                                             tarch::la::Vector<DIMENSIONS,double> _centreOfMass __attribute__((aligned(VectorisationAlignment)));
-                                             #else
-                                             tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
-                                             #endif
                                              int _globalParticleNumber;
-                                             int _material;
-                                             double _angularVelocity;
                                              int _numberOfTriangles;
-                                             #ifdef UseManualAlignment
-                                             tarch::la::Vector<DIMENSIONS,int> _vertices __attribute__((aligned(VectorisationAlignment)));
-                                             #else
-                                             tarch::la::Vector<DIMENSIONS,int> _vertices;
-                                             #endif
+                                             int _material;
                                              /**
                                               * Generated
                                               */
@@ -4558,7 +7695,239 @@ namespace dem {
                                              /**
                                               * Generated
                                               */
-                                             PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                             PersistentRecords(const tarch::la::Vector<4,int>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline tarch::la::Vector<4,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _vertices;
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline void setVertices(const tarch::la::Vector<4,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _vertices = (vertices);
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline tarch::la::Vector<4,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _orientation;
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline void setOrientation(const tarch::la::Vector<4,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _orientation = (orientation);
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline tarch::la::Vector<4,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _inertia;
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline void setInertia(const tarch::la::Vector<4,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _inertia = (inertia);
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline tarch::la::Vector<4,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _inverse;
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline void setInverse(const tarch::la::Vector<4,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _inverse = (inverse);
+                                             }
+                                             
                                              
                                              
                                              /**
@@ -4638,6 +8007,180 @@ namespace dem {
                                               * 
                                               * @see convert()
                                               */
+                                             inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _centreOfMass;
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _centreOfMass = (centreOfMass);
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _referencialAngular;
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _referencialAngular = (referencialAngular);
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _referentialCentreOfMass;
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _referentialCentreOfMass = (referentialCentreOfMass);
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
                                              inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -4673,6 +8216,64 @@ namespace dem {
  #endif 
  {
                                                 _velocity = (velocity);
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _angular;
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _angular = (angular);
                                              }
                                              
                                              
@@ -4777,64 +8378,6 @@ namespace dem {
                                              
                                              
                                              
-                                             /**
-                                              * Generated and optimized
-                                              * 
-                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                              * with -DUseManualAlignment you may add 
-                                              * \code
-                                              #pragma vector aligned
-                                              #pragma simd
-                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                              * 
-                                              * The alignment is tied to the unpacked records, i.e. for packed class
-                                              * variants the machine's natural alignment is switched off to recude the  
-                                              * memory footprint. Do not use any SSE/AVX operations or 
-                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                              * If you rely on vectorisation, convert the underlying record 
-                                              * into the unpacked version first. 
-                                              * 
-                                              * @see convert()
-                                              */
-                                             inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                return _centreOfMass;
-                                             }
-                                             
-                                             
-                                             
-                                             /**
-                                              * Generated and optimized
-                                              * 
-                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                              * with -DUseManualAlignment you may add 
-                                              * \code
-                                              #pragma vector aligned
-                                              #pragma simd
-                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                              * 
-                                              * The alignment is tied to the unpacked records, i.e. for packed class
-                                              * variants the machine's natural alignment is switched off to recude the  
-                                              * memory footprint. Do not use any SSE/AVX operations or 
-                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                              * If you rely on vectorisation, convert the underlying record 
-                                              * into the unpacked version first. 
-                                              * 
-                                              * @see convert()
-                                              */
-                                             inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                _centreOfMass = (centreOfMass);
-                                             }
-                                             
-                                             
-                                             
                                              inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -4851,46 +8394,6 @@ namespace dem {
  #endif 
  {
                                                 _globalParticleNumber = globalParticleNumber;
-                                             }
-                                             
-                                             
-                                             
-                                             inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                return _material;
-                                             }
-                                             
-                                             
-                                             
-                                             inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                _material = material;
-                                             }
-                                             
-                                             
-                                             
-                                             inline double getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                return _angularVelocity;
-                                             }
-                                             
-                                             
-                                             
-                                             inline void setAngularVelocity(const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                _angularVelocity = angularVelocity;
                                              }
                                              
                                              
@@ -4915,60 +8418,22 @@ namespace dem {
                                              
                                              
                                              
-                                             /**
-                                              * Generated and optimized
-                                              * 
-                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                              * with -DUseManualAlignment you may add 
-                                              * \code
-                                              #pragma vector aligned
-                                              #pragma simd
-                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                              * 
-                                              * The alignment is tied to the unpacked records, i.e. for packed class
-                                              * variants the machine's natural alignment is switched off to recude the  
-                                              * memory footprint. Do not use any SSE/AVX operations or 
-                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                              * If you rely on vectorisation, convert the underlying record 
-                                              * into the unpacked version first. 
-                                              * 
-                                              * @see convert()
-                                              */
-                                             inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                             inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                return _vertices;
+                                                return _material;
                                              }
                                              
                                              
                                              
-                                             /**
-                                              * Generated and optimized
-                                              * 
-                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                              * with -DUseManualAlignment you may add 
-                                              * \code
-                                              #pragma vector aligned
-                                              #pragma simd
-                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                              * 
-                                              * The alignment is tied to the unpacked records, i.e. for packed class
-                                              * variants the machine's natural alignment is switched off to recude the  
-                                              * memory footprint. Do not use any SSE/AVX operations or 
-                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                              * If you rely on vectorisation, convert the underlying record 
-                                              * into the unpacked version first. 
-                                              * 
-                                              * @see convert()
-                                              */
-                                             inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                             inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                _vertices = (vertices);
+                                                _material = material;
                                              }
                                              
                                              
@@ -4996,12 +8461,348 @@ namespace dem {
                                           /**
                                            * Generated
                                            */
-                                          Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                          Particle(const tarch::la::Vector<4,int>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                           
                                           /**
                                            * Generated
                                            */
                                           ~Particle();
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline tarch::la::Vector<4,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._vertices;
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline void setVertices(const tarch::la::Vector<4,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._vertices = (vertices);
+                                          }
+                                          
+                                          
+                                          
+                                          inline int getVertices(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<4);
+                                             return _persistentRecords._vertices[elementIndex];
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setVertices(int elementIndex, const int& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<4);
+                                             _persistentRecords._vertices[elementIndex]= vertices;
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline tarch::la::Vector<4,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._orientation;
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline void setOrientation(const tarch::la::Vector<4,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._orientation = (orientation);
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getOrientation(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<4);
+                                             return _persistentRecords._orientation[elementIndex];
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setOrientation(int elementIndex, const double& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<4);
+                                             _persistentRecords._orientation[elementIndex]= orientation;
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline tarch::la::Vector<4,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._inertia;
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline void setInertia(const tarch::la::Vector<4,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._inertia = (inertia);
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getInertia(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<4);
+                                             return _persistentRecords._inertia[elementIndex];
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setInertia(int elementIndex, const double& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<4);
+                                             _persistentRecords._inertia[elementIndex]= inertia;
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline tarch::la::Vector<4,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._inverse;
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline void setInverse(const tarch::la::Vector<4,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._inverse = (inverse);
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getInverse(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<4);
+                                             return _persistentRecords._inverse[elementIndex];
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setInverse(int elementIndex, const double& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<4);
+                                             _persistentRecords._inverse[elementIndex]= inverse;
+                                             
+                                          }
+                                          
                                           
                                           
                                           /**
@@ -5107,6 +8908,258 @@ namespace dem {
                                            * 
                                            * @see convert()
                                            */
+                                          inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._centreOfMass;
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._centreOfMass = (centreOfMass);
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             return _persistentRecords._centreOfMass[elementIndex];
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._referencialAngular;
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._referencialAngular = (referencialAngular);
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getReferencialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             return _persistentRecords._referencialAngular[elementIndex];
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setReferencialAngular(int elementIndex, const double& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             _persistentRecords._referencialAngular[elementIndex]= referencialAngular;
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._referentialCentreOfMass;
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._referentialCentreOfMass = (referentialCentreOfMass);
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getReferentialCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             return _persistentRecords._referentialCentreOfMass[elementIndex];
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setReferentialCentreOfMass(int elementIndex, const double& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             _persistentRecords._referentialCentreOfMass[elementIndex]= referentialCentreOfMass;
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
                                           inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -5167,6 +9220,90 @@ namespace dem {
                                              assertion(elementIndex>=0);
                                              assertion(elementIndex<DIMENSIONS);
                                              _persistentRecords._velocity[elementIndex]= velocity;
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._angular;
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._angular = (angular);
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             return _persistentRecords._angular[elementIndex];
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setAngular(int elementIndex, const double& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             _persistentRecords._angular[elementIndex]= angular;
                                              
                                           }
                                           
@@ -5272,90 +9409,6 @@ namespace dem {
                                           
                                           
                                           
-                                          /**
-                                           * Generated and optimized
-                                           * 
-                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                           * with -DUseManualAlignment you may add 
-                                           * \code
-                                           #pragma vector aligned
-                                           #pragma simd
-                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                           * 
-                                           * The alignment is tied to the unpacked records, i.e. for packed class
-                                           * variants the machine's natural alignment is switched off to recude the  
-                                           * memory footprint. Do not use any SSE/AVX operations or 
-                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                           * If you rely on vectorisation, convert the underlying record 
-                                           * into the unpacked version first. 
-                                           * 
-                                           * @see convert()
-                                           */
-                                          inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             return _persistentRecords._centreOfMass;
-                                          }
-                                          
-                                          
-                                          
-                                          /**
-                                           * Generated and optimized
-                                           * 
-                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                           * with -DUseManualAlignment you may add 
-                                           * \code
-                                           #pragma vector aligned
-                                           #pragma simd
-                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                           * 
-                                           * The alignment is tied to the unpacked records, i.e. for packed class
-                                           * variants the machine's natural alignment is switched off to recude the  
-                                           * memory footprint. Do not use any SSE/AVX operations or 
-                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                           * If you rely on vectorisation, convert the underlying record 
-                                           * into the unpacked version first. 
-                                           * 
-                                           * @see convert()
-                                           */
-                                          inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             _persistentRecords._centreOfMass = (centreOfMass);
-                                          }
-                                          
-                                          
-                                          
-                                          inline double getCentreOfMass(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             assertion(elementIndex>=0);
-                                             assertion(elementIndex<DIMENSIONS);
-                                             return _persistentRecords._centreOfMass[elementIndex];
-                                             
-                                          }
-                                          
-                                          
-                                          
-                                          inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             assertion(elementIndex>=0);
-                                             assertion(elementIndex<DIMENSIONS);
-                                             _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
-                                             
-                                          }
-                                          
-                                          
-                                          
                                           inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -5372,46 +9425,6 @@ namespace dem {
  #endif 
  {
                                              _persistentRecords._globalParticleNumber = globalParticleNumber;
-                                          }
-                                          
-                                          
-                                          
-                                          inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             return _persistentRecords._material;
-                                          }
-                                          
-                                          
-                                          
-                                          inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             _persistentRecords._material = material;
-                                          }
-                                          
-                                          
-                                          
-                                          inline double getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             return _persistentRecords._angularVelocity;
-                                          }
-                                          
-                                          
-                                          
-                                          inline void setAngularVelocity(const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             _persistentRecords._angularVelocity = angularVelocity;
                                           }
                                           
                                           
@@ -5436,86 +9449,22 @@ namespace dem {
                                           
                                           
                                           
-                                          /**
-                                           * Generated and optimized
-                                           * 
-                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                           * with -DUseManualAlignment you may add 
-                                           * \code
-                                           #pragma vector aligned
-                                           #pragma simd
-                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                           * 
-                                           * The alignment is tied to the unpacked records, i.e. for packed class
-                                           * variants the machine's natural alignment is switched off to recude the  
-                                           * memory footprint. Do not use any SSE/AVX operations or 
-                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                           * If you rely on vectorisation, convert the underlying record 
-                                           * into the unpacked version first. 
-                                           * 
-                                           * @see convert()
-                                           */
-                                          inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                          inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                             return _persistentRecords._vertices;
+                                             return _persistentRecords._material;
                                           }
                                           
                                           
                                           
-                                          /**
-                                           * Generated and optimized
-                                           * 
-                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                           * with -DUseManualAlignment you may add 
-                                           * \code
-                                           #pragma vector aligned
-                                           #pragma simd
-                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                           * 
-                                           * The alignment is tied to the unpacked records, i.e. for packed class
-                                           * variants the machine's natural alignment is switched off to recude the  
-                                           * memory footprint. Do not use any SSE/AVX operations or 
-                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                           * If you rely on vectorisation, convert the underlying record 
-                                           * into the unpacked version first. 
-                                           * 
-                                           * @see convert()
-                                           */
-                                          inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                          inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                             _persistentRecords._vertices = (vertices);
-                                          }
-                                          
-                                          
-                                          
-                                          inline int getVertices(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             assertion(elementIndex>=0);
-                                             assertion(elementIndex<DIMENSIONS);
-                                             return _persistentRecords._vertices[elementIndex];
-                                             
-                                          }
-                                          
-                                          
-                                          
-                                          inline void setVertices(int elementIndex, const int& vertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                             assertion(elementIndex>=0);
-                                             assertion(elementIndex<DIMENSIONS);
-                                             _persistentRecords._vertices[elementIndex]= vertices;
-                                             
+                                             _persistentRecords._material = material;
                                           }
                                           
                                           
@@ -5592,26 +9541,31 @@ namespace dem {
                                               *
                                               * 		   build date: 09-02-2014 14:40
                                               *
-                                              * @date   14/09/2016 19:48
+                                              * @date   24/09/2016 01:49
                                               */
                                              class dem::records::ParticlePacked { 
                                                 
                                                 public:
                                                    
                                                    struct PersistentRecords {
+                                                      tarch::la::Vector<4,int> _vertices;
+                                                      tarch::la::Vector<4,double> _orientation;
+                                                      tarch::la::Vector<4,double> _inertia;
+                                                      tarch::la::Vector<4,double> _inverse;
                                                       tarch::la::Vector<DIMENSIONS,double> _centre;
+                                                      tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
+                                                      tarch::la::Vector<DIMENSIONS,double> _referencialAngular;
+                                                      tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                                                       tarch::la::Vector<DIMENSIONS,double> _velocity;
+                                                      tarch::la::Vector<DIMENSIONS,double> _angular;
                                                       double _diameter;
                                                       double _influenceRadius;
                                                       double _epsilon;
                                                       double _mass;
                                                       double _hMin;
-                                                      tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                                                       int _globalParticleNumber;
-                                                      int _material;
-                                                      double _angularVelocity;
                                                       int _numberOfTriangles;
-                                                      tarch::la::Vector<DIMENSIONS,int> _vertices;
+                                                      int _material;
                                                       /**
                                                        * Generated
                                                        */
@@ -5620,7 +9574,239 @@ namespace dem {
                                                       /**
                                                        * Generated
                                                        */
-                                                      PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                      PersistentRecords(const tarch::la::Vector<4,int>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline tarch::la::Vector<4,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _vertices;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline void setVertices(const tarch::la::Vector<4,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _vertices = (vertices);
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline tarch::la::Vector<4,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _orientation;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline void setOrientation(const tarch::la::Vector<4,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _orientation = (orientation);
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline tarch::la::Vector<4,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _inertia;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline void setInertia(const tarch::la::Vector<4,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _inertia = (inertia);
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline tarch::la::Vector<4,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _inverse;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline void setInverse(const tarch::la::Vector<4,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _inverse = (inverse);
+                                                      }
+                                                      
                                                       
                                                       
                                                       /**
@@ -5700,6 +9886,180 @@ namespace dem {
                                                        * 
                                                        * @see convert()
                                                        */
+                                                      inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _centreOfMass;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _centreOfMass = (centreOfMass);
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _referencialAngular;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _referencialAngular = (referencialAngular);
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _referentialCentreOfMass;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _referentialCentreOfMass = (referentialCentreOfMass);
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
                                                       inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -5735,6 +10095,64 @@ namespace dem {
  #endif 
  {
                                                          _velocity = (velocity);
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _angular;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _angular = (angular);
                                                       }
                                                       
                                                       
@@ -5839,64 +10257,6 @@ namespace dem {
                                                       
                                                       
                                                       
-                                                      /**
-                                                       * Generated and optimized
-                                                       * 
-                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                       * with -DUseManualAlignment you may add 
-                                                       * \code
-                                                       #pragma vector aligned
-                                                       #pragma simd
-                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                       * 
-                                                       * The alignment is tied to the unpacked records, i.e. for packed class
-                                                       * variants the machine's natural alignment is switched off to recude the  
-                                                       * memory footprint. Do not use any SSE/AVX operations or 
-                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                       * If you rely on vectorisation, convert the underlying record 
-                                                       * into the unpacked version first. 
-                                                       * 
-                                                       * @see convert()
-                                                       */
-                                                      inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                         return _centreOfMass;
-                                                      }
-                                                      
-                                                      
-                                                      
-                                                      /**
-                                                       * Generated and optimized
-                                                       * 
-                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                       * with -DUseManualAlignment you may add 
-                                                       * \code
-                                                       #pragma vector aligned
-                                                       #pragma simd
-                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                       * 
-                                                       * The alignment is tied to the unpacked records, i.e. for packed class
-                                                       * variants the machine's natural alignment is switched off to recude the  
-                                                       * memory footprint. Do not use any SSE/AVX operations or 
-                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                       * If you rely on vectorisation, convert the underlying record 
-                                                       * into the unpacked version first. 
-                                                       * 
-                                                       * @see convert()
-                                                       */
-                                                      inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                         _centreOfMass = (centreOfMass);
-                                                      }
-                                                      
-                                                      
-                                                      
                                                       inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -5913,46 +10273,6 @@ namespace dem {
  #endif 
  {
                                                          _globalParticleNumber = globalParticleNumber;
-                                                      }
-                                                      
-                                                      
-                                                      
-                                                      inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                         return _material;
-                                                      }
-                                                      
-                                                      
-                                                      
-                                                      inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                         _material = material;
-                                                      }
-                                                      
-                                                      
-                                                      
-                                                      inline double getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                         return _angularVelocity;
-                                                      }
-                                                      
-                                                      
-                                                      
-                                                      inline void setAngularVelocity(const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                         _angularVelocity = angularVelocity;
                                                       }
                                                       
                                                       
@@ -5977,60 +10297,22 @@ namespace dem {
                                                       
                                                       
                                                       
-                                                      /**
-                                                       * Generated and optimized
-                                                       * 
-                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                       * with -DUseManualAlignment you may add 
-                                                       * \code
-                                                       #pragma vector aligned
-                                                       #pragma simd
-                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                       * 
-                                                       * The alignment is tied to the unpacked records, i.e. for packed class
-                                                       * variants the machine's natural alignment is switched off to recude the  
-                                                       * memory footprint. Do not use any SSE/AVX operations or 
-                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                       * If you rely on vectorisation, convert the underlying record 
-                                                       * into the unpacked version first. 
-                                                       * 
-                                                       * @see convert()
-                                                       */
-                                                      inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                                      inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                         return _vertices;
+                                                         return _material;
                                                       }
                                                       
                                                       
                                                       
-                                                      /**
-                                                       * Generated and optimized
-                                                       * 
-                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                       * with -DUseManualAlignment you may add 
-                                                       * \code
-                                                       #pragma vector aligned
-                                                       #pragma simd
-                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                       * 
-                                                       * The alignment is tied to the unpacked records, i.e. for packed class
-                                                       * variants the machine's natural alignment is switched off to recude the  
-                                                       * memory footprint. Do not use any SSE/AVX operations or 
-                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                       * If you rely on vectorisation, convert the underlying record 
-                                                       * into the unpacked version first. 
-                                                       * 
-                                                       * @see convert()
-                                                       */
-                                                      inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                                      inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                         _vertices = (vertices);
+                                                         _material = material;
                                                       }
                                                       
                                                       
@@ -6054,12 +10336,348 @@ namespace dem {
                                                    /**
                                                     * Generated
                                                     */
-                                                   ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const double& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                   ParticlePacked(const tarch::la::Vector<4,int>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                                    
                                                    /**
                                                     * Generated
                                                     */
                                                    ~ParticlePacked();
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline tarch::la::Vector<4,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._vertices;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline void setVertices(const tarch::la::Vector<4,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._vertices = (vertices);
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline int getVertices(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<4);
+                                                      return _persistentRecords._vertices[elementIndex];
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setVertices(int elementIndex, const int& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<4);
+                                                      _persistentRecords._vertices[elementIndex]= vertices;
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline tarch::la::Vector<4,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._orientation;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline void setOrientation(const tarch::la::Vector<4,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._orientation = (orientation);
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getOrientation(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<4);
+                                                      return _persistentRecords._orientation[elementIndex];
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setOrientation(int elementIndex, const double& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<4);
+                                                      _persistentRecords._orientation[elementIndex]= orientation;
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline tarch::la::Vector<4,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._inertia;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline void setInertia(const tarch::la::Vector<4,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._inertia = (inertia);
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getInertia(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<4);
+                                                      return _persistentRecords._inertia[elementIndex];
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setInertia(int elementIndex, const double& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<4);
+                                                      _persistentRecords._inertia[elementIndex]= inertia;
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline tarch::la::Vector<4,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._inverse;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline void setInverse(const tarch::la::Vector<4,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._inverse = (inverse);
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getInverse(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<4);
+                                                      return _persistentRecords._inverse[elementIndex];
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setInverse(int elementIndex, const double& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<4);
+                                                      _persistentRecords._inverse[elementIndex]= inverse;
+                                                      
+                                                   }
+                                                   
                                                    
                                                    
                                                    /**
@@ -6165,6 +10783,258 @@ namespace dem {
                                                     * 
                                                     * @see convert()
                                                     */
+                                                   inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._centreOfMass;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._centreOfMass = (centreOfMass);
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      return _persistentRecords._centreOfMass[elementIndex];
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._referencialAngular;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._referencialAngular = (referencialAngular);
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getReferencialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      return _persistentRecords._referencialAngular[elementIndex];
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setReferencialAngular(int elementIndex, const double& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      _persistentRecords._referencialAngular[elementIndex]= referencialAngular;
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._referentialCentreOfMass;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._referentialCentreOfMass = (referentialCentreOfMass);
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getReferentialCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      return _persistentRecords._referentialCentreOfMass[elementIndex];
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setReferentialCentreOfMass(int elementIndex, const double& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      _persistentRecords._referentialCentreOfMass[elementIndex]= referentialCentreOfMass;
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
                                                    inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -6225,6 +11095,90 @@ namespace dem {
                                                       assertion(elementIndex>=0);
                                                       assertion(elementIndex<DIMENSIONS);
                                                       _persistentRecords._velocity[elementIndex]= velocity;
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._angular;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._angular = (angular);
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      return _persistentRecords._angular[elementIndex];
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setAngular(int elementIndex, const double& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      _persistentRecords._angular[elementIndex]= angular;
                                                       
                                                    }
                                                    
@@ -6330,90 +11284,6 @@ namespace dem {
                                                    
                                                    
                                                    
-                                                   /**
-                                                    * Generated and optimized
-                                                    * 
-                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                    * with -DUseManualAlignment you may add 
-                                                    * \code
-                                                    #pragma vector aligned
-                                                    #pragma simd
-                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                    * 
-                                                    * The alignment is tied to the unpacked records, i.e. for packed class
-                                                    * variants the machine's natural alignment is switched off to recude the  
-                                                    * memory footprint. Do not use any SSE/AVX operations or 
-                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                    * If you rely on vectorisation, convert the underlying record 
-                                                    * into the unpacked version first. 
-                                                    * 
-                                                    * @see convert()
-                                                    */
-                                                   inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      return _persistentRecords._centreOfMass;
-                                                   }
-                                                   
-                                                   
-                                                   
-                                                   /**
-                                                    * Generated and optimized
-                                                    * 
-                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                    * with -DUseManualAlignment you may add 
-                                                    * \code
-                                                    #pragma vector aligned
-                                                    #pragma simd
-                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                    * 
-                                                    * The alignment is tied to the unpacked records, i.e. for packed class
-                                                    * variants the machine's natural alignment is switched off to recude the  
-                                                    * memory footprint. Do not use any SSE/AVX operations or 
-                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                    * If you rely on vectorisation, convert the underlying record 
-                                                    * into the unpacked version first. 
-                                                    * 
-                                                    * @see convert()
-                                                    */
-                                                   inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      _persistentRecords._centreOfMass = (centreOfMass);
-                                                   }
-                                                   
-                                                   
-                                                   
-                                                   inline double getCentreOfMass(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      assertion(elementIndex>=0);
-                                                      assertion(elementIndex<DIMENSIONS);
-                                                      return _persistentRecords._centreOfMass[elementIndex];
-                                                      
-                                                   }
-                                                   
-                                                   
-                                                   
-                                                   inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      assertion(elementIndex>=0);
-                                                      assertion(elementIndex<DIMENSIONS);
-                                                      _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
-                                                      
-                                                   }
-                                                   
-                                                   
-                                                   
                                                    inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -6430,46 +11300,6 @@ namespace dem {
  #endif 
  {
                                                       _persistentRecords._globalParticleNumber = globalParticleNumber;
-                                                   }
-                                                   
-                                                   
-                                                   
-                                                   inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      return _persistentRecords._material;
-                                                   }
-                                                   
-                                                   
-                                                   
-                                                   inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      _persistentRecords._material = material;
-                                                   }
-                                                   
-                                                   
-                                                   
-                                                   inline double getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      return _persistentRecords._angularVelocity;
-                                                   }
-                                                   
-                                                   
-                                                   
-                                                   inline void setAngularVelocity(const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      _persistentRecords._angularVelocity = angularVelocity;
                                                    }
                                                    
                                                    
@@ -6494,86 +11324,22 @@ namespace dem {
                                                    
                                                    
                                                    
-                                                   /**
-                                                    * Generated and optimized
-                                                    * 
-                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                    * with -DUseManualAlignment you may add 
-                                                    * \code
-                                                    #pragma vector aligned
-                                                    #pragma simd
-                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                    * 
-                                                    * The alignment is tied to the unpacked records, i.e. for packed class
-                                                    * variants the machine's natural alignment is switched off to recude the  
-                                                    * memory footprint. Do not use any SSE/AVX operations or 
-                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                    * If you rely on vectorisation, convert the underlying record 
-                                                    * into the unpacked version first. 
-                                                    * 
-                                                    * @see convert()
-                                                    */
-                                                   inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                                   inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                      return _persistentRecords._vertices;
+                                                      return _persistentRecords._material;
                                                    }
                                                    
                                                    
                                                    
-                                                   /**
-                                                    * Generated and optimized
-                                                    * 
-                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                    * with -DUseManualAlignment you may add 
-                                                    * \code
-                                                    #pragma vector aligned
-                                                    #pragma simd
-                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                    * 
-                                                    * The alignment is tied to the unpacked records, i.e. for packed class
-                                                    * variants the machine's natural alignment is switched off to recude the  
-                                                    * memory footprint. Do not use any SSE/AVX operations or 
-                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                    * If you rely on vectorisation, convert the underlying record 
-                                                    * into the unpacked version first. 
-                                                    * 
-                                                    * @see convert()
-                                                    */
-                                                   inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                                   inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                      _persistentRecords._vertices = (vertices);
-                                                   }
-                                                   
-                                                   
-                                                   
-                                                   inline int getVertices(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      assertion(elementIndex>=0);
-                                                      assertion(elementIndex<DIMENSIONS);
-                                                      return _persistentRecords._vertices[elementIndex];
-                                                      
-                                                   }
-                                                   
-                                                   
-                                                   
-                                                   inline void setVertices(int elementIndex, const int& vertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                      assertion(elementIndex>=0);
-                                                      assertion(elementIndex<DIMENSIONS);
-                                                      _persistentRecords._vertices[elementIndex]= vertices;
-                                                      
+                                                      _persistentRecords._material = material;
                                                    }
                                                    
                                                    
@@ -6648,7 +11414,7 @@ namespace dem {
                                                     *
                                                     * 		   build date: 09-02-2014 14:40
                                                     *
-                                                    * @date   14/09/2016 19:48
+                                                    * @date   24/09/2016 01:49
                                                     */
                                                    class dem::records::Particle { 
                                                       
@@ -6658,38 +11424,63 @@ namespace dem {
                                                          
                                                          struct PersistentRecords {
                                                             #ifdef UseManualAlignment
+                                                            tarch::la::Vector<6,int> _vertices __attribute__((aligned(VectorisationAlignment)));
+                                                            #else
+                                                            tarch::la::Vector<6,int> _vertices;
+                                                            #endif
+                                                            #ifdef UseManualAlignment
+                                                            tarch::la::Vector<9,double> _orientation __attribute__((aligned(VectorisationAlignment)));
+                                                            #else
+                                                            tarch::la::Vector<9,double> _orientation;
+                                                            #endif
+                                                            #ifdef UseManualAlignment
+                                                            tarch::la::Vector<9,double> _inertia __attribute__((aligned(VectorisationAlignment)));
+                                                            #else
+                                                            tarch::la::Vector<9,double> _inertia;
+                                                            #endif
+                                                            #ifdef UseManualAlignment
+                                                            tarch::la::Vector<9,double> _inverse __attribute__((aligned(VectorisationAlignment)));
+                                                            #else
+                                                            tarch::la::Vector<9,double> _inverse;
+                                                            #endif
+                                                            #ifdef UseManualAlignment
                                                             tarch::la::Vector<DIMENSIONS,double> _centre __attribute__((aligned(VectorisationAlignment)));
                                                             #else
                                                             tarch::la::Vector<DIMENSIONS,double> _centre;
+                                                            #endif
+                                                            #ifdef UseManualAlignment
+                                                            tarch::la::Vector<DIMENSIONS,double> _centreOfMass __attribute__((aligned(VectorisationAlignment)));
+                                                            #else
+                                                            tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
+                                                            #endif
+                                                            #ifdef UseManualAlignment
+                                                            tarch::la::Vector<DIMENSIONS,double> _referencialAngular __attribute__((aligned(VectorisationAlignment)));
+                                                            #else
+                                                            tarch::la::Vector<DIMENSIONS,double> _referencialAngular;
+                                                            #endif
+                                                            #ifdef UseManualAlignment
+                                                            tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass __attribute__((aligned(VectorisationAlignment)));
+                                                            #else
+                                                            tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                                                             #endif
                                                             #ifdef UseManualAlignment
                                                             tarch::la::Vector<DIMENSIONS,double> _velocity __attribute__((aligned(VectorisationAlignment)));
                                                             #else
                                                             tarch::la::Vector<DIMENSIONS,double> _velocity;
                                                             #endif
+                                                            #ifdef UseManualAlignment
+                                                            tarch::la::Vector<DIMENSIONS,double> _angular __attribute__((aligned(VectorisationAlignment)));
+                                                            #else
+                                                            tarch::la::Vector<DIMENSIONS,double> _angular;
+                                                            #endif
                                                             double _diameter;
                                                             double _influenceRadius;
                                                             double _epsilon;
                                                             double _mass;
                                                             double _hMin;
-                                                            #ifdef UseManualAlignment
-                                                            tarch::la::Vector<DIMENSIONS,double> _centreOfMass __attribute__((aligned(VectorisationAlignment)));
-                                                            #else
-                                                            tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
-                                                            #endif
                                                             int _globalParticleNumber;
-                                                            int _material;
-                                                            #ifdef UseManualAlignment
-                                                            tarch::la::Vector<DIMENSIONS,double> _angularVelocity __attribute__((aligned(VectorisationAlignment)));
-                                                            #else
-                                                            tarch::la::Vector<DIMENSIONS,double> _angularVelocity;
-                                                            #endif
                                                             int _numberOfTriangles;
-                                                            #ifdef UseManualAlignment
-                                                            tarch::la::Vector<DIMENSIONS,int> _vertices __attribute__((aligned(VectorisationAlignment)));
-                                                            #else
-                                                            tarch::la::Vector<DIMENSIONS,int> _vertices;
-                                                            #endif
+                                                            int _material;
                                                             /**
                                                              * Generated
                                                              */
@@ -6698,7 +11489,239 @@ namespace dem {
                                                             /**
                                                              * Generated
                                                              */
-                                                            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                            PersistentRecords(const tarch::la::Vector<6,int>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline tarch::la::Vector<6,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _vertices;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline void setVertices(const tarch::la::Vector<6,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _vertices = (vertices);
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline tarch::la::Vector<9,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _orientation;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline void setOrientation(const tarch::la::Vector<9,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _orientation = (orientation);
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline tarch::la::Vector<9,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _inertia;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline void setInertia(const tarch::la::Vector<9,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _inertia = (inertia);
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline tarch::la::Vector<9,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _inverse;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline void setInverse(const tarch::la::Vector<9,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _inverse = (inverse);
+                                                            }
+                                                            
                                                             
                                                             
                                                             /**
@@ -6778,6 +11801,180 @@ namespace dem {
                                                              * 
                                                              * @see convert()
                                                              */
+                                                            inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _centreOfMass;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _centreOfMass = (centreOfMass);
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _referencialAngular;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _referencialAngular = (referencialAngular);
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _referentialCentreOfMass;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _referentialCentreOfMass = (referentialCentreOfMass);
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
                                                             inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -6813,6 +12010,64 @@ namespace dem {
  #endif 
  {
                                                                _velocity = (velocity);
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _angular;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _angular = (angular);
                                                             }
                                                             
                                                             
@@ -6917,64 +12172,6 @@ namespace dem {
                                                             
                                                             
                                                             
-                                                            /**
-                                                             * Generated and optimized
-                                                             * 
-                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                             * with -DUseManualAlignment you may add 
-                                                             * \code
-                                                             #pragma vector aligned
-                                                             #pragma simd
-                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                             * 
-                                                             * The alignment is tied to the unpacked records, i.e. for packed class
-                                                             * variants the machine's natural alignment is switched off to recude the  
-                                                             * memory footprint. Do not use any SSE/AVX operations or 
-                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                             * If you rely on vectorisation, convert the underlying record 
-                                                             * into the unpacked version first. 
-                                                             * 
-                                                             * @see convert()
-                                                             */
-                                                            inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                               return _centreOfMass;
-                                                            }
-                                                            
-                                                            
-                                                            
-                                                            /**
-                                                             * Generated and optimized
-                                                             * 
-                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                             * with -DUseManualAlignment you may add 
-                                                             * \code
-                                                             #pragma vector aligned
-                                                             #pragma simd
-                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                             * 
-                                                             * The alignment is tied to the unpacked records, i.e. for packed class
-                                                             * variants the machine's natural alignment is switched off to recude the  
-                                                             * memory footprint. Do not use any SSE/AVX operations or 
-                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                             * If you rely on vectorisation, convert the underlying record 
-                                                             * into the unpacked version first. 
-                                                             * 
-                                                             * @see convert()
-                                                             */
-                                                            inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                               _centreOfMass = (centreOfMass);
-                                                            }
-                                                            
-                                                            
-                                                            
                                                             inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -6991,84 +12188,6 @@ namespace dem {
  #endif 
  {
                                                                _globalParticleNumber = globalParticleNumber;
-                                                            }
-                                                            
-                                                            
-                                                            
-                                                            inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                               return _material;
-                                                            }
-                                                            
-                                                            
-                                                            
-                                                            inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                               _material = material;
-                                                            }
-                                                            
-                                                            
-                                                            
-                                                            /**
-                                                             * Generated and optimized
-                                                             * 
-                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                             * with -DUseManualAlignment you may add 
-                                                             * \code
-                                                             #pragma vector aligned
-                                                             #pragma simd
-                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                             * 
-                                                             * The alignment is tied to the unpacked records, i.e. for packed class
-                                                             * variants the machine's natural alignment is switched off to recude the  
-                                                             * memory footprint. Do not use any SSE/AVX operations or 
-                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                             * If you rely on vectorisation, convert the underlying record 
-                                                             * into the unpacked version first. 
-                                                             * 
-                                                             * @see convert()
-                                                             */
-                                                            inline tarch::la::Vector<DIMENSIONS,double> getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                               return _angularVelocity;
-                                                            }
-                                                            
-                                                            
-                                                            
-                                                            /**
-                                                             * Generated and optimized
-                                                             * 
-                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                             * with -DUseManualAlignment you may add 
-                                                             * \code
-                                                             #pragma vector aligned
-                                                             #pragma simd
-                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                             * 
-                                                             * The alignment is tied to the unpacked records, i.e. for packed class
-                                                             * variants the machine's natural alignment is switched off to recude the  
-                                                             * memory footprint. Do not use any SSE/AVX operations or 
-                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                             * If you rely on vectorisation, convert the underlying record 
-                                                             * into the unpacked version first. 
-                                                             * 
-                                                             * @see convert()
-                                                             */
-                                                            inline void setAngularVelocity(const tarch::la::Vector<DIMENSIONS,double>& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                               _angularVelocity = (angularVelocity);
                                                             }
                                                             
                                                             
@@ -7093,60 +12212,22 @@ namespace dem {
                                                             
                                                             
                                                             
-                                                            /**
-                                                             * Generated and optimized
-                                                             * 
-                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                             * with -DUseManualAlignment you may add 
-                                                             * \code
-                                                             #pragma vector aligned
-                                                             #pragma simd
-                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                             * 
-                                                             * The alignment is tied to the unpacked records, i.e. for packed class
-                                                             * variants the machine's natural alignment is switched off to recude the  
-                                                             * memory footprint. Do not use any SSE/AVX operations or 
-                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                             * If you rely on vectorisation, convert the underlying record 
-                                                             * into the unpacked version first. 
-                                                             * 
-                                                             * @see convert()
-                                                             */
-                                                            inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                                            inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                               return _vertices;
+                                                               return _material;
                                                             }
                                                             
                                                             
                                                             
-                                                            /**
-                                                             * Generated and optimized
-                                                             * 
-                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                             * with -DUseManualAlignment you may add 
-                                                             * \code
-                                                             #pragma vector aligned
-                                                             #pragma simd
-                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                             * 
-                                                             * The alignment is tied to the unpacked records, i.e. for packed class
-                                                             * variants the machine's natural alignment is switched off to recude the  
-                                                             * memory footprint. Do not use any SSE/AVX operations or 
-                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                             * If you rely on vectorisation, convert the underlying record 
-                                                             * into the unpacked version first. 
-                                                             * 
-                                                             * @see convert()
-                                                             */
-                                                            inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                                            inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                               _vertices = (vertices);
+                                                               _material = material;
                                                             }
                                                             
                                                             
@@ -7174,12 +12255,348 @@ namespace dem {
                                                          /**
                                                           * Generated
                                                           */
-                                                         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                         Particle(const tarch::la::Vector<6,int>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                                          
                                                          /**
                                                           * Generated
                                                           */
                                                          ~Particle();
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline tarch::la::Vector<6,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._vertices;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline void setVertices(const tarch::la::Vector<6,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._vertices = (vertices);
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline int getVertices(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<6);
+                                                            return _persistentRecords._vertices[elementIndex];
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setVertices(int elementIndex, const int& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<6);
+                                                            _persistentRecords._vertices[elementIndex]= vertices;
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline tarch::la::Vector<9,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._orientation;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline void setOrientation(const tarch::la::Vector<9,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._orientation = (orientation);
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getOrientation(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<9);
+                                                            return _persistentRecords._orientation[elementIndex];
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setOrientation(int elementIndex, const double& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<9);
+                                                            _persistentRecords._orientation[elementIndex]= orientation;
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline tarch::la::Vector<9,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._inertia;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline void setInertia(const tarch::la::Vector<9,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._inertia = (inertia);
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getInertia(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<9);
+                                                            return _persistentRecords._inertia[elementIndex];
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setInertia(int elementIndex, const double& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<9);
+                                                            _persistentRecords._inertia[elementIndex]= inertia;
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline tarch::la::Vector<9,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._inverse;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline void setInverse(const tarch::la::Vector<9,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._inverse = (inverse);
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getInverse(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<9);
+                                                            return _persistentRecords._inverse[elementIndex];
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setInverse(int elementIndex, const double& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<9);
+                                                            _persistentRecords._inverse[elementIndex]= inverse;
+                                                            
+                                                         }
+                                                         
                                                          
                                                          
                                                          /**
@@ -7285,6 +12702,258 @@ namespace dem {
                                                           * 
                                                           * @see convert()
                                                           */
+                                                         inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._centreOfMass;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._centreOfMass = (centreOfMass);
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            return _persistentRecords._centreOfMass[elementIndex];
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._referencialAngular;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._referencialAngular = (referencialAngular);
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getReferencialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            return _persistentRecords._referencialAngular[elementIndex];
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setReferencialAngular(int elementIndex, const double& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            _persistentRecords._referencialAngular[elementIndex]= referencialAngular;
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._referentialCentreOfMass;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._referentialCentreOfMass = (referentialCentreOfMass);
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getReferentialCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            return _persistentRecords._referentialCentreOfMass[elementIndex];
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setReferentialCentreOfMass(int elementIndex, const double& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            _persistentRecords._referentialCentreOfMass[elementIndex]= referentialCentreOfMass;
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
                                                          inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -7345,6 +13014,90 @@ namespace dem {
                                                             assertion(elementIndex>=0);
                                                             assertion(elementIndex<DIMENSIONS);
                                                             _persistentRecords._velocity[elementIndex]= velocity;
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._angular;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._angular = (angular);
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            return _persistentRecords._angular[elementIndex];
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setAngular(int elementIndex, const double& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            _persistentRecords._angular[elementIndex]= angular;
                                                             
                                                          }
                                                          
@@ -7450,90 +13203,6 @@ namespace dem {
                                                          
                                                          
                                                          
-                                                         /**
-                                                          * Generated and optimized
-                                                          * 
-                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                          * with -DUseManualAlignment you may add 
-                                                          * \code
-                                                          #pragma vector aligned
-                                                          #pragma simd
-                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                          * 
-                                                          * The alignment is tied to the unpacked records, i.e. for packed class
-                                                          * variants the machine's natural alignment is switched off to recude the  
-                                                          * memory footprint. Do not use any SSE/AVX operations or 
-                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                          * If you rely on vectorisation, convert the underlying record 
-                                                          * into the unpacked version first. 
-                                                          * 
-                                                          * @see convert()
-                                                          */
-                                                         inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            return _persistentRecords._centreOfMass;
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         /**
-                                                          * Generated and optimized
-                                                          * 
-                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                          * with -DUseManualAlignment you may add 
-                                                          * \code
-                                                          #pragma vector aligned
-                                                          #pragma simd
-                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                          * 
-                                                          * The alignment is tied to the unpacked records, i.e. for packed class
-                                                          * variants the machine's natural alignment is switched off to recude the  
-                                                          * memory footprint. Do not use any SSE/AVX operations or 
-                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                          * If you rely on vectorisation, convert the underlying record 
-                                                          * into the unpacked version first. 
-                                                          * 
-                                                          * @see convert()
-                                                          */
-                                                         inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            _persistentRecords._centreOfMass = (centreOfMass);
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         inline double getCentreOfMass(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            assertion(elementIndex>=0);
-                                                            assertion(elementIndex<DIMENSIONS);
-                                                            return _persistentRecords._centreOfMass[elementIndex];
-                                                            
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            assertion(elementIndex>=0);
-                                                            assertion(elementIndex<DIMENSIONS);
-                                                            _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
-                                                            
-                                                         }
-                                                         
-                                                         
-                                                         
                                                          inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -7550,110 +13219,6 @@ namespace dem {
  #endif 
  {
                                                             _persistentRecords._globalParticleNumber = globalParticleNumber;
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            return _persistentRecords._material;
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            _persistentRecords._material = material;
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         /**
-                                                          * Generated and optimized
-                                                          * 
-                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                          * with -DUseManualAlignment you may add 
-                                                          * \code
-                                                          #pragma vector aligned
-                                                          #pragma simd
-                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                          * 
-                                                          * The alignment is tied to the unpacked records, i.e. for packed class
-                                                          * variants the machine's natural alignment is switched off to recude the  
-                                                          * memory footprint. Do not use any SSE/AVX operations or 
-                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                          * If you rely on vectorisation, convert the underlying record 
-                                                          * into the unpacked version first. 
-                                                          * 
-                                                          * @see convert()
-                                                          */
-                                                         inline tarch::la::Vector<DIMENSIONS,double> getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            return _persistentRecords._angularVelocity;
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         /**
-                                                          * Generated and optimized
-                                                          * 
-                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                          * with -DUseManualAlignment you may add 
-                                                          * \code
-                                                          #pragma vector aligned
-                                                          #pragma simd
-                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                          * 
-                                                          * The alignment is tied to the unpacked records, i.e. for packed class
-                                                          * variants the machine's natural alignment is switched off to recude the  
-                                                          * memory footprint. Do not use any SSE/AVX operations or 
-                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                          * If you rely on vectorisation, convert the underlying record 
-                                                          * into the unpacked version first. 
-                                                          * 
-                                                          * @see convert()
-                                                          */
-                                                         inline void setAngularVelocity(const tarch::la::Vector<DIMENSIONS,double>& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            _persistentRecords._angularVelocity = (angularVelocity);
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         inline double getAngularVelocity(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            assertion(elementIndex>=0);
-                                                            assertion(elementIndex<DIMENSIONS);
-                                                            return _persistentRecords._angularVelocity[elementIndex];
-                                                            
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         inline void setAngularVelocity(int elementIndex, const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            assertion(elementIndex>=0);
-                                                            assertion(elementIndex<DIMENSIONS);
-                                                            _persistentRecords._angularVelocity[elementIndex]= angularVelocity;
-                                                            
                                                          }
                                                          
                                                          
@@ -7678,86 +13243,22 @@ namespace dem {
                                                          
                                                          
                                                          
-                                                         /**
-                                                          * Generated and optimized
-                                                          * 
-                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                          * with -DUseManualAlignment you may add 
-                                                          * \code
-                                                          #pragma vector aligned
-                                                          #pragma simd
-                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                          * 
-                                                          * The alignment is tied to the unpacked records, i.e. for packed class
-                                                          * variants the machine's natural alignment is switched off to recude the  
-                                                          * memory footprint. Do not use any SSE/AVX operations or 
-                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                          * If you rely on vectorisation, convert the underlying record 
-                                                          * into the unpacked version first. 
-                                                          * 
-                                                          * @see convert()
-                                                          */
-                                                         inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                                         inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                            return _persistentRecords._vertices;
+                                                            return _persistentRecords._material;
                                                          }
                                                          
                                                          
                                                          
-                                                         /**
-                                                          * Generated and optimized
-                                                          * 
-                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                          * with -DUseManualAlignment you may add 
-                                                          * \code
-                                                          #pragma vector aligned
-                                                          #pragma simd
-                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                          * 
-                                                          * The alignment is tied to the unpacked records, i.e. for packed class
-                                                          * variants the machine's natural alignment is switched off to recude the  
-                                                          * memory footprint. Do not use any SSE/AVX operations or 
-                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                          * If you rely on vectorisation, convert the underlying record 
-                                                          * into the unpacked version first. 
-                                                          * 
-                                                          * @see convert()
-                                                          */
-                                                         inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                                         inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                            _persistentRecords._vertices = (vertices);
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         inline int getVertices(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            assertion(elementIndex>=0);
-                                                            assertion(elementIndex<DIMENSIONS);
-                                                            return _persistentRecords._vertices[elementIndex];
-                                                            
-                                                         }
-                                                         
-                                                         
-                                                         
-                                                         inline void setVertices(int elementIndex, const int& vertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                            assertion(elementIndex>=0);
-                                                            assertion(elementIndex<DIMENSIONS);
-                                                            _persistentRecords._vertices[elementIndex]= vertices;
-                                                            
+                                                            _persistentRecords._material = material;
                                                          }
                                                          
                                                          
@@ -7834,26 +13335,31 @@ namespace dem {
                                                              *
                                                              * 		   build date: 09-02-2014 14:40
                                                              *
-                                                             * @date   14/09/2016 19:48
+                                                             * @date   24/09/2016 01:49
                                                              */
                                                             class dem::records::ParticlePacked { 
                                                                
                                                                public:
                                                                   
                                                                   struct PersistentRecords {
+                                                                     tarch::la::Vector<6,int> _vertices;
+                                                                     tarch::la::Vector<9,double> _orientation;
+                                                                     tarch::la::Vector<9,double> _inertia;
+                                                                     tarch::la::Vector<9,double> _inverse;
                                                                      tarch::la::Vector<DIMENSIONS,double> _centre;
+                                                                     tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
+                                                                     tarch::la::Vector<DIMENSIONS,double> _referencialAngular;
+                                                                     tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                                                                      tarch::la::Vector<DIMENSIONS,double> _velocity;
+                                                                     tarch::la::Vector<DIMENSIONS,double> _angular;
                                                                      double _diameter;
                                                                      double _influenceRadius;
                                                                      double _epsilon;
                                                                      double _mass;
                                                                      double _hMin;
-                                                                     tarch::la::Vector<DIMENSIONS,double> _centreOfMass;
                                                                      int _globalParticleNumber;
-                                                                     int _material;
-                                                                     tarch::la::Vector<DIMENSIONS,double> _angularVelocity;
                                                                      int _numberOfTriangles;
-                                                                     tarch::la::Vector<DIMENSIONS,int> _vertices;
+                                                                     int _material;
                                                                      /**
                                                                       * Generated
                                                                       */
@@ -7862,7 +13368,239 @@ namespace dem {
                                                                      /**
                                                                       * Generated
                                                                       */
-                                                                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                                     PersistentRecords(const tarch::la::Vector<6,int>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline tarch::la::Vector<6,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _vertices;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline void setVertices(const tarch::la::Vector<6,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _vertices = (vertices);
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline tarch::la::Vector<9,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _orientation;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline void setOrientation(const tarch::la::Vector<9,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _orientation = (orientation);
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline tarch::la::Vector<9,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _inertia;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline void setInertia(const tarch::la::Vector<9,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _inertia = (inertia);
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline tarch::la::Vector<9,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _inverse;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline void setInverse(const tarch::la::Vector<9,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _inverse = (inverse);
+                                                                     }
+                                                                     
                                                                      
                                                                      
                                                                      /**
@@ -7942,6 +13680,180 @@ namespace dem {
                                                                       * 
                                                                       * @see convert()
                                                                       */
+                                                                     inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _centreOfMass;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _centreOfMass = (centreOfMass);
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _referencialAngular;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _referencialAngular = (referencialAngular);
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _referentialCentreOfMass;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _referentialCentreOfMass = (referentialCentreOfMass);
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
                                                                      inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -7977,6 +13889,64 @@ namespace dem {
  #endif 
  {
                                                                         _velocity = (velocity);
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _angular;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _angular = (angular);
                                                                      }
                                                                      
                                                                      
@@ -8081,64 +14051,6 @@ namespace dem {
                                                                      
                                                                      
                                                                      
-                                                                     /**
-                                                                      * Generated and optimized
-                                                                      * 
-                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                      * with -DUseManualAlignment you may add 
-                                                                      * \code
-                                                                      #pragma vector aligned
-                                                                      #pragma simd
-                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                      * 
-                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                      * variants the machine's natural alignment is switched off to recude the  
-                                                                      * memory footprint. Do not use any SSE/AVX operations or 
-                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                      * If you rely on vectorisation, convert the underlying record 
-                                                                      * into the unpacked version first. 
-                                                                      * 
-                                                                      * @see convert()
-                                                                      */
-                                                                     inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                        return _centreOfMass;
-                                                                     }
-                                                                     
-                                                                     
-                                                                     
-                                                                     /**
-                                                                      * Generated and optimized
-                                                                      * 
-                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                      * with -DUseManualAlignment you may add 
-                                                                      * \code
-                                                                      #pragma vector aligned
-                                                                      #pragma simd
-                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                      * 
-                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                      * variants the machine's natural alignment is switched off to recude the  
-                                                                      * memory footprint. Do not use any SSE/AVX operations or 
-                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                      * If you rely on vectorisation, convert the underlying record 
-                                                                      * into the unpacked version first. 
-                                                                      * 
-                                                                      * @see convert()
-                                                                      */
-                                                                     inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                        _centreOfMass = (centreOfMass);
-                                                                     }
-                                                                     
-                                                                     
-                                                                     
                                                                      inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -8155,84 +14067,6 @@ namespace dem {
  #endif 
  {
                                                                         _globalParticleNumber = globalParticleNumber;
-                                                                     }
-                                                                     
-                                                                     
-                                                                     
-                                                                     inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                        return _material;
-                                                                     }
-                                                                     
-                                                                     
-                                                                     
-                                                                     inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                        _material = material;
-                                                                     }
-                                                                     
-                                                                     
-                                                                     
-                                                                     /**
-                                                                      * Generated and optimized
-                                                                      * 
-                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                      * with -DUseManualAlignment you may add 
-                                                                      * \code
-                                                                      #pragma vector aligned
-                                                                      #pragma simd
-                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                      * 
-                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                      * variants the machine's natural alignment is switched off to recude the  
-                                                                      * memory footprint. Do not use any SSE/AVX operations or 
-                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                      * If you rely on vectorisation, convert the underlying record 
-                                                                      * into the unpacked version first. 
-                                                                      * 
-                                                                      * @see convert()
-                                                                      */
-                                                                     inline tarch::la::Vector<DIMENSIONS,double> getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                        return _angularVelocity;
-                                                                     }
-                                                                     
-                                                                     
-                                                                     
-                                                                     /**
-                                                                      * Generated and optimized
-                                                                      * 
-                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                      * with -DUseManualAlignment you may add 
-                                                                      * \code
-                                                                      #pragma vector aligned
-                                                                      #pragma simd
-                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                      * 
-                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                      * variants the machine's natural alignment is switched off to recude the  
-                                                                      * memory footprint. Do not use any SSE/AVX operations or 
-                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                      * If you rely on vectorisation, convert the underlying record 
-                                                                      * into the unpacked version first. 
-                                                                      * 
-                                                                      * @see convert()
-                                                                      */
-                                                                     inline void setAngularVelocity(const tarch::la::Vector<DIMENSIONS,double>& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                        _angularVelocity = (angularVelocity);
                                                                      }
                                                                      
                                                                      
@@ -8257,60 +14091,22 @@ namespace dem {
                                                                      
                                                                      
                                                                      
-                                                                     /**
-                                                                      * Generated and optimized
-                                                                      * 
-                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                      * with -DUseManualAlignment you may add 
-                                                                      * \code
-                                                                      #pragma vector aligned
-                                                                      #pragma simd
-                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                      * 
-                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                      * variants the machine's natural alignment is switched off to recude the  
-                                                                      * memory footprint. Do not use any SSE/AVX operations or 
-                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                      * If you rely on vectorisation, convert the underlying record 
-                                                                      * into the unpacked version first. 
-                                                                      * 
-                                                                      * @see convert()
-                                                                      */
-                                                                     inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                                                     inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                                        return _vertices;
+                                                                        return _material;
                                                                      }
                                                                      
                                                                      
                                                                      
-                                                                     /**
-                                                                      * Generated and optimized
-                                                                      * 
-                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                      * with -DUseManualAlignment you may add 
-                                                                      * \code
-                                                                      #pragma vector aligned
-                                                                      #pragma simd
-                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                      * 
-                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                      * variants the machine's natural alignment is switched off to recude the  
-                                                                      * memory footprint. Do not use any SSE/AVX operations or 
-                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                      * If you rely on vectorisation, convert the underlying record 
-                                                                      * into the unpacked version first. 
-                                                                      * 
-                                                                      * @see convert()
-                                                                      */
-                                                                     inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                                                     inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                                        _vertices = (vertices);
+                                                                        _material = material;
                                                                      }
                                                                      
                                                                      
@@ -8334,12 +14130,348 @@ namespace dem {
                                                                   /**
                                                                    * Generated
                                                                    */
-                                                                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& velocity, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const int& globalParticleNumber, const int& material, const tarch::la::Vector<DIMENSIONS,double>& angularVelocity, const int& numberOfTriangles, const tarch::la::Vector<DIMENSIONS,int>& vertices);
+                                                                  ParticlePacked(const tarch::la::Vector<6,int>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referencialAngular, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                                                   
                                                                   /**
                                                                    * Generated
                                                                    */
                                                                   ~ParticlePacked();
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline tarch::la::Vector<6,int> getVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._vertices;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline void setVertices(const tarch::la::Vector<6,int>& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._vertices = (vertices);
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline int getVertices(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<6);
+                                                                     return _persistentRecords._vertices[elementIndex];
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setVertices(int elementIndex, const int& vertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<6);
+                                                                     _persistentRecords._vertices[elementIndex]= vertices;
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline tarch::la::Vector<9,double> getOrientation() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._orientation;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline void setOrientation(const tarch::la::Vector<9,double>& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._orientation = (orientation);
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getOrientation(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<9);
+                                                                     return _persistentRecords._orientation[elementIndex];
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setOrientation(int elementIndex, const double& orientation) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<9);
+                                                                     _persistentRecords._orientation[elementIndex]= orientation;
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline tarch::la::Vector<9,double> getInertia() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._inertia;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline void setInertia(const tarch::la::Vector<9,double>& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._inertia = (inertia);
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getInertia(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<9);
+                                                                     return _persistentRecords._inertia[elementIndex];
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setInertia(int elementIndex, const double& inertia) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<9);
+                                                                     _persistentRecords._inertia[elementIndex]= inertia;
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline tarch::la::Vector<9,double> getInverse() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._inverse;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline void setInverse(const tarch::la::Vector<9,double>& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._inverse = (inverse);
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getInverse(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<9);
+                                                                     return _persistentRecords._inverse[elementIndex];
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setInverse(int elementIndex, const double& inverse) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<9);
+                                                                     _persistentRecords._inverse[elementIndex]= inverse;
+                                                                     
+                                                                  }
+                                                                  
                                                                   
                                                                   
                                                                   /**
@@ -8445,6 +14577,258 @@ namespace dem {
                                                                    * 
                                                                    * @see convert()
                                                                    */
+                                                                  inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._centreOfMass;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._centreOfMass = (centreOfMass);
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     return _persistentRecords._centreOfMass[elementIndex];
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline tarch::la::Vector<DIMENSIONS,double> getReferencialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._referencialAngular;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline void setReferencialAngular(const tarch::la::Vector<DIMENSIONS,double>& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._referencialAngular = (referencialAngular);
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getReferencialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     return _persistentRecords._referencialAngular[elementIndex];
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setReferencialAngular(int elementIndex, const double& referencialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     _persistentRecords._referencialAngular[elementIndex]= referencialAngular;
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline tarch::la::Vector<DIMENSIONS,double> getReferentialCentreOfMass() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._referentialCentreOfMass;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline void setReferentialCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._referentialCentreOfMass = (referentialCentreOfMass);
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getReferentialCentreOfMass(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     return _persistentRecords._referentialCentreOfMass[elementIndex];
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setReferentialCentreOfMass(int elementIndex, const double& referentialCentreOfMass) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     _persistentRecords._referentialCentreOfMass[elementIndex]= referentialCentreOfMass;
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
                                                                   inline tarch::la::Vector<DIMENSIONS,double> getVelocity() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -8505,6 +14889,90 @@ namespace dem {
                                                                      assertion(elementIndex>=0);
                                                                      assertion(elementIndex<DIMENSIONS);
                                                                      _persistentRecords._velocity[elementIndex]= velocity;
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline tarch::la::Vector<DIMENSIONS,double> getAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._angular;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline void setAngular(const tarch::la::Vector<DIMENSIONS,double>& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._angular = (angular);
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     return _persistentRecords._angular[elementIndex];
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setAngular(int elementIndex, const double& angular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     _persistentRecords._angular[elementIndex]= angular;
                                                                      
                                                                   }
                                                                   
@@ -8610,90 +15078,6 @@ namespace dem {
                                                                   
                                                                   
                                                                   
-                                                                  /**
-                                                                   * Generated and optimized
-                                                                   * 
-                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                   * with -DUseManualAlignment you may add 
-                                                                   * \code
-                                                                   #pragma vector aligned
-                                                                   #pragma simd
-                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                   * 
-                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                   * variants the machine's natural alignment is switched off to recude the  
-                                                                   * memory footprint. Do not use any SSE/AVX operations or 
-                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                   * If you rely on vectorisation, convert the underlying record 
-                                                                   * into the unpacked version first. 
-                                                                   * 
-                                                                   * @see convert()
-                                                                   */
-                                                                  inline tarch::la::Vector<DIMENSIONS,double> getCentreOfMass() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     return _persistentRecords._centreOfMass;
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  /**
-                                                                   * Generated and optimized
-                                                                   * 
-                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                   * with -DUseManualAlignment you may add 
-                                                                   * \code
-                                                                   #pragma vector aligned
-                                                                   #pragma simd
-                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                   * 
-                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                   * variants the machine's natural alignment is switched off to recude the  
-                                                                   * memory footprint. Do not use any SSE/AVX operations or 
-                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                   * If you rely on vectorisation, convert the underlying record 
-                                                                   * into the unpacked version first. 
-                                                                   * 
-                                                                   * @see convert()
-                                                                   */
-                                                                  inline void setCentreOfMass(const tarch::la::Vector<DIMENSIONS,double>& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     _persistentRecords._centreOfMass = (centreOfMass);
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  inline double getCentreOfMass(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     assertion(elementIndex>=0);
-                                                                     assertion(elementIndex<DIMENSIONS);
-                                                                     return _persistentRecords._centreOfMass[elementIndex];
-                                                                     
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  inline void setCentreOfMass(int elementIndex, const double& centreOfMass) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     assertion(elementIndex>=0);
-                                                                     assertion(elementIndex<DIMENSIONS);
-                                                                     _persistentRecords._centreOfMass[elementIndex]= centreOfMass;
-                                                                     
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
                                                                   inline int getGlobalParticleNumber() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -8710,110 +15094,6 @@ namespace dem {
  #endif 
  {
                                                                      _persistentRecords._globalParticleNumber = globalParticleNumber;
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  inline int getMaterial() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     return _persistentRecords._material;
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  inline void setMaterial(const int& material) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     _persistentRecords._material = material;
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  /**
-                                                                   * Generated and optimized
-                                                                   * 
-                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                   * with -DUseManualAlignment you may add 
-                                                                   * \code
-                                                                   #pragma vector aligned
-                                                                   #pragma simd
-                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                   * 
-                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                   * variants the machine's natural alignment is switched off to recude the  
-                                                                   * memory footprint. Do not use any SSE/AVX operations or 
-                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                   * If you rely on vectorisation, convert the underlying record 
-                                                                   * into the unpacked version first. 
-                                                                   * 
-                                                                   * @see convert()
-                                                                   */
-                                                                  inline tarch::la::Vector<DIMENSIONS,double> getAngularVelocity() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     return _persistentRecords._angularVelocity;
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  /**
-                                                                   * Generated and optimized
-                                                                   * 
-                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                   * with -DUseManualAlignment you may add 
-                                                                   * \code
-                                                                   #pragma vector aligned
-                                                                   #pragma simd
-                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                   * 
-                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                   * variants the machine's natural alignment is switched off to recude the  
-                                                                   * memory footprint. Do not use any SSE/AVX operations or 
-                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                   * If you rely on vectorisation, convert the underlying record 
-                                                                   * into the unpacked version first. 
-                                                                   * 
-                                                                   * @see convert()
-                                                                   */
-                                                                  inline void setAngularVelocity(const tarch::la::Vector<DIMENSIONS,double>& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     _persistentRecords._angularVelocity = (angularVelocity);
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  inline double getAngularVelocity(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     assertion(elementIndex>=0);
-                                                                     assertion(elementIndex<DIMENSIONS);
-                                                                     return _persistentRecords._angularVelocity[elementIndex];
-                                                                     
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  inline void setAngularVelocity(int elementIndex, const double& angularVelocity) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     assertion(elementIndex>=0);
-                                                                     assertion(elementIndex<DIMENSIONS);
-                                                                     _persistentRecords._angularVelocity[elementIndex]= angularVelocity;
-                                                                     
                                                                   }
                                                                   
                                                                   
@@ -8838,86 +15118,22 @@ namespace dem {
                                                                   
                                                                   
                                                                   
-                                                                  /**
-                                                                   * Generated and optimized
-                                                                   * 
-                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                   * with -DUseManualAlignment you may add 
-                                                                   * \code
-                                                                   #pragma vector aligned
-                                                                   #pragma simd
-                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                   * 
-                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                   * variants the machine's natural alignment is switched off to recude the  
-                                                                   * memory footprint. Do not use any SSE/AVX operations or 
-                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                   * If you rely on vectorisation, convert the underlying record 
-                                                                   * into the unpacked version first. 
-                                                                   * 
-                                                                   * @see convert()
-                                                                   */
-                                                                  inline tarch::la::Vector<DIMENSIONS,int> getVertices() const 
+                                                                  inline int getMaterial() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                                     return _persistentRecords._vertices;
+                                                                     return _persistentRecords._material;
                                                                   }
                                                                   
                                                                   
                                                                   
-                                                                  /**
-                                                                   * Generated and optimized
-                                                                   * 
-                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                                                   * with -DUseManualAlignment you may add 
-                                                                   * \code
-                                                                   #pragma vector aligned
-                                                                   #pragma simd
-                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                                                   * 
-                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
-                                                                   * variants the machine's natural alignment is switched off to recude the  
-                                                                   * memory footprint. Do not use any SSE/AVX operations or 
-                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                                                   * If you rely on vectorisation, convert the underlying record 
-                                                                   * into the unpacked version first. 
-                                                                   * 
-                                                                   * @see convert()
-                                                                   */
-                                                                  inline void setVertices(const tarch::la::Vector<DIMENSIONS,int>& vertices) 
+                                                                  inline void setMaterial(const int& material) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                                                     _persistentRecords._vertices = (vertices);
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  inline int getVertices(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     assertion(elementIndex>=0);
-                                                                     assertion(elementIndex<DIMENSIONS);
-                                                                     return _persistentRecords._vertices[elementIndex];
-                                                                     
-                                                                  }
-                                                                  
-                                                                  
-                                                                  
-                                                                  inline void setVertices(int elementIndex, const int& vertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                                                     assertion(elementIndex>=0);
-                                                                     assertion(elementIndex<DIMENSIONS);
-                                                                     _persistentRecords._vertices[elementIndex]= vertices;
-                                                                     
+                                                                     _persistentRecords._material = material;
                                                                   }
                                                                   
                                                                   

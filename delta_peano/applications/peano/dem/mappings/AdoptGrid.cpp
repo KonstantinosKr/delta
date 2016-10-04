@@ -10,7 +10,6 @@ peano::CommunicationSpecification   dem::mappings::AdoptGrid::communicationSpeci
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
 
-
 /**
  * Restrict data to coarser grid
  */
@@ -18,14 +17,12 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexLastTimeSpeci
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces);
 }
 
-
 /**
  * Just invokes refine if necessary. It also deletes the accumulated attributes.
  */
 peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification() { 
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
 }
-
 
 peano::MappingSpecification   dem::mappings::AdoptGrid::enterCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);
@@ -55,16 +52,15 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
-    if (
-      fineGridVertex.getParticle(i)._persistentRecords._diameter<fineGridH(0)/3.0
-      &&
-      fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined
-    ) {
+  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  {
+    if (fineGridVertex.getParticle(i)._persistentRecords._diameter<fineGridH(0)/3.0
+      && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+    {
       logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
-    }
-    else {
+    }else
+    {
 /*
       Does not hold as it might happen that we lift particles temporarily through hanging nodes
       assertion2(
@@ -89,10 +85,12 @@ void dem::mappings::restrictCoarseningVetoToCoarseGrid(
 ) {
   dfor2(k)
     bool influences = true;
-    for (int d=0; d<DIMENSIONS; d++) {
+    for (int d=0; d<DIMENSIONS; d++)
+    {
       influences &= ( (k(d)==0 && fineGridPositionOfVertex(d)<3) || (k(d)==1 && fineGridPositionOfVertex(d)>0) );
     }
-    if (influences) {
+    if (influences)
+    {
       coarseGridVertices[ coarseGridVerticesEnumerator(k) ].restrictParticleResponsibilityData( fineGridVertex );
     }
   enddforx
@@ -182,32 +180,26 @@ void dem::mappings::dropParticles(
 ) {
   assertion1( !fineGridVertex.isHangingNode(), fineGridVertex.toString() );
 
-  if (
-    peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(
-      fineGridPositionOfVertex
-    )
-  ) {
-    Vertex& coarseGridVertexAtSamePosition = coarseGridVertices[
-      coarseGridVerticesEnumerator( peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) )
-    ];
+  if (peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(fineGridPositionOfVertex))
+  {
+    Vertex& coarseGridVertexAtSamePosition = coarseGridVertices[coarseGridVerticesEnumerator( peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) )];
 
-    if (!coarseGridVertexAtSamePosition.isOutside()) {
+    if (!coarseGridVertexAtSamePosition.isOutside())
+    {
       int i=0;
       while (i<coarseGridVertexAtSamePosition.getNumberOfParticles()) {
-        if (
-          coarseGridVertexAtSamePosition.getParticle(i)._persistentRecords._diameter<coarseGridVerticesEnumerator.getCellSize()(0)
-        ) {
+        if (coarseGridVertexAtSamePosition.getParticle(i)._persistentRecords._diameter<coarseGridVerticesEnumerator.getCellSize()(0))
+        {
           logDebug( "dropParticle()",
-              "dropped particle " << coarseGridVertexAtSamePosition.getParticle(i).toString() <<
-              " from " << peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) <<
-              " into " << fineGridPositionOfVertex <<
-              ", i.e. from " << coarseGridVertexAtSamePosition.toString() <<
-            " into " << fineGridVertex.toString()
-          );
+          "dropped particle " << coarseGridVertexAtSamePosition.getParticle(i).toString() <<
+          " from " << peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) <<
+          " into " << fineGridPositionOfVertex <<
+          ", i.e. from " << coarseGridVertexAtSamePosition.toString() <<
+          " into " << fineGridVertex.toString());
           fineGridVertex.appendParticle( coarseGridVertexAtSamePosition.getParticle(i) );
           coarseGridVertexAtSamePosition.releaseParticle(i);
-        }
-        else {
+        } else
+        {
           i++;
         }
       }
@@ -270,12 +262,6 @@ void dem::mappings::AdoptGrid::destroyVertex(
 }
 
 
-
-
-//
-//   NOP
-// =======
-//
 
 dem::mappings::AdoptGrid::AdoptGrid() {
   logTraceIn( "AdoptGrid()" );

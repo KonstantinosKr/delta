@@ -53,7 +53,7 @@ contactpoint::contactpoint(int pid[2], int color[2], iREAL point[3], iREAL norma
 }
 
 //all-to-all range
-void contact::detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contactpoint> conpnt[])
+void contact::detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], std::vector<contactpoint> conpnt[])
 {
   iREAL Ax[3], Ay[3], Az[3], Bx[3], By[3], Bz[3];
   
@@ -63,13 +63,13 @@ void contact::detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iRE
     Ax[1] = t[1][0][i];
     Ax[2] = t[2][0][i];
     
-    By[0] = t[0][1][i];
-    By[1] = t[1][1][i];
-    By[2] = t[2][1][i];
+    Ay[0] = t[0][1][i];
+    Ay[1] = t[1][1][i];
+    Ay[2] = t[2][1][i];
     
-    Bz[0] = t[0][2][i];
-    Bz[1] = t[1][2][i];
-    Bz[2] = t[2][2][i];
+    Az[0] = t[0][2][i];
+    Az[1] = t[1][2][i];
+    Az[2] = t[2][2][i];
     
     for(int j=i+1;j<e;j++) //careful; range can overflow due to ghosts particles
     {
@@ -144,96 +144,3 @@ void contact::detection (int s, int e, iREAL *t[6][3], int tid[], int pid[], iRE
   }
 }
 
-//two ranges
-void contact::detection (int s1, int e1, int s2, int e2, iREAL *t[6][3], int tid[], int pid[], iREAL *linear[3], std::vector<contactpoint> conpnt[])
-{
-  iREAL Ax[3], Ay[3], Az[3], Bx[3], By[3], Bz[3];
-  
-  for(int i=s1;i<e1;i++)
-  {
-    Ax[0] = t[0][0][i];
-    Ax[1] = t[1][0][i];
-    Ax[2] = t[2][0][i];
-    
-    By[0] = t[0][1][i];
-    By[1] = t[1][1][i];
-    By[2] = t[2][1][i];
-    
-    Bz[0] = t[0][2][i];
-    Bz[1] = t[1][2][i];
-    Bz[2] = t[2][2][i];
-    
-    for(int j=s2; j<e2; j++) //careful; range can overflow due to ghosts particles
-    {
-      if(pid[i] == pid[j])continue;
-      
-      Bx[0] = t[0][0][j];
-      Bx[1] = t[1][0][j];
-      Bx[2] = t[2][0][j];
-      
-      By[0] = t[0][1][j];
-      By[1] = t[1][1][j];
-      By[2] = t[2][1][j];
-      
-      Bz[0] = t[0][2][j];
-      Bz[1] = t[1][2][j];
-      Bz[2] = t[2][2][j];
-      
-      iREAL xPA, yPA, zPA;
-      iREAL xPB, yPB, zPB;
-      
-      bf(Ax, Ay, Az, Bx, By, Bz, xPA, yPA, zPA, xPB, yPB, zPB);
-      
-      iREAL dist = sqrt(pow((xPB-xPA),2)+pow((yPB-yPA),2)+pow((zPB-zPA),2));
-      
-      iREAL margin = 15E-2;
-      
-      if(dist < margin)
-      {
-        int found = 0;
-        for(unsigned int ii=0; ii<conpnt[pid[i]].size(); ii++)
-        {
-          if(conpnt[pid[i]][ii].pp[0] == xPA ||conpnt[pid[i]][ii].pp[1] == yPA ||conpnt[pid[i]][ii].pp[2] == zPA || conpnt[pid[i]][ii].qq[0] == xPB ||conpnt[pid[i]][ii].qq[1] == yPB || conpnt[pid[i]][ii].qq[2] == zPB)
-          {
-            found = 1;
-          }
-        }
-        
-        if(found!=1)
-        {
-          //printf("PARTICLE A:%i T:%i is in CONTACT WITH GHOST PARTICLE B:%i T:%i\n", pid[i], tid[i], pid[j], tid[j]);
-          iREAL midpt[3], normal[3];
-          
-          midpt[0] = (xPA+xPB)/2; //x
-          midpt[1] = (yPA+yPB)/2; //y
-          midpt[2] = (zPA+zPB)/2; //z
-          
-          iREAL depth = margin-dist;
-          
-          normal[0] = ((xPB - xPA)/depth);// depth for inclusion to normal
-          normal[1] = ((yPB - yPA)/depth);
-          normal[2] = ((zPB - zPA)/depth);
-          
-          int color[2], id[2];
-          id[0] = pid[i];
-          id[1] = pid[j];
-          
-          color[0] = 0;
-          color[1] = 0;
-          
-          iREAL pp[3]; iREAL qq[3];
-          pp[0] = xPA;
-          pp[1] = yPA;
-          pp[2] = zPA;
-          
-          qq[0] = xPB;
-          qq[1] = yPB;
-          qq[2] = zPB;
-          
-          contactpoint point(id, color, midpt, normal, depth, pp, qq);
-          conpnt[pid[i]].push_back(point);
-        }
-      }
-    }
-  }
-}
