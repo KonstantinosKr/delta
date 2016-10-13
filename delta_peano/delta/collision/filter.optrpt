@@ -1,0 +1,916 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o delta/collision/filter.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: operator new(std::size_t, void *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (operator new(std::size_t, void *)) /usr/include/c++/6/new(147,1)
+
+===========================================================================
+
+Begin optimization report for: operator delete(void *, void *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (operator delete(void *, void *)) /usr/include/c++/6/new(152,67)
+
+===========================================================================
+
+Begin optimization report for: std::__copy_move<true, false, std::random_access_iterator_tag>::__copy_m<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__copy_move<true, false, std::random_access_iterator_tag>::__copy_m<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)) /usr/include/c++/6/bits/stl_algobase.h(339,9)
+
+===========================================================================
+
+Begin optimization report for: std::_Destroy_aux<true>::__destroy<std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Destroy_aux<true>::__destroy<std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)) /usr/include/c++/6/bits/stl_construct.h(112,55)
+
+===========================================================================
+
+Begin optimization report for: std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocate(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocate(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::size_type)) /usr/include/c++/6/bits/alloc_traits.h(416,7)
+
+===========================================================================
+
+Begin optimization report for: std::allocator_traits<std::allocator<delta::collision::contactpoint>>::deallocate(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::pointer, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::allocator_traits<std::allocator<delta::collision::contactpoint>>::deallocate(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::pointer, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::size_type)) /usr/include/c++/6/bits/alloc_traits.h(442,7)
+
+===========================================================================
+
+Begin optimization report for: std::allocator_traits<std::allocator<delta::collision::contactpoint>>::select_on_container_copy_construction(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type *, const std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::allocator_traits<std::allocator<delta::collision::contactpoint>>::select_on_container_copy_construction(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type *, const std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &)) /usr/include/c++/6/bits/alloc_traits.h(485,7)
+
+===========================================================================
+
+Begin optimization report for: std::allocator<delta::collision::contactpoint>::allocator(std::allocator<delta::collision::contactpoint> *, const std::allocator<delta::collision::contactpoint> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::allocator<delta::collision::contactpoint>::allocator(std::allocator<delta::collision::contactpoint> *, const std::allocator<delta::collision::contactpoint> &)) /usr/include/c++/6/bits/allocator.h(121,36)
+
+===========================================================================
+
+Begin optimization report for: std::allocator<delta::collision::contactpoint>::allocator(std::allocator<delta::collision::contactpoint> *const, const std::allocator<delta::collision::contactpoint> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::allocator<delta::collision::contactpoint>::allocator(std::allocator<delta::collision::contactpoint> *const, const std::allocator<delta::collision::contactpoint> &)) /usr/include/c++/6/bits/allocator.h(120,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_get_Tp_allocator(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_get_Tp_allocator(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)) /usr/include/c++/6/bits/stl_vector.h(114,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_get_Tp_allocator(const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_get_Tp_allocator(const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const) /usr/include/c++/6/bits/stl_vector.h(118,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::size_t, const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::allocator_type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::size_t, const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::allocator_type &)) /usr/include/c++/6/bits/stl_vector.h(136,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const, std::size_t, const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::allocator_type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const, std::size_t, const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::allocator_type &)) /usr/include/c++/6/bits/stl_vector.h(134,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)) /usr/include/c++/6/bits/stl_vector.h(160,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_allocate(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::size_t)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_allocate(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::size_t)) /usr/include/c++/6/bits/stl_vector.h(168,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_deallocate(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::size_t)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_deallocate(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::size_t)) /usr/include/c++/6/bits/stl_vector.h(175,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_create_storage(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::size_t)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_create_storage(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::size_t)) /usr/include/c++/6/bits/stl_vector.h(184,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_impl::_Vector_impl(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_impl *, const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Tp_alloc_type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_impl::_Vector_impl(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_impl *, const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Tp_alloc_type &)) /usr/include/c++/6/bits/stl_vector.h(92,2)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::begin(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::begin(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)) /usr/include/c++/6/bits/stl_vector.h(549,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::begin(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::begin(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const) /usr/include/c++/6/bits/stl_vector.h(558,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::end(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::end(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)) /usr/include/c++/6/bits/stl_vector.h(567,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::end(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::end(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const) /usr/include/c++/6/bits/stl_vector.h(576,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::cbegin(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::cbegin(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const) /usr/include/c++/6/bits/stl_vector.h(622,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const) /usr/include/c++/6/bits/stl_vector.h(656,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type)) /usr/include/c++/6/bits/stl_vector.h(781,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::erase(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::erase(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator)) /usr/include/c++/6/bits/stl_vector.h(1148,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_erase(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_erase(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator)) /usr/include/c++/6/bits/vector.tcc(143,5)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__alloc_traits<std::allocator<delta::collision::contactpoint>>::_S_select_on_copy(std::allocator<delta::collision::contactpoint> *, const std::allocator<delta::collision::contactpoint> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__alloc_traits<std::allocator<delta::collision::contactpoint>>::_S_select_on_copy(std::allocator<delta::collision::contactpoint> *, const std::allocator<delta::collision::contactpoint> &)) /usr/include/c++/6/ext/alloc_traits.h(95,5)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<delta::collision::contactpoint>::new_allocator(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, const __gnu_cxx::new_allocator<delta::collision::contactpoint> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<delta::collision::contactpoint>::new_allocator(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, const __gnu_cxx::new_allocator<delta::collision::contactpoint> &)) /usr/include/c++/6/ext/new_allocator.h(81,65)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<delta::collision::contactpoint>::allocate(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, __gnu_cxx::new_allocator<delta::collision::contactpoint>::size_type, const void *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<delta::collision::contactpoint>::allocate(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, __gnu_cxx::new_allocator<delta::collision::contactpoint>::size_type, const void *)) /usr/include/c++/6/ext/new_allocator.h(100,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<delta::collision::contactpoint>::deallocate(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, __gnu_cxx::new_allocator<delta::collision::contactpoint>::pointer, __gnu_cxx::new_allocator<delta::collision::contactpoint>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<delta::collision::contactpoint>::deallocate(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, __gnu_cxx::new_allocator<delta::collision::contactpoint>::pointer, __gnu_cxx::new_allocator<delta::collision::contactpoint>::size_type)) /usr/include/c++/6/ext/new_allocator.h(110,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<delta::collision::contactpoint>::destroy<delta::collision::contactpoint>(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, delta::collision::contactpoint *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<delta::collision::contactpoint>::destroy<delta::collision::contactpoint>(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, delta::collision::contactpoint *)) /usr/include/c++/6/ext/new_allocator.h(124,27)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &)) /usr/include/c++/6/bits/stl_iterator.h(777,25)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const) /usr/include/c++/6/bits/stl_iterator.h(830,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const) /usr/include/c++/6/bits/stl_iterator.h(842,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer &)) /usr/include/c++/6/bits/stl_iterator.h(777,25)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator*(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator*(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const) /usr/include/c++/6/bits/stl_iterator.h(790,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator++(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator++(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *)) /usr/include/c++/6/bits/stl_iterator.h(798,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const) /usr/include/c++/6/bits/stl_iterator.h(842,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &)) /usr/include/c++/6/bits/stl_iterator.h(785,34)
+
+===========================================================================
+
+Begin optimization report for: std::__addressof<delta::collision::contactpoint>(delta::collision::contactpoint &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__addressof<delta::collision::contactpoint>(delta::collision::contactpoint &)) /usr/include/c++/6/bits/move.h(48,5)
+
+===========================================================================
+
+Begin optimization report for: std::_Construct<delta::collision::contactpoint, const delta::collision::contactpoint &>(delta::collision::contactpoint *, const delta::collision::contactpoint &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Construct<delta::collision::contactpoint, const delta::collision::contactpoint &>(delta::collision::contactpoint *, const delta::collision::contactpoint &)) /usr/include/c++/6/bits/stl_construct.h(75,5)
+
+===========================================================================
+
+Begin optimization report for: std::forward<const delta::collision::contactpoint &>(std::remove_reference<const delta::collision::contactpoint &>::type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::forward<const delta::collision::contactpoint &>(std::remove_reference<const delta::collision::contactpoint &>::type &)) /usr/include/c++/6/bits/move.h(77,5)
+
+===========================================================================
+
+Begin optimization report for: std::_Destroy<std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Destroy<std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)) /usr/include/c++/6/bits/stl_construct.h(123,5)
+
+===========================================================================
+
+Begin optimization report for: std::move<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::move<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator)) /usr/include/c++/6/bits/stl_algobase.h(480,5)
+
+===========================================================================
+
+Begin optimization report for: std::__miter_base<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__miter_base<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>)) /usr/include/c++/6/bits/cpp_type_traits.h(409,5)
+
+===========================================================================
+
+Begin optimization report for: std::__copy_move_a2<true, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__copy_move_a2<true, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator)) /usr/include/c++/6/bits/stl_algobase.h(421,5)
+
+===========================================================================
+
+Begin optimization report for: std::__niter_base<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__niter_base<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>)) /usr/include/c++/6/bits/stl_iterator.h(981,5)
+
+===========================================================================
+
+Begin optimization report for: std::__copy_move_a<true, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__copy_move_a<true, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)) /usr/include/c++/6/bits/stl_algobase.h(376,5)
+
+===========================================================================
+
+Begin optimization report for: std::move<delta::collision::contactpoint &>(delta::collision::contactpoint &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::move<delta::collision::contactpoint &>(delta::collision::contactpoint &)) /usr/include/c++/6/bits/move.h(102,5)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::operator!=<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::operator!=<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &)) /usr/include/c++/6/bits/stl_iterator.h(880,5)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::operator-<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::operator-<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &)) /usr/include/c++/6/bits/stl_iterator.h(962,5)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::operator!=<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::operator!=<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &)) /usr/include/c++/6/bits/stl_iterator.h(880,5)
+
+===========================================================================
+
+Begin optimization report for: delta::collision::filter(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> &, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> &, double)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::collision::filter(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> &, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> &, double)) [54/64=84.4%] delta/collision/filter.cpp(4,1)
+  -> (5,34) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~vector(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 40) (sz = 45)
+     [[ Callee not marked with inlining pragma  <1>]]
+  -> (5,34) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::vector(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> &) (isz = 201) (sz = 208)
+     [[ Called routine is noinline  <2>]]
+  -> INLINE (MANUAL): (8,40) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (8,40) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (10,30) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (10,30) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (13,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (14,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (15,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (17,15) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (18,15) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (19,15) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (34,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::erase(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator) (isz = 182) (sz = 191)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,25) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::begin(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 6) (sz = 13)
+      -> INLINE (MANUAL): (549,25) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,47) __gnu_cxx::operator-<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &) (isz = 11) (sz = 20)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(962,20) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(962,35) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,47) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const (isz = 8) (sz = 17)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(830,34) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,47) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_erase(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator) (isz = 132) (sz = 141)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(144,24) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const (isz = 8) (sz = 17)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(830,34) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(144,26) __gnu_cxx::operator!=<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &) (isz = 10) (sz = 19)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(880,20) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(880,36) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(144,29) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::end(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 6) (sz = 13)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(567,25) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(145,2) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const (isz = 8) (sz = 17)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(830,34) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(145,2) std::move<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator) (isz = 57) (sz = 68)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(487,58) std::__miter_base<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 0) (sz = 5)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(488,30) std::__miter_base<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 0) (sz = 5)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(488,39) std::__copy_move_a2<true, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator) (isz = 50) (sz = 61)
+          -> INLINE (MANUAL): (422,18) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+          -> INLINE (MANUAL): (422,18) std::__copy_move_a<true, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer) (isz = 22) (sz = 33)
+            -> INLINE (MANUAL): (385,14) std::__copy_move<true, false, std::random_access_iterator_tag>::__copy_m<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer) (isz = 21) (sz = 32)
+              -> EXTERN: (343,20) memcpy()
+              -> INLINE (MANUAL): (343,20) std::move<delta::collision::contactpoint &>(delta::collision::contactpoint &) (isz = 0) (sz = 6)
+          -> INLINE (MANUAL): (422,46) std::__niter_base<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 4) (sz = 11)
+            -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(981,19) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+          -> INLINE (MANUAL): (423,11) std::__niter_base<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 4) (sz = 11)
+            -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(981,19) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+          -> INLINE (MANUAL): (424,11) std::__niter_base<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 4) (sz = 11)
+            -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(981,19) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(145,2) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::end(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 6) (sz = 13)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(567,25) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+      -> DELETED: /usr/include/c++/6/bits/vector.tcc:(147,7) std::allocator_traits<std::allocator<delta::collision::contactpoint>>::destroy<delta::collision::contactpoint>(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, delta::collision::contactpoint *) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,49) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::cbegin(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 7) (sz = 14)
+      -> INLINE (MANUAL): (622,31) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (34,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::begin(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 6) (sz = 13)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(549,25) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (34,53) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const (isz = 8) (sz = 17)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(830,34) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (34,53) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &) (isz = 4) (sz = 11)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(785,26) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+  -> INLINE (MANUAL): (35,13) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (42,40) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (42,40) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (44,48) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (44,48) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (47,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (48,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (49,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (51,35) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (52,35) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (53,35) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::operator[](std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (62,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::begin(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 6) (sz = 13)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(549,25) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (62,28) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::erase(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator) (isz = 182) (sz = 191)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,25) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::begin(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 6) (sz = 13)
+      -> INLINE (MANUAL): (549,25) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,47) __gnu_cxx::operator-<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &) (isz = 11) (sz = 20)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(962,20) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(962,35) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,47) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const (isz = 8) (sz = 17)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(830,34) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,47) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_erase(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator) (isz = 132) (sz = 141)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(144,24) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const (isz = 8) (sz = 17)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(830,34) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(144,26) __gnu_cxx::operator!=<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &) (isz = 10) (sz = 19)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(880,20) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(880,36) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(144,29) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::end(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 6) (sz = 13)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(567,25) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(145,2) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const (isz = 8) (sz = 17)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(830,34) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(145,2) std::move<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator) (isz = 57) (sz = 68)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(487,58) std::__miter_base<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 0) (sz = 5)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(488,30) std::__miter_base<__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 0) (sz = 5)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(488,39) std::__copy_move_a2<true, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::iterator) (isz = 50) (sz = 61)
+          -> INLINE (MANUAL): (422,18) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+          -> INLINE (MANUAL): (422,18) std::__copy_move_a<true, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer) (isz = 22) (sz = 33)
+            -> INLINE (MANUAL): (385,14) std::__copy_move<true, false, std::random_access_iterator_tag>::__copy_m<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer) (isz = 21) (sz = 32)
+              -> EXTERN: (343,20) memcpy()
+              -> INLINE (MANUAL): (343,20) std::move<delta::collision::contactpoint &>(delta::collision::contactpoint &) (isz = 0) (sz = 6)
+          -> INLINE (MANUAL): (422,46) std::__niter_base<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 4) (sz = 11)
+            -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(981,19) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+          -> INLINE (MANUAL): (423,11) std::__niter_base<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 4) (sz = 11)
+            -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(981,19) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+          -> INLINE (MANUAL): (424,11) std::__niter_base<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>) (isz = 4) (sz = 11)
+            -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(981,19) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(145,2) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::end(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 6) (sz = 13)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(567,25) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+      -> DELETED: /usr/include/c++/6/bits/vector.tcc:(147,7) std::allocator_traits<std::allocator<delta::collision::contactpoint>>::destroy<delta::collision::contactpoint>(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, delta::collision::contactpoint *) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1148,49) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::cbegin(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 7) (sz = 14)
+      -> INLINE (MANUAL): (622,31) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (62,53) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator+(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::difference_type) const (isz = 8) (sz = 17)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(830,34) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (62,53) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &) (isz = 4) (sz = 11)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(785,26) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+  -> INLINE (MANUAL): (63,33) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> INLINE (MANUAL): (66,2) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~vector(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 40) (sz = 45)
+    -> /usr/include/c++/6/bits/stl_vector.h:(426,7) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const) (isz = 18) (sz = 23)
+       [[ Callee not marked with inlining pragma  <1>]]
+    -> EXTERN: /usr/include/c++/6/bits/stl_vector.h:(426,7) __cxa_call_unexpected
+    -> DELETED: /usr/include/c++/6/bits/stl_vector.h:(426,9) std::_Destroy<std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, delta::collision::contactpoint>(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::allocator<delta::collision::contactpoint> &) (isz = 0) (sz = 8)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(427,9) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_get_Tp_allocator(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 1) (sz = 8)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(427,33) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const) (isz = 18) (sz = 23)
+      -> INLINE (MANUAL): (159,7) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 18) (sz = 23)
+        -> EXTERN: (160,7) __cxa_call_unexpected
+        -> INLINE (MANUAL): (160,9) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_deallocate(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::size_t) (isz = 4) (sz = 13)
+          -> INLINE (MANUAL): (178,4) std::allocator_traits<std::allocator<delta::collision::contactpoint>>::deallocate(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::pointer, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::size_type) (isz = 0) (sz = 9)
+            -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(442,13) __gnu_cxx::new_allocator<delta::collision::contactpoint>::deallocate(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, __gnu_cxx::new_allocator<delta::collision::contactpoint>::pointer, __gnu_cxx::new_allocator<delta::collision::contactpoint>::size_type) (isz = 0) (sz = 7)
+              -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(110,9) operator delete(void *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at delta/collision/filter.cpp(8,40)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+
+   LOOP BEGIN at delta/collision/filter.cpp(10,30)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+
+      LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(341,4) inlined into delta/collision/filter.cpp(34,28)
+         remark #15527: loop was not vectorized: function call to memcpy() cannot be vectorized   [ /usr/include/c++/6/bits/stl_algobase.h(343,20) ]
+      LOOP END
+   LOOP END
+LOOP END
+
+LOOP BEGIN at delta/collision/filter.cpp(42,40)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+
+   LOOP BEGIN at delta/collision/filter.cpp(44,48)
+      remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+
+      LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(341,4) inlined into delta/collision/filter.cpp(62,28)
+         remark #15527: loop was not vectorized: function call to memcpy() cannot be vectorized   [ /usr/include/c++/6/bits/stl_algobase.h(343,20) ]
+      LOOP END
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+/usr/include/c++/6/bits/stl_algobase.h(343,20):remark #34014: optimization advice for memcpy: increase the source's alignment to 16 (and use __assume_aligned) to increase the width of loads
+/usr/include/c++/6/bits/stl_algobase.h(343,20):remark #34014: optimization advice for memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to increase the width of stores
+/usr/include/c++/6/bits/stl_algobase.h(343,20):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (1, 0), and destination (alignment, offset): (1, 0)
+/usr/include/c++/6/bits/stl_algobase.h(343,20):remark #34014: optimization advice for memcpy: increase the source's alignment to 16 (and use __assume_aligned) to increase the width of loads
+/usr/include/c++/6/bits/stl_algobase.h(343,20):remark #34014: optimization advice for memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to increase the width of stores
+/usr/include/c++/6/bits/stl_algobase.h(343,20):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (1, 0), and destination (alignment, offset): (1, 0)
+delta/collision/filter.cpp(4,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta9collision6filterERSt6vectorINS0_12contactpointESaIS2_EES5_d] delta/collision/filter.cpp:4
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   18[ rax rdx rcx rbx rbp rsi rdi r8-r11 r14-r15 zmm0-zmm4]
+        
+    Routine temporaries
+        Total         :     162
+            Global    :      37
+            Local     :     125
+        Regenerable   :      17
+        Spilled       :       5
+        
+    Routine stack
+        Variables     :      24 bytes*
+            Reads     :       5 [8.60e+00 ~ 0.3%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       3 [2.79e+00 ~ 0.1%]
+            Writes    :       2 [1.90e+00 ~ 0.1%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: std::allocator_traits<std::allocator<delta::collision::contactpoint>>::destroy<delta::collision::contactpoint>(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, delta::collision::contactpoint *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::allocator_traits<std::allocator<delta::collision::contactpoint>>::destroy<delta::collision::contactpoint>(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, delta::collision::contactpoint *)) /usr/include/c++/6/bits/alloc_traits.h(467,2)
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::vector(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::vector(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> &)) [56/64=87.5%] /usr/include/c++/6/bits/stl_vector.h(323,7)
+  -> INLINE (MANUAL): (321,19) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::size(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 5) (sz = 12)
+  -> (322,9) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const) (isz = 18) (sz = 23)
+     [[ Callee not marked with inlining pragma  <1>]]
+  -> INLINE (MANUAL): (322,9) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const, std::size_t, const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::allocator_type &) (isz = 42) (sz = 51)
+    -> INLINE (MANUAL): (134,7) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::size_t, const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::allocator_type &) (isz = 42) (sz = 51)
+      -> INLINE (MANUAL): (135,17) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_impl::_Vector_impl(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Vector_impl *, const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_Tp_alloc_type &) (isz = 11) (sz = 18)
+        -> INLINE (MANUAL): (91,19) std::allocator<delta::collision::contactpoint>::allocator(std::allocator<delta::collision::contactpoint> *const, const std::allocator<delta::collision::contactpoint> &) (isz = 5) (sz = 12)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/allocator.h:(120,7) std::allocator<delta::collision::contactpoint>::allocator(std::allocator<delta::collision::contactpoint> *, const std::allocator<delta::collision::contactpoint> &) (isz = 5) (sz = 12)
+            -> DELETED: (121,31) __gnu_cxx::new_allocator<delta::collision::contactpoint>::new_allocator(__gnu_cxx::new_allocator<delta::collision::contactpoint> *const, const __gnu_cxx::new_allocator<delta::collision::contactpoint> &) (isz = 0) (sz = 7)
+            -> EXTERN: (121,36) __cxa_call_unexpected
+      -> INLINE (MANUAL): (136,9) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_create_storage(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::size_t) (isz = 27) (sz = 34)
+        -> INLINE (MANUAL): (185,33) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_allocate(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::size_t) (isz = 16) (sz = 25)
+          -> INLINE (MANUAL): (170,20) std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocate(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::size_type) (isz = 9) (sz = 18)
+            -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(416,20) __gnu_cxx::new_allocator<delta::collision::contactpoint>::allocate(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, __gnu_cxx::new_allocator<delta::collision::contactpoint>::size_type, const void *) (isz = 7) (sz = 18)
+              -> DELETED: /usr/include/c++/6/ext/new_allocator.h:(101,18) __gnu_cxx::new_allocator<delta::collision::contactpoint>::max_size(const __gnu_cxx::new_allocator<delta::collision::contactpoint> *) const (isz = 0) (sz = 5)
+              -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(102,4) std::__throw_bad_alloc()
+              -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(104,27) operator new(std::size_t)
+  -> INLINE (MANUAL): (322,9) __gnu_cxx::__alloc_traits<std::allocator<delta::collision::contactpoint>>::_S_select_on_copy(std::allocator<delta::collision::contactpoint> *, const std::allocator<delta::collision::contactpoint> &) (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/ext/alloc_traits.h:(95,14) std::allocator_traits<std::allocator<delta::collision::contactpoint>>::select_on_container_copy_construction(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type *, const std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &) (isz = 5) (sz = 12)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(485,16) std::allocator<delta::collision::contactpoint>::allocator(std::allocator<delta::collision::contactpoint> *, const std::allocator<delta::collision::contactpoint> &) (isz = 5) (sz = 12)
+        -> DELETED: /usr/include/c++/6/bits/allocator.h:(121,31) __gnu_cxx::new_allocator<delta::collision::contactpoint>::new_allocator(__gnu_cxx::new_allocator<delta::collision::contactpoint> *const, const __gnu_cxx::new_allocator<delta::collision::contactpoint> &) (isz = 0) (sz = 7)
+        -> EXTERN: /usr/include/c++/6/bits/allocator.h:(121,36) __cxa_call_unexpected
+  -> INLINE (MANUAL): (322,46) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_get_Tp_allocator(const std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 1) (sz = 8)
+  -> INLINE (MANUAL): (324,4) std::__uninitialized_copy_a<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, delta::collision::contactpoint>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::allocator<delta::collision::contactpoint> &) (isz = 94) (sz = 107)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(281,14) std::uninitialized_copy<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer) (isz = 94) (sz = 105)
+      -> INLINE (MANUAL): (123,14) std::__uninitialized_copy<false>::__uninit_copy<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer) (isz = 93) (sz = 104)
+        -> INLINE (MANUAL): (74,23) __gnu_cxx::operator!=<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &) (isz = 10) (sz = 19)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(880,20) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(880,36) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+        -> INLINE (MANUAL): (74,23) __gnu_cxx::operator!=<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &, const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> &) (isz = 10) (sz = 19)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(880,20) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(880,36) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::base(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 1) (sz = 7)
+        -> INLINE (MANUAL): (74,34) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator++(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) (isz = 2) (sz = 9)
+        -> INLINE (MANUAL): (75,3) std::_Construct<delta::collision::contactpoint, const delta::collision::contactpoint &>(delta::collision::contactpoint *, const delta::collision::contactpoint &) (isz = 22) (sz = 29)
+          -> DELETED: /usr/include/c++/6/bits/stl_construct.h:(75,7) operator delete(void *, void *) (isz = 0) (sz = 4)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_construct.h:(75,32) operator new(std::size_t, void *) (isz = 0) (sz = 7)
+          -> EXTERN: /usr/include/c++/6/bits/stl_construct.h:(75,42) delta::collision::contactpoint::contactpoint(delta::collision::contactpoint *, const delta::collision::contactpoint &)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_construct.h:(75,42) std::forward<const delta::collision::contactpoint &>(std::remove_reference<const delta::collision::contactpoint &>::type &) (isz = 0) (sz = 6)
+        -> INLINE (MANUAL): (75,19) std::__addressof<delta::collision::contactpoint>(delta::collision::contactpoint &) (isz = 0) (sz = 6)
+        -> INLINE (MANUAL): (75,45) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::operator*(const __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *) const (isz = 0) (sz = 7)
+        -> EXTERN: (78,4) __cxa_begin_catch
+        -> EXTERN: (79,6) __cxa_end_catch
+        -> DELETED: (80,8) std::_Destroy<std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer) (isz = 0) (sz = 7)
+        -> EXTERN: (81,8) __cxa_rethrow
+  -> INLINE (MANUAL): (324,32) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::begin(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 7) (sz = 14)
+    -> INLINE (MANUAL): (558,31) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (324,45) std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::end(const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) const (isz = 7) (sz = 14)
+    -> INLINE (MANUAL): (576,31) __gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>> *, const std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_pointer &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (326,11) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_get_Tp_allocator(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 1) (sz = 8)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_uninitialized.h(74,23) inlined into /usr/include/c++/6/bits/stl_vector.h(325,4)
+   remark #15523: loop was not vectorized: loop control variable __cur was found, but loop iteration count cannot be computed before executing the loop
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+/usr/include/c++/6/bits/stl_vector.h(323,7):remark #34051: REGISTER ALLOCATION : [_ZNSt6vectorIN5delta9collision12contactpointESaIS2_EEC1ERKS4_] /usr/include/c++/6/bits/stl_vector.h:323
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    9[ rax rdx rcx rbx rbp rsi rdi r14-r15]
+        
+    Routine temporaries
+        Total         :      45
+            Global    :      15
+            Local     :      30
+        Regenerable   :       4
+        Spilled       :       4
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       2 [0.00e+00 ~ 0.0%]
+            Writes    :       2 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       2 [9.59e-01 ~ 1.0%]
+            Writes    :       1 [9.59e-01 ~ 1.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<delta::collision::contactpoint>::max_size(const __gnu_cxx::new_allocator<delta::collision::contactpoint> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<delta::collision::contactpoint>::max_size(const __gnu_cxx::new_allocator<delta::collision::contactpoint> *) const) /usr/include/c++/6/ext/new_allocator.h(114,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<delta::collision::contactpoint>::new_allocator(__gnu_cxx::new_allocator<delta::collision::contactpoint> *const, const __gnu_cxx::new_allocator<delta::collision::contactpoint> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<delta::collision::contactpoint>::new_allocator(__gnu_cxx::new_allocator<delta::collision::contactpoint> *const, const __gnu_cxx::new_allocator<delta::collision::contactpoint> &)) /usr/include/c++/6/ext/new_allocator.h(81,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const)) [59/64=92.2%] /usr/include/c++/6/bits/stl_vector.h(159,7)
+  -> INLINE (MANUAL): (159,7) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 18) (sz = 23)
+    -> EXTERN: (160,7) __cxa_call_unexpected
+    -> INLINE (MANUAL): (160,9) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_deallocate(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::size_t) (isz = 4) (sz = 13)
+      -> INLINE (MANUAL): (178,4) std::allocator_traits<std::allocator<delta::collision::contactpoint>>::deallocate(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::pointer, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::size_type) (isz = 0) (sz = 9)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(442,13) __gnu_cxx::new_allocator<delta::collision::contactpoint>::deallocate(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, __gnu_cxx::new_allocator<delta::collision::contactpoint>::pointer, __gnu_cxx::new_allocator<delta::collision::contactpoint>::size_type) (isz = 0) (sz = 7)
+          -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(110,9) operator delete(void *)
+
+
+    Report from: Code generation optimizations [cg]
+
+/usr/include/c++/6/bits/stl_vector.h(159,7):remark #34051: REGISTER ALLOCATION : [_ZNSt12_Vector_baseIN5delta9collision12contactpointESaIS2_EED2Ev] /usr/include/c++/6/bits/stl_vector.h:159
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       7
+            Local     :       3
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~vector(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~vector(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *)) [60/64=93.8%] /usr/include/c++/6/bits/stl_vector.h(426,7)
+  -> EXTERN: (426,7) __cxa_call_unexpected
+  -> (426,7) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const) (isz = 18) (sz = 23)
+     [[ Callee not marked with inlining pragma  <1>]]
+  -> DELETED: (426,9) std::_Destroy<std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, delta::collision::contactpoint>(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::allocator<delta::collision::contactpoint> &) (isz = 0) (sz = 8)
+  -> INLINE (MANUAL): (427,9) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_get_Tp_allocator(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 1) (sz = 8)
+  -> INLINE (MANUAL): (427,33) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *const) (isz = 18) (sz = 23)
+    -> INLINE (MANUAL): (159,7) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::~_Vector_base(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *) (isz = 18) (sz = 23)
+      -> EXTERN: (160,7) __cxa_call_unexpected
+      -> INLINE (MANUAL): (160,9) std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::_M_deallocate(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>> *, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::size_t) (isz = 4) (sz = 13)
+        -> INLINE (MANUAL): (178,4) std::allocator_traits<std::allocator<delta::collision::contactpoint>>::deallocate(std::allocator_traits<std::allocator<delta::collision::contactpoint>>::allocator_type &, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::pointer, std::allocator_traits<std::allocator<delta::collision::contactpoint>>::size_type) (isz = 0) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(442,13) __gnu_cxx::new_allocator<delta::collision::contactpoint>::deallocate(__gnu_cxx::new_allocator<delta::collision::contactpoint> *, __gnu_cxx::new_allocator<delta::collision::contactpoint>::pointer, __gnu_cxx::new_allocator<delta::collision::contactpoint>::size_type) (isz = 0) (sz = 7)
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(110,9) operator delete(void *)
+
+
+    Report from: Code generation optimizations [cg]
+
+/usr/include/c++/6/bits/stl_vector.h(426,7):remark #34051: REGISTER ALLOCATION : [_ZNSt6vectorIN5delta9collision12contactpointESaIS2_EED1Ev] /usr/include/c++/6/bits/stl_vector.h:426
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       7
+            Local     :       3
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: std::_Destroy<std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, delta::collision::contactpoint>(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::allocator<delta::collision::contactpoint> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Destroy<std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, delta::collision::contactpoint>(std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::allocator<delta::collision::contactpoint> &)) /usr/include/c++/6/bits/stl_construct.h(150,5)
+
+===========================================================================
+
+Begin optimization report for: std::uninitialized_copy<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::uninitialized_copy<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)) /usr/include/c++/6/bits/stl_uninitialized.h(109,5)
+
+===========================================================================
+
+Begin optimization report for: std::__uninitialized_copy_a<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, delta::collision::contactpoint>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::allocator<delta::collision::contactpoint> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__uninitialized_copy_a<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, delta::collision::contactpoint>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer, std::allocator<delta::collision::contactpoint> &)) /usr/include/c++/6/bits/stl_uninitialized.h(281,5)
+
+===========================================================================
+
+Begin optimization report for: std::__uninitialized_copy<false>::__uninit_copy<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__uninitialized_copy<false>::__uninit_copy<std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer>(std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::vector<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::const_iterator, std::_Vector_base<delta::collision::contactpoint, std::allocator<delta::collision::contactpoint>>::pointer)) /usr/include/c++/6/bits/stl_uninitialized.h(70,9)
+
+===========================================================================
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING FOOTNOTES:
+
+<1> The compiler's heuristics indicate that the function is not profitable to 
+    inline.  Override this decision by adding "inline 
+    __attribute__((always_inline))" to the declaration of the called function, 
+    or add "#pragma forceinline" before the call site.
+
+<2> The routine declaration is annotated with "__attribute__((noinline))".  
+    Remove this annotation to permit the compiler to inline this routine.
+

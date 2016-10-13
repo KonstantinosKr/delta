@@ -1,0 +1,1280 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o delta/primitives/blender.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: std::_Destroy_aux<true>::__destroy<std::vector<double, std::allocator<double>>::pointer>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Destroy_aux<true>::__destroy<std::vector<double, std::allocator<double>>::pointer>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer)) /usr/include/c++/6/bits/stl_construct.h(112,55)
+
+===========================================================================
+
+Begin optimization report for: std::allocator_traits<std::allocator<double>>::allocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::allocator_traits<std::allocator<double>>::allocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::size_type)) /usr/include/c++/6/bits/alloc_traits.h(416,7)
+
+===========================================================================
+
+Begin optimization report for: std::allocator_traits<std::allocator<double>>::deallocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::pointer, std::allocator_traits<std::allocator<double>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::allocator_traits<std::allocator<double>>::deallocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::pointer, std::allocator_traits<std::allocator<double>>::size_type)) /usr/include/c++/6/bits/alloc_traits.h(442,7)
+
+===========================================================================
+
+Begin optimization report for: std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &)) /usr/include/c++/6/bits/alloc_traits.h(476,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *)) [5/47=10.6%] /usr/include/c++/6/bits/stl_vector.h(114,7)
+
+
+    Report from: Code generation optimizations [cg]
+
+/usr/include/c++/6/bits/stl_vector.h(114,7):remark #34051: REGISTER ALLOCATION : [_ZNSt12_Vector_baseIdSaIdEE19_M_get_Tp_allocatorEv] /usr/include/c++/6/bits/stl_vector.h:114
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rax rdi]
+        
+    Routine temporaries
+        Total         :       9
+            Global    :       0
+            Local     :       9
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const) /usr/include/c++/6/bits/stl_vector.h(118,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<double, std::allocator<double>>::_M_allocate(std::_Vector_base<double, std::allocator<double>> *, std::size_t)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Vector_base<double, std::allocator<double>>::_M_allocate(std::_Vector_base<double, std::allocator<double>> *, std::size_t)) /usr/include/c++/6/bits/stl_vector.h(168,7)
+
+===========================================================================
+
+Begin optimization report for: std::_Vector_base<double, std::allocator<double>>::_M_deallocate(std::_Vector_base<double, std::allocator<double>> *, std::_Vector_base<double, std::allocator<double>>::pointer, std::size_t)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (std::_Vector_base<double, std::allocator<double>>::_M_deallocate(std::_Vector_base<double, std::allocator<double>> *, std::_Vector_base<double, std::allocator<double>>::pointer, std::size_t)) [8/47=17.0%] /usr/include/c++/6/bits/stl_vector.h(175,7)
+  -> INLINE (MANUAL): (178,4) std::allocator_traits<std::allocator<double>>::deallocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::pointer, std::allocator_traits<std::allocator<double>>::size_type) (isz = 0) (sz = 9)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(442,13) __gnu_cxx::new_allocator<double>::deallocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::pointer, __gnu_cxx::new_allocator<double>::size_type) (isz = 0) (sz = 7)
+      -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(110,9) operator delete(void *)
+
+
+    Report from: Code generation optimizations [cg]
+
+/usr/include/c++/6/bits/stl_vector.h(175,7):remark #34051: REGISTER ALLOCATION : [_ZNSt12_Vector_baseIdSaIdEE13_M_deallocateEPdm] /usr/include/c++/6/bits/stl_vector.h:175
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      11
+            Global    :       7
+            Local     :       4
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::begin(const std::vector<double, std::allocator<double>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::begin(const std::vector<double, std::allocator<double>> *) const) /usr/include/c++/6/bits/stl_vector.h(558,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::end(const std::vector<double, std::allocator<double>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::end(const std::vector<double, std::allocator<double>> *) const) /usr/include/c++/6/bits/stl_vector.h(576,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const) /usr/include/c++/6/bits/stl_vector.h(656,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const) /usr/include/c++/6/bits/stl_vector.h(661,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::resize(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::resize(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type)) /usr/include/c++/6/bits/stl_vector.h(675,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::empty(const std::vector<double, std::allocator<double>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::empty(const std::vector<double, std::allocator<double>> *) const) /usr/include/c++/6/bits/stl_vector.h(745,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type)) /usr/include/c++/6/bits/stl_vector.h(781,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::_M_check_len(const std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type, const char *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::_M_check_len(const std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type, const char *) const) /usr/include/c++/6/bits/stl_vector.h(1421,7)
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::_M_erase_at_end(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::_M_erase_at_end(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::pointer)) /usr/include/c++/6/bits/stl_vector.h(1435,7)
+
+===========================================================================
+
+Begin optimization report for: std::move_iterator<double *>::move_iterator(std::move_iterator<double *> *, std::move_iterator<double *>::iterator_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::move_iterator<double *>::move_iterator(std::move_iterator<double *> *, std::move_iterator<double *>::iterator_type)) /usr/include/c++/6/bits/stl_iterator.h(1033,25)
+
+===========================================================================
+
+Begin optimization report for: std::move_iterator<double *>::base(const std::move_iterator<double *> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::move_iterator<double *>::base(const std::move_iterator<double *> *) const) /usr/include/c++/6/bits/stl_iterator.h(1041,7)
+
+===========================================================================
+
+Begin optimization report for: std::__copy_move<true, true, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::iterator_category>::__copy_m<double>(const double *, const double *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__copy_move<true, true, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::iterator_category>::__copy_m<double>(const double *, const double *, double *)) /usr/include/c++/6/bits/stl_algobase.h(358,9)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<double>::allocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::size_type, const void *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<double>::allocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::size_type, const void *)) /usr/include/c++/6/ext/new_allocator.h(100,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<double>::deallocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::pointer, __gnu_cxx::new_allocator<double>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<double>::deallocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::pointer, __gnu_cxx::new_allocator<double>::size_type)) /usr/include/c++/6/ext/new_allocator.h(110,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const) /usr/include/c++/6/ext/new_allocator.h(114,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *, const std::vector<double, std::allocator<double>>::const_pointer &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *, const std::vector<double, std::allocator<double>>::const_pointer &)) /usr/include/c++/6/bits/stl_iterator.h(777,25)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::base(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::base(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *) const) /usr/include/c++/6/bits/stl_iterator.h(842,7)
+
+===========================================================================
+
+Begin optimization report for: std::fill_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::fill_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &)) /usr/include/c++/6/bits/stl_algobase.h(785,5)
+
+===========================================================================
+
+Begin optimization report for: std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer)) /usr/include/c++/6/bits/stl_algobase.h(278,5)
+
+===========================================================================
+
+Begin optimization report for: std::__fill_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (std::__fill_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &)) [28/47=59.6%] /usr/include/c++/6/bits/stl_algobase.h(750,5)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7)
+<Peeled loop for vectorization>
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+   remark #25015: Estimate of max trip count of loop=1
+LOOP END
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7)
+   remark #15388: vectorization support: reference *__first has aligned access   [ /usr/include/c++/6/bits/stl_algobase.h(754,3) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.875
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 4 
+   remark #15477: vector cost: 2.000 
+   remark #15478: estimated potential speedup: 1.920 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7)
+<Remainder loop for vectorization>
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+/usr/include/c++/6/bits/stl_algobase.h(750,5):remark #34051: REGISTER ALLOCATION : [_ZSt10__fill_n_aIPdmdEN9__gnu_cxx11__enable_ifIXsr3std11__is_scalarIT1_EE7__valueET_E6__typeES4_T0_RKS3_] /usr/include/c++/6/bits/stl_algobase.h:750
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    8[ rax rdx rcx rsi rdi r8 zmm0-zmm1]
+        
+    Routine temporaries
+        Total         :      23
+            Global    :      14
+            Local     :       9
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: std::max<std::vector<double, std::allocator<double>>::size_type>(const std::vector<double, std::allocator<double>>::size_type &, const std::vector<double, std::allocator<double>>::size_type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::max<std::vector<double, std::allocator<double>>::size_type>(const std::vector<double, std::allocator<double>>::size_type &, const std::vector<double, std::allocator<double>>::size_type &)) /usr/include/c++/6/bits/stl_algobase.h(220,5)
+
+===========================================================================
+
+Begin optimization report for: std::__make_move_if_noexcept_iterator<double, std::move_iterator<double *>>(double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__make_move_if_noexcept_iterator<double, std::move_iterator<double *>>(double *)) /usr/include/c++/6/bits/stl_iterator.h(1224,5)
+
+===========================================================================
+
+Begin optimization report for: std::copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer)) /usr/include/c++/6/bits/stl_algobase.h(447,5)
+
+===========================================================================
+
+Begin optimization report for: std::__miter_base<std::move_iterator<double *>::iterator_type>(std::move_iterator<double *>::iterator_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__miter_base<std::move_iterator<double *>::iterator_type>(std::move_iterator<double *>::iterator_type)) /usr/include/c++/6/bits/cpp_type_traits.h(409,5)
+
+===========================================================================
+
+Begin optimization report for: std::__miter_base<double *>(std::move_iterator<double *>)->std::move_iterator<double *>::iterator_type
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__miter_base<double *>(std::move_iterator<double *>)->std::move_iterator<double *>::iterator_type) /usr/include/c++/6/bits/stl_iterator.h(1245,5)
+
+===========================================================================
+
+Begin optimization report for: std::__copy_move_a2<true, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>::iterator_type, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__copy_move_a2<true, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>::iterator_type, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer)) /usr/include/c++/6/bits/stl_algobase.h(421,5)
+
+===========================================================================
+
+Begin optimization report for: std::__copy_move_a<true, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__copy_move_a<true, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer)) /usr/include/c++/6/bits/stl_algobase.h(376,5)
+
+===========================================================================
+
+Begin optimization report for: std::_Destroy<std::vector<double, std::allocator<double>>::pointer>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Destroy<std::vector<double, std::allocator<double>>::pointer>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer)) /usr/include/c++/6/bits/stl_construct.h(123,5)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::operator==<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &, const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::operator==<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &, const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &)) /usr/include/c++/6/bits/stl_iterator.h(866,5)
+
+===========================================================================
+
+Begin optimization report for: delta::primitives::generateBlender(double *, double, std::vector<double, std::allocator<double>> &, std::vector<double, std::allocator<double>> &, std::vector<double, std::allocator<double>> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::primitives::generateBlender(double *, double, std::vector<double, std::allocator<double>> &, std::vector<double, std::allocator<double>> &, std::vector<double, std::allocator<double>> &)) [38/47=80.9%] delta/primitives/blender.cpp(37,1)
+  -> EXTERN: (38,2) __assert_fail(const char *, const char *, unsigned int, const char *)
+  -> INLINE (MANUAL): (38,2) std::vector<double, std::allocator<double>>::empty(const std::vector<double, std::allocator<double>> *) const (isz = 35) (sz = 42)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(745,16) std::vector<double, std::allocator<double>>::begin(const std::vector<double, std::allocator<double>> *) const (isz = 7) (sz = 14)
+      -> INLINE (MANUAL): (558,31) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *, const std::vector<double, std::allocator<double>>::const_pointer &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(745,24) __gnu_cxx::operator==<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &, const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &) (isz = 10) (sz = 19)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(866,20) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::base(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *) const (isz = 1) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(866,36) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::base(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *) const (isz = 1) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(745,27) std::vector<double, std::allocator<double>>::end(const std::vector<double, std::allocator<double>> *) const (isz = 7) (sz = 14)
+      -> INLINE (MANUAL): (576,31) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *, const std::vector<double, std::allocator<double>>::const_pointer &) (isz = 0) (sz = 7)
+  -> EXTERN: (39,2) __assert_fail(const char *, const char *, unsigned int, const char *)
+  -> INLINE (MANUAL): (39,2) std::vector<double, std::allocator<double>>::empty(const std::vector<double, std::allocator<double>> *) const (isz = 35) (sz = 42)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(745,16) std::vector<double, std::allocator<double>>::begin(const std::vector<double, std::allocator<double>> *) const (isz = 7) (sz = 14)
+      -> INLINE (MANUAL): (558,31) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *, const std::vector<double, std::allocator<double>>::const_pointer &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(745,24) __gnu_cxx::operator==<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &, const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &) (isz = 10) (sz = 19)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(866,20) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::base(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *) const (isz = 1) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(866,36) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::base(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *) const (isz = 1) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(745,27) std::vector<double, std::allocator<double>>::end(const std::vector<double, std::allocator<double>> *) const (isz = 7) (sz = 14)
+      -> INLINE (MANUAL): (576,31) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *, const std::vector<double, std::allocator<double>>::const_pointer &) (isz = 0) (sz = 7)
+  -> EXTERN: (40,2) __assert_fail(const char *, const char *, unsigned int, const char *)
+  -> INLINE (MANUAL): (40,2) std::vector<double, std::allocator<double>>::empty(const std::vector<double, std::allocator<double>> *) const (isz = 35) (sz = 42)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(745,16) std::vector<double, std::allocator<double>>::begin(const std::vector<double, std::allocator<double>> *) const (isz = 7) (sz = 14)
+      -> INLINE (MANUAL): (558,31) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *, const std::vector<double, std::allocator<double>>::const_pointer &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(745,24) __gnu_cxx::operator==<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &, const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> &) (isz = 10) (sz = 19)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(866,20) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::base(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *) const (isz = 1) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(866,36) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::base(const __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *) const (isz = 1) (sz = 7)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(745,27) std::vector<double, std::allocator<double>>::end(const std::vector<double, std::allocator<double>> *) const (isz = 7) (sz = 14)
+      -> INLINE (MANUAL): (576,31) __gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>>::__normal_iterator(__gnu_cxx::__normal_iterator<std::vector<double, std::allocator<double>>::const_pointer, std::vector<double, std::allocator<double>>> *, const std::vector<double, std::allocator<double>>::const_pointer &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (44,15) std::vector<double, std::allocator<double>>::resize(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 368) (sz = 375)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(676,19) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(677,4) std::vector<double, std::allocator<double>>::_M_default_append(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 319) (sz = 326)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(549,3) std::__uninitialized_default_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, double>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::allocator<double> &) (isz = 21) (sz = 32)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(637,14) std::__uninitialized_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 21) (sz = 30)
+          -> INLINE (MANUAL): (573,14) std::__uninitialized_default_n_1<true>::__uninit_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 20) (sz = 29)
+            -> INLINE (MANUAL): (540,11) std::fill_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 16) (sz = 27)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,18) std::__fill_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 12) (sz = 23)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,34) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(550,13) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(555,3) std::vector<double, std::allocator<double>>::_M_check_len(const std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type, const char *) const (isz = 88) (sz = 99)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1422,6) std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const (isz = 8) (sz = 15)
+          -> INLINE (MANUAL): (661,16) std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &) (isz = 2) (sz = 9)
+            -> DELETED: /usr/include/c++/6/bits/alloc_traits.h:(476,20) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+          -> INLINE (MANUAL): (661,40) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const (isz = 1) (sz = 8)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1422,19) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> EXTERN: /usr/include/c++/6/bits/stl_vector.h:(1423,4) std::__throw_length_error(const char *)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1425,26) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1425,35) std::max<std::vector<double, std::allocator<double>>::size_type>(const std::vector<double, std::allocator<double>>::size_type &, const std::vector<double, std::allocator<double>>::size_type &) (isz = 2) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1425,44) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1426,18) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1426,36) std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const (isz = 8) (sz = 15)
+          -> INLINE (MANUAL): (661,16) std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &) (isz = 2) (sz = 9)
+            -> DELETED: /usr/include/c++/6/bits/alloc_traits.h:(476,20) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+          -> INLINE (MANUAL): (661,40) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const (isz = 1) (sz = 8)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1426,50) std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const (isz = 8) (sz = 15)
+          -> INLINE (MANUAL): (661,16) std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &) (isz = 2) (sz = 9)
+            -> DELETED: /usr/include/c++/6/bits/alloc_traits.h:(476,20) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+          -> INLINE (MANUAL): (661,40) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(556,43) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(557,34) std::_Vector_base<double, std::allocator<double>>::_M_allocate(std::_Vector_base<double, std::allocator<double>> *, std::size_t) (isz = 16) (sz = 25)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(170,20) std::allocator_traits<std::allocator<double>>::allocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::size_type) (isz = 9) (sz = 18)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(416,20) __gnu_cxx::new_allocator<double>::allocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::size_type, const void *) (isz = 7) (sz = 18)
+            -> DELETED: /usr/include/c++/6/ext/new_allocator.h:(101,18) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(102,4) std::__throw_bad_alloc()
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(104,27) operator new(std::size_t)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(562,9) std::__uninitialized_move_if_noexcept_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type &) (isz = 53) (sz = 66)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(302,14) std::__uninitialized_copy_a<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, double>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 42) (sz = 55)
+          -> INLINE (MANUAL): (281,14) std::uninitialized_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer) (isz = 42) (sz = 53)
+            -> INLINE (MANUAL): (123,14) std::__uninitialized_copy<true>::__uninit_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer) (isz = 41) (sz = 52)
+              -> INLINE (MANUAL): (93,18) std::copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer) (isz = 40) (sz = 51)
+                -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(454,15) std::__copy_move_a2<true, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>::iterator_type, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer) (isz = 23) (sz = 34)
+                  -> INLINE (MANUAL): (422,18) std::__copy_move_a<true, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 13) (sz = 24)
+                    -> INLINE (MANUAL): (385,14) std::__copy_move<true, true, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::iterator_category>::__copy_m<double>(const double *, const double *, double *) (isz = 12) (sz = 23)
+                      -> EXTERN: (368,6) __builtin_memmove(void *, const void *, unsigned long)
+                  -> INLINE (MANUAL): (422,46) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): (423,11) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): (424,11) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+                -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(455,9) std::__miter_base<double *>(std::move_iterator<double *>)->std::move_iterator<double *>::iterator_type (isz = 5) (sz = 12)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,14) std::__miter_base<std::move_iterator<double *>::iterator_type>(std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,32) std::move_iterator<double *>::base(const std::move_iterator<double *> *) const (isz = 0) (sz = 6)
+                -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(455,37) std::__miter_base<double *>(std::move_iterator<double *>)->std::move_iterator<double *>::iterator_type (isz = 5) (sz = 12)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,14) std::__miter_base<std::move_iterator<double *>::iterator_type>(std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,32) std::move_iterator<double *>::base(const std::move_iterator<double *> *) const (isz = 0) (sz = 6)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(303,3) std::__make_move_if_noexcept_iterator<double, std::move_iterator<double *>>(double *) (isz = 2) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1224,26) std::move_iterator<double *>::move_iterator(std::move_iterator<double *> *, std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 6)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(304,3) std::__make_move_if_noexcept_iterator<double, std::move_iterator<double *>>(double *) (isz = 2) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1224,26) std::move_iterator<double *>::move_iterator(std::move_iterator<double *> *, std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 6)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(564,21) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(566,7) std::__uninitialized_default_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, double>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::allocator<double> &) (isz = 21) (sz = 32)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(637,14) std::__uninitialized_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 21) (sz = 30)
+          -> INLINE (MANUAL): (573,14) std::__uninitialized_default_n_1<true>::__uninit_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 20) (sz = 29)
+            -> INLINE (MANUAL): (540,11) std::fill_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 16) (sz = 27)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,18) std::__fill_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 12) (sz = 23)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,34) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(567,12) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> EXTERN: /usr/include/c++/6/bits/vector.tcc:(569,8) __cxa_begin_catch
+      -> EXTERN: /usr/include/c++/6/bits/vector.tcc:(570,3) __cxa_end_catch
+      -> DELETED: /usr/include/c++/6/bits/vector.tcc:(571,5) std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 0) (sz = 8)
+      -> /usr/include/c++/6/bits/vector.tcc:(572,5) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+         [[ Callee not marked with inlining pragma  <1>]]
+      -> /usr/include/c++/6/bits/vector.tcc:(573,5) std::_Vector_base<double, std::allocator<double>>::_M_deallocate(std::_Vector_base<double, std::allocator<double>> *, std::_Vector_base<double, std::allocator<double>>::pointer, std::size_t) (isz = 4) (sz = 13)
+         [[ Callee not marked with inlining pragma  <1>]]
+      -> EXTERN: /usr/include/c++/6/bits/vector.tcc:(574,5) __cxa_rethrow
+      -> DELETED: /usr/include/c++/6/bits/vector.tcc:(576,8) std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 0) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(577,8) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(578,8) std::_Vector_base<double, std::allocator<double>>::_M_deallocate(std::_Vector_base<double, std::allocator<double>> *, std::_Vector_base<double, std::allocator<double>>::pointer, std::size_t) (isz = 4) (sz = 13)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(178,4) std::allocator_traits<std::allocator<double>>::deallocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::pointer, std::allocator_traits<std::allocator<double>>::size_type) (isz = 0) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(442,13) __gnu_cxx::new_allocator<double>::deallocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::pointer, __gnu_cxx::new_allocator<double>::size_type) (isz = 0) (sz = 7)
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(110,9) operator delete(void *)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(677,35) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(678,24) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(679,4) std::vector<double, std::allocator<double>>::_M_erase_at_end(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::pointer) (isz = 13) (sz = 20)
+      -> EXTERN: (1435,7) __cxa_call_unexpected
+      -> DELETED: (1436,2) std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 0) (sz = 8)
+      -> INLINE (MANUAL): (1436,48) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+  -> INLINE (MANUAL): (45,15) std::vector<double, std::allocator<double>>::resize(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 368) (sz = 375)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(676,19) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(677,4) std::vector<double, std::allocator<double>>::_M_default_append(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 319) (sz = 326)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(549,3) std::__uninitialized_default_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, double>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::allocator<double> &) (isz = 21) (sz = 32)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(637,14) std::__uninitialized_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 21) (sz = 30)
+          -> INLINE (MANUAL): (573,14) std::__uninitialized_default_n_1<true>::__uninit_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 20) (sz = 29)
+            -> INLINE (MANUAL): (540,11) std::fill_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 16) (sz = 27)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,18) std::__fill_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 12) (sz = 23)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,34) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(550,13) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(555,3) std::vector<double, std::allocator<double>>::_M_check_len(const std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type, const char *) const (isz = 88) (sz = 99)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1422,6) std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const (isz = 8) (sz = 15)
+          -> INLINE (MANUAL): (661,16) std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &) (isz = 2) (sz = 9)
+            -> DELETED: /usr/include/c++/6/bits/alloc_traits.h:(476,20) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+          -> INLINE (MANUAL): (661,40) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const (isz = 1) (sz = 8)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1422,19) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> EXTERN: /usr/include/c++/6/bits/stl_vector.h:(1423,4) std::__throw_length_error(const char *)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1425,26) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1425,35) std::max<std::vector<double, std::allocator<double>>::size_type>(const std::vector<double, std::allocator<double>>::size_type &, const std::vector<double, std::allocator<double>>::size_type &) (isz = 2) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1425,44) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1426,18) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1426,36) std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const (isz = 8) (sz = 15)
+          -> INLINE (MANUAL): (661,16) std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &) (isz = 2) (sz = 9)
+            -> DELETED: /usr/include/c++/6/bits/alloc_traits.h:(476,20) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+          -> INLINE (MANUAL): (661,40) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const (isz = 1) (sz = 8)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1426,50) std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const (isz = 8) (sz = 15)
+          -> INLINE (MANUAL): (661,16) std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &) (isz = 2) (sz = 9)
+            -> DELETED: /usr/include/c++/6/bits/alloc_traits.h:(476,20) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+          -> INLINE (MANUAL): (661,40) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(556,43) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(557,34) std::_Vector_base<double, std::allocator<double>>::_M_allocate(std::_Vector_base<double, std::allocator<double>> *, std::size_t) (isz = 16) (sz = 25)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(170,20) std::allocator_traits<std::allocator<double>>::allocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::size_type) (isz = 9) (sz = 18)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(416,20) __gnu_cxx::new_allocator<double>::allocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::size_type, const void *) (isz = 7) (sz = 18)
+            -> DELETED: /usr/include/c++/6/ext/new_allocator.h:(101,18) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(102,4) std::__throw_bad_alloc()
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(104,27) operator new(std::size_t)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(562,9) std::__uninitialized_move_if_noexcept_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type &) (isz = 53) (sz = 66)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(302,14) std::__uninitialized_copy_a<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, double>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 42) (sz = 55)
+          -> INLINE (MANUAL): (281,14) std::uninitialized_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer) (isz = 42) (sz = 53)
+            -> INLINE (MANUAL): (123,14) std::__uninitialized_copy<true>::__uninit_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer) (isz = 41) (sz = 52)
+              -> INLINE (MANUAL): (93,18) std::copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer) (isz = 40) (sz = 51)
+                -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(454,15) std::__copy_move_a2<true, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>::iterator_type, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer) (isz = 23) (sz = 34)
+                  -> INLINE (MANUAL): (422,18) std::__copy_move_a<true, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 13) (sz = 24)
+                    -> INLINE (MANUAL): (385,14) std::__copy_move<true, true, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::iterator_category>::__copy_m<double>(const double *, const double *, double *) (isz = 12) (sz = 23)
+                      -> EXTERN: (368,6) __builtin_memmove(void *, const void *, unsigned long)
+                  -> INLINE (MANUAL): (422,46) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): (423,11) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): (424,11) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+                -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(455,9) std::__miter_base<double *>(std::move_iterator<double *>)->std::move_iterator<double *>::iterator_type (isz = 5) (sz = 12)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,14) std::__miter_base<std::move_iterator<double *>::iterator_type>(std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,32) std::move_iterator<double *>::base(const std::move_iterator<double *> *) const (isz = 0) (sz = 6)
+                -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(455,37) std::__miter_base<double *>(std::move_iterator<double *>)->std::move_iterator<double *>::iterator_type (isz = 5) (sz = 12)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,14) std::__miter_base<std::move_iterator<double *>::iterator_type>(std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,32) std::move_iterator<double *>::base(const std::move_iterator<double *> *) const (isz = 0) (sz = 6)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(303,3) std::__make_move_if_noexcept_iterator<double, std::move_iterator<double *>>(double *) (isz = 2) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1224,26) std::move_iterator<double *>::move_iterator(std::move_iterator<double *> *, std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 6)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(304,3) std::__make_move_if_noexcept_iterator<double, std::move_iterator<double *>>(double *) (isz = 2) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1224,26) std::move_iterator<double *>::move_iterator(std::move_iterator<double *> *, std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 6)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(564,21) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(566,7) std::__uninitialized_default_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, double>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::allocator<double> &) (isz = 21) (sz = 32)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(637,14) std::__uninitialized_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 21) (sz = 30)
+          -> INLINE (MANUAL): (573,14) std::__uninitialized_default_n_1<true>::__uninit_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 20) (sz = 29)
+            -> INLINE (MANUAL): (540,11) std::fill_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 16) (sz = 27)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,18) std::__fill_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 12) (sz = 23)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,34) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(567,12) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> EXTERN: /usr/include/c++/6/bits/vector.tcc:(569,8) __cxa_begin_catch
+      -> EXTERN: /usr/include/c++/6/bits/vector.tcc:(570,3) __cxa_end_catch
+      -> DELETED: /usr/include/c++/6/bits/vector.tcc:(571,5) std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 0) (sz = 8)
+      -> /usr/include/c++/6/bits/vector.tcc:(572,5) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+         [[ Callee not marked with inlining pragma  <1>]]
+      -> /usr/include/c++/6/bits/vector.tcc:(573,5) std::_Vector_base<double, std::allocator<double>>::_M_deallocate(std::_Vector_base<double, std::allocator<double>> *, std::_Vector_base<double, std::allocator<double>>::pointer, std::size_t) (isz = 4) (sz = 13)
+         [[ Callee not marked with inlining pragma  <1>]]
+      -> EXTERN: /usr/include/c++/6/bits/vector.tcc:(574,5) __cxa_rethrow
+      -> DELETED: /usr/include/c++/6/bits/vector.tcc:(576,8) std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 0) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(577,8) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(578,8) std::_Vector_base<double, std::allocator<double>>::_M_deallocate(std::_Vector_base<double, std::allocator<double>> *, std::_Vector_base<double, std::allocator<double>>::pointer, std::size_t) (isz = 4) (sz = 13)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(178,4) std::allocator_traits<std::allocator<double>>::deallocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::pointer, std::allocator_traits<std::allocator<double>>::size_type) (isz = 0) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(442,13) __gnu_cxx::new_allocator<double>::deallocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::pointer, __gnu_cxx::new_allocator<double>::size_type) (isz = 0) (sz = 7)
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(110,9) operator delete(void *)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(677,35) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(678,24) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(679,4) std::vector<double, std::allocator<double>>::_M_erase_at_end(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::pointer) (isz = 13) (sz = 20)
+      -> EXTERN: (1435,7) __cxa_call_unexpected
+      -> DELETED: (1436,2) std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 0) (sz = 8)
+      -> INLINE (MANUAL): (1436,48) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+  -> INLINE (MANUAL): (46,15) std::vector<double, std::allocator<double>>::resize(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 368) (sz = 375)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(676,19) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(677,4) std::vector<double, std::allocator<double>>::_M_default_append(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 319) (sz = 326)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(549,3) std::__uninitialized_default_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, double>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::allocator<double> &) (isz = 21) (sz = 32)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(637,14) std::__uninitialized_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 21) (sz = 30)
+          -> INLINE (MANUAL): (573,14) std::__uninitialized_default_n_1<true>::__uninit_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 20) (sz = 29)
+            -> INLINE (MANUAL): (540,11) std::fill_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 16) (sz = 27)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,18) std::__fill_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 12) (sz = 23)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,34) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(550,13) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(555,3) std::vector<double, std::allocator<double>>::_M_check_len(const std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type, const char *) const (isz = 88) (sz = 99)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1422,6) std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const (isz = 8) (sz = 15)
+          -> INLINE (MANUAL): (661,16) std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &) (isz = 2) (sz = 9)
+            -> DELETED: /usr/include/c++/6/bits/alloc_traits.h:(476,20) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+          -> INLINE (MANUAL): (661,40) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const (isz = 1) (sz = 8)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1422,19) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> EXTERN: /usr/include/c++/6/bits/stl_vector.h:(1423,4) std::__throw_length_error(const char *)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1425,26) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1425,35) std::max<std::vector<double, std::allocator<double>>::size_type>(const std::vector<double, std::allocator<double>>::size_type &, const std::vector<double, std::allocator<double>>::size_type &) (isz = 2) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1425,44) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1426,18) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1426,36) std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const (isz = 8) (sz = 15)
+          -> INLINE (MANUAL): (661,16) std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &) (isz = 2) (sz = 9)
+            -> DELETED: /usr/include/c++/6/bits/alloc_traits.h:(476,20) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+          -> INLINE (MANUAL): (661,40) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const (isz = 1) (sz = 8)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(1426,50) std::vector<double, std::allocator<double>>::max_size(const std::vector<double, std::allocator<double>> *) const (isz = 8) (sz = 15)
+          -> INLINE (MANUAL): (661,16) std::allocator_traits<std::allocator<double>>::max_size(const std::allocator_traits<std::allocator<double>>::allocator_type &) (isz = 2) (sz = 9)
+            -> DELETED: /usr/include/c++/6/bits/alloc_traits.h:(476,20) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+          -> INLINE (MANUAL): (661,40) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(const std::_Vector_base<double, std::allocator<double>> *) const (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(556,43) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(557,34) std::_Vector_base<double, std::allocator<double>>::_M_allocate(std::_Vector_base<double, std::allocator<double>> *, std::size_t) (isz = 16) (sz = 25)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(170,20) std::allocator_traits<std::allocator<double>>::allocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::size_type) (isz = 9) (sz = 18)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(416,20) __gnu_cxx::new_allocator<double>::allocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::size_type, const void *) (isz = 7) (sz = 18)
+            -> DELETED: /usr/include/c++/6/ext/new_allocator.h:(101,18) __gnu_cxx::new_allocator<double>::max_size(const __gnu_cxx::new_allocator<double> *) const (isz = 0) (sz = 5)
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(102,4) std::__throw_bad_alloc()
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(104,27) operator new(std::size_t)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(562,9) std::__uninitialized_move_if_noexcept_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type &) (isz = 53) (sz = 66)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(302,14) std::__uninitialized_copy_a<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, double>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 42) (sz = 55)
+          -> INLINE (MANUAL): (281,14) std::uninitialized_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer) (isz = 42) (sz = 53)
+            -> INLINE (MANUAL): (123,14) std::__uninitialized_copy<true>::__uninit_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer) (isz = 41) (sz = 52)
+              -> INLINE (MANUAL): (93,18) std::copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer) (isz = 40) (sz = 51)
+                -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(454,15) std::__copy_move_a2<true, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>::iterator_type, std::move_iterator<double *>::iterator_type, std::vector<double, std::allocator<double>>::pointer) (isz = 23) (sz = 34)
+                  -> INLINE (MANUAL): (422,18) std::__copy_move_a<true, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 13) (sz = 24)
+                    -> INLINE (MANUAL): (385,14) std::__copy_move<true, true, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::iterator_category>::__copy_m<double>(const double *, const double *, double *) (isz = 12) (sz = 23)
+                      -> EXTERN: (368,6) __builtin_memmove(void *, const void *, unsigned long)
+                  -> INLINE (MANUAL): (422,46) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): (423,11) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): (424,11) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+                -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(455,9) std::__miter_base<double *>(std::move_iterator<double *>)->std::move_iterator<double *>::iterator_type (isz = 5) (sz = 12)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,14) std::__miter_base<std::move_iterator<double *>::iterator_type>(std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,32) std::move_iterator<double *>::base(const std::move_iterator<double *> *) const (isz = 0) (sz = 6)
+                -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(455,37) std::__miter_base<double *>(std::move_iterator<double *>)->std::move_iterator<double *>::iterator_type (isz = 5) (sz = 12)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,14) std::__miter_base<std::move_iterator<double *>::iterator_type>(std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 5)
+                  -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1245,32) std::move_iterator<double *>::base(const std::move_iterator<double *> *) const (isz = 0) (sz = 6)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(303,3) std::__make_move_if_noexcept_iterator<double, std::move_iterator<double *>>(double *) (isz = 2) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1224,26) std::move_iterator<double *>::move_iterator(std::move_iterator<double *> *, std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 6)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(304,3) std::__make_move_if_noexcept_iterator<double, std::move_iterator<double *>>(double *) (isz = 2) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_iterator.h:(1224,26) std::move_iterator<double *>::move_iterator(std::move_iterator<double *> *, std::move_iterator<double *>::iterator_type) (isz = 0) (sz = 6)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(564,21) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(566,7) std::__uninitialized_default_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, double>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::allocator<double> &) (isz = 21) (sz = 32)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_uninitialized.h:(637,14) std::__uninitialized_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 21) (sz = 30)
+          -> INLINE (MANUAL): (573,14) std::__uninitialized_default_n_1<true>::__uninit_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type) (isz = 20) (sz = 29)
+            -> INLINE (MANUAL): (540,11) std::fill_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 16) (sz = 27)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,18) std::__fill_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, const std::iterator_traits<std::_Vector_base<double, std::allocator<double>>::pointer>::value_type &) (isz = 12) (sz = 23)
+              -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_algobase.h:(789,34) std::__niter_base<std::_Vector_base<double, std::allocator<double>>::pointer>(std::_Vector_base<double, std::allocator<double>>::pointer) (isz = 0) (sz = 5)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(567,12) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> EXTERN: /usr/include/c++/6/bits/vector.tcc:(569,8) __cxa_begin_catch
+      -> EXTERN: /usr/include/c++/6/bits/vector.tcc:(570,3) __cxa_end_catch
+      -> DELETED: /usr/include/c++/6/bits/vector.tcc:(571,5) std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 0) (sz = 8)
+      -> /usr/include/c++/6/bits/vector.tcc:(572,5) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+         [[ Callee not marked with inlining pragma  <1>]]
+      -> /usr/include/c++/6/bits/vector.tcc:(573,5) std::_Vector_base<double, std::allocator<double>>::_M_deallocate(std::_Vector_base<double, std::allocator<double>> *, std::_Vector_base<double, std::allocator<double>>::pointer, std::size_t) (isz = 4) (sz = 13)
+         [[ Callee not marked with inlining pragma  <1>]]
+      -> EXTERN: /usr/include/c++/6/bits/vector.tcc:(574,5) __cxa_rethrow
+      -> DELETED: /usr/include/c++/6/bits/vector.tcc:(576,8) std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 0) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(577,8) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/vector.tcc:(578,8) std::_Vector_base<double, std::allocator<double>>::_M_deallocate(std::_Vector_base<double, std::allocator<double>> *, std::_Vector_base<double, std::allocator<double>>::pointer, std::size_t) (isz = 4) (sz = 13)
+        -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(178,4) std::allocator_traits<std::allocator<double>>::deallocate(std::allocator_traits<std::allocator<double>>::allocator_type &, std::allocator_traits<std::allocator<double>>::pointer, std::allocator_traits<std::allocator<double>>::size_type) (isz = 0) (sz = 9)
+          -> INLINE (MANUAL): /usr/include/c++/6/bits/alloc_traits.h:(442,13) __gnu_cxx::new_allocator<double>::deallocate(__gnu_cxx::new_allocator<double> *, __gnu_cxx::new_allocator<double>::pointer, __gnu_cxx::new_allocator<double>::size_type) (isz = 0) (sz = 7)
+            -> EXTERN: /usr/include/c++/6/ext/new_allocator.h:(110,9) operator delete(void *)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(677,35) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(678,24) std::vector<double, std::allocator<double>>::size(const std::vector<double, std::allocator<double>> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): /usr/include/c++/6/bits/stl_vector.h:(679,4) std::vector<double, std::allocator<double>>::_M_erase_at_end(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::pointer) (isz = 13) (sz = 20)
+      -> EXTERN: (1435,7) __cxa_call_unexpected
+      -> DELETED: (1436,2) std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &) (isz = 0) (sz = 8)
+      -> INLINE (MANUAL): (1436,48) std::_Vector_base<double, std::allocator<double>>::_M_get_Tp_allocator(std::_Vector_base<double, std::allocator<double>> *) (isz = 1) (sz = 8)
+  -> INLINE (MANUAL): (87,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (88,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (89,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (91,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (92,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (93,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (95,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (96,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (97,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (100,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (101,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (102,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (104,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (105,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (106,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (108,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (109,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (110,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (115,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (116,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (117,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (119,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (120,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (121,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (123,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (124,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (125,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (128,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (129,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (130,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (132,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (133,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (134,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (136,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (137,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (138,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (143,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (144,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (145,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (147,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (148,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (149,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (151,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (152,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (153,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (156,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (157,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (158,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (160,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (161,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (162,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (164,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (165,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (166,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (170,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (171,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (172,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (174,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (175,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (176,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (178,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (179,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (180,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (183,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (184,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (185,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (187,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (188,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (189,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (191,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (192,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (193,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (197,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (198,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (199,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (201,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (202,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (203,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (205,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (206,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (207,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (210,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (211,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (212,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (214,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (215,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (216,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (218,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (219,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (220,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (224,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (225,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (226,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (228,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (229,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (230,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (232,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (233,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (234,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (237,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (238,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (239,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (241,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (242,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (243,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (245,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (246,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (247,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (287,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (288,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (289,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (291,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (292,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (293,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (295,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (296,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (297,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (299,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (300,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (301,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (303,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (304,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (305,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (307,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (308,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (309,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (314,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (315,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (316,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (318,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (319,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (320,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (322,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (323,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (324,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (327,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (328,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (329,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (331,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (332,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (333,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (335,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (336,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (337,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (341,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (342,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (343,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (345,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (346,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (347,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (349,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (350,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (351,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (354,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (355,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (356,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (358,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (359,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (360,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (362,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (363,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (364,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (368,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (369,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (370,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (372,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (373,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (374,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (376,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (377,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (378,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (381,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (382,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (383,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (385,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (386,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (387,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (389,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (390,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (391,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (395,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (396,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (397,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (399,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (400,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (401,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (403,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (404,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (405,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (408,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (409,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (410,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (412,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (413,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (414,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (416,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (417,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+  -> INLINE (MANUAL): (418,14) std::vector<double, std::allocator<double>>::operator[](std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type) (isz = 1) (sz = 10)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(44,15)
+   remark #25408: memset generated
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(44,15)
+   <Peeled loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=1
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(44,15)
+      remark #15388: vectorization support: reference *__first has aligned access   [ /usr/include/c++/6/bits/stl_algobase.h(754,3) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 2
+      remark #15309: vectorization support: normalized vectorization overhead 1.500
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 4 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 1.090 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(44,15)
+   <Remainder loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=12
+   LOOP END
+LOOP END
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(44,15)
+   remark #25408: memset generated
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(44,15)
+   <Peeled loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=1
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(44,15)
+      remark #15388: vectorization support: reference *__first has aligned access   [ /usr/include/c++/6/bits/stl_algobase.h(754,3) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 2
+      remark #15309: vectorization support: normalized vectorization overhead 1.500
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 4 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 1.090 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(44,15)
+   <Remainder loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=12
+   LOOP END
+LOOP END
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(45,15)
+   remark #25408: memset generated
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(45,15)
+   <Peeled loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=1
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(45,15)
+      remark #15388: vectorization support: reference *__first has aligned access   [ /usr/include/c++/6/bits/stl_algobase.h(754,3) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 2
+      remark #15309: vectorization support: normalized vectorization overhead 1.500
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 4 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 1.090 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(45,15)
+   <Remainder loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=12
+   LOOP END
+LOOP END
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(45,15)
+   remark #25408: memset generated
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(45,15)
+   <Peeled loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=1
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(45,15)
+      remark #15388: vectorization support: reference *__first has aligned access   [ /usr/include/c++/6/bits/stl_algobase.h(754,3) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 2
+      remark #15309: vectorization support: normalized vectorization overhead 1.500
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 4 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 1.090 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(45,15)
+   <Remainder loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=12
+   LOOP END
+LOOP END
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(46,15)
+   remark #25408: memset generated
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(46,15)
+   <Peeled loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=1
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(46,15)
+      remark #15388: vectorization support: reference *__first has aligned access   [ /usr/include/c++/6/bits/stl_algobase.h(754,3) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 2
+      remark #15309: vectorization support: normalized vectorization overhead 1.500
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 4 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 1.090 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(46,15)
+   <Remainder loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=12
+   LOOP END
+LOOP END
+
+LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(46,15)
+   remark #25408: memset generated
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(46,15)
+   <Peeled loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=1
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(46,15)
+      remark #15388: vectorization support: reference *__first has aligned access   [ /usr/include/c++/6/bits/stl_algobase.h(754,3) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 2
+      remark #15309: vectorization support: normalized vectorization overhead 1.500
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 4 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 1.090 
+      remark #15488: --- end vector cost summary ---
+      remark #25015: Estimate of max trip count of loop=3
+   LOOP END
+
+   LOOP BEGIN at /usr/include/c++/6/bits/stl_algobase.h(752,7) inlined into delta/primitives/blender.cpp(46,15)
+   <Remainder loop for vectorization>
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+      remark #25015: Estimate of max trip count of loop=12
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+/usr/include/c++/6/bits/stl_algobase.h(368,6):remark #34014: optimization advice for memmove: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(368,6):remark #34014: optimization advice for memmove: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(368,6):remark #34026: call to memmove implemented as a call to optimized library version
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34026: call to memset implemented as a call to optimized library version
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34026: call to memset implemented as a call to optimized library version
+/usr/include/c++/6/bits/stl_algobase.h(368,6):remark #34014: optimization advice for memmove: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(368,6):remark #34014: optimization advice for memmove: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(368,6):remark #34026: call to memmove implemented as a call to optimized library version
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34026: call to memset implemented as a call to optimized library version
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34026: call to memset implemented as a call to optimized library version
+/usr/include/c++/6/bits/stl_algobase.h(368,6):remark #34014: optimization advice for memmove: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(368,6):remark #34014: optimization advice for memmove: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(368,6):remark #34026: call to memmove implemented as a call to optimized library version
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34026: call to memset implemented as a call to optimized library version
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+/usr/include/c++/6/bits/stl_algobase.h(754,3):remark #34026: call to memset implemented as a call to optimized library version
+delta/primitives/blender.cpp(37,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta10primitives15generateBlenderEPddRSt6vectorIdSaIdEES5_S5_] delta/primitives/blender.cpp:37
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   29[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm13]
+        
+    Routine temporaries
+        Total         :     230
+            Global    :      91
+            Local     :     139
+        Regenerable   :      61
+        Spilled       :      20
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :     112 bytes*
+            Reads     :      43 [5.57e-01 ~ 0.2%]
+            Writes    :      40 [4.63e-01 ~ 0.2%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::_Destroy<std::vector<double, std::allocator<double>>::pointer, double>(std::vector<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &)) /usr/include/c++/6/bits/stl_construct.h(150,5)
+
+===========================================================================
+
+Begin optimization report for: std::uninitialized_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::uninitialized_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer)) /usr/include/c++/6/bits/stl_uninitialized.h(109,5)
+
+===========================================================================
+
+Begin optimization report for: std::__uninitialized_copy_a<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, double>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__uninitialized_copy_a<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, double>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer, std::allocator<double> &)) /usr/include/c++/6/bits/stl_uninitialized.h(281,5)
+
+===========================================================================
+
+Begin optimization report for: std::__uninitialized_move_if_noexcept_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__uninitialized_move_if_noexcept_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::pointer, std::_Vector_base<double, std::allocator<double>>::_Tp_alloc_type &)) /usr/include/c++/6/bits/stl_uninitialized.h(301,5)
+
+===========================================================================
+
+Begin optimization report for: std::__uninitialized_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__uninitialized_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type)) /usr/include/c++/6/bits/stl_uninitialized.h(567,5)
+
+===========================================================================
+
+Begin optimization report for: std::__uninitialized_default_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, double>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::allocator<double> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__uninitialized_default_n_a<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, double>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type, std::allocator<double> &)) /usr/include/c++/6/bits/stl_uninitialized.h(637,5)
+
+===========================================================================
+
+Begin optimization report for: std::vector<double, std::allocator<double>>::_M_default_append(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::vector<double, std::allocator<double>>::_M_default_append(std::vector<double, std::allocator<double>> *, std::vector<double, std::allocator<double>>::size_type)) /usr/include/c++/6/bits/vector.tcc(542,5)
+
+===========================================================================
+
+Begin optimization report for: std::__uninitialized_default_n_1<true>::__uninit_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__uninitialized_default_n_1<true>::__uninit_default_n<std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type>(std::_Vector_base<double, std::allocator<double>>::pointer, std::vector<double, std::allocator<double>>::size_type)) /usr/include/c++/6/bits/stl_uninitialized.h(536,9)
+
+===========================================================================
+
+Begin optimization report for: std::__uninitialized_copy<true>::__uninit_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__uninitialized_copy<true>::__uninit_copy<std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer>(std::move_iterator<double *>, std::move_iterator<double *>, std::vector<double, std::allocator<double>>::pointer)) /usr/include/c++/6/bits/stl_uninitialized.h(93,9)
+
+===========================================================================
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING FOOTNOTES:
+
+<1> The compiler's heuristics indicate that the function is not profitable to 
+    inline.  Override this decision by adding "inline 
+    __attribute__((always_inline))" to the declaration of the called function, 
+    or add "#pragma forceinline" before the call site.
+

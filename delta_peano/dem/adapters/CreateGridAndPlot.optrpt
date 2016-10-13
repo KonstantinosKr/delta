@@ -1,0 +1,1336 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o dem/adapters/CreateGridAndPlot.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: __gthread_active_p()
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gthread_active_p()) /usr/include/x86_64-linux-gnu/c++/6/bits/gthr-default.h(248,1)
+
+===========================================================================
+
+Begin optimization report for: std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>>::~basic_stringbuf(std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>>::~basic_stringbuf(std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>> *)) /usr/include/c++/6/iosfwd(96,11)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,65)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,7)
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::touchVertexLastTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::touchVertexLastTimeSpecification()) [23/53=43.4%] dem/adapters/CreateGridAndPlot.cpp(14,100)
+  -> EXTERN: (15,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (16,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (16,6) dem::mappings::CreateGrid::touchVertexLastTimeSpecification()
+  -> EXTERN: (17,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (17,6) dem::mappings::Plot::touchVertexLastTimeSpecification()
+  -> EXTERN: (18,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (18,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexLastTimeSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(14,100):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot32touchVertexLastTimeSpecificationEv] dem/adapters/CreateGridAndPlot.cpp:14
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::touchVertexFirstTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::touchVertexFirstTimeSpecification()) [24/53=45.3%] dem/adapters/CreateGridAndPlot.cpp(24,101)
+  -> EXTERN: (25,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (26,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (26,6) dem::mappings::CreateGrid::touchVertexFirstTimeSpecification()
+  -> EXTERN: (27,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (27,6) dem::mappings::Plot::touchVertexFirstTimeSpecification()
+  -> EXTERN: (28,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (28,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexFirstTimeSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(24,101):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot33touchVertexFirstTimeSpecificationEv] dem/adapters/CreateGridAndPlot.cpp:24
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::enterCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::enterCellSpecification()) [25/53=47.2%] dem/adapters/CreateGridAndPlot.cpp(34,90)
+  -> EXTERN: (35,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (36,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (36,6) dem::mappings::CreateGrid::enterCellSpecification()
+  -> EXTERN: (37,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (37,6) dem::mappings::Plot::enterCellSpecification()
+  -> EXTERN: (38,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (38,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::enterCellSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(34,90):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot22enterCellSpecificationEv] dem/adapters/CreateGridAndPlot.cpp:34
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::leaveCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::leaveCellSpecification()) [26/53=49.1%] dem/adapters/CreateGridAndPlot.cpp(44,90)
+  -> EXTERN: (45,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (46,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (46,6) dem::mappings::CreateGrid::leaveCellSpecification()
+  -> EXTERN: (47,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (47,6) dem::mappings::Plot::leaveCellSpecification()
+  -> EXTERN: (48,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (48,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::leaveCellSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(44,90):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot22leaveCellSpecificationEv] dem/adapters/CreateGridAndPlot.cpp:44
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::ascendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::ascendSpecification()) [27/53=50.9%] dem/adapters/CreateGridAndPlot.cpp(54,87)
+  -> EXTERN: (55,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (56,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (56,6) dem::mappings::CreateGrid::ascendSpecification()
+  -> EXTERN: (57,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (57,6) dem::mappings::Plot::ascendSpecification()
+  -> EXTERN: (58,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (58,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::ascendSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(54,87):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot19ascendSpecificationEv] dem/adapters/CreateGridAndPlot.cpp:54
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::descendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::descendSpecification()) [28/53=52.8%] dem/adapters/CreateGridAndPlot.cpp(64,88)
+  -> EXTERN: (65,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (66,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (66,6) dem::mappings::CreateGrid::descendSpecification()
+  -> EXTERN: (67,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (67,6) dem::mappings::Plot::descendSpecification()
+  -> EXTERN: (68,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (68,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::descendSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(64,88):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot20descendSpecificationEv] dem/adapters/CreateGridAndPlot.cpp:64
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::communicationSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::communicationSpecification()) [29/53=54.7%] dem/adapters/CreateGridAndPlot.cpp(4,100)
+  -> EXTERN: (5,10) memcpy()
+  -> EXTERN: (5,10) peano::CommunicationSpecification::getMinimalSpecification(bool)
+  -> EXTERN: (6,6) memcpy()
+  -> EXTERN: (6,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (6,6) memcpy()
+  -> EXTERN: (6,6) dem::mappings::CreateGrid::communicationSpecification()
+  -> EXTERN: (7,6) memcpy()
+  -> EXTERN: (7,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (7,6) memcpy()
+  -> EXTERN: (7,6) dem::mappings::Plot::communicationSpecification()
+  -> EXTERN: (8,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (8,6) memcpy()
+  -> EXTERN: (8,6) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::communicationSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(5,10):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/CreateGridAndPlot.cpp(6,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/CreateGridAndPlot.cpp(6,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/CreateGridAndPlot.cpp(7,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/CreateGridAndPlot.cpp(7,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/CreateGridAndPlot.cpp(8,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/CreateGridAndPlot.cpp(4,100):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot26communicationSpecificationEv] dem/adapters/CreateGridAndPlot.cpp:4
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      61
+            Global    :      22
+            Local     :      39
+        Regenerable   :      13
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :     144 bytes*
+            Reads     :      12 [1.20e+01 ~ 17.6%]
+            Writes    :      24 [2.40e+01 ~ 35.3%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *)) [30/53=56.6%] dem/adapters/CreateGridAndPlot.cpp(74,55)
+  -> EXTERN: (74,35) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+  -> EXTERN: (74,35) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+  -> EXTERN: (74,35) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+  -> EXTERN: (74,35) dem::mappings::Plot::Plot(dem::mappings::Plot *)
+  -> EXTERN: (74,35) dem::mappings::CreateGrid::CreateGrid(dem::mappings::CreateGrid *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(74,55):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlotC1Ev] dem/adapters/CreateGridAndPlot.cpp:74
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rdx rdi]
+        
+    Routine temporaries
+        Total         :      32
+            Global    :       6
+            Local     :      26
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      16 bytes*
+            Reads     :       5 [2.00e+00 ~ 7.1%]
+            Writes    :       3 [1.00e+00 ~ 3.6%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)) [31/53=58.5%] dem/adapters/CreateGridAndPlot.cpp(74,35)
+  -> INLINE: (74,35) dem::adapters::CreateGridAndPlot::CreateGridAndPlot(dem::adapters::CreateGridAndPlot *) (isz = 33) (sz = 38)
+    -> EXTERN: (74,35) dem::mappings::CreateGrid::CreateGrid(dem::mappings::CreateGrid *)
+    -> EXTERN: (74,35) dem::mappings::Plot::Plot(dem::mappings::Plot *)
+    -> EXTERN: (74,35) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+    -> EXTERN: (74,35) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+    -> EXTERN: (74,35) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(74,35):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlotC2Ev] dem/adapters/CreateGridAndPlot.cpp:74
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rax rdx rbp rdi r12-r13]
+        
+    Routine temporaries
+        Total         :      26
+            Global    :       9
+            Local     :      17
+        Regenerable   :       0
+        Spilled       :       3
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [0.00e+00 ~ 0.0%]
+            Writes    :       2 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *)) [32/53=60.4%] dem/adapters/CreateGridAndPlot.cpp(78,56)
+  -> EXTERN: (79,1) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+  -> EXTERN: (79,1) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+  -> EXTERN: (79,1) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::~CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(78,56):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlotD1Ev] dem/adapters/CreateGridAndPlot.cpp:78
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :      16
+            Global    :       6
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       2 [2.00e+00 ~ 9.5%]
+            Writes    :       1 [1.00e+00 ~ 4.8%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)) [33/53=62.3%] dem/adapters/CreateGridAndPlot.cpp(78,35)
+  -> EXTERN: (78,35) operator delete(void *)
+  -> INLINE: (78,35) dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *) (isz = 14) (sz = 19)
+    -> EXTERN: (79,1) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::~CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+    -> EXTERN: (79,1) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (79,1) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(78,35):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlotD0Ev] dem/adapters/CreateGridAndPlot.cpp:78
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rbp rdi]
+        
+    Routine temporaries
+        Total         :      15
+            Global    :       7
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *const)) [34/53=64.2%] dem/adapters/CreateGridAndPlot.cpp(78,35)
+  -> INLINE: (78,35) dem::adapters::CreateGridAndPlot::~CreateGridAndPlot(dem::adapters::CreateGridAndPlot *) (isz = 14) (sz = 19)
+    -> EXTERN: (79,1) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::~CreateGridAndPlot2VTKGridVisualiser_2(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *)
+    -> EXTERN: (79,1) dem::mappings::Plot::~Plot(dem::mappings::Plot *)
+    -> EXTERN: (79,1) dem::mappings::CreateGrid::~CreateGrid(dem::mappings::CreateGrid *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(78,35):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlotD2Ev] dem/adapters/CreateGridAndPlot.cpp:78
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi r12]
+        
+    Routine temporaries
+        Total         :      14
+            Global    :       7
+            Local     :       7
+        Regenerable   :       0
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::createInnerVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::createInnerVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [35/53=66.0%] dem/adapters/CreateGridAndPlot.cpp(142,3)
+  -> EXTERN: (143,19) dem::mappings::CreateGrid::createInnerVertex(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (144,13) dem::mappings::Plot::createInnerVertex(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (145,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::createInnerVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(142,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot17createInnerVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:142
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::createBoundaryVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::createBoundaryVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [36/53=67.9%] dem/adapters/CreateGridAndPlot.cpp(158,3)
+  -> EXTERN: (159,19) dem::mappings::CreateGrid::createBoundaryVertex(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (160,13) dem::mappings::Plot::createBoundaryVertex(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (161,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::createBoundaryVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(158,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot20createBoundaryVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:158
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::createHangingVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::createHangingVertex(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [37/53=69.8%] dem/adapters/CreateGridAndPlot.cpp(109,3)
+  -> EXTERN: (110,19) dem::mappings::CreateGrid::createHangingVertex(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (111,13) dem::mappings::Plot::createHangingVertex(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (112,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::createHangingVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(109,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot19createHangingVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:109
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::destroyHangingVertex(dem::adapters::CreateGridAndPlot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::destroyHangingVertex(dem::adapters::CreateGridAndPlot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [38/53=71.7%] dem/adapters/CreateGridAndPlot.cpp(126,3)
+  -> EXTERN: (127,19) dem::mappings::CreateGrid::destroyHangingVertex(dem::mappings::CreateGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (128,13) dem::mappings::Plot::destroyHangingVertex(dem::mappings::Plot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (129,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::destroyHangingVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(126,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot20destroyHangingVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:126
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::destroyVertex(dem::adapters::CreateGridAndPlot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::destroyVertex(dem::adapters::CreateGridAndPlot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [39/53=73.6%] dem/adapters/CreateGridAndPlot.cpp(174,3)
+  -> EXTERN: (175,19) dem::mappings::CreateGrid::destroyVertex(dem::mappings::CreateGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (176,13) dem::mappings::Plot::destroyVertex(dem::mappings::Plot *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (177,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::destroyVertex(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(174,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot13destroyVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:174
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::createCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::createCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [40/53=75.5%] dem/adapters/CreateGridAndPlot.cpp(190,3)
+  -> EXTERN: (191,19) dem::mappings::CreateGrid::createCell(dem::mappings::CreateGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (192,13) dem::mappings::Plot::createCell(dem::mappings::Plot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (193,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::createCell(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(190,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot10createCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:190
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::destroyCell(dem::adapters::CreateGridAndPlot *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::destroyCell(dem::adapters::CreateGridAndPlot *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [41/53=77.4%] dem/adapters/CreateGridAndPlot.cpp(206,3)
+  -> EXTERN: (207,19) dem::mappings::CreateGrid::destroyCell(dem::mappings::CreateGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (208,13) dem::mappings::Plot::destroyCell(dem::mappings::Plot *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (209,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::destroyCell(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(206,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot11destroyCellERKNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES6_SB_RS2_RKN5tarch2la6VectorILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:206
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::touchVertexFirstTime(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::touchVertexFirstTime(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [42/53=79.2%] dem/adapters/CreateGridAndPlot.cpp(415,3)
+  -> EXTERN: (416,19) dem::mappings::CreateGrid::touchVertexFirstTime(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (417,13) dem::mappings::Plot::touchVertexFirstTime(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (418,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexFirstTime(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(415,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot20touchVertexFirstTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:415
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::touchVertexLastTime(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::touchVertexLastTime(dem::adapters::CreateGridAndPlot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [43/53=81.1%] dem/adapters/CreateGridAndPlot.cpp(431,3)
+  -> EXTERN: (432,19) dem::mappings::CreateGrid::touchVertexLastTime(dem::mappings::CreateGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (433,13) dem::mappings::Plot::touchVertexLastTime(dem::mappings::Plot *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (434,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexLastTime(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(431,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot19touchVertexLastTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:431
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::enterCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::enterCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [44/53=83.0%] dem/adapters/CreateGridAndPlot.cpp(447,3)
+  -> EXTERN: (448,19) dem::mappings::CreateGrid::enterCell(dem::mappings::CreateGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (449,13) dem::mappings::Plot::enterCell(dem::mappings::Plot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (450,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::enterCell(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(447,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot9enterCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:447
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::leaveCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::leaveCell(dem::adapters::CreateGridAndPlot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [45/53=84.9%] dem/adapters/CreateGridAndPlot.cpp(463,3)
+  -> EXTERN: (464,19) dem::mappings::CreateGrid::leaveCell(dem::mappings::CreateGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (465,13) dem::mappings::Plot::leaveCell(dem::mappings::Plot *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (466,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::leaveCell(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(463,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot9leaveCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/CreateGridAndPlot.cpp:463
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::endIteration(dem::adapters::CreateGridAndPlot *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::endIteration(dem::adapters::CreateGridAndPlot *, dem::State &)) [46/53=86.8%] dem/adapters/CreateGridAndPlot.cpp(483,3)
+  -> EXTERN: (484,19) dem::mappings::CreateGrid::endIteration(dem::mappings::CreateGrid *, dem::State &)
+  -> EXTERN: (485,13) dem::mappings::Plot::endIteration(dem::mappings::Plot *, dem::State &)
+  -> EXTERN: (486,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::endIteration(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::State &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(483,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot12endIterationERNS_5StateE] dem/adapters/CreateGridAndPlot.cpp:483
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rsi rdi r12-r13]
+        
+    Routine temporaries
+        Total         :      19
+            Global    :       8
+            Local     :      11
+        Regenerable   :       0
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::descend(dem::adapters::CreateGridAndPlot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::descend(dem::adapters::CreateGridAndPlot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [47/53=88.7%] dem/adapters/CreateGridAndPlot.cpp(500,3)
+  -> EXTERN: (501,19) dem::mappings::CreateGrid::descend(dem::mappings::CreateGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (502,13) dem::mappings::Plot::descend(dem::mappings::Plot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (503,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::descend(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(500,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot7descendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/adapters/CreateGridAndPlot.cpp:500
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      40
+            Global    :      13
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       7
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.4%]
+            Writes    :       1 [1.00e+00 ~ 1.7%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::ascend(dem::adapters::CreateGridAndPlot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::ascend(dem::adapters::CreateGridAndPlot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [48/53=90.6%] dem/adapters/CreateGridAndPlot.cpp(515,3)
+  -> EXTERN: (516,19) dem::mappings::CreateGrid::ascend(dem::mappings::CreateGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (517,13) dem::mappings::Plot::ascend(dem::mappings::Plot *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (518,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::ascend(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(515,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot6ascendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/adapters/CreateGridAndPlot.cpp:515
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      40
+            Global    :      13
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       7
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.4%]
+            Writes    :       1 [1.00e+00 ~ 1.7%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(49,3)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(66,3)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(79,3)
+
+===========================================================================
+
+Begin optimization report for: __sti__$E()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (__sti__$E()) [52/53=98.1%] <compiler generated>
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) __cxa_atexit()
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) std::ios_base::Init::Init(std::ios_base::Init *)
+
+
+    Report from: Code generation optimizations [cg]
+
+<compiler generated>:remark #34051: REGISTER ALLOCATION : [__sti__$E] (null):0
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      13
+            Global    :       7
+            Local     :       6
+        Regenerable   :       7
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::CreateGridAndPlot::beginIteration(dem::adapters::CreateGridAndPlot *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::CreateGridAndPlot::beginIteration(dem::adapters::CreateGridAndPlot *, dem::State &)) [53/53=100.0%] dem/adapters/CreateGridAndPlot.cpp(473,3)
+  -> EXTERN: (474,19) dem::mappings::CreateGrid::beginIteration(dem::mappings::CreateGrid *, dem::State &)
+  -> EXTERN: (475,13) dem::mappings::Plot::beginIteration(dem::mappings::Plot *, dem::State &)
+  -> EXTERN: (476,46) dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::beginIteration(dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2 *, dem::State &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/CreateGridAndPlot.cpp(473,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters17CreateGridAndPlot14beginIterationERNS_5StateE] dem/adapters/CreateGridAndPlot.cpp:473
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rsi rdi r12-r13]
+        
+    Routine temporaries
+        Total         :      19
+            Global    :       8
+            Local     :      11
+        Regenerable   :       0
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================

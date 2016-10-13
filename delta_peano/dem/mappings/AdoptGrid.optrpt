@@ -1,0 +1,1754 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o dem/mappings/AdoptGrid.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: __gthread_active_p()
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gthread_active_p()) /usr/include/x86_64-linux-gnu/c++/6/bits/gthr-default.h(248,1)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *)) /usr/include/c++/6/ext/new_allocator.h(79,45)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,65)
+
+===========================================================================
+
+Begin optimization report for: tarch::la::Vector<3, double>::operator()(const tarch::la::Vector<3, double> *, int) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::la::Vector<3, double>::operator()(const tarch::la::Vector<3, double> *, int) const) ./tarch/la/Vector.h(129,7)
+
+===========================================================================
+
+Begin optimization report for: tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int)) ./tarch/la/Vector.h(144,6)
+
+===========================================================================
+
+Begin optimization report for: tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *)) ./tarch/la/Vector.cpph(6,13)
+
+===========================================================================
+
+Begin optimization report for: tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const) ./tarch/la/Vector.h(129,7)
+
+===========================================================================
+
+Begin optimization report for: tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int)) ./tarch/la/Vector.h(144,6)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Vertex<dem::records::Vertex>::isOutside(const peano::grid::Vertex<dem::records::Vertex> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Vertex<dem::records::Vertex>::isOutside(const peano::grid::Vertex<dem::records::Vertex> *) const) ./peano/grid/Vertex.cpph(144,57)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const) ./peano/grid/Vertex.cpph(297,102)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::Vertex<dem::records::Vertex>::refine(peano::grid::Vertex<dem::records::Vertex> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::Vertex<dem::records::Vertex>::refine(peano::grid::Vertex<dem::records::Vertex> *)) ./peano/grid/Vertex.cpph(257,48)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const) ./dem/records/Vertex.h(4858,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Vertex::setRefinementControl(dem::records::Vertex *, const dem::records::Vertex::RefinementControl &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Vertex::setRefinementControl(dem::records::Vertex *, const dem::records::Vertex::RefinementControl &)) ./dem/records/Vertex.h(4868,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Vertex::setAdjacentCellsHeight(dem::records::Vertex *, const int &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Vertex::setAdjacentCellsHeight(dem::records::Vertex *, const int &)) ./dem/records/Vertex.h(4888,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::Vertex::getInsideOutsideDomain(const dem::records::Vertex *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::Vertex::getInsideOutsideDomain(const dem::records::Vertex *) const) ./dem/records/Vertex.h(4938,2)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::touchVertexLastTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::touchVertexLastTimeSpecification()) [24/61=39.3%] dem/mappings/AdoptGrid.cpp(16,92)
+  -> EXTERN: (17,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(16,92):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid32touchVertexLastTimeSpecificationEv] dem/mappings/AdoptGrid.cpp:16
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       6
+            Local     :       6
+        Regenerable   :       4
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 6.2%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification()) [25/61=41.0%] dem/mappings/AdoptGrid.cpp(23,93)
+  -> EXTERN: (24,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(23,93):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid33touchVertexFirstTimeSpecificationEv] dem/mappings/AdoptGrid.cpp:23
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       6
+            Local     :       6
+        Regenerable   :       4
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 6.2%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::enterCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::enterCellSpecification()) [26/61=42.6%] dem/mappings/AdoptGrid.cpp(27,82)
+  -> EXTERN: (28,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(27,82):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid22enterCellSpecificationEv] dem/mappings/AdoptGrid.cpp:27
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       6
+            Local     :       6
+        Regenerable   :       4
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 6.2%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::leaveCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::leaveCellSpecification()) [27/61=44.3%] dem/mappings/AdoptGrid.cpp(30,82)
+  -> EXTERN: (31,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(30,82):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid22leaveCellSpecificationEv] dem/mappings/AdoptGrid.cpp:30
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       6
+            Local     :       6
+        Regenerable   :       4
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 6.2%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::ascendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::ascendSpecification()) [28/61=45.9%] dem/mappings/AdoptGrid.cpp(33,79)
+  -> EXTERN: (34,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(33,79):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid19ascendSpecificationEv] dem/mappings/AdoptGrid.cpp:33
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       6
+            Local     :       6
+        Regenerable   :       4
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 6.2%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::descendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::descendSpecification()) [29/61=47.5%] dem/mappings/AdoptGrid.cpp(36,80)
+  -> EXTERN: (37,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(36,80):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid20descendSpecificationEv] dem/mappings/AdoptGrid.cpp:36
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       6
+            Local     :       6
+        Regenerable   :       4
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 6.2%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::communicationSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::communicationSpecification()) [30/61=49.2%] dem/mappings/AdoptGrid.cpp(9,92)
+  -> EXTERN: (10,259) peano::CommunicationSpecification::CommunicationSpecification(peano::CommunicationSpecification *, peano::CommunicationSpecification::ExchangeMasterWorkerData, peano::CommunicationSpecification::ExchangeWorkerMasterData, bool)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(9,92):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid26communicationSpecificationEv] dem/mappings/AdoptGrid.cpp:9
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rax rdx rcx rsi rdi]
+        
+    Routine temporaries
+        Total         :      15
+            Global    :       6
+            Local     :       9
+        Regenerable   :       5
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      12 bytes*
+            Reads     :       2 [2.00e+00 ~ 11.1%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::AdoptGrid(dem::mappings::AdoptGrid *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::AdoptGrid(dem::mappings::AdoptGrid *)) [31/61=50.8%] dem/mappings/AdoptGrid.cpp(266,39)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(266,39):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGridC1Ev] dem/mappings/AdoptGrid.cpp:266
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :       8
+            Global    :       0
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::AdoptGrid(dem::mappings::AdoptGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::AdoptGrid(dem::mappings::AdoptGrid *const)) [32/61=52.5%] dem/mappings/AdoptGrid.cpp(266,27)
+  -> INLINE: (266,27) dem::mappings::AdoptGrid::AdoptGrid(dem::mappings::AdoptGrid *) (isz = 2) (sz = 7)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(266,27):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGridC2Ev] dem/mappings/AdoptGrid.cpp:266
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :       8
+            Global    :       0
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)) [33/61=54.1%] dem/mappings/AdoptGrid.cpp(273,40)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(273,40):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGridD1Ev] dem/mappings/AdoptGrid.cpp:273
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :       8
+            Global    :       0
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *const)) [34/61=55.7%] dem/mappings/AdoptGrid.cpp(273,27)
+  -> EXTERN: (273,27) operator delete(void *)
+  -> INLINE: (273,27) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *) (isz = 2) (sz = 7)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(273,27):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGridD0Ev] dem/mappings/AdoptGrid.cpp:273
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :       9
+            Global    :       0
+            Local     :       9
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *const)) [35/61=57.4%] dem/mappings/AdoptGrid.cpp(273,27)
+  -> INLINE: (273,27) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *) (isz = 2) (sz = 7)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(273,27):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGridD2Ev] dem/mappings/AdoptGrid.cpp:273
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :       8
+            Global    :       0
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::createInnerVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::createInnerVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [36/61=59.0%] dem/mappings/AdoptGrid.cpp(219,3)
+  -> EXTERN: (222,18) dem::Vertex::init(dem::Vertex *)
+  -> INLINE: (223,3) dem::mappings::dropParticles(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &) (isz = 78) (sz = 89)
+    -> EXTERN: (183,7) peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(const peano::grid::VertexEnumerator::LocalVertexIntegerIndex &)
+    -> EXTERN: (185,95) peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(peano::grid::VertexEnumerator::LocalVertexIntegerIndex *, const peano::grid::VertexEnumerator::LocalVertexIntegerIndex &)
+    -> INDIRECT- (VIRTUAL): (185,95)  EXPR_CONV.SI64.P64(*((SI64*) (__$U11_V$17c.0.59.153->__vptr_V$16f + 8(I64))))
+       [[ Unable to inline indirect callsite  <1>]]
+    -> INLINE (MANUAL): (187,41) peano::grid::Vertex<dem::records::Vertex>::isOutside(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 5) (sz = 12)
+      -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(145,22) dem::records::Vertex::getInsideOutsideDomain(const dem::records::Vertex *) const (isz = 0) (sz = 6)
+    -> EXTERN: (190,47) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+    -> EXTERN: (190,47) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+    -> EXTERN: (191,44) dem::Vertex::getParticle(dem::Vertex *, int)
+    -> INDIRECT- (VIRTUAL): (191,88)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25397_V$179.0.59.153->__vptr_V$16f + 72(I64))))
+       [[ Unable to inline indirect callsite  <1>]]
+    -> INLINE (MANUAL): (191,130) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
+    -> EXTERN: (199,26) dem::Vertex::appendParticle(dem::Vertex *, const dem::records::Particle &)
+    -> EXTERN: (199,73) dem::Vertex::getParticle(dem::Vertex *, int)
+    -> EXTERN: (200,42) dem::Vertex::releaseParticle(dem::Vertex *, int)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/AdoptGrid.cpp(190,7) inlined into dem/mappings/AdoptGrid.cpp(223,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(219,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid17createInnerVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/AdoptGrid.cpp:219
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   13[ rax rdx rcx rbp rsi rdi r8-r9 r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      56
+            Global    :      26
+            Local     :      30
+        Regenerable   :       8
+        Spilled       :       5
+        
+    Routine stack
+        Variables     :      36 bytes*
+            Reads     :       1 [5.50e-01 ~ 1.1%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       1 [9.90e-02 ~ 0.2%]
+            Writes    :       1 [9.90e-02 ~ 0.2%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::createBoundaryVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::createBoundaryVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [37/61=60.7%] dem/mappings/AdoptGrid.cpp(237,3)
+  -> EXTERN: (240,18) dem::Vertex::init(dem::Vertex *)
+  -> INLINE: (241,3) dem::mappings::dropParticles(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &) (isz = 78) (sz = 89)
+    -> EXTERN: (183,7) peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(const peano::grid::VertexEnumerator::LocalVertexIntegerIndex &)
+    -> EXTERN: (185,95) peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(peano::grid::VertexEnumerator::LocalVertexIntegerIndex *, const peano::grid::VertexEnumerator::LocalVertexIntegerIndex &)
+    -> INDIRECT- (VIRTUAL): (185,95)  EXPR_CONV.SI64.P64(*((SI64*) (__$U11_V$17c.0.59.149->__vptr_V$16f + 8(I64))))
+       [[ Unable to inline indirect callsite  <1>]]
+    -> INLINE (MANUAL): (187,41) peano::grid::Vertex<dem::records::Vertex>::isOutside(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 5) (sz = 12)
+      -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(145,22) dem::records::Vertex::getInsideOutsideDomain(const dem::records::Vertex *) const (isz = 0) (sz = 6)
+    -> EXTERN: (190,47) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+    -> EXTERN: (190,47) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+    -> EXTERN: (191,44) dem::Vertex::getParticle(dem::Vertex *, int)
+    -> INDIRECT- (VIRTUAL): (191,88)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25397_V$179.0.59.149->__vptr_V$16f + 72(I64))))
+       [[ Unable to inline indirect callsite  <1>]]
+    -> INLINE (MANUAL): (191,130) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
+    -> EXTERN: (199,26) dem::Vertex::appendParticle(dem::Vertex *, const dem::records::Particle &)
+    -> EXTERN: (199,73) dem::Vertex::getParticle(dem::Vertex *, int)
+    -> EXTERN: (200,42) dem::Vertex::releaseParticle(dem::Vertex *, int)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/AdoptGrid.cpp(190,7) inlined into dem/mappings/AdoptGrid.cpp(241,3)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(237,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid20createBoundaryVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/AdoptGrid.cpp:237
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   13[ rax rdx rcx rbp rsi rdi r8-r9 r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      56
+            Global    :      26
+            Local     :      30
+        Regenerable   :       8
+        Spilled       :       5
+        
+    Routine stack
+        Variables     :      36 bytes*
+            Reads     :       1 [5.50e-01 ~ 1.1%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       1 [9.90e-02 ~ 0.2%]
+            Writes    :       1 [9.90e-02 ~ 0.2%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::createHangingVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::createHangingVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [38/61=62.3%] dem/mappings/AdoptGrid.cpp(127,3)
+  -> EXTERN: (130,18) dem::Vertex::init(dem::Vertex *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(127,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid19createHangingVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/AdoptGrid.cpp:127
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      14
+            Global    :       0
+            Local     :      14
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::destroyHangingVertex(dem::mappings::AdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::destroyHangingVertex(dem::mappings::AdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [39/61=63.9%] dem/mappings/AdoptGrid.cpp(165,3)
+  -> INLINE: (168,3) dem::mappings::liftAllParticles(const dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &) (isz = 83) (sz = 92)
+    -> EXTERN: (144,27) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+    -> EXTERN: (144,27) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+    -> INLINE (MANUAL): (145,39) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
+      -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset()
+    -> INLINE (MANUAL): (147,24) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+    -> EXTERN: (147,45) dem::Vertex::getParticle(const dem::Vertex *, int) const
+    -> INLINE (MANUAL): (147,86) tarch::la::Vector<3, double>::operator()(const tarch::la::Vector<3, double> *, int) const (isz = 1) (sz = 9)
+    -> INDIRECT- (VIRTUAL): (147,92)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25392_V$172.0.58.157->__vptr_V$16f + 56(I64))))
+       [[ Unable to inline indirect callsite  <1>]]
+    -> INLINE (MANUAL): (147,136) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
+    -> INDIRECT- (VIRTUAL): (149,54)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25392_V$172.0.58.157->__vptr_V$16f + 8(I64))))
+       [[ Unable to inline indirect callsite  <1>]]
+    -> EXTERN: (149,75) dem::Vertex::appendParticle(dem::Vertex *, const dem::records::Particle &)
+    -> EXTERN: (149,106) dem::Vertex::getParticle(const dem::Vertex *, int) const
+  -> EXTERN: (169,18) dem::Vertex::destroy(const dem::Vertex *) const
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/AdoptGrid.cpp(144,3) inlined into dem/mappings/AdoptGrid.cpp(168,3)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+
+   LOOP BEGIN at dem/mappings/AdoptGrid.cpp(146,5) inlined into dem/mappings/AdoptGrid.cpp(168,3)
+      remark #15382: vectorization support: call to function dem::Vertex::getParticle(const dem::Vertex *, int) const cannot be vectorized   [ dem/mappings/AdoptGrid.cpp(147,45) ]
+      remark #15382: vectorization support: call to function (unknown virtual call) cannot be vectorized   [ dem/mappings/AdoptGrid.cpp(147,92) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+./tarch/la/Vector.cpph(6,13):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (16, 0)
+dem/mappings/AdoptGrid.cpp(165,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid20destroyHangingVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/mappings/AdoptGrid.cpp:165
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   14[ rax rdx rcx rbx rbp rsi rdi r8-r9 r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      49
+            Global    :      24
+            Local     :      25
+        Regenerable   :       5
+        Spilled       :       7
+        
+    Routine stack
+        Variables     :      36 bytes*
+            Reads     :       1 [1.50e+01 ~ 3.9%]
+            Writes    :       4 [2.50e+01 ~ 6.5%]
+        Spills        :      24 bytes*
+            Reads     :       3 [6.80e+00 ~ 1.8%]
+            Writes    :       3 [6.80e+00 ~ 1.8%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::destroyVertex(dem::mappings::AdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::destroyVertex(dem::mappings::AdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [40/61=65.6%] dem/mappings/AdoptGrid.cpp(255,3)
+  -> EXTERN: (259,18) dem::Vertex::destroy(const dem::Vertex *) const
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(255,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid13destroyVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/mappings/AdoptGrid.cpp:255
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      14
+            Global    :       0
+            Local     :      14
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::createCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::createCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [41/61=67.2%] dem/mappings/AdoptGrid.cpp(304,3)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(304,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid10createCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/mappings/AdoptGrid.cpp:304
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::destroyCell(dem::mappings::AdoptGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::destroyCell(dem::mappings::AdoptGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [42/61=68.9%] dem/mappings/AdoptGrid.cpp(319,3)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(319,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid11destroyCellERKNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES6_SB_RS2_RKN5tarch2la6VectorILi3EiEE] dem/mappings/AdoptGrid.cpp:319
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::touchVertexFirstTime(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::touchVertexFirstTime(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [43/61=70.5%] dem/mappings/AdoptGrid.cpp(52,3)
+  -> EXTERN: (55,34) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> EXTERN: (55,34) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> EXTERN: (57,24) dem::Vertex::getParticle(dem::Vertex *, int)
+  -> INLINE (MANUAL): (57,77) tarch::la::Vector<3, double>::operator()(const tarch::la::Vector<3, double> *, int) const (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (58,25) peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 3) (sz = 10)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(298,22) dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (61,22) peano::grid::Vertex<dem::records::Vertex>::refine(peano::grid::Vertex<dem::records::Vertex> *) (isz = 12) (sz = 17)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(261,15) dem::records::Vertex::setRefinementControl(dem::records::Vertex *, const dem::records::Vertex::RefinementControl &) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(262,15) dem::records::Vertex::setAdjacentCellsHeight(dem::records::Vertex *, const int &) (isz = 0) (sz = 7)
+  -> EXTERN: (74,18) dem::Vertex::clearGridRefinementAnalysisData(dem::Vertex *)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/AdoptGrid.cpp(55,34)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+   remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(52,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid20touchVertexFirstTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/AdoptGrid.cpp:52
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   11[ rax rdx rcx rsi rdi r8-r9 r12-r14 zmm0]
+        
+    Routine temporaries
+        Total         :      29
+            Global    :      16
+            Local     :      13
+        Regenerable   :       1
+        Spilled       :       3
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::touchVertexLastTime(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::touchVertexLastTime(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [44/61=72.1%] dem/mappings/AdoptGrid.cpp(108,3)
+  -> EXTERN: (111,18) dem::Vertex::eraseIfParticleDistributionPermits(dem::Vertex *)
+  -> INLINE: (113,3) dem::mappings::restrictCoarseningVetoToCoarseGrid(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &) (isz = 128) (sz = 139)
+    -> INLINE (MANUAL): (86,3) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
+      -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset()
+    -> INLINE (MANUAL): (86,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+    -> INLINE (MANUAL): (86,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+    -> INLINE (MANUAL): (86,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+    -> INLINE (MANUAL): (90,25) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+    -> INLINE (MANUAL): (90,59) tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const (isz = 1) (sz = 9)
+    -> INLINE (MANUAL): (90,71) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+    -> INLINE (MANUAL): (90,105) tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const (isz = 1) (sz = 9)
+    -> INDIRECT- (VIRTUAL): (94,56)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25374_V$166.0.57.162->__vptr_V$16f + 8(I64))))
+       [[ Unable to inline indirect callsite  <1>]]
+    -> EXTERN: (94,61) dem::Vertex::restrictParticleResponsibilityData(dem::Vertex *, const dem::Vertex &)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/AdoptGrid.cpp(86,3) inlined into dem/mappings/AdoptGrid.cpp(113,3)
+   remark #15382: vectorization support: call to function memset() cannot be vectorized   [ ./tarch/la/Vector.cpph(6,13) ]
+   remark #15382: vectorization support: call to function (unknown virtual call) cannot be vectorized   [ dem/mappings/AdoptGrid.cpp(94,56) ]
+   remark #15382: vectorization support: call to function dem::Vertex::restrictParticleResponsibilityData(dem::Vertex *, const dem::Vertex &) cannot be vectorized   [ dem/mappings/AdoptGrid.cpp(94,61) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:memset() (6:13) and call:dem::Vertex::restrictParticleResponsibilityData(dem::Vertex (94:61)
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:dem::Vertex::restrictParticleResponsibilityData(dem::Vertex (94:61) and call:memset() (6:13)
+
+   LOOP BEGIN at dem/mappings/AdoptGrid.cpp(88,5) inlined into dem/mappings/AdoptGrid.cpp(113,3)
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+      remark #15346: vector dependence: assumed ANTI dependence between influences (90:7) and influences (90:7)
+      remark #15346: vector dependence: assumed FLOW dependence between influences (90:7) and influences (90:7)
+      remark #15346: vector dependence: assumed ANTI dependence between influences (90:7) and influences (90:7)
+      remark #25436: completely unrolled by 3  
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+./tarch/la/Vector.cpph(6,13):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (16, 0)
+dem/mappings/AdoptGrid.cpp(108,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid19touchVertexLastTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/AdoptGrid.cpp:108
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   15[ rax rdx rcx rbx rbp rsi rdi r8-r15]
+        
+    Routine temporaries
+        Total         :      43
+            Global    :      27
+            Local     :      16
+        Regenerable   :       6
+        Spilled       :       9
+        
+    Routine stack
+        Variables     :      12 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       5 [4.00e+01 ~ 9.5%]
+        Spills        :      24 bytes*
+            Reads     :       3 [5.28e+00 ~ 1.3%]
+            Writes    :       3 [3.00e+00 ~ 0.7%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::enterCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::enterCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [45/61=73.8%] dem/mappings/AdoptGrid.cpp(506,3)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(506,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid9enterCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/mappings/AdoptGrid.cpp:506
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::leaveCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::leaveCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [46/61=75.4%] dem/mappings/AdoptGrid.cpp(518,3)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(518,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid9leaveCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/mappings/AdoptGrid.cpp:518
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::endIteration(dem::mappings::AdoptGrid *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::endIteration(dem::mappings::AdoptGrid *, dem::State &)) [47/61=77.0%] dem/mappings/AdoptGrid.cpp(530,3)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(530,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid12endIterationERNS_5StateE] dem/mappings/AdoptGrid.cpp:530
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rsi rdi]
+        
+    Routine temporaries
+        Total         :       8
+            Global    :       0
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::descend(dem::mappings::AdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::descend(dem::mappings::AdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [48/61=78.7%] dem/mappings/AdoptGrid.cpp(542,3)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(542,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid7descendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/mappings/AdoptGrid.cpp:542
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::ascend(dem::mappings::AdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::ascend(dem::mappings::AdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [49/61=80.3%] dem/mappings/AdoptGrid.cpp(553,3)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(553,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid6ascendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/mappings/AdoptGrid.cpp:553
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(49,3)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(66,3)
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::restrictCoarseningVetoToCoarseGrid(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::restrictCoarseningVetoToCoarseGrid(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &)) [52/61=85.2%] dem/mappings/AdoptGrid.cpp(85,3)
+  -> INLINE (MANUAL): (86,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (86,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (86,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (86,3) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
+    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset()
+  -> INLINE (MANUAL): (90,25) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (90,59) tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (90,71) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (90,105) tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const (isz = 1) (sz = 9)
+  -> INDIRECT- (VIRTUAL): (94,56)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25374_V$166.0.57->__vptr_V$16f + 8(I64))))
+     [[ Unable to inline indirect callsite  <1>]]
+  -> EXTERN: (94,61) dem::Vertex::restrictParticleResponsibilityData(dem::Vertex *, const dem::Vertex &)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/AdoptGrid.cpp(86,3)
+   remark #15382: vectorization support: call to function memset() cannot be vectorized   [ ./tarch/la/Vector.cpph(6,13) ]
+   remark #15382: vectorization support: call to function (unknown virtual call) cannot be vectorized   [ dem/mappings/AdoptGrid.cpp(94,56) ]
+   remark #15382: vectorization support: call to function dem::Vertex::restrictParticleResponsibilityData(dem::Vertex *, const dem::Vertex &) cannot be vectorized   [ dem/mappings/AdoptGrid.cpp(94,61) ]
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:memset() (6:13) and call:dem::Vertex::restrictParticleResponsibilityData(dem::Vertex (94:61)
+   remark #15346: vector dependence: assumed OUTPUT dependence between call:dem::Vertex::restrictParticleResponsibilityData(dem::Vertex (94:61) and call:memset() (6:13)
+
+   LOOP BEGIN at dem/mappings/AdoptGrid.cpp(88,5)
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+      remark #15346: vector dependence: assumed ANTI dependence between influences (90:7) and influences (90:7)
+      remark #15346: vector dependence: assumed FLOW dependence between influences (90:7) and influences (90:7)
+      remark #15346: vector dependence: assumed ANTI dependence between influences (90:7) and influences (90:7)
+      remark #25436: completely unrolled by 3  
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+./tarch/la/Vector.cpph(6,13):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (16, 0)
+dem/mappings/AdoptGrid.cpp(85,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings34restrictCoarseningVetoToCoarseGridERNS_6VertexEPS1_RKN5peano4grid16VertexEnumeratorERKN5tarch2la6VectorILi3EiEE] dem/mappings/AdoptGrid.cpp:85
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   15[ rax rdx rcx rbx rbp rsi rdi r8-r15]
+        
+    Routine temporaries
+        Total         :      40
+            Global    :      27
+            Local     :      13
+        Regenerable   :       5
+        Spilled       :       9
+        
+    Routine stack
+        Variables     :      12 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       5 [4.00e+01 ~ 9.7%]
+        Spills        :      24 bytes*
+            Reads     :       3 [5.28e+00 ~ 1.3%]
+            Writes    :       3 [3.00e+00 ~ 0.7%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::liftAllParticles(const dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::liftAllParticles(const dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &)) [53/61=86.9%] dem/mappings/AdoptGrid.cpp(140,3)
+  -> EXTERN: (144,27) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> EXTERN: (144,27) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> INLINE (MANUAL): (145,39) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
+    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset()
+  -> INLINE (MANUAL): (147,24) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> EXTERN: (147,45) dem::Vertex::getParticle(const dem::Vertex *, int) const
+  -> INLINE (MANUAL): (147,86) tarch::la::Vector<3, double>::operator()(const tarch::la::Vector<3, double> *, int) const (isz = 1) (sz = 9)
+  -> INDIRECT- (VIRTUAL): (147,92)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25392_V$172.0.58->__vptr_V$16f + 56(I64))))
+     [[ Unable to inline indirect callsite  <1>]]
+  -> INLINE (MANUAL): (147,136) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
+  -> INDIRECT- (VIRTUAL): (149,54)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25392_V$172.0.58->__vptr_V$16f + 8(I64))))
+     [[ Unable to inline indirect callsite  <1>]]
+  -> EXTERN: (149,75) dem::Vertex::appendParticle(dem::Vertex *, const dem::records::Particle &)
+  -> EXTERN: (149,106) dem::Vertex::getParticle(const dem::Vertex *, int) const
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/AdoptGrid.cpp(144,3)
+   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+
+   LOOP BEGIN at dem/mappings/AdoptGrid.cpp(146,5)
+      remark #15382: vectorization support: call to function dem::Vertex::getParticle(const dem::Vertex *, int) const cannot be vectorized   [ dem/mappings/AdoptGrid.cpp(147,45) ]
+      remark #15382: vectorization support: call to function (unknown virtual call) cannot be vectorized   [ dem/mappings/AdoptGrid.cpp(147,92) ]
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   LOOP END
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+./tarch/la/Vector.cpph(6,13):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (16, 0)
+dem/mappings/AdoptGrid.cpp(140,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings16liftAllParticlesERKNS_6VertexEPS1_RKN5peano4grid16VertexEnumeratorE] dem/mappings/AdoptGrid.cpp:140
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   11[ rax rdx rbx rbp rsi rdi r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      45
+            Global    :      24
+            Local     :      21
+        Regenerable   :       5
+        Spilled       :       7
+        
+    Routine stack
+        Variables     :      36 bytes*
+            Reads     :       1 [1.50e+01 ~ 4.0%]
+            Writes    :       4 [2.50e+01 ~ 6.6%]
+        Spills        :      24 bytes*
+            Reads     :       3 [6.80e+00 ~ 1.8%]
+            Writes    :       3 [6.80e+00 ~ 1.8%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::dropParticles(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::dropParticles(dem::Vertex &, dem::Vertex *, const peano::grid::VertexEnumerator &, const tarch::la::Vector<3, int> &)) [54/61=88.5%] dem/mappings/AdoptGrid.cpp(180,3)
+  -> EXTERN: (183,7) peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(const peano::grid::VertexEnumerator::LocalVertexIntegerIndex &)
+  -> INDIRECT- (VIRTUAL): (185,95)  EXPR_CONV.SI64.P64(*((SI64*) (__$U11_V$17c.0.59->__vptr_V$16f + 8(I64))))
+     [[ Unable to inline indirect callsite  <1>]]
+  -> EXTERN: (185,95) peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(peano::grid::VertexEnumerator::LocalVertexIntegerIndex *, const peano::grid::VertexEnumerator::LocalVertexIntegerIndex &)
+  -> INLINE (MANUAL): (187,41) peano::grid::Vertex<dem::records::Vertex>::isOutside(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 5) (sz = 12)
+    -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(145,22) dem::records::Vertex::getInsideOutsideDomain(const dem::records::Vertex *) const (isz = 0) (sz = 6)
+  -> EXTERN: (190,47) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> EXTERN: (190,47) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
+  -> EXTERN: (191,44) dem::Vertex::getParticle(dem::Vertex *, int)
+  -> INDIRECT- (VIRTUAL): (191,88)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25397_V$179.0.59->__vptr_V$16f + 72(I64))))
+     [[ Unable to inline indirect callsite  <1>]]
+  -> INLINE (MANUAL): (191,130) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
+  -> EXTERN: (199,26) dem::Vertex::appendParticle(dem::Vertex *, const dem::records::Particle &)
+  -> EXTERN: (199,73) dem::Vertex::getParticle(dem::Vertex *, int)
+  -> EXTERN: (200,42) dem::Vertex::releaseParticle(dem::Vertex *, int)
+
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at dem/mappings/AdoptGrid.cpp(190,7)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(180,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13dropParticlesERNS_6VertexEPS1_RKN5peano4grid16VertexEnumeratorERKN5tarch2la6VectorILi3EiEE] dem/mappings/AdoptGrid.cpp:180
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   11[ rax rdx rcx rbx rsi rdi r12-r15 zmm0]
+        
+    Routine temporaries
+        Total         :      53
+            Global    :      26
+            Local     :      27
+        Regenerable   :       5
+        Spilled       :       5
+        
+    Routine stack
+        Variables     :      36 bytes*
+            Reads     :       1 [5.50e-01 ~ 1.2%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       1 [9.90e-02 ~ 0.2%]
+            Writes    :       1 [9.90e-02 ~ 0.2%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: __sti__$E()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (__sti__$E()) [55/61=90.2%] <compiler generated>
+  -> INLINE: /usr/include/c++/6/iostream:(74,25) __sti___ZN3dem8mappings9AdoptGrid4_logE() (isz = 63) (sz = 66)
+    -> EXTERN: dem/mappings/AdoptGrid.cpp:(41,62) __cxa_atexit()
+    -> INLINE (MANUAL): dem/mappings/AdoptGrid.cpp:(41,62) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) (isz = 27) (sz = 32)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,9) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_rep(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 3) (sz = 10)
+        -> INLINE (MANUAL): (2817,44) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_data(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 0) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,19) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_dispose(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &) (isz = 37) (sz = 44)
+        -> EXTERN: (2746,2) __cxa_call_unexpected
+        -> INLINE (MANUAL): (2748,34) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_S_empty_rep() (isz = 0) (sz = 4)
+        -> INLINE (MANUAL): (2761,12) __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int) (isz = 18) (sz = 28)
+          -> INLINE (MANUAL): /usr/include/c++/6/ext/atomicity.h:(81,9) __gthread_active_p() (isz = 1) (sz = 5)
+          -> INLINE (MANUAL): /usr/include/c++/6/ext/atomicity.h:(82,14) __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int) (isz = 4) (sz = 13)
+            -> EXTERN: (49,12) __atomic_fetch_add_4(volatile void *, unsigned int, int)
+          -> INLINE (MANUAL): /usr/include/c++/6/ext/atomicity.h:(84,14) __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int) (isz = 3) (sz = 12)
+        -> EXTERN: (2765,5) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_destroy(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,36) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::get_allocator(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::allocator_type *, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 2) (sz = 9)
+        -> INLINE (MANUAL): (4369,16) std::allocator<char>::allocator(std::allocator<char> *, const std::allocator<char> &) (isz = 5) (sz = 12)
+          -> DELETED: /usr/include/c++/6/bits/allocator.h:(121,31) __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &) (isz = 0) (sz = 7)
+          -> EXTERN: /usr/include/c++/6/bits/allocator.h:(121,36) __cxa_call_unexpected
+    -> DELETED: dem/mappings/AdoptGrid.cpp:(41,62) std::allocator<char>::~allocator(std::allocator<char> *) (isz = 0) (sz = 3)
+    -> INLINE (MANUAL): dem/mappings/AdoptGrid.cpp:(41,68) std::allocator<char>::allocator(std::allocator<char> *) (isz = 5) (sz = 10)
+      -> DELETED: /usr/include/c++/6/bits/allocator.h:(118,7) __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const) (isz = 0) (sz = 5)
+      -> EXTERN: /usr/include/c++/6/bits/allocator.h:(118,27) __cxa_call_unexpected
+    -> EXTERN: dem/mappings/AdoptGrid.cpp:(41,68) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *, const char *, const std::allocator<char> &)
+    -> EXTERN: dem/mappings/AdoptGrid.cpp:(41,68) tarch::logging::Log::Log(tarch::logging::Log *, const std::string &)
+    -> DELETED: dem/mappings/AdoptGrid.cpp:(41,68) std::allocator<char>::~allocator(std::allocator<char> *) (isz = 0) (sz = 3)
+    -> INLINE (MANUAL): dem/mappings/AdoptGrid.cpp:(41,68) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) (isz = 27) (sz = 32)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,9) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_rep(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 3) (sz = 10)
+        -> INLINE (MANUAL): (2817,44) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_data(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 0) (sz = 7)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,19) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_dispose(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &) (isz = 37) (sz = 44)
+        -> EXTERN: (2746,2) __cxa_call_unexpected
+        -> INLINE (MANUAL): (2748,34) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_S_empty_rep() (isz = 0) (sz = 4)
+        -> (2761,12) __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int) (isz = 18) (sz = 28)
+           [[ Callee not marked with inlining pragma  <2>]]
+        -> EXTERN: (2765,5) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_destroy(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &)
+      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,36) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::get_allocator(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::allocator_type *, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 2) (sz = 9)
+        -> INLINE (MANUAL): (4369,16) std::allocator<char>::allocator(std::allocator<char> *, const std::allocator<char> &) (isz = 5) (sz = 12)
+          -> DELETED: /usr/include/c++/6/bits/allocator.h:(121,31) __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &) (isz = 0) (sz = 7)
+          -> EXTERN: /usr/include/c++/6/bits/allocator.h:(121,36) __cxa_call_unexpected
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) __cxa_atexit()
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) std::ios_base::Init::Init(std::ios_base::Init *)
+
+
+    Report from: Code generation optimizations [cg]
+
+<compiler generated>:remark #34051: REGISTER ALLOCATION : [__sti__$E] (null):0
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rax rdx rcx rsi rdi]
+        
+    Routine temporaries
+        Total         :      60
+            Global    :      19
+            Local     :      41
+        Regenerable   :      29
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :      19 bytes*
+            Reads     :       3 [1.00e+00 ~ 2.5%]
+            Writes    :       2 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       1 [0.00e+00 ~ 0.0%]
+            Writes    :       1 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,7)
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (__gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)) [57/61=93.4%] /usr/include/c++/6/ext/atomicity.h(79,3)
+  -> INLINE (MANUAL): (81,9) __gthread_active_p() (isz = 1) (sz = 5)
+  -> INLINE (MANUAL): (82,14) __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int) (isz = 4) (sz = 13)
+    -> EXTERN: (49,12) __atomic_fetch_add_4(volatile void *, unsigned int, int)
+  -> INLINE (MANUAL): (84,14) __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int) (isz = 3) (sz = 12)
+
+
+    Report from: Code generation optimizations [cg]
+
+/usr/include/c++/6/ext/atomicity.h(79,3):remark #34051: REGISTER ALLOCATION : [_ZN48_INTERNAL_26_dem_mappings_AdoptGrid_cpp_dfd0e8929__gnu_cxx27__exchange_and_add_dispatchEPii] /usr/include/c++/6/ext/atomicity.h:79
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rax rdx rcx rsi rdi]
+        
+    Routine temporaries
+        Total         :      18
+            Global    :       8
+            Local     :      10
+        Regenerable   :       2
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const)) /usr/include/c++/6/ext/new_allocator.h(79,7)
+
+===========================================================================
+
+Begin optimization report for: __sti___ZN3dem8mappings9AdoptGrid4_logE()
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (__sti___ZN3dem8mappings9AdoptGrid4_logE()) <compiler generated>
+
+===========================================================================
+
+Begin optimization report for: dem::mappings::AdoptGrid::beginIteration(dem::mappings::AdoptGrid *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::mappings::AdoptGrid::beginIteration(dem::mappings::AdoptGrid *, dem::State &)) [61/61=100.0%] dem/mappings/AdoptGrid.cpp(524,3)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/mappings/AdoptGrid.cpp(524,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings9AdoptGrid14beginIterationERNS_5StateE] dem/mappings/AdoptGrid.cpp:524
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rsi rdi]
+        
+    Routine temporaries
+        Total         :       8
+            Global    :       0
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING FOOTNOTES:
+
+<1> The indirectly called function must be resolved to its targets before it 
+can be inlined.  Consider compiling with -ipo or -prof-gen followed by 
+-prof-use.
+
+<2> The compiler's heuristics indicate that the function is not profitable to 
+    inline.  Override this decision by adding "inline 
+    __attribute__((always_inline))" to the declaration of the called function, 
+    or add "#pragma forceinline" before the call site.
+

@@ -1,0 +1,1280 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o dem/adapters/TimeStepOnDynamicGrid.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::touchVertexLastTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::touchVertexLastTimeSpecification()) [1/28=3.6%] dem/adapters/TimeStepOnDynamicGrid.cpp(14,104)
+  -> EXTERN: (15,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (16,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (16,6) dem::mappings::Collision::touchVertexLastTimeSpecification()
+  -> EXTERN: (17,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (17,6) dem::mappings::MoveParticles::touchVertexLastTimeSpecification()
+  -> EXTERN: (18,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (18,6) dem::mappings::AdoptGrid::touchVertexLastTimeSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(14,104):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid32touchVertexLastTimeSpecificationEv] dem/adapters/TimeStepOnDynamicGrid.cpp:14
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::touchVertexFirstTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::touchVertexFirstTimeSpecification()) [2/28=7.1%] dem/adapters/TimeStepOnDynamicGrid.cpp(24,105)
+  -> EXTERN: (25,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (26,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (26,6) dem::mappings::Collision::touchVertexFirstTimeSpecification()
+  -> EXTERN: (27,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (27,6) dem::mappings::MoveParticles::touchVertexFirstTimeSpecification()
+  -> EXTERN: (28,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (28,6) dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(24,105):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid33touchVertexFirstTimeSpecificationEv] dem/adapters/TimeStepOnDynamicGrid.cpp:24
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::enterCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::enterCellSpecification()) [3/28=10.7%] dem/adapters/TimeStepOnDynamicGrid.cpp(34,94)
+  -> EXTERN: (35,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (36,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (36,6) dem::mappings::Collision::enterCellSpecification()
+  -> EXTERN: (37,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (37,6) dem::mappings::MoveParticles::enterCellSpecification()
+  -> EXTERN: (38,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (38,6) dem::mappings::AdoptGrid::enterCellSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(34,94):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid22enterCellSpecificationEv] dem/adapters/TimeStepOnDynamicGrid.cpp:34
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::leaveCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::leaveCellSpecification()) [4/28=14.3%] dem/adapters/TimeStepOnDynamicGrid.cpp(44,94)
+  -> EXTERN: (45,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (46,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (46,6) dem::mappings::Collision::leaveCellSpecification()
+  -> EXTERN: (47,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (47,6) dem::mappings::MoveParticles::leaveCellSpecification()
+  -> EXTERN: (48,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (48,6) dem::mappings::AdoptGrid::leaveCellSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(44,94):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid22leaveCellSpecificationEv] dem/adapters/TimeStepOnDynamicGrid.cpp:44
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::ascendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::ascendSpecification()) [5/28=17.9%] dem/adapters/TimeStepOnDynamicGrid.cpp(54,91)
+  -> EXTERN: (55,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (56,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (56,6) dem::mappings::Collision::ascendSpecification()
+  -> EXTERN: (57,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (57,6) dem::mappings::MoveParticles::ascendSpecification()
+  -> EXTERN: (58,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (58,6) dem::mappings::AdoptGrid::ascendSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(54,91):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid19ascendSpecificationEv] dem/adapters/TimeStepOnDynamicGrid.cpp:54
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::descendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::descendSpecification()) [6/28=21.4%] dem/adapters/TimeStepOnDynamicGrid.cpp(64,92)
+  -> EXTERN: (65,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (66,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (66,6) dem::mappings::Collision::descendSpecification()
+  -> EXTERN: (67,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (67,6) dem::mappings::MoveParticles::descendSpecification()
+  -> EXTERN: (68,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (68,6) dem::mappings::AdoptGrid::descendSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(64,92):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid20descendSpecificationEv] dem/adapters/TimeStepOnDynamicGrid.cpp:64
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      14
+            Local     :      19
+        Regenerable   :      12
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      48 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       6 [6.00e+00 ~ 20.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::communicationSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::communicationSpecification()) [7/28=25.0%] dem/adapters/TimeStepOnDynamicGrid.cpp(4,104)
+  -> EXTERN: (5,10) memcpy()
+  -> EXTERN: (5,10) peano::CommunicationSpecification::getMinimalSpecification(bool)
+  -> EXTERN: (6,6) memcpy()
+  -> EXTERN: (6,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (6,6) memcpy()
+  -> EXTERN: (6,6) dem::mappings::Collision::communicationSpecification()
+  -> EXTERN: (7,6) memcpy()
+  -> EXTERN: (7,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (7,6) memcpy()
+  -> EXTERN: (7,6) dem::mappings::MoveParticles::communicationSpecification()
+  -> EXTERN: (8,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (8,6) memcpy()
+  -> EXTERN: (8,6) dem::mappings::AdoptGrid::communicationSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(5,10):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStepOnDynamicGrid.cpp(6,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStepOnDynamicGrid.cpp(6,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStepOnDynamicGrid.cpp(7,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStepOnDynamicGrid.cpp(7,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStepOnDynamicGrid.cpp(8,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStepOnDynamicGrid.cpp(4,104):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid26communicationSpecificationEv] dem/adapters/TimeStepOnDynamicGrid.cpp:4
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      61
+            Global    :      22
+            Local     :      39
+        Regenerable   :      13
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :     144 bytes*
+            Reads     :      12 [1.20e+01 ~ 17.6%]
+            Writes    :      24 [2.40e+01 ~ 35.3%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *)) [8/28=28.6%] dem/adapters/TimeStepOnDynamicGrid.cpp(74,63)
+  -> EXTERN: (74,39) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+  -> EXTERN: (74,39) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+  -> EXTERN: (74,39) dem::mappings::AdoptGrid::AdoptGrid(dem::mappings::AdoptGrid *)
+  -> EXTERN: (74,39) dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *)
+  -> EXTERN: (74,39) dem::mappings::Collision::Collision(dem::mappings::Collision *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(74,63):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGridC1Ev] dem/adapters/TimeStepOnDynamicGrid.cpp:74
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rdx rdi]
+        
+    Routine temporaries
+        Total         :      32
+            Global    :       6
+            Local     :      26
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      16 bytes*
+            Reads     :       5 [2.00e+00 ~ 7.1%]
+            Writes    :       3 [1.00e+00 ~ 3.6%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *const)) [9/28=32.1%] dem/adapters/TimeStepOnDynamicGrid.cpp(74,39)
+  -> INLINE: (74,39) dem::adapters::TimeStepOnDynamicGrid::TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *) (isz = 33) (sz = 38)
+    -> EXTERN: (74,39) dem::mappings::Collision::Collision(dem::mappings::Collision *)
+    -> EXTERN: (74,39) dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (74,39) dem::mappings::AdoptGrid::AdoptGrid(dem::mappings::AdoptGrid *)
+    -> EXTERN: (74,39) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+    -> EXTERN: (74,39) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(74,39):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGridC2Ev] dem/adapters/TimeStepOnDynamicGrid.cpp:74
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rax rdx rbp rdi r12-r13]
+        
+    Routine temporaries
+        Total         :      26
+            Global    :       9
+            Local     :      17
+        Regenerable   :       0
+        Spilled       :       3
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [0.00e+00 ~ 0.0%]
+            Writes    :       2 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::~TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::~TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *)) [10/28=35.7%] dem/adapters/TimeStepOnDynamicGrid.cpp(78,64)
+  -> EXTERN: (79,1) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+  -> EXTERN: (79,1) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+  -> EXTERN: (79,1) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(78,64):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGridD1Ev] dem/adapters/TimeStepOnDynamicGrid.cpp:78
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :      16
+            Global    :       6
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       2 [2.00e+00 ~ 9.5%]
+            Writes    :       1 [1.00e+00 ~ 4.8%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::~TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::~TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *const)) [11/28=39.3%] dem/adapters/TimeStepOnDynamicGrid.cpp(78,39)
+  -> EXTERN: (78,39) operator delete(void *)
+  -> INLINE: (78,39) dem::adapters::TimeStepOnDynamicGrid::~TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *) (isz = 14) (sz = 19)
+    -> EXTERN: (79,1) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+    -> EXTERN: (79,1) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (79,1) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(78,39):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGridD0Ev] dem/adapters/TimeStepOnDynamicGrid.cpp:78
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rbp rdi]
+        
+    Routine temporaries
+        Total         :      15
+            Global    :       7
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::~TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::~TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *const)) [12/28=42.9%] dem/adapters/TimeStepOnDynamicGrid.cpp(78,39)
+  -> INLINE: (78,39) dem::adapters::TimeStepOnDynamicGrid::~TimeStepOnDynamicGrid(dem::adapters::TimeStepOnDynamicGrid *) (isz = 14) (sz = 19)
+    -> EXTERN: (79,1) dem::mappings::AdoptGrid::~AdoptGrid(dem::mappings::AdoptGrid *)
+    -> EXTERN: (79,1) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (79,1) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(78,39):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGridD2Ev] dem/adapters/TimeStepOnDynamicGrid.cpp:78
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi r12]
+        
+    Routine temporaries
+        Total         :      14
+            Global    :       7
+            Local     :       7
+        Regenerable   :       0
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::createInnerVertex(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::createInnerVertex(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [13/28=46.4%] dem/adapters/TimeStepOnDynamicGrid.cpp(142,3)
+  -> EXTERN: (143,18) dem::mappings::Collision::createInnerVertex(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (144,22) dem::mappings::MoveParticles::createInnerVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (145,18) dem::mappings::AdoptGrid::createInnerVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(142,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid17createInnerVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:142
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::createBoundaryVertex(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::createBoundaryVertex(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [14/28=50.0%] dem/adapters/TimeStepOnDynamicGrid.cpp(158,3)
+  -> EXTERN: (159,18) dem::mappings::Collision::createBoundaryVertex(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (160,22) dem::mappings::MoveParticles::createBoundaryVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (161,18) dem::mappings::AdoptGrid::createBoundaryVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(158,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid20createBoundaryVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:158
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::createHangingVertex(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::createHangingVertex(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [15/28=53.6%] dem/adapters/TimeStepOnDynamicGrid.cpp(109,3)
+  -> EXTERN: (110,18) dem::mappings::Collision::createHangingVertex(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (111,22) dem::mappings::MoveParticles::createHangingVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (112,18) dem::mappings::AdoptGrid::createHangingVertex(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(109,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid19createHangingVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:109
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::destroyHangingVertex(dem::adapters::TimeStepOnDynamicGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::destroyHangingVertex(dem::adapters::TimeStepOnDynamicGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [16/28=57.1%] dem/adapters/TimeStepOnDynamicGrid.cpp(126,3)
+  -> EXTERN: (127,18) dem::mappings::Collision::destroyHangingVertex(dem::mappings::Collision *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (128,22) dem::mappings::MoveParticles::destroyHangingVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (129,18) dem::mappings::AdoptGrid::destroyHangingVertex(dem::mappings::AdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(126,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid20destroyHangingVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:126
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::destroyVertex(dem::adapters::TimeStepOnDynamicGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::destroyVertex(dem::adapters::TimeStepOnDynamicGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [17/28=60.7%] dem/adapters/TimeStepOnDynamicGrid.cpp(174,3)
+  -> EXTERN: (175,18) dem::mappings::Collision::destroyVertex(dem::mappings::Collision *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (176,22) dem::mappings::MoveParticles::destroyVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (177,18) dem::mappings::AdoptGrid::destroyVertex(dem::mappings::AdoptGrid *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(174,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid13destroyVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:174
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::createCell(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::createCell(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [18/28=64.3%] dem/adapters/TimeStepOnDynamicGrid.cpp(190,3)
+  -> EXTERN: (191,18) dem::mappings::Collision::createCell(dem::mappings::Collision *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (192,22) dem::mappings::MoveParticles::createCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (193,18) dem::mappings::AdoptGrid::createCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(190,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid10createCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:190
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::destroyCell(dem::adapters::TimeStepOnDynamicGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::destroyCell(dem::adapters::TimeStepOnDynamicGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [19/28=67.9%] dem/adapters/TimeStepOnDynamicGrid.cpp(206,3)
+  -> EXTERN: (207,18) dem::mappings::Collision::destroyCell(dem::mappings::Collision *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (208,22) dem::mappings::MoveParticles::destroyCell(dem::mappings::MoveParticles *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (209,18) dem::mappings::AdoptGrid::destroyCell(dem::mappings::AdoptGrid *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(206,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid11destroyCellERKNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES6_SB_RS2_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:206
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::touchVertexFirstTime(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::touchVertexFirstTime(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [20/28=71.4%] dem/adapters/TimeStepOnDynamicGrid.cpp(415,3)
+  -> EXTERN: (416,18) dem::mappings::Collision::touchVertexFirstTime(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (417,22) dem::mappings::MoveParticles::touchVertexFirstTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (418,18) dem::mappings::AdoptGrid::touchVertexFirstTime(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(415,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid20touchVertexFirstTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:415
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::touchVertexLastTime(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::touchVertexLastTime(dem::adapters::TimeStepOnDynamicGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [21/28=75.0%] dem/adapters/TimeStepOnDynamicGrid.cpp(431,3)
+  -> EXTERN: (432,18) dem::mappings::Collision::touchVertexLastTime(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (433,22) dem::mappings::MoveParticles::touchVertexLastTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (434,18) dem::mappings::AdoptGrid::touchVertexLastTime(dem::mappings::AdoptGrid *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(431,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid19touchVertexLastTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:431
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::enterCell(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::enterCell(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [22/28=78.6%] dem/adapters/TimeStepOnDynamicGrid.cpp(447,3)
+  -> EXTERN: (448,18) dem::mappings::Collision::enterCell(dem::mappings::Collision *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (449,22) dem::mappings::MoveParticles::enterCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (450,18) dem::mappings::AdoptGrid::enterCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(447,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid9enterCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:447
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::leaveCell(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::leaveCell(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [23/28=82.1%] dem/adapters/TimeStepOnDynamicGrid.cpp(463,3)
+  -> EXTERN: (464,18) dem::mappings::Collision::leaveCell(dem::mappings::Collision *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (465,22) dem::mappings::MoveParticles::leaveCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (466,18) dem::mappings::AdoptGrid::leaveCell(dem::mappings::AdoptGrid *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(463,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid9leaveCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStepOnDynamicGrid.cpp:463
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      41
+            Global    :      14
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       4 [4.00e+00 ~ 6.7%]
+            Writes    :       2 [2.00e+00 ~ 3.3%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::endIteration(dem::adapters::TimeStepOnDynamicGrid *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::endIteration(dem::adapters::TimeStepOnDynamicGrid *, dem::State &)) [24/28=85.7%] dem/adapters/TimeStepOnDynamicGrid.cpp(483,3)
+  -> EXTERN: (484,18) dem::mappings::Collision::endIteration(dem::mappings::Collision *, dem::State &)
+  -> EXTERN: (485,22) dem::mappings::MoveParticles::endIteration(dem::mappings::MoveParticles *, dem::State &)
+  -> EXTERN: (486,18) dem::mappings::AdoptGrid::endIteration(dem::mappings::AdoptGrid *, dem::State &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(483,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid12endIterationERNS_5StateE] dem/adapters/TimeStepOnDynamicGrid.cpp:483
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rsi rdi r12-r13]
+        
+    Routine temporaries
+        Total         :      19
+            Global    :       8
+            Local     :      11
+        Regenerable   :       0
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::descend(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::descend(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [25/28=89.3%] dem/adapters/TimeStepOnDynamicGrid.cpp(500,3)
+  -> EXTERN: (501,18) dem::mappings::Collision::descend(dem::mappings::Collision *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (502,22) dem::mappings::MoveParticles::descend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (503,18) dem::mappings::AdoptGrid::descend(dem::mappings::AdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(500,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid7descendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/adapters/TimeStepOnDynamicGrid.cpp:500
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      40
+            Global    :      13
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       7
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.4%]
+            Writes    :       1 [1.00e+00 ~ 1.7%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::ascend(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::ascend(dem::adapters::TimeStepOnDynamicGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [26/28=92.9%] dem/adapters/TimeStepOnDynamicGrid.cpp(515,3)
+  -> EXTERN: (516,18) dem::mappings::Collision::ascend(dem::mappings::Collision *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (517,22) dem::mappings::MoveParticles::ascend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (518,18) dem::mappings::AdoptGrid::ascend(dem::mappings::AdoptGrid *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(515,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid6ascendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/adapters/TimeStepOnDynamicGrid.cpp:515
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      40
+            Global    :      13
+            Local     :      27
+        Regenerable   :       0
+        Spilled       :       7
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.4%]
+            Writes    :       1 [1.00e+00 ~ 1.7%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: __sti__$E()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (__sti__$E()) [27/28=96.4%] <compiler generated>
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) __cxa_atexit()
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) std::ios_base::Init::Init(std::ios_base::Init *)
+
+
+    Report from: Code generation optimizations [cg]
+
+<compiler generated>:remark #34051: REGISTER ALLOCATION : [__sti__$E] (null):0
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      13
+            Global    :       7
+            Local     :       6
+        Regenerable   :       7
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStepOnDynamicGrid::beginIteration(dem::adapters::TimeStepOnDynamicGrid *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStepOnDynamicGrid::beginIteration(dem::adapters::TimeStepOnDynamicGrid *, dem::State &)) [28/28=100.0%] dem/adapters/TimeStepOnDynamicGrid.cpp(473,3)
+  -> EXTERN: (474,18) dem::mappings::Collision::beginIteration(dem::mappings::Collision *, dem::State &)
+  -> EXTERN: (475,22) dem::mappings::MoveParticles::beginIteration(dem::mappings::MoveParticles *, dem::State &)
+  -> EXTERN: (476,18) dem::mappings::AdoptGrid::beginIteration(dem::mappings::AdoptGrid *, dem::State &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStepOnDynamicGrid.cpp(473,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters21TimeStepOnDynamicGrid14beginIterationERNS_5StateE] dem/adapters/TimeStepOnDynamicGrid.cpp:473
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rsi rdi r12-r13]
+        
+    Routine temporaries
+        Total         :      19
+            Global    :       8
+            Local     :      11
+        Regenerable   :       0
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================

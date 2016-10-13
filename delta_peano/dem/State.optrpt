@@ -1,0 +1,1282 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o dem/State.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: dem::State::writeToCheckpoint(const dem::State *, peano::grid::Checkpoint<dem::Vertex, dem::Cell> &) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::writeToCheckpoint(const dem::State *, peano::grid::Checkpoint<dem::Vertex, dem::Cell> &) const) [1/48=2.1%] dem/State.cpp(17,104)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(17,104):remark #34051: REGISTER ALLOCATION : [_ZNK3dem5State17writeToCheckpointERN5peano4grid10CheckpointINS_6VertexENS_4CellEEE] dem/State.cpp:17
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rsi rdi]
+        
+    Routine temporaries
+        Total         :       8
+            Global    :       0
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::readFromCheckpoint(dem::State *, const peano::grid::Checkpoint<dem::Vertex, dem::Cell> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::readFromCheckpoint(dem::State *, const peano::grid::Checkpoint<dem::Vertex, dem::Cell> &)) [2/48=4.2%] dem/State.cpp(21,105)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(21,105):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State18readFromCheckpointERKN5peano4grid10CheckpointINS_6VertexENS_4CellEEE] dem/State.cpp:21
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rsi rdi]
+        
+    Routine temporaries
+        Total         :       8
+            Global    :       0
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::State(dem::State *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::State(dem::State *)) [3/48=6.2%] dem/State.cpp(8,10)
+  -> INLINE (MANUAL): (7,13) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const) (isz = 9) (sz = 14)
+    -> INLINE (MANUAL): ./peano/grid/State.h:(102,5) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *) (isz = 9) (sz = 14)
+      -> EXTERN: ./peano/grid/State.cpph:(32,32) dem::records::State::State(dem::records::State *)
+      -> INLINE (MANUAL): ./peano/grid/State.cpph:(34,14) dem::records::State::setIsTraversalInverted(dem::records::State *, const bool &) (isz = 0) (sz = 7)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(8,10):remark #34051: REGISTER ALLOCATION : [_ZN3dem5StateC1Ev] dem/State.cpp:8
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi r13]
+        
+    Routine temporaries
+        Total         :       9
+            Global    :       7
+            Local     :       2
+        Regenerable   :       0
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::State(dem::State *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::State(dem::State *const)) [4/48=8.3%] dem/State.cpp(7,13)
+  -> INLINE: (7,13) dem::State::State(dem::State *) (isz = 9) (sz = 14)
+    -> INLINE (MANUAL): (7,13) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const) (isz = 9) (sz = 14)
+      -> INLINE (MANUAL): ./peano/grid/State.h:(102,5) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *) (isz = 9) (sz = 14)
+        -> EXTERN: ./peano/grid/State.cpph:(32,32) dem::records::State::State(dem::records::State *)
+        -> INLINE (MANUAL): ./peano/grid/State.cpph:(34,14) dem::records::State::setIsTraversalInverted(dem::records::State *, const bool &) (isz = 0) (sz = 7)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(7,13):remark #34051: REGISTER ALLOCATION : [_ZN3dem5StateC2Ev] dem/State.cpp:7
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi r13]
+        
+    Routine temporaries
+        Total         :       9
+            Global    :       7
+            Local     :       2
+        Regenerable   :       0
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::State(dem::State *, const peano::grid::State<dem::records::State>::PersistentState &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::State(dem::State *, const peano::grid::State<dem::records::State>::PersistentState &)) [5/48=10.4%] dem/State.cpp(13,18)
+  -> INLINE (MANUAL): (13,8) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 19) (sz = 26)
+    -> INLINE (MANUAL): ./peano/grid/State.h:(103,5) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 19) (sz = 26)
+      -> EXTERN: ./peano/grid/State.cpph:(48,32) dem::records::StatePacked::~StatePacked(dem::records::StatePacked *)
+      -> EXTERN: ./peano/grid/State.cpph:(49,43) dem::records::StatePacked::StatePacked(dem::records::StatePacked *, const dem::records::StatePacked::PersistentRecords &)
+      -> EXTERN: ./peano/grid/State.cpph:(49,43) dem::records::StatePacked::~StatePacked(dem::records::StatePacked *)
+      -> EXTERN: ./peano/grid/State.cpph:(49,54) dem::records::StatePacked::convert(dem::records::State *, const dem::records::StatePacked *) const
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(13,18):remark #34051: REGISTER ALLOCATION : [_ZN3dem5StateC1ERKNS_7records11StatePacked17PersistentRecordsE] dem/State.cpp:13
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rax rdx rsi rdi r14]
+        
+    Routine temporaries
+        Total         :      24
+            Global    :       8
+            Local     :      16
+        Regenerable   :       6
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :     200 bytes*
+            Reads     :       1 [0.00e+00 ~ 0.0%]
+            Writes    :       1 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::State(dem::State *const, const peano::grid::State<dem::records::State>::PersistentState &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::State(dem::State *const, const peano::grid::State<dem::records::State>::PersistentState &)) [6/48=12.5%] dem/State.cpp(12,13)
+  -> INLINE: (12,13) dem::State::State(dem::State *, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 19) (sz = 26)
+    -> INLINE (MANUAL): (13,8) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 19) (sz = 26)
+      -> INLINE (MANUAL): ./peano/grid/State.h:(103,5) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 19) (sz = 26)
+        -> EXTERN: ./peano/grid/State.cpph:(48,32) dem::records::StatePacked::~StatePacked(dem::records::StatePacked *)
+        -> EXTERN: ./peano/grid/State.cpph:(49,43) dem::records::StatePacked::StatePacked(dem::records::StatePacked *, const dem::records::StatePacked::PersistentRecords &)
+        -> EXTERN: ./peano/grid/State.cpph:(49,43) dem::records::StatePacked::~StatePacked(dem::records::StatePacked *)
+        -> EXTERN: ./peano/grid/State.cpph:(49,54) dem::records::StatePacked::convert(dem::records::State *, const dem::records::StatePacked *) const
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(12,13):remark #34051: REGISTER ALLOCATION : [_ZN3dem5StateC2ERKNS_7records11StatePacked17PersistentRecordsE] dem/State.cpp:12
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rax rdx rsi rdi r14]
+        
+    Routine temporaries
+        Total         :      24
+            Global    :       8
+            Local     :      16
+        Regenerable   :       6
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :     200 bytes*
+            Reads     :       1 [0.00e+00 ~ 0.0%]
+            Writes    :       1 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::merge(dem::State *, const dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::merge(dem::State *, const dem::State &)) [7/48=14.6%] dem/State.cpp(60,51)
+  -> INLINE (MANUAL): (61,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (61,51) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (61,102) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (62,14) dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (62,59) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (62,118) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (63,14) dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (63,57) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (63,114) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(60,51):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State5mergeERKS0_] dem/State.cpp:60
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rsi rdi zmm0-zmm2]
+        
+    Routine temporaries
+        Total         :      16
+            Global    :       0
+            Local     :      16
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::clearAccumulatedData(dem::State *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::clearAccumulatedData(dem::State *)) [8/48=16.7%] dem/State.cpp(25,41)
+  -> INLINE (MANUAL): (26,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (27,14) dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (28,14) dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (29,14) dem::records::State::setTwoParticlesAreClose(dem::records::State *, const bool &) (isz = 0) (sz = 7)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(25,41):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State20clearAccumulatedDataEv] dem/State.cpp:25
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rax rdi]
+        
+    Routine temporaries
+        Total         :       9
+            Global    :       0
+            Local     :       9
+        Regenerable   :       1
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::incNumberOfContactPoints(dem::State *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::incNumberOfContactPoints(dem::State *, int)) [9/48=18.8%] dem/State.cpp(44,54)
+  -> INLINE (MANUAL): (45,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (45,51) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(44,54):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State24incNumberOfContactPointsEi] dem/State.cpp:44
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rsi rdi zmm0]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::decNumberOfContactPoints(dem::State *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::decNumberOfContactPoints(dem::State *, int)) [10/48=20.8%] dem/State.cpp(48,54)
+  -> INLINE (MANUAL): (49,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (49,51) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(48,54):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State24decNumberOfContactPointsEi] dem/State.cpp:48
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rsi rdi zmm0-zmm1]
+        
+    Routine temporaries
+        Total         :      13
+            Global    :       0
+            Local     :      13
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::incNumberOfParticleReassignments(dem::State *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::incNumberOfParticleReassignments(dem::State *, int)) [11/48=22.9%] dem/State.cpp(52,62)
+  -> INLINE (MANUAL): (53,14) dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (53,59) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(52,62):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State32incNumberOfParticleReassignmentsEi] dem/State.cpp:52
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rsi rdi zmm0]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::incNumberOfTriangleComparisons(dem::State *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::incNumberOfTriangleComparisons(dem::State *, int)) [12/48=25.0%] dem/State.cpp(56,60)
+  -> INLINE (MANUAL): (57,14) dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (57,57) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(56,60):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State30incNumberOfTriangleComparisonsEi] dem/State.cpp:56
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rsi rdi zmm0]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       0
+            Local     :      12
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::getNumberOfContactPoints(const dem::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::getNumberOfContactPoints(const dem::State *) const) [13/48=27.1%] dem/State.cpp(32,53)
+  -> INLINE (MANUAL): (33,21) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(32,53):remark #34051: REGISTER ALLOCATION : [_ZNK3dem5State24getNumberOfContactPointsEv] dem/State.cpp:32
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi zmm0]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::getNumberOfParticleReassignments(const dem::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::getNumberOfParticleReassignments(const dem::State *) const) [14/48=29.2%] dem/State.cpp(36,61)
+  -> INLINE (MANUAL): (37,21) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(36,61):remark #34051: REGISTER ALLOCATION : [_ZNK3dem5State32getNumberOfParticleReassignmentsEv] dem/State.cpp:36
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi zmm0]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::getNumberOfTriangleComparisons(const dem::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::getNumberOfTriangleComparisons(const dem::State *) const) [15/48=31.2%] dem/State.cpp(40,59)
+  -> INLINE (MANUAL): (41,21) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(40,59):remark #34051: REGISTER ALLOCATION : [_ZNK3dem5State30getNumberOfTriangleComparisonsEv] dem/State.cpp:40
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi zmm0]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::getTimeStepSize(const dem::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::getTimeStepSize(const dem::State *) const) [16/48=33.3%] dem/State.cpp(66,44)
+  -> INLINE (MANUAL): (67,21) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(66,44):remark #34051: REGISTER ALLOCATION : [_ZNK3dem5State15getTimeStepSizeEv] dem/State.cpp:66
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi zmm0]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::getTime(const dem::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::getTime(const dem::State *) const) [17/48=35.4%] dem/State.cpp(70,36)
+  -> INLINE (MANUAL): (71,21) dem::records::State::getCurrentTime(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(70,36):remark #34051: REGISTER ALLOCATION : [_ZNK3dem5State7getTimeEv] dem/State.cpp:70
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi zmm0]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::informStateThatTwoParticlesAreClose(dem::State *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::informStateThatTwoParticlesAreClose(dem::State *)) [18/48=37.5%] dem/State.cpp(79,56)
+  -> INLINE (MANUAL): (80,14) dem::records::State::setTwoParticlesAreClose(dem::records::State *, const bool &) (isz = 0) (sz = 7)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(79,56):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State35informStateThatTwoParticlesAreCloseEv] dem/State.cpp:79
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :       8
+            Global    :       0
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::finishedTimeStep(dem::State *, double)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::finishedTimeStep(dem::State *, double)) [19/48=39.6%] dem/State.cpp(83,52)
+  -> INLINE (MANUAL): (84,14) dem::records::State::setCurrentTime(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (84,41) dem::records::State::getCurrentTime(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (84,71) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (85,18) dem::records::State::getTwoParticlesAreClose(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (86,18) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (87,15) dem::records::State::setTimeStepSize(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (87,42) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (90,18) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (91,15) dem::records::State::setTimeStepSize(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (91,42) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(83,52):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State16finishedTimeStepEd] dem/State.cpp:83
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rdi zmm0-zmm2]
+        
+    Routine temporaries
+        Total         :      18
+            Global    :       9
+            Local     :       9
+        Regenerable   :       3
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::incNumberOfParticles(dem::State *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::incNumberOfParticles(dem::State *, int)) [20/48=41.7%] dem/State.cpp(95,50)
+  -> INLINE (MANUAL): (96,13) dem::records::State::setNumberOfParticles(dem::records::State *, const int &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (96,45) dem::records::State::getNumberOfParticles(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(95,50):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State20incNumberOfParticlesEi] dem/State.cpp:95
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rsi rdi]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::getNumberOfParticles(const dem::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::getNumberOfParticles(const dem::State *) const) [21/48=43.8%] dem/State.cpp(103,46)
+  -> INLINE (MANUAL): (104,20) dem::records::State::getNumberOfParticles(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(103,46):remark #34051: REGISTER ALLOCATION : [_ZNK3dem5State20getNumberOfParticlesEv] dem/State.cpp:103
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rax rdi]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::incNumberOfObstacles(dem::State *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::incNumberOfObstacles(dem::State *, int)) [22/48=45.8%] dem/State.cpp(99,50)
+  -> INLINE (MANUAL): (100,13) dem::records::State::setNumberOfObstacles(dem::records::State *, const int &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (100,45) dem::records::State::getNumberOfObstacles(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(99,50):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State20incNumberOfObstaclesEi] dem/State.cpp:99
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rsi rdi]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::getNumberOfObstacles(const dem::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::getNumberOfObstacles(const dem::State *) const) [23/48=47.9%] dem/State.cpp(107,46)
+  -> INLINE (MANUAL): (108,20) dem::records::State::getNumberOfObstacles(const dem::records::State *) const (isz = 0) (sz = 6)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(107,46):remark #34051: REGISTER ALLOCATION : [_ZNK3dem5State20getNumberOfObstaclesEv] dem/State.cpp:107
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rax rdi]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getNumberOfContactPoints(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfContactPoints(const dem::records::State *) const) ./dem/records/State.h(5532,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &)) ./dem/records/State.h(5542,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const) ./dem/records/State.h(5552,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &)) ./dem/records/State.h(5562,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const) ./dem/records/State.h(5572,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &)) ./dem/records/State.h(5582,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getTimeStepSize(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getTimeStepSize(const dem::records::State *) const) ./dem/records/State.h(5592,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setTimeStepSize(dem::records::State *, const double &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setTimeStepSize(dem::records::State *, const double &)) ./dem/records/State.h(5602,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getCurrentTime(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getCurrentTime(const dem::records::State *) const) ./dem/records/State.h(5612,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setCurrentTime(dem::records::State *, const double &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setCurrentTime(dem::records::State *, const double &)) ./dem/records/State.h(5622,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getTwoParticlesAreClose(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getTwoParticlesAreClose(const dem::records::State *) const) ./dem/records/State.h(5632,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setTwoParticlesAreClose(dem::records::State *, const bool &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setTwoParticlesAreClose(dem::records::State *, const bool &)) ./dem/records/State.h(5642,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getNumberOfParticles(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfParticles(const dem::records::State *) const) ./dem/records/State.h(5652,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setNumberOfParticles(dem::records::State *, const int &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfParticles(dem::records::State *, const int &)) ./dem/records/State.h(5662,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getNumberOfObstacles(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfObstacles(const dem::records::State *) const) ./dem/records/State.h(5672,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setNumberOfObstacles(dem::records::State *, const int &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfObstacles(dem::records::State *, const int &)) ./dem/records/State.h(5682,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setIsTraversalInverted(dem::records::State *, const bool &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setIsTraversalInverted(dem::records::State *, const bool &)) ./dem/records/State.h(6210,2)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *)) ./peano/grid/State.cpph(33,16)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const)) ./peano/grid/State.h(102,5)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *, const peano::grid::State<dem::records::State>::PersistentState &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *, const peano::grid::State<dem::records::State>::PersistentState &)) ./peano/grid/State.cpph(49,66)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const, const peano::grid::State<dem::records::State>::PersistentState &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const, const peano::grid::State<dem::records::State>::PersistentState &)) ./peano/grid/State.h(103,5)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *)) ./peano/grid/State.cpph(59,41)
+
+===========================================================================
+
+Begin optimization report for: peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *const)) ./peano/grid/State.h(180,6)
+
+===========================================================================
+
+Begin optimization report for: __sti__$E()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (__sti__$E()) [47/48=97.9%] <compiler generated>
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) __cxa_atexit()
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) std::ios_base::Init::Init(std::ios_base::Init *)
+
+
+    Report from: Code generation optimizations [cg]
+
+<compiler generated>:remark #34051: REGISTER ALLOCATION : [__sti__$E] (null):0
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      13
+            Global    :       7
+            Local     :       6
+        Regenerable   :       7
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::State::setInitialTimeStepSize(dem::State *, double)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::setInitialTimeStepSize(dem::State *, double)) [48/48=100.0%] dem/State.cpp(74,55)
+  -> INLINE (MANUAL): (75,14) dem::records::State::setTimeStepSize(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (76,14) dem::records::State::setCurrentTime(dem::records::State *, const double &) (isz = 0) (sz = 7)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/State.cpp(74,55):remark #34051: REGISTER ALLOCATION : [_ZN3dem5State22setInitialTimeStepSizeEd] dem/State.cpp:74
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi zmm0]
+        
+    Routine temporaries
+        Total         :      10
+            Global    :       0
+            Local     :      10
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================

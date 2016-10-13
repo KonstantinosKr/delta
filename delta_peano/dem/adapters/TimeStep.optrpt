@@ -1,0 +1,1240 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o dem/adapters/TimeStep.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: dem::adapters::TimeStep::touchVertexLastTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::touchVertexLastTimeSpecification()) [1/28=3.6%] dem/adapters/TimeStep.cpp(13,91)
+  -> EXTERN: (14,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (15,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (15,6) dem::mappings::Collision::touchVertexLastTimeSpecification()
+  -> EXTERN: (16,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (16,6) dem::mappings::MoveParticles::touchVertexLastTimeSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(13,91):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep32touchVertexLastTimeSpecificationEv] dem/adapters/TimeStep.cpp:13
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      25
+            Global    :      12
+            Local     :      13
+        Regenerable   :       8
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      32 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       4 [4.00e+00 ~ 16.7%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::touchVertexFirstTimeSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::touchVertexFirstTimeSpecification()) [2/28=7.1%] dem/adapters/TimeStep.cpp(22,92)
+  -> EXTERN: (23,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (24,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (24,6) dem::mappings::Collision::touchVertexFirstTimeSpecification()
+  -> EXTERN: (25,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (25,6) dem::mappings::MoveParticles::touchVertexFirstTimeSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(22,92):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep33touchVertexFirstTimeSpecificationEv] dem/adapters/TimeStep.cpp:22
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      25
+            Global    :      12
+            Local     :      13
+        Regenerable   :       8
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      32 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       4 [4.00e+00 ~ 16.7%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::enterCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::enterCellSpecification()) [3/28=10.7%] dem/adapters/TimeStep.cpp(31,81)
+  -> EXTERN: (32,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (33,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (33,6) dem::mappings::Collision::enterCellSpecification()
+  -> EXTERN: (34,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (34,6) dem::mappings::MoveParticles::enterCellSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(31,81):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep22enterCellSpecificationEv] dem/adapters/TimeStep.cpp:31
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      25
+            Global    :      12
+            Local     :      13
+        Regenerable   :       8
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      32 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       4 [4.00e+00 ~ 16.7%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::leaveCellSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::leaveCellSpecification()) [4/28=14.3%] dem/adapters/TimeStep.cpp(40,81)
+  -> EXTERN: (41,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (42,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (42,6) dem::mappings::Collision::leaveCellSpecification()
+  -> EXTERN: (43,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (43,6) dem::mappings::MoveParticles::leaveCellSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(40,81):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep22leaveCellSpecificationEv] dem/adapters/TimeStep.cpp:40
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      25
+            Global    :      12
+            Local     :      13
+        Regenerable   :       8
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      32 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       4 [4.00e+00 ~ 16.7%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::ascendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::ascendSpecification()) [5/28=17.9%] dem/adapters/TimeStep.cpp(49,78)
+  -> EXTERN: (50,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (51,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (51,6) dem::mappings::Collision::ascendSpecification()
+  -> EXTERN: (52,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (52,6) dem::mappings::MoveParticles::ascendSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(49,78):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep19ascendSpecificationEv] dem/adapters/TimeStep.cpp:49
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      25
+            Global    :      12
+            Local     :      13
+        Regenerable   :       8
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      32 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       4 [4.00e+00 ~ 16.7%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::descendSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::descendSpecification()) [6/28=21.4%] dem/adapters/TimeStep.cpp(58,79)
+  -> EXTERN: (59,10) peano::MappingSpecification::getMinimalSpecification()
+  -> EXTERN: (60,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (60,6) dem::mappings::Collision::descendSpecification()
+  -> EXTERN: (61,6) operator&(const peano::MappingSpecification &, const peano::MappingSpecification &)
+  -> EXTERN: (61,6) dem::mappings::MoveParticles::descendSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(58,79):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep20descendSpecificationEv] dem/adapters/TimeStep.cpp:58
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      25
+            Global    :      12
+            Local     :      13
+        Regenerable   :       8
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      32 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       4 [4.00e+00 ~ 16.7%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::communicationSpecification()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::communicationSpecification()) [7/28=25.0%] dem/adapters/TimeStep.cpp(4,91)
+  -> EXTERN: (5,10) memcpy()
+  -> EXTERN: (5,10) peano::CommunicationSpecification::getMinimalSpecification(bool)
+  -> EXTERN: (6,6) memcpy()
+  -> EXTERN: (6,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (6,6) memcpy()
+  -> EXTERN: (6,6) dem::mappings::Collision::communicationSpecification()
+  -> EXTERN: (7,6) operator&(const peano::CommunicationSpecification &, const peano::CommunicationSpecification &)
+  -> EXTERN: (7,6) memcpy()
+  -> EXTERN: (7,6) dem::mappings::MoveParticles::communicationSpecification()
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(5,10):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStep.cpp(6,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStep.cpp(6,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStep.cpp(7,6):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (16, 0)
+dem/adapters/TimeStep.cpp(4,91):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep26communicationSpecificationEv] dem/adapters/TimeStep.cpp:4
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      45
+            Global    :      18
+            Local     :      27
+        Regenerable   :       9
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :      96 bytes*
+            Reads     :       8 [8.00e+00 ~ 16.0%]
+            Writes    :      16 [1.60e+01 ~ 32.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::TimeStep(dem::adapters::TimeStep *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::TimeStep(dem::adapters::TimeStep *)) [8/28=28.6%] dem/adapters/TimeStep.cpp(67,37)
+  -> EXTERN: (67,26) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+  -> EXTERN: (67,26) dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *)
+  -> EXTERN: (67,26) dem::mappings::Collision::Collision(dem::mappings::Collision *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(67,37):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStepC1Ev] dem/adapters/TimeStep.cpp:67
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rax rdx rdi r14-r15]
+        
+    Routine temporaries
+        Total         :      19
+            Global    :       8
+            Local     :      11
+        Regenerable   :       0
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [0.00e+00 ~ 0.0%]
+            Writes    :       1 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::TimeStep(dem::adapters::TimeStep *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::TimeStep(dem::adapters::TimeStep *const)) [9/28=32.1%] dem/adapters/TimeStep.cpp(67,26)
+  -> INLINE: (67,26) dem::adapters::TimeStep::TimeStep(dem::adapters::TimeStep *) (isz = 20) (sz = 25)
+    -> EXTERN: (67,26) dem::mappings::Collision::Collision(dem::mappings::Collision *)
+    -> EXTERN: (67,26) dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (67,26) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(67,26):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStepC2Ev] dem/adapters/TimeStep.cpp:67
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rax rdx rdi r14-r15]
+        
+    Routine temporaries
+        Total         :      19
+            Global    :       8
+            Local     :      11
+        Regenerable   :       0
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [0.00e+00 ~ 0.0%]
+            Writes    :       1 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::~TimeStep(dem::adapters::TimeStep *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::~TimeStep(dem::adapters::TimeStep *)) [10/28=35.7%] dem/adapters/TimeStep.cpp(71,38)
+  -> EXTERN: (72,1) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+  -> EXTERN: (72,1) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(71,38):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStepD1Ev] dem/adapters/TimeStep.cpp:71
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    1[ rdi]
+        
+    Routine temporaries
+        Total         :      13
+            Global    :       6
+            Local     :       7
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 5.6%]
+            Writes    :       1 [1.00e+00 ~ 5.6%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::~TimeStep(dem::adapters::TimeStep *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::~TimeStep(dem::adapters::TimeStep *const)) [11/28=39.3%] dem/adapters/TimeStep.cpp(71,26)
+  -> EXTERN: (71,26) operator delete(void *)
+  -> INLINE: (71,26) dem::adapters::TimeStep::~TimeStep(dem::adapters::TimeStep *) (isz = 10) (sz = 15)
+    -> EXTERN: (72,1) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (72,1) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(71,26):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStepD0Ev] dem/adapters/TimeStep.cpp:71
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi r12]
+        
+    Routine temporaries
+        Total         :      13
+            Global    :       7
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::~TimeStep(dem::adapters::TimeStep *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::~TimeStep(dem::adapters::TimeStep *const)) [12/28=42.9%] dem/adapters/TimeStep.cpp(71,26)
+  -> INLINE: (71,26) dem::adapters::TimeStep::~TimeStep(dem::adapters::TimeStep *) (isz = 10) (sz = 15)
+    -> EXTERN: (72,1) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)
+    -> EXTERN: (72,1) dem::mappings::Collision::~Collision(dem::mappings::Collision *)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(71,26):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStepD2Ev] dem/adapters/TimeStep.cpp:71
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    2[ rdi r13]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       7
+            Local     :       5
+        Regenerable   :       0
+        Spilled       :       1
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::createInnerVertex(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::createInnerVertex(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [13/28=46.4%] dem/adapters/TimeStep.cpp(131,3)
+  -> EXTERN: (132,18) dem::mappings::Collision::createInnerVertex(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (133,22) dem::mappings::MoveParticles::createInnerVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(131,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep17createInnerVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStep.cpp:131
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::createBoundaryVertex(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::createBoundaryVertex(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [14/28=50.0%] dem/adapters/TimeStep.cpp(146,3)
+  -> EXTERN: (147,18) dem::mappings::Collision::createBoundaryVertex(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (148,22) dem::mappings::MoveParticles::createBoundaryVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(146,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep20createBoundaryVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStep.cpp:146
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::createHangingVertex(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::createHangingVertex(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [15/28=53.6%] dem/adapters/TimeStep.cpp(100,3)
+  -> EXTERN: (101,18) dem::mappings::Collision::createHangingVertex(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (102,22) dem::mappings::MoveParticles::createHangingVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(100,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep19createHangingVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStep.cpp:100
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::destroyHangingVertex(dem::adapters::TimeStep *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::destroyHangingVertex(dem::adapters::TimeStep *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [16/28=57.1%] dem/adapters/TimeStep.cpp(116,3)
+  -> EXTERN: (117,18) dem::mappings::Collision::destroyHangingVertex(dem::mappings::Collision *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (118,22) dem::mappings::MoveParticles::destroyHangingVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(116,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep20destroyHangingVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/adapters/TimeStep.cpp:116
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::destroyVertex(dem::adapters::TimeStep *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::destroyVertex(dem::adapters::TimeStep *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [17/28=60.7%] dem/adapters/TimeStep.cpp(161,3)
+  -> EXTERN: (162,18) dem::mappings::Collision::destroyVertex(dem::mappings::Collision *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (163,22) dem::mappings::MoveParticles::destroyVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(161,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep13destroyVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/adapters/TimeStep.cpp:161
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::createCell(dem::adapters::TimeStep *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::createCell(dem::adapters::TimeStep *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [18/28=64.3%] dem/adapters/TimeStep.cpp(176,3)
+  -> EXTERN: (177,18) dem::mappings::Collision::createCell(dem::mappings::Collision *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (178,22) dem::mappings::MoveParticles::createCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(176,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep10createCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStep.cpp:176
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::destroyCell(dem::adapters::TimeStep *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::destroyCell(dem::adapters::TimeStep *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [19/28=67.9%] dem/adapters/TimeStep.cpp(191,3)
+  -> EXTERN: (192,18) dem::mappings::Collision::destroyCell(dem::mappings::Collision *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (193,22) dem::mappings::MoveParticles::destroyCell(dem::mappings::MoveParticles *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(191,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep11destroyCellERKNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES6_SB_RS2_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStep.cpp:191
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::touchVertexFirstTime(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::touchVertexFirstTime(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [20/28=71.4%] dem/adapters/TimeStep.cpp(387,3)
+  -> EXTERN: (388,18) dem::mappings::Collision::touchVertexFirstTime(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (389,22) dem::mappings::MoveParticles::touchVertexFirstTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(387,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep20touchVertexFirstTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStep.cpp:387
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::touchVertexLastTime(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::touchVertexLastTime(dem::adapters::TimeStep *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [21/28=75.0%] dem/adapters/TimeStep.cpp(402,3)
+  -> EXTERN: (403,18) dem::mappings::Collision::touchVertexLastTime(dem::mappings::Collision *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (404,22) dem::mappings::MoveParticles::touchVertexLastTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(402,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep19touchVertexLastTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStep.cpp:402
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::enterCell(dem::adapters::TimeStep *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::enterCell(dem::adapters::TimeStep *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [22/28=78.6%] dem/adapters/TimeStep.cpp(417,3)
+  -> EXTERN: (418,18) dem::mappings::Collision::enterCell(dem::mappings::Collision *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (419,22) dem::mappings::MoveParticles::enterCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(417,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep9enterCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStep.cpp:417
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::leaveCell(dem::adapters::TimeStep *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::leaveCell(dem::adapters::TimeStep *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [23/28=82.1%] dem/adapters/TimeStep.cpp(432,3)
+  -> EXTERN: (433,18) dem::mappings::Collision::leaveCell(dem::mappings::Collision *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+  -> EXTERN: (434,22) dem::mappings::MoveParticles::leaveCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(432,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep9leaveCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStep.cpp:432
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      34
+            Global    :      14
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       8
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [2.00e+00 ~ 3.9%]
+            Writes    :       2 [2.00e+00 ~ 3.9%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::endIteration(dem::adapters::TimeStep *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::endIteration(dem::adapters::TimeStep *, dem::State &)) [24/28=85.7%] dem/adapters/TimeStep.cpp(450,3)
+  -> EXTERN: (451,18) dem::mappings::Collision::endIteration(dem::mappings::Collision *, dem::State &)
+  -> EXTERN: (452,22) dem::mappings::MoveParticles::endIteration(dem::mappings::MoveParticles *, dem::State &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(450,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep12endIterationERNS_5StateE] dem/adapters/TimeStep.cpp:450
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rsi rdi r13-r14]
+        
+    Routine temporaries
+        Total         :      16
+            Global    :       8
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::descend(dem::adapters::TimeStep *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::descend(dem::adapters::TimeStep *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [25/28=89.3%] dem/adapters/TimeStep.cpp(466,3)
+  -> EXTERN: (467,18) dem::mappings::Collision::descend(dem::mappings::Collision *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (468,22) dem::mappings::MoveParticles::descend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(466,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep7descendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/adapters/TimeStep.cpp:466
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      13
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       7
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 2.0%]
+            Writes    :       1 [1.00e+00 ~ 2.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::ascend(dem::adapters::TimeStep *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::ascend(dem::adapters::TimeStep *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [26/28=92.9%] dem/adapters/TimeStep.cpp(480,3)
+  -> EXTERN: (481,18) dem::mappings::Collision::ascend(dem::mappings::Collision *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+  -> EXTERN: (482,22) dem::mappings::MoveParticles::ascend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(480,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep6ascendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/adapters/TimeStep.cpp:480
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   12[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
+        
+    Routine temporaries
+        Total         :      33
+            Global    :      13
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       7
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       8 bytes*
+            Reads     :       1 [1.00e+00 ~ 2.0%]
+            Writes    :       1 [1.00e+00 ~ 2.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: __sti__$E()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (__sti__$E()) [27/28=96.4%] <compiler generated>
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) __cxa_atexit()
+  -> EXTERN: /usr/include/c++/6/iostream:(74,25) std::ios_base::Init::Init(std::ios_base::Init *)
+
+
+    Report from: Code generation optimizations [cg]
+
+<compiler generated>:remark #34051: REGISTER ALLOCATION : [__sti__$E] (null):0
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rdx rsi rdi]
+        
+    Routine temporaries
+        Total         :      13
+            Global    :       7
+            Local     :       6
+        Regenerable   :       7
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: dem::adapters::TimeStep::beginIteration(dem::adapters::TimeStep *, dem::State &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::adapters::TimeStep::beginIteration(dem::adapters::TimeStep *, dem::State &)) [28/28=100.0%] dem/adapters/TimeStep.cpp(441,3)
+  -> EXTERN: (442,18) dem::mappings::Collision::beginIteration(dem::mappings::Collision *, dem::State &)
+  -> EXTERN: (443,22) dem::mappings::MoveParticles::beginIteration(dem::mappings::MoveParticles *, dem::State &)
+
+
+    Report from: Code generation optimizations [cg]
+
+dem/adapters/TimeStep.cpp(441,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters8TimeStep14beginIterationERNS_5StateE] dem/adapters/TimeStep.cpp:441
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rsi rdi r13-r14]
+        
+    Routine temporaries
+        Total         :      16
+            Global    :       8
+            Local     :       8
+        Regenerable   :       0
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================

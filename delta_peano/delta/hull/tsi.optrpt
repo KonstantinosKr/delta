@@ -1,0 +1,157 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o delta/hull/tsi.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: delta::hull::TSI_Status(double *, double *, double *, double *, double)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TSI_Status(double *, double *, double *, double *, double)) [1/2=50.0%] delta/hull/tsi.cpp(54,1)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/hull/tsi.cpp(54,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull10TSI_StatusEPdS1_S1_S1_d] delta/hull/tsi.cpp:54
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   24[ rax rdx rcx rsi rdi r8-r10 zmm0-zmm15]
+        
+    Routine temporaries
+        Total         :     261
+            Global    :      52
+            Local     :     209
+        Regenerable   :      21
+        Spilled       :      25
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :     200 bytes*
+            Reads     :      31 [2.07e+01 ~ 7.2%]
+            Writes    :      27 [2.18e+01 ~ 7.6%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::hull::TSI_Approx(double *, double *, double *, double *, double, double **, int *, int **, int *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::hull::TSI_Approx(double *, double *, double *, double *, double, double **, int *, int **, int *)) [2/2=100.0%] delta/hull/tsi.cpp(474,1)
+  -> EXTERN: (535,7) malloc(size_t)
+  -> EXTERN: (535,7) malloc(size_t)
+  -> EXTERN: (544,5) malloc(size_t)
+  -> EXTERN: (544,5) malloc(size_t)
+  -> EXTERN: (550,5) malloc(size_t)
+  -> EXTERN: (550,5) malloc(size_t)
+  -> EXTERN: (556,5) malloc(size_t)
+  -> EXTERN: (556,5) malloc(size_t)
+  -> EXTERN: (559,5) malloc(size_t)
+  -> EXTERN: (559,5) malloc(size_t)
+  -> EXTERN: (559,5) malloc(size_t)
+  -> EXTERN: (559,5) malloc(size_t)
+  -> EXTERN: (562,5) malloc(size_t)
+  -> EXTERN: (562,5) malloc(size_t)
+  -> EXTERN: (562,5) malloc(size_t)
+  -> EXTERN: (562,5) malloc(size_t)
+  -> EXTERN: (565,5) malloc(size_t)
+  -> EXTERN: (565,5) malloc(size_t)
+  -> EXTERN: (565,5) malloc(size_t)
+  -> EXTERN: (565,5) malloc(size_t)
+  -> EXTERN: (568,5) malloc(size_t)
+  -> EXTERN: (568,5) malloc(size_t)
+  -> EXTERN: (568,5) malloc(size_t)
+  -> EXTERN: (568,5) malloc(size_t)
+  -> EXTERN: (571,5) malloc(size_t)
+  -> EXTERN: (571,5) malloc(size_t)
+  -> EXTERN: (571,5) malloc(size_t)
+  -> EXTERN: (571,5) malloc(size_t)
+  -> EXTERN: (574,5) malloc(size_t)
+  -> EXTERN: (574,5) malloc(size_t)
+  -> EXTERN: (574,5) malloc(size_t)
+  -> EXTERN: (574,5) malloc(size_t)
+  -> EXTERN: (577,5) malloc(size_t)
+  -> EXTERN: (577,5) malloc(size_t)
+  -> EXTERN: (584,5) malloc(size_t)
+  -> EXTERN: (584,5) malloc(size_t)
+  -> EXTERN: (587,5) malloc(size_t)
+  -> EXTERN: (587,5) malloc(size_t)
+  -> EXTERN: (590,5) malloc(size_t)
+  -> EXTERN: (590,5) malloc(size_t)
+  -> EXTERN: (593,5) malloc(size_t)
+  -> EXTERN: (593,5) malloc(size_t)
+  -> EXTERN: (596,5) malloc(size_t)
+  -> EXTERN: (596,5) malloc(size_t)
+  -> EXTERN: (599,5) malloc(size_t)
+  -> EXTERN: (599,5) malloc(size_t)
+  -> EXTERN: (602,5) malloc(size_t)
+  -> EXTERN: (602,5) malloc(size_t)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/hull/tsi.cpp(474,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull10TSI_ApproxEPdS1_S1_S1_dPS1_PiPS3_S3_] delta/hull/tsi.cpp:474
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :   31[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm15]
+        
+    Routine temporaries
+        Total         :   10479
+            Global    :     542
+            Local     :    9937
+        Regenerable   :     236
+        Spilled       :     290
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :    2256 bytes*
+            Reads     :    2140 [9.77e+01 ~ 10.9%]
+            Writes    :     912 [6.95e+01 ~ 7.7%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================

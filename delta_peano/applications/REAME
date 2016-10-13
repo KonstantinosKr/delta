@@ -1,7 +1,0 @@
-This directory holds applications that demonstrate how to use Delta. We currently have
-
-
-- kdelta  Konstantinos' proof-of-concept code using Delta with the help of Zoltan
-- peano   Tobias' proof-of-concept code using Delta with the help of Peano, i.e. an AMR framework
-- parmes  Tomek's PARMES code using Delta (not maintained yet)
-
