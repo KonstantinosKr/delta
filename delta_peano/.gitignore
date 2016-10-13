@@ -49,3 +49,5 @@ applications/peano/dem/runners/RunnerParallelWorker.optrpt
 applications/peano/dem/tests/CollisionTest.optrpt
 applications/peano/dem/tests/TestCase.optrpt
 application/peano/makefile
+peano
+tarch
