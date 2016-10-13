@@ -53,6 +53,7 @@ void dem::mappings::Plot::beginIteration(
   _velocitiesAndNormals  = _writer->createVertexDataWriter( "velocities-and-contact-normals", DIMENSIONS );
   _frictionNormals 		 = _writer->createVertexDataWriter( "friction-normals", DIMENSIONS );
   _particleVelocity		 = _writer->createVertexDataWriter( "particle-velocity", 1);
+  _particleAngular		 = _writer->createVertexDataWriter( "particle-angular", DIMENSIONS);
   _particleDiameter  	 = _writer->createVertexDataWriter( "particle-radius", 1);
   _particleEpsilon  	 = _writer->createVertexDataWriter( "particle-epsilon", 1);
   _particleInfluence     = _writer->createVertexDataWriter( "particle-influence", 1);
@@ -99,6 +100,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
         	_frictionNormals->plotVertex(contactPointVertexIndex, 0);
         }
         _particleVelocity->plotVertex(contactPointVertexIndex,0);
+        _particleAngular->plotVertex(contactPointVertexIndex,0);
         _particleDiameter->plotVertex(contactPointVertexIndex,0);
         _particleEpsilon->plotVertex(contactPointVertexIndex,0);
         _particleInfluence->plotVertex(contactPointVertexIndex,0);
@@ -114,6 +116,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
         _velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
         _frictionNormals->plotVertex(contactPointVertexIndex, 0);
         _particleVelocity->plotVertex(contactPointVertexIndex,0);
+        _particleAngular->plotVertex(contactPointVertexIndex,0);
 
         _particleDiameter->plotVertex(contactPointVertexIndex,0);
         _particleEpsilon->plotVertex(contactPointVertexIndex,0);
@@ -130,6 +133,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
         _velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
         _frictionNormals->plotVertex(contactPointVertexIndex, 0);
         _particleVelocity->plotVertex(contactPointVertexIndex,0);
+        _particleAngular->plotVertex(contactPointVertexIndex,0);
 
         _particleDiameter->plotVertex(contactPointVertexIndex,0);
         _particleEpsilon->plotVertex(contactPointVertexIndex,0);
@@ -154,6 +158,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   _velocitiesAndNormals->close();
   _frictionNormals->close();
   _particleVelocity->close();
+  _particleAngular->close();
   _particleDiameter->close();
   _particleEpsilon->close();
   _particleInfluence->close();
@@ -180,6 +185,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   delete _frictionNormals;
   delete _velocitiesAndNormals;
   delete _particleVelocity;
+  delete _particleAngular;
   delete _particleDiameter;
   delete _particleEpsilon;
   delete _particleInfluence;
@@ -211,6 +217,7 @@ void dem::mappings::Plot::touchVertexLastTime(
   _frictionNormals->plotVertex(particleVertexLink[0],0);
   _velocitiesAndNormals->plotVertex(particleVertexLink[0],0);
   _particleVelocity->plotVertex(particleVertexLink[0],0);
+  _particleAngular->plotVertex(particleVertexLink[0],0);
   _particleDiameter->plotVertex(particleVertexLink[0],0);
   _particleEpsilon->plotVertex(particleVertexLink[0],0);
   _particleInfluence->plotVertex(particleVertexLink[0],0);
@@ -232,9 +239,13 @@ void dem::mappings::Plot::touchVertexLastTime(
     	//it will only accept diameter not radius to plot the sphere thus multiply epsilon by 2
         tarch::la::Vector<3,double> v;
         double mag = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0)+particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1)+particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
+        //double magAng = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0)+particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1)+particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
         v = particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2);
     	_velocitiesAndNormals->plotVertex(particleVertexLink[1],v);
     	_particleVelocity->plotVertex(particleVertexLink[1],mag);
+    	v = particle._persistentRecords._angular(0), particle._persistentRecords._angular(1), particle._persistentRecords._angular(2);
+    	_particleAngular->plotVertex(particleVertexLink[1],v);
+    	//printf("%f %f %f\n", particle._persistentRecords._angular(0), particle._persistentRecords._angular(1), particle._persistentRecords._angular(2));
     	_particleDiameter->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter);
     	_particleEpsilon->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter+(particle._persistentRecords._epsilon*2));
     	_particleInfluence->plotVertex(particleVertexLink[1], particle._persistentRecords._influenceRadius*2);
@@ -242,6 +253,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     {
     	_velocitiesAndNormals->plotVertex(particleVertexLink[1],0);
     	_particleVelocity->plotVertex(particleVertexLink[1],0);
+    	_particleAngular->plotVertex(particleVertexLink[1],0);
     	_particleDiameter->plotVertex(particleVertexLink[1], 0);
     	_particleEpsilon->plotVertex(particleVertexLink[1], 0);
     	_particleInfluence->plotVertex(particleVertexLink[1], 0);
@@ -299,6 +311,10 @@ void dem::mappings::Plot::touchVertexLastTime(
 	  _particleVelocity->plotVertex(vertexIndex[1], 0);
 	  _particleVelocity->plotVertex(vertexIndex[2], 0);
 
+	  _particleAngular->plotVertex(vertexIndex[0], 0);
+	  _particleAngular->plotVertex(vertexIndex[1], 0);
+	  _particleAngular->plotVertex(vertexIndex[2], 0);
+
       _particleDiameter->plotVertex(vertexIndex[0], 0);
       _particleDiameter->plotVertex(vertexIndex[1], 0);
       _particleDiameter->plotVertex(vertexIndex[2], 0);
@@ -338,6 +354,7 @@ dem::mappings::Plot::Plot(const Plot&  masterThread):
   _velocitiesAndNormals(masterThread._velocitiesAndNormals),
   _frictionNormals(masterThread._frictionNormals),
   _particleVelocity(masterThread._particleVelocity),
+  _particleAngular(masterThread._particleAngular),
   _particleEpsilon(masterThread._particleEpsilon),
   _particleDiameter(masterThread._particleDiameter),
   _particleInfluence(masterThread._particleInfluence),

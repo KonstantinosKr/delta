@@ -70,6 +70,7 @@ class dem::mappings::Plot {
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _velocitiesAndNormals;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _frictionNormals;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleVelocity;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleAngular;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleDiameter;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleEpsilon;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleInfluence;

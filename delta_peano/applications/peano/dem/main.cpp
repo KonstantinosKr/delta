@@ -276,7 +276,7 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  dem::mappings::MoveParticles::gravity      = gravity;
+  dem::mappings::MoveParticles::gravity	= (gravity>0) ? 9.81 : 0.0;
 
   // Configure the output
   tarch::logging::CommandLineLogger::getInstance().clearFilterList();

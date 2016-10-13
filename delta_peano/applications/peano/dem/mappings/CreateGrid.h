@@ -83,7 +83,6 @@ class dem::mappings::CreateGrid {
     static double   _maxH;
     static double   _particleDiamMax;
     static double   _particleDiamMin;
-    static double 	_epsilon;
 
     static GridType _gridType;
 
@@ -110,6 +109,7 @@ class dem::mappings::CreateGrid {
     static peano::CommunicationSpecification   communicationSpecification();
 
 
+    static double 	_epsilon;
     /**
      * Mapping constructor.
      *

@@ -125,7 +125,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       }
     }
 
-    if(plot==Adaptive) repository.getState().finishedTimeStep();
+    if(plot==Adaptive) repository.getState().finishedTimeStep(initialTimeStepSize);
     elapsed = repository.getState().getTime() - timestamp;
 
     repository.getState().clearAccumulatedData();

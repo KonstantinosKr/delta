@@ -733,8 +733,8 @@ void dem::mappings::CreateGrid::createCell(
 					centreAsArray[1] = centreAsArray[1] + (0.15 - _epsilon*2);
 					newParticleNumber = vertex.createNewParticle( centreAsArray );
 					//if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-					delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-					//delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates );
+					//delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+					delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates );
 				} else {return;}
 			}
 
@@ -783,20 +783,20 @@ void dem::mappings::CreateGrid::createCell(
 			vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
 			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = particleDiameter;
 			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon;
-			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius 	   = (particleDiameter/2) + (vertex.getParticle(newParticleNumber)._persistentRecords._epsilon * 2);
+			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius 	   = (particleDiameter/2) + (vertex.getParticle(newParticleNumber)._persistentRecords._epsilon * 6);
 			vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
 			vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
 
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(0) = 0.01*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
+			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(0) = 0.0005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
 			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(1) = 0;
 			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(2) = 0;
 			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(3) = 0;
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(4) = 0.01*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
+			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(4) = 0.0005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
 			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(5) = 0;
 			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(6) = 0;
 			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(7) = 0;
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(8) = 0.01*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
+			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(8) = 0.0005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
 
 			// invert inertia properties
 			iREAL a[9], x[9], det;
@@ -834,7 +834,8 @@ void dem::mappings::CreateGrid::createCell(
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = 0.5;
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = 0;
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = 0;
-					vertex.getParticle(newParticleNumber)._persistentRecords._angular(0) = 0;
+
+					vertex.getParticle(newParticleNumber)._persistentRecords._angular(0) = 5;
 					vertex.getParticle(newParticleNumber)._persistentRecords._angular(1) = 5;
 					vertex.getParticle(newParticleNumber)._persistentRecords._angular(2) = 0;
 					break;
@@ -843,7 +844,6 @@ void dem::mappings::CreateGrid::createCell(
 	}
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
-
 
 
 void dem::mappings::CreateGrid::endIteration(

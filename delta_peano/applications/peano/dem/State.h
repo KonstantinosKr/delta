@@ -92,7 +92,7 @@ class dem::State: public peano::grid::State< dem::records::State > {
     void setInitialTimeStepSize(double value);
 
     void informStateThatTwoParticlesAreClose();
-    void finishedTimeStep();
+    void finishedTimeStep(double initStep);
 
     void incNumberOfParticles(int delta);
     int getNumberOfParticles() const;

@@ -49,7 +49,7 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
 
 tarch::logging::Log                dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" ); 
 
-double    dem::mappings::MoveParticles::gravity      = 0.0;
+double    dem::mappings::MoveParticles::gravity = 0.0;
 
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
   dem::Vertex&               fineGridVertex
@@ -59,16 +59,14 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
   {
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
-    assertion1( particle._persistentRecords._centre(0)==particle._persistentRecords._centre(0), particle.toString() );
-
     if(particle._persistentRecords._globalParticleNumber <= _state.getNumberOfObstacles()){continue;}
 
     double timeStepSize = _state.getTimeStepSize();
 
     particle._persistentRecords._velocity(1) += -(timeStepSize * (gravity/ particle._persistentRecords._mass));
 
-    double velocity = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0))+(particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1))+(particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
-    //particle._persistentRecords._epsilon = dem::mappings::CreateGrid::epsilon + (particle._persistentRecords._influenceRadius*velocity*timeStepSize);
+    //double velocity = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0))+(particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1))+(particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
+    //particle._persistentRecords._epsilon = dem::mappings::CreateGrid::_epsilon + (particle._persistentRecords._influenceRadius*velocity*timeStepSize);
     //particle._persistentRecords._influenceRadius = particle._persistentRecords._influenceRadius + (particle._persistentRecords._influenceRadius*(timeStepSize*velocity));
 
 	delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0), &particle._persistentRecords._orientation(0), timeStepSize);
@@ -97,6 +95,11 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 									&particle._persistentRecords._centreOfMass(0),
 									&particle._persistentRecords._referentialCentreOfMass(0));
     }
+
+    /*iREAL energy = delta::sys::getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
+    iREAL rotational = delta::sys::getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
+    iREAL kinetic = delta::sys::getKineticEnergy(&particle._persistentRecords._velocity(0), particle._persistentRecords._mass);
+    printf("TOTAL ENERGY:%f ROTATIONAL:%f KINETIC:%f\n", energy, rotational, kinetic);*/
   }
 }
 

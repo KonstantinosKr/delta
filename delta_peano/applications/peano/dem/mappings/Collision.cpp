@@ -147,26 +147,27 @@ void dem::mappings::Collision::addCollision(
 
 	for(unsigned int k = 0; k<newContactPoints.size(); k++)
 	{
-		iREAL z[3], vi[3], vj[3], vij[3];
+	   iREAL z[3];
+	   iREAL vi[3];
 
-		//contact point - position i
-		z[0] = newContactPoints[k].x[0]-particleA._persistentRecords._centreOfMass[0];
-		z[1] = newContactPoints[k].x[1]-particleA._persistentRecords._centreOfMass[1];
-		z[2] = newContactPoints[k].x[2]-particleA._persistentRecords._centreOfMass[2];
+	   //contact point - position i
+	   z[0] = newContactPoints[k].x[0]-particleA._persistentRecords._centreOfMass[0];
+	   z[1] = newContactPoints[k].x[1]-particleA._persistentRecords._centreOfMass[1];
+	   z[2] = newContactPoints[k].x[2]-particleA._persistentRecords._centreOfMass[2];
 
-		//cross product - relative angular i to contact point plus linear i
-		vi[0] = particleA._persistentRecords._velocity[0];
-		vi[1] = particleA._persistentRecords._velocity[1];
-		vi[2] = particleA._persistentRecords._velocity[2];
+       //cross product - relative angular i to contact point plus linear i
+       vi[0] = particleA._persistentRecords._angular[1]*z[2]-particleA._persistentRecords._angular[2]*z[1] + particleA._persistentRecords._velocity[0];
+       vi[1] = particleA._persistentRecords._angular[2]*z[0]-particleA._persistentRecords._angular[0]*z[2] + particleA._persistentRecords._velocity[1];
+       vi[2] = particleA._persistentRecords._angular[0]*z[1]-particleA._persistentRecords._angular[1]*z[0] + particleA._persistentRecords._velocity[2];
 
 	   iREAL vt[3];
 	   vt[0] = vi[0] - newContactPoints[k].normal[0]*((vi[0]*newContactPoints[k].normal[0]) + (vi[1]*newContactPoints[k].normal[1]) + (vi[2]*newContactPoints[k].normal[2]));
 	   vt[1] = vi[1] - newContactPoints[k].normal[1]*((vi[0]*newContactPoints[k].normal[0]) + (vi[1]*newContactPoints[k].normal[1]) + (vi[2]*newContactPoints[k].normal[2]));
 	   vt[2] = vi[2] - newContactPoints[k].normal[2]*((vi[0]*newContactPoints[k].normal[0]) + (vi[1]*newContactPoints[k].normal[1]) + (vi[2]*newContactPoints[k].normal[2]));
 
-	   newContactPoints[k].friction[0] =  -vt[0]*1;
-	   newContactPoints[k].friction[1] =  -vt[1]*1;
-	   newContactPoints[k].friction[2] =  -vt[2]*1;
+	   newContactPoints[k].friction[0] =  -vt[0];
+	   newContactPoints[k].friction[1] =  -vt[1];
+	   newContactPoints[k].friction[2] =  -vt[2];
 
 	  //printf("ID: %d friction collision:%f %f %f\n", particleA._persistentRecords._globalParticleNumber, newContactPoints[k].friction[0], newContactPoints[k].friction[1], newContactPoints[k].friction[2]);
 	}
@@ -212,22 +213,20 @@ void dem::mappings::Collision::touchVertexFirstTime(
 ) {
 	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+	double timeStepSize = _state.getTimeStepSize();
+
 	for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
 	{ // No need to loop over virtual particles here as well
 		records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
-		// derive forces from collisions of previous grid traversal
-		if( _activeCollisions.count(currentParticle._persistentRecords._globalParticleNumber)>0 )
+		if( _activeCollisions.count(currentParticle._persistentRecords._globalParticleNumber)>0  && currentParticle._persistentRecords._globalParticleNumber > _state.getNumberOfObstacles())
 		{
-			//logInfo( "touchVertexFirstTime(...)", "particle no " << currentParticle._persistentRecords._globalParticleNumber << " does collide with other particle(s) in " << _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].size() << " contact points" );
+			//logInfo( "touchVertexFirstTime(...)", "particle no " << currentParticle._persistentRecords._globalParticleNumber << " collide with other particle(s) in " << _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].size() << " contact points" );
 			for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].begin();
 				 p != _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].end(); p++)
 			{
 				double force[3]  = {0.0,0.0,0.0};
 				double torque[3] = {0.0,0.0,0.0};
-
-				if (currentParticle._persistentRecords.getGlobalParticleNumber() > _state.getNumberOfObstacles())
-				{
 
 				 delta::forces::getContactForces(
 					p->_contactPoints,
@@ -241,33 +240,25 @@ void dem::mappings::Collision::touchVertexFirstTime(
 					p->_copyOfPartnerParticle._persistentRecords._mass,
 					force, torque);
 
-				 	//torque[0] *= 50;
-				 	//torque[1] *= 50;
-				 	//torque[2] *= 50;
+				//logInfo( "touchVertexFirstTime(...)", "add force f=" << force[0] << ", " << force[1] << ", " << force[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
+				//logInfo( "touchVertexFirstTime(...)", "add force t=" << torque[0] << ", " << torque[1] << ", " << torque[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
 
-				 	//logInfo( "touchVertexFirstTime(...)", "add force f=" << force[0] << ", " << force[1] << ", " << force[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
-				}
-				if (currentParticle._persistentRecords.getGlobalParticleNumber() > _state.getNumberOfObstacles())
-				{
-					double timeStepSize = _state.getTimeStepSize();
+				currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle._persistentRecords._mass);
+				currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle._persistentRecords._mass);
+				currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle._persistentRecords._mass);
 
-					currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle._persistentRecords._mass);
-					currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle._persistentRecords._mass);
-					currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle._persistentRecords._mass);
+				delta::dynamics::updateAngular(&currentParticle._persistentRecords._angular(0),
+														&currentParticle._persistentRecords._orientation(0),
+														&currentParticle._persistentRecords._inertia(0),
+														&currentParticle._persistentRecords._inverse(0),
+														currentParticle._persistentRecords._mass,
+														torque, timeStepSize);
 
-					delta::dynamics::updateAngular(&currentParticle._persistentRecords._angular(0),
-															&currentParticle._persistentRecords._orientation(0),
-															&currentParticle._persistentRecords._inertia(0),
-															&currentParticle._persistentRecords._inverse(0),
-															currentParticle._persistentRecords._mass,
-															torque, timeStepSize);
-
-					logInfo( "touchVertexFirstTime(...)", "add angvel av=" << currentParticle._persistentRecords._angular(0) << ", " << currentParticle._persistentRecords._angular(1) << ", " << currentParticle._persistentRecords._angular(2) );
-					//logInfo( "touchVertexFirstTime(...)", "add vel av=" << currentParticle._persistentRecords._velocity(0) << ", " << currentParticle._persistentRecords._velocity(1) << ", " << currentParticle._persistentRecords._velocity(2));
-				}
+				//logInfo( "touchVertexFirstTime(...)", "add angvel av=" << currentParticle._persistentRecords._angular(0) << ", " << currentParticle._persistentRecords._angular(1) << ", " << currentParticle._persistentRecords._angular(2) );
+				//logInfo( "touchVertexFirstTime(...)", "add vel av=" << currentParticle._persistentRecords._velocity(0) << ", " << currentParticle._persistentRecords._velocity(1) << ", " << currentParticle._persistentRecords._velocity(2));
 			}
-			_activeCollisions.erase(currentParticle._persistentRecords._globalParticleNumber);
 		}
+		_activeCollisions.erase(currentParticle._persistentRecords._globalParticleNumber);
 	}
 
 	// clear adaptivity/mulitlevel data
@@ -284,7 +275,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	{ // No nead to loop over virtual particles here as well
 		for (int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{
-			if ( (fineGridVertex.getParticle(i).getVelocity(0)) != (fineGridVertex.getParticle(j).getVelocity(0)) )
+			if ( (fineGridVertex.getParticle(i)._persistentRecords._globalParticleNumber != fineGridVertex.getParticle(j)._persistentRecords._globalParticleNumber) )
 			{
 				std::vector<delta::collision::contactpoint> newContactPoints;
 				switch (_collisionModel) {
@@ -298,7 +289,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 					} else if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID && fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID)
 					{
 						//printf("ENTERED fine grid sphere BA\n");
-						/*if(delta::collision::isSphereOverlayInContact(
+						if(delta::collision::isSphereOverlayInContact(
 								fineGridVertex.getParticle(i).getCentre(0),
 								fineGridVertex.getParticle(i).getCentre(1),
 								fineGridVertex.getParticle(i).getCentre(2),
@@ -307,7 +298,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 								fineGridVertex.getParticle(j).getCentre(0),
 								fineGridVertex.getParticle(j).getCentre(1),
 								fineGridVertex.getParticle(j).getCentre(2),
-								fineGridVertex.getParticle(j).getInfluenceRadius()))*/
+								fineGridVertex.getParticle(j).getInfluenceRadius()))
 						{
 							newContactPoints = delta::collision::sphereWithBarrierBA(
 								fineGridVertex.getParticle(j).getCentre(0),
@@ -315,9 +306,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 								fineGridVertex.getParticle(j).getCentre(2),
 								fineGridVertex.getParticle(j).getDiameter(),
 								fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-								fineGridVertex.getParticle(j)._persistentRecords._velocity(0),
-								fineGridVertex.getParticle(j)._persistentRecords._velocity(1),
-								fineGridVertex.getParticle(j)._persistentRecords._velocity(2),
 								fineGridVertex.getParticle(j)._persistentRecords._material,
 
 								fineGridVertex.getXCoordinates( i ),
@@ -332,7 +320,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 					} else if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID && fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)
 					{
 						//printf("ENTERED fine grid sphere AB\n");
-						/*if(delta::collision::isSphereOverlayInContact(
+						if(delta::collision::isSphereOverlayInContact(
 							fineGridVertex.getParticle(i).getCentre(0),
 							fineGridVertex.getParticle(i).getCentre(1),
 							fineGridVertex.getParticle(i).getCentre(2),
@@ -341,7 +329,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getCentre(0),
 							fineGridVertex.getParticle(j).getCentre(1),
 							fineGridVertex.getParticle(j).getCentre(2),
-							fineGridVertex.getParticle(j).getInfluenceRadius()))*/
+							fineGridVertex.getParticle(j).getInfluenceRadius()))
 						{
 						newContactPoints = delta::collision::sphereWithBarrierAB(
 							fineGridVertex.getParticle(i).getCentre(0),
@@ -349,9 +337,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(i).getCentre(2),
 							fineGridVertex.getParticle(i).getDiameter(),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 							fineGridVertex.getParticle(i)._persistentRecords._material,
 
 							fineGridVertex.getXCoordinates( j ),
@@ -370,9 +355,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(i).getCentre(2),
 							fineGridVertex.getParticle(i).getDiameter(),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 							fineGridVertex.getParticle(i)._persistentRecords._material,
 
 							fineGridVertex.getParticle(j).getCentre(0),
@@ -392,9 +374,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 						fineGridVertex.getYCoordinates( i ),
 						fineGridVertex.getZCoordinates( i ),
 						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 						fineGridVertex.getParticle(i)._persistentRecords._material,
 
 						fineGridVertex.getNumberOfTriangles( j ),
@@ -413,9 +392,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 						fineGridVertex.getYCoordinates( i ),
 						fineGridVertex.getZCoordinates( i ),
 						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 						fineGridVertex.getParticle(i)._persistentRecords._material,
 
 						fineGridVertex.getNumberOfTriangles( j ),
@@ -434,9 +410,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 						fineGridVertex.getYCoordinates( i ),
 						fineGridVertex.getZCoordinates( i ),
 						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 						fineGridVertex.getParticle(i)._persistentRecords._material,
 
 						fineGridVertex.getNumberOfTriangles( j ),
@@ -455,9 +428,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 						fineGridVertex.getYCoordinates( i ),
 						fineGridVertex.getZCoordinates( i ),
 						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 						fineGridVertex.getParticle(i)._persistentRecords._material,
 
 						fineGridVertex.getNumberOfTriangles( j ),
@@ -476,9 +446,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 						fineGridVertex.getYCoordinates( i ),
 						fineGridVertex.getZCoordinates( i ),
 						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 						fineGridVertex.getParticle(i)._persistentRecords._material,
 
 						fineGridVertex.getNumberOfTriangles( j ),
@@ -497,9 +464,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 						fineGridVertex.getYCoordinates( i ),
 						fineGridVertex.getZCoordinates( i ),
 						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 						fineGridVertex.getParticle(i)._persistentRecords._material,
 
 						fineGridVertex.getNumberOfTriangles( j ),
@@ -518,9 +482,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 						fineGridVertex.getYCoordinates( i ),
 						fineGridVertex.getZCoordinates( i ),
 						fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-						fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 						fineGridVertex.getParticle(i)._persistentRecords._material,
 
 						fineGridVertex.getNumberOfTriangles( j ),
@@ -550,9 +511,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getYCoordinates( i ),
 							fineGridVertex.getZCoordinates( i ),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 							fineGridVertex.getParticle(i)._persistentRecords._material,
 
 							fineGridVertex.getNumberOfTriangles( j ),
@@ -583,9 +541,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getYCoordinates( i ),
 							fineGridVertex.getZCoordinates( i ),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 							fineGridVertex.getParticle(i)._persistentRecords._material,
 
 							fineGridVertex.getNumberOfTriangles( j ),
@@ -610,7 +565,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getCentre(2),
 							fineGridVertex.getParticle(j).getInfluenceRadius()))
 					{
-				        _state.informStateThatTwoParticlesAreClose();
 
 						newContactPoints = delta::collision::bf(
 							fineGridVertex.getNumberOfTriangles( i ),
@@ -618,9 +572,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getYCoordinates( i ),
 							fineGridVertex.getZCoordinates( i ),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 							fineGridVertex.getParticle(i)._persistentRecords._material,
 
 							fineGridVertex.getNumberOfTriangles( j ),
@@ -651,9 +602,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getYCoordinates( i ),
 							fineGridVertex.getZCoordinates( i ),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 							fineGridVertex.getParticle(i)._persistentRecords._material,
 
 							fineGridVertex.getNumberOfTriangles( j ),
@@ -674,9 +622,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getZCoordinates( i ),
 							fineGridVertex.getNumberOfTriangles( j ),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(0),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(1),
-							fineGridVertex.getParticle(i)._persistentRecords._velocity(2),
 							fineGridVertex.getParticle(i)._persistentRecords._material,
 
 							fineGridVertex.getXCoordinates( j ),
@@ -743,7 +688,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 						} else if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID && vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID)
 						{
 							//printf("ENTERED virtual grid sphere BA\n");
-							/*if(delta::collision::isSphereOverlayInContact(
+							if(delta::collision::isSphereOverlayInContact(
 								vertexA.getParticle(i).getCentre(0),
 								vertexA.getParticle(i).getCentre(1),
 								vertexA.getParticle(i).getCentre(2),
@@ -752,7 +697,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexB.getParticle(j).getCentre(0),
 								vertexB.getParticle(j).getCentre(1),
 								vertexB.getParticle(j).getCentre(2),
-								vertexB.getParticle(j).getInfluenceRadius()))*/
+								vertexB.getParticle(j).getInfluenceRadius()))
 							{
 								newContactPoints = delta::collision::sphereWithBarrierBA(
 								vertexB.getParticle(j).getCentre(0),
@@ -760,9 +705,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexB.getParticle(j).getCentre(2),
 								vertexB.getParticle(j).getDiameter(),
 								vertexB.getParticle(j)._persistentRecords._epsilon,
-								vertexB.getParticle(j)._persistentRecords._velocity(0),
-								vertexB.getParticle(j)._persistentRecords._velocity(1),
-								vertexB.getParticle(j)._persistentRecords._velocity(2),
 								vertexB.getParticle(j)._persistentRecords._material,
 
 								vertexA.getXCoordinates( i ),
@@ -777,7 +719,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 						} else if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID && vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)
 						{
 							//printf("ENTERED virtual grid sphere AB\n");
-							/*if(delta::collision::isSphereOverlayInContact(
+							if(delta::collision::isSphereOverlayInContact(
 								vertexA.getParticle(i).getCentre(0),
 								vertexA.getParticle(i).getCentre(1),
 								vertexA.getParticle(i).getCentre(2),
@@ -786,7 +728,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexB.getParticle(j).getCentre(0),
 								vertexB.getParticle(j).getCentre(1),
 								vertexB.getParticle(j).getCentre(2),
-								vertexB.getParticle(j).getInfluenceRadius()))*/
+								vertexB.getParticle(j).getInfluenceRadius()))
 							{
 								newContactPoints = delta::collision::sphereWithBarrierAB(
 								vertexA.getParticle(i).getCentre(0),
@@ -794,9 +736,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexA.getParticle(i).getCentre(2),
 								vertexA.getParticle(i).getDiameter(),
 								vertexA.getParticle(i)._persistentRecords._epsilon,
-								vertexA.getParticle(i)._persistentRecords._velocity(0),
-								vertexA.getParticle(i)._persistentRecords._velocity(1),
-								vertexA.getParticle(i)._persistentRecords._velocity(2),
 								vertexA.getParticle(i)._persistentRecords._material,
 
 								vertexB.getXCoordinates( j ),
@@ -814,9 +753,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexA.getParticle(i).getCentre(2),
 								vertexA.getParticle(i).getDiameter(),
 								vertexA.getParticle(i)._persistentRecords._epsilon,
-								vertexA.getParticle(i)._persistentRecords._velocity(0),
-								vertexA.getParticle(i)._persistentRecords._velocity(1),
-								vertexA.getParticle(i)._persistentRecords._velocity(2),
 								vertexA.getParticle(i)._persistentRecords._material,
 
 								vertexB.getParticle(j).getCentre(0),
@@ -836,9 +772,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getYCoordinates( i ),
 							vertexA.getZCoordinates( i ),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._velocity(0),
-							vertexA.getParticle(i)._persistentRecords._velocity(1),
-							vertexA.getParticle(i)._persistentRecords._velocity(2),
 							vertexA.getParticle(i)._persistentRecords._material,
 
 							vertexB.getNumberOfTriangles( j ),
@@ -857,9 +790,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getYCoordinates( i ),
 							vertexA.getZCoordinates( i ),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._velocity(0),
-							vertexA.getParticle(i)._persistentRecords._velocity(1),
-							vertexA.getParticle(i)._persistentRecords._velocity(2),
 							vertexA.getParticle(i)._persistentRecords._material,
 
 							vertexB.getNumberOfTriangles( j ),
@@ -878,9 +808,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getYCoordinates( i ),
 							vertexA.getZCoordinates( i ),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._velocity(0),
-							vertexA.getParticle(i)._persistentRecords._velocity(1),
-							vertexA.getParticle(i)._persistentRecords._velocity(2),
 							vertexA.getParticle(i)._persistentRecords._material,
 
 							vertexB.getNumberOfTriangles( j ),
@@ -899,9 +826,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getYCoordinates( i ),
 							vertexA.getZCoordinates( i ),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._velocity(0),
-							vertexA.getParticle(i)._persistentRecords._velocity(1),
-							vertexA.getParticle(i)._persistentRecords._velocity(2),
 							vertexA.getParticle(i)._persistentRecords._material,
 
 							vertexB.getNumberOfTriangles( j ),
@@ -920,9 +844,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getYCoordinates( i ),
 							vertexA.getZCoordinates( i ),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._velocity(0),
-							vertexA.getParticle(i)._persistentRecords._velocity(1),
-							vertexA.getParticle(i)._persistentRecords._velocity(2),
 							vertexA.getParticle(i)._persistentRecords._material,
 
 							vertexB.getNumberOfTriangles( j ),
@@ -941,9 +862,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getYCoordinates( i ),
 							vertexA.getZCoordinates( i ),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._velocity(0),
-							vertexA.getParticle(i)._persistentRecords._velocity(1),
-							vertexA.getParticle(i)._persistentRecords._velocity(2),
 							vertexA.getParticle(i)._persistentRecords._material,
 
 							vertexB.getNumberOfTriangles( j ),
@@ -962,9 +880,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getYCoordinates( i ),
 							vertexA.getZCoordinates( i ),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._velocity(0),
-							vertexA.getParticle(i)._persistentRecords._velocity(1),
-							vertexA.getParticle(i)._persistentRecords._velocity(2),
 							vertexA.getParticle(i)._persistentRecords._material,
 
 							vertexB.getNumberOfTriangles( j ),
@@ -994,9 +909,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexA.getYCoordinates( i ),
 								vertexA.getZCoordinates( i ),
 								vertexA.getParticle(i)._persistentRecords._epsilon,
-								vertexA.getParticle(i)._persistentRecords._velocity(0),
-								vertexA.getParticle(i)._persistentRecords._velocity(1),
-								vertexA.getParticle(i)._persistentRecords._velocity(2),
 								vertexA.getParticle(i)._persistentRecords._material,
 
 								vertexB.getNumberOfTriangles( j ),
@@ -1027,9 +939,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexA.getYCoordinates( i ),
 								vertexA.getZCoordinates( i ),
 								vertexA.getParticle(i)._persistentRecords._epsilon,
-								vertexA.getParticle(i)._persistentRecords._velocity(0),
-								vertexA.getParticle(i)._persistentRecords._velocity(1),
-								vertexA.getParticle(i)._persistentRecords._velocity(2),
 								vertexA.getParticle(i)._persistentRecords._material,
 
 								vertexB.getNumberOfTriangles( j ),
@@ -1054,16 +963,13 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexB.getParticle(j).getCentre(2),
 							vertexB.getParticle(j).getInfluenceRadius()))
 						{
-							_state.informStateThatTwoParticlesAreClose();
+
 							newContactPoints = delta::collision::bf(
 								vertexA.getNumberOfTriangles( i ),
 								vertexA.getXCoordinates( i ),
 								vertexA.getYCoordinates( i ),
 								vertexA.getZCoordinates( i ),
 								vertexA.getParticle(i)._persistentRecords._epsilon,
-								vertexA.getParticle(i)._persistentRecords._velocity(0),
-								vertexA.getParticle(i)._persistentRecords._velocity(1),
-								vertexA.getParticle(i)._persistentRecords._velocity(2),
 								vertexA.getParticle(i)._persistentRecords._material,
 
 								vertexB.getNumberOfTriangles( j ),
@@ -1094,9 +1000,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 								vertexA.getYCoordinates( i ),
 								vertexA.getZCoordinates( i ),
 								vertexA.getParticle(i)._persistentRecords._epsilon,
-								vertexA.getParticle(i)._persistentRecords._velocity(0),
-								vertexA.getParticle(i)._persistentRecords._velocity(1),
-								vertexA.getParticle(i)._persistentRecords._velocity(2),
 								vertexA.getParticle(i)._persistentRecords._material,
 
 								vertexB.getNumberOfTriangles( j ),
@@ -1116,9 +1019,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getYCoordinates( i ),
 							vertexA.getZCoordinates( i ),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._velocity(0),
-							vertexA.getParticle(i)._persistentRecords._velocity(1),
-							vertexA.getParticle(i)._persistentRecords._velocity(2),
 							vertexA.getParticle(i)._persistentRecords._material,
 
 							vertexB.getNumberOfTriangles( j ),
@@ -1139,13 +1039,13 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 					addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j) );
 				}
 
-					//printf("DifferentVertexContact:%d\n", newContactPoints.size());
-					//printf("VertexANoParticles:%d VertexBNoParticles:%d\n", vertexA.getNumberOfRealAndVirtualParticles(), vertexB.getNumberOfRealAndVirtualParticles());
-					//printf("VertexA:%d VertexB:%d\n", vertexA.getParticle(i)._persistentRecords._globalParticleNumber, vertexB.getParticle(j)._persistentRecords._globalParticleNumber);
-					#ifdef ompParticle
-						#pragma omp critical
-					#endif
-					_state.incNumberOfTriangleComparisons( vertexA.getNumberOfTriangles( i ) * vertexB.getNumberOfTriangles( j ) );
+				//printf("DifferentVertexContact:%d\n", newContactPoints.size());
+				//printf("VertexANoParticles:%d VertexBNoParticles:%d\n", vertexA.getNumberOfRealAndVirtualParticles(), vertexB.getNumberOfRealAndVirtualParticles());
+				//printf("VertexA:%d VertexB:%d\n", vertexA.getParticle(i)._persistentRecords._globalParticleNumber, vertexB.getParticle(j)._persistentRecords._globalParticleNumber);
+				#ifdef ompParticle
+					#pragma omp critical
+				#endif
+				_state.incNumberOfTriangleComparisons( vertexA.getNumberOfTriangles( i ) * vertexB.getNumberOfTriangles( j ) );
 			}
 		}
 	}
@@ -1374,12 +1274,6 @@ void dem::mappings::Collision::enterCell(
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
 
-
-
-//
-//   NOP
-// =======
-//
 dem::mappings::Collision::Collision() {
 	logTraceIn( "Collision()" );
 	// @todo Insert your code here
