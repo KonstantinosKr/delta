@@ -2,9 +2,6 @@ Intel(R) Advisor can now assist with vectorization and show optimization
   report messages with your source code.
 See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
-Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
-
-Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o delta/hull/set.o
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -68,7 +65,7 @@ INLINE REPORT: (delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **,
   -> INLINE (MANUAL): (182,19) delta::hull::item(delta::hull::MEM *, void *) (isz = 18) (sz = 27)
     -> EXTERN: (162,17) delta::hull::MEM_Alloc(delta::hull::MEM *)
     -> EXTERN: (165,17) delta::hull::MEM_CALLOC(size_t)
-  -> INDIRECT-: (192,8)  compare_390_V$1b.0.6
+  -> INDIRECT-: (192,8) 
      [[ Callee not marked with inlining pragma  <1>]]
   -> INLINE (MANUAL): (197,10) delta::hull::item(delta::hull::MEM *, void *) (isz = 18) (sz = 27)
     -> EXTERN: (162,17) delta::hull::MEM_Alloc(delta::hull::MEM *)
@@ -92,56 +89,16 @@ INLINE REPORT: (delta::hull::SET_Insert(delta::hull::MEM *, delta::hull::SET **,
 
 
 LOOP BEGIN at delta/hull/set.cpp(188,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
-LOOP BEGIN at delta/hull/set.cpp(192,8)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+LOOP BEGIN at delta/hull/set.cpp(188,5)
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(251,3)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
-
-
-Non-optimizable loops:
-
-
-LOOP BEGIN at delta/hull/set.cpp(202,9)
-   remark #15522: loop was not vectorized: loop control flow is too complex. Try using canonical loop form from OpenMP specification
-LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(176,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull10SET_InsertEPNS0_11memory_poolEPPNS0_3setEPvPFiS6_S6_E] delta/hull/set.cpp:176
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   13[ rax rdx rcx rbx rbp rsi rdi r8-r9 r12-r15]
-        
-    Routine temporaries
-        Total         :      79
-            Global    :      50
-            Local     :      29
-        Regenerable   :      10
-        Spilled       :       6
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_Find(delta::hull::SET *, void *, delta::hull::SET_Compare)
@@ -149,7 +106,7 @@ Begin optimization report for: delta::hull::SET_Find(delta::hull::SET *, void *,
     Report from: Interprocedural optimizations [ipo]
 
 INLINE REPORT: (delta::hull::SET_Find(delta::hull::SET *, void *, delta::hull::SET_Compare)) [6/17=35.3%] delta/hull/set.cpp(305,1)
-  -> INDIRECT-: (313,13)  compare_422_V$22.0.7
+  -> INDIRECT-: (313,13) 
      [[ Callee not marked with inlining pragma  <1>]]
 
 
@@ -157,44 +114,12 @@ INLINE REPORT: (delta::hull::SET_Find(delta::hull::SET *, void *, delta::hull::S
 
 
 LOOP BEGIN at delta/hull/set.cpp(311,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(321,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(305,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8SET_FindEPNS0_3setEPvPFiS3_S3_E] delta/hull/set.cpp:305
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   10[ rax rdx rcx rsi rdi r8 r12-r15]
-        
-    Routine temporaries
-        Total         :      26
-            Global    :      14
-            Local     :      12
-        Regenerable   :       3
-        Spilled       :       4
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :      32 bytes*
-            Reads     :      12 [3.50e+00 ~ 6.4%]
-            Writes    :       4 [3.50e+00 ~ 6.4%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_Contains(delta::hull::SET *, void *, delta::hull::SET_Compare)
@@ -202,7 +127,7 @@ Begin optimization report for: delta::hull::SET_Contains(delta::hull::SET *, voi
     Report from: Interprocedural optimizations [ipo]
 
 INLINE REPORT: (delta::hull::SET_Contains(delta::hull::SET *, void *, delta::hull::SET_Compare)) [7/17=41.2%] delta/hull/set.cpp(333,1)
-  -> INDIRECT-: (341,13)  compare_435_V$27.0.8
+  -> INDIRECT-: (341,13) 
      [[ Callee not marked with inlining pragma  <1>]]
 
 
@@ -210,44 +135,12 @@ INLINE REPORT: (delta::hull::SET_Contains(delta::hull::SET *, void *, delta::hul
 
 
 LOOP BEGIN at delta/hull/set.cpp(339,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(349,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(333,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull12SET_ContainsEPNS0_3setEPvPFiS3_S3_E] delta/hull/set.cpp:333
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   10[ rax rdx rcx rsi rdi r8 r12-r15]
-        
-    Routine temporaries
-        Total         :      25
-            Global    :      13
-            Local     :      12
-        Regenerable   :       5
-        Spilled       :       4
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :      32 bytes*
-            Reads     :      12 [3.50e+00 ~ 6.4%]
-            Writes    :       4 [3.50e+00 ~ 6.4%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_Delete(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare)
@@ -255,7 +148,7 @@ Begin optimization report for: delta::hull::SET_Delete(delta::hull::MEM *, delta
     Report from: Interprocedural optimizations [ipo]
 
 INLINE REPORT: (delta::hull::SET_Delete(delta::hull::MEM *, delta::hull::SET **, void *, delta::hull::SET_Compare)) [8/17=47.1%] delta/hull/set.cpp(362,1)
-  -> INDIRECT-: (370,13)  compare_448_V$2d.0.9
+  -> INDIRECT-: (370,13) 
      [[ Callee not marked with inlining pragma  <1>]]
   -> INLINE (MANUAL): (423,5) delta::hull::set_delete_fixup(delta::hull::SET **, delta::hull::SET *) (isz = 371) (sz = 378)
     -> INLINE (MANUAL): (82,9) delta::hull::set_rotate_l(delta::hull::SET **, delta::hull::SET *) (isz = 37) (sz = 44)
@@ -272,52 +165,20 @@ INLINE REPORT: (delta::hull::SET_Delete(delta::hull::MEM *, delta::hull::SET **,
 
 
 LOOP BEGIN at delta/hull/set.cpp(368,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(381,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(401,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(72,3) inlined into delta/hull/set.cpp(423,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(362,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull10SET_DeleteEPNS0_11memory_poolEPPNS0_3setEPvPFiS6_S6_E] delta/hull/set.cpp:362
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   15[ rax rdx rcx rbx rbp rsi rdi r8-r15]
-        
-    Routine temporaries
-        Total         :      66
-            Global    :      35
-            Local     :      31
-        Regenerable   :       3
-        Spilled       :       6
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :      48 bytes*
-            Reads     :      18 [5.25e+00 ~ 6.3%]
-            Writes    :       6 [5.25e+00 ~ 6.3%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_Delete_Node(delta::hull::MEM *, delta::hull::SET **, delta::hull::SET *)
@@ -341,53 +202,21 @@ INLINE REPORT: (delta::hull::SET_Delete_Node(delta::hull::MEM *, delta::hull::SE
 
 
 LOOP BEGIN at delta/hull/set.cpp(580,5) inlined into delta/hull/set.cpp(433,10)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
    remark #25478: While Loop Unrolled by 2  
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(569,5) inlined into delta/hull/set.cpp(433,10)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(442,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(72,3) inlined into delta/hull/set.cpp(465,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(430,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull15SET_Delete_NodeEPNS0_11memory_poolEPPNS0_3setES4_] delta/hull/set.cpp:430
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   10[ rax rdx rcx rsi rdi r8-r11 r15]
-        
-    Routine temporaries
-        Total         :      61
-            Global    :      36
-            Local     :      25
-        Regenerable   :       3
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_Free(delta::hull::MEM *, delta::hull::SET **)
@@ -401,38 +230,6 @@ INLINE REPORT: (delta::hull::SET_Free(delta::hull::MEM *, delta::hull::SET **)) 
      [[ Callee not marked with inlining pragma  <1>]]
   -> EXTERN: (478,13) delta::hull::MEM_Free(delta::hull::MEM *, void *)
   -> EXTERN: (479,8) free(void *)
-
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(474,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8SET_FreeEPNS0_11memory_poolEPPNS0_3setE] delta/hull/set.cpp:474
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    5[ rax rbx rbp rsi rdi]
-        
-    Routine temporaries
-        Total         :      24
-            Global    :       9
-            Local     :      15
-        Regenerable   :       1
-        Spilled       :       2
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -449,38 +246,6 @@ INLINE REPORT: (delta::hull::SET_Copy(delta::hull::MEM *, delta::hull::SET *)) [
   -> (492,10) delta::hull::SET_Copy(delta::hull::MEM *, delta::hull::SET *) (isz = 60) (sz = 70)
      [[ Callee not marked with inlining pragma  <1>]]
 
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(484,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8SET_CopyEPNS0_11memory_poolEPNS0_3setE] delta/hull/set.cpp:484
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    9[ rax rdx rcx rbx rsi rdi r13-r15]
-        
-    Routine temporaries
-        Total         :      30
-            Global    :      17
-            Local     :      13
-        Regenerable   :       2
-        Spilled       :       4
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_Size(delta::hull::SET *)
@@ -493,38 +258,6 @@ INLINE REPORT: (delta::hull::SET_Size(delta::hull::SET *)) [12/17=70.6%] delta/h
        [[ Callee not marked with inlining pragma  <1>]]
     -> (153,5) delta::hull::set_size(delta::hull::SET *, int *) (isz = 14) (sz = 21)
        [[ Callee not marked with inlining pragma  <1>]]
-
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(499,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8SET_SizeEPNS0_3setE] delta/hull/set.cpp:499
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    5[ rax rdx rbx rsi rdi]
-        
-    Routine temporaries
-        Total         :      18
-            Global    :       9
-            Local     :       9
-        Regenerable   :       4
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :       4 bytes*
-            Reads     :       2 [1.73e+00 ~ 6.1%]
-            Writes    :       2 [1.73e+00 ~ 6.1%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -543,40 +276,8 @@ INLINE REPORT: (delta::hull::set_size(delta::hull::SET *, int *)) [13/17=76.5%] 
 
 
 LOOP BEGIN at delta/hull/set.cpp(148,1)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(148,1):remark #34051: REGISTER ALLOCATION : [_ZN40_INTERNAL_18_delta_hull_set_cpp_de7541245delta4hull8set_sizeEPNS1_3setEPi] delta/hull/set.cpp:148
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    5[ rax rsi rdi r12-r13]
-        
-    Routine temporaries
-        Total         :      14
-            Global    :       8
-            Local     :       6
-        Regenerable   :       1
-        Spilled       :       2
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_First(delta::hull::SET *)
@@ -590,41 +291,9 @@ INLINE REPORT: (delta::hull::SET_First(delta::hull::SET *)) [14/17=82.4%] delta/
 
 
 LOOP BEGIN at delta/hull/set.cpp(508,3)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
    remark #25478: While Loop Unrolled by 8  
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(506,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull9SET_FirstEPNS0_3setE] delta/hull/set.cpp:506
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rcx rdi]
-        
-    Routine temporaries
-        Total         :      19
-            Global    :      16
-            Local     :       3
-        Regenerable   :       2
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_Last(delta::hull::SET *)
@@ -638,41 +307,9 @@ INLINE REPORT: (delta::hull::SET_Last(delta::hull::SET *)) [15/17=88.2%] delta/h
 
 
 LOOP BEGIN at delta/hull/set.cpp(516,3)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
    remark #25478: While Loop Unrolled by 8  
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(513,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8SET_LastEPNS0_3setE] delta/hull/set.cpp:513
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rcx rdi]
-        
-    Routine temporaries
-        Total         :      19
-            Global    :      16
-            Local     :       3
-        Regenerable   :       2
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_Prev(delta::hull::SET *)
@@ -686,45 +323,13 @@ INLINE REPORT: (delta::hull::SET_Prev(delta::hull::SET *)) [16/17=94.1%] delta/h
 
 
 LOOP BEGIN at delta/hull/set.cpp(547,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
    remark #25478: While Loop Unrolled by 2  
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(536,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(521,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8SET_PrevEPNS0_3setE] delta/hull/set.cpp:521
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rcx rdi]
-        
-    Routine temporaries
-        Total         :      21
-            Global    :      14
-            Local     :       7
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::SET_Next(delta::hull::SET *)
@@ -738,45 +343,13 @@ INLINE REPORT: (delta::hull::SET_Next(delta::hull::SET *)) [17/17=100.0%] delta/
 
 
 LOOP BEGIN at delta/hull/set.cpp(580,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
    remark #25478: While Loop Unrolled by 2  
 LOOP END
 
 LOOP BEGIN at delta/hull/set.cpp(569,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/set.cpp(554,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8SET_NextEPNS0_3setE] delta/hull/set.cpp:554
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rcx rdi]
-        
-    Routine temporaries
-        Total         :      21
-            Global    :      14
-            Local     :       7
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
     Report from: Interprocedural optimizations [ipo]

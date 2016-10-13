@@ -2,9 +2,6 @@ Intel(R) Advisor can now assist with vectorization and show optimization
   report messages with your source code.
 See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
-Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
-
-Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o delta/hull/hyb.o
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -33,38 +30,6 @@ Begin optimization report for: delta::hull::boxcmp(delta::hull::BOX **, delta::h
     Report from: Interprocedural optimizations [ipo]
 
 INLINE REPORT: (delta::hull::boxcmp(delta::hull::BOX **, delta::hull::BOX **)) [1/13=7.7%] delta/hull/hyb.cpp(41,1)
-
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/hyb.cpp(41,1):remark #34051: REGISTER ALLOCATION : [_ZN40_INTERNAL_18_delta_hull_hyb_cpp_de7541245delta4hull6boxcmpEPPNS1_3boxES4_] delta/hull/hyb.cpp:41
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rax rdx rsi rdi zmm0-zmm1]
-        
-    Routine temporaries
-        Total         :      17
-            Global    :      10
-            Local     :       7
-        Regenerable   :       2
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -133,16 +98,16 @@ INLINE REPORT: (delta::hull::hybrid(delta::hull::BOX **, int, void *, delta::hul
   -> EXTERN: (287,3) memcpy(void *, const void *, size_t)
   -> INLINE: (289,3) delta::hull::stream(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, double, double, int, void *, delta::hull::BOX_Overlap_Create) (isz = 810) (sz = 832)
     -> INLINE: (213,20) delta::hull::onewayscan(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, int, void *, delta::hull::BOX_Overlap_Create) (isz = 119) (sz = 136)
-      -> EXTERN: (54,3) qsort(void *, size_t, size_t, __compar_fn_t)
-      -> EXTERN: (55,3) qsort(void *, size_t, size_t, __compar_fn_t)
-      -> INDIRECT-: (69,45)  create_1654_V$10.0.3.41
+      -> EXTERN: (54,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+      -> EXTERN: (55,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+      -> INDIRECT-: (69,45) 
          [[ Callee not marked with inlining pragma  <1>]]
     -> INLINE: (214,50) delta::hull::twowayscan(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, int, void *, delta::hull::BOX_Overlap_Create) (isz = 176) (sz = 193)
-      -> EXTERN: (82,3) qsort(void *, size_t, size_t, __compar_fn_t)
-      -> EXTERN: (83,3) qsort(void *, size_t, size_t, __compar_fn_t)
-      -> INDIRECT-: (98,39)  create_1661_V$19.0.4.40
+      -> EXTERN: (82,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+      -> EXTERN: (83,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+      -> INDIRECT-: (98,39) 
          [[ Callee not marked with inlining pragma  <1>]]
-      -> INDIRECT-: (112,39)  create_1661_V$19.0.4.40
+      -> INDIRECT-: (112,39) 
          [[ Callee not marked with inlining pragma  <1>]]
     -> INLINE: (220,10) delta::hull::lo_hi_inside(delta::hull::BOX **, delta::hull::BOX **, double, double, int) (isz = 56) (sz = 71)
     -> (224,5) delta::hull::stream(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, double, double, int, void *, delta::hull::BOX_Overlap_Create) (isz = 810) (sz = 832)
@@ -178,10 +143,10 @@ INLINE REPORT: (delta::hull::hybrid(delta::hull::BOX **, int, void *, delta::hul
 
 
 LOOP BEGIN at delta/hull/hyb.cpp(123,3) inlined into delta/hull/hyb.cpp(289,3)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(125,5) inlined into delta/hull/hyb.cpp(289,3)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(125,75) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(126,29) inlined into delta/hull/hyb.cpp(289,3)
@@ -195,22 +160,22 @@ LOOP BEGIN at delta/hull/hyb.cpp(123,3) inlined into delta/hull/hyb.cpp(289,3)
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(173,3) inlined into delta/hull/hyb.cpp(289,3)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(175,5) inlined into delta/hull/hyb.cpp(289,3)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(175,46) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(176,29) inlined into delta/hull/hyb.cpp(289,3)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(176,10) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(289,3)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(195,5) inlined into delta/hull/hyb.cpp(289,3)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(195,77) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(196,29) inlined into delta/hull/hyb.cpp(289,3)
@@ -224,10 +189,10 @@ LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(289,3)
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(289,3)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(195,5) inlined into delta/hull/hyb.cpp(289,3)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(195,77) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(196,29) inlined into delta/hull/hyb.cpp(289,3)
@@ -244,56 +209,27 @@ LOOP BEGIN at delta/hull/hyb.cpp(85,3) inlined into delta/hull/hyb.cpp(289,3)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
    LOOP BEGIN at delta/hull/hyb.cpp(90,7) inlined into delta/hull/hyb.cpp(289,3)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(90,69) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
 
       LOOP BEGIN at delta/hull/hyb.cpp(92,2) inlined into delta/hull/hyb.cpp(289,3)
-         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(92,22) ]
+         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
       LOOP END
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(104,7) inlined into delta/hull/hyb.cpp(289,3)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(104,69) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
 
       LOOP BEGIN at delta/hull/hyb.cpp(106,2) inlined into delta/hull/hyb.cpp(289,3)
-         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(106,22) ]
+         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
       LOOP END
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-delta/hull/hyb.cpp(287,3):remark #34014: optimization advice for memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
-delta/hull/hyb.cpp(287,3):remark #34014: optimization advice for memcpy: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
-delta/hull/hyb.cpp(287,3):remark #34026: call to memcpy implemented as a call to optimized library version
-delta/hull/hyb.cpp(283,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull6hybridEPPNS0_3boxEiPvPFvS4_S2_S2_E] delta/hull/hyb.cpp:283
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   19[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm3]
-        
-    Routine temporaries
-        Total         :     282
-            Global    :     108
-            Local     :     174
-        Regenerable   :      23
-        Spilled       :      18
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :      88 bytes*
-            Reads     :      30 [4.22e+00 ~ 1.1%]
-            Writes    :      18 [4.45e+00 ~ 1.1%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
+delta/hull/hyb.cpp(287,3):remark #34014: optimization advice for _memcpy: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+delta/hull/hyb.cpp(287,3):remark #34014: optimization advice for _memcpy: increase the source's alignment to 16 (and use __assume_aligned) to speed up library implementation
+delta/hull/hyb.cpp(287,3):remark #34026: call to _memcpy implemented as a call to optimized library version
 ===========================================================================
 
 Begin optimization report for: delta::hull::stream(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, double, double, int, void *, delta::hull::BOX_Overlap_Create)
@@ -302,16 +238,16 @@ Begin optimization report for: delta::hull::stream(delta::hull::BOX **, delta::h
 
 INLINE REPORT: (delta::hull::stream(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, double, double, int, void *, delta::hull::BOX_Overlap_Create)) [10/13=76.9%] delta/hull/hyb.cpp(211,1)
   -> INLINE: (213,20) delta::hull::onewayscan(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, int, void *, delta::hull::BOX_Overlap_Create) (isz = 119) (sz = 136)
-    -> EXTERN: (54,3) qsort(void *, size_t, size_t, __compar_fn_t)
-    -> EXTERN: (55,3) qsort(void *, size_t, size_t, __compar_fn_t)
-    -> INDIRECT-: (69,45)  create_1654_V$10.0.3.30
+    -> EXTERN: (54,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+    -> EXTERN: (55,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+    -> INDIRECT-: (69,45) 
        [[ Callee not marked with inlining pragma  <1>]]
   -> INLINE: (214,50) delta::hull::twowayscan(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, int, void *, delta::hull::BOX_Overlap_Create) (isz = 176) (sz = 193)
-    -> EXTERN: (82,3) qsort(void *, size_t, size_t, __compar_fn_t)
-    -> EXTERN: (83,3) qsort(void *, size_t, size_t, __compar_fn_t)
-    -> INDIRECT-: (98,39)  create_1661_V$19.0.4.31
+    -> EXTERN: (82,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+    -> EXTERN: (83,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+    -> INDIRECT-: (98,39) 
        [[ Callee not marked with inlining pragma  <1>]]
-    -> INDIRECT-: (112,39)  create_1661_V$19.0.4.31
+    -> INDIRECT-: (112,39) 
        [[ Callee not marked with inlining pragma  <1>]]
   -> INLINE: (220,10) delta::hull::lo_hi_inside(delta::hull::BOX **, delta::hull::BOX **, double, double, int) (isz = 56) (sz = 71)
   -> (224,5) delta::hull::stream(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, double, double, int, void *, delta::hull::BOX_Overlap_Create) (isz = 810) (sz = 832)
@@ -346,10 +282,10 @@ INLINE REPORT: (delta::hull::stream(delta::hull::BOX **, delta::hull::BOX **, de
 
 
 LOOP BEGIN at delta/hull/hyb.cpp(123,3) inlined into delta/hull/hyb.cpp(220,10)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(125,5) inlined into delta/hull/hyb.cpp(220,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(125,75) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(126,29) inlined into delta/hull/hyb.cpp(220,10)
@@ -363,22 +299,22 @@ LOOP BEGIN at delta/hull/hyb.cpp(123,3) inlined into delta/hull/hyb.cpp(220,10)
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(173,3) inlined into delta/hull/hyb.cpp(233,10)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(175,5) inlined into delta/hull/hyb.cpp(233,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(175,46) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(176,29) inlined into delta/hull/hyb.cpp(233,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(176,10) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(235,10)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(195,5) inlined into delta/hull/hyb.cpp(235,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(195,77) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(196,29) inlined into delta/hull/hyb.cpp(235,10)
@@ -392,10 +328,10 @@ LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(235,10)
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(239,10)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(195,5) inlined into delta/hull/hyb.cpp(239,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(195,77) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(196,29) inlined into delta/hull/hyb.cpp(239,10)
@@ -409,22 +345,22 @@ LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(239,10)
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(57,3) inlined into delta/hull/hyb.cpp(213,20)
-   remark #15382: vectorization support: call to function (Indirect call) cannot be vectorized   [ delta/hull/hyb.cpp(69,45) ]
+   remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ delta/hull/hyb.cpp(69,45) ]
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed ANTI dependence between Pb (61:5) and Pb (59:42)
-   remark #15346: vector dependence: assumed FLOW dependence between Pb (59:42) and Pb (61:5)
-   remark #15346: vector dependence: assumed FLOW dependence between Pb (59:42) and Pb (61:5)
-   remark #15346: vector dependence: assumed ANTI dependence between Pb (61:5) and Pb (59:42)
+   remark #15346: vector dependence: assumed ANTI dependence between Pb_722 line 61 and Pb_722 line 59
+   remark #15346: vector dependence: assumed FLOW dependence between Pb_722 line 59 and Pb_722 line 61
+   remark #15346: vector dependence: assumed FLOW dependence between Pb_722 line 59 and Pb_722 line 61
+   remark #15346: vector dependence: assumed ANTI dependence between Pb_722 line 61 and Pb_722 line 59
 
    LOOP BEGIN at delta/hull/hyb.cpp(59,5) inlined into delta/hull/hyb.cpp(213,20)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(59,42) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(59,23) ]
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(61,5) inlined into delta/hull/hyb.cpp(213,20)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(61,68) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
 
       LOOP BEGIN at delta/hull/hyb.cpp(63,7) inlined into delta/hull/hyb.cpp(213,20)
-         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(63,27) ]
+         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
          remark #25015: Estimate of max trip count of loop=6
       LOOP END
    LOOP END
@@ -434,19 +370,19 @@ LOOP BEGIN at delta/hull/hyb.cpp(85,3) inlined into delta/hull/hyb.cpp(214,50)
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
    LOOP BEGIN at delta/hull/hyb.cpp(90,7) inlined into delta/hull/hyb.cpp(214,50)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(90,69) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
 
       LOOP BEGIN at delta/hull/hyb.cpp(92,2) inlined into delta/hull/hyb.cpp(214,50)
-         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(92,22) ]
+         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
          remark #25015: Estimate of max trip count of loop=6
       LOOP END
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(104,7) inlined into delta/hull/hyb.cpp(214,50)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(104,69) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
 
       LOOP BEGIN at delta/hull/hyb.cpp(106,2) inlined into delta/hull/hyb.cpp(214,50)
-         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(106,22) ]
+         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
          remark #25015: Estimate of max trip count of loop=6
       LOOP END
    LOOP END
@@ -457,40 +393,8 @@ Non-optimizable loops:
 
 
 LOOP BEGIN at delta/hull/hyb.cpp(241,10)
-   remark #15522: loop was not vectorized: loop control flow is too complex. Try using canonical loop form from OpenMP specification
+   remark #15341: loop was not vectorized: nonstandard loop is not a vectorization candidate
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/hyb.cpp(211,1):remark #34051: REGISTER ALLOCATION : [_ZN40_INTERNAL_18_delta_hull_hyb_cpp_de7541245delta4hull6streamEPPNS1_3boxES4_S4_S4_ddiPvPFvS5_S3_S3_E] delta/hull/hyb.cpp:211
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   18[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm2]
-        
-    Routine temporaries
-        Total         :     292
-            Global    :     121
-            Local     :     171
-        Regenerable   :      20
-        Spilled       :      21
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :     120 bytes*
-            Reads     :      53 [1.00e+01 ~ 1.9%]
-            Writes    :      45 [1.56e+01 ~ 3.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::median(delta::hull::BOX **, delta::hull::BOX **, int, int)
@@ -507,38 +411,6 @@ INLINE REPORT: (delta::hull::median(delta::hull::BOX **, delta::hull::BOX **, in
   -> (165,32) delta::hull::median(delta::hull::BOX **, delta::hull::BOX **, int, int) (isz = 149) (sz = 163)
      [[ Callee not marked with inlining pragma  <1>]]
 
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/hyb.cpp(161,1):remark #34051: REGISTER ALLOCATION : [_ZN40_INTERNAL_18_delta_hull_hyb_cpp_de7541245delta4hull6medianEPPNS1_3boxES4_ii] delta/hull/hyb.cpp:161
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   15[ rax rdx rcx rbx rbp rsi rdi r8 r12-r15 zmm0-zmm2]
-        
-    Routine temporaries
-        Total         :      55
-            Global    :      24
-            Local     :      31
-        Regenerable   :       0
-        Spilled       :       7
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       8 bytes*
-            Reads     :       1 [8.80e-01 ~ 1.4%]
-            Writes    :       1 [8.80e-01 ~ 1.4%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::hybrid_ext(delta::hull::BOX **, int, delta::hull::BOX **, int, void *, delta::hull::BOX_Overlap_Create)
@@ -551,38 +423,6 @@ INLINE REPORT: (delta::hull::hybrid_ext(delta::hull::BOX **, int, delta::hull::B
   -> (305,3) delta::hull::stream_ext(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, double, double, int, void *, delta::hull::BOX_Overlap_Create) (isz = 626) (sz = 648)
      [[ Inlining would exceed -inline-max-size value (648>230) <2>]]
 
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/hyb.cpp(299,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull10hybrid_extEPPNS0_3boxEiS3_iPvPFvS4_S2_S2_E] delta/hull/hyb.cpp:299
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   14[ rdx rcx rbx rbp rsi rdi r8-r9 r12-r15 zmm0-zmm1]
-        
-    Routine temporaries
-        Total         :      40
-            Global    :      14
-            Local     :      26
-        Regenerable   :       8
-        Spilled       :       6
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::stream_ext(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, double, double, int, void *, delta::hull::BOX_Overlap_Create)
@@ -591,9 +431,9 @@ Begin optimization report for: delta::hull::stream_ext(delta::hull::BOX **, delt
 
 INLINE REPORT: (delta::hull::stream_ext(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, double, double, int, void *, delta::hull::BOX_Overlap_Create)) [13/13=100.0%] delta/hull/hyb.cpp(248,1)
   -> INLINE: (250,60) delta::hull::onewayscan(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, int, void *, delta::hull::BOX_Overlap_Create) (isz = 119) (sz = 136)
-    -> EXTERN: (54,3) qsort(void *, size_t, size_t, __compar_fn_t)
-    -> EXTERN: (55,3) qsort(void *, size_t, size_t, __compar_fn_t)
-    -> INDIRECT-: (69,45)  create_1654_V$10.0.3.29
+    -> EXTERN: (54,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+    -> EXTERN: (55,3) qsort(void *, size_t, size_t, int (*)(const void *, const void *))
+    -> INDIRECT-: (69,45) 
        [[ Callee not marked with inlining pragma  <1>]]
   -> INLINE: (256,10) delta::hull::lo_hi_inside(delta::hull::BOX **, delta::hull::BOX **, double, double, int) (isz = 56) (sz = 71)
   -> (260,5) delta::hull::stream_ext(delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, delta::hull::BOX **, double, double, int, void *, delta::hull::BOX_Overlap_Create) (isz = 626) (sz = 648)
@@ -628,10 +468,10 @@ INLINE REPORT: (delta::hull::stream_ext(delta::hull::BOX **, delta::hull::BOX **
 
 
 LOOP BEGIN at delta/hull/hyb.cpp(123,3) inlined into delta/hull/hyb.cpp(256,10)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(125,5) inlined into delta/hull/hyb.cpp(256,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(125,75) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(126,29) inlined into delta/hull/hyb.cpp(256,10)
@@ -645,22 +485,22 @@ LOOP BEGIN at delta/hull/hyb.cpp(123,3) inlined into delta/hull/hyb.cpp(256,10)
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(173,3) inlined into delta/hull/hyb.cpp(269,10)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(175,5) inlined into delta/hull/hyb.cpp(269,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(175,46) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(176,29) inlined into delta/hull/hyb.cpp(269,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(176,10) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(271,10)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(195,5) inlined into delta/hull/hyb.cpp(271,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(195,77) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(196,29) inlined into delta/hull/hyb.cpp(271,10)
@@ -674,10 +514,10 @@ LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(271,10)
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(275,10)
-   remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at delta/hull/hyb.cpp(195,5) inlined into delta/hull/hyb.cpp(275,10)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(195,77) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(196,29) inlined into delta/hull/hyb.cpp(275,10)
@@ -691,22 +531,22 @@ LOOP BEGIN at delta/hull/hyb.cpp(193,3) inlined into delta/hull/hyb.cpp(275,10)
 LOOP END
 
 LOOP BEGIN at delta/hull/hyb.cpp(57,3) inlined into delta/hull/hyb.cpp(250,60)
-   remark #15382: vectorization support: call to function (Indirect call) cannot be vectorized   [ delta/hull/hyb.cpp(69,45) ]
+   remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ delta/hull/hyb.cpp(69,45) ]
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed ANTI dependence between Pb (61:5) and Pb (59:42)
-   remark #15346: vector dependence: assumed FLOW dependence between Pb (59:42) and Pb (61:5)
-   remark #15346: vector dependence: assumed FLOW dependence between Pb (59:42) and Pb (61:5)
-   remark #15346: vector dependence: assumed ANTI dependence between Pb (61:5) and Pb (59:42)
+   remark #15346: vector dependence: assumed ANTI dependence between Pb_722 line 61 and Pb_722 line 59
+   remark #15346: vector dependence: assumed FLOW dependence between Pb_722 line 59 and Pb_722 line 61
+   remark #15346: vector dependence: assumed FLOW dependence between Pb_722 line 59 and Pb_722 line 61
+   remark #15346: vector dependence: assumed ANTI dependence between Pb_722 line 61 and Pb_722 line 59
 
    LOOP BEGIN at delta/hull/hyb.cpp(59,5) inlined into delta/hull/hyb.cpp(250,60)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(59,42) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(59,23) ]
    LOOP END
 
    LOOP BEGIN at delta/hull/hyb.cpp(61,5) inlined into delta/hull/hyb.cpp(250,60)
-      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(61,68) ]
+      remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
 
       LOOP BEGIN at delta/hull/hyb.cpp(63,7) inlined into delta/hull/hyb.cpp(250,60)
-         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ delta/hull/hyb.cpp(63,27) ]
+         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
          remark #25015: Estimate of max trip count of loop=6
       LOOP END
    LOOP END
@@ -717,40 +557,8 @@ Non-optimizable loops:
 
 
 LOOP BEGIN at delta/hull/hyb.cpp(277,10)
-   remark #15522: loop was not vectorized: loop control flow is too complex. Try using canonical loop form from OpenMP specification
+   remark #15341: loop was not vectorized: nonstandard loop is not a vectorization candidate
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/hyb.cpp(248,1):remark #34051: REGISTER ALLOCATION : [_ZN40_INTERNAL_18_delta_hull_hyb_cpp_de7541245delta4hull10stream_extEPPNS1_3boxES4_S4_S4_ddiPvPFvS5_S3_S3_E] delta/hull/hyb.cpp:248
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   18[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm2]
-        
-    Routine temporaries
-        Total         :     256
-            Global    :     107
-            Local     :     149
-        Regenerable   :      15
-        Spilled       :      19
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :     104 bytes*
-            Reads     :      41 [9.44e+00 ~ 1.9%]
-            Writes    :      40 [1.45e+01 ~ 2.9%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
     Report from: Interprocedural optimizations [ipo]

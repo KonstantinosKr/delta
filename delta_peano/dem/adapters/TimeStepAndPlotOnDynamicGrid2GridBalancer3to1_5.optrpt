@@ -2,9 +2,6 @@ Intel(R) Advisor can now assist with vectorization and show optimization
   report messages with your source code.
 See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
-Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
-
-Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.o
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -27,38 +24,6 @@ In the inlining report below:
       the calling routine will grow if the called routine is inlined into it.
       The compiler generally limits the amount a routine can grow by having
       routines inlined into it.
-
-Begin optimization report for: __gthread_active_p()
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gthread_active_p()) /usr/include/x86_64-linux-gnu/c++/6/bits/gthr-default.h(248,1)
-
-===========================================================================
-
-Begin optimization report for: std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>>::~basic_stringbuf(std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>> *)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>>::~basic_stringbuf(std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>> *)) /usr/include/c++/6/iosfwd(96,11)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,65)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,7)
-
-===========================================================================
 
 Begin optimization report for: tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *)
 
@@ -160,40 +125,8 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::touchVertexLastTimeSpecification()) [31/61=50.8%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(19,130)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::touchVertexLastTimeSpecification()) [13/39=33.3%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(19,130)
   -> EXTERN: (20,78) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(19,130):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_532touchVertexLastTimeSpecificationEv] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:19
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -201,40 +134,8 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::touchVertexFirstTimeSpecification()) [32/61=52.5%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(24,131)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::touchVertexFirstTimeSpecification()) [14/39=35.9%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(24,131)
   -> EXTERN: (25,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(24,131):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_533touchVertexFirstTimeSpecificationEv] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:24
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -242,40 +143,8 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::enterCellSpecification()) [33/61=54.1%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(29,120)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::enterCellSpecification()) [15/39=38.5%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(29,120)
   -> EXTERN: (30,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(29,120):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_522enterCellSpecificationEv] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:29
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -283,40 +152,8 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::leaveCellSpecification()) [34/61=55.7%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(34,120)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::leaveCellSpecification()) [16/39=41.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(34,120)
   -> EXTERN: (35,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(34,120):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_522leaveCellSpecificationEv] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:34
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -324,40 +161,8 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::ascendSpecification()) [35/61=57.4%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(39,117)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::ascendSpecification()) [17/39=43.6%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(39,117)
   -> EXTERN: (40,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(39,117):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_519ascendSpecificationEv] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:39
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -365,40 +170,8 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::descendSpecification()) [36/61=59.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(44,118)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::descendSpecification()) [18/39=46.2%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(44,118)
   -> EXTERN: (45,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(44,118):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_520descendSpecificationEv] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:44
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -406,40 +179,8 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::communicationSpecification()) [37/61=60.7%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(14,130)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::communicationSpecification()) [19/39=48.7%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(14,130)
   -> EXTERN: (15,10) peano::CommunicationSpecification::getMinimalSpecification(bool)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(14,130):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_526communicationSpecificationEv] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:14
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    3[ rax rdx rdi]
-        
-    Routine temporaries
-        Total         :      13
-            Global    :      10
-            Local     :       3
-        Regenerable   :       1
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -447,39 +188,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *)) [38/61=62.3%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(49,115)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(49,115):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5C1Ev] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:49
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :       8
-            Global    :       0
-            Local     :       8
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *)) [20/39=51.3%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(49,115)
 
 ===========================================================================
 
@@ -487,40 +196,8 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *const)) [39/61=63.9%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(49,65)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *const)) [21/39=53.8%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(49,65)
   -> INLINE: (49,65) dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *) (isz = 2) (sz = 7)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(49,65):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5C2Ev] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:49
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :       8
-            Global    :       0
-            Local     :       8
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -528,39 +205,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::~TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *)) [40/61=65.6%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(53,116)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(53,116):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5D1Ev] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:53
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :       8
-            Global    :       0
-            Local     :       8
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::~TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *)) [22/39=56.4%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(53,116)
 
 ===========================================================================
 
@@ -568,82 +213,18 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::~TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *const)) [41/61=67.2%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(53,65)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::~TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *const)) [23/39=59.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(53,65)
   -> EXTERN: (53,65) operator delete(void *)
   -> INLINE: (53,65) dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::~TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *) (isz = 2) (sz = 7)
 
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(53,65):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5D0Ev] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:53
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :       9
-            Global    :       0
-            Local     :       9
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::~TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *const)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::~TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *const)) [42/61=68.9%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(53,65)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::~TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *const)) [24/39=61.5%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(53,65)
   -> INLINE: (53,65) dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::~TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *) (isz = 2) (sz = 7)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(53,65):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5D2Ev] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:53
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :       8
-            Global    :       0
-            Local     :       8
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -651,39 +232,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::createInnerVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [43/61=70.5%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(101,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(101,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_517createInnerVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:101
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::createInnerVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [25/39=64.1%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(101,3)
 
 ===========================================================================
 
@@ -691,39 +240,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::createBoundaryVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [44/61=72.1%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(113,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(113,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_520createBoundaryVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:113
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::createBoundaryVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [26/39=66.7%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(113,3)
 
 ===========================================================================
 
@@ -731,39 +248,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::createHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [45/61=73.8%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(76,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(76,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_519createHangingVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:76
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::createHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [27/39=69.2%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(76,3)
 
 ===========================================================================
 
@@ -771,39 +256,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::destroyHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [46/61=75.4%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(89,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(89,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_520destroyHangingVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:89
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::destroyHangingVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [28/39=71.8%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(89,3)
 
 ===========================================================================
 
@@ -811,39 +264,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::destroyVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [47/61=77.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(125,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(125,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_513destroyVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:125
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::destroyVertex(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [29/39=74.4%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(125,3)
 
 ===========================================================================
 
@@ -851,39 +272,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::createCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [48/61=78.7%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(137,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(137,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_510createCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:137
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::createCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [30/39=76.9%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(137,3)
 
 ===========================================================================
 
@@ -891,39 +280,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::destroyCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [49/61=80.3%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(149,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(149,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_511destroyCellERKNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES6_SB_RS2_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:149
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::destroyCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [31/39=79.5%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(149,3)
 
 ===========================================================================
 
@@ -931,39 +288,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::touchVertexFirstTime(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [50/61=82.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(305,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(305,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_520touchVertexFirstTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:305
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::touchVertexFirstTime(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [32/39=82.1%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(305,3)
 
 ===========================================================================
 
@@ -971,16 +296,16 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::touchVertexLastTime(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [51/61=83.6%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(317,3)
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::touchVertexLastTime(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [33/39=84.6%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(317,3)
   -> INLINE (MANUAL): (319,20) peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 3) (sz = 10)
     -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(298,22) dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const (isz = 0) (sz = 6)
   -> INLINE (MANUAL): (321,20) peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 3) (sz = 10)
     -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(298,22) dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const (isz = 0) (sz = 6)
   -> INLINE (MANUAL): (323,40) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
-    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset()
+    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset(void *, int, size_t)
   -> INLINE (MANUAL): (325,33) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (325,63) tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const (isz = 1) (sz = 9)
-  -> INDIRECT- (VIRTUAL): (328,81)  EXPR_CONV.SI64.P64(*((SI64*) (coarseGridVerticesEnumerator_25519_V$190.0.54->__vptr_V$196 + 8(I64))))
+  -> INDIRECT-: (328,81) 
      [[ Unable to inline indirect callsite  <1>]]
   -> INLINE (MANUAL): (330,20) peano::grid::Vertex<dem::records::Vertex>::getRefinementControl(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 3) (sz = 10)
     -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(298,22) dem::records::Vertex::getRefinementControl(const dem::records::Vertex *) const (isz = 0) (sz = 6)
@@ -997,97 +322,31 @@ INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::
 
 
 LOOP BEGIN at dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(324,5)
-   remark #15389: vectorization support: reference coarseGridPositionOfVertex._values[d] has unaligned access   [ ./tarch/la/Vector.h(147,15) ]
+   remark #15389: vectorization support: reference coarseGridPositionOfVertex._values has unaligned access   [ dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(325,69) ]
    remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
    remark #15305: vectorization support: vector length 2
    remark #15309: vectorization support: normalized vectorization overhead 0.462
-   remark #15300: LOOP WAS VECTORIZED
    remark #15450: unmasked unaligned unit stride loads: 1 
    remark #15451: unmasked unaligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 21 
-   remark #15477: vector cost: 6.500 
-   remark #15478: estimated potential speedup: 1.570 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=1
-LOOP END
-
-LOOP BEGIN at dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(324,5)
-<Remainder loop for vectorization>
-   remark #25436: completely unrolled by 1  
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 12 
+   remark #15477: vector loop cost: 6.500 
+   remark #15478: estimated potential speedup: 1.160 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25436: completely unrolled by 3  
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-./tarch/la/Vector.cpph(6,13):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (16, 0)
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(317,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_519touchVertexLastTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:317
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   10[ rax rdx rcx rsi rdi r8-r9 r15 zmm0-zmm1]
-        
-    Routine temporaries
-        Total         :      35
-            Global    :      12
-            Local     :      23
-        Regenerable   :       6
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :      12 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       5 [2.60e+00 ~ 7.4%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
+./tarch/la/Vector.cpph(6,13):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
 ===========================================================================
 
 Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::enterCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::enterCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [52/61=85.2%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(350,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(350,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_59enterCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:350
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::enterCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [34/39=87.2%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(350,3)
 
 ===========================================================================
 
@@ -1095,39 +354,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::leaveCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [53/61=86.9%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(362,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(362,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_59leaveCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:362
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::leaveCell(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [35/39=89.7%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(362,3)
 
 ===========================================================================
 
@@ -1135,39 +362,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::endIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::State &)) [54/61=88.5%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(374,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(374,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_512endIterationERNS_5StateE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:374
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    2[ rsi rdi]
-        
-    Routine temporaries
-        Total         :       8
-            Global    :       0
-            Local     :       8
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::endIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::State &)) [36/39=92.3%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(374,3)
 
 ===========================================================================
 
@@ -1175,39 +370,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::descend(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [55/61=90.2%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(387,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(387,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_57descendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:387
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::descend(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [37/39=94.9%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(387,3)
 
 ===========================================================================
 
@@ -1215,105 +378,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::ascend(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [56/61=91.8%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(398,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(398,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_56ascendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:398
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(49,3)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(66,3)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(79,3)
-
-===========================================================================
-
-Begin optimization report for: __sti__$E()
-
-    Report from: Interprocedural optimizations [ipo]
-
-INLINE REPORT: (__sti__$E()) [60/61=98.4%] <compiler generated>
-  -> EXTERN: /usr/include/c++/6/iostream:(74,25) __cxa_atexit()
-  -> EXTERN: /usr/include/c++/6/iostream:(74,25) std::ios_base::Init::Init(std::ios_base::Init *)
-
-
-    Report from: Code generation optimizations [cg]
-
-<compiler generated>:remark #34051: REGISTER ALLOCATION : [__sti__$E] (null):0
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    3[ rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      13
-            Global    :       7
-            Local     :       6
-        Regenerable   :       7
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::ascend(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [38/39=97.4%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(398,3)
 
 ===========================================================================
 
@@ -1321,39 +386,7 @@ Begin optimization report for: dem::adapters::TimeStepAndPlotOnDynamicGrid2GridB
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::beginIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::State &)) [61/61=100.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(368,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(368,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8adapters47TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_514beginIterationERNS_5StateE] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp:368
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    2[ rsi rdi]
-        
-    Routine temporaries
-        Total         :       8
-            Global    :       0
-            Local     :       8
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5::beginIteration(dem::adapters::TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5 *, dem::State &)) [39/39=100.0%] dem/adapters/TimeStepAndPlotOnDynamicGrid2GridBalancer3to1_5.cpp(368,3)
 
 ===========================================================================
 

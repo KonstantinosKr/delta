@@ -2,9 +2,6 @@ Intel(R) Advisor can now assist with vectorization and show optimization
   report messages with your source code.
 See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
-Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
-
-Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o dem/mappings/MoveParticles.o
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -28,27 +25,43 @@ In the inlining report below:
       The compiler generally limits the amount a routine can grow by having
       routines inlined into it.
 
-Begin optimization report for: __gthread_active_p()
+Begin optimization report for: std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *)
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (__gthread_active_p()) /usr/include/x86_64-linux-gnu/c++/6/bits/gthr-default.h(248,1)
+DEAD STATIC FUNCTION: (std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string(640,55)
 
 ===========================================================================
 
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *)
+Begin optimization report for: std::__1::allocator<char>::allocator(std::__1::allocator<char> *)
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *)) /usr/include/c++/6/ext/new_allocator.h(79,45)
+DEAD STATIC FUNCTION: (std::__1::allocator<char>::allocator(std::__1::allocator<char> *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(1713,53)
 
 ===========================================================================
 
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)
+Begin optimization report for: std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *)
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,65)
+DEAD STATIC FUNCTION: (std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,75)
+
+===========================================================================
+
+Begin optimization report for: std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,31)
+
+===========================================================================
+
+Begin optimization report for: std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2400,51)
 
 ===========================================================================
 
@@ -176,7 +189,7 @@ Begin optimization report for: dem::mappings::MoveParticles::moveAllParticlesAss
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::mappings::MoveParticles *, dem::Vertex &)) [27/67=40.3%] dem/mappings/MoveParticles.cpp(56,3)
+INLINE REPORT: (dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::mappings::MoveParticles *, dem::Vertex &)) [22/56=39.3%] dem/mappings/MoveParticles.cpp(56,3)
   -> EXTERN: (58,34) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
   -> EXTERN: (58,34) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
   -> EXTERN: (60,51) dem::Vertex::getParticle(dem::Vertex *, int)
@@ -221,74 +234,42 @@ LOOP BEGIN at dem/mappings/MoveParticles.cpp(58,34)
       remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
    LOOP END
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(56,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles34moveAllParticlesAssociatedToVertexERNS_6VertexE] dem/mappings/MoveParticles.cpp:56
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   18[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm2]
-        
-    Routine temporaries
-        Total         :      91
-            Global    :      37
-            Local     :      54
-        Regenerable   :       0
-        Spilled       :      17
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :     112 bytes*
-            Reads     :      15 [4.59e+01 ~ 14.7%]
-            Writes    :      14 [1.40e+01 ~ 4.5%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: dem::mappings::MoveParticles::reassignParticles(dem::mappings::MoveParticles *, dem::Vertex *, const peano::grid::VertexEnumerator &)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::reassignParticles(dem::mappings::MoveParticles *, dem::Vertex *, const peano::grid::VertexEnumerator &)) [28/67=41.8%] dem/mappings/MoveParticles.cpp(109,3)
-  -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+INLINE REPORT: (dem::mappings::MoveParticles::reassignParticles(dem::mappings::MoveParticles *, dem::Vertex *, const peano::grid::VertexEnumerator &)) [23/56=41.1%] dem/mappings/MoveParticles.cpp(109,3)
   -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
-    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset()
-  -> INDIRECT- (VIRTUAL): (113,59)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37->__vptr_V$132 + 8(I64))))
+    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset(void *, int, size_t)
+  -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+  -> INDIRECT-: (113,59) 
      [[ Unable to inline indirect callsite  <1>]]
-  -> INDIRECT- (VIRTUAL): (113,59)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37->__vptr_V$132 + 8(I64))))
+  -> INDIRECT-: (113,59) 
      [[ Unable to inline indirect callsite  <1>]]
   -> EXTERN: (113,64) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
   -> EXTERN: (113,64) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
-  -> INDIRECT- (VIRTUAL): (114,83)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37->__vptr_V$132 + 8(I64))))
+  -> INDIRECT-: (114,83) 
      [[ Unable to inline indirect callsite  <1>]]
   -> EXTERN: (114,88) dem::Vertex::getParticle(dem::Vertex *, int)
   -> INLINE (MANUAL): (116,41) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
-    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset()
+    -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset(void *, int, size_t)
   -> INLINE (MANUAL): (118,22) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (118,63) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INDIRECT- (VIRTUAL): (118,69)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37->__vptr_V$132 + 56(I64))))
+  -> INDIRECT-: (118,69) 
      [[ Unable to inline indirect callsite  <1>]]
   -> INLINE (MANUAL): (118,111) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (121,24) tarch::la::operator!=<3, int>(const tarch::la::Vector<3, int> &, const tarch::la::Vector<3, int> &) (isz = 21) (sz = 30)
     -> INLINE (MANUAL): ./tarch/la/VectorVectorOperations.cpph:(286,15) tarch::la::operator==<3, int>(const tarch::la::Vector<3, int> &, const tarch::la::Vector<3, int> &) (isz = 17) (sz = 27)
       -> INLINE (MANUAL): (273,12) tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const (isz = 1) (sz = 9)
       -> INLINE (MANUAL): (273,22) tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const (isz = 1) (sz = 9)
-  -> INDIRECT- (VIRTUAL): (122,54)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37->__vptr_V$132 + 8(I64))))
+  -> INDIRECT-: (122,54) 
      [[ Unable to inline indirect callsite  <1>]]
   -> EXTERN: (122,71) dem::Vertex::appendParticle(dem::Vertex *, const dem::records::Particle &)
-  -> INDIRECT- (VIRTUAL): (124,54)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37->__vptr_V$132 + 8(I64))))
+  -> INDIRECT-: (124,54) 
      [[ Unable to inline indirect callsite  <1>]]
   -> EXTERN: (124,59) dem::Vertex::releaseParticle(dem::Vertex *, int)
   -> EXTERN: (132,10) dem::State::incNumberOfParticleReassignments(dem::State *, int)
@@ -304,98 +285,69 @@ LOOP BEGIN at dem/mappings/MoveParticles.cpp(111,3)
       remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
 
       LOOP BEGIN at dem/mappings/MoveParticles.cpp(117,7)
-         remark #15382: vectorization support: call to function (unknown virtual call) cannot be vectorized   [ dem/mappings/MoveParticles.cpp(118,69) ]
+         remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ dem/mappings/MoveParticles.cpp(118,69) ]
          remark #15344: loop was not vectorized: vector dependence prevents vectorization
       LOOP END
 
       LOOP BEGIN at ./tarch/la/VectorVectorOperations.cpph(272,3) inlined into dem/mappings/MoveParticles.cpp(121,24)
-         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ ./tarch/la/VectorVectorOperations.cpph(273,5) ]
+         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
       LOOP END
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-./tarch/la/Vector.cpph(6,13):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (16, 0)
-./tarch/la/Vector.cpph(6,13):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (16, 0)
-dem/mappings/MoveParticles.cpp(109,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles17reassignParticlesEPNS_6VertexERKN5peano4grid16VertexEnumeratorE] dem/mappings/MoveParticles.cpp:109
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   16[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0]
-        
-    Routine temporaries
-        Total         :      88
-            Global    :      38
-            Local     :      50
-        Regenerable   :      12
-        Spilled       :      12
-        
-    Routine stack
-        Variables     :      48 bytes*
-            Reads     :       3 [2.91e+02 ~ 8.7%]
-            Writes    :       9 [2.40e+02 ~ 7.1%]
-        Spills        :      48 bytes*
-            Reads     :       7 [3.88e+01 ~ 1.2%]
-            Writes    :       8 [3.98e+01 ~ 1.2%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
+./tarch/la/Vector.cpph(6,13):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
+./tarch/la/Vector.cpph(6,13):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
 ===========================================================================
 
 Begin optimization report for: dem::mappings::MoveParticles::reflectParticles(dem::mappings::MoveParticles *, dem::Vertex &)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::reflectParticles(dem::mappings::MoveParticles *, dem::Vertex &)) [29/67=43.3%] dem/mappings/MoveParticles.cpp(137,3)
+INLINE REPORT: (dem::mappings::MoveParticles::reflectParticles(dem::mappings::MoveParticles *, dem::Vertex &)) [24/56=42.9%] dem/mappings/MoveParticles.cpp(137,3)
   -> EXTERN: (140,34) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
   -> EXTERN: (140,34) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
   -> EXTERN: (142,50) dem::Vertex::getParticle(dem::Vertex *, int)
   -> INLINE (MANUAL): (144,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (146,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (146,48) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (146,48) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (146,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (146,139) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (146,139) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (146,185) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (148,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (151,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (151,85) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (152,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (152,48) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (152,48) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (152,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (152,139) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (152,139) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (152,185) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (153,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (153,85) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (155,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (157,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (157,48) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (157,48) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (157,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (157,139) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (157,139) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (157,185) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (160,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (162,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (162,48) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (162,48) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (162,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (162,140) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (162,140) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (162,186) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (164,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (166,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (166,48) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (166,48) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (166,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (166,140) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (166,140) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (166,186) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (168,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
   -> INLINE (MANUAL): (170,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (170,48) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (170,48) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (170,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-  -> INLINE (MANUAL): (170,140) std::abs(double) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (170,140) std::__1::abs(double) (isz = 1) (sz = 8)
   -> INLINE (MANUAL): (170,186) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
 
 
@@ -406,78 +358,14 @@ LOOP BEGIN at dem/mappings/MoveParticles.cpp(140,34)
    remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
    remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(137,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles16reflectParticlesERNS_6VertexE] dem/mappings/MoveParticles.cpp:137
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   14[ rax rsi rdi r12-r13 zmm0-zmm8]
-        
-    Routine temporaries
-        Total         :      63
-            Global    :      22
-            Local     :      41
-        Regenerable   :       4
-        Spilled       :       2
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: dem::mappings::MoveParticles::touchVertexLastTimeSpecification()
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::touchVertexLastTimeSpecification()) [30/67=44.8%] dem/mappings/MoveParticles.cpp(24,96)
+INLINE REPORT: (dem::mappings::MoveParticles::touchVertexLastTimeSpecification()) [25/56=44.6%] dem/mappings/MoveParticles.cpp(24,96)
   -> EXTERN: (25,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(24,96):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles32touchVertexLastTimeSpecificationEv] dem/mappings/MoveParticles.cpp:24
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -485,40 +373,8 @@ Begin optimization report for: dem::mappings::MoveParticles::touchVertexFirstTim
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::touchVertexFirstTimeSpecification()) [31/67=46.3%] dem/mappings/MoveParticles.cpp(30,97)
+INLINE REPORT: (dem::mappings::MoveParticles::touchVertexFirstTimeSpecification()) [26/56=46.4%] dem/mappings/MoveParticles.cpp(30,97)
   -> EXTERN: (31,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(30,97):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles33touchVertexFirstTimeSpecificationEv] dem/mappings/MoveParticles.cpp:30
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -526,40 +382,8 @@ Begin optimization report for: dem::mappings::MoveParticles::enterCellSpecificat
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::enterCellSpecification()) [32/67=47.8%] dem/mappings/MoveParticles.cpp(36,86)
+INLINE REPORT: (dem::mappings::MoveParticles::enterCellSpecification()) [27/56=48.2%] dem/mappings/MoveParticles.cpp(36,86)
   -> EXTERN: (37,77) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(36,86):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles22enterCellSpecificationEv] dem/mappings/MoveParticles.cpp:36
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -567,40 +391,8 @@ Begin optimization report for: dem::mappings::MoveParticles::leaveCellSpecificat
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::leaveCellSpecification()) [33/67=49.3%] dem/mappings/MoveParticles.cpp(40,86)
+INLINE REPORT: (dem::mappings::MoveParticles::leaveCellSpecification()) [28/56=50.0%] dem/mappings/MoveParticles.cpp(40,86)
   -> EXTERN: (41,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(40,86):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles22leaveCellSpecificationEv] dem/mappings/MoveParticles.cpp:40
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -608,40 +400,8 @@ Begin optimization report for: dem::mappings::MoveParticles::ascendSpecification
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::ascendSpecification()) [34/67=50.7%] dem/mappings/MoveParticles.cpp(43,83)
+INLINE REPORT: (dem::mappings::MoveParticles::ascendSpecification()) [29/56=51.8%] dem/mappings/MoveParticles.cpp(43,83)
   -> EXTERN: (44,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(43,83):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles19ascendSpecificationEv] dem/mappings/MoveParticles.cpp:43
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -649,40 +409,8 @@ Begin optimization report for: dem::mappings::MoveParticles::descendSpecificatio
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::descendSpecification()) [35/67=52.2%] dem/mappings/MoveParticles.cpp(46,84)
+INLINE REPORT: (dem::mappings::MoveParticles::descendSpecification()) [30/56=53.6%] dem/mappings/MoveParticles.cpp(46,84)
   -> EXTERN: (47,71) peano::MappingSpecification::MappingSpecification(peano::MappingSpecification *, peano::MappingSpecification::Manipulates, peano::MappingSpecification::Multithreading)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(46,84):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles20descendSpecificationEv] dem/mappings/MoveParticles.cpp:46
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    4[ rax rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       6
-            Local     :       6
-        Regenerable   :       4
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       1 [1.00e+00 ~ 6.2%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -690,40 +418,8 @@ Begin optimization report for: dem::mappings::MoveParticles::communicationSpecif
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::communicationSpecification()) [36/67=53.7%] dem/mappings/MoveParticles.cpp(17,96)
+INLINE REPORT: (dem::mappings::MoveParticles::communicationSpecification()) [31/56=55.4%] dem/mappings/MoveParticles.cpp(17,96)
   -> EXTERN: (18,259) peano::CommunicationSpecification::CommunicationSpecification(peano::CommunicationSpecification *, peano::CommunicationSpecification::ExchangeMasterWorkerData, peano::CommunicationSpecification::ExchangeWorkerMasterData, bool)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(17,96):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles26communicationSpecificationEv] dem/mappings/MoveParticles.cpp:17
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    5[ rax rdx rcx rsi rdi]
-        
-    Routine temporaries
-        Total         :      15
-            Global    :       6
-            Local     :       9
-        Regenerable   :       5
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :      12 bytes*
-            Reads     :       2 [2.00e+00 ~ 11.1%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -731,40 +427,8 @@ Begin optimization report for: dem::mappings::MoveParticles::MoveParticles(dem::
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *)) [37/67=55.2%] dem/mappings/MoveParticles.cpp(249,47)
+INLINE REPORT: (dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *)) [32/56=57.1%] dem/mappings/MoveParticles.cpp(249,47)
   -> EXTERN: (249,31) dem::State::State(dem::State *)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(249,47):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticlesC1Ev] dem/mappings/MoveParticles.cpp:249
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :      10
-            Global    :       0
-            Local     :      10
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -772,41 +436,9 @@ Begin optimization report for: dem::mappings::MoveParticles::MoveParticles(dem::
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *const)) [38/67=56.7%] dem/mappings/MoveParticles.cpp(249,31)
+INLINE REPORT: (dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *const)) [33/56=58.9%] dem/mappings/MoveParticles.cpp(249,31)
   -> INLINE: (249,31) dem::mappings::MoveParticles::MoveParticles(dem::mappings::MoveParticles *) (isz = 6) (sz = 11)
     -> EXTERN: (249,31) dem::State::State(dem::State *)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(249,31):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticlesC2Ev] dem/mappings/MoveParticles.cpp:249
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :      10
-            Global    :       0
-            Local     :      10
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -814,43 +446,14 @@ Begin optimization report for: dem::mappings::MoveParticles::~MoveParticles(dem:
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)) [39/67=58.2%] dem/mappings/MoveParticles.cpp(252,48)
-  -> INLINE (MANUAL): (253,1) dem::State::~State(dem::State *) (isz = 2) (sz = 7)
-    -> INLINE (MANUAL): ./dem/State.h:(43,12) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *const) (isz = 2) (sz = 7)
-      -> INLINE (MANUAL): ./peano/grid/State.h:(180,6) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *) (isz = 2) (sz = 7)
+INLINE REPORT: (dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *)) [34/56=60.7%] dem/mappings/MoveParticles.cpp(252,48)
+  -> EXTERN: (252,48) ___cxa_call_unexpected
+  -> INLINE (MANUAL): (253,1) dem::State::~State(dem::State *) (isz = 12) (sz = 17)
+    -> INLINE (MANUAL): ./dem/State.h:(43,12) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *const) (isz = 7) (sz = 12)
+      -> INLINE (MANUAL): ./peano/grid/State.h:(180,6) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *) (isz = 7) (sz = 12)
+        -> EXTERN: ./peano/grid/State.cpph:(59,41) ___cxa_call_unexpected
         -> EXTERN: ./peano/grid/State.cpph:(60,1) dem::records::State::~State(dem::records::State *)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(252,48):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticlesD1Ev] dem/mappings/MoveParticles.cpp:252
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :      10
-            Global    :       0
-            Local     :      10
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+    -> EXTERN: ./dem/State.h:(43,12) ___cxa_call_unexpected
 
 ===========================================================================
 
@@ -858,45 +461,16 @@ Begin optimization report for: dem::mappings::MoveParticles::~MoveParticles(dem:
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *const)) [40/67=59.7%] dem/mappings/MoveParticles.cpp(252,31)
+INLINE REPORT: (dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *const)) [35/56=62.5%] dem/mappings/MoveParticles.cpp(252,31)
   -> EXTERN: (252,31) operator delete(void *)
-  -> INLINE: (252,31) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *) (isz = 8) (sz = 13)
-    -> INLINE (MANUAL): (253,1) dem::State::~State(dem::State *) (isz = 2) (sz = 7)
-      -> INLINE (MANUAL): ./dem/State.h:(43,12) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *const) (isz = 2) (sz = 7)
-        -> INLINE (MANUAL): ./peano/grid/State.h:(180,6) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *) (isz = 2) (sz = 7)
+  -> INLINE: (252,31) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *) (isz = 23) (sz = 28)
+    -> EXTERN: (252,48) ___cxa_call_unexpected
+    -> INLINE (MANUAL): (253,1) dem::State::~State(dem::State *) (isz = 12) (sz = 17)
+      -> EXTERN: ./dem/State.h:(43,12) ___cxa_call_unexpected
+      -> INLINE (MANUAL): ./dem/State.h:(43,12) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *const) (isz = 7) (sz = 12)
+        -> INLINE (MANUAL): ./peano/grid/State.h:(180,6) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *) (isz = 7) (sz = 12)
+          -> EXTERN: ./peano/grid/State.cpph:(59,41) ___cxa_call_unexpected
           -> EXTERN: ./peano/grid/State.cpph:(60,1) dem::records::State::~State(dem::records::State *)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(252,31):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticlesD0Ev] dem/mappings/MoveParticles.cpp:252
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    2[ rdi r13]
-        
-    Routine temporaries
-        Total         :      11
-            Global    :       7
-            Local     :       4
-        Regenerable   :       0
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -904,44 +478,15 @@ Begin optimization report for: dem::mappings::MoveParticles::~MoveParticles(dem:
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *const)) [41/67=61.2%] dem/mappings/MoveParticles.cpp(252,31)
-  -> INLINE: (252,31) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *) (isz = 8) (sz = 13)
-    -> INLINE (MANUAL): (253,1) dem::State::~State(dem::State *) (isz = 2) (sz = 7)
-      -> INLINE (MANUAL): ./dem/State.h:(43,12) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *const) (isz = 2) (sz = 7)
-        -> INLINE (MANUAL): ./peano/grid/State.h:(180,6) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *) (isz = 2) (sz = 7)
+INLINE REPORT: (dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *const)) [36/56=64.3%] dem/mappings/MoveParticles.cpp(252,31)
+  -> INLINE: (252,31) dem::mappings::MoveParticles::~MoveParticles(dem::mappings::MoveParticles *) (isz = 23) (sz = 28)
+    -> EXTERN: (252,48) ___cxa_call_unexpected
+    -> INLINE (MANUAL): (253,1) dem::State::~State(dem::State *) (isz = 12) (sz = 17)
+      -> EXTERN: ./dem/State.h:(43,12) ___cxa_call_unexpected
+      -> INLINE (MANUAL): ./dem/State.h:(43,12) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *const) (isz = 7) (sz = 12)
+        -> INLINE (MANUAL): ./peano/grid/State.h:(180,6) peano::grid::State<dem::records::State>::~State(peano::grid::State<dem::records::State> *) (isz = 7) (sz = 12)
+          -> EXTERN: ./peano/grid/State.cpph:(59,41) ___cxa_call_unexpected
           -> EXTERN: ./peano/grid/State.cpph:(60,1) dem::records::State::~State(dem::records::State *)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(252,31):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticlesD2Ev] dem/mappings/MoveParticles.cpp:252
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :      10
-            Global    :       0
-            Local     :      10
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -949,39 +494,7 @@ Begin optimization report for: dem::mappings::MoveParticles::createInnerVertex(d
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::createInnerVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [42/67=62.7%] dem/mappings/MoveParticles.cpp(304,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(304,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles17createInnerVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/MoveParticles.cpp:304
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::createInnerVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [37/56=66.1%] dem/mappings/MoveParticles.cpp(304,3)
 
 ===========================================================================
 
@@ -989,39 +502,7 @@ Begin optimization report for: dem::mappings::MoveParticles::createBoundaryVerte
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::createBoundaryVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [43/67=64.2%] dem/mappings/MoveParticles.cpp(316,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(316,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles20createBoundaryVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/MoveParticles.cpp:316
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::createBoundaryVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [38/56=67.9%] dem/mappings/MoveParticles.cpp(316,3)
 
 ===========================================================================
 
@@ -1029,39 +510,7 @@ Begin optimization report for: dem::mappings::MoveParticles::createHangingVertex
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::createHangingVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [44/67=65.7%] dem/mappings/MoveParticles.cpp(280,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(280,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles19createHangingVertexERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/MoveParticles.cpp:280
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::createHangingVertex(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [39/56=69.6%] dem/mappings/MoveParticles.cpp(280,3)
 
 ===========================================================================
 
@@ -1069,39 +518,7 @@ Begin optimization report for: dem::mappings::MoveParticles::destroyHangingVerte
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::destroyHangingVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [45/67=67.2%] dem/mappings/MoveParticles.cpp(292,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(292,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles20destroyHangingVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/mappings/MoveParticles.cpp:292
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::destroyHangingVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [40/56=71.4%] dem/mappings/MoveParticles.cpp(292,3)
 
 ===========================================================================
 
@@ -1109,39 +526,7 @@ Begin optimization report for: dem::mappings::MoveParticles::destroyVertex(dem::
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::destroyVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [46/67=68.7%] dem/mappings/MoveParticles.cpp(331,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(331,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles13destroyVertexERKNS_6VertexERKN5tarch2la6VectorILi3EdEESA_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS7_ILi3EiEE] dem/mappings/MoveParticles.cpp:331
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::destroyVertex(dem::mappings::MoveParticles *, const dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [41/56=73.2%] dem/mappings/MoveParticles.cpp(331,3)
 
 ===========================================================================
 
@@ -1149,39 +534,7 @@ Begin optimization report for: dem::mappings::MoveParticles::createCell(dem::map
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::createCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [47/67=70.1%] dem/mappings/MoveParticles.cpp(346,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(346,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles10createCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/mappings/MoveParticles.cpp:346
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::createCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [42/56=75.0%] dem/mappings/MoveParticles.cpp(346,3)
 
 ===========================================================================
 
@@ -1189,39 +542,7 @@ Begin optimization report for: dem::mappings::MoveParticles::destroyCell(dem::ma
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::destroyCell(dem::mappings::MoveParticles *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [48/67=71.6%] dem/mappings/MoveParticles.cpp(361,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(361,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles11destroyCellERKNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES6_SB_RS2_RKN5tarch2la6VectorILi3EiEE] dem/mappings/MoveParticles.cpp:361
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::destroyCell(dem::mappings::MoveParticles *, const dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [43/56=76.8%] dem/mappings/MoveParticles.cpp(361,3)
 
 ===========================================================================
 
@@ -1229,7 +550,7 @@ Begin optimization report for: dem::mappings::MoveParticles::touchVertexFirstTim
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::touchVertexFirstTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [49/67=73.1%] dem/mappings/MoveParticles.cpp(183,3)
+INLINE REPORT: (dem::mappings::MoveParticles::touchVertexFirstTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [44/56=78.6%] dem/mappings/MoveParticles.cpp(183,3)
   -> INLINE: (186,3) dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::mappings::MoveParticles *, dem::Vertex &) (isz = 249) (sz = 256)
     -> EXTERN: (58,34) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
     -> EXTERN: (58,34) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
@@ -1268,52 +589,20 @@ INLINE REPORT: (dem::mappings::MoveParticles::touchVertexFirstTime(dem::mappings
 
 
 LOOP BEGIN at dem/mappings/MoveParticles.cpp(58,34) inlined into dem/mappings/MoveParticles.cpp(186,3)
-   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _i was found, but loop iteration count cannot be computed before executing the loop
 
    LOOP BEGIN at dem/mappings/MoveParticles.cpp(90,5) inlined into dem/mappings/MoveParticles.cpp(186,3)
-      remark #15523: loop was not vectorized: loop control variable j was found, but loop iteration count cannot be computed before executing the loop
+      remark #15523: loop was not vectorized: loop control variable _j was found, but loop iteration count cannot be computed before executing the loop
       remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
    LOOP END
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(183,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles20touchVertexFirstTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/MoveParticles.cpp:183
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   18[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm2]
-        
-    Routine temporaries
-        Total         :      95
-            Global    :      37
-            Local     :      58
-        Regenerable   :       0
-        Spilled       :      17
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :     112 bytes*
-            Reads     :      15 [4.59e+01 ~ 14.6%]
-            Writes    :      14 [1.40e+01 ~ 4.5%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: dem::mappings::MoveParticles::touchVertexLastTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::touchVertexLastTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [50/67=74.6%] dem/mappings/MoveParticles.cpp(216,3)
+INLINE REPORT: (dem::mappings::MoveParticles::touchVertexLastTime(dem::mappings::MoveParticles *, dem::Vertex &, const tarch::la::Vector<3, double> &, const tarch::la::Vector<3, double> &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [45/56=80.4%] dem/mappings/MoveParticles.cpp(216,3)
   -> INLINE (MANUAL): (219,22) peano::grid::Vertex<dem::records::Vertex>::isBoundary(const peano::grid::Vertex<dem::records::Vertex> *) const (isz = 5) (sz = 12)
     -> INLINE (MANUAL): ./peano/grid/Vertex.cpph:(151,22) dem::records::Vertex::getInsideOutsideDomain(const dem::records::Vertex *) const (isz = 0) (sz = 6)
   -> INLINE: (220,5) dem::mappings::MoveParticles::reflectParticles(dem::mappings::MoveParticles *, dem::Vertex &) (isz = 325) (sz = 332)
@@ -1322,43 +611,43 @@ INLINE REPORT: (dem::mappings::MoveParticles::touchVertexLastTime(dem::mappings:
     -> EXTERN: (142,50) dem::Vertex::getParticle(dem::Vertex *, int)
     -> INLINE (MANUAL): (144,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (146,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (146,48) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (146,48) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (146,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (146,139) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (146,139) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (146,185) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (148,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (151,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (151,85) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (152,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (152,48) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (152,48) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (152,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (152,139) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (152,139) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (152,185) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (153,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (153,85) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (155,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (157,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (157,48) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (157,48) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (157,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (157,139) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (157,139) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (157,185) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (160,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (162,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (162,48) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (162,48) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (162,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (162,140) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (162,140) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (162,186) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (164,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (166,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (166,48) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (166,48) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (166,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (166,140) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (166,140) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (166,186) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (168,43) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (170,42) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (170,48) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (170,48) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (170,92) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (170,140) std::abs(double) (isz = 0) (sz = 7)
+    -> INLINE (MANUAL): (170,140) std::__1::abs(double) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (170,186) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
 
 
@@ -1366,78 +655,46 @@ INLINE REPORT: (dem::mappings::MoveParticles::touchVertexLastTime(dem::mappings:
 
 
 LOOP BEGIN at dem/mappings/MoveParticles.cpp(140,34) inlined into dem/mappings/MoveParticles.cpp(220,5)
-   remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+   remark #15523: loop was not vectorized: loop control variable _i was found, but loop iteration count cannot be computed before executing the loop
    remark #25456: Number of Array Refs Scalar Replaced In Loop: 1
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(216,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles19touchVertexLastTimeERNS_6VertexERKN5tarch2la6VectorILi3EdEES9_PS2_RKN5peano4grid16VertexEnumeratorERNS_4CellERKNS6_ILi3EiEE] dem/mappings/MoveParticles.cpp:216
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   18[ rax rdx rcx rsi rdi r8-r9 r12-r13 zmm0-zmm8]
-        
-    Routine temporaries
-        Total         :      67
-            Global    :      22
-            Local     :      45
-        Regenerable   :       4
-        Spilled       :       2
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: dem::mappings::MoveParticles::enterCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::enterCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [51/67=76.1%] dem/mappings/MoveParticles.cpp(199,3)
+INLINE REPORT: (dem::mappings::MoveParticles::enterCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [46/56=82.1%] dem/mappings/MoveParticles.cpp(199,3)
   -> INLINE: (202,3) dem::mappings::MoveParticles::reassignParticles(dem::mappings::MoveParticles *, dem::Vertex *, const peano::grid::VertexEnumerator &) (isz = 235) (sz = 244)
+    -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
+    -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
-      -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset()
+      -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset(void *, int, size_t)
     -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
-    -> INLINE (MANUAL): (111,3) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
-    -> INDIRECT- (VIRTUAL): (113,59)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37.240->__vptr_V$132 + 8(I64))))
+    -> INDIRECT-: (113,59) 
        [[ Unable to inline indirect callsite  <1>]]
-    -> INDIRECT- (VIRTUAL): (113,59)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37.240->__vptr_V$132 + 8(I64))))
+    -> INDIRECT-: (113,59) 
        [[ Unable to inline indirect callsite  <1>]]
     -> EXTERN: (113,64) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
     -> EXTERN: (113,64) dem::Vertex::getNumberOfParticles(const dem::Vertex *) const
-    -> INDIRECT- (VIRTUAL): (114,83)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37.240->__vptr_V$132 + 8(I64))))
+    -> INDIRECT-: (114,83) 
        [[ Unable to inline indirect callsite  <1>]]
     -> EXTERN: (114,88) dem::Vertex::getParticle(dem::Vertex *, int)
     -> INLINE (MANUAL): (116,41) tarch::la::Vector<3, int>::Vector(tarch::la::Vector<3, int> *) (isz = 5) (sz = 10)
-      -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset()
+      -> EXTERN: ./tarch/la/Vector.cpph:(6,13) memset(void *, int, size_t)
     -> INLINE (MANUAL): (118,22) tarch::la::Vector<3, int>::operator()(tarch::la::Vector<3, int> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (118,63) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
-    -> INDIRECT- (VIRTUAL): (118,69)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37.240->__vptr_V$132 + 56(I64))))
+    -> INDIRECT-: (118,69) 
        [[ Unable to inline indirect callsite  <1>]]
     -> INLINE (MANUAL): (118,111) tarch::la::Vector<3, double>::operator()(tarch::la::Vector<3, double> *, int) (isz = 1) (sz = 9)
     -> INLINE (MANUAL): (121,24) tarch::la::operator!=<3, int>(const tarch::la::Vector<3, int> &, const tarch::la::Vector<3, int> &) (isz = 21) (sz = 30)
       -> INLINE (MANUAL): ./tarch/la/VectorVectorOperations.cpph:(286,15) tarch::la::operator==<3, int>(const tarch::la::Vector<3, int> &, const tarch::la::Vector<3, int> &) (isz = 17) (sz = 27)
         -> INLINE (MANUAL): (273,12) tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const (isz = 1) (sz = 9)
         -> INLINE (MANUAL): (273,22) tarch::la::Vector<3, int>::operator()(const tarch::la::Vector<3, int> *, int) const (isz = 1) (sz = 9)
-    -> INDIRECT- (VIRTUAL): (122,54)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37.240->__vptr_V$132 + 8(I64))))
+    -> INDIRECT-: (122,54) 
        [[ Unable to inline indirect callsite  <1>]]
     -> EXTERN: (122,71) dem::Vertex::appendParticle(dem::Vertex *, const dem::records::Particle &)
-    -> INDIRECT- (VIRTUAL): (124,54)  EXPR_CONV.SI64.P64(*((SI64*) (fineGridVerticesEnumerator_28681_V$128.0.37.240->__vptr_V$132 + 8(I64))))
+    -> INDIRECT-: (124,54) 
        [[ Unable to inline indirect callsite  <1>]]
     -> EXTERN: (124,59) dem::Vertex::releaseParticle(dem::Vertex *, int)
     -> EXTERN: (132,10) dem::State::incNumberOfParticleReassignments(dem::State *, int)
@@ -1450,91 +707,30 @@ LOOP BEGIN at dem/mappings/MoveParticles.cpp(111,3) inlined into dem/mappings/Mo
    remark #15541: outer loop was not auto-vectorized: consider using SIMD directive
 
    LOOP BEGIN at dem/mappings/MoveParticles.cpp(113,5) inlined into dem/mappings/MoveParticles.cpp(202,3)
-      remark #15523: loop was not vectorized: loop control variable i was found, but loop iteration count cannot be computed before executing the loop
+      remark #15523: loop was not vectorized: loop control variable _i was found, but loop iteration count cannot be computed before executing the loop
 
       LOOP BEGIN at dem/mappings/MoveParticles.cpp(117,7) inlined into dem/mappings/MoveParticles.cpp(202,3)
-         remark #15382: vectorization support: call to function (unknown virtual call) cannot be vectorized   [ dem/mappings/MoveParticles.cpp(118,69) ]
+         remark #15382: vectorization support: call to function (indirect call) cannot be vectorized   [ dem/mappings/MoveParticles.cpp(118,69) ]
          remark #15344: loop was not vectorized: vector dependence prevents vectorization
       LOOP END
 
       LOOP BEGIN at ./tarch/la/VectorVectorOperations.cpph(272,3) inlined into dem/mappings/MoveParticles.cpp(202,3)
-         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ ./tarch/la/VectorVectorOperations.cpph(273,5) ]
+         remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria
       LOOP END
    LOOP END
 LOOP END
 
     Report from: Code generation optimizations [cg]
 
-./tarch/la/Vector.cpph(6,13):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (16, 0)
-./tarch/la/Vector.cpph(6,13):remark #34000: call to memset implemented inline with stores with proven (alignment, offset): (16, 0)
-dem/mappings/MoveParticles.cpp(199,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles9enterCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/mappings/MoveParticles.cpp:199
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   16[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0]
-        
-    Routine temporaries
-        Total         :      91
-            Global    :      38
-            Local     :      53
-        Regenerable   :      12
-        Spilled       :      12
-        
-    Routine stack
-        Variables     :      48 bytes*
-            Reads     :       3 [2.91e+02 ~ 8.7%]
-            Writes    :       9 [2.40e+02 ~ 7.1%]
-        Spills        :      48 bytes*
-            Reads     :       7 [3.88e+01 ~ 1.2%]
-            Writes    :       8 [3.98e+01 ~ 1.2%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
+./tarch/la/Vector.cpph(6,13):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
+./tarch/la/Vector.cpph(6,13):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
 ===========================================================================
 
 Begin optimization report for: dem::mappings::MoveParticles::leaveCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::leaveCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [52/67=77.6%] dem/mappings/MoveParticles.cpp(548,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(548,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles9leaveCellERNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_S3_RKN5tarch2la6VectorILi3EiEE] dem/mappings/MoveParticles.cpp:548
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::leaveCell(dem::mappings::MoveParticles *, dem::Cell &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &, const tarch::la::Vector<3, int> &)) [47/56=83.9%] dem/mappings/MoveParticles.cpp(548,3)
 
 ===========================================================================
 
@@ -1542,40 +738,8 @@ Begin optimization report for: dem::mappings::MoveParticles::endIteration(dem::m
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::endIteration(dem::mappings::MoveParticles *, dem::State &)) [53/67=79.1%] dem/mappings/MoveParticles.cpp(241,3)
+INLINE REPORT: (dem::mappings::MoveParticles::endIteration(dem::mappings::MoveParticles *, dem::State &)) [48/56=85.7%] dem/mappings/MoveParticles.cpp(241,3)
   -> EXTERN: (244,15) dem::State::merge(dem::State *, const dem::State &)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(241,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles12endIterationERNS_5StateE] dem/mappings/MoveParticles.cpp:241
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    3[ rax rsi rdi]
-        
-    Routine temporaries
-        Total         :      13
-            Global    :       0
-            Local     :      13
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -1583,39 +747,7 @@ Begin optimization report for: dem::mappings::MoveParticles::descend(dem::mappin
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::descend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [54/67=80.6%] dem/mappings/MoveParticles.cpp(562,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(562,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles7descendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/mappings/MoveParticles.cpp:562
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::descend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [49/56=87.5%] dem/mappings/MoveParticles.cpp(562,3)
 
 ===========================================================================
 
@@ -1623,63 +755,15 @@ Begin optimization report for: dem::mappings::MoveParticles::ascend(dem::mapping
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::ascend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [55/67=82.1%] dem/mappings/MoveParticles.cpp(576,3)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(576,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles6ascendEPNS_4CellEPNS_6VertexERKN5peano4grid16VertexEnumeratorES5_SA_RS2_] dem/mappings/MoveParticles.cpp:576
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rdx rcx rsi rdi r8-r9]
-        
-    Routine temporaries
-        Total         :      12
-            Global    :       0
-            Local     :      12
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::mappings::MoveParticles::ascend(dem::mappings::MoveParticles *, dem::Cell *, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Vertex *, const peano::grid::VertexEnumerator &, dem::Cell &)) [50/56=89.3%] dem/mappings/MoveParticles.cpp(576,3)
 
 ===========================================================================
 
-Begin optimization report for: std::abs(double)
+Begin optimization report for: std::__1::abs(double)
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (std::abs(double)) /usr/include/c++/6/cmath(86,3)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(49,3)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(66,3)
+DEAD STATIC FUNCTION: (std::__1::abs(double)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/cmath(668,32)
 
 ===========================================================================
 
@@ -1699,151 +783,36 @@ DEAD STATIC FUNCTION: (tarch::la::operator==<3, int>(const tarch::la::Vector<3, 
 
 ===========================================================================
 
-Begin optimization report for: __sti__$E()
-
-    Report from: Interprocedural optimizations [ipo]
-
-INLINE REPORT: (__sti__$E()) [61/67=91.0%] <compiler generated>
-  -> INLINE: /usr/include/c++/6/iostream:(74,25) __sti___ZN3dem8mappings13MoveParticles4_logE() (isz = 63) (sz = 66)
-    -> EXTERN: dem/mappings/MoveParticles.cpp:(50,66) __cxa_atexit()
-    -> INLINE (MANUAL): dem/mappings/MoveParticles.cpp:(50,66) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) (isz = 27) (sz = 32)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,9) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_rep(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 3) (sz = 10)
-        -> INLINE (MANUAL): (2817,44) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_data(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 0) (sz = 7)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,19) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_dispose(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &) (isz = 37) (sz = 44)
-        -> EXTERN: (2746,2) __cxa_call_unexpected
-        -> INLINE (MANUAL): (2748,34) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_S_empty_rep() (isz = 0) (sz = 4)
-        -> INLINE (MANUAL): (2761,12) __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int) (isz = 18) (sz = 28)
-          -> INLINE (MANUAL): /usr/include/c++/6/ext/atomicity.h:(81,9) __gthread_active_p() (isz = 1) (sz = 5)
-          -> INLINE (MANUAL): /usr/include/c++/6/ext/atomicity.h:(82,14) __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int) (isz = 4) (sz = 13)
-            -> EXTERN: (49,12) __atomic_fetch_add_4(volatile void *, unsigned int, int)
-          -> INLINE (MANUAL): /usr/include/c++/6/ext/atomicity.h:(84,14) __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int) (isz = 3) (sz = 12)
-        -> EXTERN: (2765,5) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_destroy(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,36) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::get_allocator(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::allocator_type *, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 2) (sz = 9)
-        -> INLINE (MANUAL): (4369,16) std::allocator<char>::allocator(std::allocator<char> *, const std::allocator<char> &) (isz = 5) (sz = 12)
-          -> DELETED: /usr/include/c++/6/bits/allocator.h:(121,31) __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &) (isz = 0) (sz = 7)
-          -> EXTERN: /usr/include/c++/6/bits/allocator.h:(121,36) __cxa_call_unexpected
-    -> DELETED: dem/mappings/MoveParticles.cpp:(50,66) std::allocator<char>::~allocator(std::allocator<char> *) (isz = 0) (sz = 3)
-    -> INLINE (MANUAL): dem/mappings/MoveParticles.cpp:(50,72) std::allocator<char>::allocator(std::allocator<char> *) (isz = 5) (sz = 10)
-      -> DELETED: /usr/include/c++/6/bits/allocator.h:(118,7) __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const) (isz = 0) (sz = 5)
-      -> EXTERN: /usr/include/c++/6/bits/allocator.h:(118,27) __cxa_call_unexpected
-    -> EXTERN: dem/mappings/MoveParticles.cpp:(50,72) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *, const char *, const std::allocator<char> &)
-    -> EXTERN: dem/mappings/MoveParticles.cpp:(50,72) tarch::logging::Log::Log(tarch::logging::Log *, const std::string &)
-    -> DELETED: dem/mappings/MoveParticles.cpp:(50,72) std::allocator<char>::~allocator(std::allocator<char> *) (isz = 0) (sz = 3)
-    -> INLINE (MANUAL): dem/mappings/MoveParticles.cpp:(50,72) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) (isz = 27) (sz = 32)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,9) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_rep(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 3) (sz = 10)
-        -> INLINE (MANUAL): (2817,44) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_data(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 0) (sz = 7)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,19) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_dispose(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &) (isz = 37) (sz = 44)
-        -> EXTERN: (2746,2) __cxa_call_unexpected
-        -> INLINE (MANUAL): (2748,34) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_S_empty_rep() (isz = 0) (sz = 4)
-        -> (2761,12) __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int) (isz = 18) (sz = 28)
-           [[ Callee not marked with inlining pragma  <2>]]
-        -> EXTERN: (2765,5) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_destroy(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,36) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::get_allocator(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::allocator_type *, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 2) (sz = 9)
-        -> INLINE (MANUAL): (4369,16) std::allocator<char>::allocator(std::allocator<char> *, const std::allocator<char> &) (isz = 5) (sz = 12)
-          -> DELETED: /usr/include/c++/6/bits/allocator.h:(121,31) __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &) (isz = 0) (sz = 7)
-          -> EXTERN: /usr/include/c++/6/bits/allocator.h:(121,36) __cxa_call_unexpected
-  -> EXTERN: /usr/include/c++/6/iostream:(74,25) __cxa_atexit()
-  -> EXTERN: /usr/include/c++/6/iostream:(74,25) std::ios_base::Init::Init(std::ios_base::Init *)
-
-
-    Report from: Code generation optimizations [cg]
-
-<compiler generated>:remark #34051: REGISTER ALLOCATION : [__sti__$E] (null):0
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    5[ rax rdx rcx rsi rdi]
-        
-    Routine temporaries
-        Total         :      60
-            Global    :      19
-            Local     :      41
-        Regenerable   :      29
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :      19 bytes*
-            Reads     :       3 [1.00e+00 ~ 2.5%]
-            Writes    :       2 [0.00e+00 ~ 0.0%]
-        Spills        :       8 bytes*
-            Reads     :       1 [0.00e+00 ~ 0.0%]
-            Writes    :       1 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,7)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)
-
-    Report from: Interprocedural optimizations [ipo]
-
-INLINE REPORT: (__gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)) [63/67=94.0%] /usr/include/c++/6/ext/atomicity.h(79,3)
-  -> INLINE (MANUAL): (81,9) __gthread_active_p() (isz = 1) (sz = 5)
-  -> INLINE (MANUAL): (82,14) __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int) (isz = 4) (sz = 13)
-    -> EXTERN: (49,12) __atomic_fetch_add_4(volatile void *, unsigned int, int)
-  -> INLINE (MANUAL): (84,14) __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int) (isz = 3) (sz = 12)
-
-
-    Report from: Code generation optimizations [cg]
-
-/usr/include/c++/6/ext/atomicity.h(79,3):remark #34051: REGISTER ALLOCATION : [_ZN52_INTERNAL_30_dem_mappings_MoveParticles_cpp_05cf27629__gnu_cxx27__exchange_and_add_dispatchEPii] /usr/include/c++/6/ext/atomicity.h:79
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    5[ rax rdx rcx rsi rdi]
-        
-    Routine temporaries
-        Total         :      18
-            Global    :       8
-            Local     :      10
-        Regenerable   :       2
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const)) /usr/include/c++/6/ext/new_allocator.h(79,7)
-
-===========================================================================
-
 Begin optimization report for: __sti___ZN3dem8mappings13MoveParticles4_logE()
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (__sti___ZN3dem8mappings13MoveParticles4_logE()) <compiler generated>
+INLINE REPORT: (__sti___ZN3dem8mappings13MoveParticles4_logE()) [54/56=96.4%] <compiler generated>
+  -> EXTERN: dem/mappings/MoveParticles.cpp:(50,66) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+  -> EXTERN: dem/mappings/MoveParticles.cpp:(50,66) __cxa_atexit()
+  -> EXTERN: dem/mappings/MoveParticles.cpp:(50,72) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+  -> EXTERN: dem/mappings/MoveParticles.cpp:(50,72) tarch::logging::Log::Log(tarch::logging::Log *, const std::__1::string &)
+  -> INLINE (MANUAL): dem/mappings/MoveParticles.cpp:(50,72) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *) (isz = 16) (sz = 23)
+    -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2002,44) std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *) (isz = 7) (sz = 12)
+      -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory:(2400,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const) (isz = 7) (sz = 12)
+        -> INLINE (MANUAL): (2221,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *) (isz = 7) (sz = 12)
+          -> DELETED: (2221,31) std::__1::allocator<char>::allocator(std::__1::allocator<char> *const) (isz = 0) (sz = 5)
+          -> EXTERN: (2221,31) memset(void *, int, size_t)
+    -> EXTERN: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,5) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__init(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::size_type)
+    -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,17) std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *) (isz = 1) (sz = 8)
+      -> EXTERN: (640,63) strlen(const char *)
+
+
+    Report from: Code generation optimizations [cg]
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,31):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
+===========================================================================
+
+Begin optimization report for: std::__1::allocator<char>::allocator(std::__1::allocator<char> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::allocator<char>::allocator(std::__1::allocator<char> *const)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(1713,31)
 
 ===========================================================================
 
@@ -1851,13 +820,13 @@ Begin optimization report for: dem::mappings::MoveParticles::beginIteration(dem:
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::mappings::MoveParticles::beginIteration(dem::mappings::MoveParticles *, dem::State &)) [67/67=100.0%] dem/mappings/MoveParticles.cpp(229,3)
-  -> INLINE (MANUAL): (232,10) dem::State::operator=(dem::State *, const dem::State &) (isz = 122) (sz = 131)
-    -> INLINE (MANUAL): ./dem/State.h:(43,12) peano::grid::State<dem::records::State>::operator=(peano::grid::State<dem::records::State> *, const peano::grid::State<dem::records::State> &) (isz = 121) (sz = 130)
-      -> INLINE (MANUAL): ./peano/grid/State.h:(65,20) dem::records::State::operator=(dem::records::State *, const dem::records::State &) (isz = 116) (sz = 125)
-        -> INLINE (MANUAL): ./dem/records/State.h:(4811,33) dem::records::State::PersistentRecords::operator=(dem::records::State::PersistentRecords *, const dem::records::State::PersistentRecords &) (isz = 111) (sz = 120)
-          -> INLINE (MANUAL): (4817,26) tarch::la::Vector<3, double>::operator=(tarch::la::Vector<3, double> *, const tarch::la::Vector<3, double> &) (isz = 10) (sz = 19)
-          -> INLINE (MANUAL): (4817,26) tarch::la::Vector<3, double>::operator=(tarch::la::Vector<3, double> *, const tarch::la::Vector<3, double> &) (isz = 10) (sz = 19)
+INLINE REPORT: (dem::mappings::MoveParticles::beginIteration(dem::mappings::MoveParticles *, dem::State &)) [56/56=100.0%] dem/mappings/MoveParticles.cpp(229,3)
+  -> INLINE (MANUAL): (232,10) dem::State::operator=(dem::State *, const dem::State &) (isz = 120) (sz = 129)
+    -> INLINE (MANUAL): ./dem/State.h:(43,12) peano::grid::State<dem::records::State>::operator=(peano::grid::State<dem::records::State> *, const peano::grid::State<dem::records::State> &) (isz = 119) (sz = 128)
+      -> INLINE (MANUAL): ./peano/grid/State.h:(65,20) dem::records::State::operator=(dem::records::State *, const dem::records::State &) (isz = 114) (sz = 123)
+        -> INLINE (MANUAL): ./dem/records/State.h:(4811,33) dem::records::State::PersistentRecords::operator=(dem::records::State::PersistentRecords *, const dem::records::State::PersistentRecords &) (isz = 109) (sz = 118)
+          -> INLINE (MANUAL): (4817,26) tarch::la::Vector<3, double>::operator=(tarch::la::Vector<3, double> *, const tarch::la::Vector<3, double> &) (isz = 9) (sz = 18)
+          -> INLINE (MANUAL): (4817,26) tarch::la::Vector<3, double>::operator=(tarch::la::Vector<3, double> *, const tarch::la::Vector<3, double> &) (isz = 9) (sz = 18)
   -> EXTERN: (233,10) dem::State::clearAccumulatedData(dem::State *)
 
 
@@ -1866,76 +835,43 @@ INLINE REPORT: (dem::mappings::MoveParticles::beginIteration(dem::mappings::Move
 
 LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between this[_2] (4817:26) and __p2[_2] (4817:26)
-   remark #15346: vector dependence: assumed ANTI dependence between __p2[_2] (4817:26) and this[_2] (4817:26)
+   remark #15346: vector dependence: assumed FLOW dependence between __p2_34425 line 4817 and __p2_34425 line 4817
+   remark #15346: vector dependence: assumed ANTI dependence between this_34425 line 4817 and this_34425 line 4817
    remark #25436: completely unrolled by 5  
 LOOP END
 
 LOOP BEGIN at ./tarch/la/Vector.cpph(43,3) inlined into dem/mappings/MoveParticles.cpp(232,10)
-   remark #15389: vectorization support: reference this->_values[i] has unaligned access   [ ./tarch/la/Vector.cpph(44,5) ]
-   remark #15389: vectorization support: reference toAssign->_values[i] has unaligned access   [ ./tarch/la/Vector.cpph(44,18) ]
-   remark #15381: vectorization support: unaligned access used inside loop body
-   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-   remark #15305: vectorization support: vector length 2
-   remark #15309: vectorization support: normalized vectorization overhead 1.000
-   remark #15450: unmasked unaligned unit stride loads: 1 
-   remark #15451: unmasked unaligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 4 
-   remark #15477: vector cost: 3.000 
-   remark #15478: estimated potential speedup: 0.750 
-   remark #15488: --- end vector cost summary ---
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between toAssign_34666 line 44 and toAssign_34666 line 44
+   remark #15346: vector dependence: assumed ANTI dependence between this_34666 line 44 and this_34666 line 44
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at ./tarch/la/Vector.cpph(43,3) inlined into dem/mappings/MoveParticles.cpp(232,10)
-   remark #15389: vectorization support: reference this->_values[i] has unaligned access   [ ./tarch/la/Vector.cpph(44,5) ]
-   remark #15389: vectorization support: reference toAssign->_values[i] has unaligned access   [ ./tarch/la/Vector.cpph(44,18) ]
-   remark #15381: vectorization support: unaligned access used inside loop body
-   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-   remark #15305: vectorization support: vector length 2
-   remark #15309: vectorization support: normalized vectorization overhead 1.000
-   remark #15450: unmasked unaligned unit stride loads: 1 
-   remark #15451: unmasked unaligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 4 
-   remark #15477: vector cost: 3.000 
-   remark #15478: estimated potential speedup: 0.750 
-   remark #15488: --- end vector cost summary ---
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed FLOW dependence between toAssign_34666 line 44 and toAssign_34666 line 44
+   remark #15346: vector dependence: assumed ANTI dependence between this_34666 line 44 and this_34666 line 44
    remark #25436: completely unrolled by 3  
-LOOP END
-
-LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
-<Peeled loop for vectorization, Multiversioned v1>
-   remark #25015: Estimate of max trip count of loop=1
 LOOP END
 
 LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
 <Multiversioned v1>
    remark #25228: Loop multiversioned for Data Dependence
-   remark #15388: vectorization support: reference *(this+_2*8+104) has aligned access
-   remark #15388: vectorization support: reference *(__p2+_2*8+104) has aligned access
-   remark #15305: vectorization support: vector length 2
-   remark #15309: vectorization support: normalized vectorization overhead 6.000
+   remark #15389: vectorization support: reference this_34425 has unaligned access
+   remark #15389: vectorization support: reference __p2_34425 has unaligned access
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 4
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.500
    remark #15301: MATERIALIZED LOOP WAS VECTORIZED
-   remark #15442: entire loop may be executed in remainder
-   remark #15448: unmasked aligned unit stride loads: 1 
-   remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 5 
-   remark #15477: vector cost: 1.500 
-   remark #15478: estimated potential speedup: 1.250 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=5
-LOOP END
-
-LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
-<Alternate Alignment Vectorized Loop, Multiversioned v1>
-   remark #25015: Estimate of max trip count of loop=5
-LOOP END
-
-LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
-<Remainder loop for vectorization, Multiversioned v1>
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 8 
+   remark #15477: vector loop cost: 1.500 
+   remark #15478: estimated potential speedup: 2.350 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=1
 LOOP END
 
 LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
@@ -1945,22 +881,34 @@ LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParti
 LOOP END
 
 LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
+<Remainder loop for vectorization, Multiversioned v1>
+   remark #15389: vectorization support: reference this_34425 has unaligned access
+   remark #15389: vectorization support: reference __p2_34425 has unaligned access
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15427: loop was completely unrolled
+   remark #15309: vectorization support: normalized vectorization overhead 0.750
+   remark #25436: completely unrolled by 2  
+LOOP END
+
+LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
 <Multiversioned v1>
    remark #25228: Loop multiversioned for Data Dependence
-   remark #15389: vectorization support: reference *(this+_2+188) has unaligned access
-   remark #15389: vectorization support: reference *(__p2+_2+188) has unaligned access
+   remark #15389: vectorization support: reference this_34425 has unaligned access
+   remark #15389: vectorization support: reference __p2_34425 has unaligned access
    remark #15381: vectorization support: unaligned access used inside loop body
-   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
    remark #15305: vectorization support: vector length 4
    remark #15309: vectorization support: normalized vectorization overhead 0.750
+   remark #15301: MATERIALIZED LOOP WAS VECTORIZED
    remark #15450: unmasked unaligned unit stride loads: 1 
    remark #15451: unmasked unaligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 5 
-   remark #15477: vector cost: 2.000 
-   remark #15478: estimated potential speedup: 1.200 
-   remark #15488: --- end vector cost summary ---
-   remark #25436: completely unrolled by 7  
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 7 
+   remark #15477: vector loop cost: 2.000 
+   remark #15478: estimated potential speedup: 1.400 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=1
 LOOP END
 
 LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
@@ -1969,37 +917,10 @@ LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParti
    remark #25436: completely unrolled by 7  
 LOOP END
 
-    Report from: Code generation optimizations [cg]
-
-dem/mappings/MoveParticles.cpp(229,3):remark #34051: REGISTER ALLOCATION : [_ZN3dem8mappings13MoveParticles14beginIterationERNS_5StateE] dem/mappings/MoveParticles.cpp:229
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   10[ rax rdx rcx rsi rdi r8-r11 zmm0]
-        
-    Routine temporaries
-        Total         :      70
-            Global    :      15
-            Local     :      55
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
+LOOP BEGIN at ./dem/records/State.h(4817,26) inlined into dem/mappings/MoveParticles.cpp(232,10)
+<Remainder loop for vectorization, Multiversioned v1>
+   remark #25436: completely unrolled by 3  
+LOOP END
 ===========================================================================
 
     Report from: Interprocedural optimizations [ipo]
@@ -2009,9 +930,4 @@ INLINING FOOTNOTES:
 <1> The indirectly called function must be resolved to its targets before it 
 can be inlined.  Consider compiling with -ipo or -prof-gen followed by 
 -prof-use.
-
-<2> The compiler's heuristics indicate that the function is not profitable to 
-    inline.  Override this decision by adding "inline 
-    __attribute__((always_inline))" to the declaration of the called function, 
-    or add "#pragma forceinline" before the call site.
 

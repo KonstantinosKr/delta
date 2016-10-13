@@ -2,9 +2,6 @@ Intel(R) Advisor can now assist with vectorization and show optimization
   report messages with your source code.
 See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
-Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
-
-Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o delta/hull/predicates.o
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -60,105 +57,73 @@ INLINE REPORT: (delta::hull::orient2d(double *, double *, double *)) [3/13=23.1%
 
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(821,12)
-   remark #15389: vectorization support: reference B[eindex] has unaligned access   [ delta/hull/predicates.cpp(737,21) ]
+   remark #15389: vectorization support: reference _B has unaligned access   [ delta/hull/predicates.cpp(670,5) ]
    remark #15381: vectorization support: unaligned access used inside loop body
    remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
    remark #15305: vectorization support: vector length 2
-   remark #15309: vectorization support: normalized vectorization overhead 3.167
+   remark #15309: vectorization support: normalized vectorization overhead 2.167
    remark #15450: unmasked unaligned unit stride loads: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 6 
-   remark #15477: vector cost: 3.000 
-   remark #15478: estimated potential speedup: 0.580 
-   remark #15488: --- end vector cost summary ---
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 5 
+   remark #15477: vector loop cost: 3.000 
+   remark #15478: estimated potential speedup: 0.620 
+   remark #15488: --- end vector loop cost summary ---
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(564,5) inlined into delta/hull/predicates.cpp(821,12)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(578,3) inlined into delta/hull/predicates.cpp(821,12)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between hindex (583:9) and hindex (583:7)
-   remark #15346: vector dependence: assumed ANTI dependence between hindex (583:7) and hindex (583:9)
+   remark #15346: vector dependence: assumed FLOW dependence between _hindex line 583 and _hindex line 583
+   remark #15346: vector dependence: assumed ANTI dependence between _hindex line 583 and _hindex line 583
    remark #25015: Estimate of max trip count of loop=4
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(586,3) inlined into delta/hull/predicates.cpp(821,12)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between hindex (591:9) and hindex (591:7)
-   remark #15346: vector dependence: assumed ANTI dependence between hindex (591:7) and hindex (591:9)
+   remark #15346: vector dependence: assumed FLOW dependence between _hindex line 591 and _hindex line 591
+   remark #15346: vector dependence: assumed ANTI dependence between _hindex line 591 and _hindex line 591
    remark #25015: Estimate of max trip count of loop=4
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(564,5) inlined into delta/hull/predicates.cpp(821,12)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(578,3) inlined into delta/hull/predicates.cpp(821,12)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between hindex (583:9) and hindex (583:7)
-   remark #15346: vector dependence: assumed ANTI dependence between hindex (583:7) and hindex (583:9)
+   remark #15346: vector dependence: assumed FLOW dependence between _hindex line 583 and _hindex line 583
+   remark #15346: vector dependence: assumed ANTI dependence between _hindex line 583 and _hindex line 583
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(586,3) inlined into delta/hull/predicates.cpp(821,12)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between hindex (591:9) and hindex (591:7)
-   remark #15346: vector dependence: assumed ANTI dependence between hindex (591:7) and hindex (591:9)
+   remark #15346: vector dependence: assumed FLOW dependence between _hindex line 591 and _hindex line 591
+   remark #15346: vector dependence: assumed ANTI dependence between _hindex line 591 and _hindex line 591
    remark #25015: Estimate of max trip count of loop=4
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(564,5) inlined into delta/hull/predicates.cpp(821,12)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(578,3) inlined into delta/hull/predicates.cpp(821,12)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between hindex (583:9) and hindex (583:7)
-   remark #15346: vector dependence: assumed ANTI dependence between hindex (583:7) and hindex (583:9)
+   remark #15346: vector dependence: assumed FLOW dependence between _hindex line 583 and _hindex line 583
+   remark #15346: vector dependence: assumed ANTI dependence between _hindex line 583 and _hindex line 583
    remark #25015: Estimate of max trip count of loop=12
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(586,3) inlined into delta/hull/predicates.cpp(821,12)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between hindex (591:9) and hindex (591:7)
-   remark #15346: vector dependence: assumed ANTI dependence between hindex (591:7) and hindex (591:9)
+   remark #15346: vector dependence: assumed FLOW dependence between _hindex line 591 and _hindex line 591
+   remark #15346: vector dependence: assumed ANTI dependence between _hindex line 591 and _hindex line 591
    remark #25015: Estimate of max trip count of loop=4
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(785,3):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8orient2dEPdS1_S1_] delta/hull/predicates.cpp:785
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   23[ rax rdx rcx rsi rdi r8-r9 zmm0-zmm15]
-        
-    Routine temporaries
-        Total         :     312
-            Global    :      69
-            Local     :     243
-        Regenerable   :       6
-        Spilled       :      10
-        
-    Routine stack
-        Variables     :     352 bytes*
-            Reads     :      23 [2.92e-01 ~ 0.5%]
-            Writes    :      34 [7.30e-01 ~ 1.2%]
-        Spills        :      80 bytes*
-            Reads     :      11 [7.42e-02 ~ 0.1%]
-            Writes    :      12 [5.75e-01 ~ 0.9%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::orient3d(double *, double *, double *, double *)
@@ -168,38 +133,6 @@ Begin optimization report for: delta::hull::orient3d(double *, double *, double 
 INLINE REPORT: (delta::hull::orient3d(double *, double *, double *, double *)) [4/13=30.8%] delta/hull/predicates.cpp(1261,3)
   -> (1302,12) delta::hull::orient3dadapt(double *, double *, double *, double *, double) (isz = 5249) (sz = 5267)
      [[ Inlining would exceed -inline-max-total-size value (5249>2000) <1>]]
-
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(1261,3):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8orient3dEPdS1_S1_S1_] delta/hull/predicates.cpp:1261
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   19[ rdx rcx rsi rdi zmm0-zmm14]
-        
-    Routine temporaries
-        Total         :      78
-            Global    :      15
-            Local     :      63
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -278,52 +211,52 @@ INLINE REPORT: (delta::hull::orient3dadapt(double *, double *, double *, double 
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(923,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between adet[hindex] (642:7) and adet[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between adet[hindex] (646:7) and adet[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between adet line 642 and adet line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between adet line 646 and adet line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(929,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between bdet[hindex] (642:7) and bdet[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between bdet[hindex] (646:7) and bdet[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between bdet line 642 and bdet line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between bdet line 646 and bdet line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(935,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between cdet[hindex] (642:7) and cdet[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between cdet[hindex] (646:7) and cdet[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between cdet line 642 and cdet line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between cdet line 646 and cdet line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(940,9)
 <Peeled loop for vectorization>
-   remark #25436: completely unrolled by 1  
+   remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(940,9)
-   remark #15388: vectorization support: reference fin1[eindex] has aligned access   [ delta/hull/predicates.cpp(940,29) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference fin1 has aligned access   [ delta/hull/predicates.cpp(670,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15399: vectorization support: unroll factor set to 8
-   remark #15309: vectorization support: normalized vectorization overhead 0.396
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
    remark #15300: LOOP WAS VECTORIZED
-   remark #15448: unmasked aligned unit stride loads: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 6 
-   remark #15477: vector cost: 3.000 
-   remark #15478: estimated potential speedup: 1.790 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=12
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 5 
+   remark #15477: vector loop cost: 1.250 
+   remark #15478: estimated potential speedup: 2.530 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=6
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(940,9)
 <Remainder loop for vectorization>
-   remark #15388: vectorization support: reference fin1[eindex] has aligned access   [ delta/hull/predicates.cpp(940,29) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference fin1 has aligned access   [ delta/hull/predicates.cpp(670,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15309: vectorization support: normalized vectorization overhead 5.800
    remark #15301: REMAINDER LOOP WAS VECTORIZED
-   remark #25015: Estimate of max trip count of loop=96
+   remark #25015: Estimate of max trip count of loop=48
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(940,9)
@@ -333,132 +266,102 @@ LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1098,13)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (642:7) and w[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (646:7) and w[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 642 and w line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 646 and w line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1104,13)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (642:7) and w[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (646:7) and w[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 642 and w line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 646 and w line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1110,13)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (642:7) and w[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (646:7) and w[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 642 and w line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 646 and w line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1116,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between v[hindex] (642:7) and v[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between v[hindex] (646:7) and v[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between v line 642 and v line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between v line 646 and v line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1122,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between v[hindex] (642:7) and v[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between v[hindex] (646:7) and v[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between v line 642 and v line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between v line 646 and v line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1128,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between v[hindex] (642:7) and v[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between v[hindex] (646:7) and v[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between v line 642 and v line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between v line 646 and v line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1235,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (642:7) and w[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (646:7) and w[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 642 and w line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 646 and w line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1241,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (642:7) and w[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (646:7) and w[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 642 and w line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 646 and w line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(564,5) inlined into delta/hull/predicates.cpp(1242,17)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(578,3) inlined into delta/hull/predicates.cpp(1242,17)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed ANTI dependence between finnow[eindex] (580:5) and finother[hindex] (583:7)
-   remark #15346: vector dependence: assumed FLOW dependence between finother[hindex] (583:7) and finnow[eindex] (580:5)
+   remark #15346: vector dependence: assumed ANTI dependence between finnow line 580 and finother line 583
+   remark #15346: vector dependence: assumed FLOW dependence between finother line 583 and finnow line 580
+   remark #25015: Estimate of max trip count of loop=192
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(586,3) inlined into delta/hull/predicates.cpp(1242,17)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between hindex (591:9) and hindex (591:7)
-   remark #15346: vector dependence: assumed ANTI dependence between hindex (591:7) and hindex (591:9)
+   remark #15346: vector dependence: assumed FLOW dependence between _hindex line 591 and _hindex line 591
+   remark #15346: vector dependence: assumed ANTI dependence between _hindex line 591 and _hindex line 591
    remark #25015: Estimate of max trip count of loop=16
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1247,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (642:7) and w[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between w[hindex] (646:7) and w[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 642 and w line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between w line 646 and w line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(564,5) inlined into delta/hull/predicates.cpp(1248,17)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(578,3) inlined into delta/hull/predicates.cpp(1248,17)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed ANTI dependence between finnow[eindex] (580:5) and finother[hindex] (583:7)
-   remark #15346: vector dependence: assumed FLOW dependence between finother[hindex] (583:7) and finnow[eindex] (580:5)
+   remark #15346: vector dependence: assumed ANTI dependence between finnow line 580 and finother line 583
+   remark #15346: vector dependence: assumed FLOW dependence between finother line 583 and finnow line 580
+   remark #25015: Estimate of max trip count of loop=192
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(586,3) inlined into delta/hull/predicates.cpp(1248,17)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed FLOW dependence between hindex (591:9) and hindex (591:7)
-   remark #15346: vector dependence: assumed ANTI dependence between hindex (591:7) and hindex (591:9)
+   remark #15346: vector dependence: assumed FLOW dependence between _hindex line 591 and _hindex line 591
+   remark #15346: vector dependence: assumed ANTI dependence between _hindex line 591 and _hindex line 591
    remark #25015: Estimate of max trip count of loop=16
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(857,1):remark #34051: REGISTER ALLOCATION : [_ZN47_INTERNAL_25_delta_hull_predicates_cpp_de7541245delta4hull13orient3dadaptEPdS2_S2_S2_d] delta/hull/predicates.cpp:857
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   31[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm15]
-        
-    Routine temporaries
-        Total         :    1572
-            Global    :     367
-            Local     :    1205
-        Regenerable   :      85
-        Spilled       :     105
-        
-    Routine stack
-        Variables     :    4128 bytes*
-            Reads     :      41 [5.42e+01 ~ 3.9%]
-            Writes    :     186 [6.93e+01 ~ 4.9%]
-        Spills        :     792 bytes*
-            Reads     :     273 [9.30e+01 ~ 6.6%]
-            Writes    :     115 [7.90e+01 ~ 5.6%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::incircle(double *, double *, double *, double *)
@@ -468,38 +371,6 @@ Begin optimization report for: delta::hull::incircle(double *, double *, double 
 INLINE REPORT: (delta::hull::incircle(double *, double *, double *, double *)) [6/13=46.2%] delta/hull/predicates.cpp(1910,3)
   -> (1952,9) delta::hull::incircleadapt(double *, double *, double *, double *, double) (isz = 5973) (sz = 5991)
      [[ Inlining would exceed -inline-max-total-size value (5973>2000) <1>]]
-
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(1910,3):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8incircleEPdS1_S1_S1_] delta/hull/predicates.cpp:1910
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   20[ rdx rcx rsi rdi zmm0-zmm15]
-        
-    Routine temporaries
-        Total         :      77
-            Global    :      15
-            Local     :      62
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -828,31 +699,31 @@ INLINE REPORT: (delta::hull::incircleadapt(double *, double *, double *, double 
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(1439,9)
 <Peeled loop for vectorization>
-   remark #25436: completely unrolled by 1  
+   remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(1439,9)
-   remark #15388: vectorization support: reference fin1[eindex] has aligned access   [ delta/hull/predicates.cpp(1439,29) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference fin1 has aligned access   [ delta/hull/predicates.cpp(670,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15399: vectorization support: unroll factor set to 8
-   remark #15309: vectorization support: normalized vectorization overhead 0.396
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
    remark #15300: LOOP WAS VECTORIZED
-   remark #15448: unmasked aligned unit stride loads: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 6 
-   remark #15477: vector cost: 3.000 
-   remark #15478: estimated potential speedup: 1.960 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=72
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 5 
+   remark #15477: vector loop cost: 1.250 
+   remark #15478: estimated potential speedup: 3.640 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=36
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(1439,9)
 <Remainder loop for vectorization>
-   remark #15388: vectorization support: reference fin1[eindex] has aligned access   [ delta/hull/predicates.cpp(1439,29) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference fin1 has aligned access   [ delta/hull/predicates.cpp(670,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15309: vectorization support: normalized vectorization overhead 5.800
    remark #15301: REMAINDER LOOP WAS VECTORIZED
-   remark #25015: Estimate of max trip count of loop=576
+   remark #25015: Estimate of max trip count of loop=288
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(1439,9)
@@ -862,147 +733,115 @@ LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1833,19)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between cxtabt[hindex] (642:7) and cxtabt[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between cxtabt[hindex] (646:7) and cxtabt[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between cxtabt line 642 and cxtabt line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between cxtabt line 646 and cxtabt line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1834,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a[hindex] (642:7) and temp32a[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a[hindex] (646:7) and temp32a[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a line 642 and temp32a line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a line 646 and temp32a line 642
    remark #25015: Estimate of max trip count of loop=16
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1842,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8[hindex] (642:7) and temp8[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8[hindex] (646:7) and temp8[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8 line 642 and temp8 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8 line 646 and temp8 line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1843,22)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a[hindex] (642:7) and temp16a[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a[hindex] (646:7) and temp16a[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a line 642 and temp16a line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a line 646 and temp16a line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1850,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8[hindex] (642:7) and temp8[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8[hindex] (646:7) and temp8[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8 line 642 and temp8 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8 line 646 and temp8 line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1851,22)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a[hindex] (642:7) and temp16a[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a[hindex] (646:7) and temp16a[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a line 642 and temp16a line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a line 646 and temp16a line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1858,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a[hindex] (642:7) and temp32a[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a[hindex] (646:7) and temp32a[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a line 642 and temp32a line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a line 646 and temp32a line 642
    remark #25015: Estimate of max trip count of loop=16
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1860,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between cxtabtt[hindex] (642:7) and cxtabtt[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between cxtabtt[hindex] (646:7) and cxtabtt[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between cxtabtt line 642 and cxtabtt line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between cxtabtt line 646 and cxtabtt line 642
    remark #25015: Estimate of max trip count of loop=4
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1861,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a[hindex] (642:7) and temp16a[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a[hindex] (646:7) and temp16a[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a line 642 and temp16a line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a line 646 and temp16a line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1863,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16b[hindex] (642:7) and temp16b[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16b[hindex] (646:7) and temp16b[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16b line 642 and temp16b line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16b line 646 and temp16b line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1875,19)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between cytabt[hindex] (642:7) and cytabt[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between cytabt[hindex] (646:7) and cytabt[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between cytabt line 642 and cytabt line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between cytabt line 646 and cytabt line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1876,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a[hindex] (642:7) and temp32a[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a[hindex] (646:7) and temp32a[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a line 642 and temp32a line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a line 646 and temp32a line 642
    remark #25015: Estimate of max trip count of loop=16
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1885,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a[hindex] (642:7) and temp32a[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a[hindex] (646:7) and temp32a[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a line 642 and temp32a line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp32a line 646 and temp32a line 642
    remark #25015: Estimate of max trip count of loop=16
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1887,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between cytabtt[hindex] (642:7) and cytabtt[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between cytabtt[hindex] (646:7) and cytabtt[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between cytabtt line 642 and cytabtt line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between cytabtt line 646 and cytabtt line 642
    remark #25015: Estimate of max trip count of loop=4
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1888,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a[hindex] (642:7) and temp16a[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a[hindex] (646:7) and temp16a[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a line 642 and temp16a line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16a line 646 and temp16a line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(1890,20)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16b[hindex] (642:7) and temp16b[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp16b[hindex] (646:7) and temp16b[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16b line 642 and temp16b line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp16b line 646 and temp16b line 642
    remark #25015: Estimate of max trip count of loop=8
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(1335,1):remark #34051: REGISTER ALLOCATION : [_ZN47_INTERNAL_25_delta_hull_predicates_cpp_de7541245delta4hull13incircleadaptEPdS2_S2_S2_d] delta/hull/predicates.cpp:1335
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   28[ rax rdx rcx rbx rbp rsi rdi r8 r12-r15 zmm0-zmm15]
-        
-    Routine temporaries
-        Total         :    2225
-            Global    :     659
-            Local     :    1566
-        Regenerable   :     509
-        Spilled       :     127
-        
-    Routine stack
-        Variables     :   25568 bytes*
-            Reads     :      40 [5.45e+01 ~ 4.1%]
-            Writes    :     138 [4.67e+01 ~ 3.5%]
-        Spills        :     968 bytes*
-            Reads     :     401 [1.10e+02 ~ 8.4%]
-            Writes    :     149 [6.74e+01 ~ 5.1%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::fast_expansion_sum_zeroelim(int, double *, int, double *, double *)
@@ -1016,52 +855,20 @@ INLINE REPORT: (delta::hull::fast_expansion_sum_zeroelim(int, double *, int, dou
 
 
 LOOP BEGIN at delta/hull/predicates.cpp(564,5)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(578,3)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed ANTI dependence between e[eindex] (580:5) and h[hindex] (583:7)
-   remark #15346: vector dependence: assumed FLOW dependence between h[hindex] (583:7) and e[eindex] (580:5)
+   remark #15346: vector dependence: assumed ANTI dependence between e line 580 and h line 583
+   remark #15346: vector dependence: assumed FLOW dependence between h line 583 and e line 580
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(586,3)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed ANTI dependence between f[findex] (588:5) and h[hindex] (591:7)
-   remark #15346: vector dependence: assumed FLOW dependence between h[hindex] (591:7) and f[findex] (588:5)
+   remark #15346: vector dependence: assumed ANTI dependence between f line 588 and h line 591
+   remark #15346: vector dependence: assumed FLOW dependence between h line 591 and f line 588
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(532,1):remark #34051: REGISTER ALLOCATION : [_ZN47_INTERNAL_25_delta_hull_predicates_cpp_de7541245delta4hull27fast_expansion_sum_zeroelimEiPdiS2_S2_] delta/hull/predicates.cpp:532
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   16[ rax rdx rcx rsi rdi r8-r12 zmm0-zmm5]
-        
-    Routine temporaries
-        Total         :      62
-            Global    :      26
-            Local     :      36
-        Regenerable   :       9
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::scale_expansion_zeroelim(int, double *, double, double *)
@@ -1076,41 +883,9 @@ INLINE REPORT: (delta::hull::scale_expansion_zeroelim(int, double *, double, dou
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed ANTI dependence between e[eindex] (638:5) and h[hindex] (646:7)
-   remark #15346: vector dependence: assumed FLOW dependence between h[hindex] (646:7) and e[eindex] (638:5)
+   remark #15346: vector dependence: assumed ANTI dependence between e line 638 and h line 646
+   remark #15346: vector dependence: assumed FLOW dependence between h line 646 and e line 638
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(617,1):remark #34051: REGISTER ALLOCATION : [_ZN47_INTERNAL_25_delta_hull_predicates_cpp_de7541245delta4hull24scale_expansion_zeroelimEiPddS2_] delta/hull/predicates.cpp:617
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   13[ rax rdx rcx rsi rdi zmm0-zmm7]
-        
-    Routine temporaries
-        Total         :      43
-            Global    :      20
-            Local     :      23
-        Regenerable   :       2
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::insphere(double *, double *, double *, double *, double *)
@@ -1120,38 +895,6 @@ Begin optimization report for: delta::hull::insphere(double *, double *, double 
 INLINE REPORT: (delta::hull::insphere(double *, double *, double *, double *, double *)) [10/13=76.9%] delta/hull/predicates.cpp(2451,83)
   -> (2553,9) delta::hull::insphereadapt(double *, double *, double *, double *, double *, double) (isz = 3783) (sz = 3803)
      [[ Inlining would exceed -inline-max-total-size value (3783>2000) <1>]]
-
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(2451,83):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8insphereEPdS1_S1_S1_S1_] delta/hull/predicates.cpp:2451
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   21[ rdx rcx rsi rdi r8 zmm0-zmm15]
-        
-    Routine temporaries
-        Total         :     170
-            Global    :      16
-            Local     :     154
-        Regenerable   :       0
-        Spilled       :       7
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :      56 bytes*
-            Reads     :       7 [7.00e+00 ~ 3.4%]
-            Writes    :       7 [7.00e+00 ~ 3.4%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -1264,181 +1007,149 @@ INLINE REPORT: (delta::hull::insphereadapt(double *, double *, double *, double 
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2352,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8c[hindex] (642:7) and temp8c[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8c[hindex] (646:7) and temp8c[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8c line 642 and temp8c line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8c line 646 and temp8c line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2357,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (642:7) and temp48[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (646:7) and temp48[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 642 and temp48 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 646 and temp48 line 642
    remark #25015: Estimate of max trip count of loop=24
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2358,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between xdet[hindex] (642:7) and xdet[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between xdet[hindex] (646:7) and xdet[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between xdet line 642 and xdet line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between xdet line 646 and xdet line 642
    remark #25015: Estimate of max trip count of loop=48
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2359,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (642:7) and temp48[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (646:7) and temp48[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 642 and temp48 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 646 and temp48 line 642
    remark #25015: Estimate of max trip count of loop=24
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2360,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between ydet[hindex] (642:7) and ydet[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between ydet[hindex] (646:7) and ydet[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between ydet line 642 and ydet line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between ydet line 646 and ydet line 642
    remark #25015: Estimate of max trip count of loop=48
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2361,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (642:7) and temp48[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (646:7) and temp48[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 642 and temp48 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 646 and temp48 line 642
    remark #25015: Estimate of max trip count of loop=24
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2362,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between zdet[hindex] (642:7) and zdet[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between zdet[hindex] (646:7) and zdet[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between zdet line 642 and zdet line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between zdet line 646 and zdet line 642
    remark #25015: Estimate of max trip count of loop=48
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2366,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8a[hindex] (642:7) and temp8a[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8a[hindex] (646:7) and temp8a[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8a line 642 and temp8a line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8a line 646 and temp8a line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2367,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8b[hindex] (642:7) and temp8b[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8b[hindex] (646:7) and temp8b[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8b line 642 and temp8b line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8b line 646 and temp8b line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2368,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8c[hindex] (642:7) and temp8c[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp8c[hindex] (646:7) and temp8c[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8c line 642 and temp8c line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp8c line 646 and temp8c line 642
    remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2373,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (642:7) and temp48[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (646:7) and temp48[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 642 and temp48 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 646 and temp48 line 642
    remark #25015: Estimate of max trip count of loop=24
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2374,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between xdet[hindex] (642:7) and xdet[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between xdet[hindex] (646:7) and xdet[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between xdet line 642 and xdet line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between xdet line 646 and xdet line 642
    remark #25015: Estimate of max trip count of loop=48
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2375,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (642:7) and temp48[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (646:7) and temp48[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 642 and temp48 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 646 and temp48 line 642
    remark #25015: Estimate of max trip count of loop=24
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2376,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between ydet[hindex] (642:7) and ydet[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between ydet[hindex] (646:7) and ydet[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between ydet line 642 and ydet line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between ydet line 646 and ydet line 642
    remark #25015: Estimate of max trip count of loop=48
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2377,15)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (642:7) and temp48[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp48[hindex] (646:7) and temp48[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 642 and temp48 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp48 line 646 and temp48 line 642
    remark #25015: Estimate of max trip count of loop=24
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2378,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between zdet[hindex] (642:7) and zdet[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between zdet[hindex] (646:7) and zdet[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between zdet line 642 and zdet line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between zdet line 646 and zdet line 642
    remark #25015: Estimate of max trip count of loop=48
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(2386,9)
 <Peeled loop for vectorization>
-   remark #25436: completely unrolled by 1  
+   remark #25436: completely unrolled by 3  
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(2386,9)
-   remark #15388: vectorization support: reference fin1[eindex] has aligned access   [ delta/hull/predicates.cpp(2386,29) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference fin1 has aligned access   [ delta/hull/predicates.cpp(670,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15399: vectorization support: unroll factor set to 8
-   remark #15309: vectorization support: normalized vectorization overhead 0.396
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
    remark #15300: LOOP WAS VECTORIZED
-   remark #15448: unmasked aligned unit stride loads: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 6 
-   remark #15477: vector cost: 3.000 
-   remark #15478: estimated potential speedup: 1.960 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=72
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 5 
+   remark #15477: vector loop cost: 1.250 
+   remark #15478: estimated potential speedup: 3.640 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=36
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(2386,9)
 <Remainder loop for vectorization>
-   remark #15388: vectorization support: reference fin1[eindex] has aligned access   [ delta/hull/predicates.cpp(2386,29) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference fin1 has aligned access   [ delta/hull/predicates.cpp(670,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15309: vectorization support: normalized vectorization overhead 5.800
    remark #15301: REMAINDER LOOP WAS VECTORIZED
-   remark #25015: Estimate of max trip count of loop=576
+   remark #25015: Estimate of max trip count of loop=288
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(669,3) inlined into delta/hull/predicates.cpp(2386,9)
 <Remainder loop for vectorization>
    remark #25015: Estimate of max trip count of loop=1152
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(2238,1):remark #34051: REGISTER ALLOCATION : [_ZN47_INTERNAL_25_delta_hull_predicates_cpp_de7541245delta4hull13insphereadaptEPdS2_S2_S2_S2_d] delta/hull/predicates.cpp:2238
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   31[ rax rdx rcx rbx rbp rsi rdi r8-r15 zmm0-zmm15]
-        
-    Routine temporaries
-        Total         :    1203
-            Global    :     363
-            Local     :     840
-        Regenerable   :     132
-        Spilled       :      76
-        
-    Routine stack
-        Variables     :   32576 bytes*
-            Reads     :      39 [1.25e+02 ~ 3.7%]
-            Writes    :     104 [1.81e+02 ~ 5.4%]
-        Spills        :     560 bytes*
-            Reads     :     172 [1.43e+02 ~ 4.2%]
-            Writes    :      83 [7.61e+01 ~ 2.3%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::insphereexact(double *, double *, double *, double *, double *)
@@ -1654,29 +1365,29 @@ INLINE REPORT: (delta::hull::insphereexact(double *, double *, double *, double 
 
 
 LOOP BEGIN at delta/hull/predicates.cpp(2150,3)
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2151,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2151,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2151,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2151,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15399: vectorization support: unroll factor set to 4
    remark #15300: LOOP WAS VECTORIZED
    remark #15448: unmasked aligned unit stride loads: 1 
    remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 5 
-   remark #15477: vector cost: 2.000 
-   remark #15478: estimated potential speedup: 2.500 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=6
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 5 
+   remark #15477: vector loop cost: 1.000 
+   remark #15478: estimated potential speedup: 5.000 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=3
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2150,3)
 <Remainder loop for vectorization>
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2151,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2151,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2151,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2151,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15309: vectorization support: normalized vectorization overhead 2.500
    remark #15301: REMAINDER LOOP WAS VECTORIZED
-   remark #25015: Estimate of max trip count of loop=24
+   remark #25015: Estimate of max trip count of loop=12
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2150,3)
@@ -1685,29 +1396,29 @@ LOOP BEGIN at delta/hull/predicates.cpp(2150,3)
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2166,3)
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2167,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2167,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2167,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2167,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15399: vectorization support: unroll factor set to 4
    remark #15300: LOOP WAS VECTORIZED
    remark #15448: unmasked aligned unit stride loads: 1 
    remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 5 
-   remark #15477: vector cost: 2.000 
-   remark #15478: estimated potential speedup: 2.500 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=6
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 5 
+   remark #15477: vector loop cost: 1.000 
+   remark #15478: estimated potential speedup: 5.000 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=3
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2166,3)
 <Remainder loop for vectorization>
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2167,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2167,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2167,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2167,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15309: vectorization support: normalized vectorization overhead 2.500
    remark #15301: REMAINDER LOOP WAS VECTORIZED
-   remark #25015: Estimate of max trip count of loop=24
+   remark #25015: Estimate of max trip count of loop=12
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2166,3)
@@ -1716,29 +1427,29 @@ LOOP BEGIN at delta/hull/predicates.cpp(2166,3)
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2182,3)
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2183,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2183,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2183,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2183,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15399: vectorization support: unroll factor set to 4
    remark #15300: LOOP WAS VECTORIZED
    remark #15448: unmasked aligned unit stride loads: 1 
    remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 5 
-   remark #15477: vector cost: 2.000 
-   remark #15478: estimated potential speedup: 2.500 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=6
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 5 
+   remark #15477: vector loop cost: 1.000 
+   remark #15478: estimated potential speedup: 5.000 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=3
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2182,3)
 <Remainder loop for vectorization>
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2183,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2183,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2183,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2183,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15309: vectorization support: normalized vectorization overhead 2.500
    remark #15301: REMAINDER LOOP WAS VECTORIZED
-   remark #25015: Estimate of max trip count of loop=24
+   remark #25015: Estimate of max trip count of loop=12
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2182,3)
@@ -1748,56 +1459,56 @@ LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2189,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (642:7) and temp192[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (646:7) and temp192[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 642 and temp192 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 646 and temp192 line 642
    remark #25015: Estimate of max trip count of loop=96
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2190,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384y[hindex] (642:7) and det384y[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384y[hindex] (646:7) and det384y[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384y line 642 and det384y line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384y line 646 and det384y line 642
    remark #25015: Estimate of max trip count of loop=192
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2191,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (642:7) and temp192[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (646:7) and temp192[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 642 and temp192 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 646 and temp192 line 642
    remark #25015: Estimate of max trip count of loop=96
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2192,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384z[hindex] (642:7) and det384z[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384z[hindex] (646:7) and det384z[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384z line 642 and det384z line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384z line 646 and det384z line 642
    remark #25015: Estimate of max trip count of loop=192
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2198,3)
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2199,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2199,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2199,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2199,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15399: vectorization support: unroll factor set to 4
    remark #15300: LOOP WAS VECTORIZED
    remark #15448: unmasked aligned unit stride loads: 1 
    remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 5 
-   remark #15477: vector cost: 2.000 
-   remark #15478: estimated potential speedup: 2.500 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=6
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 5 
+   remark #15477: vector loop cost: 1.000 
+   remark #15478: estimated potential speedup: 5.000 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=3
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2198,3)
 <Remainder loop for vectorization>
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2199,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2199,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2199,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2199,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15309: vectorization support: normalized vectorization overhead 2.500
    remark #15301: REMAINDER LOOP WAS VECTORIZED
-   remark #25015: Estimate of max trip count of loop=24
+   remark #25015: Estimate of max trip count of loop=12
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2198,3)
@@ -1807,70 +1518,70 @@ LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2203,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (642:7) and temp192[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (646:7) and temp192[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 642 and temp192 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 646 and temp192 line 642
    remark #25015: Estimate of max trip count of loop=96
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2204,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384x[hindex] (642:7) and det384x[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384x[hindex] (646:7) and det384x[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384x line 642 and det384x line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384x line 646 and det384x line 642
    remark #25015: Estimate of max trip count of loop=192
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2205,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (642:7) and temp192[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (646:7) and temp192[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 642 and temp192 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 646 and temp192 line 642
    remark #25015: Estimate of max trip count of loop=96
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2206,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384y[hindex] (642:7) and det384y[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384y[hindex] (646:7) and det384y[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384y line 642 and det384y line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384y line 646 and det384y line 642
    remark #25015: Estimate of max trip count of loop=192
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2207,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (642:7) and temp192[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (646:7) and temp192[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 642 and temp192 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 646 and temp192 line 642
    remark #25015: Estimate of max trip count of loop=96
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2208,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384z[hindex] (642:7) and det384z[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384z[hindex] (646:7) and det384z[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384z line 642 and det384z line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384z line 646 and det384z line 642
    remark #25015: Estimate of max trip count of loop=192
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2214,3)
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2215,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2215,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2215,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2215,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15399: vectorization support: unroll factor set to 4
    remark #15300: LOOP WAS VECTORIZED
    remark #15448: unmasked aligned unit stride loads: 1 
    remark #15449: unmasked aligned unit stride stores: 1 
-   remark #15475: --- begin vector cost summary ---
-   remark #15476: scalar cost: 5 
-   remark #15477: vector cost: 2.000 
-   remark #15478: estimated potential speedup: 2.500 
-   remark #15488: --- end vector cost summary ---
-   remark #25015: Estimate of max trip count of loop=6
+   remark #15475: --- begin vector loop cost summary ---
+   remark #15476: scalar loop cost: 5 
+   remark #15477: vector loop cost: 1.000 
+   remark #15478: estimated potential speedup: 5.000 
+   remark #15488: --- end vector loop cost summary ---
+   remark #25015: Estimate of max trip count of loop=3
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2214,3)
 <Remainder loop for vectorization>
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2215,5) ]
-   remark #15388: vectorization support: reference temp48b[i] has aligned access   [ delta/hull/predicates.cpp(2215,19) ]
-   remark #15305: vectorization support: vector length 2
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2215,5) ]
+   remark #15388: vectorization support: reference temp48b has aligned access   [ delta/hull/predicates.cpp(2215,5) ]
+   remark #15305: vectorization support: vector length 4
    remark #15309: vectorization support: normalized vectorization overhead 2.500
    remark #15301: REMAINDER LOOP WAS VECTORIZED
-   remark #25015: Estimate of max trip count of loop=24
+   remark #25015: Estimate of max trip count of loop=12
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(2214,3)
@@ -1880,77 +1591,45 @@ LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2219,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (642:7) and temp192[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (646:7) and temp192[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 642 and temp192 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 646 and temp192 line 642
    remark #25015: Estimate of max trip count of loop=96
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2220,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384x[hindex] (642:7) and det384x[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384x[hindex] (646:7) and det384x[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384x line 642 and det384x line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384x line 646 and det384x line 642
    remark #25015: Estimate of max trip count of loop=192
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2221,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (642:7) and temp192[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (646:7) and temp192[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 642 and temp192 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 646 and temp192 line 642
    remark #25015: Estimate of max trip count of loop=96
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2222,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384y[hindex] (642:7) and det384y[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384y[hindex] (646:7) and det384y[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384y line 642 and det384y line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384y line 646 and det384y line 642
    remark #25015: Estimate of max trip count of loop=192
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2223,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (642:7) and temp192[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between temp192[hindex] (646:7) and temp192[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 642 and temp192 line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between temp192 line 646 and temp192 line 642
    remark #25015: Estimate of max trip count of loop=96
 LOOP END
 
 LOOP BEGIN at delta/hull/predicates.cpp(637,3) inlined into delta/hull/predicates.cpp(2224,10)
    remark #15344: loop was not vectorized: vector dependence prevents vectorization
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384z[hindex] (642:7) and det384z[hindex] (646:7)
-   remark #15346: vector dependence: assumed OUTPUT dependence between det384z[hindex] (646:7) and det384z[hindex] (642:7)
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384z line 642 and det384z line 646
+   remark #15346: vector dependence: assumed OUTPUT dependence between det384z line 646 and det384z line 642
    remark #25015: Estimate of max trip count of loop=192
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(1985,1):remark #34051: REGISTER ALLOCATION : [_ZN47_INTERNAL_25_delta_hull_predicates_cpp_de7541245delta4hull13insphereexactEPdS2_S2_S2_S2_] delta/hull/predicates.cpp:1985
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   30[ rax rdx rcx rbx rbp rsi rdi r8-r10 r12-r15 zmm0-zmm15]
-        
-    Routine temporaries
-        Total         :    1448
-            Global    :     444
-            Local     :    1004
-        Regenerable   :     312
-        Spilled       :      45
-        
-    Routine stack
-        Variables     :   180672 bytes*
-            Reads     :      48 [9.56e+02 ~ 9.6%]
-            Writes    :     124 [1.06e+03 ~ 10.7%]
-        Spills        :     312 bytes*
-            Reads     :     115 [1.13e+02 ~ 1.1%]
-            Writes    :      45 [4.50e+01 ~ 0.5%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: delta::hull::exactinit()
@@ -1966,38 +1645,6 @@ INLINE REPORT: (delta::hull::exactinit()) [13/13=100.0%] delta/hull/predicates.c
 LOOP BEGIN at delta/hull/predicates.cpp(480,3)
    remark #15523: loop was not vectorized: loop control variable every_other was found, but loop iteration count cannot be computed before executing the loop
 LOOP END
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/predicates.cpp(469,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull9exactinitEv] delta/hull/predicates.cpp:469
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :   17[ rax zmm0-zmm15]
-        
-    Routine temporaries
-        Total         :      73
-            Global    :      15
-            Local     :      58
-        Regenerable   :      17
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
     Report from: Interprocedural optimizations [ipo]

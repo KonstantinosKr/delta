@@ -2,9 +2,6 @@ Intel(R) Advisor can now assist with vectorization and show optimization
   report messages with your source code.
 See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
-Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
-
-Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o delta/hull/alg.o
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -33,37 +30,5 @@ Begin optimization report for: delta::hull::POINTS_COMPARE(double *, double *)
     Report from: Interprocedural optimizations [ipo]
 
 INLINE REPORT: (delta::hull::POINTS_COMPARE(double *, double *)) [1/1=100.0%] delta/hull/alg.cpp(30,5)
-
-
-    Report from: Code generation optimizations [cg]
-
-delta/hull/alg.cpp(30,5):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull14POINTS_COMPAREEPdS1_] delta/hull/alg.cpp:30
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    9[ rax rsi rdi zmm0-zmm5]
-        
-    Routine temporaries
-        Total         :      35
-            Global    :      16
-            Local     :      19
-        Regenerable   :       5
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================

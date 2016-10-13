@@ -2,9 +2,6 @@ Intel(R) Advisor can now assist with vectorization and show optimization
   report messages with your source code.
 See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
-Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
-
-Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o dem/Cell.o
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -32,44 +29,12 @@ Begin optimization report for: dem::Cell::Cell(dem::Cell *)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::Cell::Cell(dem::Cell *)) [1/17=5.9%] dem/Cell.cpp(5,10)
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *)) [1/16=6.2%] dem/Cell.cpp(5,10)
   -> INLINE (MANUAL): (4,12) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const) (isz = 16) (sz = 21)
     -> INLINE (MANUAL): ./peano/grid/Cell.h:(97,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *) (isz = 16) (sz = 21)
       -> EXTERN: ./peano/grid/Cell.cpph:(16,30) dem::records::Cell::Cell(dem::records::Cell *)
       -> INLINE (MANUAL): ./peano/grid/Cell.cpph:(18,13) dem::records::Cell::setIsInside(dem::records::Cell *, const bool &) (isz = 0) (sz = 7)
       -> INLINE (MANUAL): ./peano/grid/Cell.cpph:(19,13) dem::records::Cell::setState(dem::records::Cell *, const dem::records::Cell::State &) (isz = 0) (sz = 7)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/Cell.cpp(5,10):remark #34051: REGISTER ALLOCATION : [_ZN3dem4CellC1Ev] dem/Cell.cpp:5
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    3[ rax rdi r12]
-        
-    Routine temporaries
-        Total         :      10
-            Global    :       7
-            Local     :       3
-        Regenerable   :       1
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -77,7 +42,7 @@ Begin optimization report for: dem::Cell::Cell(dem::Cell *const)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::Cell::Cell(dem::Cell *const)) [2/17=11.8%] dem/Cell.cpp(4,12)
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *const)) [2/16=12.5%] dem/Cell.cpp(4,12)
   -> INLINE: (4,12) dem::Cell::Cell(dem::Cell *) (isz = 16) (sz = 21)
     -> INLINE (MANUAL): (4,12) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const) (isz = 16) (sz = 21)
       -> INLINE (MANUAL): ./peano/grid/Cell.h:(97,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *) (isz = 16) (sz = 21)
@@ -85,80 +50,16 @@ INLINE REPORT: (dem::Cell::Cell(dem::Cell *const)) [2/17=11.8%] dem/Cell.cpp(4,1
         -> INLINE (MANUAL): ./peano/grid/Cell.cpph:(18,13) dem::records::Cell::setIsInside(dem::records::Cell *, const bool &) (isz = 0) (sz = 7)
         -> INLINE (MANUAL): ./peano/grid/Cell.cpph:(19,13) dem::records::Cell::setState(dem::records::Cell *, const dem::records::Cell::State &) (isz = 0) (sz = 7)
 
-
-    Report from: Code generation optimizations [cg]
-
-dem/Cell.cpp(4,12):remark #34051: REGISTER ALLOCATION : [_ZN3dem4CellC2Ev] dem/Cell.cpp:4
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    3[ rax rdi r12]
-        
-    Routine temporaries
-        Total         :      10
-            Global    :       7
-            Local     :       3
-        Regenerable   :       1
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
 ===========================================================================
 
 Begin optimization report for: dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)) [3/17=17.6%] dem/Cell.cpp(11,15)
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)) [3/16=18.8%] dem/Cell.cpp(11,15)
   -> INLINE (MANUAL): (11,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): ./peano/grid/Cell.h:(99,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
       -> EXTERN: ./peano/grid/Cell.cpph:(35,30) dem::records::Cell::Cell(dem::records::Cell *)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/Cell.cpp(11,15):remark #34051: REGISTER ALLOCATION : [_ZN3dem4CellC1ERKN5peano4grid4CellINS_7records4CellEE28DoNotCallStandardConstructorE] dem/Cell.cpp:11
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    2[ rsi rdi]
-        
-    Routine temporaries
-        Total         :      10
-            Global    :       0
-            Local     :      10
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -166,43 +67,11 @@ Begin optimization report for: dem::Cell::Cell(dem::Cell *const, const peano::gr
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::Cell::Cell(dem::Cell *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)) [4/17=23.5%] dem/Cell.cpp(10,12)
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &)) [4/16=25.0%] dem/Cell.cpp(10,12)
   -> INLINE: (10,12) dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
     -> INLINE (MANUAL): (11,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
       -> INLINE (MANUAL): ./peano/grid/Cell.h:(99,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::DoNotCallStandardConstructor &) (isz = 1) (sz = 8)
         -> EXTERN: ./peano/grid/Cell.cpph:(35,30) dem::records::Cell::Cell(dem::records::Cell *)
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/Cell.cpp(10,12):remark #34051: REGISTER ALLOCATION : [_ZN3dem4CellC2ERKN5peano4grid4CellINS_7records4CellEE28DoNotCallStandardConstructorE] dem/Cell.cpp:10
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    2[ rsi rdi]
-        
-    Routine temporaries
-        Total         :      10
-            Global    :       0
-            Local     :      10
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -210,45 +79,14 @@ Begin optimization report for: dem::Cell::Cell(dem::Cell *, const peano::grid::C
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)) [5/17=29.4%] dem/Cell.cpp(16,18)
-  -> INLINE (MANUAL): (16,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 19) (sz = 26)
-    -> INLINE (MANUAL): ./peano/grid/Cell.h:(98,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 19) (sz = 26)
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)) [5/16=31.2%] dem/Cell.cpp(16,18)
+  -> INLINE (MANUAL): (16,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
+    -> INLINE (MANUAL): ./peano/grid/Cell.h:(98,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
       -> EXTERN: ./peano/grid/Cell.cpph:(40,30) dem::records::CellPacked::~CellPacked(dem::records::CellPacked *)
       -> EXTERN: ./peano/grid/Cell.cpph:(41,41) dem::records::CellPacked::CellPacked(dem::records::CellPacked *, const dem::records::CellPacked::PersistentRecords &)
       -> EXTERN: ./peano/grid/Cell.cpph:(41,41) dem::records::CellPacked::~CellPacked(dem::records::CellPacked *)
       -> EXTERN: ./peano/grid/Cell.cpph:(41,52) dem::records::CellPacked::convert(dem::records::Cell *, const dem::records::CellPacked *) const
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/Cell.cpp(16,18):remark #34051: REGISTER ALLOCATION : [_ZN3dem4CellC1ERKNS_7records10CellPacked17PersistentRecordsE] dem/Cell.cpp:16
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    5[ rax rdx rsi rdi r14]
-        
-    Routine temporaries
-        Total         :      24
-            Global    :       8
-            Local     :      16
-        Regenerable   :       6
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :      30 bytes*
-            Reads     :       1 [0.00e+00 ~ 0.0%]
-            Writes    :       1 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+      -> EXTERN: ./peano/grid/Cell.cpph:(41,52) dem::records::Cell::~Cell(dem::records::Cell *)
 
 ===========================================================================
 
@@ -256,46 +94,15 @@ Begin optimization report for: dem::Cell::Cell(dem::Cell *const, const peano::gr
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::Cell::Cell(dem::Cell *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)) [6/17=35.3%] dem/Cell.cpp(15,12)
-  -> INLINE: (15,12) dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 19) (sz = 26)
-    -> INLINE (MANUAL): (16,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 19) (sz = 26)
-      -> INLINE (MANUAL): ./peano/grid/Cell.h:(98,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 19) (sz = 26)
+INLINE REPORT: (dem::Cell::Cell(dem::Cell *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &)) [6/16=37.5%] dem/Cell.cpp(15,12)
+  -> INLINE: (15,12) dem::Cell::Cell(dem::Cell *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
+    -> INLINE (MANUAL): (16,8) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *const, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
+      -> INLINE (MANUAL): ./peano/grid/Cell.h:(98,5) peano::grid::Cell<dem::records::Cell>::Cell(peano::grid::Cell<dem::records::Cell> *, const peano::grid::Cell<dem::records::Cell>::PersistentCell &) (isz = 28) (sz = 35)
         -> EXTERN: ./peano/grid/Cell.cpph:(40,30) dem::records::CellPacked::~CellPacked(dem::records::CellPacked *)
         -> EXTERN: ./peano/grid/Cell.cpph:(41,41) dem::records::CellPacked::CellPacked(dem::records::CellPacked *, const dem::records::CellPacked::PersistentRecords &)
         -> EXTERN: ./peano/grid/Cell.cpph:(41,41) dem::records::CellPacked::~CellPacked(dem::records::CellPacked *)
         -> EXTERN: ./peano/grid/Cell.cpph:(41,52) dem::records::CellPacked::convert(dem::records::Cell *, const dem::records::CellPacked *) const
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/Cell.cpp(15,12):remark #34051: REGISTER ALLOCATION : [_ZN3dem4CellC2ERKNS_7records10CellPacked17PersistentRecordsE] dem/Cell.cpp:15
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    5[ rax rdx rsi rdi r14]
-        
-    Routine temporaries
-        Total         :      24
-            Global    :       8
-            Local     :      16
-        Regenerable   :       6
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :      30 bytes*
-            Reads     :       1 [0.00e+00 ~ 0.0%]
-            Writes    :       1 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+        -> EXTERN: ./peano/grid/Cell.cpph:(41,52) dem::records::Cell::~Cell(dem::records::Cell *)
 
 ===========================================================================
 
@@ -376,47 +183,5 @@ Begin optimization report for: peano::grid::Cell<dem::records::Cell>::~Cell(pean
     Report from: Interprocedural optimizations [ipo]
 
 DEAD STATIC FUNCTION: (peano::grid::Cell<dem::records::Cell>::~Cell(peano::grid::Cell<dem::records::Cell> *const)) ./peano/grid/Cell.h(102,5)
-
-===========================================================================
-
-Begin optimization report for: __sti__$E()
-
-    Report from: Interprocedural optimizations [ipo]
-
-INLINE REPORT: (__sti__$E()) [17/17=100.0%] <compiler generated>
-  -> EXTERN: /usr/include/c++/6/iostream:(74,25) __cxa_atexit()
-  -> EXTERN: /usr/include/c++/6/iostream:(74,25) std::ios_base::Init::Init(std::ios_base::Init *)
-
-
-    Report from: Code generation optimizations [cg]
-
-<compiler generated>:remark #34051: REGISTER ALLOCATION : [__sti__$E] (null):0
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    3[ rdx rsi rdi]
-        
-    Routine temporaries
-        Total         :      13
-            Global    :       7
-            Local     :       6
-        Regenerable   :       7
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================

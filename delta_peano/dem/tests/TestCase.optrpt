@@ -2,9 +2,6 @@ Intel(R) Advisor can now assist with vectorization and show optimization
   report messages with your source code.
 See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
-Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
-
-Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o dem/tests/TestCase.o
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -28,35 +25,51 @@ In the inlining report below:
       The compiler generally limits the amount a routine can grow by having
       routines inlined into it.
 
-Begin optimization report for: __gthread_active_p()
+Begin optimization report for: std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *)
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (__gthread_active_p()) /usr/include/x86_64-linux-gnu/c++/6/bits/gthr-default.h(248,1)
+DEAD STATIC FUNCTION: (std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string(640,55)
 
 ===========================================================================
 
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *)
+Begin optimization report for: std::__1::allocator<char>::allocator(std::__1::allocator<char> *)
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *)) /usr/include/c++/6/ext/new_allocator.h(79,45)
+DEAD STATIC FUNCTION: (std::__1::allocator<char>::allocator(std::__1::allocator<char> *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(1713,53)
 
 ===========================================================================
 
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)
+Begin optimization report for: std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *)
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,65)
+DEAD STATIC FUNCTION: (std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,75)
 
 ===========================================================================
 
-Begin optimization report for: tarch::tests::TestCaseFactory<dem::tests::TestCase>::TestCaseFactory(tarch::tests::TestCaseFactory<dem::tests::TestCase> *, tarch::tests::TestCaseFactory<dem::tests::TestCase>::Type, const std::string &)
+Begin optimization report for: std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const)
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (tarch::tests::TestCaseFactory<dem::tests::TestCase>::TestCaseFactory(tarch::tests::TestCaseFactory<dem::tests::TestCase> *, tarch::tests::TestCaseFactory<dem::tests::TestCase>::Type, const std::string &)) ./tarch/tests/TestCaseFactory.cpph(8,3)
+DEAD STATIC FUNCTION: (std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,31)
+
+===========================================================================
+
+Begin optimization report for: std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2400,51)
+
+===========================================================================
+
+Begin optimization report for: tarch::tests::TestCaseFactory<dem::tests::TestCase>::TestCaseFactory(tarch::tests::TestCaseFactory<dem::tests::TestCase> *, tarch::tests::TestCaseFactory<dem::tests::TestCase>::Type, const std::__1::string &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (tarch::tests::TestCaseFactory<dem::tests::TestCase>::TestCaseFactory(tarch::tests::TestCaseFactory<dem::tests::TestCase> *, tarch::tests::TestCaseFactory<dem::tests::TestCase>::Type, const std::__1::string &)) ./tarch/tests/TestCaseFactory.cpph(8,3)
 
 ===========================================================================
 
@@ -64,84 +77,10 @@ Begin optimization report for: tarch::tests::TestCaseFactory<dem::tests::TestCas
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (tarch::tests::TestCaseFactory<dem::tests::TestCase>::~TestCaseFactory(tarch::tests::TestCaseFactory<dem::tests::TestCase> *)) [11/27=40.7%] ./tarch/tests/TestCaseFactory.cpph(24,61)
-  -> EXTERN: (24,61) __cxa_call_unexpected
-  -> INDIRECT- (VIRTUAL): (25,10)  dem::tests::TestCase::~TestCase(dem::tests::TestCase *const)  (isz = 2) (sz = 7)
+INLINE REPORT: (tarch::tests::TestCaseFactory<dem::tests::TestCase>::~TestCaseFactory(tarch::tests::TestCaseFactory<dem::tests::TestCase> *)) [8/16=50.0%] ./tarch/tests/TestCaseFactory.cpph(24,61)
+  -> EXTERN: (24,61) ___cxa_call_unexpected
+  -> INDIRECT-: (25,10) 
      [[ Unable to inline indirect callsite  <1>]]
-
-
-    Report from: Code generation optimizations [cg]
-
-./tarch/tests/TestCaseFactory.cpph(24,61):remark #34051: REGISTER ALLOCATION : [_ZN5tarch5tests15TestCaseFactoryIN3dem5tests8TestCaseEED1Ev] ./tarch/tests/TestCaseFactory.cpph:24
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    3[ rax rdx rdi]
-        
-    Routine temporaries
-        Total         :      20
-            Global    :       7
-            Local     :      13
-        Regenerable   :       1
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       8 bytes*
-            Reads     :       2 [0.00e+00 ~ 0.0%]
-            Writes    :       1 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
-===========================================================================
-
-Begin optimization report for: dem::tests::TestCase::TestCase(dem::tests::TestCase *const)
-
-    Report from: Interprocedural optimizations [ipo]
-
-INLINE REPORT: (dem::tests::TestCase::TestCase(dem::tests::TestCase *const)) [12/27=44.4%] dem/tests/TestCase.cpp(14,23)
-  -> (14,23) dem::tests::TestCase::TestCase(dem::tests::TestCase *) (isz = 41) (sz = 46)
-     [[ Called routine has #pragma optimize(*,off)  <2>]]
-
-
-    Report from: Code generation optimizations [cg]
-
-dem/tests/TestCase.cpp(14,23):remark #34051: REGISTER ALLOCATION : [_ZN3dem5tests8TestCaseC2Ev] dem/tests/TestCase.cpp:14
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :       9
-            Global    :       0
-            Local     :       9
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
 
 ===========================================================================
 
@@ -149,79 +88,59 @@ Begin optimization report for: dem::tests::TestCase::TestCase(dem::tests::TestCa
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::tests::TestCase::TestCase(dem::tests::TestCase *)) [13/27=48.1%] dem/tests/TestCase.cpp(15,52)
-  -> (14,23) std::allocator<char>::~allocator(std::allocator<char> *) (isz = 0) (sz = 3)
-     [[ Calling routine has #pragma optimize(*,off)  <3>]]
-  -> (14,23) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) (isz = 27) (sz = 32)
-     [[ Calling routine has #pragma optimize(*,off)  <3>]]
-  -> (15,27) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) (isz = 27) (sz = 32)
-     [[ Calling routine has #pragma optimize(*,off)  <3>]]
-  -> (15,27) std::allocator<char>::~allocator(std::allocator<char> *) (isz = 0) (sz = 3)
-     [[ Calling routine has #pragma optimize(*,off)  <3>]]
-  -> EXTERN: (15,27) tarch::tests::TestCase::TestCase(tarch::tests::TestCase *const, const std::string &)
-  -> EXTERN: (15,27) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *, const char *, const std::allocator<char> &)
-  -> (15,27) std::allocator<char>::allocator(std::allocator<char> *) (isz = 5) (sz = 10)
-     [[ Calling routine has #pragma optimize(*,off)  <3>]]
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const)) /usr/include/c++/6/ext/new_allocator.h(79,7)
-
-===========================================================================
-
-Begin optimization report for: dem::tests::TestCase::~TestCase(dem::tests::TestCase *const)
-
-    Report from: Interprocedural optimizations [ipo]
-
-INLINE REPORT: (dem::tests::TestCase::~TestCase(dem::tests::TestCase *const)) [18/27=66.7%] dem/tests/TestCase.cpp(19,23)
-  -> EXTERN: (19,23) operator delete(void *)
-  -> (19,23) dem::tests::TestCase::~TestCase(dem::tests::TestCase *) (isz = 9) (sz = 14)
-     [[ Called routine has #pragma optimize(*,off)  <2>]]
+INLINE REPORT: (dem::tests::TestCase::TestCase(dem::tests::TestCase *)) [9/16=56.2%] dem/tests/TestCase.cpp(15,52)
+  -> EXTERN: (14,23) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+  -> EXTERN: (15,27) tarch::tests::TestCase::~TestCase(tarch::tests::TestCase *const)
+  -> EXTERN: (15,27) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+  -> EXTERN: (15,27) tarch::tests::TestCase::TestCase(tarch::tests::TestCase *const, const std::__1::string &)
+  -> INLINE (MANUAL): (15,27) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *) (isz = 16) (sz = 23)
+    -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2002,44) std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *) (isz = 7) (sz = 12)
+      -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory:(2400,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const) (isz = 7) (sz = 12)
+        -> INLINE (MANUAL): (2221,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *) (isz = 7) (sz = 12)
+          -> DELETED: (2221,31) std::__1::allocator<char>::allocator(std::__1::allocator<char> *const) (isz = 0) (sz = 5)
+          -> EXTERN: (2221,31) memset(void *, int, size_t)
+    -> EXTERN: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,5) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__init(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::size_type)
+    -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,17) std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *) (isz = 1) (sz = 8)
+      -> EXTERN: (640,63) strlen(const char *)
 
 
     Report from: Code generation optimizations [cg]
 
-dem/tests/TestCase.cpp(19,23):remark #34051: REGISTER ALLOCATION : [_ZN3dem5tests8TestCaseD0Ev] dem/tests/TestCase.cpp:19
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,31):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
+===========================================================================
 
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    2[ rdi r13]
-        
-    Routine temporaries
-        Total         :      10
-            Global    :       7
-            Local     :       3
-        Regenerable   :       0
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+Begin optimization report for: dem::tests::TestCase::TestCase(dem::tests::TestCase *const)
 
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::tests::TestCase::TestCase(dem::tests::TestCase *const)) [10/16=62.5%] dem/tests/TestCase.cpp(14,23)
+  -> INLINE: (14,23) dem::tests::TestCase::TestCase(dem::tests::TestCase *) (isz = 38) (sz = 43)
+    -> EXTERN: (14,23) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+    -> INLINE (MANUAL): (15,27) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *) (isz = 16) (sz = 23)
+      -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2002,44) std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *) (isz = 7) (sz = 12)
+        -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory:(2400,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const) (isz = 7) (sz = 12)
+          -> INLINE (MANUAL): (2221,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *) (isz = 7) (sz = 12)
+            -> EXTERN: (2221,31) memset(void *, int, size_t)
+            -> DELETED: (2221,31) std::__1::allocator<char>::allocator(std::__1::allocator<char> *const) (isz = 0) (sz = 5)
+      -> EXTERN: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,5) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__init(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::size_type)
+      -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,17) std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *) (isz = 1) (sz = 8)
+        -> EXTERN: (640,63) strlen(const char *)
+    -> EXTERN: (15,27) tarch::tests::TestCase::TestCase(tarch::tests::TestCase *const, const std::__1::string &)
+    -> EXTERN: (15,27) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+    -> EXTERN: (15,27) tarch::tests::TestCase::~TestCase(tarch::tests::TestCase *const)
+
+
+    Report from: Code generation optimizations [cg]
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,31):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
 ===========================================================================
 
 Begin optimization report for: dem::tests::TestCase::~TestCase(dem::tests::TestCase *)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::tests::TestCase::~TestCase(dem::tests::TestCase *)) [19/27=70.4%] dem/tests/TestCase.cpp(19,35)
-  -> EXTERN: (19,35) __cxa_call_unexpected
+INLINE REPORT: (dem::tests::TestCase::~TestCase(dem::tests::TestCase *)) [11/16=68.8%] dem/tests/TestCase.cpp(19,35)
+  -> EXTERN: (19,35) ___cxa_call_unexpected
   -> EXTERN: (20,1) tarch::tests::TestCase::~TestCase(tarch::tests::TestCase *const)
 
 ===========================================================================
@@ -230,41 +149,22 @@ Begin optimization report for: dem::tests::TestCase::~TestCase(dem::tests::TestC
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::tests::TestCase::~TestCase(dem::tests::TestCase *const)) [20/27=74.1%] dem/tests/TestCase.cpp(19,23)
-  -> (19,23) dem::tests::TestCase::~TestCase(dem::tests::TestCase *) (isz = 9) (sz = 14)
-     [[ Called routine has #pragma optimize(*,off)  <2>]]
+INLINE REPORT: (dem::tests::TestCase::~TestCase(dem::tests::TestCase *const)) [12/16=75.0%] dem/tests/TestCase.cpp(19,23)
+  -> EXTERN: (19,23) operator delete(void *)
+  -> INLINE: (19,23) dem::tests::TestCase::~TestCase(dem::tests::TestCase *) (isz = 9) (sz = 14)
+    -> EXTERN: (19,35) ___cxa_call_unexpected
+    -> EXTERN: (20,1) tarch::tests::TestCase::~TestCase(tarch::tests::TestCase *const)
 
+===========================================================================
 
-    Report from: Code generation optimizations [cg]
+Begin optimization report for: dem::tests::TestCase::~TestCase(dem::tests::TestCase *const)
 
-dem/tests/TestCase.cpp(19,23):remark #34051: REGISTER ALLOCATION : [_ZN3dem5tests8TestCaseD2Ev] dem/tests/TestCase.cpp:19
+    Report from: Interprocedural optimizations [ipo]
 
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    1[ rdi]
-        
-    Routine temporaries
-        Total         :       9
-            Global    :       0
-            Local     :       9
-        Regenerable   :       0
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::tests::TestCase::~TestCase(dem::tests::TestCase *const)) [13/16=81.2%] dem/tests/TestCase.cpp(19,23)
+  -> INLINE: (19,23) dem::tests::TestCase::~TestCase(dem::tests::TestCase *) (isz = 9) (sz = 14)
+    -> EXTERN: (19,35) ___cxa_call_unexpected
+    -> EXTERN: (20,1) tarch::tests::TestCase::~TestCase(tarch::tests::TestCase *const)
 
 ===========================================================================
 
@@ -272,164 +172,7 @@ Begin optimization report for: dem::tests::TestCase::run(dem::tests::TestCase *)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::tests::TestCase::run(dem::tests::TestCase *)) [21/27=77.8%] dem/tests/TestCase.cpp(23,34)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(49,3)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::__exchange_and_add_single(_Atomic_word *, int)) /usr/include/c++/6/ext/atomicity.h(66,3)
-
-===========================================================================
-
-Begin optimization report for: __sti__$E()
-
-    Report from: Interprocedural optimizations [ipo]
-
-INLINE REPORT: (__sti__$E()) [24/27=88.9%] <compiler generated>
-  -> INLINE: /usr/include/c++/6/iostream:(74,25) __sti__thisTestCaseFactoryInstance() (isz = 99) (sz = 102)
-    -> INLINE (MANUAL): dem/tests/TestCase.cpp:(6,1) std::allocator<char>::allocator(std::allocator<char> *) (isz = 5) (sz = 10)
-      -> DELETED: /usr/include/c++/6/bits/allocator.h:(118,7) __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const) (isz = 0) (sz = 5)
-      -> EXTERN: /usr/include/c++/6/bits/allocator.h:(118,27) __cxa_call_unexpected
-    -> EXTERN: dem/tests/TestCase.cpp:(6,1) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *, const char *, const std::allocator<char> &)
-    -> INLINE (MANUAL): dem/tests/TestCase.cpp:(6,1) tarch::tests::TestCaseFactory<dem::tests::TestCase>::TestCaseFactory(tarch::tests::TestCaseFactory<dem::tests::TestCase> *, tarch::tests::TestCaseFactory<dem::tests::TestCase>::Type, const std::string &) (isz = 35) (sz = 44)
-      -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(9,3) operator delete(void *)
-      -> ./tarch/tests/TestCaseFactory.cpph:(9,3) dem::tests::TestCase::TestCase(dem::tests::TestCase *) (isz = 41) (sz = 46)
-         [[ Called routine has #pragma optimize(*,off)  <2>]]
-      -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(9,3) operator new(std::size_t)
-      -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(10,10) tarch::tests::TestCase::setTestCaseName(tarch::tests::TestCase *, const std::string &)
-      -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(14,7) tarch::tests::TestCaseRegistry::getInstance()
-      -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(14,53) tarch::tests::TestCaseRegistry::addIntegrationTestCase(tarch::tests::TestCaseRegistry *, const std::string &, tarch::tests::TestCase *)
-      -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(17,7) tarch::tests::TestCaseRegistry::getInstance()
-      -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(17,53) tarch::tests::TestCaseRegistry::addTestCase(tarch::tests::TestCaseRegistry *, const std::string &, tarch::tests::TestCase *)
-    -> DELETED: dem/tests/TestCase.cpp:(6,1) std::allocator<char>::~allocator(std::allocator<char> *) (isz = 0) (sz = 3)
-    -> INLINE (MANUAL): dem/tests/TestCase.cpp:(6,1) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) (isz = 27) (sz = 32)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,9) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_rep(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 3) (sz = 10)
-        -> INLINE (MANUAL): (2817,44) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_data(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 0) (sz = 7)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,19) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_dispose(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &) (isz = 37) (sz = 44)
-        -> EXTERN: (2746,2) __cxa_call_unexpected
-        -> INLINE (MANUAL): (2748,34) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_S_empty_rep() (isz = 0) (sz = 4)
-        -> (2761,12) __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int) (isz = 18) (sz = 28)
-           [[ Callee not marked with inlining pragma  <4>]]
-        -> EXTERN: (2765,5) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_destroy(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,36) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::get_allocator(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::allocator_type *, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 2) (sz = 9)
-        -> INLINE (MANUAL): (4369,16) std::allocator<char>::allocator(std::allocator<char> *, const std::allocator<char> &) (isz = 5) (sz = 12)
-          -> DELETED: /usr/include/c++/6/bits/allocator.h:(121,31) __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &) (isz = 0) (sz = 7)
-          -> EXTERN: /usr/include/c++/6/bits/allocator.h:(121,36) __cxa_call_unexpected
-    -> EXTERN: dem/tests/TestCase.cpp:(6,1) __cxa_atexit()
-    -> INLINE (MANUAL): dem/tests/TestCase.cpp:(6,1) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::~basic_string(std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) (isz = 27) (sz = 32)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,9) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_rep(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 3) (sz = 10)
-        -> INLINE (MANUAL): (2817,44) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_data(const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 0) (sz = 7)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,19) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_dispose(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &) (isz = 37) (sz = 44)
-        -> EXTERN: (2746,2) __cxa_call_unexpected
-        -> INLINE (MANUAL): (2748,34) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_S_empty_rep() (isz = 0) (sz = 4)
-        -> INLINE (MANUAL): (2761,12) __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int) (isz = 18) (sz = 28)
-          -> INLINE (MANUAL): /usr/include/c++/6/ext/atomicity.h:(81,9) __gthread_active_p() (isz = 1) (sz = 5)
-          -> INLINE (MANUAL): /usr/include/c++/6/ext/atomicity.h:(82,14) __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int) (isz = 4) (sz = 13)
-            -> EXTERN: (49,12) __atomic_fetch_add_4(volatile void *, unsigned int, int)
-          -> INLINE (MANUAL): /usr/include/c++/6/ext/atomicity.h:(84,14) __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int) (isz = 3) (sz = 12)
-        -> EXTERN: (2765,5) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep::_M_destroy(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::_Rep *, const std::allocator<char> &)
-      -> INLINE (MANUAL): /usr/include/c++/6/bits/basic_string.h:(3062,36) std::basic_string<char, std::char_traits<char>, std::allocator<char>>::get_allocator(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::allocator_type *, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> *) const (isz = 2) (sz = 9)
-        -> INLINE (MANUAL): (4369,16) std::allocator<char>::allocator(std::allocator<char> *, const std::allocator<char> &) (isz = 5) (sz = 12)
-          -> DELETED: /usr/include/c++/6/bits/allocator.h:(121,31) __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &) (isz = 0) (sz = 7)
-          -> EXTERN: /usr/include/c++/6/bits/allocator.h:(121,36) __cxa_call_unexpected
-    -> DELETED: dem/tests/TestCase.cpp:(6,1) std::allocator<char>::~allocator(std::allocator<char> *) (isz = 0) (sz = 3)
-  -> EXTERN: /usr/include/c++/6/iostream:(74,25) __cxa_atexit()
-  -> EXTERN: /usr/include/c++/6/iostream:(74,25) std::ios_base::Init::Init(std::ios_base::Init *)
-
-
-    Report from: Code generation optimizations [cg]
-
-<compiler generated>:remark #34051: REGISTER ALLOCATION : [__sti__$E] (null):0
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    6[ rax rdx rcx rsi rdi r14]
-        
-    Routine temporaries
-        Total         :      75
-            Global    :      22
-            Local     :      53
-        Regenerable   :      30
-        Spilled       :       1
-        
-    Routine stack
-        Variables     :      19 bytes*
-            Reads     :       3 [1.00e+00 ~ 2.1%]
-            Writes    :       3 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)
-
-    Report from: Interprocedural optimizations [ipo]
-
-DEAD STATIC FUNCTION: (__gnu_cxx::new_allocator<char>::new_allocator(__gnu_cxx::new_allocator<char> *const, const __gnu_cxx::new_allocator<char> &)) /usr/include/c++/6/ext/new_allocator.h(81,7)
-
-===========================================================================
-
-Begin optimization report for: __gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)
-
-    Report from: Interprocedural optimizations [ipo]
-
-INLINE REPORT: (__gnu_cxx::__exchange_and_add_dispatch(_Atomic_word *, int)) [26/27=96.3%] /usr/include/c++/6/ext/atomicity.h(79,3)
-  -> INLINE (MANUAL): (81,9) __gthread_active_p() (isz = 1) (sz = 5)
-  -> INLINE (MANUAL): (82,14) __gnu_cxx::__exchange_and_add(volatile _Atomic_word *, int) (isz = 4) (sz = 13)
-    -> EXTERN: (49,12) __atomic_fetch_add_4(volatile void *, unsigned int, int)
-  -> INLINE (MANUAL): (84,14) __gnu_cxx::__exchange_and_add_single(_Atomic_word *, int) (isz = 3) (sz = 12)
-
-
-    Report from: Code generation optimizations [cg]
-
-/usr/include/c++/6/ext/atomicity.h(79,3):remark #34051: REGISTER ALLOCATION : [_ZN44_INTERNAL_22_dem_tests_TestCase_cpp_dfd0e8929__gnu_cxx27__exchange_and_add_dispatchEPii] /usr/include/c++/6/ext/atomicity.h:79
-
-    Hardware registers
-        Reserved     :    2[ rsp rip]
-        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
-        Callee-save  :    6[ rbx rbp r12-r15]
-        Assigned     :    5[ rax rdx rcx rsi rdi]
-        
-    Routine temporaries
-        Total         :      18
-            Global    :       8
-            Local     :      10
-        Regenerable   :       2
-        Spilled       :       0
-        
-    Routine stack
-        Variables     :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-        Spills        :       0 bytes*
-            Reads     :       0 [0.00e+00 ~ 0.0%]
-            Writes    :       0 [0.00e+00 ~ 0.0%]
-    
-    Notes
-    
-        *Non-overlapping variables and spills may share stack space,
-         so the total stack size might be less than this.
-    
+INLINE REPORT: (dem::tests::TestCase::run(dem::tests::TestCase *)) [14/16=87.5%] dem/tests/TestCase.cpp(23,34)
 
 ===========================================================================
 
@@ -437,7 +180,54 @@ Begin optimization report for: __sti__thisTestCaseFactoryInstance()
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (__sti__thisTestCaseFactoryInstance()) <compiler generated>
+INLINE REPORT: (__sti__thisTestCaseFactoryInstance()) [15/16=93.8%] <compiler generated>
+  -> EXTERN: dem/tests/TestCase.cpp:(6,1) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+  -> EXTERN: dem/tests/TestCase.cpp:(6,1) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+  -> EXTERN: dem/tests/TestCase.cpp:(6,1) __cxa_atexit()
+  -> INLINE (MANUAL): dem/tests/TestCase.cpp:(6,1) tarch::tests::TestCaseFactory<dem::tests::TestCase>::TestCaseFactory(tarch::tests::TestCaseFactory<dem::tests::TestCase> *, tarch::tests::TestCaseFactory<dem::tests::TestCase>::Type, const std::__1::string &) (isz = 73) (sz = 82)
+    -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(9,3) operator new(size_t)
+    -> INLINE: ./tarch/tests/TestCaseFactory.cpph:(9,3) dem::tests::TestCase::TestCase(dem::tests::TestCase *) (isz = 38) (sz = 43)
+      -> EXTERN: dem/tests/TestCase.cpp:(14,23) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+      -> EXTERN: dem/tests/TestCase.cpp:(15,27) tarch::tests::TestCase::~TestCase(tarch::tests::TestCase *const)
+      -> EXTERN: dem/tests/TestCase.cpp:(15,27) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::~basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *)
+      -> EXTERN: dem/tests/TestCase.cpp:(15,27) tarch::tests::TestCase::TestCase(tarch::tests::TestCase *const, const std::__1::string &)
+      -> INLINE (MANUAL): dem/tests/TestCase.cpp:(15,27) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *) (isz = 16) (sz = 23)
+        -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2002,44) std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *) (isz = 7) (sz = 12)
+          -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory:(2400,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const) (isz = 7) (sz = 12)
+            -> INLINE (MANUAL): (2221,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *) (isz = 7) (sz = 12)
+              -> DELETED: (2221,31) std::__1::allocator<char>::allocator(std::__1::allocator<char> *const) (isz = 0) (sz = 5)
+              -> EXTERN: (2221,31) memset(void *, int, size_t)
+        -> EXTERN: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,5) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__init(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::size_type)
+        -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,17) std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *) (isz = 1) (sz = 8)
+          -> EXTERN: (640,63) strlen(const char *)
+    -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(9,3) operator delete(void *)
+    -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(10,10) tarch::tests::TestCase::setTestCaseName(tarch::tests::TestCase *, const std::__1::string &)
+    -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(14,7) tarch::tests::TestCaseRegistry::getInstance()
+    -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(14,53) tarch::tests::TestCaseRegistry::addIntegrationTestCase(tarch::tests::TestCaseRegistry *, const std::__1::string &, tarch::tests::TestCase *)
+    -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(17,7) tarch::tests::TestCaseRegistry::getInstance()
+    -> EXTERN: ./tarch/tests/TestCaseFactory.cpph:(17,53) tarch::tests::TestCaseRegistry::addTestCase(tarch::tests::TestCaseRegistry *, const std::__1::string &, tarch::tests::TestCase *)
+  -> INLINE (MANUAL): dem/tests/TestCase.cpp:(6,1) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::basic_string(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *) (isz = 16) (sz = 23)
+    -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2002,44) std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type>::__compressed_pair(std::__1::__compressed_pair<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type> *) (isz = 7) (sz = 12)
+      -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory:(2400,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *const) (isz = 7) (sz = 12)
+        -> INLINE (MANUAL): (2221,31) std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U>::__libcpp_compressed_pair_imp(std::__1::__libcpp_compressed_pair_imp<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__rep, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::allocator_type, 2U> *) (isz = 7) (sz = 12)
+          -> DELETED: (2221,31) std::__1::allocator<char>::allocator(std::__1::allocator<char> *const) (isz = 0) (sz = 5)
+          -> EXTERN: (2221,31) memset(void *, int, size_t)
+    -> EXTERN: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,5) std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::__init(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> *, const std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::value_type *, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>::size_type)
+    -> INLINE (MANUAL): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/string:(2005,17) std::__1::char_traits<char>::length(const std::__1::char_traits<char>::char_type *) (isz = 1) (sz = 8)
+      -> EXTERN: (640,63) strlen(const char *)
+
+
+    Report from: Code generation optimizations [cg]
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,31):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(2221,31):remark #34000: call to _memset implemented inline with stores with proven (alignment, offset): (32, 0)
+===========================================================================
+
+Begin optimization report for: std::__1::allocator<char>::allocator(std::__1::allocator<char> *const)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (std::__1::allocator<char>::allocator(std::__1::allocator<char> *const)) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory(1713,31)
 
 ===========================================================================
 
@@ -448,17 +238,4 @@ INLINING FOOTNOTES:
 <1> The indirectly called function must be resolved to its targets before it 
 can be inlined.  Consider compiling with -ipo or -prof-gen followed by 
 -prof-use.
-
-<2> The compiler did not inline the call site because the called routine is 
-    marked with "#pragma optimize("", off)".  Remove this pragma to permit 
-    the compiler to inline this routine.
-
-<3> The compiler did not inline the call site because the calling routine is 
-    marked with "#pragma optimize("", off)".  Remove this pragma to permit 
-    the compiler to inline routines called by this routine.
-
-<4> The compiler's heuristics indicate that the function is not profitable to 
-    inline.  Override this decision by adding "inline 
-    __attribute__((always_inline))" to the declaration of the called function, 
-    or add "#pragma forceinline" before the call site.
 
