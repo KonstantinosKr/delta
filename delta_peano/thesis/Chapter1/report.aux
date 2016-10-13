@@ -1,0 +1,143 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Contact Point Generation}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Contact divergence situation due to penetration. Where A,B are convex bodies, x1,x2 contact points with normals, d1,d2 is the penetration depth. In the next time step object A will move upwards to the right and object B downwards to the left.}}{5}}
+\newlabel{fig1}{{1}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}The Gilbert Johnson Keerthi Distance Algorithm}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces left: Two convex shapes intersected. right: Minkowski Difference of the two shapes.}}{5}}
+\newlabel{fig2}{{2}{5}}
+\newlabel{alg1}{{1}{6}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Pseudocode Support Function}}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces left: Simplex where origin is not enclosed right: Simplex including origin}}{6}}
+\newlabel{fig3}{{3}{6}}
+\newlabel{alg2}{{2}{7}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Pseudocode for direction towards origin}}{7}}
+\newlabel{alg3}{{3}{7}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Pseudocode of iterative GJK algorithm.}}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces left: First iteration. right: Second iteration}}{7}}
+\newlabel{fig4}{{4}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces left: Backtrack iteration, set simplex, direction. right: Third iteration; determined contact. }}{7}}
+\newlabel{fig5}{{5}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Boundary Layer Expanded Meshes}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Contact divergence is avoided by introducing boundary layers in the two bodies, prohibiting penetration making contact point generation robust. Left figure show contact points on A,B. Right figure show contact normal caused by contact. d1,d1 is the boundary margin penetration depth. See Figure 1 for contact divergence example when penetration is allowed.}}{8}}
+\newlabel{fig6}{{6}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Contact points (left) and contact normal (right) using boundary margin layer triangles for contact generation robustness.[21]}}{9}}
+\newlabel{fig7}{{7}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Example of triangles that intersect without boundary layers; the direction of shortest retraction is not consistent. This make the contact point generation not robust, causing contact divergence. As it can be seen in the right figure where the black arrow indicate how the triangle should move in the next time step, making the kinematics of the simulation inconsistent.[21]}}{9}}
+\newlabel{fig8}{{8}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Triangle Distance Problem}{10}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Brute Force Approach}{10}}
+\newlabel{alg4}{{4}{10}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces Brute Force TTD Pseudocode.}}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Segment to Segment Minimum Distance }{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces (s,t) parameter space with G boundary box C for global minimum}}{11}}
+\newlabel{fig9}{{9}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Point to Triangle Minimum Distance}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces  Regions based on the (s,t) parameters plane}}{13}}
+\newlabel{fig10}{{10}{13}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Iterative Approach}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Example of minimum distance and the corresponding barycentric points (parameters of objective function) on a pair of triangles in 3D. Triangle X:T1 has points A, B, C where barymetric parameters a,b correspond to point $x$ on the triangle. Triangle Y:T2 has points D,E,F where barymetric parameters g,d correspond to a point $x$. The two defined barymetric points define the minimum distance between the two triangles in 3D.}}{14}}
+\newlabel{fig11}{{11}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Barrier Method}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Illustration of a 2D problem where the logarithmic barrier function (red line) is added to the objective function (black line) f(x) to define feasible region (red line) under the constraint $a$ (dash line). }}{15}}
+\newlabel{fig12}{{12}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Penalty Method}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Illustration of a 2D problem showing the penalty function (red line) penalizing the objective function (black line) f(x) under a constraint $a$ (dash line) to create the feasible region (blue line).}}{16}}
+\newlabel{fig13}{{13}{16}}
+\newlabel{eq:penalty}{{7}{17}}
+\newlabel{alg5}{{5}{18}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {5}{\ignorespaces The penalty algorithm}}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Augmented Lagrange Method}{19}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Implementation}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Brute Force Method}{20}}
+\newlabel{alg9}{{6}{21}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {6}{\ignorespaces MATLAB version of Brute Force.}}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Penalty Method}{22}}
+\newlabel{alg10}{{7}{22}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {7}{\ignorespaces MATLAB version of the Penalty TTD test.}}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Tuning data for the penalty method to find a scaling relationship between the size (upper left to lower right figure) of problem, penalty parameter and error - using logarithmic scales}}{24}}
+\newlabel{fig14}{{14}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Relationship between eps and number of iterations for different lengths of triangles. Optimal eps should be low and increased depending on the r parameter.}}{25}}
+\newlabel{fig15}{{15}{25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Remarks}{25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Histogram that shows that most problems converge in three iterations}}{26}}
+\newlabel{fig16}{{16}{26}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Performance Results}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Run-time comparison of the sequential and parallel penalty and brute force methods using float and double precision, using ISPC, Intel, GCC compilers on a single AVX2 core.}}{27}}
+\newlabel{fig17}{{17}{27}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 64bit sequential computation; solving ten million random triangle pairs using the two methods.}}{27}}
+\newlabel{table1}{{1}{27}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 64bit SIMD computation; solving ten million random triangle pairs using the two methods.}}{28}}
+\newlabel{table2}{{2}{28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Run time comparison of the penalty and brute force method using threads (OpenMP 4.0).}}{28}}
+\newlabel{fig18}{{18}{28}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Future Work}{29}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Work Packages}{29}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Conferences}{31}}
+\newlabel{RF1}{33}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Timeline of Project}}{33}}
+\newlabel{fig19}{{19}{33}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Appendix}{34}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Line Search}{34}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.1.1}Bisection Method}{34}}
+\newlabel{alg6}{{8}{34}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {8}{\ignorespaces Bisection Line Search Method}}{34}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.1.2}Golden Section Method}{35}}
+\newlabel{alg7}{{9}{35}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {9}{\ignorespaces Golden Section Line Search Method}}{35}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.1.3}Fibonacci Method}{36}}
+\newlabel{alg8}{{10}{36}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {10}{\ignorespaces Fibonacci Line Search Method}}{36}}
+\bibcite{Mokhtar}{{1}{}{{}}{{}}}
+\bibcite{Ted}{{2}{}{{}}{{}}}
+\bibcite{William}{{3}{}{{}}{{}}}
+\bibcite{Stephen}{{4}{}{{}}{{}}}
+\bibcite{Todd}{{5}{}{{}}{{}}}
+\bibcite{Intel}{{6}{}{{}}{{}}}
+\bibcite{Jack Dongarra}{{7}{}{{}}{{}}}
+\bibcite{David}{{8}{}{{}}{{}}}
+\bibcite{David}{{9}{}{{}}{{}}}
+\bibcite{David}{{10}{}{{}}{{}}}
+\bibcite{David}{{11}{}{{}}{{}}}
+\bibcite{Christer}{{12}{}{{}}{{}}}
+\bibcite{Christer}{{13}{}{{}}{{}}}
+\bibcite{Gwendolyn}{{14}{}{{}}{{}}}
+\bibcite{Evghenii}{{15}{}{{}}{{}}}
+\bibcite{George}{{16}{}{{}}{{}}}
+\bibcite{GTS}{{17}{}{{}}{{}}}
+\bibcite{Pedro}{{18}{}{{}}{{}}}
+\bibcite{John}{{19}{}{{}}{{}}}
+\bibcite{Hansen}{{20}{}{{}}{{}}}
+\bibcite{Kris}{{21}{}{{}}{{}}}
+\bibcite{kris}{{22}{}{{}}{{}}}
+\bibcite{Hughes}{{23}{}{{}}{{}}}
+\bibcite{Jim Jeffers}{{24}{}{{}}{{}}}
+\bibcite{Tero}{{25}{}{{}}{{}}}
+\bibcite{Koziara}{{26}{}{{}}{{}}}
+\bibcite{Koziara}{{27}{}{{}}{{}}}
+\bibcite{Koziara}{{28}{}{{}}{{}}}
+\bibcite{Sandia}{{29}{}{{}}{{}}}
+\bibcite{lazard}{{30}{}{{}}{{}}}
+\bibcite{Shin}{{31}{}{{}}{{}}}
+\bibcite{Shuo}{{32}{}{{}}{{}}}
+\bibcite{Scherzer}{{33}{}{{}}{{}}}
+\bibcite{Tim}{{34}{}{{}}{{}}}
+\bibcite{nancy}{{35}{}{{}}{{}}}
+\bibcite{Jorge}{{36}{}{{}}{{}}}
+\bibcite{OpenMP}{{37}{}{{}}{{}}}
+\bibcite{Sergei}{{38}{}{{}}{{}}}
+\bibcite{Matt}{{39}{}{{}}{{}}}
+\bibcite{Khaled}{{40}{}{{}}{{}}}
+\bibcite{James}{{41}{}{{}}{{}}}
+\bibcite{Samuel}{{42}{}{{}}{{}}}
+\bibcite{Andrzej}{{43}{}{{}}{{}}}
+\bibcite{Nadathur}{{44}{}{{}}{{}}}
+\bibcite{Smith}{{45}{}{{}}{{}}}
+\bibcite{Dan}{{46}{}{{}}{{}}}
+\bibcite{Dan}{{47}{}{{}}{{}}}
+\bibcite{Oren}{{48}{}{{}}{{}}}
+\bibcite{likwid}{{49}{}{{}}{{}}}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\newlabel{LastPage}{{}{39}}
+\xdef\lastpage@lastpage{39}
+\gdef\lastpage@lastpageHy{}

@@ -1,0 +1,121 @@
+\clearpage
+
+\section{Appendix Algorithms}
+\label{section:appendix-algorithms}
+
+\begin{algorithm}
+ \caption{Brute-force distance calculation.} \label{algorithm:bf}
+ \begin{algorithmic}[1]
+	\Function{BF}{A, B, C, D, E, F}
+	
+		\State {T1=[A;B;C;];}
+		
+		\State {T2=[D;E;F;];}
+
+		\State {list[0]= pt(T2, T1[0]);}
+
+		\State {list[1]= pt(T2, T1[1]);}
+
+		\State {list[2]= pt(T2, T1[2]);}
+
+		\State {list[3]= pt(T1, T2[0]);}
+
+		\State {list[4]= pt(T1, T2[1]);}
+
+		\State {list[5]= pt(T1, T2[2]);}
+
+		\State {ptmin = min(list);}
+
+		\State {list[0]=segseg(T1[0],T1[1],T2(0],T2[1]);}
+
+		\State {list[1]=segseg(T1[0],T1[1],T2[1],T2(2]);}
+
+		\State {list[2]=segseg(T1[0],T1[1],T2[2],T2(0]);}
+
+		\State {list[3]=segseg(T1[1],T1[2],T2[0],T2(1]);}
+
+		\State {list[4]=segseg(T1[1],T1[2],T2[1],T2(2]);}
+
+		\State {list[5]=segseg(T1[1],T1[2],T2[2],T2(0]);}
+
+		\State {list[6]=segseg(T1[2],T1[0],T2[0],T2(1]);}
+
+		\State {list[7]=segseg(T1[2],T1[0],T2[1],T2(2]);}
+
+		\State {list[8]=segseg(T1[2],T1[0],T2[2],T2(0]);}
+
+		\State {ssmin = min(list);}
+
+		\State {min = min(ssmin, ptmin);}
+
+		\State {P = min.p; Q = min.q;}
+	\EndFunction
+ \end{algorithmic}
+\end{algorithm} 
+
+
+\begin{algorithm}
+ \caption{Point to triangle distance algorithm.} \label{algorithm:point_to_triangle}
+ \begin{algorithmic}[1]
+	\Function{pt}{T, Point}
+		
+		%function to evaluate Q(s,t) of triangle T 		
+		\ForAll {regions i from 0 to 6}
+		 
+			\If{projection in Region i}
+		
+				\State {determine (s,t) parametric values}
+		
+			\EndIf		
+		
+		\EndFor
+		
+		\Return {Q point on triangle}
+	\EndFunction
+ \end{algorithmic}
+\end{algorithm} 
+
+\begin{algorithm}
+ \caption{Segment to segment distance algorithm.} \label{algorithm:seg_seg}
+ \begin{algorithmic}[1]
+	\Function{pt}{segment1, segment2}
+		
+		%function to evaluate (s,t) of seg1, seg2
+		\If {segment1 and segment2 are parallel}		
+		
+			\Return {any point P on segment1 and any point Q on segment2}
+		
+		\Else 
+			
+			\State {Get the closest points sC and tC on the infinite lines L1, L2}
+			
+			\If {$sC \leq 0$}
+				
+				\State {s = 0 edge is visible => s = 0}
+				
+			\EndIf
+				
+			\If {$sC \geq 0$}
+
+				\State {s = 1 edge is visible => s = 1}			
+				
+			\EndIf
+				
+			\If {$tC \leq 0$}
+
+				\State {t = 0 edge is visible => t = 0}
+
+			\EndIf
+								
+			\If {$tC \leq 0$}
+
+				\State {t = 1 edge is visible => t = 1}
+
+			\EndIf							
+		\EndIf
+		
+		\Return {P, Q points on two segments}
+		
+	\EndFunction
+ \end{algorithmic}
+\end{algorithm} 

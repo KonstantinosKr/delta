@@ -1,0 +1,19 @@
+\section{Software}
+\label{section:software}
+
+All underlying software is free and open source C++ code.
+\DeltaSoftware\ is available from \cite{Software:Delta} and offers all the
+functionality introduced in Section \ref{section:vectorisation} through
+\ref{section:domain-decomposition}.
+All spacetree and adaptive mesh refinement routines (Section ref{section:grid}) used in the
+present work rely on the framework Peano
+\cite{Software:Peano,Weinzierl:2009:Diss,Weinzierl:11:Peano}.
+All geometric operations as well as DEM-specific compute kernels however are
+independent of Peano and can be used with any other (spacetree-based) software.
+
+We offer \DeltaSoftware\ with single (\texttt{float}) and double
+(\texttt{double}).
+The accuracy is controlled via a compile flag \texttt{-DiREAL=}.
+Subject of study here is exlusively \texttt{double}. 
+Studies on reduced accuracy computations are beyond the scope of the present
+work.

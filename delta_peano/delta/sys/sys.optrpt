@@ -1,0 +1,509 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o delta/sys/sys.o
+
+    Report from: Interprocedural optimizations [ipo]
+
+  WHOLE PROGRAM (SAFE) [EITHER METHOD]: false
+  WHOLE PROGRAM (SEEN) [TABLE METHOD]: false
+  WHOLE PROGRAM (READ) [OBJECT READER METHOD]: false
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: disabled
+  -inline-max-per-compile: disabled
+
+In the inlining report below:
+   "sz" refers to the "size" of the routine. The smaller a routine's size,
+      the more likely it is to be inlined.
+   "isz" refers to the "inlined size" of the routine. This is the amount
+      the calling routine will grow if the called routine is inlined into it.
+      The compiler generally limits the amount a routine can grow by having
+      routines inlined into it.
+
+Begin optimization report for: delta::sys::simulationCheckpoint()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::simulationCheckpoint()) [1/12=8.3%] delta/sys/sys.cpp(30,30)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(30,30):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys20simulationCheckpointEv] delta/sys/sys.cpp:30
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    0[ reg_null]
+        
+    Routine temporaries
+        Total         :       6
+            Global    :       0
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::output()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::output()) [2/12=16.7%] delta/sys/sys.cpp(34,16)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(34,16):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys6outputEv] delta/sys/sys.cpp:34
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    0[ reg_null]
+        
+    Routine temporaries
+        Total         :       6
+            Global    :       0
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getKineticRotationalEnergy(double *, double *, double *, double)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getKineticRotationalEnergy(double *, double *, double *, double)) [3/12=25.0%] delta/sys/sys.cpp(38,107)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(38,107):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys26getKineticRotationalEnergyEPdS1_S1_d] delta/sys/sys.cpp:38
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    8[ rdx rsi rdi zmm0-zmm4]
+        
+    Routine temporaries
+        Total         :      32
+            Global    :       0
+            Local     :      32
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getKineticEnergy(double *, double)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getKineticEnergy(double *, double)) [4/12=33.3%] delta/sys/sys.cpp(45,59)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(45,59):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys16getKineticEnergyEPdd] delta/sys/sys.cpp:45
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rdi zmm0-zmm2]
+        
+    Routine temporaries
+        Total         :      19
+            Global    :       0
+            Local     :      19
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getRotationalEnergy(double *, double *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getRotationalEnergy(double *, double *)) [5/12=41.7%] delta/sys/sys.cpp(50,67)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(50,67):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys19getRotationalEnergyEPdS1_] delta/sys/sys.cpp:50
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rsi rdi zmm0-zmm1]
+        
+    Routine temporaries
+        Total         :      20
+            Global    :       0
+            Local     :      20
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getLinearVelocities()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getLinearVelocities()) [6/12=50.0%] delta/sys/sys.cpp(55,29)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(55,29):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys19getLinearVelocitiesEv] delta/sys/sys.cpp:55
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    0[ reg_null]
+        
+    Routine temporaries
+        Total         :       6
+            Global    :       0
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getAngularVelocities()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getAngularVelocities()) [7/12=58.3%] delta/sys/sys.cpp(59,30)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(59,30):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys20getAngularVelocitiesEv] delta/sys/sys.cpp:59
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    0[ reg_null]
+        
+    Routine temporaries
+        Total         :       6
+            Global    :       0
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getPosition()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getPosition()) [8/12=66.7%] delta/sys/sys.cpp(63,21)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(63,21):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys11getPositionEv] delta/sys/sys.cpp:63
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    0[ reg_null]
+        
+    Routine temporaries
+        Total         :       6
+            Global    :       0
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getInertia()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getInertia()) [9/12=75.0%] delta/sys/sys.cpp(67,20)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(67,20):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys10getInertiaEv] delta/sys/sys.cpp:67
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    0[ reg_null]
+        
+    Routine temporaries
+        Total         :       6
+            Global    :       0
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getMass()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getMass()) [10/12=83.3%] delta/sys/sys.cpp(71,17)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(71,17):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys7getMassEv] delta/sys/sys.cpp:71
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    0[ reg_null]
+        
+    Routine temporaries
+        Total         :       6
+            Global    :       0
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getInverse()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getInverse()) [11/12=91.7%] delta/sys/sys.cpp(75,20)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(75,20):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys10getInverseEv] delta/sys/sys.cpp:75
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    0[ reg_null]
+        
+    Routine temporaries
+        Total         :       6
+            Global    :       0
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
+
+Begin optimization report for: delta::sys::getScenarioSettings()
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (delta::sys::getScenarioSettings()) [12/12=100.0%] delta/sys/sys.cpp(79,29)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/sys/sys.cpp(79,29):remark #34051: REGISTER ALLOCATION : [_ZN5delta3sys19getScenarioSettingsEv] delta/sys/sys.cpp:79
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    0[ reg_null]
+        
+    Routine temporaries
+        Total         :       6
+            Global    :       0
+            Local     :       6
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
+===========================================================================
