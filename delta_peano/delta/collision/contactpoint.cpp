@@ -4,7 +4,7 @@
 #include <cmath>
 #include <sstream>
 
-delta::collision::contactpoint::contactpoint() {}
+delta::collision::contactpoint::contactpoint(){}
 
 delta::collision::contactpoint::contactpoint(const contactpoint& copy) {
   x[0] = copy.x[0];
@@ -67,8 +67,6 @@ delta::collision::contactpoint::contactpoint(
   normal[0] = ((xPA-xPB)/getDistance());
   normal[1] = ((yPA-yPB)/getDistance());
   normal[2] = ((zPA-zPB)/getDistance());
-
- // delta::sys::deltaCritical =
 
   frictionType = type;
 }

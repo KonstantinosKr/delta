@@ -296,16 +296,16 @@ void dem::mappings::CreateGrid::createCell(
 				int	newParticleNumber = vertex.createNewParticle(centreAsArray);
 
 				//hopper
-				double _hopperWidth = 0.26;
-				double _hopperHatch = 0.15;
+				//double _hopperWidth = 0.26;
+				//double _hopperHatch = 0.15;
 
 				//hopper 300
 				//double _hopperWidth = 0.26;
 				//double _hopperHatch = 0.10;
 
 				//hopper 1000
-				//double _hopperWidth = 0.4;
-				//double _hopperHatch = 0.10;
+				double _hopperWidth = 0.4;
+				double _hopperHatch = 0.10;
 
 				_numberOfParticles++; _numberOfObstacles++;
 				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
@@ -327,7 +327,7 @@ void dem::mappings::CreateGrid::createCell(
 
 				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _hopperWidth*1.8;
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _hopperWidth * 1.8;
-				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon-0.0005;
+				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon*1.5;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
 				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
@@ -625,10 +625,10 @@ void dem::mappings::CreateGrid::createCell(
 			else if(particlesInHopper)
 			{
 				//hopper - hopper300
-				double _hopperWidth = 0.26;
+				//double _hopperWidth = 0.26;
 
 				//hopper 1000
-				//double _hopperWidth = 0.4;
+				double _hopperWidth = 0.4;
 
 				double coarseCenterHopperMarginUpper = 0.5 + (_hopperWidth/2);
 				double coarseCenterHopperMarginLower = 0.5 - (_hopperWidth/2);
@@ -718,6 +718,7 @@ void dem::mappings::CreateGrid::createCell(
 					if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
 					{
 						delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates );
+						//delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 					}else
 					{
 						delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
@@ -733,11 +734,10 @@ void dem::mappings::CreateGrid::createCell(
 					centreAsArray[1] = centreAsArray[1] + (0.15 - _epsilon*2);
 					newParticleNumber = vertex.createNewParticle( centreAsArray );
 					//if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-					//delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-					delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates );
+					delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+					//delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates );
 				} else {return;}
 			}
-
 
 			for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
 			{

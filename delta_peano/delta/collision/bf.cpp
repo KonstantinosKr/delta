@@ -26,6 +26,7 @@
 #include <complex>
 #include <limits>
 #include <iostream>
+#include "algo.h"
 
 std::vector<delta::collision::contactpoint> delta::collision::bf(
     int       numberOfTrianglesOfGeometryA,
@@ -100,6 +101,69 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
 #define DOT(a, b)\
 ((a)[0]*(b)[0] + (a)[1]*(b)[1] + (a)[2]*(b)[2])
 
+
+/* some macros */
+#define CROSS(dest,v1,v2){                     \
+              dest[0]=v1[1]*v2[2]-v1[2]*v2[1]; \
+              dest[1]=v1[2]*v2[0]-v1[0]*v2[2]; \
+              dest[2]=v1[0]*v2[1]-v1[1]*v2[0];}
+
+int NoDivTriTriIsect(double V0[3],double V1[3],double V2[3],
+		double U0[3],double U1[3],double U2[3])
+{
+	double E1[3],E2[3];
+	double N1[3],N2[3],d1,d2;
+	double du0,du1,du2,dv0,dv1,dv2;
+  double D[3];
+  double isect1[2], isect2[2];
+  double du0du1,du0du2,dv0dv1,dv0dv2;
+  short index;
+  double vp0,vp1,vp2;
+  double up0,up1,up2;
+  double bb,cc,max;
+
+  /* compute plane equation of triangle(V0,V1,V2) */
+  SUB(V1,V0, E1);
+  SUB(V2,V0, E2);
+  CROSS(E1, E2, N1);
+  d1=-DOT(N1,V0);
+  /* plane equation 1: N1.X+d1=0 */
+
+  /* put U0,U1,U2 into plane equation 1 to compute signed distances to the plane*/
+  du0=DOT(N1,U0)+d1;
+  du1=DOT(N1,U1)+d1;
+  du2=DOT(N1,U2)+d1;
+
+  /* coplanarity robustness check */
+  du0du1=du0*du1;
+  du0du2=du0*du2;
+
+  if(du0du1>0.0f && du0du2>0.0f)/* same sign on all of them + not equal 0 ? */
+    return 1;                    /* no intersection occurs */
+
+  /* compute plane of triangle (U0,U1,U2) */
+  SUB(U1,U0,E1);
+  SUB(U2,U0,E2);
+  CROSS(E1,E2,N2);
+
+  d2=-DOT(N2,U0);
+  /* plane equation 2: N2.X+d2=0 */
+
+  /* put V0,V1,V2 into plane equation 2 */
+  dv0=DOT(N2,V0)+d2;
+  dv1=DOT(N2,V1)+d2;
+  dv2=DOT(N2,V2)+d2;
+
+  dv0dv1=dv0*dv1;
+  dv0dv2=dv0*dv2;
+
+  if(dv0dv1>0.0f && dv0dv2>0.0f)
+  return 1;/* same sign on all of them + not equal 0 ? */
+                       /* no intersection occurs */
+
+  return 0;
+}
+
 void delta::collision::bf(
                           double   xCoordinatesOfPointsOfGeometryA[3],
                           double   yCoordinatesOfPointsOfGeometryA[3],
@@ -114,6 +178,42 @@ void delta::collision::bf(
                           double&  yPB,
                           double&  zPB
                           ) {
+
+	iREAL aaa[3], bbb[3], ccc[3];
+	iREAL ddd[3], eee[3], fff[3];
+
+	aaa[0] = xCoordinatesOfPointsOfGeometryA[0];
+	aaa[1] = yCoordinatesOfPointsOfGeometryA[0];
+	aaa[2] = zCoordinatesOfPointsOfGeometryA[0];
+
+	bbb[0] = xCoordinatesOfPointsOfGeometryA[1];
+	bbb[1] = yCoordinatesOfPointsOfGeometryA[1];
+	bbb[2] = zCoordinatesOfPointsOfGeometryA[1];
+
+
+	ccc[0] = xCoordinatesOfPointsOfGeometryA[2];
+	ccc[1] = yCoordinatesOfPointsOfGeometryA[2];
+	ccc[2] = zCoordinatesOfPointsOfGeometryA[2];
+
+
+	ddd[0] = xCoordinatesOfPointsOfGeometryB[0];
+	ddd[1] = yCoordinatesOfPointsOfGeometryB[0];
+	ddd[2] = zCoordinatesOfPointsOfGeometryB[0];
+
+
+	eee[0] = xCoordinatesOfPointsOfGeometryB[1];
+	eee[1] = yCoordinatesOfPointsOfGeometryB[1];
+	eee[2] = zCoordinatesOfPointsOfGeometryB[1];
+
+
+	fff[0] = xCoordinatesOfPointsOfGeometryB[2];
+	fff[1] = yCoordinatesOfPointsOfGeometryB[2];
+	fff[2] = zCoordinatesOfPointsOfGeometryB[2];
+
+  if(NoDivTriTriIsect(aaa, bbb, ccc, ddd, eee, fff))
+  {
+	  printf("PENETRATED!\n");
+  }
   
   iREAL u[3], v[3], nn[3][2], w[3], w0[3][6], dir[3][6], pointArray[3][6];
   

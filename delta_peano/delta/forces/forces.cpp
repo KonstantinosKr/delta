@@ -1,8 +1,9 @@
 #include "forces.h"
 
 #define SPRING 1E3
-#define DAMPER 10
-#define FRICTION 0.8
+#define DAMPER 6
+#define FRICTION 0.5
+#define FRICTIONROLLING 0.001
 
 double delta::forces::springDashpot(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3])
 {
@@ -49,7 +50,8 @@ void delta::forces::getContactForces(
     iREAL linearVelocityB[3],
     iREAL massB,
     iREAL force[3],
-    iREAL torque[3]
+    iREAL torque[3],
+	bool  isSphere
 ) {
 
     for(unsigned int k = 0; k<conpnt.size(); k++)
@@ -89,23 +91,45 @@ void delta::forces::getContactForces(
         friction[1] = 0.0;
         friction[2] = 0.0;
 
-    	iREAL a[3]; //contact-position
-		a[0] = conpnt[k].x[0]-positionA[0];
-		a[1] = conpnt[k].x[1]-positionA[1];
-		a[2] = conpnt[k].x[2]-positionA[2];
-
         if(conpnt[k].frictionType > 2)
         	delta::forces::friction(conpnt[k].normal, vi, forc, friction);
 
-		//accumulate force
-		force[0] += f[0]+friction[0];
-		force[1] += f[1]+friction[1];
-		force[2] += f[2]+friction[2];
+        f[0] = f[0] + friction[0];
+        f[1] = f[1] + friction[1];
+        f[2] = f[2] + friction[2];
 
-		//cross product accumulate torque
-		torque[0] += a[1]*(f[2]+friction[2]) - a[2]*(f[1]+friction[1]);
-		torque[1] += a[2]*(f[0]+friction[0]) - a[0]*(f[2]+friction[2]);
-		torque[2] += a[0]*(f[1]+friction[1]) - a[1]*(f[0]+friction[0]);
+        //accumulate force
+        force[0] += f[0];
+        force[1] += f[1];
+        force[2] += f[2];
 
+        iREAL arm[3];
+        //contact-position = arm
+        arm[0] = conpnt[k].x[0]-positionA[0];
+        arm[1] = conpnt[k].x[1]-positionA[1];
+        arm[2] = conpnt[k].x[2]-positionA[2];
+
+        //cross product accumulate torque
+        torque[0] += arm[1]*(f[2]) - arm[2]*(f[1]);
+        torque[1] += arm[2]*(f[0]) - arm[0]*(f[2]);
+        torque[2] += arm[0]*(f[1]) - arm[1]*(f[0]);
+
+        if(isSphere)
+        {
+			//relative angular velocities
+			vij[0] = angularVelocityA[0] - angularVelocityB[0];
+			vij[1] = angularVelocityA[1] - angularVelocityB[1];
+			vij[2] = angularVelocityA[2] - angularVelocityB[2];
+
+			iREAL w = std::abs(sqrt(vij[0]*vij[0]+vij[1]*vij[1]+vij[2]*vij[2]));
+			//printf("W:%f | wij: %f %f %f\n", w, vij[0], vij[1], vij[2]);
+
+			if(w>0.0)
+			{
+				torque[0] += -(vij[0]/w)*FRICTIONROLLING*forc;
+				torque[1] += -(vij[1]/w)*FRICTIONROLLING*forc;
+				torque[2] += -(vij[2]/w)*FRICTIONROLLING*forc;
+			}
+        }
     }
 }

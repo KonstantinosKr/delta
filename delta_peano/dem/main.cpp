@@ -53,7 +53,7 @@ int main(int argc, char** argv)
               << " time-step-size      floating point number" << std::endl
               << " plot                see plot variants below" << std::endl
               << " gravity             floating point number" << std::endl
-              << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, sphere-hybrid-on-triangle-pairs, sphere-hybrid-on-batches, bf, sphere-bf, sphere-penalty, gjk" << std::endl
+              << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, gjk, add sphere- for sphere check" << std::endl
               << " [core-count]        only required if you have translated the code with TBBs" << std::endl
               << std::endl << std::endl << std::endl << std::endl
               << "Scenarios" << std::endl
@@ -168,9 +168,6 @@ int main(int argc, char** argv)
   else if (scenario=="hopper300") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.11, 0.11, 0.11, gridType, epsilon);
   }
-  else if (scenario=="hopper1000") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.11, 0.11, 0.11, gridType, epsilon);
-  }
   else if (scenario=="hopperBricks") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperBricks, 0.15, 0.15, 0.15, gridType, epsilon);
   }
@@ -184,7 +181,7 @@ int main(int argc, char** argv)
      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallBricks, 0.15, 0.15, 0.15, gridType, epsilon);
   }
   else if (scenario=="freefallKeys") {
-       dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallKeys, 0.15, 0.15, 0.15, gridType, epsilon);
+     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallKeys, 0.15, 0.15, 0.15, gridType, epsilon);
    }
   else if (scenario=="flatwall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::flatwall, 0.15, 0.15, 0.15, gridType, epsilon);
@@ -258,15 +255,19 @@ int main(int argc, char** argv)
   }
   else if (collisionModel=="sphere-hybrid-on-triangle-pairs") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereHybridOnTrianglePairs;
+    dem::mappings::Collision::_enableOverlapCheck = true;
   }
   else if (collisionModel=="sphere-hybrid-on-batches") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereHybridOnBatches;
+    dem::mappings::Collision::_enableOverlapCheck = true;
   }
   else if (collisionModel=="sphere-bf") {
   	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereBruteForce;
+  	dem::mappings::Collision::_enableOverlapCheck = true;
   }
   else if (collisionModel=="sphere-penalty") {
   	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SpherePenalty;
+  	dem::mappings::Collision::_enableOverlapCheck = true;
   }
   else if (collisionModel=="gjk") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;

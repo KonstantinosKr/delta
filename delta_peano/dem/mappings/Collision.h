@@ -63,6 +63,7 @@ class dem::mappings::Collision {
       const records::Particle&                    particleB
     );
 
+
   public:
     enum class CollisionModel {
     	Sphere,
@@ -79,6 +80,8 @@ class dem::mappings::Collision {
 		SpherePenalty,
     	GJK
     };
+
+    static bool _enableOverlapCheck;
 
     struct Collisions {
       records::Particle                            _copyOfPartnerParticle;

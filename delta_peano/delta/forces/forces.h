@@ -34,6 +34,7 @@ namespace delta {
       iREAL linearVelocityB[3],
       iREAL massB,
       iREAL force[3],
-      iREAL torque[3]);
+      iREAL torque[3],
+	  bool  isSphere);
   }
 }

@@ -27,7 +27,7 @@ void delta::collision::filter(std::vector<contactpoint>& dataStoredContactPoints
 			//look how parallel they are
 			double parallel = sqrt(ax[0]*bx[0]+ax[1]*bx[1]+ax[2]*bx[2]);
 
-			if (distance < hMin)
+			if (distance <= 0 || distance <= hMin)
 			{
 				//	printf("PARALLEL:%f\n", parallel);
 				//printf("hMIN:%f, distance:%f\n", hMin, distance);

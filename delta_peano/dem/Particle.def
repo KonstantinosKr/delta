@@ -13,14 +13,14 @@ Packed-Type: short int;
 class dem::records::Particle {  
 
   #ifdef Dim3
-  persistent expose int vertices[6];
+  persistent expose double vertices[6];
   persistent expose double orientation[9];
   persistent expose double inertia[9];
   persistent expose double inverse[9];
   #endif
  
   #ifdef Dim2
-  persistent expose int vertices[4];
+  persistent expose double vertices[4];
   persistent expose double orientation[4];
   persistent expose double inertia[4];
   persistent expose double inverse[4];
