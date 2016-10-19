@@ -47,8 +47,7 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces);
 }
 
-tarch::logging::Log                dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" ); 
-
+tarch::logging::Log		dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" );
 double    dem::mappings::MoveParticles::gravity = 0.0;
 
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
@@ -114,7 +113,8 @@ void dem::mappings::MoveParticles::reassignParticles(
       records::Particle&  particle = fineGridVertices[ fineGridVerticesEnumerator(k) ].getParticle(i);
 
       tarch::la::Vector<DIMENSIONS,int> correctVertex;
-      for (int d=0; d<DIMENSIONS; d++) {
+      for (int d=0; d<DIMENSIONS; d++)
+      {
         correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
       }
 

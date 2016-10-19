@@ -81,7 +81,6 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._inverse = tarch::la::Vector<4,double>(0.0);
   #endif
 
-  #ifdef Dim3
   newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(2) = DEMDoubleHeap::getInstance().createData();
@@ -101,7 +100,6 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 
   newParticle._persistentRecords._inertia = tarch::la::Vector<9,double>(0.0);
   newParticle._persistentRecords._inverse = tarch::la::Vector<9,double>(0.0);
-  #endif
 
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
@@ -118,8 +116,10 @@ int dem::Vertex::getNumberOfRealAndVirtualParticles() const {
   assertion1( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticles()), toString() );
   assertion1( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticlesOnCoarserLevels()), toString() );
 
-  const int result = static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size())
+  int result = static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size())
                    + static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size());
+
+  //printf("VIRTUAL:%d\n", static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size()));
 
   return result;
 }
@@ -289,10 +289,9 @@ void dem::Vertex::restrictParticleResponsibilityData(const Vertex& fineGridVerte
 
 
 void dem::Vertex::eraseIfParticleDistributionPermits() {
-  if (
-    !_vertexData.getVetoCoarsening() &&
-    getRefinementControl()==Records::Refined
-  ) {
+  if (!_vertexData.getVetoCoarsening() &&
+    getRefinementControl()==Records::Refined)
+  {
     erase();
   }
 }
@@ -303,24 +302,34 @@ void dem::Vertex::clearInheritedCoarseGridParticles() {
 }
 
 
-void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex ) {
-  if (
-    !vertex.isOutside()
-    &&
-    vertex.getRefinementControl()==Vertex::Records::Refined
-    &&
-    (getRefinementControl()!=Vertex::Records::Unrefined || getNumberOfParticles()>0)
-  ) {
-    ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).insert(
-      ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).end(),
-      ParticleHeap::getInstance().getData( vertex._vertexData.getParticlesOnCoarserLevels() ).begin(),
-      ParticleHeap::getInstance().getData( vertex._vertexData.getParticlesOnCoarserLevels() ).end()
-    );
+void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
+{
+  if (!vertex.isOutside() && vertex.getRefinementControl()==Vertex::Records::Refined &&
+    (getRefinementControl()!=Vertex::Records::Unrefined || getNumberOfParticles()>0))
+  {
+	for(auto & particleCoarse:
+			ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels())) //loop coarse grid vertex real and virtual particles
+	{
+		bool found = false;
+		for(auto & particleLocal:
+				ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()))//loop local grid vertex real and virtual particles
+		{
+			if(particleCoarse._persistentRecords.getGlobalParticleNumber()==particleLocal._persistentRecords.getGlobalParticleNumber())
+				found = true;
+		}
+		if(!found)
+			ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
+			      ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
+	}
 
-    ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).insert(
-      ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).end(),
-      ParticleHeap::getInstance().getData( vertex._vertexData.getParticles() ).begin(),
-      ParticleHeap::getInstance().getData( vertex._vertexData.getParticles() ).end()
-    );
+    /*ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
+      ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
+      ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).begin(),
+      ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).end());*/
+
+    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
+      ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
+      ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).begin(),
+      ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
   }
 }

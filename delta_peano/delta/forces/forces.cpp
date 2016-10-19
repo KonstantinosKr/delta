@@ -1,9 +1,9 @@
 #include "forces.h"
 
-#define SPRING 1E3
-#define DAMPER 6
-#define FRICTION 0.5
-#define FRICTIONROLLING 0.001
+#define SPRING 1E6
+#define DAMPER 1
+#define FRICTION 0.3
+#define FRICTIONROLLING 0.0005
 
 double delta::forces::springDashpot(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3])
 {
@@ -51,8 +51,8 @@ void delta::forces::getContactForces(
     iREAL massB,
     iREAL force[3],
     iREAL torque[3],
-	bool  isSphere
-) {
+	bool  isSphere)
+{
 
     for(unsigned int k = 0; k<conpnt.size(); k++)
     {
