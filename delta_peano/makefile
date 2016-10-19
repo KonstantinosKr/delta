@@ -46,7 +46,7 @@ default: header
 	@echo dim3-icc-release-tbb-omp
 	@echo dim3-icc-release-tbb-omp-triangle
 	@echo dim3-icc-release-tbb-omp-particle
-	@echo dim3-icc-release-tbb-omp-particle-novec
+	@echo dim3-icc-release-tbb-omp-particle-dev
 	@echo dim3-icc-release-tbb-omp-triangle-particle
 	@echo dim3-icc-release-tbb-omp-triangle-phi
 	@echo dim3-icc-release-tbb-omp-particle-phi
