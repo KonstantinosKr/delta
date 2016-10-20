@@ -30,6 +30,7 @@ delta::collision::contactpoint::contactpoint(const contactpoint& copy) {
   friction[2] = copy.friction[2];
 
   frictionType = copy.frictionType;
+  epsilonTotal = copy.epsilonTotal;
 }
 
 #if ompTriangle || ompParticle
@@ -60,7 +61,7 @@ delta::collision::contactpoint::contactpoint(
   Q[1] = yPB;
   Q[2] = zPB;
 
-  iREAL epsilonTotal = epsilonA+epsilonB;
+  epsilonTotal = epsilonA+epsilonB;
 
   depth = (epsilonTotal - getDistance())/epsilonTotal;
 

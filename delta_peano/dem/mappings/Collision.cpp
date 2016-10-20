@@ -38,7 +38,6 @@ peano::MappingSpecification   dem::mappings::Collision::descendSpecification() {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces);
 }
 
-
 tarch::logging::Log                                                 dem::mappings::Collision::_log( "dem::mappings::Collision" );
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_activeCollisions;
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_collisionsOfNextTraversal;
@@ -142,11 +141,18 @@ void dem::mappings::Collision::addCollision(
 		dataSetB->_copyOfPartnerParticle = particleA;
 	}
 
-	delta::collision::filter(dataSetA->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
-	delta::collision::filter(dataSetB->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+	#ifdef ompParticle
+		#pragma omp critical
+	#endif
+	{
+		delta::collision::filter(dataSetA->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+		delta::collision::filter(dataSetB->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+	}
 
 	for(unsigned int k = 0; k<newContactPoints.size(); k++)
 	{
+	   if(newContactPoints[k].getDistance() <= newContactPoints[k].epsilonTotal/2) _state.informStateThatTwoParticlesAreClose();
+
 	   iREAL z[3];
 	   iREAL vi[3];
 
@@ -180,6 +186,9 @@ void dem::mappings::Collision::addCollision(
 	 * C. we always want to ensure that normal of particle point away from obstacle
 	 * D. we don't care about normal of obstacle.
 	 */
+	#ifdef ompParticle
+		#pragma omp critical
+	#endif
 	dataSetA->_contactPoints.insert( dataSetA->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
 
 	for (std::vector<delta::collision::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
@@ -190,6 +199,9 @@ void dem::mappings::Collision::addCollision(
 		p->normal[2] = -1.0 * p->normal[2];
 	}
 
+	#ifdef ompParticle
+		#pragma omp critical
+	#endif
 	dataSetB->_contactPoints.insert( dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
 	//logInfo( "addCollision(...)", "add collision for particles " << particleA._persistentRecords._globalParticleNumber << " and " << particleB._persistentRecords._globalParticleNumber);
 
@@ -300,6 +312,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			{
 				case CollisionModel::Sphere:
 				{
+					bool penetration = false;
 					if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID &&
 							fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID)
 					{
@@ -317,7 +330,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getZCoordinates(i),
 							fineGridVertex.getNumberOfTriangles(i),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._material);
+							fineGridVertex.getParticle(i)._persistentRecords._material, penetration);
 
 					} else if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID &&
 							fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)
@@ -336,7 +349,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getZCoordinates(j),
 							fineGridVertex.getNumberOfTriangles(j),
 							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._material);
+							fineGridVertex.getParticle(j)._persistentRecords._material, penetration);
 					} else
 					{
 						newContactPoints = delta::collision::sphere(
@@ -352,7 +365,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getCentre(2),
 							fineGridVertex.getParticle(j).getDiameter(),
 							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._material);
+							fineGridVertex.getParticle(j)._persistentRecords._material, penetration);
 					}
 					break;
 				}
@@ -502,17 +515,11 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				}
 			}
 
-			if (!newContactPoints.empty())
-			{
-				#ifdef ompParticle
-					#pragma omp critical
-				#endif
-				addCollision( newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) );
-			}
+			if (!newContactPoints.empty()) addCollision( newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) );
 			#ifdef ompParticle
 				#pragma omp critical
 			#endif
-			_state.incNumberOfTriangleComparisons( fineGridVertex.getNumberOfTriangles( i ) * fineGridVertex.getNumberOfTriangles( j ) );
+			_state.incNumberOfTriangleComparisons( fineGridVertex.getNumberOfTriangles(i) * fineGridVertex.getNumberOfTriangles(j) );
 		}
 	}
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
@@ -537,22 +544,24 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 					(vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)) ||
 					((vertexA.getParticle(i)._persistentRecords._globalParticleNumber) == (vertexB.getParticle(j)._persistentRecords._globalParticleNumber))) continue;
 
-			if(!delta::collision::isSphereOverlayInContact(
-					vertexA.getParticle(i).getCentre(0),
-					vertexA.getParticle(i).getCentre(1),
-					vertexA.getParticle(i).getCentre(2),
-					vertexA.getParticle(i).getInfluenceRadius(),
+			if(_enableOverlapCheck)
+				if(!delta::collision::isSphereOverlayInContact(
+						vertexA.getParticle(i).getCentre(0),
+						vertexA.getParticle(i).getCentre(1),
+						vertexA.getParticle(i).getCentre(2),
+						vertexA.getParticle(i).getInfluenceRadius(),
 
-					vertexB.getParticle(j).getCentre(0),
-					vertexB.getParticle(j).getCentre(1),
-					vertexB.getParticle(j).getCentre(2),
-					vertexB.getParticle(j).getInfluenceRadius())) continue;
+						vertexB.getParticle(j).getCentre(0),
+						vertexB.getParticle(j).getCentre(1),
+						vertexB.getParticle(j).getCentre(2),
+						vertexB.getParticle(j).getInfluenceRadius())) continue;
 
 			std::vector<delta::collision::contactpoint> newContactPoints;
 			switch (_collisionModel)
 			{
 				case CollisionModel::Sphere:
 				{
+					bool penetration = false;
 					if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID &&
 							vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID)
 					{
@@ -565,12 +574,12 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexB.getParticle(j)._persistentRecords._epsilon,
 							vertexB.getParticle(j)._persistentRecords._material,
 
-							vertexA.getXCoordinates( i ),
-							vertexA.getYCoordinates( i ),
-							vertexA.getZCoordinates( i ),
-							vertexA.getNumberOfTriangles( i ),
+							vertexA.getXCoordinates(i),
+							vertexA.getYCoordinates(i),
+							vertexA.getZCoordinates(i),
+							vertexA.getNumberOfTriangles(i),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._material);
+							vertexA.getParticle(i)._persistentRecords._material, penetration);
 					} else if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID &&
 							vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)
 					{
@@ -583,12 +592,12 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getParticle(i)._persistentRecords._epsilon,
 							vertexA.getParticle(i)._persistentRecords._material,
 
-							vertexB.getXCoordinates( j ),
-							vertexB.getYCoordinates( j ),
-							vertexB.getZCoordinates( j ),
-							vertexB.getNumberOfTriangles( j ),
+							vertexB.getXCoordinates(j),
+							vertexB.getYCoordinates(j),
+							vertexB.getZCoordinates(j),
+							vertexB.getNumberOfTriangles(j),
 							vertexB.getParticle(j)._persistentRecords._epsilon,
-							vertexB.getParticle(j)._persistentRecords._material);
+							vertexB.getParticle(j)._persistentRecords._material, penetration);
 					} else
 					{
 						newContactPoints = delta::collision::sphere(
@@ -604,24 +613,28 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexB.getParticle(j).getCentre(2),
 							vertexB.getParticle(j).getDiameter(),
 							vertexB.getParticle(j)._persistentRecords._epsilon,
-							vertexB.getParticle(j)._persistentRecords._material);
+							vertexB.getParticle(j)._persistentRecords._material, penetration);
+					}
+					if(penetration)
+					{
+						_state.informStatePenetration();
 					}
 					break;
 				}
 				case CollisionModel::BruteForce:
 				{
 					newContactPoints = delta::collision::bf(
-						vertexA.getNumberOfTriangles( i ),
-						vertexA.getXCoordinates( i ),
-						vertexA.getYCoordinates( i ),
-						vertexA.getZCoordinates( i ),
+						vertexA.getNumberOfTriangles(i),
+						vertexA.getXCoordinates(i),
+						vertexA.getYCoordinates(i),
+						vertexA.getZCoordinates(i),
 						vertexA.getParticle(i)._persistentRecords._epsilon,
 						vertexA.getParticle(i)._persistentRecords._material,
 
-						vertexB.getNumberOfTriangles( j ),
-						vertexB.getXCoordinates( j ),
-						vertexB.getYCoordinates( j ),
-						vertexB.getZCoordinates( j ),
+						vertexB.getNumberOfTriangles(j),
+						vertexB.getXCoordinates(j),
+						vertexB.getYCoordinates(j),
+						vertexB.getZCoordinates(j),
 						vertexB.getParticle(j)._persistentRecords._epsilon,
 						vertexB.getParticle(j)._persistentRecords._material);
 					break;
@@ -629,17 +642,17 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				case CollisionModel::Penalty:
 				{
 					newContactPoints = delta::collision::penalty(
-						vertexA.getNumberOfTriangles( i ),
-						vertexA.getXCoordinates( i ),
-						vertexA.getYCoordinates( i ),
-						vertexA.getZCoordinates( i ),
+						vertexA.getNumberOfTriangles(i),
+						vertexA.getXCoordinates(i),
+						vertexA.getYCoordinates(i),
+						vertexA.getZCoordinates(i),
 						vertexA.getParticle(i)._persistentRecords._epsilon,
 						vertexA.getParticle(i)._persistentRecords._material,
 
-						vertexB.getNumberOfTriangles( j ),
-						vertexB.getXCoordinates( j ),
-						vertexB.getYCoordinates( j ),
-						vertexB.getZCoordinates( j ),
+						vertexB.getNumberOfTriangles(j),
+						vertexB.getXCoordinates(j),
+						vertexB.getYCoordinates(j),
+						vertexB.getZCoordinates(j),
 						vertexB.getParticle(j)._persistentRecords._epsilon,
 						vertexB.getParticle(j)._persistentRecords._material);
 					break;
@@ -647,17 +660,17 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				case CollisionModel::PenaltyStat:
 				{
 					newContactPoints = delta::collision::penaltyStat(
-						vertexA.getNumberOfTriangles( i ),
-						vertexA.getXCoordinates( i ),
-						vertexA.getYCoordinates( i ),
-						vertexA.getZCoordinates( i ),
+						vertexA.getNumberOfTriangles(i),
+						vertexA.getXCoordinates(i),
+						vertexA.getYCoordinates(i),
+						vertexA.getZCoordinates(i),
 						vertexA.getParticle(i)._persistentRecords._epsilon,
 						vertexA.getParticle(i)._persistentRecords._material,
 
-						vertexB.getNumberOfTriangles( j ),
-						vertexB.getXCoordinates( j ),
-						vertexB.getYCoordinates( j ),
-						vertexB.getZCoordinates( j ),
+						vertexB.getNumberOfTriangles(j),
+						vertexB.getXCoordinates(j),
+						vertexB.getYCoordinates(j),
+						vertexB.getZCoordinates(j),
 						vertexB.getParticle(j)._persistentRecords._epsilon,
 						vertexB.getParticle(j)._persistentRecords._material);
 					break;
@@ -665,17 +678,17 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				case CollisionModel::HybridOnBatches:
 				{
 					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
-						vertexA.getNumberOfTriangles( i ),
-						vertexA.getXCoordinates( i ),
-						vertexA.getYCoordinates( i ),
-						vertexA.getZCoordinates( i ),
+						vertexA.getNumberOfTriangles(i),
+						vertexA.getXCoordinates(i),
+						vertexA.getYCoordinates(i),
+						vertexA.getZCoordinates(i),
 						vertexA.getParticle(i)._persistentRecords._epsilon,
 						vertexA.getParticle(i)._persistentRecords._material,
 
-						vertexB.getNumberOfTriangles( j ),
-						vertexB.getXCoordinates( j ),
-						vertexB.getYCoordinates( j ),
-						vertexB.getZCoordinates( j ),
+						vertexB.getNumberOfTriangles(j),
+						vertexB.getXCoordinates(j),
+						vertexB.getYCoordinates(j),
+						vertexB.getZCoordinates(j),
 						vertexB.getParticle(j)._persistentRecords._epsilon,
 						vertexB.getParticle(j)._persistentRecords._material);
 					break;
@@ -683,17 +696,17 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				case CollisionModel::HybridOnTrianglePairs:
 				{
 					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
-						vertexA.getNumberOfTriangles( i ),
-						vertexA.getXCoordinates( i ),
-						vertexA.getYCoordinates( i ),
-						vertexA.getZCoordinates( i ),
+						vertexA.getNumberOfTriangles(i),
+						vertexA.getXCoordinates(i),
+						vertexA.getYCoordinates(i),
+						vertexA.getZCoordinates(i),
 						vertexA.getParticle(i)._persistentRecords._epsilon,
 						vertexA.getParticle(i)._persistentRecords._material,
 
-						vertexB.getNumberOfTriangles( j ),
-						vertexB.getXCoordinates( j ),
-						vertexB.getYCoordinates( j ),
-						vertexB.getZCoordinates( j ),
+						vertexB.getNumberOfTriangles(j),
+						vertexB.getXCoordinates(j),
+						vertexB.getYCoordinates(j),
+						vertexB.getZCoordinates(j),
 						vertexB.getParticle(j)._persistentRecords._epsilon,
 						vertexB.getParticle(j)._persistentRecords._material);
 					break;
@@ -701,17 +714,17 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				case CollisionModel::HybridOnBatchesStats:
 				{
 					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
-						vertexA.getNumberOfTriangles( i ),
-						vertexA.getXCoordinates( i ),
-						vertexA.getYCoordinates( i ),
-						vertexA.getZCoordinates( i ),
+						vertexA.getNumberOfTriangles(i),
+						vertexA.getXCoordinates(i),
+						vertexA.getYCoordinates(i),
+						vertexA.getZCoordinates(i),
 						vertexA.getParticle(i)._persistentRecords._epsilon,
 						vertexA.getParticle(i)._persistentRecords._material,
 
-						vertexB.getNumberOfTriangles( j ),
-						vertexB.getXCoordinates( j ),
-						vertexB.getYCoordinates( j ),
-						vertexB.getZCoordinates( j ),
+						vertexB.getNumberOfTriangles(j),
+						vertexB.getXCoordinates(j),
+						vertexB.getYCoordinates(j),
+						vertexB.getZCoordinates(j),
 						vertexB.getParticle(j)._persistentRecords._epsilon,
 						vertexB.getParticle(j)._persistentRecords._material);
 					break;
@@ -719,17 +732,17 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				case CollisionModel::HybridOnTrianglePairsStats:
 				{
 					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
-						vertexA.getNumberOfTriangles( i ),
-						vertexA.getXCoordinates( i ),
-						vertexA.getYCoordinates( i ),
-						vertexA.getZCoordinates( i ),
+						vertexA.getNumberOfTriangles(i),
+						vertexA.getXCoordinates(i),
+						vertexA.getYCoordinates(i),
+						vertexA.getZCoordinates(i),
 						vertexA.getParticle(i)._persistentRecords._epsilon,
 						vertexA.getParticle(i)._persistentRecords._material,
 
-						vertexB.getNumberOfTriangles( j ),
-						vertexB.getXCoordinates( j ),
-						vertexB.getYCoordinates( j ),
-						vertexB.getZCoordinates( j ),
+						vertexB.getNumberOfTriangles(j),
+						vertexB.getXCoordinates(j),
+						vertexB.getYCoordinates(j),
+						vertexB.getZCoordinates(j),
 						vertexB.getParticle(j)._persistentRecords._epsilon,
 						vertexB.getParticle(j)._persistentRecords._material);
 					break;
@@ -737,30 +750,24 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				case CollisionModel::GJK:
 				{
 					newContactPoints = delta::collision::gjk(
-						vertexA.getNumberOfTriangles( i ),
-						vertexA.getXCoordinates( i ),
-						vertexA.getYCoordinates( i ),
-						vertexA.getZCoordinates( i ),
+						vertexA.getNumberOfTriangles(i),
+						vertexA.getXCoordinates(i),
+						vertexA.getYCoordinates(i),
+						vertexA.getZCoordinates(i),
 						vertexA.getParticle(i)._persistentRecords._epsilon,
 						vertexA.getParticle(i)._persistentRecords._material,
 
-						vertexB.getNumberOfTriangles( j ),
-						vertexB.getXCoordinates( j ),
-						vertexB.getYCoordinates( j ),
-						vertexB.getZCoordinates( j ),
+						vertexB.getNumberOfTriangles(j),
+						vertexB.getXCoordinates(j),
+						vertexB.getYCoordinates(j),
+						vertexB.getZCoordinates(j),
 						vertexB.getParticle(j)._persistentRecords._epsilon,
 						vertexB.getParticle(j)._persistentRecords._material);
 					break;
 				}
 			}
 
-			if (!newContactPoints.empty())
-			{
-				#ifdef ompParticle
-					#pragma omp critical
-				#endif
-				addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j) );
-			}
+			if (!newContactPoints.empty()) addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j) );
 
 			//printf("DifferentVertexContact:%d\n", newContactPoints.size());
 			//printf("VertexANoParticles:%d VertexBNoParticles:%d\n", vertexA.getNumberOfRealAndVirtualParticles(), vertexB.getNumberOfRealAndVirtualParticles());
@@ -788,16 +795,13 @@ void dem::mappings::Collision::enterCell(
 	// along faces
 	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(1) ]
-	);
+			fineGridVertices[ fineGridVerticesEnumerator(1) ]);
 	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(2) ]
-	);
+			fineGridVertices[ fineGridVerticesEnumerator(2) ]);
 	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(4) ]
-	);
+			fineGridVertices[ fineGridVerticesEnumerator(4) ]);
 
 	// additional faces front/back
 	if (fineGridVertices[fineGridVerticesEnumerator(0) ].isBoundary() ||

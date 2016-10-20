@@ -9,31 +9,22 @@ void delta::collision::filter(std::vector<contactpoint>& dataStoredContactPoints
 	{
 		for (int j = i+1 ; j < tmp.size(); j++)
 		{
-			double ax[3], bx[3], sub[3];
-			ax[0] = newContactPoints[i].x[0];
-			ax[1] = newContactPoints[i].x[1];
-			ax[2] = newContactPoints[i].x[2];
-
-			bx[0] = tmp[j].x[0];
-			bx[1] = tmp[j].x[1];
-			bx[2] = tmp[j].x[2];
-
-			sub[0] = bx[0] - ax[0];
-			sub[1] = bx[1] - ax[1];
-			sub[2] = bx[2] - ax[2];
+			double sub[3];
+			sub[0] = tmp[j].x[0] - newContactPoints[i].x[0];
+			sub[1] = tmp[j].x[1] - newContactPoints[i].x[1];
+			sub[2] = tmp[j].x[2] - newContactPoints[i].x[2];
 
 			double distance = sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]);
 
 			//look how parallel they are
-			double parallel = sqrt(ax[0]*bx[0]+ax[1]*bx[1]+ax[2]*bx[2]);
+			double parallel = sqrt(newContactPoints[i].x[0]*tmp[j].x[0]+newContactPoints[i].x[1]*tmp[j].x[1]+newContactPoints[i].x[2]*tmp[j].x[2]);
 
 			if (distance <= 0 || distance <= hMin)
 			{
-				//	printf("PARALLEL:%f\n", parallel);
+				//printf("PARALLEL:%f\n", parallel);
 				//printf("hMIN:%f, distance:%f\n", hMin, distance);
 				newContactPoints.erase(newContactPoints.begin()+i);
 				j = tmp.size();
-
 			}
 		}
 	}
@@ -43,21 +34,12 @@ void delta::collision::filter(std::vector<contactpoint>& dataStoredContactPoints
 	{
 		for (int j = 0 ; j < dataStoredContactPoints.size(); j++)
 		{
-			double ax[3], bx[3], sub[3];
-			ax[0] = newContactPoints[i].x[0];
-			ax[1] = newContactPoints[i].x[1];
-			ax[2] = newContactPoints[i].x[2];
+			double sub[3];
+			sub[0] = dataStoredContactPoints[j].x[0] - newContactPoints[i].x[0];
+			sub[1] = dataStoredContactPoints[j].x[1] - newContactPoints[i].x[1];
+			sub[2] = dataStoredContactPoints[j].x[2] - newContactPoints[i].x[2];
 
-			bx[0] = dataStoredContactPoints[j].x[0];
-			bx[1] = dataStoredContactPoints[j].x[1];
-			bx[2] = dataStoredContactPoints[j].x[2];
-
-			sub[0] = bx[0] - ax[0];
-			sub[1] = bx[1] - ax[1];
-			sub[2] = bx[2] - ax[2];
-
-			double distance = sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]);
-			if (distance < hMin)
+			if (sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]) < hMin)
 			{
 				newContactPoints.erase(newContactPoints.begin()+i);
 				j = dataStoredContactPoints.size();

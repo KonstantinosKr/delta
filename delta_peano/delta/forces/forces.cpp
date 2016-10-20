@@ -1,7 +1,7 @@
 #include "forces.h"
 
-#define SPRING 1E6
-#define DAMPER 1
+#define SPRING 1E3
+#define DAMPER 0.5
 #define FRICTION 0.3
 #define FRICTIONROLLING 0.0005
 

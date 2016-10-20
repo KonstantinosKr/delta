@@ -51,8 +51,8 @@ tarch::logging::Log		dem::mappings::MoveParticles::_log( "dem::mappings::MovePar
 double    dem::mappings::MoveParticles::gravity = 0.0;
 
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
-  dem::Vertex&               fineGridVertex
-) {
+  dem::Vertex&               fineGridVertex)
+{
 
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
@@ -74,9 +74,9 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
     particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
 
-    particle._persistentRecords._centre(0)   = particle._persistentRecords._centreOfMass(0);
-    particle._persistentRecords._centre(1)   = particle._persistentRecords._centreOfMass(1);
-    particle._persistentRecords._centre(2)   = particle._persistentRecords._centreOfMass(2);
+    particle._persistentRecords._centre(0) = particle._persistentRecords._centreOfMass(0);
+    particle._persistentRecords._centre(1) = particle._persistentRecords._centreOfMass(1);
+    particle._persistentRecords._centre(2) = particle._persistentRecords._centreOfMass(2);
 
     double* x = fineGridVertex.getXCoordinates(i);
     double* y = fineGridVertex.getYCoordinates(i);

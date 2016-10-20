@@ -27,36 +27,43 @@
 
 
 #include <time.h>
+#include <vector>
 
 namespace delta {
 	namespace sys {
-		void simulationCheckpoint();
-		void getKineticEnergy();
-		double getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass);
-
-		double getKineticEnergy(double velocity[3], double mass);
-		double getRotationalEnergy(double angular[3], double inertia[9]);
-
-		void getLinearVelocities();
-		void getAngularVelocities();
-		void getPosition();
-		void getInertia();
-		void getMass();
-		void getInverse();
-		void getScenarioSettings();
-
-
-		void logsimulationCheckpoint();
-		void logKineticEnergy();
-		void logLinearVelocities();
-		void logAngularVelocities();
-		void logPosition();
-		void logInertia();
-		void logMass();
-		void logInverse();
-		void logScenarioSettings();
-
+		class Sys;
 	}
 }
 
+
+class delta::sys::Sys{
+public:
+	void checkpoint();
+	void getSimSetup(int particles, int obstacles, double timeStepSize, int currentIteration, int iteration);
+	/*void delta::sys::Sys::logParticle(int id, double &positionSpatial[3], double &positionReferential[3],
+									double &linear[3], double &angular[3], double &positionSpatial[3],
+									double &positionReferential[3],double &inertia[9], double mass);*/
+private:
+	static int _noOfParticles;
+	static int _noOfObstacles;
+	static double _timeStepSize;
+	static int _currentIteration;
+	static int	_totalIterations;
+
+	static std::vector<int> _id;
+	static std::vector<double&> _positionSpatial;
+	static std::vector<double&> _positionReferential;
+	static std::vector<double&> _linear;
+	static std::vector<double&> _angular;
+	static std::vector<double&> _inertia;
+	static std::vector<double> _mass;
+};
+
+
+
+
+
+
 #endif /* DELTA_SYS_SYS_H_ */
+
+

@@ -783,7 +783,13 @@ void dem::mappings::CreateGrid::createCell(
 			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = particleDiameter;
 			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon;
 			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius 	   = (particleDiameter/2) + (vertex.getParticle(newParticleNumber)._persistentRecords._epsilon * 6);
-			vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+			if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
+			{
+				vertex.getParticle(newParticleNumber)._persistentRecords._hMin             = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+			}else
+			{
+				vertex.getParticle(newParticleNumber)._persistentRecords._hMin             = particleDiameter*0.5;
+			}
 			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
 			vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
 

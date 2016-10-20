@@ -80,6 +80,14 @@ void dem::State::informStateThatTwoParticlesAreClose() {
   _stateData.setTwoParticlesAreClose(true);
 }
 
+void dem::State::informStatePenetration(){
+  _stateData.setPenetrationOccured(true);
+}
+
+bool dem::State::getPenetrationStatus(){
+  return _stateData.getPenetrationOccured();
+}
+
 void dem::State::finishedTimeStep(double initStep) {
   _stateData.setCurrentTime( _stateData.getCurrentTime() + _stateData.getTimeStepSize() );
   if (_stateData.getTwoParticlesAreClose()) {

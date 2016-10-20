@@ -99,6 +99,9 @@ class dem::State: public peano::grid::State< dem::records::State > {
 
     void incNumberOfObstacles(int delta);
     int getNumberOfObstacles() const;
+
+    void informStatePenetration();
+    bool getPenetrationStatus();
 };
 
 

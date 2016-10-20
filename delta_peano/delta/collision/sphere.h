@@ -46,7 +46,8 @@ namespace delta {
       double   zCoordinatesOfPointsOfGeometryB,
       double   diameterB,
       double   epsilonB,
-	  int      materialB
+	  int      materialB,
+	  bool&    penetration
     );
 
     std::vector<contactpoint> sphereWithBarrierAB(
@@ -62,7 +63,8 @@ namespace delta {
       double   *zCoordinatesOfPointsOfGeometryB,
 	  int   	numberOfTrianglesOfGeometryB,
       double   epsilonB,
-	  int 	   materialB
+	  int 	   materialB,
+	  bool&    penetration
     );
 
     std::vector<contactpoint> sphereWithBarrierBA(
@@ -78,7 +80,8 @@ namespace delta {
           double   *zCoordinatesOfPointsOfGeometryB,
     	  int      numberOfTrianglesOfGeometryB,
           double   epsilonB,
-		  int      materialB
+		  int      materialB,
+		  bool&    penetration
         );
 
     bool isSphereOverlayInContact(

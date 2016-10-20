@@ -42,6 +42,7 @@ struct delta::collision::contactpoint {
   iREAL Q[3];
   iREAL friction[3];
   int frictionType;
+  double epsilonTotal;
 
   contactpoint();
   contactpoint(const contactpoint& copy);

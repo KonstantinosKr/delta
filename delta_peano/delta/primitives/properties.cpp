@@ -88,5 +88,6 @@ double delta::primitives::computeHMin(
 		min = std::min(std::min(AB, BC), CA);
 	}
   }
+  if(min == 1E99) min = 0.0;
   return min;
 }

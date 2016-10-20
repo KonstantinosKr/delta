@@ -85,12 +85,24 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
 	if(plotThisTraversal)
     {
-      logInfo("runAsMaster(...)", "iteration i=" << i
-        << ", reassignments=" << repository.getState().getNumberOfParticleReassignments()
-        << ", triangle-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-        << ", contact-points=" << repository.getState().getNumberOfContactPoints()
-        << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
-        << " | snapshot");
+
+
+      if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
+      {
+          logInfo("runAsMaster(...)", "iteration i=" << i
+            << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+            << ", contact-points=" << repository.getState().getNumberOfContactPoints()
+            << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
+            << " | snapshot");
+      }else
+      {
+          logInfo("runAsMaster(...)", "iteration i=" << i
+            << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+            << ", triangle-cmp=" << repository.getState().getNumberOfTriangleComparisons()
+            << ", contact-points=" << repository.getState().getNumberOfContactPoints()
+            << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
+            << " | snapshot");
+      }
 
       timestamp = repository.getState().getTime();
 
@@ -106,12 +118,22 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       }
     } else
     {
-      logInfo("runAsMaster(...)", "iteration i=" << i
-        << ", reassignments=" << repository.getState().getNumberOfParticleReassignments()
-        << ", triangle-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-        << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
-		<< ", t=" << repository.getState().getTime()
-		<< ", dt=" << repository.getState().getTimeStepSize());
+      if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
+      {
+		  logInfo("runAsMaster(...)", "iteration i=" << i
+			<< ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+			<< ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
+			<< ", t=" << repository.getState().getTime()
+			<< ", dt=" << repository.getState().getTimeStepSize());
+      }else
+      {
+    	  logInfo("runAsMaster(...)", "iteration i=" << i
+    			<< ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+    			<< ", triangle-cmp=" << repository.getState().getNumberOfTriangleComparisons()
+    			<< ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
+    			<< ", t=" << repository.getState().getTime()
+    			<< ", dt=" << repository.getState().getTimeStepSize());
+      }
 
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {

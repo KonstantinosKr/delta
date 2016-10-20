@@ -24,60 +24,43 @@
 
 #include "sys.h"
 
-namespace delta {
-	namespace sys
-	{
-		void simulationCheckpoint(){
 
-		}
+	int delta::sys::Sys::_noOfParticles;
+	int delta::sys::Sys::_noOfObstacles;
+	double delta::sys::Sys::_timeStepSize;
+	int delta::sys::Sys::_currentIteration;
+	int delta::sys::Sys::_totalIterations;
 
-		void output(){
+void delta::sys::Sys::checkpoint(){
+	/*
+	 * ASCII CHECKPOINT FORMAT DELTA
+	 *
+	 *
+	 */
 
-		}
 
-		double getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass){
-			iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
-			iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
+}
 
-			return rotation+kinetic;
-		}
+void delta::sys::Sys::getSimSetup(int particles, int obstacles, double timeStepSize, int currentIteration, int totalIterations)
+{
+	_noOfParticles = particles;
+	_noOfObstacles = obstacles;
+	_timeStepSize = timeStepSize;
+	_currentIteration = currentIteration;
+	_totalIterations = totalIterations;
+}
 
-		double getKineticEnergy(double velocity[3], double mass){
-			iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
-			return kinetic;
-		}
+/*
+void delta::sys::Sys::logParticle(int id, double &positionSpatial[3], double &positionReferential[3],
+								double &linear[3], double &angular[3], double &positionSpatial[3],
+								double &positionReferential[3],double &inertia[9], double mass)
+{
+	_id.push_back(id);
+	_positionSpatial.push_back(positionSpatial);
+	_positionReferential.push_back(positionReferential);
+	_linear.push_back(linear);
+	_angular.push_back(angular);
 
-		double getRotationalEnergy(double angular[3], double inertia[9]){
-			iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
-			return rotation;
-		}
-
-		void getLinearVelocities(){
-
-		}
-
-		void getAngularVelocities(){
-
-		}
-
-		void getPosition(){
-
-		}
-
-		void getInertia(){
-
-		}
-
-		void getMass(){
-
-		}
-
-		void getInverse(){
-
-		}
-
-		void getScenarioSettings(){
-
-		}
-	}
-} /* namespace sys */
+	_inertia.push_back(inertia);
+	_mass.push_back(mass);
+}*/
