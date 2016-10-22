@@ -147,10 +147,7 @@ void dem::mappings::MoveParticles::reflectParticles(
 	  }
 	  if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2<0.0)
 	  {
-		  const double FrictionDamping = 0.7;
-		  particle._persistentRecords._velocity(0) = particle._persistentRecords._velocity(0) * FrictionDamping;
 		  particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(1));
-		  particle._persistentRecords._velocity(2) = particle._persistentRecords._velocity(2) * FrictionDamping;
 	  }
 	  if (particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2<0.0)
 	  {

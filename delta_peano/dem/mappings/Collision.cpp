@@ -94,7 +94,8 @@ void dem::mappings::Collision::endIteration(
 void dem::mappings::Collision::addCollision(
 		std::vector<delta::collision::contactpoint> newContactPoints,
 		const records::Particle&                    particleA,
-		const records::Particle&                    particleB
+		const records::Particle&                    particleB,
+		bool sphere
 ) {
 	assertion( !newContactPoints.empty() );
 
@@ -141,15 +142,32 @@ void dem::mappings::Collision::addCollision(
 		dataSetB->_copyOfPartnerParticle = particleA;
 	}
 
-	#ifdef ompParticle
-		#pragma omp critical
-	#endif
+	if(sphere)
 	{
-		delta::collision::filter(dataSetA->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
-		delta::collision::filter(dataSetB->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+		delta::collision::filterNewContacts(newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin), particleA._persistentRecords._diameter/2, particleB._persistentRecords._diameter/2);
+
+		#ifdef ompParticle
+			#pragma omp critical
+		#endif
+		{
+			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin), particleA._persistentRecords._diameter/2, particleB._persistentRecords._diameter/2);
+			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin), particleA._persistentRecords._diameter/2, particleB._persistentRecords._diameter/2);
+		}
+	}else
+	{
+		delta::collision::filterNewContacts(newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+
+		#ifdef ompParticle
+			#pragma omp critical
+		#endif
+		{
+			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+		}
 	}
 
-	for(unsigned int k = 0; k<newContactPoints.size(); k++)
+	//plotting purposes
+	/*for(unsigned int k = 0; k<newContactPoints.size(); k++)
 	{
 	   if(newContactPoints[k].getDistance() <= newContactPoints[k].epsilonTotal/2) _state.informStateThatTwoParticlesAreClose();
 
@@ -176,7 +194,7 @@ void dem::mappings::Collision::addCollision(
 	   newContactPoints[k].friction[2] =  -vt[2];
 
 	  //printf("ID: %d friction collision:%f %f %f\n", particleA._persistentRecords._globalParticleNumber, newContactPoints[k].friction[0], newContactPoints[k].friction[1], newContactPoints[k].friction[2]);
-	}
+	}*/
 
 	/*
 	 * Problem here was:
@@ -515,13 +533,14 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				}
 			}
 
-			if (!newContactPoints.empty()) addCollision( newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) );
+			if (!newContactPoints.empty()) addCollision( newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
 			#ifdef ompParticle
 				#pragma omp critical
 			#endif
 			_state.incNumberOfTriangleComparisons( fineGridVertex.getNumberOfTriangles(i) * fineGridVertex.getNumberOfTriangles(j) );
 		}
 	}
+	_state.incNumberOfParticleComparisons(fineGridVertex.getNumberOfParticles() * fineGridVertex.getNumberOfRealAndVirtualParticles())
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
@@ -767,7 +786,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				}
 			}
 
-			if (!newContactPoints.empty()) addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j) );
+			if (!newContactPoints.empty()) addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j), dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
 
 			//printf("DifferentVertexContact:%d\n", newContactPoints.size());
 			//printf("VertexANoParticles:%d VertexBNoParticles:%d\n", vertexA.getNumberOfRealAndVirtualParticles(), vertexB.getNumberOfRealAndVirtualParticles());
@@ -777,8 +796,8 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			#endif
 			_state.incNumberOfTriangleComparisons(vertexA.getNumberOfTriangles(i) * vertexB.getNumberOfTriangles(j));
 		}
-
 	}
+	_state.incNumberOfParticleComparisons(vertexA.getNumberOfParticles() * vertexB.getNumberOfParticles());
 }
 
 void dem::mappings::Collision::enterCell(

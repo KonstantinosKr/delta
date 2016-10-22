@@ -29,7 +29,7 @@ Begin optimization report for: dem::State::writeToCheckpoint(const dem::State *,
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::writeToCheckpoint(const dem::State *, peano::grid::Checkpoint<dem::Vertex, dem::Cell> &) const) [1/47=2.1%] dem/State.cpp(17,104)
+INLINE REPORT: (dem::State::writeToCheckpoint(const dem::State *, peano::grid::Checkpoint<dem::Vertex, dem::Cell> &) const) [1/55=1.8%] dem/State.cpp(17,104)
 
 ===========================================================================
 
@@ -37,7 +37,7 @@ Begin optimization report for: dem::State::readFromCheckpoint(dem::State *, cons
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::readFromCheckpoint(dem::State *, const peano::grid::Checkpoint<dem::Vertex, dem::Cell> &)) [2/47=4.3%] dem/State.cpp(21,105)
+INLINE REPORT: (dem::State::readFromCheckpoint(dem::State *, const peano::grid::Checkpoint<dem::Vertex, dem::Cell> &)) [2/55=3.6%] dem/State.cpp(21,105)
 
 ===========================================================================
 
@@ -45,7 +45,7 @@ Begin optimization report for: dem::State::State(dem::State *)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::State(dem::State *)) [3/47=6.4%] dem/State.cpp(8,10)
+INLINE REPORT: (dem::State::State(dem::State *)) [3/55=5.5%] dem/State.cpp(8,10)
   -> INLINE (MANUAL): (7,13) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const) (isz = 9) (sz = 14)
     -> INLINE (MANUAL): ./peano/grid/State.h:(102,5) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *) (isz = 9) (sz = 14)
       -> EXTERN: ./peano/grid/State.cpph:(32,32) dem::records::State::State(dem::records::State *)
@@ -57,7 +57,7 @@ Begin optimization report for: dem::State::State(dem::State *const)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::State(dem::State *const)) [4/47=8.5%] dem/State.cpp(7,13)
+INLINE REPORT: (dem::State::State(dem::State *const)) [4/55=7.3%] dem/State.cpp(7,13)
   -> INLINE: (7,13) dem::State::State(dem::State *) (isz = 9) (sz = 14)
     -> INLINE (MANUAL): (7,13) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const) (isz = 9) (sz = 14)
       -> INLINE (MANUAL): ./peano/grid/State.h:(102,5) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *) (isz = 9) (sz = 14)
@@ -70,7 +70,7 @@ Begin optimization report for: dem::State::State(dem::State *, const peano::grid
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::State(dem::State *, const peano::grid::State<dem::records::State>::PersistentState &)) [5/47=10.6%] dem/State.cpp(13,18)
+INLINE REPORT: (dem::State::State(dem::State *, const peano::grid::State<dem::records::State>::PersistentState &)) [5/55=9.1%] dem/State.cpp(13,18)
   -> INLINE (MANUAL): (13,8) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 28) (sz = 35)
     -> INLINE (MANUAL): ./peano/grid/State.h:(103,5) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 28) (sz = 35)
       -> EXTERN: ./peano/grid/State.cpph:(48,32) dem::records::StatePacked::~StatePacked(dem::records::StatePacked *)
@@ -85,7 +85,7 @@ Begin optimization report for: dem::State::State(dem::State *const, const peano:
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::State(dem::State *const, const peano::grid::State<dem::records::State>::PersistentState &)) [6/47=12.8%] dem/State.cpp(12,13)
+INLINE REPORT: (dem::State::State(dem::State *const, const peano::grid::State<dem::records::State>::PersistentState &)) [6/55=10.9%] dem/State.cpp(12,13)
   -> INLINE: (12,13) dem::State::State(dem::State *, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 28) (sz = 35)
     -> INLINE (MANUAL): (13,8) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *const, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 28) (sz = 35)
       -> INLINE (MANUAL): ./peano/grid/State.h:(103,5) peano::grid::State<dem::records::State>::State(peano::grid::State<dem::records::State> *, const peano::grid::State<dem::records::State>::PersistentState &) (isz = 28) (sz = 35)
@@ -101,16 +101,16 @@ Begin optimization report for: dem::State::merge(dem::State *, const dem::State 
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::merge(dem::State *, const dem::State &)) [7/47=14.9%] dem/State.cpp(60,51)
-  -> INLINE (MANUAL): (61,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (61,51) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (61,102) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (62,14) dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (62,59) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (62,118) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (63,14) dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (63,57) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (63,114) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::merge(dem::State *, const dem::State &)) [7/55=12.7%] dem/State.cpp(68,51)
+  -> INLINE (MANUAL): (69,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (69,51) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (69,102) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (70,14) dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (70,59) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (70,118) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (71,14) dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (71,57) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (71,114) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -118,7 +118,7 @@ Begin optimization report for: dem::State::clearAccumulatedData(dem::State *)
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::clearAccumulatedData(dem::State *)) [8/47=17.0%] dem/State.cpp(25,41)
+INLINE REPORT: (dem::State::clearAccumulatedData(dem::State *)) [8/55=14.5%] dem/State.cpp(25,41)
   -> INLINE (MANUAL): (26,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
   -> INLINE (MANUAL): (27,14) dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &) (isz = 0) (sz = 7)
   -> INLINE (MANUAL): (28,14) dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &) (isz = 0) (sz = 7)
@@ -130,9 +130,9 @@ Begin optimization report for: dem::State::incNumberOfContactPoints(dem::State *
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::incNumberOfContactPoints(dem::State *, int)) [9/47=19.1%] dem/State.cpp(44,54)
-  -> INLINE (MANUAL): (45,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (45,51) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::incNumberOfContactPoints(dem::State *, int)) [9/55=16.4%] dem/State.cpp(48,54)
+  -> INLINE (MANUAL): (49,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (49,51) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -140,9 +140,9 @@ Begin optimization report for: dem::State::decNumberOfContactPoints(dem::State *
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::decNumberOfContactPoints(dem::State *, int)) [10/47=21.3%] dem/State.cpp(48,54)
-  -> INLINE (MANUAL): (49,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (49,51) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::decNumberOfContactPoints(dem::State *, int)) [10/55=18.2%] dem/State.cpp(52,54)
+  -> INLINE (MANUAL): (53,14) dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (53,51) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -150,9 +150,9 @@ Begin optimization report for: dem::State::incNumberOfParticleReassignments(dem:
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::incNumberOfParticleReassignments(dem::State *, int)) [11/47=23.4%] dem/State.cpp(52,62)
-  -> INLINE (MANUAL): (53,14) dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (53,59) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::incNumberOfParticleReassignments(dem::State *, int)) [11/55=20.0%] dem/State.cpp(56,62)
+  -> INLINE (MANUAL): (57,14) dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (57,59) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -160,9 +160,19 @@ Begin optimization report for: dem::State::incNumberOfTriangleComparisons(dem::S
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::incNumberOfTriangleComparisons(dem::State *, int)) [12/47=25.5%] dem/State.cpp(56,60)
-  -> INLINE (MANUAL): (57,14) dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (57,57) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::incNumberOfTriangleComparisons(dem::State *, int)) [12/55=21.8%] dem/State.cpp(60,60)
+  -> INLINE (MANUAL): (61,14) dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (61,57) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
+
+===========================================================================
+
+Begin optimization report for: dem::State::incNumberOfParticleComparisons(dem::State *, int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::incNumberOfParticleComparisons(dem::State *, int)) [13/55=23.6%] dem/State.cpp(64,60)
+  -> INLINE (MANUAL): (65,14) dem::records::State::setNumberOfParticleComparisons(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (65,57) dem::records::State::getNumberOfParticleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -170,7 +180,7 @@ Begin optimization report for: dem::State::getNumberOfContactPoints(const dem::S
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::getNumberOfContactPoints(const dem::State *) const) [13/47=27.7%] dem/State.cpp(32,53)
+INLINE REPORT: (dem::State::getNumberOfContactPoints(const dem::State *) const) [14/55=25.5%] dem/State.cpp(32,53)
   -> INLINE (MANUAL): (33,21) dem::records::State::getNumberOfContactPoints(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
@@ -179,7 +189,7 @@ Begin optimization report for: dem::State::getNumberOfParticleReassignments(cons
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::getNumberOfParticleReassignments(const dem::State *) const) [14/47=29.8%] dem/State.cpp(36,61)
+INLINE REPORT: (dem::State::getNumberOfParticleReassignments(const dem::State *) const) [15/55=27.3%] dem/State.cpp(36,61)
   -> INLINE (MANUAL): (37,21) dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
@@ -188,8 +198,17 @@ Begin optimization report for: dem::State::getNumberOfTriangleComparisons(const 
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::getNumberOfTriangleComparisons(const dem::State *) const) [15/47=31.9%] dem/State.cpp(40,59)
+INLINE REPORT: (dem::State::getNumberOfTriangleComparisons(const dem::State *) const) [16/55=29.1%] dem/State.cpp(40,59)
   -> INLINE (MANUAL): (41,21) dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
+
+===========================================================================
+
+Begin optimization report for: dem::State::getNumberOfParticleComparisons(const dem::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::getNumberOfParticleComparisons(const dem::State *) const) [17/55=30.9%] dem/State.cpp(44,59)
+  -> INLINE (MANUAL): (45,21) dem::records::State::getNumberOfParticleComparisons(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -197,8 +216,8 @@ Begin optimization report for: dem::State::getTimeStepSize(const dem::State *) c
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::getTimeStepSize(const dem::State *) const) [16/47=34.0%] dem/State.cpp(66,44)
-  -> INLINE (MANUAL): (67,21) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::getTimeStepSize(const dem::State *) const) [18/55=32.7%] dem/State.cpp(74,44)
+  -> INLINE (MANUAL): (75,21) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -206,8 +225,8 @@ Begin optimization report for: dem::State::getTime(const dem::State *) const
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::getTime(const dem::State *) const) [17/47=36.2%] dem/State.cpp(70,36)
-  -> INLINE (MANUAL): (71,21) dem::records::State::getCurrentTime(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::getTime(const dem::State *) const) [19/55=34.5%] dem/State.cpp(78,36)
+  -> INLINE (MANUAL): (79,21) dem::records::State::getCurrentTime(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -215,8 +234,8 @@ Begin optimization report for: dem::State::informStateThatTwoParticlesAreClose(d
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::informStateThatTwoParticlesAreClose(dem::State *)) [18/47=38.3%] dem/State.cpp(79,56)
-  -> INLINE (MANUAL): (80,14) dem::records::State::setTwoParticlesAreClose(dem::records::State *, const bool &) (isz = 0) (sz = 7)
+INLINE REPORT: (dem::State::informStateThatTwoParticlesAreClose(dem::State *)) [20/55=36.4%] dem/State.cpp(87,56)
+  -> INLINE (MANUAL): (88,14) dem::records::State::setTwoParticlesAreClose(dem::records::State *, const bool &) (isz = 0) (sz = 7)
 
 ===========================================================================
 
@@ -224,17 +243,17 @@ Begin optimization report for: dem::State::finishedTimeStep(dem::State *, double
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::finishedTimeStep(dem::State *, double)) [19/47=40.4%] dem/State.cpp(83,52)
-  -> INLINE (MANUAL): (84,14) dem::records::State::setCurrentTime(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (84,41) dem::records::State::getCurrentTime(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (84,71) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (85,18) dem::records::State::getTwoParticlesAreClose(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (86,18) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (87,15) dem::records::State::setTimeStepSize(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (87,42) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (90,18) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
-  -> INLINE (MANUAL): (91,15) dem::records::State::setTimeStepSize(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (91,42) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::finishedTimeStep(dem::State *, double)) [21/55=38.2%] dem/State.cpp(99,52)
+  -> INLINE (MANUAL): (100,14) dem::records::State::setCurrentTime(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (100,41) dem::records::State::getCurrentTime(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (100,71) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (101,18) dem::records::State::getTwoParticlesAreClose(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (102,18) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (103,15) dem::records::State::setTimeStepSize(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (103,42) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (106,18) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
+  -> INLINE (MANUAL): (107,15) dem::records::State::setTimeStepSize(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (107,42) dem::records::State::getTimeStepSize(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -242,9 +261,9 @@ Begin optimization report for: dem::State::incNumberOfParticles(dem::State *, in
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::incNumberOfParticles(dem::State *, int)) [20/47=42.6%] dem/State.cpp(95,50)
-  -> INLINE (MANUAL): (96,13) dem::records::State::setNumberOfParticles(dem::records::State *, const int &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (96,45) dem::records::State::getNumberOfParticles(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::incNumberOfParticles(dem::State *, int)) [22/55=40.0%] dem/State.cpp(111,50)
+  -> INLINE (MANUAL): (112,13) dem::records::State::setNumberOfParticles(dem::records::State *, const int &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (112,45) dem::records::State::getNumberOfParticles(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -252,8 +271,8 @@ Begin optimization report for: dem::State::getNumberOfParticles(const dem::State
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::getNumberOfParticles(const dem::State *) const) [21/47=44.7%] dem/State.cpp(103,46)
-  -> INLINE (MANUAL): (104,20) dem::records::State::getNumberOfParticles(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::getNumberOfParticles(const dem::State *) const) [23/55=41.8%] dem/State.cpp(119,46)
+  -> INLINE (MANUAL): (120,20) dem::records::State::getNumberOfParticles(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -261,9 +280,9 @@ Begin optimization report for: dem::State::incNumberOfObstacles(dem::State *, in
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::incNumberOfObstacles(dem::State *, int)) [22/47=46.8%] dem/State.cpp(99,50)
-  -> INLINE (MANUAL): (100,13) dem::records::State::setNumberOfObstacles(dem::records::State *, const int &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (100,45) dem::records::State::getNumberOfObstacles(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::incNumberOfObstacles(dem::State *, int)) [24/55=43.6%] dem/State.cpp(115,50)
+  -> INLINE (MANUAL): (116,13) dem::records::State::setNumberOfObstacles(dem::records::State *, const int &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (116,45) dem::records::State::getNumberOfObstacles(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -271,8 +290,26 @@ Begin optimization report for: dem::State::getNumberOfObstacles(const dem::State
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::getNumberOfObstacles(const dem::State *) const) [23/47=48.9%] dem/State.cpp(107,46)
-  -> INLINE (MANUAL): (108,20) dem::records::State::getNumberOfObstacles(const dem::records::State *) const (isz = 0) (sz = 6)
+INLINE REPORT: (dem::State::getNumberOfObstacles(const dem::State *) const) [25/55=45.5%] dem/State.cpp(123,46)
+  -> INLINE (MANUAL): (124,20) dem::records::State::getNumberOfObstacles(const dem::records::State *) const (isz = 0) (sz = 6)
+
+===========================================================================
+
+Begin optimization report for: dem::State::informStatePenetration(dem::State *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::informStatePenetration(dem::State *)) [26/55=47.3%] dem/State.cpp(91,42)
+  -> INLINE (MANUAL): (92,14) dem::records::State::setPenetrationOccured(dem::records::State *, const bool &) (isz = 0) (sz = 7)
+
+===========================================================================
+
+Begin optimization report for: dem::State::getPenetrationStatus(dem::State *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (dem::State::getPenetrationStatus(dem::State *)) [27/55=49.1%] dem/State.cpp(95,40)
+  -> INLINE (MANUAL): (96,21) dem::records::State::getPenetrationOccured(const dem::records::State *) const (isz = 0) (sz = 6)
 
 ===========================================================================
 
@@ -280,7 +317,7 @@ Begin optimization report for: dem::records::State::getNumberOfContactPoints(con
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::getNumberOfContactPoints(const dem::records::State *) const) ./dem/records/State.h(5532,2)
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfContactPoints(const dem::records::State *) const) ./dem/records/State.h(5902,2)
 
 ===========================================================================
 
@@ -288,7 +325,7 @@ Begin optimization report for: dem::records::State::setNumberOfContactPoints(dem
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &)) ./dem/records/State.h(5542,2)
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfContactPoints(dem::records::State *, const double &)) ./dem/records/State.h(5912,2)
 
 ===========================================================================
 
@@ -296,7 +333,7 @@ Begin optimization report for: dem::records::State::getNumberOfParticleReassignm
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const) ./dem/records/State.h(5552,2)
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfParticleReassignments(const dem::records::State *) const) ./dem/records/State.h(5922,2)
 
 ===========================================================================
 
@@ -304,7 +341,7 @@ Begin optimization report for: dem::records::State::setNumberOfParticleReassignm
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &)) ./dem/records/State.h(5562,2)
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfParticleReassignments(dem::records::State *, const double &)) ./dem/records/State.h(5932,2)
 
 ===========================================================================
 
@@ -312,7 +349,7 @@ Begin optimization report for: dem::records::State::getNumberOfTriangleCompariso
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const) ./dem/records/State.h(5572,2)
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfTriangleComparisons(const dem::records::State *) const) ./dem/records/State.h(5942,2)
 
 ===========================================================================
 
@@ -320,7 +357,23 @@ Begin optimization report for: dem::records::State::setNumberOfTriangleCompariso
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &)) ./dem/records/State.h(5582,2)
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfTriangleComparisons(dem::records::State *, const double &)) ./dem/records/State.h(5952,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getNumberOfParticleComparisons(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfParticleComparisons(const dem::records::State *) const) ./dem/records/State.h(5962,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setNumberOfParticleComparisons(dem::records::State *, const double &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfParticleComparisons(dem::records::State *, const double &)) ./dem/records/State.h(5972,2)
 
 ===========================================================================
 
@@ -328,7 +381,7 @@ Begin optimization report for: dem::records::State::getTimeStepSize(const dem::r
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::getTimeStepSize(const dem::records::State *) const) ./dem/records/State.h(5592,2)
+DEAD STATIC FUNCTION: (dem::records::State::getTimeStepSize(const dem::records::State *) const) ./dem/records/State.h(5982,2)
 
 ===========================================================================
 
@@ -336,7 +389,7 @@ Begin optimization report for: dem::records::State::setTimeStepSize(dem::records
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::setTimeStepSize(dem::records::State *, const double &)) ./dem/records/State.h(5602,2)
+DEAD STATIC FUNCTION: (dem::records::State::setTimeStepSize(dem::records::State *, const double &)) ./dem/records/State.h(5992,2)
 
 ===========================================================================
 
@@ -344,7 +397,7 @@ Begin optimization report for: dem::records::State::getCurrentTime(const dem::re
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::getCurrentTime(const dem::records::State *) const) ./dem/records/State.h(5612,2)
+DEAD STATIC FUNCTION: (dem::records::State::getCurrentTime(const dem::records::State *) const) ./dem/records/State.h(6002,2)
 
 ===========================================================================
 
@@ -352,7 +405,7 @@ Begin optimization report for: dem::records::State::setCurrentTime(dem::records:
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::setCurrentTime(dem::records::State *, const double &)) ./dem/records/State.h(5622,2)
+DEAD STATIC FUNCTION: (dem::records::State::setCurrentTime(dem::records::State *, const double &)) ./dem/records/State.h(6012,2)
 
 ===========================================================================
 
@@ -360,7 +413,7 @@ Begin optimization report for: dem::records::State::getTwoParticlesAreClose(cons
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::getTwoParticlesAreClose(const dem::records::State *) const) ./dem/records/State.h(5632,2)
+DEAD STATIC FUNCTION: (dem::records::State::getTwoParticlesAreClose(const dem::records::State *) const) ./dem/records/State.h(6022,2)
 
 ===========================================================================
 
@@ -368,7 +421,23 @@ Begin optimization report for: dem::records::State::setTwoParticlesAreClose(dem:
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::setTwoParticlesAreClose(dem::records::State *, const bool &)) ./dem/records/State.h(5642,2)
+DEAD STATIC FUNCTION: (dem::records::State::setTwoParticlesAreClose(dem::records::State *, const bool &)) ./dem/records/State.h(6032,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::getPenetrationOccured(const dem::records::State *) const
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::getPenetrationOccured(const dem::records::State *) const) ./dem/records/State.h(6042,2)
+
+===========================================================================
+
+Begin optimization report for: dem::records::State::setPenetrationOccured(dem::records::State *, const bool &)
+
+    Report from: Interprocedural optimizations [ipo]
+
+DEAD STATIC FUNCTION: (dem::records::State::setPenetrationOccured(dem::records::State *, const bool &)) ./dem/records/State.h(6052,2)
 
 ===========================================================================
 
@@ -376,7 +445,7 @@ Begin optimization report for: dem::records::State::getNumberOfParticles(const d
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::getNumberOfParticles(const dem::records::State *) const) ./dem/records/State.h(5652,2)
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfParticles(const dem::records::State *) const) ./dem/records/State.h(6062,2)
 
 ===========================================================================
 
@@ -384,7 +453,7 @@ Begin optimization report for: dem::records::State::setNumberOfParticles(dem::re
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::setNumberOfParticles(dem::records::State *, const int &)) ./dem/records/State.h(5662,2)
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfParticles(dem::records::State *, const int &)) ./dem/records/State.h(6072,2)
 
 ===========================================================================
 
@@ -392,7 +461,7 @@ Begin optimization report for: dem::records::State::getNumberOfObstacles(const d
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::getNumberOfObstacles(const dem::records::State *) const) ./dem/records/State.h(5672,2)
+DEAD STATIC FUNCTION: (dem::records::State::getNumberOfObstacles(const dem::records::State *) const) ./dem/records/State.h(6082,2)
 
 ===========================================================================
 
@@ -400,7 +469,7 @@ Begin optimization report for: dem::records::State::setNumberOfObstacles(dem::re
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::setNumberOfObstacles(dem::records::State *, const int &)) ./dem/records/State.h(5682,2)
+DEAD STATIC FUNCTION: (dem::records::State::setNumberOfObstacles(dem::records::State *, const int &)) ./dem/records/State.h(6092,2)
 
 ===========================================================================
 
@@ -408,7 +477,7 @@ Begin optimization report for: dem::records::State::setIsTraversalInverted(dem::
 
     Report from: Interprocedural optimizations [ipo]
 
-DEAD STATIC FUNCTION: (dem::records::State::setIsTraversalInverted(dem::records::State *, const bool &)) ./dem/records/State.h(6210,2)
+DEAD STATIC FUNCTION: (dem::records::State::setIsTraversalInverted(dem::records::State *, const bool &)) ./dem/records/State.h(6620,2)
 
 ===========================================================================
 
@@ -464,8 +533,8 @@ Begin optimization report for: dem::State::setInitialTimeStepSize(dem::State *, 
 
     Report from: Interprocedural optimizations [ipo]
 
-INLINE REPORT: (dem::State::setInitialTimeStepSize(dem::State *, double)) [47/47=100.0%] dem/State.cpp(74,55)
-  -> INLINE (MANUAL): (75,14) dem::records::State::setTimeStepSize(dem::records::State *, const double &) (isz = 0) (sz = 7)
-  -> INLINE (MANUAL): (76,14) dem::records::State::setCurrentTime(dem::records::State *, const double &) (isz = 0) (sz = 7)
+INLINE REPORT: (dem::State::setInitialTimeStepSize(dem::State *, double)) [55/55=100.0%] dem/State.cpp(82,55)
+  -> INLINE (MANUAL): (83,14) dem::records::State::setTimeStepSize(dem::records::State *, const double &) (isz = 0) (sz = 7)
+  -> INLINE (MANUAL): (84,14) dem::records::State::setCurrentTime(dem::records::State *, const double &) (isz = 0) (sz = 7)
 
 ===========================================================================

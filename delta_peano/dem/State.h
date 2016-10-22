@@ -82,10 +82,12 @@ class dem::State: public peano::grid::State< dem::records::State > {
     void decNumberOfContactPoints(int delta);
     void incNumberOfParticleReassignments(int delta);
     void incNumberOfTriangleComparisons(int delta);
+    void incNumberOfParticleComparisons(int delta);
 
     double getNumberOfContactPoints() const;
     double getNumberOfParticleReassignments() const;
     double getNumberOfTriangleComparisons() const;
+    double getNumberOfParticleComparisons() const;
 
     double getTimeStepSize() const;
     double getTime() const;

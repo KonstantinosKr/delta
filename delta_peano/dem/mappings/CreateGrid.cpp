@@ -149,11 +149,9 @@ void dem::mappings::CreateGrid::createCell(
 	bool PlaceParticleInCell       = true;
 	bool randomAlignedDomain = false;
 	bool particlesInHopper = false;
-	bool bricksInHopper = false;
 	bool keysInHopper = false;
 	bool twoParticleCrash = false;
 	bool freefallcase = false;
-	bool freefallBrickscase = false;
 	bool freefallKeyscase = false;
 	bool flatwallcase = false;
 	bool icecubecase = false;
@@ -186,9 +184,6 @@ void dem::mappings::CreateGrid::createCell(
 			break;
 		case freefall:
 			freefallcase = true;
-			break;
-		case freefallBricks:
-			freefallBrickscase = true;
 			break;
 		case freefallKeys:
 			freefallKeyscase = true;
@@ -230,7 +225,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
 				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _wallWidth;
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.8;
-				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon-0.0005;
+				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = 1;
 				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
@@ -369,50 +364,6 @@ void dem::mappings::CreateGrid::createCell(
 				return;
 			}
 			particlesInHopper = true;
-			break;
-		case hopperBricks:
-			if (coarseGridCell.isRoot() )
-			{
-				dem::Vertex&  vertex  = fineGridVertices[ fineGridVerticesEnumerator(0) ];
-				double centreAsArray[] = {fineGridVerticesEnumerator.getCellCenter()(0),
-										  fineGridVerticesEnumerator.getCellCenter()(1),
-										  fineGridVerticesEnumerator.getCellCenter()(2)};
-
-				const int     newParticleNumber = vertex.createNewParticle(centreAsArray);
-
-				double _hopperWidth = 0.3;
-				double _hopperHatch = 0.15;
-
-				_numberOfParticles++; _numberOfObstacles++;
-
-				std::vector<double>  xCoordinates;
-				std::vector<double>  yCoordinates;
-				std::vector<double>  zCoordinates;
-
-				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
-
-				for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
-				{
-					vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
-					vertex.getYCoordinatesAsVector(newParticleNumber).push_back( yCoordinates[i] );
-					vertex.getZCoordinatesAsVector(newParticleNumber).push_back( zCoordinates[i] );
-
-					vertex.getXRefCoordinatesAsVector(newParticleNumber).push_back(xCoordinates[i]);
-					vertex.getYRefCoordinatesAsVector(newParticleNumber).push_back(yCoordinates[i]);
-					vertex.getZRefCoordinatesAsVector(newParticleNumber).push_back(zCoordinates[i]);
-				}
-
-				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-
-				vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
-				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _hopperWidth*1.8;
-				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _hopperWidth * 1.8;
-				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon-0.0005;
-				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
-				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
-			}
-			bricksInHopper = true;
 			break;
 		case hopperKeys:
 			if (coarseGridCell.isRoot() )
@@ -560,10 +511,7 @@ void dem::mappings::CreateGrid::createCell(
 			_particleDiamMax = fineGridVerticesEnumerator.getCellSize()(0);
 			_particleDiamMin = std::min(_particleDiamMin,_particleDiamMax);
 			logWarning( "createCell(...)", "particle size has been too small for coarsest prescribed grid. Reduce particle size to " << _particleDiamMin << "-" << _particleDiamMax );
-		}else
-		{
-			logDebug( "createCell", "particlesInCellPerAxis="<< particlesInCellPerAxis );
-		}
+		}else{logDebug( "createCell", "particlesInCellPerAxis="<< particlesInCellPerAxis );}
 
 		dfor(k,particlesInCellPerAxis)
 		{
@@ -641,21 +589,6 @@ void dem::mappings::CreateGrid::createCell(
 					delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates );
 				} else {return;}
 			}
-			else if(bricksInHopper)
-			{
-				double _hopperWidth = 0.3;
-
-				double coarseCenterHopperMarginUpper = 0.5 + (_hopperWidth/2);
-				double coarseCenterHopperMarginLower = 0.5 - (_hopperWidth/2);
-				if(centreAsArray[0] < coarseCenterHopperMarginUpper && centreAsArray[0] > coarseCenterHopperMarginLower &&
-				   centreAsArray[1] < coarseCenterHopperMarginUpper+0.2 && centreAsArray[1] > coarseCenterHopperMarginUpper &&
-				   centreAsArray[2] < coarseCenterHopperMarginUpper && centreAsArray[2] > coarseCenterHopperMarginLower)
-				{
-					newParticleNumber = vertex.createNewParticle( centre );
-					if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-					delta::primitives::generateBrick( centreAsArray,particleDiameter*4.5,xCoordinates,yCoordinates,zCoordinates );
-				} else {return;}
-			}
 			else if(keysInHopper)
 			{
 				double _hopperWidth = 0.26;
@@ -675,12 +608,7 @@ void dem::mappings::CreateGrid::createCell(
 				newParticleNumber = vertex.createNewParticle( centre );
 				if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
 				delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates );
-			}
-			else if(freefallBrickscase)
-			{
-				newParticleNumber = vertex.createNewParticle( centre );
-				if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-				delta::primitives::generateBrick( centreAsArray,particleDiameter*4.5,xCoordinates,yCoordinates,zCoordinates );
+				//delta::primitives::generateBrick( centreAsArray,particleDiameter*4.5,xCoordinates,yCoordinates,zCoordinates );
 			}
 			else if(freefallKeyscase)
 			{
@@ -788,7 +716,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin             = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 			}else
 			{
-				vertex.getParticle(newParticleNumber)._persistentRecords._hMin             = particleDiameter*0.5;
+				vertex.getParticle(newParticleNumber)._persistentRecords._hMin             = 0;
 			}
 			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
 			vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;

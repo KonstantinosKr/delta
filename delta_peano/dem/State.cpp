@@ -26,6 +26,7 @@ void dem::State::clearAccumulatedData() {
   _stateData.setNumberOfContactPoints(0.0);
   _stateData.setNumberOfParticleReassignments(0.0);
   _stateData.setNumberOfTriangleComparisons(0.0);
+  _stateData.setNumberOfParticleComparisons(0.0);
   _stateData.setTwoParticlesAreClose(false);
 }
 
@@ -39,6 +40,10 @@ double dem::State::getNumberOfParticleReassignments() const {
 
 double dem::State::getNumberOfTriangleComparisons() const {
   return _stateData.getNumberOfTriangleComparisons();
+}
+
+double dem::State::getNumberOfParticleComparisons() const {
+  return _stateData.getNumberOfParticleComparisons();
 }
 
 void dem::State::incNumberOfContactPoints(int delta) {
@@ -55,6 +60,10 @@ void dem::State::incNumberOfParticleReassignments(int delta) {
 
 void dem::State::incNumberOfTriangleComparisons(int delta) {
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + delta );
+}
+
+void dem::State::incNumberOfParticleComparisons(int delta) {
+  _stateData.setNumberOfParticleComparisons( _stateData.getNumberOfParticleComparisons() + delta );
 }
 
 void dem::State::merge( const State& otherState ) {

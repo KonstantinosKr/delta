@@ -92,6 +92,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
           logInfo("runAsMaster(...)", "iteration i=" << i
             << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
             << ", contact-points=" << repository.getState().getNumberOfContactPoints()
+			<< ", particle-cmp=" << repository.getState().getNumberOfParticleComparisons()
             << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
             << " | snapshot");
       }else
@@ -122,6 +123,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       {
 		  logInfo("runAsMaster(...)", "iteration i=" << i
 			<< ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+			<< ", particle-cmp=" << repository.getState().getNumberOfParticleComparisons()
 			<< ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
 			<< ", t=" << repository.getState().getTime()
 			<< ", dt=" << repository.getState().getTimeStepSize());

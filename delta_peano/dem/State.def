@@ -5,6 +5,7 @@ class dem::records::State {
   parallelise persistent double  numberOfContactPoints; 
   parallelise persistent double  numberOfParticleReassignments; 
   parallelise persistent double  numberOfTriangleComparisons; 
+  parallelise persistent double  numberOfParticleComparisons;
   parallelise persistent double  timeStepSize;
   parallelise persistent double  currentTime;
   parallelise persistent bool      twoParticlesAreClose;

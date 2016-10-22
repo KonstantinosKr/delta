@@ -10,7 +10,7 @@
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
 
-#define epsilon 0.002
+#define epsilon 0.0015
 
 tarch::logging::Log _log("");
 
@@ -168,17 +168,11 @@ int main(int argc, char** argv)
   else if (scenario=="hopper300") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.11, 0.11, 0.11, gridType, epsilon);
   }
-  else if (scenario=="hopperBricks") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperBricks, 0.15, 0.15, 0.15, gridType, epsilon);
-  }
   else if (scenario=="hopperKeys") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperKeys, 0.10, 0.10, 0.10, gridType, epsilon);
   }
   else if (scenario=="freefall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, 0.15, 0.15, 0.15, gridType, epsilon);
-  }
-  else if (scenario=="freefallBricks") {
-     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallBricks, 0.15, 0.15, 0.15, gridType, epsilon);
   }
   else if (scenario=="freefallKeys") {
      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallKeys, 0.15, 0.15, 0.15, gridType, epsilon);

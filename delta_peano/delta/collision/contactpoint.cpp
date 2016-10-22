@@ -63,7 +63,7 @@ delta::collision::contactpoint::contactpoint(
 
   epsilonTotal = epsilonA+epsilonB;
 
-  depth = (epsilonTotal - getDistance())/epsilonTotal;
+  depth = (epsilonTotal - getDistance());
 
   normal[0] = ((xPA-xPB)/getDistance());
   normal[1] = ((yPA-yPB)/getDistance());
