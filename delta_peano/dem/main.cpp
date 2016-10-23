@@ -172,7 +172,7 @@ int main(int argc, char** argv)
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperKeys, 0.10, 0.10, 0.10, gridType, epsilon);
   }
   else if (scenario=="freefall") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, 0.15, 0.15, 0.15, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
   }
   else if (scenario=="freefallKeys") {
      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallKeys, 0.15, 0.15, 0.15, gridType, epsilon);
