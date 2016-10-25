@@ -85,8 +85,6 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
 	if(plotThisTraversal)
     {
-
-
       if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
       {
           logInfo("runAsMaster(...)", "iteration i=" << i

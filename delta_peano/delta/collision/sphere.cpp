@@ -30,6 +30,7 @@
 
 #include "dem/mappings/Collision.h"
 
+
 std::vector<delta::collision::contactpoint> delta::collision::sphere(
 	      double   xCoordinatesOfPointsOfGeometryA,
 	      double   yCoordinatesOfPointsOfGeometryA,

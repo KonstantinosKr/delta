@@ -25,8 +25,7 @@
 #include <vector>
 
 #include "delta/collision/contactpoint.h"
-#include "tarch/logging/Log.h"
-
+#include "algo.h"
 #include "dem/mappings/Collision.h"
 
 

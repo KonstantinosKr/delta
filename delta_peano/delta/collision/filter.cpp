@@ -110,12 +110,12 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
 				break;
 			}
 
-			if (distance <= hMin && (tmp[i].getDistance() > tmp[j].getDistance()))
+			/*if (distance <= hMin && (tmp[i].getDistance() > tmp[j].getDistance()))
 			{
 				newContactPoints.erase(newContactPoints.begin()+(i-deleted));
 				deleted++;
 				break;
-			}
+			}*/
 		}
 	}
 }
@@ -141,7 +141,7 @@ void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredCo
 				newContactPoints.erase(newContactPoints.begin()+j);
 				break;
 			}
-
+/*
 			//distance between contacts points is smaller than hMin | new contact/body distance is smaller than the one stored  | delete stored
 			if (distance <= hMin && (newContactPoints[j].getDistance() < dataStoredContactPoints[i].getDistance()))
 			{
@@ -152,7 +152,7 @@ void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredCo
 			{
 				newContactPoints.erase(newContactPoints.begin()+j);
 				break;
-			}
+			}*/
 		}
 	}
 }

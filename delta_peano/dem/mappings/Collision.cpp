@@ -155,7 +155,8 @@ void dem::mappings::Collision::addCollision(
 		}
 	}else
 	{
-		delta::collision::filterNewContacts(newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+		//if enabled friction slide doesn't work (fix it)
+		//delta::collision::filterNewContacts(newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
 
 		#ifdef ompParticle
 			#pragma omp critical
