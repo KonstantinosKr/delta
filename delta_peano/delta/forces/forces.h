@@ -6,9 +6,11 @@
 namespace delta {
   namespace forces {
 
-  	double springDashpot(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3]);
+  	double spring(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3]);
+  	double springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3]);
 
   	void friction(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3]);
+  	void frictionSphere(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3]);
 
     /**
       @param angularVelocityA is a vector that indicates linear velocity from center of mass

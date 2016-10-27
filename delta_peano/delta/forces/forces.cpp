@@ -1,28 +1,40 @@
 #include "forces.h"
 
-#define SPRING 1E6
+//particle parameters
+#define SPRING 5E5
 #define DAMPER 0.1
-#define FRICTION 0.3
-#define FRICTIONROLLING 0.0005
+#define FRICTION 0.0
 
-double delta::forces::springDashpot(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3])
+//sphere parameters that work
+#define SSPRING 1E6
+#define SDAMPER 0.2
+#define SFRICTION 0.3
+#define SFRICTIONROLLING 0.005
+
+
+double delta::forces::spring(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3])
 {
   iREAL ma = (1/massA) + (1/massB);
+  iREAL damping1 = 2 * DAMPER * sqrt(SPRING*ma);
   
-  //iREAL damp = log(0.7)*sqrt(1/(log(0.7)*log(0.7)+(3.14*3.14)));
-  //printf("damp:%f\n", damp)
+  //iREAL mij = (massA*massB)/(massA+massB);
+  //iREAL damping2 = -2 * DAMPER * mij;
 
-  iREAL damping = DAMPER * 2 * sqrt(SPRING*ma);
+  //iREAL damping3 = log(0.7)*sqrt(1/(log(0.7)*log(0.7)+(3.14*3.14)));
 
   iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
 
-  iREAL force = SPRING*depth + damping*velocity;
+  //printf("damp1:%f damp2:%f damp3:%f vel:%f\n", damping1, damping2, damping3, velocity);
+
+  iREAL damp = damping1*velocity;
+
+  iREAL force = SPRING*depth + damp;
 
   f[0] = force*normal[0];
   f[1] = force*normal[1];
   f[2] = force*normal[2];
 
-  //printf("Velocity:%f DEPTH:%f normal: %f %f %f FORCE:%f force: %f %f %f vel:%f %f %f\n", velocity, depth, normal[0], normal[1], normal[2], force, f[0], f[1], f[2], relativeVelocity[0], relativeVelocity[1], relativeVelocity[2]);
+  printf("Velocity:%f depth:%f force:%f damp:%f\n", velocity, depth, force, damp);
   return force;
 }
 
@@ -37,6 +49,38 @@ void delta::forces::friction(iREAL normal[3], iREAL vi[3], iREAL force, iREAL fr
   friction[0] =  -vt[0]*FRICTION*force;
   friction[1] =  -vt[1]*FRICTION*force;
   friction[2] =  -vt[2]*FRICTION*force;
+}
+
+
+double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3])
+{
+  iREAL ma = (1/massA) + (1/massB);
+  iREAL damping = 2 * SDAMPER * sqrt(SSPRING*ma);
+
+  iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
+
+  iREAL damp = damping*velocity;
+
+  iREAL force = SSPRING*depth + damp;
+
+  f[0] = force*normal[0];
+  f[1] = force*normal[1];
+  f[2] = force*normal[2];
+
+  return force;
+}
+
+void delta::forces::frictionSphere(iREAL normal[3], iREAL vi[3], iREAL force, iREAL friction[3])
+{
+  iREAL vt[3];
+
+  vt[0] = vi[0] - normal[0]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
+  vt[1] = vi[1] - normal[1]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
+  vt[2] = vi[2] - normal[2]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
+
+  friction[0] =  -vt[0]*SFRICTION*force;
+  friction[1] =  -vt[1]*SFRICTION*force;
+  friction[2] =  -vt[2]*SFRICTION*force;
 }
 
 void delta::forces::getContactForces(
@@ -83,16 +127,26 @@ void delta::forces::getContactForces(
         vij[1] = vj[1] - vi[1];
         vij[2] = vj[2] - vi[2];
 
-        iREAL f[3], friction[3];
-
-        iREAL forc = delta::forces::springDashpot(conpnt[k].normal, conpnt[k].depth, vij, massA, massB, f);
+        iREAL f[3], friction[3], forc;
 
         friction[0] = 0.0;
         friction[1] = 0.0;
         friction[2] = 0.0;
 
-        if(conpnt[k].frictionType > 2)
-        	delta::forces::friction(conpnt[k].normal, vi, forc, friction);
+        if(isSphere)
+        {
+        	forc = delta::forces::springSphere(conpnt[k].normal, conpnt[k].depth, vij, massA, massB, f);
+
+            if(conpnt[k].frictionType > 2)
+            	delta::forces::frictionSphere(conpnt[k].normal, vi, forc, friction);
+        }
+        else{
+            forc = delta::forces::spring(conpnt[k].normal, conpnt[k].depth, vij, massA, massB, f);
+
+            if(conpnt[k].frictionType > 2)
+            	delta::forces::friction(conpnt[k].normal, vi, forc, friction);
+        }
+
 
         f[0] = f[0] + friction[0];
         f[1] = f[1] + friction[1];
@@ -126,9 +180,9 @@ void delta::forces::getContactForces(
 
 			if(w>0.0)
 			{
-				torque[0] += -(vij[0]/w)*FRICTIONROLLING*forc;
-				torque[1] += -(vij[1]/w)*FRICTIONROLLING*forc;
-				torque[2] += -(vij[2]/w)*FRICTIONROLLING*forc;
+				torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
+				torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
+				torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
 			}
         }
     }

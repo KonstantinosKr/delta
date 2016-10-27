@@ -10,7 +10,7 @@
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
 
-#define epsilon 0.0015
+#define epsilon 0.002
 
 tarch::logging::Log _log("");
 
@@ -36,9 +36,9 @@ int main(int argc, char** argv)
   }
 
   #ifdef SharedMemoryParallelisation
-  const int NumberOfArguments = 13;
+  const int NumberOfArguments = 14;
   #else
-  const int NumberOfArguments = 12;
+  const int NumberOfArguments = 13;
   #endif
 
   if (argc!=NumberOfArguments) {
@@ -55,6 +55,7 @@ int main(int argc, char** argv)
               << " gravity             floating point number" << std::endl
               << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, gjk, add sphere- for sphere check" << std::endl
               << " [core-count]        only required if you have translated the code with TBBs" << std::endl
+			  << " number-of-triangles per particle" << std::endl
               << std::endl << std::endl << std::endl << std::endl
               << "Scenarios" << std::endl
               << "=========" << std::endl
@@ -102,8 +103,9 @@ int main(int argc, char** argv)
   const double       gravity             = atof(argv[9]);
   const std::string  collisionModel      = argv[10];
   const double		 realSnapshot		 = atof(argv[11]);
+  const int			 noTriangles 		 = atof(argv[12]);
   #ifdef SharedMemoryParallelisation
-  const int          numberOfCores       = atoi(argv[12]);
+  const int          numberOfCores       = atoi(argv[13]);
   #else
   const int          numberOfCores       = 0;
   #endif
@@ -142,61 +144,61 @@ int main(int argc, char** argv)
   }
 
   if (scenario=="black-hole-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="black-hole-with-aligned-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithAlignedCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithAlignedCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="black-hole") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHole, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHole, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="random-velocities-with-aligned-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithAlignedCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithAlignedCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="random-velocities-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="random-velocities") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::Random, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::Random, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="two-particles-crash") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopper") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.15, 0.15, 0.15, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopper300") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.11, 0.11, 0.11, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopperKeys") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperKeys, 0.10, 0.10, 0.10, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperKeys, 0.10, 0.10, 0.10, gridType, epsilon, noTriangles);
   }
   else if (scenario=="freefall") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="freefallKeys") {
-     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallKeys, 0.15, 0.15, 0.15, gridType, epsilon);
+     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallKeys, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
    }
   else if (scenario=="flatwall") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::flatwall, 0.15, 0.15, 0.15, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::flatwall, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="icecube"){
-	dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::icecube, 0.15, 0.15, 0.15, gridType, epsilon);
+	dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::icecube, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="friction") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::friction, 0.15, 0.15, 0.15, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::friction, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="frictionSlide") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide, 0.15, 0.15, 0.15, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="domino") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::domino, 0.15, 0.15, 0.15, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::domino, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="stability") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::stability, 0.15, 0.15, 0.15, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::stability, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="sla") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla, 0.15, 0.15, 0.15, gridType, epsilon);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;

@@ -45,8 +45,9 @@ void delta::primitives::generateParticle(
   double  h,
   std::vector<double>&  xCoordinates,
   std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates
-) {
+  std::vector<double>&  zCoordinates,
+  int noPointsPerParticle)
+{
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
   assert(zCoordinates.empty());
@@ -55,13 +56,13 @@ void delta::primitives::generateParticle(
 
   double diameter = h * 0.9; //diameter -> make it slightly smaller
 
-  int pointsize = 20; //number of points for point cloud
+  int pointsize = noPointsPerParticle; //number of points for point cloud
 
   double eps = 0.25; //0.25 eps is the roundness degree
 
 //  srand48(time(NULL));
 
-  double v[10000][3];
+  double v[100000][3];
   for(int i = 0; i<pointsize; i++) //create point cloud and do delaunay hull triangulation
   {
     double rng1 = 0;

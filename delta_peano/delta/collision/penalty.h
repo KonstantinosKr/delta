@@ -29,6 +29,7 @@
 #include <float.h>
 #include "algo.h"
 
+#define MaxNumberOfNewtonIterations 8
 namespace delta {
   namespace collision {
     void cleanPenaltyStatistics();
@@ -122,7 +123,6 @@ namespace delta {
       double&  xPB,
       double&  yPB,
       double&  zPB,
-      int numberOfNewtonIterations,
       double MaxErrorOfPenaltyMethod,
       bool& failed) {
 
@@ -190,7 +190,7 @@ namespace delta {
      x[3] = 0.33;
 
       //Newton loop
-      for(int i=0;i<numberOfNewtonIterations;i++)
+      for(int i=0;i<MaxNumberOfNewtonIterations;i++)
       {
      	 //Declare loop variables;
      	 iREAL dx[4] __attribute__ ((aligned(byteAlignment)));
@@ -281,7 +281,6 @@ namespace delta {
       double&  xPB,
       double&  yPB,
       double&  zPB,
-      int      maxNumberOfNewtonIterations,
       double   maxError,
       int&     numberOfNewtonIterationsRequired
     );

@@ -26,7 +26,7 @@
 #include "penalty.h"
 
 namespace {
-  const int MaxNumberOfNewtonIterations __attribute__ ((aligned(byteAlignment))) = 32;
+  //const int MaxNumberOfNewtonIterations __attribute__ ((aligned(byteAlignment))) = 8;
 
   std::vector<int> __attribute__ ((aligned(byteAlignment))) numberOfNewtonIterations(MaxNumberOfNewtonIterations+1);
 }
@@ -100,7 +100,6 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
         yCoordinatesOfPointsOfGeometryB+(iB),
         zCoordinatesOfPointsOfGeometryB+(iB),
         xPA, yPA, zPA, xPB, yPB, zPB,
-        MaxNumberOfNewtonIterations,
         MaxError,
         numberOfNewtonIterationsRequired
       );
@@ -183,7 +182,6 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
         yCoordinatesOfPointsOfGeometryB+(iB),
         zCoordinatesOfPointsOfGeometryB+(iB),
         xPA, yPA, zPA, xPB, yPB, zPB,
-        MaxNumberOfNewtonIterations,
         MaxError, failed);
 
       contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
@@ -216,7 +214,6 @@ extern void delta::collision::penalty(
    double&  xPB,
    double&  yPB,
    double&  zPB,
-   int numberOfNewtonIterations,
    double MaxErrorOfPenaltyMethod,
    bool& failed);
  
@@ -234,10 +231,8 @@ extern void delta::collision::penalty(
     double&  xPB,
     double&  yPB,
     double&  zPB,
-    int      maxNumberOfNewtonIterations,
     double   maxError,
-    int&     numberOfNewtonIterationsRequired
-    )
+    int&     numberOfNewtonIterationsRequired)
  {
   iREAL BA[3] __attribute__ ((aligned(byteAlignment)));
   iREAL CA[3] __attribute__ ((aligned(byteAlignment)));
@@ -294,7 +289,7 @@ extern void delta::collision::penalty(
   x[3] = 0.33;
 
    //Newton loop
-   for(int i=0;i<maxNumberOfNewtonIterations;i++)
+   for(int i=0;i<MaxNumberOfNewtonIterations;i++)
    {
   	 //Declare loop variables;
   	 iREAL dx[4] __attribute__ ((aligned(byteAlignment)));

@@ -40,7 +40,7 @@ namespace delta {
       double    h,
       std::vector<double>&  xCoordinates,
       std::vector<double>&  yCoordinates,
-      std::vector<double>&  zCoordinates
-    );
+      std::vector<double>&  zCoordinates,
+	  int noPointsPerParticle);
   }
 }

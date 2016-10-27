@@ -82,7 +82,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
           xCoordinatesOfPointsOfGeometryB+(iB),
           yCoordinatesOfPointsOfGeometryB+(iB),
           zCoordinatesOfPointsOfGeometryB+(iB),
-          xPA, yPA, zPA, xPB, yPB, zPB, MaxNewtonIterations, MaxErrorOfPenaltyMethod, failed);
+          xPA, yPA, zPA, xPB, yPB, zPB, MaxErrorOfPenaltyMethod, failed);
 
       if (failed) 
       {
@@ -173,7 +173,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
           xCoordinatesOfPointsOfGeometryB+(iB),
           yCoordinatesOfPointsOfGeometryB+(iB),
           zCoordinatesOfPointsOfGeometryB+(iB),
-          xPA, yPA, zPA, xPB, yPB, zPB, MaxNewtonIterations, MaxErrorOfPenaltyMethod, failed);
+          xPA, yPA, zPA, xPB, yPB, zPB, MaxErrorOfPenaltyMethod, failed);
 
       if (failed)
       {
@@ -268,7 +268,6 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
             yCoordinatesOfPointsOfGeometryB+(iB),
             zCoordinatesOfPointsOfGeometryB+(iB),
             xPA, yPA, zPA, xPB, yPB, zPB, 
-	    MaxNewtonIterations, 
 	    MaxErrorOfPenaltyMethod, failed); 
 
         contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
@@ -387,7 +386,6 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
             yCoordinatesOfPointsOfGeometryB+(iB),
             zCoordinatesOfPointsOfGeometryB+(iB),
             xPA, yPA, zPA, xPB, yPB, zPB,
-	    MaxNewtonIterations,
 	    MaxErrorOfPenaltyMethod, failed);
 
         contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);

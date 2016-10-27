@@ -50,6 +50,23 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
 tarch::logging::Log		dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" );
 double    dem::mappings::MoveParticles::gravity = 0.0;
 
+double getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass){
+	iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
+	iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
+
+	return rotation+kinetic;
+}
+
+double getKineticEnergy(double velocity[3], double mass){
+	iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
+	return kinetic;
+}
+
+double getRotationalEnergy(double angular[3], double inertia[9]){
+	iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
+	return rotation;
+}
+
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
   dem::Vertex&               fineGridVertex)
 {
@@ -95,10 +112,10 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 									&particle._persistentRecords._referentialCentreOfMass(0));
     }
 
-    /*iREAL energy = delta::sys::getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
-    iREAL rotational = delta::sys::getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
-    iREAL kinetic = delta::sys::getKineticEnergy(&particle._persistentRecords._velocity(0), particle._persistentRecords._mass);
-    printf("TOTAL ENERGY:%f ROTATIONAL:%f KINETIC:%f\n", energy, rotational, kinetic);*/
+    //iREAL energy = getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
+    //iREAL rotational = getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
+    //iREAL kinetic = getKineticEnergy(&particle._persistentRecords._velocity(0), particle._persistentRecords._mass);
+    //printf("TOTAL ENERGY:%f ROTATIONAL:%f KINETIC:%f\n", energy, rotational, kinetic);
   }
 }
 

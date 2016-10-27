@@ -71,7 +71,7 @@ class dem::mappings::CreateGrid {
       ReluctantAdaptiveGrid
     };
 
-    static void setScenario(Scenario scenario, double minH, double particleDiamMax, double particleDiamMin, GridType gridType, double epsilon);
+    static void setScenario(Scenario scenario, double minH, double particleDiamMax, double particleDiamMin, GridType gridType, double epsilon, int noPointsPerGranulate);
 
   private:
     /**
@@ -83,12 +83,14 @@ class dem::mappings::CreateGrid {
     static double   _maxH;
     static double   _particleDiamMax;
     static double   _particleDiamMin;
+    static int   _noPointsPerParticle;
 
     static GridType _gridType;
 
     int   _numberOfParticles;
     int   _numberOfObstacles;
     int   _numberOfTriangles;
+
   public:
     /**
      * These flags are used to inform Peano about your operation. It tells the 

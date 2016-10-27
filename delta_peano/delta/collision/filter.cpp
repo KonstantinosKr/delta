@@ -91,30 +91,26 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
     int deleted = 0;
 
 	//search similarities in new contacts
-	for (int i = 0; i < tmp.size(); i++)
+	for (int i = 0; i < newContactPoints.size(); i++)
 	{
-		for (int j = 0; j < tmp.size(); j++)
+		for (int j = 0; j < newContactPoints.size(); j++)
 		{
 			if( i == j) continue;
 			double sub[3];
-			sub[0] = tmp[j].x[0] - tmp[i].x[0];
-			sub[1] = tmp[j].x[1] - tmp[i].x[1];
-			sub[2] = tmp[j].x[2] - tmp[i].x[2];
+			sub[0] = newContactPoints[j].x[0] - newContactPoints[i].x[0];
+			sub[1] = newContactPoints[j].x[1] - newContactPoints[i].x[1];
+			sub[2] = newContactPoints[j].x[2] - newContactPoints[i].x[2];
 
 			double distance = std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
 
 			if (distance == 0)
 			{
-				newContactPoints.erase(newContactPoints.begin()+(i-deleted));
-				deleted++;
-				break;
+				newContactPoints.erase(newContactPoints.begin()+i);
 			}
 
-			/*if (distance <= hMin && (tmp[i].getDistance() > tmp[j].getDistance()))
+			/*if (distance <= hMin && (newContactPoints[i].getDistance() > newContactPoints[j].getDistance()))
 			{
-				newContactPoints.erase(newContactPoints.begin()+(i-deleted));
-				deleted++;
-				break;
+				newContactPoints.erase(newContactPoints.begin()+(i));
 			}*/
 		}
 	}
