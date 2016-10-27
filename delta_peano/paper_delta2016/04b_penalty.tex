@@ -20,10 +20,7 @@ P(x)=f(x)+r\sum_{i=1...6}max(0,c(x_{i}))^{2}
 \end{equation}
 Where r is the penalty parameter (figure \ref{figure:penaltyfunction}) that augments $f$. Convergence can be controlled by the r parameter that controls the sharpness of the constraint curve. One aspect that requires care however is the invertibility of the Hessian $\nabla\nabla P$ due to ill conditioning. This illustrates the fact that $f$ has multiple minima and $\nabla\nabla f$ is singular. Consequently, $\nabla\nabla P$ is also singular inside of the feasible region. The cause is due to multiple possible solutions when the orientation of the two triangles is parallel. This is also revealed by the two zero eigenvalues of the Hessian. We use a quasi-Newton approach, where the Hessian is approximated by a perturbation operator $\nabla\nabla P + \epsilon I$. $I$ is an identity matrix and $\epsilon$ is suitably small.
 
-\begin{algorithm}
-	\caption{Penalty Solver.}
- 	\label{algorithm:penalty}
-	\begin{algorithmic}[1]
+\begin{algorithmic}[1]
 	
 	\Function{Penalty}{A, B, C, D, E, F, rho, tol}
 
@@ -78,8 +75,10 @@ Where r is the penalty parameter (figure \ref{figure:penaltyfunction}) that augm
 		\EndFor
 
 	\EndFunction
-	\end{algorithmic}
-\end{algorithm}
+	
+	%\caption{Penalty Solver.}
+ 	\label{algorithm:penalty}
+\end{algorithmic}
 
 The penalty algorithm as shown in Algorithm \ref{algorithm:penalty} accepts vertex coordinates for triangle T1(A, B, C), T2(D, E, F), $rho$ for the penalty parameter, and $epsilon$ for the perturbation, $tol$ is the tolerance error for convergence. At line 23 of Algorithm \ref{algorithm:penalty} an initial guess is set to be the center of the triangles, the For loop initiates the Newton solver to find the solution on the $X$, $Y$ triangle, under constraint c. For each constraint (line 12) the max function is evaluated to detect the active ones. At line 17 and line 18 the gradient and Hessian is evaluated for the Gaussian elimination direct solver (MATLAB backslash) to get $dx$ Newton direction
 

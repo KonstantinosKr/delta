@@ -13,8 +13,6 @@ There are two variants of hybrid method; the first is the hybrid-on-triangle-pai
 
 The first variant is hybrid-on-triangle-pairs where it divides the computational workload to be per each triangle pair. The hybrid-on-triangle-pairs method runs first the penalty solver on one triangle pair, if the solution is not within the user specified tolerance, we fall back to brute force to solve the problem naively. 
 
-\begin{algorithm}
- \caption{Hybrid On Triangle Pairs} \label{algorithm:hybridTriangle}
  \begin{algorithmic}[1]
 
 	\Function {hybridOnTrianglePairs(particleA, particleB, tolerance)}	
@@ -39,13 +37,12 @@ The first variant is hybrid-on-triangle-pairs where it divides the computational
 	
 	\EndFunction
 	
+ %\caption{Hybrid On Triangle Pairs}
+ \label{algorithm:hybridTriangle}
  \end{algorithmic}
-\end{algorithm} 
 
 The other variant is the hybrid-on-batches where it is hybrid per triangle batches. This method is checking the error less frequently than the previous variant and uses an error for the whole batch. As in the hybrid-on-triangle-pairs variant; we run then penalty method on one batch of triangles and then fall back to brute on the whole batch if the error tolerance is not satisfied. The batch size can be set by the user to be of any arbitrary size. For our application we set it to be the number of triangles of our non-spherical particles (tessellation size of 60~ triangles).    
 
-\begin{algorithm}
- \caption{Hybrid On Triangle Batches} \label{algorithm:hybridBatches}
  \begin{algorithmic}[1]
 	
 	\Function {hybridOnTrianglePairs(particleA, particleB, tolerance)}	
@@ -74,8 +71,9 @@ The other variant is the hybrid-on-batches where it is hybrid per triangle batch
 	
 	\EndFunction
 	
+ %\caption{Hybrid On Triangle Batches} 
+ \label{algorithm:hybridBatches}
  \end{algorithmic}
-\end{algorithm} 
 
 Both hybrid methods suffer by their nature by the granularity of the grain size whether that is singular size (triangle pair) or greater (batches of pairs).
 The memory distribution of pairs of triangles that do not converge within the mean number of Newton iterations are not known a priori because the solution depends on the underlying geometry. Triangle pairs or triangle batches that do not converge within the set tolerance skew the overall error distribution margin, potentially creating the worse case scenario where the method becomes a worse than brute force solver with both penalty and brute force being executed in sequence. It is not possible to predict the sparsity/distribution of non-convergent triangle pairs/batches during run-time so the tolerance value, penalty, regularization parameters are vital. In our experiments those parameters are set based on empirical tuning and trial and error.

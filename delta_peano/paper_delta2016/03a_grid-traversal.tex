@@ -1,4 +1,4 @@
-{\bf Grid traversal.}
+%{\bf Grid traversal.}
 With a grid at hand, we may map the algorithmic steps from Algorithm
 \ref{algorithm:dem-blueprint} onto a grid traversal.
 For the traversal, we rely on a combination of a depth-first order with
@@ -39,10 +39,8 @@ operations are performed if a vertex is read for the very first time \linebreak
 Besides the actual grid hosting the particles, the grid sweeps build and
 maintain two further sets of collision points (algorithm \ref{algorithm:grid-based-dem}).
 
-\begin{algorithm}
- \caption{A grid-based DEM implementation.}
- \label{algorithm:grid-based-dem}
- \begin{algorithmic}[1]
+
+\begin{algorithmic}[1]
   \Function{traverseGrid}{$\mathcal{C}$}
    \State $\mathcal{C}_{old} \gets \mathcal{C}$
    \State $\mathcal{C} \gets \emptyset$
@@ -83,8 +81,10 @@ maintain two further sets of collision points (algorithm \ref{algorithm:grid-bas
   %  \State $t \gets t + \Delta t$
   % \EndFor
   %\EndFunction
- \end{algorithmic}
-\end{algorithm} 
+  
+ %\caption{A grid-based DEM implementation.}
+ \label{algorithm:grid-based-dem}
+\end{algorithmic}
 
 
 Our grid-based realisation is characterised by few properties:
