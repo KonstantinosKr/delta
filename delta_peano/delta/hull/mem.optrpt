@@ -2,6 +2,9 @@ Intel(R) Advisor can now assist with vectorization and show optimization
   report messages with your source code.
 See "https://software.intel.com/en-us/intel-advisor-xe" for details.
 
+Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -I. --std=c++11 -DDim3 -DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost -c -o delta/hull/mem.o
 
     Report from: Interprocedural optimizations [ipo]
 
@@ -36,8 +39,37 @@ INLINE REPORT: (delta::hull::MEM_CALLOC(size_t)) [1/6=16.7%] delta/hull/mem.cpp(
 
     Report from: Code generation optimizations [cg]
 
-delta/hull/mem.cpp(42,3):remark #34014: optimization advice for _memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
-delta/hull/mem.cpp(42,3):remark #34026: call to _memset implemented as a call to optimized library version
+delta/hull/mem.cpp(42,3):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+delta/hull/mem.cpp(42,3):remark #34026: call to memset implemented as a call to optimized library version
+delta/hull/mem.cpp(37,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull10MEM_CALLOCEm] delta/hull/mem.cpp:37
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    6[ rax rdx rbp rsi rdi r12]
+        
+    Routine temporaries
+        Total         :      16
+            Global    :       9
+            Local     :       7
+        Regenerable   :       2
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
 ===========================================================================
 
 Begin optimization report for: delta::hull::MEM_Alloc(delta::hull::MEM *)
@@ -52,10 +84,39 @@ INLINE REPORT: (delta::hull::MEM_Alloc(delta::hull::MEM *)) [2/6=33.3%] delta/hu
 
     Report from: Code generation optimizations [cg]
 
-delta/hull/mem.cpp(78,5):remark #34014: optimization advice for _memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
-delta/hull/mem.cpp(78,5):remark #34026: call to _memset implemented as a call to optimized library version
-delta/hull/mem.cpp(87,5):remark #34014: optimization advice for _memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
-delta/hull/mem.cpp(87,5):remark #34026: call to _memset implemented as a call to optimized library version
+delta/hull/mem.cpp(78,5):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+delta/hull/mem.cpp(78,5):remark #34026: call to memset implemented as a call to optimized library version
+delta/hull/mem.cpp(87,5):remark #34014: optimization advice for memset: increase the destination's alignment to 16 (and use __assume_aligned) to speed up library implementation
+delta/hull/mem.cpp(87,5):remark #34026: call to memset implemented as a call to optimized library version
+delta/hull/mem.cpp(60,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull9MEM_AllocEPNS0_11memory_poolE] delta/hull/mem.cpp:60
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    7[ rax rdx rcx rsi rdi r12-r13]
+        
+    Routine temporaries
+        Total         :      36
+            Global    :      12
+            Local     :      24
+        Regenerable   :       3
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
 ===========================================================================
 
 Begin optimization report for: delta::hull::MEM_Free(delta::hull::MEM *, void *)
@@ -63,6 +124,38 @@ Begin optimization report for: delta::hull::MEM_Free(delta::hull::MEM *, void *)
     Report from: Interprocedural optimizations [ipo]
 
 INLINE REPORT: (delta::hull::MEM_Free(delta::hull::MEM *, void *)) [3/6=50.0%] delta/hull/mem.cpp(104,1)
+
+
+    Report from: Code generation optimizations [cg]
+
+delta/hull/mem.cpp(104,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8MEM_FreeEPNS0_11memory_poolEPv] delta/hull/mem.cpp:104
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    3[ rax rsi rdi]
+        
+    Routine temporaries
+        Total         :      11
+            Global    :       0
+            Local     :      11
+        Regenerable   :       0
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
 
 ===========================================================================
 
@@ -80,6 +173,38 @@ LOOP BEGIN at delta/hull/mem.cpp(132,3)
    remark #15523: loop was not vectorized: loop control variable size was found, but loop iteration count cannot be computed before executing the loop
    remark #25478: While Loop Unrolled by 2  
 LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+delta/hull/mem.cpp(122,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8MEM_SizeEPNS0_11memory_poolE] delta/hull/mem.cpp:122
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rax rdx rcx rsi rdi]
+        
+    Routine temporaries
+        Total         :      19
+            Global    :      14
+            Local     :       5
+        Regenerable   :       1
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
 ===========================================================================
 
 Begin optimization report for: delta::hull::MEM_Release(delta::hull::MEM *)
@@ -94,23 +219,57 @@ INLINE REPORT: (delta::hull::MEM_Release(delta::hull::MEM *)) [5/6=83.3%] delta/
 
 
 LOOP BEGIN at delta/hull/mem.cpp(153,3)
-   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form
+   remark #15521: loop was not vectorized: loop control variable was not identified. Explicitly compute the iteration count before executing the loop or try using canonical loop form from OpenMP specification
 LOOP END
 
 LOOP BEGIN at delta/hull/mem.cpp(161,3)
-   remark #15389: vectorization support: reference pool has unaligned access
+   remark #15389: vectorization support: reference pool[_2] has unaligned access
    remark #15381: vectorization support: unaligned access used inside loop body
-   remark #15305: vectorization support: vector length 4
+   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
    remark #15427: loop was completely unrolled
-   remark #15309: vectorization support: normalized vectorization overhead 0.600
-   remark #15301: MATERIALIZED LOOP WAS VECTORIZED
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.250
    remark #15451: unmasked unaligned unit stride stores: 1 
-   remark #15475: --- begin vector loop cost summary ---
-   remark #15476: scalar loop cost: 3 
-   remark #15477: vector loop cost: 1.250 
-   remark #15478: estimated potential speedup: 1.500 
-   remark #15488: --- end vector loop cost summary ---
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 3 
+   remark #15477: vector cost: 3.000 
+   remark #15478: estimated potential speedup: 0.800 
+   remark #15488: --- end vector cost summary ---
+   remark #25436: completely unrolled by 4  
 LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+delta/hull/mem.cpp(143,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull11MEM_ReleaseEPNS0_11memory_poolE] delta/hull/mem.cpp:143
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    4[ rax rbx rbp rdi]
+        
+    Routine temporaries
+        Total         :      12
+            Global    :       9
+            Local     :       3
+        Regenerable   :       1
+        Spilled       :       2
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :      16 bytes*
+            Reads     :       2 [1.97e+00 ~ 3.2%]
+            Writes    :       2 [1.97e+00 ~ 3.2%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
 ===========================================================================
 
 Begin optimization report for: delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)
@@ -124,17 +283,51 @@ INLINE REPORT: (delta::hull::MEM_Init(delta::hull::MEM *, size_t, size_t)) [6/6=
 
 
 LOOP BEGIN at delta/hull/mem.cpp(53,3)
-   remark #15389: vectorization support: reference pool has unaligned access
+   remark #15389: vectorization support: reference pool[_2] has unaligned access
    remark #15381: vectorization support: unaligned access used inside loop body
-   remark #15305: vectorization support: vector length 4
+   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
    remark #15427: loop was completely unrolled
-   remark #15309: vectorization support: normalized vectorization overhead 0.600
-   remark #15301: MATERIALIZED LOOP WAS VECTORIZED
+   remark #15399: vectorization support: unroll factor set to 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.250
    remark #15451: unmasked unaligned unit stride stores: 1 
-   remark #15475: --- begin vector loop cost summary ---
-   remark #15476: scalar loop cost: 3 
-   remark #15477: vector loop cost: 1.250 
-   remark #15478: estimated potential speedup: 1.500 
-   remark #15488: --- end vector loop cost summary ---
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 3 
+   remark #15477: vector cost: 3.000 
+   remark #15478: estimated potential speedup: 0.800 
+   remark #15488: --- end vector cost summary ---
+   remark #25436: completely unrolled by 4  
 LOOP END
+
+    Report from: Code generation optimizations [cg]
+
+delta/hull/mem.cpp(48,1):remark #34051: REGISTER ALLOCATION : [_ZN5delta4hull8MEM_InitEPNS0_11memory_poolEmm] delta/hull/mem.cpp:48
+
+    Hardware registers
+        Reserved     :    2[ rsp rip]
+        Available    :   39[ rax rdx rcx rbx rbp rsi rdi r8-r15 mm0-mm7 zmm0-zmm15]
+        Callee-save  :    6[ rbx rbp r12-r15]
+        Assigned     :    5[ rax rdx rcx rsi rdi]
+        
+    Routine temporaries
+        Total         :      15
+            Global    :       0
+            Local     :      15
+        Regenerable   :       2
+        Spilled       :       0
+        
+    Routine stack
+        Variables     :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+        Spills        :       0 bytes*
+            Reads     :       0 [0.00e+00 ~ 0.0%]
+            Writes    :       0 [0.00e+00 ~ 0.0%]
+    
+    Notes
+    
+        *Non-overlapping variables and spills may share stack space,
+         so the total stack size might be less than this.
+    
+
 ===========================================================================

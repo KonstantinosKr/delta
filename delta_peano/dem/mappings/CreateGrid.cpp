@@ -664,6 +664,7 @@ void dem::mappings::CreateGrid::createCell(
 					if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
 					{
 						delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+						delta::primitives::meshDenseMultiplier(1, xCoordinates, yCoordinates, zCoordinates);
 					}else
 					{
 						delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);

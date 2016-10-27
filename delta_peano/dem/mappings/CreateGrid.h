@@ -23,6 +23,7 @@
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"
+#include "delta/primitives/triangle.h"
 
 namespace dem {
   namespace mappings {
