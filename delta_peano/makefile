@@ -88,8 +88,7 @@ dim3-icc-release-vec: CC=icpc --std=c++11
 dim3-icc-release-vec: DIM=-DDim3
 dim3-icc-release-vec: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics
 dim3-icc-release-vec: CFLAGS=-fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost
-dim3-icc-release-vec: LFLAGS=
-	#-lrt 
+dim3-icc-release-vec: LFLAGS=-lrt 
 dim3-icc-release-vec: EXECUTABLE=dem-3d-release-vec
 dim3-icc-release-vec: header build
 
@@ -106,7 +105,7 @@ dim3-icc-release-omp-triangle: DIM=-DDim3
 dim3-icc-release-omp-triangle: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompTriangle -DTrackGridStatistics
 dim3-icc-release-omp-triangle: CFLAGS=-fast -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost 
 dim3-icc-release-omp-triangle: LFLAGS=$(LINK_OMP) -lrt 
-dim3-icc-release-omp-triangle: EXECUTABLE=dem-3d-release-vecTRIANGLE
+dim3-icc-release-omp-triangle: EXECUTABLE=dem-3d-release-omp-triangle
 dim3-icc-release-omp-triangle: header build
 
 dim3-icc-release-omp-triangle-phi: CC=icpc --std=c++11
@@ -114,7 +113,7 @@ dim3-icc-release-omp-triangle-phi: DIM=-DDim3
 dim3-icc-release-omp-triangle-phi: SETTINGS=-DiREAL=double -DbyteAlignment=64 -DompTriangle -DTrackGridStatistics
 dim3-icc-release-omp-triangle-phi: CFLAGS=-mmic -fast -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip 
 dim3-icc-release-omp-triangle-phi: LFLAGS=$(LINK_OMP) -lrt -mmic 
-dim3-icc-release-omp-triangle-phi: EXECUTABLE=dem-3d-release-vecTRIANGLEphi
+dim3-icc-release-omp-triangle-phi: EXECUTABLE=dem-3d-release-omp-triangle-phi
 dim3-icc-release-omp-triangle-phi: header build
 
 dim3-icc-release-omp-particle: CC=icpc --std=c++11
@@ -122,7 +121,7 @@ dim3-icc-release-omp-particle: DIM=-DDim3
 dim3-icc-release-omp-particle: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompParticle -DTrackGridStatistics
 dim3-icc-release-omp-particle: CFLAGS=-fast -qopenmp -qopt-threads-per-core=1 -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost 
 dim3-icc-release-omp-particle: LFLAGS=$(LINK_OMP) -lrt 
-dim3-icc-release-omp-particle: EXECUTABLE=dem-3d-release-vecPARTICLE
+dim3-icc-release-omp-particle: EXECUTABLE=dem-3d-release-omp-particle
 dim3-icc-release-omp-particle: header build
 
 dim3-icc-release-omp-particle-phi: CC=icpc --std=c++11
@@ -130,7 +129,7 @@ dim3-icc-release-omp-particle-phi: DIM=-DDim3
 dim3-icc-release-omp-particle-phi: SETTINGS=-DiREAL=double -DbyteAlignment=64 -DompParticle -DTrackGridStatistics
 dim3-icc-release-omp-particle-phi: CFLAGS=-mmic -fast -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip
 dim3-icc-release-omp-particle-phi: LFLAGS=$(LINK_OMP) -lrt -mmic
-dim3-icc-release-omp-particle-phi: EXECUTABLE=dem-3d-release-vecPARTICLEphi
+dim3-icc-release-omp-particle-phi: EXECUTABLE=dem-3d-release-omp-particle-phi
 dim3-icc-release-omp-particle-phi: header build
 
 dim3-icc-release-omp-particle-triangle: CC=icpc --std=c++11
@@ -138,7 +137,7 @@ dim3-icc-release-omp-particle-triangle: DIM=-DDim3
 dim3-icc-release-omp-particle-triangle: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompParticle -DompTriangle -DTrackGridStatistics
 dim3-icc-release-omp-particle-triangle: CFLAGS=-fast -qopenmp -qopt-threads-per-core=1 -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost 
 dim3-icc-release-omp-particle-triangle: LFLAGS=$(LINK_OMP) -lrt 
-dim3-icc-release-omp-particle-triangle: EXECUTABLE=dem-3d-release-vecPARTICLETRIANGLE
+dim3-icc-release-omp-particle-triangle: EXECUTABLE=dem-3d-release-omp-particle-triangle
 dim3-icc-release-omp-particle-triangle: header build
 
 dim3-icc-release-omp-particle-triangle-phi: CC=icpc --std=c++11
@@ -146,7 +145,7 @@ dim3-icc-release-omp-particle-triangle-phi: DIM=-DDim3
 dim3-icc-release-omp-particle-triangle-phi: SETTINGS=-DiREAL=double -DbyteAlignment=64 -DompParticle -DompTriangle -DTrackGridStatistics
 dim3-icc-release-omp-particle-triangle-phi: CFLAGS=-fast -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip
 dim3-icc-release-omp-particle-triangle-phi: LFLAGS=$(LINK_OMP) -lrt -mmic 
-dim3-icc-release-omp-particle-triangle-phi: EXECUTABLE=dem-3d-release-vecPARTICLETRIANGLEphi
+dim3-icc-release-omp-particle-triangle-phi: EXECUTABLE=dem-3d-release-omp-particle-triangle-phi
 dim3-icc-release-omp-particle-triangle-phi: header build
 
 dim3-icc-asserts-tbb: CC=icpc --std=c++11
@@ -165,14 +164,6 @@ dim3-icc-release-tbb: LFLAGS=-lrt $(LINK_TBB)
 dim3-icc-release-tbb: EXECUTABLE=dem-3d-release-tbb
 dim3-icc-release-tbb: header build
 
-dim3-icc-release-tbb-omp: CC=icpc --std=c++11
-dim3-icc-release-tbb-omp: DIM=-DDim3
-dim3-icc-release-tbb-omp: SETTINGS=-DiREAL=double -DSharedTBB -DTrackGridStatistics -DbyteAlignment=32 
-dim3-icc-release-tbb-omp: CFLAGS=-fast -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
-dim3-icc-release-tbb-omp: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB)
-dim3-icc-release-tbb-omp: EXECUTABLE=dem-3d-release-tbb-omp
-dim3-icc-release-tbb-omp: header build
-
 dim3-icc-release-tbb-omp-triangle: CC=icpc --std=c++11
 dim3-icc-release-tbb-omp-triangle: DIM=-DDim3
 dim3-icc-release-tbb-omp-triangle: SETTINGS=-DiREAL=double -DSharedTBB -DTrackGridStatistics -DbyteAlignment=32 
@@ -188,14 +179,6 @@ dim3-icc-release-tbb-omp-particle: CFLAGS=-fast -qopenmp -qopt-report=5 -fstrict
 dim3-icc-release-tbb-omp-particle: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB)
 dim3-icc-release-tbb-omp-particle: EXECUTABLE=dem-3d-release-tbb-omp-particle
 dim3-icc-release-tbb-omp-particle: header build
-
-dim3-icc-release-tbb-omp-particle-dev: CC=icpc --std=c++11
-dim3-icc-release-tbb-omp-particle-dev: DIM=-DDim3
-dim3-icc-release-tbb-omp-particle-dev: SETTINGS=-DiREAL=double -DSharedTBB -DTrackGridStatistics -DbyteAlignment=32
-dim3-icc-release-tbb-omp-particle-dev: CFLAGS=-fast -debug -g -Wall -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
-dim3-icc-release-tbb-omp-particle-dev: LFLAGS= $(LINK_OMP) $(LINK_TBB)
-dim3-icc-release-tbb-omp-particle-dev: EXECUTABLE=dem-3d-release-tbb-omp-particle-dev
-dim3-icc-release-tbb-omp-particle-dev: header build
 
 dim3-icc-release-tbb-omp-particle-triangle: CC=icpc --std=c++11
 dim3-icc-release-tbb-omp-particle-triangle: DIM=-DDim3
