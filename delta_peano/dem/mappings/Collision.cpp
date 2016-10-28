@@ -556,9 +556,9 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 	#ifdef ompParticle
 		#pragma omp parallel for
 	#endif
-	for (int i=0; i<vertexA.getNumberOfParticles(); i++)
+	for (int i=0; i<vertexA.getNumberOfRealAndVirtualParticles(); i++)
 	{
-		for (int j=0; j<vertexB.getNumberOfParticles(); j++)
+		for (int j=0; j<vertexB.getNumberOfRealAndVirtualParticles(); j++)
 		{
 			if(((vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID) &&
 					(vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)) ||

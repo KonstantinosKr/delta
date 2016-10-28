@@ -471,15 +471,24 @@ void dem::mappings::CreateGrid::createCell(
 			{
 				newParticleNumber = vertex.createNewParticle( centre );
 
-				if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-				delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+				if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
+				{
+					delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+				}
+				else{
+					delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+				}
 			}
 			else if (_scenario == Random)
 			{
 				newParticleNumber = vertex.createNewParticle( centre );
-
-				if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-				delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+				if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
+				{
+					delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+				}
+				else{
+					delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+				}
 			}
 			else if(_scenario == hopper)
 			{
@@ -530,8 +539,14 @@ void dem::mappings::CreateGrid::createCell(
 					centreAsArray[2] < coarseCenterHopperMarginUpper && centreAsArray[2] > coarseCenterHopperMarginLower)
 				{
 					newParticleNumber = vertex.createNewParticle( centre );
-					if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-					delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+
+					if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
+					{
+						delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+					}
+					else{
+						delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+					}
 				} else {return;}
 			}
 			else if(_scenario == icecube)
@@ -999,7 +1014,7 @@ void dem::mappings::CreateGrid::leaveCell(
 		dem::Vertex * const  coarseGridVertices,
 		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
 		dem::Cell&           coarseGridCell,
-		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
+		const tarch::la::Vector<DIMENSIONS,int>&      fineGridPositionOfCell
 ) {
 }
 
