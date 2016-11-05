@@ -314,8 +314,10 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
 		for(auto & particleLocal:
 				ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()))//loop local grid vertex real and virtual particles
 		{
-			if(particleCoarse._persistentRecords.getGlobalParticleNumber()==particleLocal._persistentRecords.getGlobalParticleNumber())
+			if(particleCoarse._persistentRecords.getGlobalParticleNumber()==particleLocal._persistentRecords.getGlobalParticleNumber()){
 				found = true;
+				break;
+			}
 		}
 		if(!found)
 			ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(

@@ -2,20 +2,18 @@
 
 void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPoints, double hMin, double rA, double rB)
 {
-	std::vector<contactpoint> tmp = newContactPoints;
-    std::vector<int> duplicates;
-    int deleted = 0;
+	std::vector<contactpoint> tmp;
 
-	//search similarities in new contacts
-	for (int i = 0; i < tmp.size(); i++)
+    //search similarities in new contacts
+	for (int i = 0; i < newContactPoints.size(); i++)
 	{
+		bool ignore = false;
 		for (int j = 0; j < tmp.size(); j++)
 		{
-			if( i == j) continue;
 			double sub[3];
-			sub[0] = tmp[j].x[0] - tmp[i].x[0];
-			sub[1] = tmp[j].x[1] - tmp[i].x[1];
-			sub[2] = tmp[j].x[2] - tmp[i].x[2];
+			sub[0] = newContactPoints[i].x[0] - tmp[j].x[0];
+			sub[1] = newContactPoints[i].x[1] - tmp[j].x[1];
+			sub[2] = newContactPoints[i].x[2] - tmp[j].x[2];
 
 			double distance = std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
 
@@ -27,35 +25,35 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
 			//printf("rA:%f depth:%f hMin:%f distance:%f\n", rA, tmp[j].depth, hMin, distance);
 			if (distance == 0)
 			{
-				//printf("delete:%d\n", i);
-				newContactPoints.erase(newContactPoints.begin()+(i-deleted));
-				deleted++;
-				break;
+				ignore = true;
 			}
 
-			if (distance <= 0.01 && (tmp[i].getDistance() > tmp[j].getDistance()))
+			if (distance <= 0.01 && (newContactPoints[i].getDistance() > tmp[j].getDistance()))
 			{
-				//printf("hMIN:%f\n", hMin);
-				newContactPoints.erase(newContactPoints.begin()+(i-deleted));
-				deleted++;
-				break;
+				ignore = true;
 			}
 		}
+		if(!ignore)
+		{
+			tmp.push_back(newContactPoints[i]);
+		}
 	}
+	newContactPoints = tmp;
 }
 
 void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredContactPoints, std::vector<contactpoint>& newContactPoints, double hMin, double rA, double rB)
 {
-	int deleted = 0;
-	//search similarities between new contacts and already stored
-	for (int i = 0; i < dataStoredContactPoints.size(); i++)
+	std::vector<contactpoint> tmp;
+
+	for (int i = 0; i < newContactPoints.size(); i++)
 	{
-		for (int j = 0; j < newContactPoints.size(); j++)
+		bool ignore = false;
+		for (int j = 0; j < dataStoredContactPoints.size(); j++)
 		{
 			double sub[3];
-			sub[0] = newContactPoints[j].x[0] - dataStoredContactPoints[i].x[0];
-			sub[1] = newContactPoints[j].x[1] - dataStoredContactPoints[i].x[1];
-			sub[2] = newContactPoints[j].x[2] - dataStoredContactPoints[i].x[2];
+			sub[0] = newContactPoints[i].x[0] - dataStoredContactPoints[j].x[0];
+			sub[1] = newContactPoints[i].x[1] - dataStoredContactPoints[j].x[1];
+			sub[2] = newContactPoints[i].x[2] - dataStoredContactPoints[j].x[2];
 
 			double distance =  std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
 
@@ -66,46 +64,47 @@ void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredCo
 			//printf("rA:%f depth:%f hMin:%f\n", rA, dataStoredContactPoints[j].depth, hMin);
 			if(distance == 0)
 			{
-				//printf("hMIN:%f, distance:%f\n", hMin, distance);
-				newContactPoints.erase(newContactPoints.begin()+j);
-				break;
+				ignore = true;
 			}
 
 			//distance between contacts points is smaller than hMin | new contact/body distance is smaller than the one stored  | delete stored
 			if (distance <= 0.01 && (newContactPoints[j].getDistance() < dataStoredContactPoints[i].getDistance()))
 			{
-				dataStoredContactPoints.erase(dataStoredContactPoints.begin()+(i-deleted));
-				break;
+				ignore = true;
 			} else if(distance <= 0.01 && (newContactPoints[j].getDistance() > dataStoredContactPoints[i].getDistance()))
 			{
-				newContactPoints.erase(newContactPoints.begin()+j);
-				break;
+				ignore = true;
 			}
 		}
+		if(!ignore)
+		{
+			tmp.push_back(newContactPoints[i]);
+		}
 	}
+	newContactPoints = tmp;
 }
 
 void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPoints, double hMin)
 {
-	std::vector<contactpoint> tmp = newContactPoints;
-    int deleted = 0;
+	std::vector<contactpoint> tmpContactPoints;
 
 	//search similarities in new contacts
 	for (int i = 0; i < newContactPoints.size(); i++)
 	{
-		for (int j = 0; j < newContactPoints.size(); j++)
+		bool ignore = false;//found or ignore
+		for (int j = 0; j < tmpContactPoints.size(); j++)
 		{
-			if( i == j) continue;
 			double sub[3];
-			sub[0] = newContactPoints[j].x[0] - newContactPoints[i].x[0];
-			sub[1] = newContactPoints[j].x[1] - newContactPoints[i].x[1];
-			sub[2] = newContactPoints[j].x[2] - newContactPoints[i].x[2];
+			sub[0] = newContactPoints[i].x[0] - tmpContactPoints[j].x[0];
+			sub[1] = newContactPoints[i].x[1] - tmpContactPoints[j].x[1];
+			sub[2] = newContactPoints[i].x[2] - tmpContactPoints[j].x[2];
 
 			double distance = std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
 
 			if (distance == 0)
 			{
-				newContactPoints.erase(newContactPoints.begin()+i);
+				//printf("hMIN:%f, distance:%f\n", hMin, distance);
+				ignore = true;
 			}
 
 			/*if (distance <= hMin && (newContactPoints[i].getDistance() > newContactPoints[j].getDistance()))
@@ -113,42 +112,67 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
 				newContactPoints.erase(newContactPoints.begin()+(i));
 			}*/
 		}
+
+		if(!ignore)
+		{
+			tmpContactPoints.push_back(newContactPoints[i]);
+		}
 	}
+	newContactPoints = tmpContactPoints;
+
+	/*for (int i = 0; i < newContactPoints.size(); i++)
+	{
+		printf("NEW2 CONP%f %f %f\n", newContactPoints[i].x[0], newContactPoints[i].x[1], newContactPoints[i].x[2]);
+	}*/
 }
 
 void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredContactPoints, std::vector<contactpoint>& newContactPoints, double hMin)
 {
-	int deleted = 0;
-	//search similarities between new contacts and already stored
-	for (int i = 0; i < dataStoredContactPoints.size(); i++)
+	std::vector<contactpoint> tmpContactPoints;
+
+	/*for (int i = 0; i < dataStoredContactPoints.size(); i++)
 	{
-		for (int j = 0; j < newContactPoints.size(); j++)
+		printf("STORED CONP%f %f %f\n", dataStoredContactPoints[i].x[0], dataStoredContactPoints[i].x[1], dataStoredContactPoints[i].x[2]);
+	}*/
+
+	//search similarities in new and stored contacts
+	for (int i = 0; i < newContactPoints.size(); i++)//loop through stored
+	{
+		bool ignore = false;//found or ignore
+		for (int j = 0; j < dataStoredContactPoints.size(); j++)//loop through new, if similar then don't write in new-new contacts
 		{
 			double sub[3];
-			sub[0] = newContactPoints[j].x[0] - dataStoredContactPoints[i].x[0];
-			sub[1] = newContactPoints[j].x[1] - dataStoredContactPoints[i].x[1];
-			sub[2] = newContactPoints[j].x[2] - dataStoredContactPoints[i].x[2];
+			sub[0] = newContactPoints[i].x[0] - dataStoredContactPoints[j].x[0];
+			sub[1] = newContactPoints[i].x[1] - dataStoredContactPoints[j].x[1];
+			sub[2] = newContactPoints[i].x[2] - dataStoredContactPoints[j].x[2];
 
-			double distance =  std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
-			//printf("rA:%f depth:%f hMin:%f\n", rA, dataStoredContactPoints[j].depth, hMin);
-			if(distance == 0)
+			double distance = std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
+
+			if (distance == 0)
 			{
 				//printf("hMIN:%f, distance:%f\n", hMin, distance);
-				newContactPoints.erase(newContactPoints.begin()+j);
-				break;
+				ignore = true;
 			}
-/*
-			//distance between contacts points is smaller than hMin | new contact/body distance is smaller than the one stored  | delete stored
-			if (distance <= hMin && (newContactPoints[j].getDistance() < dataStoredContactPoints[i].getDistance()))
+
+			/*if (distance <= hMin && (newContactPoints[i].getDistance() > newContactPoints[j].getDistance()))
 			{
-				dataStoredContactPoints.erase(dataStoredContactPoints.begin()+(i-deleted));
-				deleted++;
-				break;
+				ignore = true;
+			}*/
+
+			//distance between contacts points is smaller than hMin | new contact/body distance is smaller than the one stored  | delete stored
+			/*if (distance <= hMin && (newContactPoints[j].getDistance() < dataStoredContactPoints[i].getDistance()))
+			{
+				ignore = true;
 			} else if(distance <= hMin && (newContactPoints[j].getDistance() > dataStoredContactPoints[i].getDistance()))
 			{
-				newContactPoints.erase(newContactPoints.begin()+j);
-				break;
+				ignore = true;
 			}*/
 		}
+
+		if(!ignore)
+		{
+			tmpContactPoints.push_back(newContactPoints[i]);
+		}
 	}
+	newContactPoints = tmpContactPoints;
 }

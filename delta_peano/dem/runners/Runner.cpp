@@ -17,6 +17,7 @@
 #include "peano/geometry/Hexahedron.h" 
 
 #include "dem/mappings/MoveParticles.h"
+#include "delta/sys/sys.h"
 
 tarch::logging::Log dem::runners::Runner::_log( "dem::runners::Runner" );
 
@@ -40,8 +41,7 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
 
   peano::datatraversal::autotuning::Oracle::getInstance().setOracle(
      new peano::datatraversal::autotuning::OracleForOnePhaseDummy(
-       true, false
-     ));
+       true, false));
   #endif
 
   int result = 0;
@@ -102,6 +102,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
             << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
             << " | snapshot");
       }
+
+      //delta::sys::Sys::saveIteration(repository.getState().getTimeStepSize(), i, iterations);
 
       timestamp = repository.getState().getTime();
 

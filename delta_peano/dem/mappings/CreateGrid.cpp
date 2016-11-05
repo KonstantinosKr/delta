@@ -408,6 +408,23 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
 				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 2;
+				vertex.getParticle(newParticleNumber)._persistentRecords._mass				   = 100000000000;
+
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(0) = 0.0005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(1) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(2) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(3) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(4) = 0.0005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(5) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(6) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(7) = 0;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(8) = 0.0005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
+
+				// invert inertia properties
+				iREAL a[9], x[9], det;
+				for (int j = 0; j < 9; j ++){a[j] = vertex.getParticle(newParticleNumber)._persistentRecords._inertia(j);}
+				INVERT (a, x, det);
+				for (int j = 0; j < 9; j ++){vertex.getParticle(newParticleNumber)._persistentRecords._inverse(j) = x[j];}
 				return;
 			}
 			break;
@@ -575,7 +592,7 @@ void dem::mappings::CreateGrid::createCell(
 				   centreAsArray[1] < 0.5 && centreAsArray[1] > 0.35 &&
 				   centreAsArray[2] < 1-0.30 && centreAsArray[2] > 1-0.45)
 				{
-					centreAsArray[1] = centreAsArray[1] + (0.15 - _epsilon*2);
+					centreAsArray[1] = centreAsArray[1] + (0.16 - _epsilon*2);
 					newParticleNumber = vertex.createNewParticle( centreAsArray );
 					if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
 					{
@@ -669,13 +686,13 @@ void dem::mappings::CreateGrid::createCell(
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity = tarch::la::Vector<DIMENSIONS,double>(0.5) - fineGridVerticesEnumerator.getVertexPosition(k);
 					break;
 				case frictionSlide:
-					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = 0.5;
+					/*vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = 0.5;
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = 0;
-					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = 0;
+					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = 0;*/
 
-					vertex.getParticle(newParticleNumber)._persistentRecords._angular(0) = 5;
+					/*vertex.getParticle(newParticleNumber)._persistentRecords._angular(0) = 5;
 					vertex.getParticle(newParticleNumber)._persistentRecords._angular(1) = 5;
-					vertex.getParticle(newParticleNumber)._persistentRecords._angular(2) = 0;
+					vertex.getParticle(newParticleNumber)._persistentRecords._angular(2) = 0;*/
 					break;
 			}
 		}
@@ -696,6 +713,8 @@ void dem::mappings::CreateGrid::endIteration(
 			<< _numberOfParticles << " particles with "
 			<< _numberOfObstacles << " obstacles "
 			<< _numberOfTriangles << " triangles");
+
+	//delta::sys::Sys::saveScenario(_numberOfParticles, _numberOfObstacles);
 
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
 }

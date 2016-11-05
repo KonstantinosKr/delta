@@ -6,7 +6,13 @@
 namespace delta {
   namespace forces {
 
-  	double spring(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3]);
+  	double spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREAL relativeVelocity[3],
+  			iREAL positionASpatial[3], iREAL positionBSpatial[3],
+  			iREAL positionAReferential[3], iREAL positionBReferential[3],
+			iREAL massA, iREAL massB,
+			iREAL rotationA[9], iREAL rotationB[9],
+			iREAL inverseA[9], iREAL inverseB[9], iREAL f[3]);
+
   	double springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3]);
 
   	void friction(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3]);
@@ -27,16 +33,25 @@ namespace delta {
     */
   	void getContactForces(
       std::vector<delta::collision::contactpoint> &conpnt,
-      iREAL positionA[3],
-      iREAL angularVelocityA[3],
-      iREAL linearVelocityA[3],
+      iREAL positionASpatial[3],
+	  iREAL positionAReferential[3],
+	  iREAL angularA[3],
+	  iREAL refAngularA[3],
+      iREAL linearA[3],
       iREAL massA,
+	  iREAL inverseA[9],
+	  iREAL rotationA[9],
       iREAL positionB[3],
-      iREAL angularVelocityB[3],
-      iREAL linearVelocityB[3],
+	  iREAL positionBReferential[3],
+      iREAL angularB[3],
+	  iREAL refAngularB[3],
+	  iREAL linearB[3],
       iREAL massB,
-      iREAL force[3],
+	  iREAL inverseB[9],
+	  iREAL rotationB[9],
+	  iREAL force[3],
       iREAL torque[3],
 	  bool  isSphere);
   }
+
 }

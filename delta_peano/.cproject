@@ -50,6 +50,29 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.toolchain.gnu.cross.base.368927218.690103757" name="/" resourcePath="delta/collision">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.macosx.base.1124274096" name="MacOSX GCC" superClass="cdt.managedbuild.toolchain.gnu.macosx.base" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.macosx.c.linker.macosx.base.107294515" name="MacOS X C Linker" superClass="cdt.managedbuild.tool.macosx.c.linker.macosx.base.27479032"/>
+							<tool id="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base.1666698832" name="MacOS X C++ Linker" superClass="cdt.managedbuild.tool.macosx.cpp.linker.macosx.base.467018797"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.macosx.base.1272260360" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.macosx.base.1081811767">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1142091022" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.macosx.base.1182749854" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.macosx.base.1833722904"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.base.1558545493" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.macosx.base.1497737111">
+								<option id="gnu.cpp.compiler.option.include.paths.21163376" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/"/>
+									<listOptionValue builtIn="false" value="/Users/konstantinos/Devel/peano-code/peano/"/>
+									<listOptionValue builtIn="false" value="/Users/konstantinos/Devel/delta_peano/delta/"/>
+									<listOptionValue builtIn="false" value="/Users/konstantinos/Devel/peano-code/tarch/"/>
+									<listOptionValue builtIn="false" value="/Users/konstantinos/Devel/delta/delta_peano/dem/"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1092499020" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.base.145895754" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.base.596631965">
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.91282128" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry excluding="tarch|peano|delta" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>

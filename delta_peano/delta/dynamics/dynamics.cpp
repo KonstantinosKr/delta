@@ -128,7 +128,7 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
   Lambda9 += 1.0;
 }
 
- void delta::dynamics::updateRotationMatrix(iREAL *angular, iREAL *rotation, iREAL step)
+ void delta::dynamics::updateRotationMatrix(iREAL *angular, iREAL *refAngular, iREAL *rotation, iREAL step)
  {
 	iREAL DL[9], L2[9];
  	expmap (step*angular[0], step*angular[1], step*angular[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
@@ -145,13 +145,12 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
  	rotation[8] = rotation[2]*DL[6]+rotation[5]*DL[7]+rotation[8]*DL[8];
 
  	//NVMUL (rotation, angular, refangular);
- 	//angular[0] = rotation[0]*angular[0]+rotation[3]*angular[1]+rotation[6]*angular[2];
- 	//angular[1] = rotation[1]*angular[0]+rotation[4]*angular[1]+rotation[7]*angular[2];
- 	//angular[2] = rotation[2]*angular[0]+rotation[5]*angular[1]+rotation[8]*angular[2];
+ 	refAngular[0] = rotation[0]*angular[0]+rotation[3]*angular[1]+rotation[6]*angular[2];
+ 	refAngular[1] = rotation[1]*angular[0]+rotation[4]*angular[1]+rotation[7]*angular[2];
+ 	refAngular[2] = rotation[2]*angular[0]+rotation[5]*angular[1]+rotation[8]*angular[2];
  }
 
-
-void delta::dynamics::updateAngular(iREAL *angular, iREAL *rotation, iREAL *inertia, iREAL *inverse, iREAL mass, iREAL *torque, iREAL step)
+void delta::dynamics::updateAngular(iREAL *angular, iREAL *refAngular, iREAL *rotation, iREAL *inertia, iREAL *inverse, iREAL mass, iREAL *torque, iREAL step)
 {
 	iREAL half = 0.5*step;
 
@@ -227,14 +226,11 @@ void delta::dynamics::updateVertices(iREAL *x, iREAL *y, iREAL *z, iREAL *refx, 
 	iREAL C[3], c[3];
 
 	//point A REFERENCIAL
-	C[0] = *refx;
-	C[1] = *refy;
-	C[2] = *refz;
+	C[0] = *refx - refposition[0];
+	C[1] = *refy - refposition[1];
+	C[2] = *refz - refposition[2];
 
 	//SCC (refposition, C);
-	C[0] -= refposition[0];
-	C[1] -= refposition[1];
-	C[2] -= refposition[2];
 
 	c[0] = position[0] + (rotation[0]*(C)[0]+rotation[3]*C[1]+rotation[6]*C[2]);
 	c[1] = position[1] + (rotation[1]*(C)[0]+rotation[4]*C[1]+rotation[7]*C[2]);

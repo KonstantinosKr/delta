@@ -10,7 +10,7 @@
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
 
-#define epsilon 0.002
+#define epsilon 0.0042
 
 tarch::logging::Log _log("");
 
@@ -54,8 +54,9 @@ int main(int argc, char** argv)
               << " plot                see plot variants below" << std::endl
               << " gravity             floating point number" << std::endl
               << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, gjk, add sphere- for sphere check" << std::endl
-              << " [core-count]        only required if you have translated the code with TBBs" << std::endl
+			  << " max timestep size for adaptive timestepping" << std::endl
 			  << " number-of-triangles per particle" << std::endl
+			  << " [core-count]        only required if you have translated the code with TBBs" << std::endl
               << std::endl << std::endl << std::endl << std::endl
               << "Scenarios" << std::endl
               << "=========" << std::endl

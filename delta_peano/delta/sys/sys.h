@@ -28,6 +28,10 @@
 
 #include <time.h>
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <string>
+
 
 namespace delta {
 	namespace sys {
@@ -35,14 +39,17 @@ namespace delta {
 	}
 }
 
-
 class delta::sys::Sys{
 public:
-	void checkpoint();
-	void getSimSetup(int particles, int obstacles, double timeStepSize, int currentIteration, int iteration);
-	/*void delta::sys::Sys::logParticle(int id, double &positionSpatial[3], double &positionReferential[3],
-									double &linear[3], double &angular[3], double &positionSpatial[3],
-									double &positionReferential[3],double &inertia[9], double mass);*/
+	void initCheckpoint(int iteration);
+	void closeCheckpoint();
+	void saveScenario(int particles, int obstacles);
+	void saveIteration(double timeStepSize, int currentIteration, int iteration);
+
+	void saveParticleProperties(int id, double positionSpatial[3], double positionReferential[3], double linear[3], double angular[3],
+							    double inertia[9], double orientation[9], double mass);
+	void saveParticleGeometry(int id, std::vector<double> xCoordinatesSpatial, std::vector<double> yCoordinatesSpatial, std::vector<double> zCoordinatesSpatial,
+							  std::vector<double> xCoordinatesRef, std::vector<double> yCoordinatesRef, std::vector<double> zCoordinatesRef);
 private:
 	static int _noOfParticles;
 	static int _noOfObstacles;
@@ -51,16 +58,8 @@ private:
 	static int	_totalIterations;
 
 	static std::vector<int> _id;
-	static std::vector<double&> _positionSpatial;
-	static std::vector<double&> _positionReferential;
-	static std::vector<double&> _linear;
-	static std::vector<double&> _angular;
-	static std::vector<double&> _inertia;
-	static std::vector<double> _mass;
+	static std::ofstream _checkpointFile;
 };
-
-
-
 
 
 

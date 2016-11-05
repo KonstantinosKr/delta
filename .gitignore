@@ -1,5 +1,5 @@
 delta_peano/geometry-*
 delta_peano/grid-*
+delta_peano/dem-*
 delta_peano/*****/*.optrpt
 delta_peano/*****/*******/*.optrpt
-delta_peano/dem-3d-*

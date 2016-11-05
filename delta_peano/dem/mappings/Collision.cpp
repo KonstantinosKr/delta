@@ -155,9 +155,7 @@ void dem::mappings::Collision::addCollision(
 		}
 	}else
 	{
-		//if enabled friction slide doesn't work (fix it)
 		delta::collision::filterNewContacts(newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
-
 		#ifdef ompParticle
 			#pragma omp critical
 		#endif
@@ -222,8 +220,12 @@ void dem::mappings::Collision::addCollision(
 		#pragma omp critical
 	#endif
 	dataSetB->_contactPoints.insert( dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
-	//logInfo( "addCollision(...)", "add collision for particles " << particleA._persistentRecords._globalParticleNumber << " and " << particleB._persistentRecords._globalParticleNumber);
+	logInfo( "addCollision(...)", "add collision for particles " << particleA._persistentRecords._globalParticleNumber << " and " << particleB._persistentRecords._globalParticleNumber);
 
+	/*for (int i = 0; i < newContactPoints.size(); i++)
+	{
+		printf("NEW CONP%f %f %f\n", newContactPoints[i].x[0], newContactPoints[i].x[1], newContactPoints[i].x[2]);
+	}*/
 	#ifdef ompParticle
 		#pragma omp critical
 	#endif
@@ -253,7 +255,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		  		  "particle no " << currentParticle._persistentRecords._globalParticleNumber
 				  				 << " collide with other particle(s) in "
 								 << _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].size()
-								 << " contact points" );*/
+								 << " contact points");*/
 
 		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].begin();
 			 p != _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].end(); p++)
@@ -264,13 +266,21 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			 delta::forces::getContactForces(
 				p->_contactPoints,
 				&(currentParticle._persistentRecords._centreOfMass(0)),
+				&(currentParticle._persistentRecords._referentialCentreOfMass(0)),
+				&(currentParticle._persistentRecords._referentialAngular(0)),
 				&(currentParticle._persistentRecords._angular(0)),
 				&(currentParticle._persistentRecords._velocity(0)),
 				currentParticle._persistentRecords._mass,
+				&(currentParticle._persistentRecords._inverse(0)),
+				&(currentParticle._persistentRecords._orientation(0)),
 				&(p->_copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
+				&(p->_copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0)),
+				&(p->_copyOfPartnerParticle._persistentRecords._referentialAngular(0)),
 				&(p->_copyOfPartnerParticle._persistentRecords._angular(0)),
 				&(p->_copyOfPartnerParticle._persistentRecords._velocity(0)),
 				p->_copyOfPartnerParticle._persistentRecords._mass,
+				&(p->_copyOfPartnerParticle._persistentRecords._inverse(0)),
+				&(p->_copyOfPartnerParticle._persistentRecords._orientation(0)),
 				force, torque, (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
 
 			currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle._persistentRecords._mass);
@@ -278,11 +288,12 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle._persistentRecords._mass);
 
 			delta::dynamics::updateAngular(&currentParticle._persistentRecords._angular(0),
-													&currentParticle._persistentRecords._orientation(0),
-													&currentParticle._persistentRecords._inertia(0),
-													&currentParticle._persistentRecords._inverse(0),
-													currentParticle._persistentRecords._mass,
-													torque, timeStepSize);
+											&currentParticle._persistentRecords._referentialAngular(0),
+											&currentParticle._persistentRecords._orientation(0),
+											&currentParticle._persistentRecords._inertia(0),
+											&currentParticle._persistentRecords._inverse(0),
+											currentParticle._persistentRecords._mass,
+											torque, timeStepSize);
 
 			//logInfo( "touchVertexFirstTime(...)", "add force f=" << force[0] << ", " << force[1] << ", " << force[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
 			//logInfo( "touchVertexFirstTime(...)", "add torque t=" << torque[0] << ", " << torque[1] << ", " << torque[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
@@ -798,7 +809,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			_state.incNumberOfTriangleComparisons(vertexA.getNumberOfTriangles(i) * vertexB.getNumberOfTriangles(j));
 		}
 	}
-	_state.incNumberOfParticleComparisons(vertexA.getNumberOfParticles() * vertexB.getNumberOfParticles());
+	_state.incNumberOfParticleComparisons(vertexA.getNumberOfRealAndVirtualParticles() * vertexB.getNumberOfRealAndVirtualParticles());
 }
 
 void dem::mappings::Collision::enterCell(

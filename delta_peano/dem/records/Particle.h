@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   23/10/2016 00:08
+    * @date   05/11/2016 11:55
     */
    class dem::records::Particle { 
       
@@ -67,6 +67,11 @@ namespace dem {
             #else
             tarch::la::Vector<DIMENSIONS,double> _angular;
             #endif
+            #ifdef UseManualAlignment
+            tarch::la::Vector<DIMENSIONS,double> _referentialAngular __attribute__((aligned(VectorisationAlignment)));
+            #else
+            tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
+            #endif
             double _diameter;
             double _influenceRadius;
             double _epsilon;
@@ -83,7 +88,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+            PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
             
             
             /**
@@ -376,6 +381,64 @@ namespace dem {
             
             
             
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _referentialAngular;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _referentialAngular = (referentialAngular);
+            }
+            
+            
+            
             inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -559,7 +622,7 @@ namespace dem {
          /**
           * Generated
           */
-         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+         Particle(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
          
          /**
           * Generated
@@ -987,6 +1050,90 @@ namespace dem {
          
          
          
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
+         inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._referentialAngular;
+         }
+         
+         
+         
+         /**
+          * Generated and optimized
+          * 
+          * If you realise a for loop using exclusively arrays (vectors) and compile 
+          * with -DUseManualAlignment you may add 
+          * \code
+          #pragma vector aligned
+          #pragma simd
+          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+          * 
+          * The alignment is tied to the unpacked records, i.e. for packed class
+          * variants the machine's natural alignment is switched off to recude the  
+          * memory footprint. Do not use any SSE/AVX operations or 
+          * vectorisation on the result for the packed variants, as the data is misaligned. 
+          * If you rely on vectorisation, convert the underlying record 
+          * into the unpacked version first. 
+          * 
+          * @see convert()
+          */
+         inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._referentialAngular = (referentialAngular);
+         }
+         
+         
+         
+         inline double getReferentialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            return _persistentRecords._referentialAngular[elementIndex];
+            
+         }
+         
+         
+         
+         inline void setReferentialAngular(int elementIndex, const double& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            assertion(elementIndex>=0);
+            assertion(elementIndex<DIMENSIONS);
+            _persistentRecords._referentialAngular[elementIndex]= referentialAngular;
+            
+         }
+         
+         
+         
          inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1219,7 +1366,7 @@ namespace dem {
              *
              * 		   build date: 09-02-2014 14:40
              *
-             * @date   23/10/2016 00:08
+             * @date   05/11/2016 11:55
              */
             class dem::records::ParticlePacked { 
                
@@ -1231,6 +1378,7 @@ namespace dem {
                      tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                      tarch::la::Vector<DIMENSIONS,double> _velocity;
                      tarch::la::Vector<DIMENSIONS,double> _angular;
+                     tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
                      double _diameter;
                      double _influenceRadius;
                      double _epsilon;
@@ -1247,7 +1395,7 @@ namespace dem {
                      /**
                       * Generated
                       */
-                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                     PersistentRecords(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                      
                      
                      /**
@@ -1540,6 +1688,64 @@ namespace dem {
                      
                      
                      
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
+                     inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        return _referentialAngular;
+                     }
+                     
+                     
+                     
+                     /**
+                      * Generated and optimized
+                      * 
+                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                      * with -DUseManualAlignment you may add 
+                      * \code
+                      #pragma vector aligned
+                      #pragma simd
+                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                      * 
+                      * The alignment is tied to the unpacked records, i.e. for packed class
+                      * variants the machine's natural alignment is switched off to recude the  
+                      * memory footprint. Do not use any SSE/AVX operations or 
+                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                      * If you rely on vectorisation, convert the underlying record 
+                      * into the unpacked version first. 
+                      * 
+                      * @see convert()
+                      */
+                     inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                        _referentialAngular = (referentialAngular);
+                     }
+                     
+                     
+                     
                      inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1719,7 +1925,7 @@ namespace dem {
                   /**
                    * Generated
                    */
-                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                  ParticlePacked(const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                   
                   /**
                    * Generated
@@ -2147,6 +2353,90 @@ namespace dem {
                   
                   
                   
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
+                  inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     return _persistentRecords._referentialAngular;
+                  }
+                  
+                  
+                  
+                  /**
+                   * Generated and optimized
+                   * 
+                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                   * with -DUseManualAlignment you may add 
+                   * \code
+                   #pragma vector aligned
+                   #pragma simd
+                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                   * 
+                   * The alignment is tied to the unpacked records, i.e. for packed class
+                   * variants the machine's natural alignment is switched off to recude the  
+                   * memory footprint. Do not use any SSE/AVX operations or 
+                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                   * If you rely on vectorisation, convert the underlying record 
+                   * into the unpacked version first. 
+                   * 
+                   * @see convert()
+                   */
+                  inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     _persistentRecords._referentialAngular = (referentialAngular);
+                  }
+                  
+                  
+                  
+                  inline double getReferentialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     return _persistentRecords._referentialAngular[elementIndex];
+                     
+                  }
+                  
+                  
+                  
+                  inline void setReferentialAngular(int elementIndex, const double& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                     assertion(elementIndex>=0);
+                     assertion(elementIndex<DIMENSIONS);
+                     _persistentRecords._referentialAngular[elementIndex]= referentialAngular;
+                     
+                  }
+                  
+                  
+                  
                   inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -2376,7 +2666,7 @@ namespace dem {
                       *
                       * 		   build date: 09-02-2014 14:40
                       *
-                      * @date   23/10/2016 00:08
+                      * @date   05/11/2016 11:55
                       */
                      class dem::records::Particle { 
                         
@@ -2450,6 +2740,11 @@ namespace dem {
                               #else
                               tarch::la::Vector<DIMENSIONS,double> _angular;
                               #endif
+                              #ifdef UseManualAlignment
+                              tarch::la::Vector<DIMENSIONS,double> _referentialAngular __attribute__((aligned(VectorisationAlignment)));
+                              #else
+                              tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
+                              #endif
                               double _diameter;
                               double _influenceRadius;
                               double _epsilon;
@@ -2466,7 +2761,7 @@ namespace dem {
                               /**
                                * Generated
                                */
-                              PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                              PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                               
                               
                               /**
@@ -3223,6 +3518,64 @@ namespace dem {
                               
                               
                               
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 return _referentialAngular;
+                              }
+                              
+                              
+                              
+                              /**
+                               * Generated and optimized
+                               * 
+                               * If you realise a for loop using exclusively arrays (vectors) and compile 
+                               * with -DUseManualAlignment you may add 
+                               * \code
+                               #pragma vector aligned
+                               #pragma simd
+                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                               * 
+                               * The alignment is tied to the unpacked records, i.e. for packed class
+                               * variants the machine's natural alignment is switched off to recude the  
+                               * memory footprint. Do not use any SSE/AVX operations or 
+                               * vectorisation on the result for the packed variants, as the data is misaligned. 
+                               * If you rely on vectorisation, convert the underlying record 
+                               * into the unpacked version first. 
+                               * 
+                               * @see convert()
+                               */
+                              inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                 _referentialAngular = (referentialAngular);
+                              }
+                              
+                              
+                              
                               inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -3406,7 +3759,7 @@ namespace dem {
                            /**
                             * Generated
                             */
-                           Particle(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                           Particle(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                            
                            /**
                             * Generated
@@ -4506,6 +4859,90 @@ namespace dem {
                            
                            
                            
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              return _persistentRecords._referentialAngular;
+                           }
+                           
+                           
+                           
+                           /**
+                            * Generated and optimized
+                            * 
+                            * If you realise a for loop using exclusively arrays (vectors) and compile 
+                            * with -DUseManualAlignment you may add 
+                            * \code
+                            #pragma vector aligned
+                            #pragma simd
+                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                            * 
+                            * The alignment is tied to the unpacked records, i.e. for packed class
+                            * variants the machine's natural alignment is switched off to recude the  
+                            * memory footprint. Do not use any SSE/AVX operations or 
+                            * vectorisation on the result for the packed variants, as the data is misaligned. 
+                            * If you rely on vectorisation, convert the underlying record 
+                            * into the unpacked version first. 
+                            * 
+                            * @see convert()
+                            */
+                           inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              _persistentRecords._referentialAngular = (referentialAngular);
+                           }
+                           
+                           
+                           
+                           inline double getReferentialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              return _persistentRecords._referentialAngular[elementIndex];
+                              
+                           }
+                           
+                           
+                           
+                           inline void setReferentialAngular(int elementIndex, const double& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                              assertion(elementIndex>=0);
+                              assertion(elementIndex<DIMENSIONS);
+                              _persistentRecords._referentialAngular[elementIndex]= referentialAngular;
+                              
+                           }
+                           
+                           
+                           
                            inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -4738,7 +5175,7 @@ namespace dem {
                                *
                                * 		   build date: 09-02-2014 14:40
                                *
-                               * @date   23/10/2016 00:08
+                               * @date   05/11/2016 11:55
                                */
                               class dem::records::ParticlePacked { 
                                  
@@ -4758,6 +5195,7 @@ namespace dem {
                                        tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                                        tarch::la::Vector<DIMENSIONS,double> _velocity;
                                        tarch::la::Vector<DIMENSIONS,double> _angular;
+                                       tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
                                        double _diameter;
                                        double _influenceRadius;
                                        double _epsilon;
@@ -4774,7 +5212,7 @@ namespace dem {
                                        /**
                                         * Generated
                                         */
-                                       PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                       PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                        
                                        
                                        /**
@@ -5531,6 +5969,64 @@ namespace dem {
                                        
                                        
                                        
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          return _referentialAngular;
+                                       }
+                                       
+                                       
+                                       
+                                       /**
+                                        * Generated and optimized
+                                        * 
+                                        * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                        * with -DUseManualAlignment you may add 
+                                        * \code
+                                        #pragma vector aligned
+                                        #pragma simd
+                                        \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                        * 
+                                        * The alignment is tied to the unpacked records, i.e. for packed class
+                                        * variants the machine's natural alignment is switched off to recude the  
+                                        * memory footprint. Do not use any SSE/AVX operations or 
+                                        * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                        * If you rely on vectorisation, convert the underlying record 
+                                        * into the unpacked version first. 
+                                        * 
+                                        * @see convert()
+                                        */
+                                       inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                          _referentialAngular = (referentialAngular);
+                                       }
+                                       
+                                       
+                                       
                                        inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -5710,7 +6206,7 @@ namespace dem {
                                     /**
                                      * Generated
                                      */
-                                    ParticlePacked(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                    ParticlePacked(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                     
                                     /**
                                      * Generated
@@ -6810,6 +7306,90 @@ namespace dem {
                                     
                                     
                                     
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       return _persistentRecords._referentialAngular;
+                                    }
+                                    
+                                    
+                                    
+                                    /**
+                                     * Generated and optimized
+                                     * 
+                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                     * with -DUseManualAlignment you may add 
+                                     * \code
+                                     #pragma vector aligned
+                                     #pragma simd
+                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                     * 
+                                     * The alignment is tied to the unpacked records, i.e. for packed class
+                                     * variants the machine's natural alignment is switched off to recude the  
+                                     * memory footprint. Do not use any SSE/AVX operations or 
+                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                     * If you rely on vectorisation, convert the underlying record 
+                                     * into the unpacked version first. 
+                                     * 
+                                     * @see convert()
+                                     */
+                                    inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       _persistentRecords._referentialAngular = (referentialAngular);
+                                    }
+                                    
+                                    
+                                    
+                                    inline double getReferentialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       return _persistentRecords._referentialAngular[elementIndex];
+                                       
+                                    }
+                                    
+                                    
+                                    
+                                    inline void setReferentialAngular(int elementIndex, const double& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                       assertion(elementIndex>=0);
+                                       assertion(elementIndex<DIMENSIONS);
+                                       _persistentRecords._referentialAngular[elementIndex]= referentialAngular;
+                                       
+                                    }
+                                    
+                                    
+                                    
                                     inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -7040,7 +7620,7 @@ namespace dem {
                                      *
                                      * 		   build date: 09-02-2014 14:40
                                      *
-                                     * @date   23/10/2016 00:08
+                                     * @date   05/11/2016 11:55
                                      */
                                     class dem::records::Particle { 
                                        
@@ -7094,6 +7674,11 @@ namespace dem {
                                              #else
                                              tarch::la::Vector<DIMENSIONS,double> _angular;
                                              #endif
+                                             #ifdef UseManualAlignment
+                                             tarch::la::Vector<DIMENSIONS,double> _referentialAngular __attribute__((aligned(VectorisationAlignment)));
+                                             #else
+                                             tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
+                                             #endif
                                              double _diameter;
                                              double _influenceRadius;
                                              double _epsilon;
@@ -7110,7 +7695,7 @@ namespace dem {
                                              /**
                                               * Generated
                                               */
-                                             PersistentRecords(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                             PersistentRecords(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                              
                                              
                                              /**
@@ -7635,6 +8220,64 @@ namespace dem {
                                              
                                              
                                              
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                return _referentialAngular;
+                                             }
+                                             
+                                             
+                                             
+                                             /**
+                                              * Generated and optimized
+                                              * 
+                                              * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                              * with -DUseManualAlignment you may add 
+                                              * \code
+                                              #pragma vector aligned
+                                              #pragma simd
+                                              \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                              * 
+                                              * The alignment is tied to the unpacked records, i.e. for packed class
+                                              * variants the machine's natural alignment is switched off to recude the  
+                                              * memory footprint. Do not use any SSE/AVX operations or 
+                                              * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                              * If you rely on vectorisation, convert the underlying record 
+                                              * into the unpacked version first. 
+                                              * 
+                                              * @see convert()
+                                              */
+                                             inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                _referentialAngular = (referentialAngular);
+                                             }
+                                             
+                                             
+                                             
                                              inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -7818,7 +8461,7 @@ namespace dem {
                                           /**
                                            * Generated
                                            */
-                                          Particle(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                          Particle(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                           
                                           /**
                                            * Generated
@@ -8582,6 +9225,90 @@ namespace dem {
                                           
                                           
                                           
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             return _persistentRecords._referentialAngular;
+                                          }
+                                          
+                                          
+                                          
+                                          /**
+                                           * Generated and optimized
+                                           * 
+                                           * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                           * with -DUseManualAlignment you may add 
+                                           * \code
+                                           #pragma vector aligned
+                                           #pragma simd
+                                           \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                           * 
+                                           * The alignment is tied to the unpacked records, i.e. for packed class
+                                           * variants the machine's natural alignment is switched off to recude the  
+                                           * memory footprint. Do not use any SSE/AVX operations or 
+                                           * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                           * If you rely on vectorisation, convert the underlying record 
+                                           * into the unpacked version first. 
+                                           * 
+                                           * @see convert()
+                                           */
+                                          inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             _persistentRecords._referentialAngular = (referentialAngular);
+                                          }
+                                          
+                                          
+                                          
+                                          inline double getReferentialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             return _persistentRecords._referentialAngular[elementIndex];
+                                             
+                                          }
+                                          
+                                          
+                                          
+                                          inline void setReferentialAngular(int elementIndex, const double& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                             assertion(elementIndex>=0);
+                                             assertion(elementIndex<DIMENSIONS);
+                                             _persistentRecords._referentialAngular[elementIndex]= referentialAngular;
+                                             
+                                          }
+                                          
+                                          
+                                          
                                           inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -8814,7 +9541,7 @@ namespace dem {
                                               *
                                               * 		   build date: 09-02-2014 14:40
                                               *
-                                              * @date   23/10/2016 00:08
+                                              * @date   05/11/2016 11:55
                                               */
                                              class dem::records::ParticlePacked { 
                                                 
@@ -8830,6 +9557,7 @@ namespace dem {
                                                       tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                                                       tarch::la::Vector<DIMENSIONS,double> _velocity;
                                                       tarch::la::Vector<DIMENSIONS,double> _angular;
+                                                      tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
                                                       double _diameter;
                                                       double _influenceRadius;
                                                       double _epsilon;
@@ -8846,7 +9574,7 @@ namespace dem {
                                                       /**
                                                        * Generated
                                                        */
-                                                      PersistentRecords(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                                      PersistentRecords(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                                       
                                                       
                                                       /**
@@ -9371,6 +10099,64 @@ namespace dem {
                                                       
                                                       
                                                       
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         return _referentialAngular;
+                                                      }
+                                                      
+                                                      
+                                                      
+                                                      /**
+                                                       * Generated and optimized
+                                                       * 
+                                                       * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                       * with -DUseManualAlignment you may add 
+                                                       * \code
+                                                       #pragma vector aligned
+                                                       #pragma simd
+                                                       \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                       * 
+                                                       * The alignment is tied to the unpacked records, i.e. for packed class
+                                                       * variants the machine's natural alignment is switched off to recude the  
+                                                       * memory footprint. Do not use any SSE/AVX operations or 
+                                                       * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                       * If you rely on vectorisation, convert the underlying record 
+                                                       * into the unpacked version first. 
+                                                       * 
+                                                       * @see convert()
+                                                       */
+                                                      inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                         _referentialAngular = (referentialAngular);
+                                                      }
+                                                      
+                                                      
+                                                      
                                                       inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -9550,7 +10336,7 @@ namespace dem {
                                                    /**
                                                     * Generated
                                                     */
-                                                   ParticlePacked(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                                   ParticlePacked(const tarch::la::Vector<4,double>& vertices, const tarch::la::Vector<4,double>& orientation, const tarch::la::Vector<4,double>& inertia, const tarch::la::Vector<4,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                                    
                                                    /**
                                                     * Generated
@@ -10314,6 +11100,90 @@ namespace dem {
                                                    
                                                    
                                                    
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      return _persistentRecords._referentialAngular;
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   /**
+                                                    * Generated and optimized
+                                                    * 
+                                                    * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                    * with -DUseManualAlignment you may add 
+                                                    * \code
+                                                    #pragma vector aligned
+                                                    #pragma simd
+                                                    \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                    * 
+                                                    * The alignment is tied to the unpacked records, i.e. for packed class
+                                                    * variants the machine's natural alignment is switched off to recude the  
+                                                    * memory footprint. Do not use any SSE/AVX operations or 
+                                                    * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                    * If you rely on vectorisation, convert the underlying record 
+                                                    * into the unpacked version first. 
+                                                    * 
+                                                    * @see convert()
+                                                    */
+                                                   inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      _persistentRecords._referentialAngular = (referentialAngular);
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline double getReferentialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      return _persistentRecords._referentialAngular[elementIndex];
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
+                                                   inline void setReferentialAngular(int elementIndex, const double& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                      assertion(elementIndex>=0);
+                                                      assertion(elementIndex<DIMENSIONS);
+                                                      _persistentRecords._referentialAngular[elementIndex]= referentialAngular;
+                                                      
+                                                   }
+                                                   
+                                                   
+                                                   
                                                    inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -10544,7 +11414,7 @@ namespace dem {
                                                     *
                                                     * 		   build date: 09-02-2014 14:40
                                                     *
-                                                    * @date   23/10/2016 00:08
+                                                    * @date   05/11/2016 11:55
                                                     */
                                                    class dem::records::Particle { 
                                                       
@@ -10598,6 +11468,11 @@ namespace dem {
                                                             #else
                                                             tarch::la::Vector<DIMENSIONS,double> _angular;
                                                             #endif
+                                                            #ifdef UseManualAlignment
+                                                            tarch::la::Vector<DIMENSIONS,double> _referentialAngular __attribute__((aligned(VectorisationAlignment)));
+                                                            #else
+                                                            tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
+                                                            #endif
                                                             double _diameter;
                                                             double _influenceRadius;
                                                             double _epsilon;
@@ -10614,7 +11489,7 @@ namespace dem {
                                                             /**
                                                              * Generated
                                                              */
-                                                            PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                                            PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                                             
                                                             
                                                             /**
@@ -11139,6 +12014,64 @@ namespace dem {
                                                             
                                                             
                                                             
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               return _referentialAngular;
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            /**
+                                                             * Generated and optimized
+                                                             * 
+                                                             * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                             * with -DUseManualAlignment you may add 
+                                                             * \code
+                                                             #pragma vector aligned
+                                                             #pragma simd
+                                                             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                             * 
+                                                             * The alignment is tied to the unpacked records, i.e. for packed class
+                                                             * variants the machine's natural alignment is switched off to recude the  
+                                                             * memory footprint. Do not use any SSE/AVX operations or 
+                                                             * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                             * If you rely on vectorisation, convert the underlying record 
+                                                             * into the unpacked version first. 
+                                                             * 
+                                                             * @see convert()
+                                                             */
+                                                            inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                               _referentialAngular = (referentialAngular);
+                                                            }
+                                                            
+                                                            
+                                                            
                                                             inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -11322,7 +12255,7 @@ namespace dem {
                                                          /**
                                                           * Generated
                                                           */
-                                                         Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                                         Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                                          
                                                          /**
                                                           * Generated
@@ -12086,6 +13019,90 @@ namespace dem {
                                                          
                                                          
                                                          
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            return _persistentRecords._referentialAngular;
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         /**
+                                                          * Generated and optimized
+                                                          * 
+                                                          * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                          * with -DUseManualAlignment you may add 
+                                                          * \code
+                                                          #pragma vector aligned
+                                                          #pragma simd
+                                                          \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                          * 
+                                                          * The alignment is tied to the unpacked records, i.e. for packed class
+                                                          * variants the machine's natural alignment is switched off to recude the  
+                                                          * memory footprint. Do not use any SSE/AVX operations or 
+                                                          * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                          * If you rely on vectorisation, convert the underlying record 
+                                                          * into the unpacked version first. 
+                                                          * 
+                                                          * @see convert()
+                                                          */
+                                                         inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            _persistentRecords._referentialAngular = (referentialAngular);
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline double getReferentialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            return _persistentRecords._referentialAngular[elementIndex];
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
+                                                         inline void setReferentialAngular(int elementIndex, const double& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                            assertion(elementIndex>=0);
+                                                            assertion(elementIndex<DIMENSIONS);
+                                                            _persistentRecords._referentialAngular[elementIndex]= referentialAngular;
+                                                            
+                                                         }
+                                                         
+                                                         
+                                                         
                                                          inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -12318,7 +13335,7 @@ namespace dem {
                                                              *
                                                              * 		   build date: 09-02-2014 14:40
                                                              *
-                                                             * @date   23/10/2016 00:08
+                                                             * @date   05/11/2016 11:55
                                                              */
                                                             class dem::records::ParticlePacked { 
                                                                
@@ -12334,6 +13351,7 @@ namespace dem {
                                                                      tarch::la::Vector<DIMENSIONS,double> _referentialCentreOfMass;
                                                                      tarch::la::Vector<DIMENSIONS,double> _velocity;
                                                                      tarch::la::Vector<DIMENSIONS,double> _angular;
+                                                                     tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
                                                                      double _diameter;
                                                                      double _influenceRadius;
                                                                      double _epsilon;
@@ -12350,7 +13368,7 @@ namespace dem {
                                                                      /**
                                                                       * Generated
                                                                       */
-                                                                     PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                                                     PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                                                      
                                                                      
                                                                      /**
@@ -12875,6 +13893,64 @@ namespace dem {
                                                                      
                                                                      
                                                                      
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        return _referentialAngular;
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
+                                                                     /**
+                                                                      * Generated and optimized
+                                                                      * 
+                                                                      * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                      * with -DUseManualAlignment you may add 
+                                                                      * \code
+                                                                      #pragma vector aligned
+                                                                      #pragma simd
+                                                                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                      * 
+                                                                      * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                      * variants the machine's natural alignment is switched off to recude the  
+                                                                      * memory footprint. Do not use any SSE/AVX operations or 
+                                                                      * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                      * If you rely on vectorisation, convert the underlying record 
+                                                                      * into the unpacked version first. 
+                                                                      * 
+                                                                      * @see convert()
+                                                                      */
+                                                                     inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                        _referentialAngular = (referentialAngular);
+                                                                     }
+                                                                     
+                                                                     
+                                                                     
                                                                      inline double getDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -13054,7 +14130,7 @@ namespace dem {
                                                                   /**
                                                                    * Generated
                                                                    */
-                                                                  ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
+                                                                  ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleNumber, const int& numberOfTriangles, const int& material);
                                                                   
                                                                   /**
                                                                    * Generated
@@ -13813,6 +14889,90 @@ namespace dem {
                                                                      assertion(elementIndex>=0);
                                                                      assertion(elementIndex<DIMENSIONS);
                                                                      _persistentRecords._angular[elementIndex]= angular;
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline tarch::la::Vector<DIMENSIONS,double> getReferentialAngular() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     return _persistentRecords._referentialAngular;
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  /**
+                                                                   * Generated and optimized
+                                                                   * 
+                                                                   * If you realise a for loop using exclusively arrays (vectors) and compile 
+                                                                   * with -DUseManualAlignment you may add 
+                                                                   * \code
+                                                                   #pragma vector aligned
+                                                                   #pragma simd
+                                                                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                                                                   * 
+                                                                   * The alignment is tied to the unpacked records, i.e. for packed class
+                                                                   * variants the machine's natural alignment is switched off to recude the  
+                                                                   * memory footprint. Do not use any SSE/AVX operations or 
+                                                                   * vectorisation on the result for the packed variants, as the data is misaligned. 
+                                                                   * If you rely on vectorisation, convert the underlying record 
+                                                                   * into the unpacked version first. 
+                                                                   * 
+                                                                   * @see convert()
+                                                                   */
+                                                                  inline void setReferentialAngular(const tarch::la::Vector<DIMENSIONS,double>& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     _persistentRecords._referentialAngular = (referentialAngular);
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline double getReferentialAngular(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     return _persistentRecords._referentialAngular[elementIndex];
+                                                                     
+                                                                  }
+                                                                  
+                                                                  
+                                                                  
+                                                                  inline void setReferentialAngular(int elementIndex, const double& referentialAngular) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                                                                     assertion(elementIndex>=0);
+                                                                     assertion(elementIndex<DIMENSIONS);
+                                                                     _persistentRecords._referentialAngular[elementIndex]= referentialAngular;
                                                                      
                                                                   }
                                                                   
