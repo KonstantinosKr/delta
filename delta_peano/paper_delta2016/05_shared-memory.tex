@@ -1,20 +1,47 @@
 \section{Shared memory parallelisation}
 \label{section:shared-memory}
 
-We introduce three levels of shared memory parallelisation. On the highest level, we exploit the cell level decomposition and assign work within each cell to cores. Within the cell we assign work per particle pair  to an inner fork-level of threads. Lastly within each particle pair the innermost level of parallelisation is utilised to exploit tessellation level parallelisation by the contact solver.
+We introduce three levels of shared memory parallelisation. On the highest level, we exploit the cell level decomposition and assign work within each cell to cores. Within the cell we assign work per particle pair  to an inner fork-level of threads. Lastly within each particle pair the innermost level of parallelisation is utilised to exploit mesh level parallelisation by the contact solver.
 
-Three levels of multicore parallelisation:
+Three levels of multicore parallelisation:\\
 
-a) on the cell level
-b) within one 'cell' do all the particles in parallel
-c) within one particle-particle sweep, do all the triangles in parallel
+a) cell level cell-to-cell thread units\\
+
+b) cell vertex level particle-to-particle thread units\\
+
+c) particle level mesh-to-mesh thread units\\
 
 %describe the setup
-For the multi-core scaling experiments we setup runs that use the hybrid solver and the brute force solver. We base performance experiments on three main runtime setups. We use meshed non-spherical particles of approximately 60 triangles each based on the Delauny triangulation (see appendix) derived from a 50 sphere shaped point cloud. We scale the contact problem in two aspects; by number of non-spherical particles and by irregularity of particle radius size. We use regular grid, adaptive and reluctant grids for grid-based adaptivity. Lastly, the particles mass is homogeneous to the particles and the initial velocities are random for every particle. To enhance the time to solution we use spheres as a last stage boundary box to minimize the number of mesh to mesh contact solving per timestep per cell per vertex.
+We utilise particles approximated by a random spherical point cloud, arbitrary particle surfaces are generated with the Delauny triangulation algorithm. The algorithm is scaled in three respects; number of non-spherical particles, irregularity of particle radius size, and mesh size. Respectively, we provide three parameters in the creation of the simulation domain. $Rmin$, $Rmax$ parameter for max and min radius of particles, $m$ for mesh density, $p$ for number of particles in the domain. These allow observation of the interplay between performance and particle geometry and dynamics within a grid in a modern NUMA architecture. For scaling measuring we use the hybrid and the brute force solvers.
 
-\clearpage
+%Initial conditions
+For the experiment the initial space configuration of the particles in respect to the grid is homogeneous and aligned per cell. Initial conditions for the particle dynamics are governed by the force of gravity only. The termination condition is a finite number of steps where the majority granulates of the experiment are rest and in contact position on a floor, this step phase is known a priori. We utilise regular grid and reluctant-adaptive grids for space decomposition and adaptivity. 
 
-In the innermost level of parallesation we are experimenting with several solver methods to resolve contact points. At this level computation is parallelised based upon triangle pairs and triangle batches and assigned to threads statically. 
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{experiments/omp/omp_mesh_regular.png}
+  \end{center}
+  \caption{Regular grid drop test shared memory scaling of 729 particles, 22540 triangle elements.}
+  \label{figure:omp_regular_triangle_20}
+\end{figure}
+
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{experiments/omp/omp_mesh_reluctant.png}
+  \end{center}
+  \caption{Regular grid drop test shared memory scaling of 729 particles, 22540 triangle elements.}
+  \label{figure:omp_reluctant_triangle_20}
+\end{figure}
+
+%I THINK I SHOULD MERGE THE ABOVE TWO PLOTS INTO ONE
+
+Starting from the innermost level of parallelism, the tessellation-level experiment with a regular grid (figure \ref{omp_regular_triangle_20}) on a NUMA ivy bridge system scales up to the single eight-core die. As we increase the size of the problem using the m parameter (figure \ref{omp_regular_triangle_200}) we observe that computation to memory bandwidth is no longer sustainable over multiple cores. 
+
+Similarly for a small enough sized $m$ (figure \ref{omp_reluctant_triangle_20}) adaptivity doesn't pay off as multi-threading scheduling, initialisation, adaptivity and communication overhead takes over computation. Contrary to regular grid, adaptivity allows up to scale on bigger problems (figure \ref{omp_reluctant_triangle_200}) as long as shared memory and computation to memory bandwidth overhead is not a bottleneck. In both cases for the brute force solver it did not scale pass the second die interconnect.
+
+
+
+In the innermost level of parallesation we are experimenting with several solver methods to resolve contact points. At this level computation is parallelised upon triangle pairs and triangle batches and assigned to threads statically. 
 From the performance measurements in Figure \ref{figure:triangle_omp} it is observed that Hybrid-on-triangle-pairs scales but it is slowest method to solution per timestep. 
 
 \begin{figure}[htb]
