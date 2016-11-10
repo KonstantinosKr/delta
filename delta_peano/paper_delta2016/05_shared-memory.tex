@@ -19,17 +19,17 @@ For the experiment the initial space configuration of the particles in respect t
 
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{experiments/omp/omp_mesh_regular.png}
+    \includegraphics[width=0.8\textwidth]{experiments/omp/omp_mesh_regular_20.png}
   \end{center}
-  \caption{Regular grid drop test shared memory scaling of 729 particles, 22540 triangle elements.}
+  \caption{Regular grid shared memory scaling, 22540 triangle elements.}
   \label{figure:omp_regular_triangle_20}
 \end{figure}
 
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{experiments/omp/omp_mesh_reluctant.png}
+    \includegraphics[width=0.8\textwidth]{experiments/omp/omp_mesh_reluctant_20.png}
   \end{center}
-  \caption{Regular grid drop test shared memory scaling of 729 particles, 22540 triangle elements.}
+  \caption{Regular grid shared memory scaling, 22540 triangle elements.}
   \label{figure:omp_reluctant_triangle_20}
 \end{figure}
 
@@ -37,12 +37,27 @@ For the experiment the initial space configuration of the particles in respect t
 
 Starting from the innermost level of parallelism, the tessellation-level experiment with a regular grid (figure \ref{omp_regular_triangle_20}) on a NUMA ivy bridge system scales up to the single eight-core die. As we increase the size of the problem using the m parameter (figure \ref{omp_regular_triangle_200}) we observe that computation to memory bandwidth is no longer sustainable over multiple cores. 
 
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{experiments/omp/omp_mesh_regular_200.png}
+  \end{center}
+  \caption{Regular grid shared memory scaling, 98540 triangle elements.}
+  \label{figure:omp_regular_triangle_200}
+\end{figure}
+
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{experiments/omp/omp_mesh_reluctant_200.png}
+  \end{center}
+  \caption{Reluctant adaptive grid shared memory scaling, 98540 triangle elements.}
+  \label{figure:omp_reluctant_triangle_200}
+\end{figure}
+
 Similarly for a small enough sized $m$ (figure \ref{omp_reluctant_triangle_20}) adaptivity doesn't pay off as multi-threading scheduling, initialisation, adaptivity and communication overhead takes over computation. Contrary to regular grid, adaptivity allows up to scale on bigger problems (figure \ref{omp_reluctant_triangle_200}) as long as shared memory and computation to memory bandwidth overhead is not a bottleneck. In both cases for the brute force solver it did not scale pass the second die interconnect.
 
 
-
-In the innermost level of parallesation we are experimenting with several solver methods to resolve contact points. At this level computation is parallelised upon triangle pairs and triangle batches and assigned to threads statically. 
-From the performance measurements in Figure \ref{figure:triangle_omp} it is observed that Hybrid-on-triangle-pairs scales but it is slowest method to solution per timestep. 
+For the hybrid method computation is parallelised in two schemes triangle-to-triangle pairs and triangle-to-triangle batches. 
+In Figure \ref{figure:triangle_omp} it is observed that hybrid-on-triangle-pairs scales but it is slowest method to solution per timestep. 
 
 \begin{figure}[htb]
   \begin{center}

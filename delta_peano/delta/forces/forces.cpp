@@ -138,7 +138,7 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 
   iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
 
-  iREAL damp = DAMPER * 2 * sqrt(mass*SPRING)*velocity;
+  iREAL damp = DAMPER * 50 * sqrt(mass*SPRING)*velocity;
 
   iREAL force = SPRING*depth+damp;
 
@@ -146,7 +146,7 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
   f[1] = force*normal[1];
   f[2] = force*normal[2];
 
-  printf("Velocity:%f depth:%f force:%f damp:%f mass:%f\n", velocity, depth, force, damp, mass);
+  printf("Velocity:%f depth:%f spring:%f totalforce:%f damp:%f mass:%f\n", velocity, depth, SPRING*depth, force, damp, mass);
   return force;
 }
 

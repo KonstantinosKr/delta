@@ -28,7 +28,22 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
 				ignore = true;
 			}
 
-			if (distance <= 0.01 && (newContactPoints[i].getDistance() > tmp[j].getDistance()))
+			iREAL A[3], B[3];
+
+			A[0] = newContactPoints[i].normal[0];
+			A[1] = newContactPoints[i].normal[1];
+			A[2] = newContactPoints[i].normal[2];
+
+			B[0] = tmp[j].normal[0];
+			B[1] = tmp[j].normal[1];
+			B[2] = tmp[j].normal[2];
+
+			double dot = A[0]*B[0]+
+						 A[1]*B[1]+
+						 A[2]*B[2];
+
+			printf("Distance:%f DOT:%f\n", distance, dot);
+			if (dot >= 0.70)
 			{
 				ignore = true;
 			}
@@ -67,14 +82,27 @@ void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredCo
 				ignore = true;
 			}
 
+			iREAL A[3], B[3];
+			A[0] = newContactPoints[i].normal[0];
+			A[1] = newContactPoints[i].normal[1];
+			A[2] = newContactPoints[i].normal[2];
+
+			B[0] = dataStoredContactPoints[j].normal[0];
+			B[1] = dataStoredContactPoints[j].normal[1];
+			B[2] = dataStoredContactPoints[j].normal[2];
+
+			double dot = A[0]*B[0]+
+						 A[1]*B[1]+
+						 A[2]*B[2];
+
 			//distance between contacts points is smaller than hMin | new contact/body distance is smaller than the one stored  | delete stored
-			if (distance <= 0.01 && (newContactPoints[j].getDistance() < dataStoredContactPoints[i].getDistance()))
+			/*if (dot <= 0.7 && (newContactPoints[j].getDistance() < dataStoredContactPoints[i].getDistance()))
 			{
 				ignore = true;
-			} else if(distance <= 0.01 && (newContactPoints[j].getDistance() > dataStoredContactPoints[i].getDistance()))
+			} else if(dot <= 0.7 && (newContactPoints[j].getDistance() > dataStoredContactPoints[i].getDistance()))
 			{
 				ignore = true;
-			}
+			}*/
 		}
 		if(!ignore)
 		{

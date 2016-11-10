@@ -10,7 +10,7 @@
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
 
-#define epsilon 0.0042
+#define epsilon 0.004
 
 tarch::logging::Log _log("");
 

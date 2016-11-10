@@ -87,20 +87,20 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     {
       if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
       {
-          logInfo("runAsMaster(...)", "iteration i=" << i
+          logInfo("runAsMaster(...)", "i=" << i
             << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-            << ", contact-points=" << repository.getState().getNumberOfContactPoints()
+            << ", contacts=" << repository.getState().getNumberOfContactPoints()
 			<< ", particle-cmp=" << repository.getState().getNumberOfParticleComparisons()
-            << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
-            << " | snapshot");
+            << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
+            << " | snap");
       }else
       {
-          logInfo("runAsMaster(...)", "iteration i=" << i
+          logInfo("runAsMaster(...)", "i=" << i
             << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
             << ", triangle-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-            << ", contact-points=" << repository.getState().getNumberOfContactPoints()
-            << ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
-            << " | snapshot");
+            << ", contacts=" << repository.getState().getNumberOfContactPoints()
+            << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
+            << " | snap");
       }
 
       //delta::sys::Sys::saveIteration(repository.getState().getTimeStepSize(), i, iterations);
@@ -121,18 +121,18 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     {
       if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
       {
-		  logInfo("runAsMaster(...)", "iteration i=" << i
+		  logInfo("runAsMaster(...)", "i=" << i
 			<< ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
 			<< ", particle-cmp=" << repository.getState().getNumberOfParticleComparisons()
-			<< ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
+			<< ", grid-v=" << repository.getState().getNumberOfInnerVertices()
 			<< ", t=" << repository.getState().getTime()
 			<< ", dt=" << repository.getState().getTimeStepSize());
       }else
       {
-    	  logInfo("runAsMaster(...)", "iteration i=" << i
+    	  logInfo("runAsMaster(...)", "i=" << i
     			<< ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
     			<< ", triangle-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-    			<< ", grid-vertices=" << repository.getState().getNumberOfInnerVertices()
+    			<< ", grid-v=" << repository.getState().getNumberOfInnerVertices()
     			<< ", t=" << repository.getState().getTime()
     			<< ", dt=" << repository.getState().getTimeStepSize());
       }

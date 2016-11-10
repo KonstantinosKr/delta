@@ -220,7 +220,7 @@ void dem::mappings::Collision::addCollision(
 		#pragma omp critical
 	#endif
 	dataSetB->_contactPoints.insert( dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
-	logInfo( "addCollision(...)", "add collision for particles " << particleA._persistentRecords._globalParticleNumber << " and " << particleB._persistentRecords._globalParticleNumber);
+	//logInfo( "addCollision(...)", "add collision for particles " << particleA._persistentRecords._globalParticleNumber << " and " << particleB._persistentRecords._globalParticleNumber);
 
 	/*for (int i = 0; i < newContactPoints.size(); i++)
 	{

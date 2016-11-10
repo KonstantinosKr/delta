@@ -267,7 +267,7 @@ void dem::mappings::CreateGrid::createCell(
 
 				_numberOfParticles++; _numberOfObstacles++;
 				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
-
+				//delta::primitives::meshDenseMultiplier(5, xCoordinates, yCoordinates, zCoordinates);
 				for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
 				{
 					vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
