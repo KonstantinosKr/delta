@@ -146,7 +146,7 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
   f[1] = force*normal[1];
   f[2] = force*normal[2];
 
-  printf("Velocity:%f depth:%f spring:%f totalforce:%f damp:%f mass:%f\n", velocity, depth, SPRING*depth, force, damp, mass);
+  //printf("Velocity:%f depth:%f spring:%f totalforce:%f damp:%f mass:%f\n", velocity, depth, SPRING*depth, force, damp, mass);
   return force;
 }
 

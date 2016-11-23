@@ -115,7 +115,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
     iREAL energy = getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
     iREAL rotational = getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
     iREAL kinetic = getKineticEnergy(&particle._persistentRecords._velocity(0), particle._persistentRecords._mass);
-    printf("TOTAL ENERGY:%f ROTATIONAL:%f KINETIC:%f\n", energy, rotational, kinetic);
+    //printf("TOTAL ENERGY:%f ROTATIONAL:%f KINETIC:%f\n", energy, rotational, kinetic);
   }
 }
 
