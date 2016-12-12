@@ -61,7 +61,7 @@ default: header
 dim3-gcc-asserts: CC=g++ -std=c++0x
 dim3-gcc-asserts: DIM=-DDim3
 dim3-gcc-asserts: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DAsserts -DTrackGridStatistics
-dim3-gcc-asserts: CFLAGS=-Wall -pedantic -pedantic-errors -O0 -debug
+dim3-gcc-asserts: CFLAGS=-O0 -Wall -pedantic -pedantic-errors -debug
 dim3-gcc-asserts: LFLAGS=
 dim3-gcc-asserts: EXECUTABLE=dem-3d-asserts
 dim3-gcc-asserts: header build
@@ -77,7 +77,7 @@ dim3-gcc-release-novec: header build
 dim3-gcc-release-vec: CC=g++ --std=c++11
 dim3-gcc-release-vec: DIM=-DDim3
 dim3-gcc-release-vec: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics
-dim3-gcc-release-vec: CFLAGS=-O3 -g -ftree-vectorizer-verbose=2 -fstrict-aliasing
+dim3-gcc-release-vec: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing
 dim3-gcc-release-vec: LFLAGS=-lrt
 dim3-gcc-release-vec: EXECUTABLE=dem-3d-release-vec
 dim3-gcc-release-vec: header build
@@ -85,7 +85,7 @@ dim3-gcc-release-vec: header build
 dim3-gcc-release-omp: CC=g++ --std=c++11
 dim3-gcc-release-omp: DIM=-DDim3
 dim3-gcc-release-omp: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics
-dim3-gcc-release-omp: CFLAGS=-fast -qopenmp -ftree-vectorizer-verbose=2 -fstrict-aliasing
+dim3-gcc-release-omp: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -ftree-vectorizer-verbose=2 -fstrict-aliasing -qopenmp
 dim3-gcc-release-omp: LFLAGS=-qopenmp -lrt
 dim3-gcc-release-omp: EXECUTABLE=dem-3d-release-omp
 dim3-gcc-release-omp: header build
@@ -93,7 +93,7 @@ dim3-gcc-release-omp: header build
 dim3-gcc-release-omp-triangle: CC=g++ --std=c++11
 dim3-gcc-release-omp-triangle: DIM=-DDim3
 dim3-gcc-release-omp-triangle: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompTriangle -DTrackGridStatistics
-dim3-gcc-release-omp-triangle: CFLAGS=-fast -qopenmp -ftree-vectorizer-verbose=2 -fstrict-aliasing
+dim3-gcc-release-omp-triangle: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing
 dim3-gcc-release-omp-triangle: LFLAGS=$(LINK_OMP) -lrt
 dim3-gcc-release-omp-triangle: EXECUTABLE=dem-3d-release-omp-triangle
 dim3-gcc-release-omp-triangle: header build
@@ -101,7 +101,7 @@ dim3-gcc-release-omp-triangle: header build
 dim3-gcc-release-omp-triangle-phi: CC=g++ --std=c++11
 dim3-gcc-release-omp-triangle-phi: DIM=-DDim3
 dim3-gcc-release-omp-triangle-phi: SETTINGS=-DiREAL=double -DbyteAlignment=64 -DompTriangle -DTrackGridStatistics
-dim3-gcc-release-omp-triangle-phi: CFLAGS=-mmic -fast -qopenmp -ftree-vectorizer-verbose=2 -fstrict-aliasing
+dim3-gcc-release-omp-triangle-phi: CFLAGS=-mmic -O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing
 dim3-gcc-release-omp-triangle-phi: LFLAGS=$(LINK_OMP) -lrt -mmic
 dim3-gcc-release-omp-triangle-phi: EXECUTABLE=dem-3d-release-omp-triangle-phi
 dim3-gcc-release-omp-triangle-phi: header build
@@ -109,7 +109,7 @@ dim3-gcc-release-omp-triangle-phi: header build
 dim3-gcc-release-omp-particle: CC=g++ --std=c++11
 dim3-gcc-release-omp-particle: DIM=-DDim3
 dim3-gcc-release-omp-particle: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompParticle -DTrackGridStatistics
-dim3-gcc-release-omp-particle: CFLAGS=-fast -qopenmp -ftree-vectorizer-verbose=2 -qopt-threads-per-core=1 -fstrict-aliasing
+dim3-gcc-release-omp-particle: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -qopt-threads-per-core=1 -fstrict-aliasing
 dim3-gcc-release-omp-particle: LFLAGS=$(LINK_OMP) -lrt
 dim3-gcc-release-omp-particle: EXECUTABLE=dem-3d-release-omp-particle
 dim3-gcc-release-omp-particle: header build
@@ -117,7 +117,7 @@ dim3-gcc-release-omp-particle: header build
 dim3-gcc-release-omp-particle-triangle: CC=g++ --std=c++11
 dim3-gcc-release-omp-particle-triangle: DIM=-DDim3
 dim3-gcc-release-omp-particle-triangle: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompParticle -DompTriangle -DTrackGridStatistics
-dim3-gcc-release-omp-particle-triangle: CFLAGS=-fast -qopenmp -ftree-vectorizer-verbose=2 -qopt-threads-per-core=1 -fstrict-aliasing
+dim3-gcc-release-omp-particle-triangle: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -qopt-threads-per-core=1 -fstrict-aliasing
 dim3-gcc-release-omp-particle-triangle: LFLAGS=$(LINK_OMP) -lrt
 dim3-gcc-release-omp-particle-triangle: EXECUTABLE=dem-3d-release-omp-particle-triangle
 dim3-gcc-release-omp-particle-triangle: header build
