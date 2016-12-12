@@ -59,17 +59,35 @@ Beginning at the innermost tessellation-level with a regular grid (figure \ref{o
   \begin{center}
     \includegraphics[width=0.8\textwidth]{experiments/omp/hbatches_omp_triangles_200.png}
   \end{center}
-  \caption{Triangle based shared memory running hybrid-on-batches (HBatches) and hybrid-on-triangle-pairs (HTriangles) methods.}
+  \caption{Triangle based shared memory running hybrid-on-batches (HBatches).}
   \label{figure:hbatches_triangles_triangle_omp}
 \end{figure}
 
 Arithmetic, bandwidth intensity and data access patterns vary among solvers in the innermost level and can yield different performance results. The hybrid solver is parallelised in two different hybrid schemes triangle-to-triangle pairs and triangle-to-triangle batches, both launch different types of threads. For the hybrid-on-batches solver the tessellation-based threads
 are $n$ triangle batches wide while hybrid-on-triangles solver relies on fine couples of threads. The non-deterministic nature and error-prone distribution of triangles of the hybrid algorithm as discussed in Chapter {-hybrid chapter-} would suggest that alternative scheduling would pay off. But for our experiments dynamic and guided thread scheduling don't have a performance gain but they rather create scheduling overhead due to error distribution in triangle pairs and due to the granularity of our batches. For the hybrid-on-triangles that is also the case because although the arithmetic intensity is dense in the solver, it doesn't last long enough to significantly overlap the cost of threading overhead. 
 
-Figure \ref{figure:hbatches_htriangles_triangle_omp} hybrid-on-triangle and hybrid-on-batches scales up to eight cores on the single dice but also cannot gain from offloading to the twin socket. In practice hybrids normalized time to solution is significantly greater than brute force.
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{experiments/omp/
+htriangle_omp_triangles_200.png}
+  \end{center}
+  \caption{Triangle based shared memory running hybrid-on-triangle-pairs (HTriangles)}
+  \label{figure:htriangles_triangles_triangle_omp}
+\end{figure}
+
+
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{experiments/omp/
+bf_vs_hbatches_omp_200.png}
+  \end{center}
+  \caption{Triangle based shared memory running hybrid-on-triangle-pairs (HTriangles)}
+  \label{figure:bfvshbatches_triangle_omp}
+\end{figure}
+
+Figure \ref{figure:hbatches_htriangles_triangle_omp} hybrid-on-triangle and hybrid-on-batches scales up to eight cores on the single dice but also neither gain from offloading to the second socket. In practice hybrids normalized time to solution is significantly greater than brute force as seen in Figure \ref{bfvshbatches_triangle_omp}
 
 %VITUNE results and memory bandwidth compared to stream.  
-
 
 %STEP B
 
@@ -79,13 +97,13 @@ At the outer parallel blocks, particle blocks are threaded within each grid-vert
   \begin{center}
     \includegraphics[width=1\textwidth]{experiments/random/omp/particle_triangle_based_x0.png}
   \end{center}
-  \caption{Particle and Triangle based nested shared memory parallelism using openMP running brute force (bf), hybrid-on-batches (HBatches) and hybrid-on-triangle-pairs (HTriangles) methods.}
+  \caption{Particle based nested shared memory brute force (bf)}
   \label{figure:particletriangle_omp}
 \end{figure}
 
-Particle and Triangle parallelism nests both particle and triangle shared memory threads. The runtime to solution is slightly slower than particle-based parallelism due to overhead. 
+%Particle and Triangle parallelism nests both particle and triangle shared memory threads. The runtime to solution is slightly slower than particle-based parallelism due to overhead. 
 
-Nevertheless it has an impact on brute-force method as it scales smoother than particle-based only parallelism due to overhead. In this case hybrid-on-batches is also the fastest while the hybrid-on-triangle-pairs the slowest. 
+%Nevertheless it has an impact on brute-force method as it scales smoother than particle-based only parallelism due to overhead. In this case hybrid-on-batches is also the fastest while the hybrid-on-triangle-pairs the slowest. 
 
 
 %STEP C
@@ -109,7 +127,7 @@ At the highest level of shared memory parallelism is the grid cell-based multico
   \label{figure:tbb_scaling}
 \end{figure}
 
-Overall shared memory on three levels of parallelisation yield good computational gains with the hybrid-on-batches method and in some cases brute force using adaptive grids. For small problems triangle-based parallelism show good time to solution but for large (**put plot) particle number with particle-based parallelism may pays off better. The finer/inner the thread forking the less significant scaling it is observed for larger problem sizes. For large problem sizes the combination of cell-based plus particle-based multi-core parallelism using hybrid-on-batches makes sense. Furthermore additional overall speedup can be gained if spheres are used as a filtering bounding box stage to our triangle-to-triangle contact detection.
+Overall shared memory parallelisation yield good speed ups both for hybrid and brute force using adaptive grids with triangle-based parallelism show good time-to-solution For large problem sizes the combination of cell-based plus triangle-based parallelism using hybrid-on-batches is the preferred option. Additional speedup can be gained if spheres are used as a filtering bounding box stage to our triangle-to-triangle contact detection.
 
 \clearpage
 
