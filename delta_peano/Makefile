@@ -133,7 +133,7 @@ dim3-gcc-asserts-tbb: header build
 dim3-gcc-release-tbb: CC=g++ --std=c++11
 dim3-gcc-release-tbb: DIM=-DDim3
 dim3-gcc-release-tbb: SETTINGS=-DiREAL=double -DSharedTBB -DbyteAlignment=32 -DTrackGridStatistics
-dim3-gcc-release-tbb: CFLAGS=-O3 -ftree-vectorizer-verbose=2 -fstrict-aliasing $(INCLUDE_TBB)
+dim3-gcc-release-tbb: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing $(INCLUDE_TBB)
 dim3-gcc-release-tbb: LFLAGS=-lrt $(LINK_TBB)
 dim3-gcc-release-tbb: EXECUTABLE=dem-3d-release-tbb
 dim3-gcc-release-tbb: header build
@@ -141,7 +141,7 @@ dim3-gcc-release-tbb: header build
 dim3-gcc-release-tbb-omp-triangle: CC=g++ --std=c++11
 dim3-gcc-release-tbb-omp-triangle: DIM=-DDim3
 dim3-gcc-release-tbb-omp-triangle: SETTINGS=-DiREAL=double -DSharedTBB -DompTriangle -DTrackGridStatistics -DbyteAlignment=32
-dim3-gcc-release-tbb-omp-triangle: CFLAGS=-O3 -qopenmp -ftree-vectorizer-verbose=2 -fstrict-aliasing $(INCLUDE_TBB)
+dim3-gcc-release-tbb-omp-triangle: CFLAGS=-O3 -qopenmp -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing $(INCLUDE_TBB)
 dim3-gcc-release-tbb-omp-triangle: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB)
 dim3-gcc-release-tbb-omp-triangle: EXECUTABLE=dem-3d-release-tbb-omp-triangle
 dim3-gcc-release-tbb-omp-triangle: header build
@@ -149,7 +149,7 @@ dim3-gcc-release-tbb-omp-triangle: header build
 dim3-gcc-release-tbb-omp-particle: CC=g++ --std=c++11
 dim3-gcc-release-tbb-omp-particle: DIM=-DDim3
 dim3-gcc-release-tbb-omp-particle: SETTINGS=-DiREAL=double -DSharedTBB -DompParticle -DTrackGridStatistics -DbyteAlignment=32
-dim3-gcc-release-tbb-omp-particle: CFLAGS=-O3 -qopenmp -ftree-vectorizer-verbose=2 -fstrict-aliasing $(INCLUDE_TBB)
+dim3-gcc-release-tbb-omp-particle: CFLAGS=-O3 -qopenmp -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing $(INCLUDE_TBB)
 dim3-gcc-release-tbb-omp-particle: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB)
 dim3-gcc-release-tbb-omp-particle: EXECUTABLE=dem-3d-release-tbb-omp-particle
 dim3-gcc-release-tbb-omp-particle: header build
@@ -157,7 +157,7 @@ dim3-gcc-release-tbb-omp-particle: header build
 dim3-gcc-release-tbb-omp-triangle-ampl: CC=g++ --std=c++11
 dim3-gcc-release-tbb-omp-triangle-ampl: DIM=-DDim3
 dim3-gcc-release-tbb-omp-triangle-ampl: SETTINGS=-DiREAL=double -DTrackGridStatistics -DSharedTBB -DompTriangle -DbyteAlignment=32
-dim3-gcc-release-tbb-omp-triangle-ampl: CFLAGS=-O3 -g -qopenmp -ftree-vectorizer-verbose=2 -fstrict-aliasing $(INCLUDE_TBB)
+dim3-gcc-release-tbb-omp-triangle-ampl: CFLAGS=-O3 -g -qopenmp -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing $(INCLUDE_TBB)
 dim3-gcc-release-tbb-omp-triangle-ampl: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB)
 dim3-gcc-release-tbb-omp-triangle-ampl: EXECUTABLE=dem-3d-release-tbb-omp-triangle-ampl
 dim3-gcc-release-tbb-omp-triangle-ampl: header build
@@ -165,7 +165,7 @@ dim3-gcc-release-tbb-omp-triangle-ampl: header build
 dim3-gcc-release-omp-triangle-ampl: CC=g++ --std=c++11
 dim3-gcc-release-omp-triangle-ampl: DIM=-DDim3
 dim3-gcc-release-omp-triangle-ampl: SETTINGS=-DiREAL=double -DTrackGridStatistics -DompTriangle -DbyteAlignment=32
-dim3-gcc-release-omp-triangle-ampl: CFLAGS=-O3 -g -qopenmp -ftree-vectorizer-verbose=2 -fstrict-aliasing $(INCLUDE_TBB)
+dim3-gcc-release-omp-triangle-ampl: CFLAGS=-O3 -g -qopenmp -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing $(INCLUDE_TBB)
 dim3-gcc-release-omp-triangle-ampl: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB)
 dim3-gcc-release-omp-triangle-ampl: EXECUTABLE=dem-3d-release-omp-triangle-ampl
 dim3-gcc-release-omp-triangle-ampl: header build
@@ -173,7 +173,7 @@ dim3-gcc-release-omp-triangle-ampl: header build
 dim3-gcc-release-tbb-omp-triangle-phi: CC=g++ --std=c++11
 dim3-gcc-release-tbb-omp-triangle-phi: DIM=-DDim3
 dim3-gcc-release-tbb-omp-triangle-phi: SETTINGS=-DiREAL=double -DTrackGridStatistics -DSharedTBB -DompTriangle -DbyteAlignment=64
-dim3-gcc-release-tbb-omp-triangle-phi: CFLAGS=-mmic -qopenmp -ftree-vectorizer-verbose=2 -O3 -fstrict-aliasing $(INCLUDE_TBB)
+dim3-gcc-release-tbb-omp-triangle-phi: CFLAGS=-mmic -qopenmp -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -O3 -fstrict-aliasing $(INCLUDE_TBB)
 dim3-gcc-release-tbb-omp-triangle-phi: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB) -mmic
 dim3-gcc-release-tbb-omp-triangle-phi: EXECUTABLE=dem-3d-release-tbb-omp-triangle-phi
 dim3-gcc-release-tbb-omp-triangle-phi: header build
