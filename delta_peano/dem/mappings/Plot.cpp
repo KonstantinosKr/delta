@@ -13,23 +13,23 @@ peano::CommunicationSpecification   dem::mappings::Plot::communicationSpecificat
  * This is the only routine that we actually use.
  */
 peano::MappingSpecification   dem::mappings::Plot::touchVertexLastTimeSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 peano::MappingSpecification   dem::mappings::Plot::touchVertexFirstTimeSpecification() { 
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 peano::MappingSpecification   dem::mappings::Plot::enterCellSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::Plot::leaveCellSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::Plot::ascendSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::Plot::descendSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
 tarch::logging::Log  dem::mappings::Plot::_log( "dem::mappings::Plot" );

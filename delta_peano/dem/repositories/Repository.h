@@ -33,7 +33,7 @@ class dem::repositories::Repository {
     /**
      * Iterate with current active event handle.
      *
-     * !!! Stop exchange of boundary vertices
+     * <h2> Stop exchange of boundary vertices </h2>
      *
      * If you can make your algorithm run without boundary vertex exchange for
      * a couple of times, you typically observe a significant speedup. Exchange
@@ -50,6 +50,13 @@ class dem::repositories::Repository {
      *   there is still data available in the next sweep that has been received
      *   from the iteration before. You do not send away data anymore, but you
      *   receive.
+     *
+     * <h2>iterate on MPI workers</h2>
+     *
+     * If iterate is called on MPI workers, i.e. not on the global rank, then 
+     * the two parameters are actually ignored. Instead, the iterate relies on 
+     * the existing _repositoryState that has been received by 
+     * continueToIterate() before. 
      *
      * @param numberOfIterations        How often shall the repository run through a particular adapter
      * @param exchangeBoundaryVertices  Does Peano have to exchange boundary vertices at all?

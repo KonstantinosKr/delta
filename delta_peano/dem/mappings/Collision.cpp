@@ -18,24 +18,25 @@ peano::CommunicationSpecification   dem::mappings::Collision::communicationSpeci
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexFirstTimeSpecification() { 
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification() {
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification() {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
+
 peano::MappingSpecification   dem::mappings::Collision::leaveCellSpecification() {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);
+	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::ascendSpecification() {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces);
+	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::Collision::descendSpecification() {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces);
+	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
 tarch::logging::Log                                                 dem::mappings::Collision::_log( "dem::mappings::Collision" );

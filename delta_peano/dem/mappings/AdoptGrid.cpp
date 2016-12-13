@@ -14,27 +14,27 @@ peano::CommunicationSpecification   dem::mappings::AdoptGrid::communicationSpeci
  * Restrict data to coarser grid
  */
 peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexLastTimeSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
 /**
  * Just invokes refine if necessary. It also deletes the accumulated attributes.
  */
 peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification() { 
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 peano::MappingSpecification   dem::mappings::AdoptGrid::enterCellSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::AdoptGrid::leaveCellSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::AdoptGrid::ascendSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::AdoptGrid::descendSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
 

@@ -20,32 +20,32 @@ peano::CommunicationSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisu
 
 
 peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexLastTimeSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexFirstTimeSpecification() { 
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::enterCellSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::leaveCellSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::ascendSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::descendSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 

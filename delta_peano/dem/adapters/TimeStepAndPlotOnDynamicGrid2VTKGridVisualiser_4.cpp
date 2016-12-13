@@ -20,32 +20,32 @@ peano::CommunicationSpecification   dem::adapters::TimeStepAndPlotOnDynamicGrid2
 
 
 peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::touchVertexLastTimeSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::touchVertexFirstTimeSpecification() { 
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::enterCellSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::leaveCellSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::ascendSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
 peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4::descendSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
