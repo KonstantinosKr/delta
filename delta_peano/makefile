@@ -65,7 +65,7 @@ dim3-gcc-asserts: header build
 dim3-gcc-release-novec: CC=g++ -std=c++0x
 dim3-gcc-release-novec: DIM=-DDim3
 dim3-gcc-release-novec: SETTINGS=-DiREAL=double -DbyteAlignment=8 -DTrackGridStatistics
-dim3-gcc-release-novec: CFLAGS=-O3 -Wall -pedantic -pedantic-errors
+dim3-gcc-release-novec: CFLAGS=-O0 -Wall -pedantic -pedantic-errors
 dim3-gcc-release-novec: LFLAGS=
 dim3-gcc-release-novec: EXECUTABLE=dem-3d-release-novec
 dim3-gcc-release-novec: header build
@@ -74,7 +74,7 @@ dim3-gcc-release-vec: CC=g++ --std=c++11
 dim3-gcc-release-vec: DIM=-DDim3
 dim3-gcc-release-vec: SETTINGS=-DiREAL=double -DbyteAlignment=8 -DTrackGridStatistics
 dim3-gcc-release-vec: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing
-dim3-gcc-release-vec: LFLAGS=-lrt
+dim3-gcc-release-vec: LFLAGS=#-lrt
 dim3-gcc-release-vec: EXECUTABLE=dem-3d-release-vec
 dim3-gcc-release-vec: header build
 
@@ -157,6 +157,22 @@ dim3-gcc-release-omp-triangle-ampl: CFLAGS=-O3 -g -qopenmp -ftree-vectorizer-ver
 dim3-gcc-release-omp-triangle-ampl: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB)
 dim3-gcc-release-omp-triangle-ampl: EXECUTABLE=dem-3d-release-omp-triangle-ampl
 dim3-gcc-release-omp-triangle-ampl: header build
+
+dim3-mpicc-release-dbg: CC=mpic++ --std=c++11
+dim3-mpicc-release-dbg: DIM=-DDim3
+dim3-mpicc-release-dbg: SETTINGS=-DiREAL=double -DTrackGridStatistics -DbyteAlignment=8 -DDebug -DParallel -DMPICH_IGNORE_CXX_SEEK
+dim3-mpicc-release-dbg: CFLAGS=-O0 -g -fstrict-aliasing $(INCLUDE_TBB)
+dim3-mpicc-release-dbg: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB)
+dim3-mpicc-release-dbg: EXECUTABLE=dem-3d-release-omp-triangle-ampl
+dim3-mpicc-release-dbg: header build
+
+dim3-mpicc-release-vec: CC=mpic++ --std=c++11
+dim3-mpicc-release-vec: DIM=-DDim3
+dim3-mpicc-release-vec: SETTINGS=-DiREAL=double -DTrackGridStatistics -DompTriangle -DbyteAlignment=8
+dim3-mpicc-release-vec: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing $(INCLUDE_TBB)
+dim3-mpicc-release-vec: LFLAGS=-lrt $(LINK_OMP) $(LINK_TBB)
+dim3-mpicc-release-vec: EXECUTABLE=dem-3d-release-omp-triangle-ampl
+dim3-mpicc-release-vec: header build
 
 dim3-icc-asserts: CC=icpc --std=c++11
 dim3-icc-asserts: DIM=-DDim3

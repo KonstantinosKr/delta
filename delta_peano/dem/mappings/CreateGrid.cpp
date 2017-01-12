@@ -408,17 +408,17 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
 				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 2;
-				vertex.getParticle(newParticleNumber)._persistentRecords._mass				   = 100000000000;
+				vertex.getParticle(newParticleNumber)._persistentRecords._mass				   = 100;
 
-				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(0) = 0.0005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(0) = 0.005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
 				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(1) = 0;
 				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(2) = 0;
 				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(3) = 0;
-				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(4) = 0.0005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(4) = 0.005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
 				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(5) = 0;
 				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(6) = 0;
 				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(7) = 0;
-				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(8) = 0.0005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
+				vertex.getParticle(newParticleNumber)._persistentRecords._inertia(8) = 0.005*vertex.getParticle(newParticleNumber)._persistentRecords._mass;
 
 				// invert inertia properties
 				iREAL a[9], x[9], det;

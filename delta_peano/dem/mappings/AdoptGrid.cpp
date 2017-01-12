@@ -1,7 +1,6 @@
 #include "dem/mappings/AdoptGrid.h"
 #include "peano/utils/Loop.h"
-
-
+#include "tarch/logging/Log.h"
 
 /**
  * @todo Please tailor the parameters to your mapping's properties.

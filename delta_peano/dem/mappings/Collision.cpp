@@ -20,6 +20,7 @@ peano::CommunicationSpecification   dem::mappings::Collision::communicationSpeci
 peano::MappingSpecification   dem::mappings::Collision::touchVertexFirstTimeSpecification() { 
 	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
+
 peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification() {
 	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }

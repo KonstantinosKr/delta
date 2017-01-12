@@ -91,3 +91,34 @@ double delta::primitives::computeHMin(
   if(min == 1E99) min = 0.0;
   return min;
 }
+
+
+double delta::primitives::simplex_J (double *a, double *b, double *c, double *d)
+{
+  double q [9], J;
+
+  q [0] = b [0] - a [0];
+  q [1] = c [0] - a [0];
+  q [2] = d [0] - a [0];
+  q [3] = b [1] - a [1];
+  q [4] = c [1] - a [1];
+  q [5] = d [1] - a [1];
+  q [6] = b [2] - a [2];
+  q [7] = c [2] - a [2];
+  q [8] = d [2] - a [2];
+
+  J = q [0]*q [4]*q [8] + q [3]*q [7]*q [2] + q [6]*q [1]*q [5] -
+      q [6]*q [4]*q [2] - q [0]*q [7]*q [5] - q [3]*q [1]*q [8];
+
+  return J;
+}
+/*
+ * computes the inertia using simplex integration from solfec
+ */
+void delta::primitives::computeInertia(
+		const std::vector<double>&  xCoordinates,
+		const std::vector<double>&  yCoordinates,
+		const std::vector<double>&  zCoordinates)
+{
+
+}
