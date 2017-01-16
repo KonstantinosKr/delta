@@ -34,6 +34,7 @@ namespace delta {
     void generateSurface(
       double    center[3],
       double 	width,
+	  double	height,
       std::vector<double>&  xCoordinates,
       std::vector<double>&  yCoordinates,
       std::vector<double>&  zCoordinates

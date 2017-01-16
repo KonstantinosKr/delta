@@ -24,6 +24,7 @@
 #include "dem/Cell.h"
 #include "dem/State.h"
 #include "delta/primitives/triangle.h"
+#include "delta/primitives/properties.h"
 
 namespace dem {
   namespace mappings {

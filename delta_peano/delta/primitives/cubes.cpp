@@ -48,7 +48,7 @@ void delta::primitives::generateSquare(
 
 
 void delta::primitives::generateCube(
-  double center[3],double h,
+  double center[3], double h,
   double alphaX,
   double alphaY,
   double alphaZ,

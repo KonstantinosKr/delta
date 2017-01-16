@@ -56,17 +56,14 @@ namespace delta {
       const std::vector<double>&  zCoordinates
     );
 
-    void delta::primitives::computeInertia(
+    void computeInertia(
     		const std::vector<double>&  xCoordinates,
     		const std::vector<double>&  yCoordinates,
     		const std::vector<double>&  zCoordinates,
-    		double&               centreOfMassX,
-    		double&               centreOfMassY,
-    		double&               centreOfMassZ,
-    		double&               refcentreOfMassX,
-    		double&               refcentreOfMassY,
-    		double&               refcentreOfMassZ,
-    		double *inertia);
+			double rho,
+    		double& mass,
+    		double center[3],
+    		double inertia[9]);
 
     double simplex_J (double *a, double *b, double *c, double *d);
 

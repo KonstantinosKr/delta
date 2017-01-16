@@ -70,17 +70,6 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._diameter			= 0;
   newParticle._persistentRecords._numberOfTriangles = 0;
 
-  #ifdef Dim2
-  newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(2) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(3) = DEMDoubleHeap::getInstance().createData();
-
-  newParticle._persistentRecords._orientation = tarch::la::Vector<4,double>(0.0);
-  newParticle._persistentRecords._inertia = tarch::la::Vector<4,double>(0.0);
-  newParticle._persistentRecords._inverse = tarch::la::Vector<4,double>(0.0);
-  #endif
-
   newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(2) = DEMDoubleHeap::getInstance().createData();

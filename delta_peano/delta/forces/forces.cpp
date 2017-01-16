@@ -1,9 +1,9 @@
 #include "forces.h"
 
 //particle parameters
-#define SPRING 1E5
+#define SPRING 8E4
 #define DAMPER 1
-#define FRICTION 0.5
+#define FRICTION 0.1
 
 //sphere parameters that work
 #define SSPRING 1E6
@@ -25,7 +25,8 @@
 }
 
 double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREAL relativeVelocity[3],
-							iREAL positionASpatial[3], iREAL positionBSpatial[3], iREAL positionAReferential[3], iREAL positionBReferential[3], iREAL massA, iREAL massB,
+							iREAL positionASpatial[3], iREAL positionBSpatial[3], iREAL positionAReferential[3], iREAL positionBReferential[3],
+							iREAL massA, iREAL massB,
 							iREAL rotationA[9], iREAL rotationB[9], iREAL inverseA[9], iREAL inverseB[9], iREAL f[3])
 {
 	//RefConPoint = Rotation^T *(spatial contact point - spatial centre) + RefCentre;
@@ -69,7 +70,7 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	RIi[10] = 0;	RIi[13] = 1;	RIi[16] = 0;
 	RIi[11] = 0;	RIi[14] = 0;	RIi[17] = 1;
 
-	NNMUL(rotationB, rPositionContactPntj, RIi);
+	NNMUL(rotationB, rPositionContactPntj, RIj);
 
 	RIj[9] = 1;		RIj[12] = 0;	RIj[15] = 0;
 	RIj[10] = 0;	RIj[13] = 1;	RIj[16] = 0;
@@ -138,7 +139,7 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 
   iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
 
-  iREAL damp = DAMPER * 50 * sqrt(mass*SPRING)*velocity;
+  iREAL damp = DAMPER * 2 * sqrt(mass*SPRING)*velocity;
 
   iREAL force = SPRING*depth+damp;
 
