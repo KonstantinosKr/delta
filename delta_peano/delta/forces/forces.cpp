@@ -1,7 +1,7 @@
 #include "forces.h"
 
 //particle parameters
-#define SPRING 8E4
+#define SPRING 1E5
 #define DAMPER 1
 #define FRICTION 0.1
 
@@ -139,7 +139,7 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 
   iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
 
-  iREAL damp = DAMPER * 2 * sqrt(mass*SPRING)*velocity;
+  iREAL damp = DAMPER * 7 * sqrt(mass*SPRING)*velocity;
 
   iREAL force = SPRING*depth+damp;
 

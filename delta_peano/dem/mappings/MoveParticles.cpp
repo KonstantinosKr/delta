@@ -105,8 +105,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 
     for (int j=0; j<particle._persistentRecords._numberOfTriangles*DIMENSIONS; j++)
     {
-    	delta::dynamics::updateVertices(&x[j], &y[j], &z[j],
-									&refx[j], &refy[j], &refz[j],
+    	delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
 									&particle._persistentRecords._orientation(0),
 									&particle._persistentRecords._centreOfMass(0),
 									&particle._persistentRecords._referentialCentreOfMass(0));
@@ -123,8 +122,8 @@ void dem::mappings::MoveParticles::reassignParticles(
   dem::Vertex * const                        fineGridVertices,
   const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator
 ) {
-  int numberOfReassignments = 0;
-  dfor2(k)
+    int numberOfReassignments = 0;
+    dfor2(k)
     int i=0;
     while (i<fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles()) {
       records::Particle&  particle = fineGridVertices[ fineGridVerticesEnumerator(k) ].getParticle(i);

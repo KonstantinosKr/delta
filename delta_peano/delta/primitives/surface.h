@@ -28,6 +28,9 @@
 
 #include <vector>
 
+#include "delta/hull/hull.h"
+#include "delta/hull/alg.h"
+
 namespace delta {
   namespace primitives {
 
@@ -40,6 +43,22 @@ namespace delta {
       std::vector<double>&  zCoordinates
     );
 
+    void generateSurface(
+	  double    center[3],
+	  double 	width,
+	  std::vector<double>&  xCoordinates,
+	  std::vector<double>&  yCoordinates,
+	  std::vector<double>&  zCoordinates
+	);
+
+    void generateCuboid(
+	  double    center[3],
+	  double 	width,
+	  double    height,
+	  std::vector<double>&  xCoordinates,
+	  std::vector<double>&  yCoordinates,
+	  std::vector<double>&  zCoordinates
+	);
   }
 }
 

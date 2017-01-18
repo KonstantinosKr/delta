@@ -42,7 +42,7 @@ int main(int argc, char** argv)
   #endif
 
   if (argc!=NumberOfArguments) {
-    std::cerr << "Usage: ./dem-xxx grid_h_max particle_diam_max particle_diam_min scenario no-of-time-steps grid-type time-step-size plot gravity collision-model [core-count]" << std::endl
+    std::cerr << "Usage: ./dem-xxx grid_h_max particle_diam_max particle_diam_min scenario no-of-time-steps grid-type time-step-size plot gravity collision-model triangle-multiplier [core-count]" << std::endl
               << std::endl
               << " grid_h_max          maximum mesh width of grid" << std::endl
               << " particle_diam_max   maximal diameter of particles" << std::endl

@@ -92,7 +92,6 @@ double delta::primitives::computeHMin(
   return min;
 }
 
-
 double delta::primitives::simplex_J (double *a, double *b, double *c, double *d)
 {
   double q [9], J;
@@ -155,7 +154,6 @@ void delta::primitives::computeInertia(
 
     J = rho * simplex_J (zero, a, b, c);
     me += simplex_1 (J, zero, a, b, c);
-    printf("me:%f\n", me);
     sx += simplex_x (J, zero, a, b, c);
     sy += simplex_y (J, zero, a, b, c);
     sz += simplex_z (J, zero, a, b, c);
@@ -168,11 +166,16 @@ void delta::primitives::computeInertia(
   }
 
   mass = me;
-
+  printf("mass: %f\n", mass);
+  printf("sx:%f sy:%f sz:%f\n", sx, sy, sz);
   center[0] = (sx / me);
   center[1] = (sy / me);
   center[2] = (sz / me);
 
+  printf("c %f c %f c %f\n", center[0], center[1], center[2]);
+
+
+  printf("euler %f %f %f %f %f %f %f %f %f\n", euler[0], euler[1], euler[2], euler[3], euler[4], euler[5], euler[6], euler[7], euler[8]);
 
   euler[0] -= (2*sx - center[0]*me)*center[0];
   euler[4] -= (2*sy - center[1]*me)*center[1];
@@ -195,4 +198,6 @@ void delta::primitives::computeInertia(
   inertia[5] = -euler[5];
   inertia[6] = -euler[6];
   inertia[7] = -euler[7]; /* inertia = tr(euler)*one - euler */
+
+  printf("Inertia %f %f %f %f %f %f %f %f %f\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
 }
