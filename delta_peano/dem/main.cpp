@@ -42,22 +42,23 @@ int main(int argc, char** argv)
   #endif
 
   if (argc!=NumberOfArguments) {
-    std::cerr << "Usage: ./dem-xxx grid_h_max particle_diam_max particle_diam_min scenario no-of-time-steps grid-type time-step-size plot gravity collision-model triangle-multiplier [core-count]" << std::endl
+    std::cerr << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot gravity collision-model mesh-multiplier [core-count]" << std::endl
               << std::endl
               << " grid_h_max          maximum mesh width of grid" << std::endl
-              << " particle_diam_max   maximal diameter of particles" << std::endl
               << " particle_diam_min   minimal diameter of particles" << std::endl
+              << " particle_diam_max   maximal diameter of particles" << std::endl
               << " scenario            which scenario to use. See list below for valid configurations " << std::endl
-              << " no-of-iterations    number of iterations or time steps depending on scheme" << std::endl
+              << " iterations          number of iterations or time steps depending on scheme" << std::endl
               << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
-              << " time-step-size      floating point number" << std::endl
+              << " step-size           floating point number" << std::endl
               << " plot                see plot variants below" << std::endl
               << " gravity             floating point number" << std::endl
               << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, gjk, add sphere- for sphere check" << std::endl
-			  << " max timestep size for adaptive timestepping" << std::endl
-			  << " number-of-triangles per particle" << std::endl
-			  << " [core-count]        only required if you have translated the code with TBBs" << std::endl
+			  << " max-step-size       adaptive max step" << std::endl
+			  << " mesh-per-particle   multiplier for mesh size and sphericity" << std::endl
+			  << " [core-count]        only required in TBB shared memory" << std::endl
               << std::endl << std::endl << std::endl << std::endl
+
               << "Scenarios" << std::endl
               << "=========" << std::endl
               << "  black-hole-with-aligned-cubes" << std::endl
@@ -68,20 +69,19 @@ int main(int argc, char** argv)
               << "  random-velocities" << std::endl
               << "  two-particles-crash" << std::endl
 			  << "  hopper" << std::endl
-			  << "  hopper100" << std::endl
-			  << "  hopperBrick" << std::endl
+			  << "  hopper300" << std::endl
 			  << "  freefall" << std::endl
 			  << "  flatwall" << std::endl
-			  << "  icecube" << std::endl
 			  << "  friction" << std::endl
 			  << "  frictionSlide" << std::endl
-			  << "  twoBricksCrash" << std::endl
+
               << "Grid types" << std::endl
               << "==========" << std::endl
               << "  no-grid" << std::endl
               << "  regular-grid" << std::endl
               << "  adaptive-grid" << std::endl
               << "  reluctant-adaptive-grid" << std::endl
+
               << "Plot variants" << std::endl
               << "=============" << std::endl
               << "  never" << std::endl
@@ -105,10 +105,11 @@ int main(int argc, char** argv)
   const std::string  collisionModel      = argv[10];
   const double		 realSnapshot		 = atof(argv[11]);
   const int			 noTriangles 		 = atof(argv[12]);
+
   #ifdef SharedMemoryParallelisation
-  const int          numberOfCores       = atoi(argv[13]);
+  	  const int          numberOfCores       = atoi(argv[13]);
   #else
-  const int          numberOfCores       = 0;
+  	  const int          numberOfCores       = 0;
   #endif
 
   int programExitCode = 0;
@@ -144,6 +145,7 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
+
   if (scenario=="black-hole-with-cubes") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
@@ -171,32 +173,17 @@ int main(int argc, char** argv)
   else if (scenario=="hopper300") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, 0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
   }
-  else if (scenario=="hopperKeys") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperKeys, 0.10, 0.10, 0.10, gridType, epsilon, noTriangles);
-  }
   else if (scenario=="freefall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
-  else if (scenario=="freefallKeys") {
-     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallKeys, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
-   }
   else if (scenario=="flatwall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::flatwall, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
-  }
-  else if (scenario=="icecube"){
-	dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::icecube, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="friction") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::friction, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="frictionSlide") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
-  }
-  else if (scenario=="domino") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::domino, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
-  }
-  else if (scenario=="stability") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::stability, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="sla") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);

@@ -278,7 +278,7 @@ void delta::primitives::generateCuboid(
  yCoordinates.resize(numberOfTriangles*3);
  zCoordinates.resize(numberOfTriangles*3);
 
- printf("points:%f\n", pointlength);
+ //printf("points:%f\n", pointlength);
 
  int counter = 0;
  for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)

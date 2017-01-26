@@ -58,17 +58,17 @@ peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification() 
 tarch::logging::Log                  dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
 dem::mappings::CreateGrid::Scenario  dem::mappings::CreateGrid::_scenario;
 double                               dem::mappings::CreateGrid::_maxH;
-double                               dem::mappings::CreateGrid::_particleDiamMax;
-double                               dem::mappings::CreateGrid::_particleDiamMin;
+double                               dem::mappings::CreateGrid::_minParticleDiam;
+double                               dem::mappings::CreateGrid::_maxParticleDiam;
 dem::mappings::CreateGrid::GridType  dem::mappings::CreateGrid::_gridType;
 double								 dem::mappings::CreateGrid::_epsilon;
 int 								 dem::mappings::CreateGrid::_noPointsPerParticle;
 
-void dem::mappings::CreateGrid::setScenario(Scenario scenario, double maxH, double particleDiamMax, double particleDiamMin, GridType gridType, double epsilon, int noPointsPerParticle) {
+void dem::mappings::CreateGrid::setScenario(Scenario scenario, double maxH, double particleDiamMin, double particleDiamMax, GridType gridType, double epsilon, int noPointsPerParticle) {
 	_scenario        = scenario;
 	_maxH            = maxH;
-	_particleDiamMax = particleDiamMax;
-	_particleDiamMin = particleDiamMin;
+	_minParticleDiam = particleDiamMin;
+	_maxParticleDiam = particleDiamMax;
 	_gridType        = gridType;
 	_epsilon 		 = epsilon;
 	_noPointsPerParticle = noPointsPerParticle;
@@ -125,7 +125,9 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 	logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
 	if (fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined && _gridType!=NoGrid)
-	{fineGridVertex.refine();}
+	{
+		fineGridVertex.refine();
+	}
 
 	fineGridVertex.init();
 
@@ -211,12 +213,12 @@ void dem::mappings::CreateGrid::createCell(
 				int	newParticleNumber = vertex.createNewParticle(centreAsArray);
 
 				//hopper
-				double _hopperWidth = 0.26;
-				double _hopperHatch = 0.15;
+				//double _hopperWidth = 0.26;
+				//double _hopperHatch = 0.15;
 
 				//hopper 300
-				//double _hopperWidth = 0.26;
-				//double _hopperHatch = 0.10;
+				double _hopperWidth = 0.26;
+				double _hopperHatch = 0.10;
 
 				//hopper 1000
 				//double _hopperWidth = 0.4;
@@ -402,18 +404,21 @@ void dem::mappings::CreateGrid::createCell(
 	if (PlaceParticleInCell && peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(fineGridVertices,fineGridVerticesEnumerator,Vertex::Records::Unrefined)
 		&& !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices,fineGridVerticesEnumerator))
 	{
-		int particlesInCellPerAxis = std::floor(fineGridVerticesEnumerator.getCellSize()(0) / _particleDiamMax);
+		int particlesInCellPerAxis = std::floor(fineGridVerticesEnumerator.getCellSize()(0) / _maxParticleDiam);
 
 		if (particlesInCellPerAxis==0)
 		{   particlesInCellPerAxis = 1;
-			logWarning( "createCell(...)", "particle size has been too small for coarsest prescribed grid. Reduce particle size to " << std::min(_particleDiamMin,_particleDiamMax) << "-" << fineGridVerticesEnumerator.getCellSize()(0) );
+
+			_maxParticleDiam = fineGridVerticesEnumerator.getCellSize()(0);
+			_minParticleDiam = std::min(_minParticleDiam,_maxParticleDiam);
+			logWarning( "createCell(...)", "particle size has been too small for coarsest prescribed grid. Reduce particle size to " << std::min(_minParticleDiam,_maxParticleDiam) << "-" << fineGridVerticesEnumerator.getCellSize()(0) );
 		}else{logDebug( "createCell", "particlesInCellPerAxis="<< particlesInCellPerAxis );}
 
 		dfor(k,particlesInCellPerAxis)
 		{
-			const tarch::la::Vector<DIMENSIONS,double> centre = fineGridVerticesEnumerator.getVertexPosition() + _particleDiamMax * (k.convertScalar<double>()+0.5);
+			const tarch::la::Vector<DIMENSIONS,double> centre = fineGridVerticesEnumerator.getVertexPosition() + _maxParticleDiam * (k.convertScalar<double>()+0.5);
 
-			double particleDiameter = (_particleDiamMin + (_particleDiamMax-_particleDiamMin) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) ) / std::sqrt( DIMENSIONS );
+			double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) ) / std::sqrt( DIMENSIONS );
 
 			logDebug( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter );
 
