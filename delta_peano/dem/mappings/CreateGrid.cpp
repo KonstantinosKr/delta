@@ -192,7 +192,8 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.8;
 				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = 1;
+				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = 1;
+				vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
 				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
 				return;
 			}
@@ -212,20 +213,13 @@ void dem::mappings::CreateGrid::createCell(
 
 				int	newParticleNumber = vertex.createNewParticle(centreAsArray);
 
-				//hopper
-				//double _hopperWidth = 0.26;
-				//double _hopperHatch = 0.15;
-
-				//hopper 300
 				double _hopperWidth = 0.26;
 				double _hopperHatch = 0.10;
 
-				//hopper 1000
-				//double _hopperWidth = 0.4;
-				//double _hopperHatch = 0.10;
+				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
 
 				_numberOfParticles++; _numberOfObstacles++;
-				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
+
 				//delta::primitives::meshDenseMultiplier(5, xCoordinates, yCoordinates, zCoordinates);
 				for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
 				{
@@ -246,7 +240,8 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _hopperWidth * 1.8;
 				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon*1.5;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
+				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId     =  _numberOfParticles;
+				vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
 				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
 
 				xCoordinates.clear();
@@ -277,7 +272,8 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = 1;
 				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon*3;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
+				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = _numberOfParticles;
+				vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
 				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 2;
 
 				vertex.getParticle(newParticleNumber)._persistentRecords._mass = 100;
@@ -321,7 +317,8 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.2;
 				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
+				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = _numberOfParticles;
+				vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
 				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 2;
 				return;
 			}
@@ -363,7 +360,8 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.8;
 				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = 0;
 				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
+				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = _numberOfParticles;
+				vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
 				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 2;
 
 				iREAL inertia[9], mass = 1, centerOfMass[3], rho = 10000;
@@ -586,7 +584,8 @@ void dem::mappings::CreateGrid::createCell(
 			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = particleDiameter;
 			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon;
 			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius 	   = (particleDiameter/2) + (vertex.getParticle(newParticleNumber)._persistentRecords._epsilon * 6);
-			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleNumber = _numberOfParticles;
+			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = _numberOfParticles;
+			vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = false;
 			vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
 
 			if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)

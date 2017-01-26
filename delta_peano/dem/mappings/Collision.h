@@ -50,8 +50,6 @@ class dem::mappings::Collision {
 
     State   _state;
 
-    static int _obstacleThresholdID;
-
     void collideParticlesOfTwoDifferentVertices(
       dem::Vertex&  vertexA,
       dem::Vertex&  vertexB

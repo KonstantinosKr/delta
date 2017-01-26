@@ -285,7 +285,6 @@ void dem::Vertex::eraseIfParticleDistributionPermits() {
   }
 }
 
-
 void dem::Vertex::clearInheritedCoarseGridParticles() {
   ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).clear();
 }
@@ -303,7 +302,7 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
 		for(auto & particleLocal:
 				ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()))//loop local grid vertex real and virtual particles
 		{
-			if(particleCoarse._persistentRecords.getGlobalParticleNumber()==particleLocal._persistentRecords.getGlobalParticleNumber()){
+			if(particleCoarse._persistentRecords.getGlobalParticleId()==particleLocal._persistentRecords.getGlobalParticleId()){
 				found = true;
 				break;
 			}

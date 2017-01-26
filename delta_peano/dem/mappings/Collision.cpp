@@ -44,7 +44,6 @@ tarch::logging::Log                                                 dem::mapping
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_activeCollisions;
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_collisionsOfNextTraversal;
 dem::mappings::Collision::CollisionModel                            dem::mappings::Collision::_collisionModel;
-int																	dem::mappings::Collision::_obstacleThresholdID;
 bool																dem::mappings::Collision::_enableOverlapCheck;
 
 void dem::mappings::Collision::beginIteration(
@@ -59,8 +58,6 @@ void dem::mappings::Collision::beginIteration(
 
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
 	delta::collision::cleanPenaltyStatistics();
-
-	_obstacleThresholdID = _state.getNumberOfObstacles();
 
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
@@ -101,30 +98,30 @@ void dem::mappings::Collision::addCollision(
 ) {
 	assertion( !newContactPoints.empty() );
 
-	if ( _collisionsOfNextTraversal.count(particleA._persistentRecords._globalParticleNumber)==0 ) {
-		_collisionsOfNextTraversal.insert( std::pair<int,std::vector<Collisions>>( particleA._persistentRecords._globalParticleNumber, std::vector<Collisions>() ) );
+	if ( _collisionsOfNextTraversal.count(particleA._persistentRecords._globalParticleId)==0 ) {
+		_collisionsOfNextTraversal.insert( std::pair<int,std::vector<Collisions>>( particleA._persistentRecords._globalParticleId, std::vector<Collisions>() ) );
 	}
 
-	if ( _collisionsOfNextTraversal.count(particleB._persistentRecords._globalParticleNumber)==0 ) {
-		_collisionsOfNextTraversal.insert( std::pair<int,std::vector<Collisions>>( particleB._persistentRecords._globalParticleNumber, std::vector<Collisions>() ) );
+	if ( _collisionsOfNextTraversal.count(particleB._persistentRecords._globalParticleId)==0 ) {
+		_collisionsOfNextTraversal.insert( std::pair<int,std::vector<Collisions>>( particleB._persistentRecords._globalParticleId, std::vector<Collisions>() ) );
 	}
 
 	Collisions* dataSetA = nullptr;
 	Collisions* dataSetB = nullptr;
 
-	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleNumber].begin();
-		 p!=_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleNumber].end();  p++)
+	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleId].begin();
+		 p!=_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleId].end();  p++)
 	{
-		if (p->_copyOfPartnerParticle._persistentRecords._globalParticleNumber==particleB._persistentRecords._globalParticleNumber)
+		if (p->_copyOfPartnerParticle._persistentRecords._globalParticleId==particleB._persistentRecords._globalParticleId)
 		{
 			dataSetA = &(*p);
 		}
 	}
 
-	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleNumber].begin();
-		 p!=_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleNumber].end(); p++)
+	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleId].begin();
+		 p!=_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleId].end(); p++)
 	{
-		if (p->_copyOfPartnerParticle._persistentRecords._globalParticleNumber==particleA._persistentRecords._globalParticleNumber)
+		if (p->_copyOfPartnerParticle._persistentRecords._globalParticleId==particleA._persistentRecords._globalParticleId)
 		{
 			dataSetB = &(*p);
 		}
@@ -134,11 +131,11 @@ void dem::mappings::Collision::addCollision(
 
 	if (dataSetA==nullptr)
 	{
-		_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleNumber].push_back( Collisions() );
-		_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleNumber].push_back( Collisions() );
+		_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleId].push_back( Collisions() );
+		_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleId].push_back( Collisions() );
 
-		dataSetA = &(_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleNumber].back());
-		dataSetB = &(_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleNumber].back());
+		dataSetA = &(_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleId].back());
+		dataSetB = &(_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleId].back());
 
 		dataSetA->_copyOfPartnerParticle = particleB;
 		dataSetB->_copyOfPartnerParticle = particleA;
@@ -250,8 +247,8 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		double timeStepSize = _state.getTimeStepSize();
 		records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
-		if(!_activeCollisions.count(currentParticle._persistentRecords._globalParticleNumber)>0  &&
-		   !currentParticle._persistentRecords._globalParticleNumber > _state.getNumberOfObstacles()) continue;
+		if(!_activeCollisions.count(currentParticle._persistentRecords._globalParticleId)>0  &&
+		   !currentParticle._persistentRecords._isObstacle) continue;
 
 		/*logInfo("touchVertexFirstTime(...)",
 		  		  "particle no " << currentParticle._persistentRecords._globalParticleNumber
@@ -259,8 +256,8 @@ void dem::mappings::Collision::touchVertexFirstTime(
 								 << _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].size()
 								 << " contact points");*/
 
-		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].begin();
-			 p != _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].end(); p++)
+		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleId].begin();
+			 p != _activeCollisions[currentParticle._persistentRecords._globalParticleId].end(); p++)
 		{
 			double force[3]  = {0.0,0.0,0.0};
 			double torque[3] = {0.0,0.0,0.0};
@@ -302,7 +299,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			//logInfo( "touchVertexFirstTime(...)", "add angvel av=" << currentParticle._persistentRecords._angular(0) << ", " << currentParticle._persistentRecords._angular(1) << ", " << currentParticle._persistentRecords._angular(2) );
 			//logInfo( "touchVertexFirstTime(...)", "add vel av=" << currentParticle._persistentRecords._velocity(0) << ", " << currentParticle._persistentRecords._velocity(1) << ", " << currentParticle._persistentRecords._velocity(2));
 		}
-		_activeCollisions.erase(currentParticle._persistentRecords._globalParticleNumber);
+		_activeCollisions.erase(currentParticle._persistentRecords._globalParticleId);
 	}
 
 	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
@@ -322,9 +319,9 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		{
 			//printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
 			//printf("I:%d J:%d\n", fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber(), fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber());
-			if ((fineGridVertex.getParticle(i)._persistentRecords._globalParticleNumber == fineGridVertex.getParticle(j)._persistentRecords._globalParticleNumber) ||
-				(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID &&
-				 fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID))
+			if ((fineGridVertex.getParticle(i)._persistentRecords._globalParticleId == fineGridVertex.getParticle(j)._persistentRecords._globalParticleId) ||
+				(fineGridVertex.getParticle(i)._persistentRecords._isObstacle &&
+				 fineGridVertex.getParticle(j)._persistentRecords._isObstacle))
 				 continue;
 
 			if(_enableOverlapCheck)
@@ -345,8 +342,8 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				case CollisionModel::Sphere:
 				{
 					bool penetration = false;
-					if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID &&
-							fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID)
+					if(fineGridVertex.getParticle(i)._persistentRecords._isObstacle &&
+							!fineGridVertex.getParticle(j)._persistentRecords._isObstacle)
 					{
 						//printf("ENTERED fine grid sphere BA\n");
 						newContactPoints = delta::collision::sphereWithBarrierBA(
@@ -364,8 +361,8 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
 							fineGridVertex.getParticle(i)._persistentRecords._material, penetration);
 
-					} else if(fineGridVertex.getParticle(i)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID &&
-							fineGridVertex.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)
+					} else if(!fineGridVertex.getParticle(i)._persistentRecords._isObstacle &&
+							fineGridVertex.getParticle(j)._persistentRecords._isObstacle)
 					{
 						//printf("ENTERED fine grid sphere AB\n");
 						newContactPoints = delta::collision::sphereWithBarrierAB(
@@ -573,9 +570,9 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 	{
 		for (int j=0; j<vertexB.getNumberOfRealAndVirtualParticles(); j++)
 		{
-			if(((vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID) &&
-					(vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)) ||
-					((vertexA.getParticle(i)._persistentRecords._globalParticleNumber) == (vertexB.getParticle(j)._persistentRecords._globalParticleNumber))) continue;
+			if(((vertexA.getParticle(i)._persistentRecords._isObstacle) &&
+					(vertexB.getParticle(j)._persistentRecords._isObstacle)) ||
+					((vertexA.getParticle(i)._persistentRecords._globalParticleId) == (vertexB.getParticle(j)._persistentRecords._globalParticleId))) continue;
 
 			if(_enableOverlapCheck)
 				if(!delta::collision::isSphereOverlayInContact(
@@ -595,8 +592,8 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				case CollisionModel::Sphere:
 				{
 					bool penetration = false;
-					if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID &&
-							vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID)
+					if(vertexA.getParticle(i)._persistentRecords._isObstacle &&
+							!vertexB.getParticle(j)._persistentRecords._isObstacle)
 					{
 						//printf("ENTERED neighbor grid sphere BA\n");
 						newContactPoints = delta::collision::sphereWithBarrierBA(
@@ -613,8 +610,8 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getNumberOfTriangles(i),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
 							vertexA.getParticle(i)._persistentRecords._material, penetration);
-					} else if(vertexA.getParticle(i)._persistentRecords.getGlobalParticleNumber() > _obstacleThresholdID &&
-							vertexB.getParticle(j)._persistentRecords.getGlobalParticleNumber() <= _obstacleThresholdID)
+					} else if(!vertexA.getParticle(i)._persistentRecords._isObstacle &&
+							vertexB.getParticle(j)._persistentRecords._isObstacle)
 					{
 						//printf("ENTERED neighbor grid sphere AB\n");
 						newContactPoints = delta::collision::sphereWithBarrierAB(

@@ -54,6 +54,7 @@ class dem::mappings::Plot {
 
     static int  _snapshotCounter;
 
+
     #ifdef UseInSituVisualiser
     typedef insituvis::Visualiser                                                       Writer;
     #else
@@ -63,9 +64,9 @@ class dem::mappings::Plot {
     Writer*                                                                             _writer;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexWriter*       _vertexWriter;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellWriter*         _cellWriter;
+    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _faceVertexAssociation;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _type;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _level;
-    tarch::plotter::griddata::unstructured::UnstructuredGridWriter::CellDataWriter*     _faceVertexAssociation;
 
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _velocitiesAndNormals;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _frictionNormals;
@@ -75,12 +76,11 @@ class dem::mappings::Plot {
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleEpsilon;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _particleInfluence;
     tarch::plotter::griddata::unstructured::UnstructuredGridWriter::VertexDataWriter*   _vertexColoring;
-
     int _vertexCounter;
+
     int _particleCounter;
     int _collisionPointCounter;
 
-    static int _obstacleThresholdID;
   public:
     /**
      * These flags are used to inform Peano about your operation. It tells the 

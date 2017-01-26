@@ -34,7 +34,6 @@ peano::MappingSpecification   dem::mappings::Plot::descendSpecification() {
 
 tarch::logging::Log  dem::mappings::Plot::_log( "dem::mappings::Plot" );
 int                  dem::mappings::Plot::_snapshotCounter( 0 );
-int					 dem::mappings::Plot::_obstacleThresholdID;
 
 void dem::mappings::Plot::beginIteration(
   dem::State&  solverState
@@ -62,8 +61,6 @@ void dem::mappings::Plot::beginIteration(
   _vertexCounter         = 0;
   _particleCounter       = 0;
   _collisionPointCounter = 0;
-
-  _obstacleThresholdID = solverState.getNumberOfObstacles();
 
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
@@ -234,7 +231,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 
     particleVertexLink[1] = _vertexWriter->plotVertex( particle._persistentRecords._centreOfMass );
 
-    if(particle._persistentRecords._globalParticleNumber > _obstacleThresholdID)
+    if(!particle._persistentRecords._isObstacle)
     {
     	//it will only accept diameter not radius to plot the sphere thus multiply epsilon by 2
         tarch::la::Vector<3,double> v;
@@ -260,7 +257,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     }
 
     _frictionNormals->plotVertex(particleVertexLink[1],0);
-	_vertexColoring->plotVertex(particleVertexLink[1], particle._persistentRecords._globalParticleNumber);
+	_vertexColoring->plotVertex(particleVertexLink[1], particle._persistentRecords._globalParticleId);
 
     int lineFromParticleToHostVertex = _cellWriter->plotLine(particleVertexLink);
     _type->plotCell(lineFromParticleToHostVertex,3);

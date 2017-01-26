@@ -73,9 +73,10 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
+
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
-    if(particle._persistentRecords._globalParticleNumber <= _state.getNumberOfObstacles()){continue;}
+    if(particle._persistentRecords._isObstacle){continue;}
 
     double timeStepSize = _state.getTimeStepSize();
 
@@ -111,9 +112,9 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 									&particle._persistentRecords._referentialCentreOfMass(0));
     }
 
-    iREAL energy = getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
-    iREAL rotational = getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
-    iREAL kinetic = getKineticEnergy(&particle._persistentRecords._velocity(0), particle._persistentRecords._mass);
+    //iREAL energy = getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
+    //iREAL rotational = getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
+    //iREAL kinetic = getKineticEnergy(&particle._persistentRecords._velocity(0), particle._persistentRecords._mass);
     //printf("TOTAL ENERGY:%f ROTATIONAL:%f KINETIC:%f\n", energy, rotational, kinetic);
   }
 }
