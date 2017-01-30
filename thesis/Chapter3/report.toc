@@ -1,0 +1,12 @@
+\contentsline {section}{\numberline {1}Introduction}{3}
+\contentsline {section}{\numberline {2}Algorithmic Overview}{4}
+\contentsline {section}{\numberline {3}Vectorised Contact Detection}{6}
+\contentsline {subsection}{\numberline {3.1}Brute Force}{6}
+\contentsline {subsection}{\numberline {3.2}Penalty}{8}
+\contentsline {subsection}{\numberline {3.3}Hybrid}{10}
+\contentsline {section}{\numberline {4}Domain Decomposition for Contact Detection}{13}
+\contentsline {subsection}{\numberline {4.1}Domain Decomposition}{13}
+\contentsline {subsection}{\numberline {4.2}Ghost Data Exchange}{15}
+\contentsline {section}{\numberline {5}Conclusion and Future Work}{16}
+\contentsline {subsection}{\numberline {5.1}Acknowledgments}{17}
+\contentsline {subsection}{\numberline {5.2}Work Packages}{17}

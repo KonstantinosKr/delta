@@ -1,0 +1,199 @@
+\documentclass[times,12pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs,graphicx}
+\usepackage{titlesec}
+\usepackage{algorithm}
+\usepackage{color}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{url}
+\usepackage{fancyhdr}
+
+\pagenumbering{arabic}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 2pt minus 1 pt}
+
+\topmargin  -15mm
+\evensidemargin 0mm
+\oddsidemargin  0mm
+\textwidth  160mm
+\textheight 235mm
+\frenchspacing
+\sloppy
+\titlespacing{\section}{0pt}{\parskip}{0.01\parskip}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin {document}
+
+\pagestyle{plain}
+
+\begin{center}
+{\fontsize{22}{20}\bf A Parallel Grid-based Approach for Multiscale Non-Spherical Geometry Impact Dynamics\\
+}\end{center}
+
+\vspace{\fill}
+\begin{center}\fontsize{16}{20}
+\textbf{Konstantinos Krestenitis$^1$}\\
+\today
+\end{center}
+\vspace{\fill}
+
+\begin{center}
+{\fontsize{10}{12}
+}\end{center}
+
+\begin{center}
+$^1$School of Engineering and Computing Sciences, University of Durham, DH1 3LE, Durham\\
+konstantinos.krestenitis@durham.ac.uk\\
+Mechanics Research Group\\
+\end{center}
+\begin{center}
+Supervised by\\
+Dr Tobias Weinzierl\\
+Dr Tomasz Koziara (former)\\
+Professor Jon Trevelyan\\
+\end{center}
+
+\clearpage
+
+\section{Introduction}
+We present a Discrete Element Method (DEM) contact detection code that simulates rigid non-spherical particles on manycore shared memory machines and distributed memory computers. DEM is used to study granular particles in fields like soil mechanics. We rely on triangulated particle meshes to model surfaces. Spherical or multi-sphere models currently are state-of-the-art - due to a lack of well-suited software and runtime demands. Non-spherical particles promise to facilitate more accurate physics than sphere-based approaches \cite{AlonsoMarroqu2013}. The focus on triangles for rigid contact mechanics facilitates memory layouts allowing vectorised computation \cite{Alvarez2007, Koziara2005, Krestenitis2015}. It is vital to yield high performance on current and upcoming processor architectures to enable engineers to simulate more realistic materials.
+
+It is important to investigate the problem of finding the minimum distance between triangles because of the changes in the computational hardware \cite{Dongarra2011}. The central processing unit architecture today and the future upcoming hardware support Single Instruction Multiple Data (SIMD)\cite{Alvarez2007} parallelism which allow data level parallelism. These speed-ups are enabled because of new instruction sets and wide vector register. Furthermore, shared memory parallelism at the node level as well as distributed memory for supercomputers can provide significant speed-ups. It is vital to extract resources available on current and upcoming hardware, the speed-ups enable more triangles to be used to describe surfaces. Consequently, our objective is to enable engineers to use an algorithm that is capable to handle the maximum amount of triangles per time step to do better engineering and science.
+
+In the present work we propose a hybrid method that combines the advantages of two optimised triangle-to-triangle distance computation methods. It benefits from both performance and robustness of an iterative Newton-penalty and a brute force solver. We exploit shared memory parallelism and SIMD (Single Instruction Data) to perform contact detection at the node level. On distributed memory, we use spatial domain decomposition  whilst with the Message Passing Interface (MPI), we exploit asynchronous non-blocking communication to overlap data exchange with computation.
+
+The state-of-the-art large scale DEM work, to the best of my knowledge, relies on sphere-based or multi-sphere particles \cite{Gonnet2013, Gonnet2014}. Large scale applications of spherical particles can be found in the field of molecular dynamics. Large scale non-spherical particle based DEM simulations in literature \cite{Girolami2012, Iglberger2009, Iglberger2010, Iglberger2011} often describe particles as convex polyhedra and contact detection is resolved with GJK (Gilbert-Johnson-Keerthi) \cite{Ericson2005} variants which require interpenetration and access to all vertices of the particle to detect contact on the surface. Interpenetration introduces contact point clustering and the problem of divergence \cite{Koziara2008, koziara2011, Krestenitis2015}. In addition, convex polyhedra based contact detection methods require undeterministic memory access to all particle simplices \cite{Ericson2005} which is contradictory to the aligned memory access imposed by SIMD for data locality. Triangle-based contact detection retain locality for vectorisation as well as increases accuracy of contact point generation \cite{Krestenitis2015}. Furthermore, the method can be extended to run on shared memory manycore and distributed memory machines.
+
+The remainder of the paper is structured as follows. In Section 2, we describe the serial DEM  algorithm. In Section 3 we review two triangle-to-triangle distance algorithms. We create a new hybrid shared memory method that benefits from fast convergence and robustness. Next, in Section 3, we propose a distributed memory algorithm for contact detection that use asynchronous communication to overlap computation over communication. Section 4, discusses the future research directions.
+
+\section{Algorithmic Overview}
+\vspace{5mm}
+\begin{itemize}
+\item Completed since last report: Implemented serial DEM simulation with triangle-to-triangle contact detection using spring-dashpot contact forces, explicit time step.
+\item New concepts: New shared memory hybrid method for computation of triangle-to-triangle distance.
+\item Open questions: Best-case design of distributed memory implementation is not clear yet, real-world experiments are missing.
+\end{itemize}
+
+In contact mechanics, fluid-stucture interaction or other fields, it is an essential task to compute the distance between geometries to determine contact. Contact detection also is the most expensive algorithmic step \cite{Koziara2010, Wachs2012}. We present a Discrete Element Method (DEM) code that simulate particles that interact with spring-based contact. Non-spherical particles promise to facilitate more accurate physics than sphere-based approaches \cite{AlonsoMarroqu2013, Girolami2012}. The contact detection routine determines contact based on the distance between the triangles of every particle against all other. If two triangles are closer than a prescribed threshold, they are considered to contact each other. The use of triangles for rigid body contact dynamics rather than arbitrary polygons simplifies geometric checks and facilitates memory layouts that allow vectorised computation \cite{Eichenberger2004, Juurlink, Krestenitis2015, Krestenitis2016}.
+
+The serial DEM Algorithm \ref{alg1} demonstrates the execution of contact detection, an O($n^2$) operation. In line 3 and line 4 the nested for loop indicate the complexity of iterating through all triangle pairs. In line 5 TTD(i, j) invokes a Triangle-to-Triangle Distance (TTD) algorithm that determines the distance between triangle i and triangle j. Based on the boundary layer margin contact model \cite{Krestenitis2015} to avoid penetration, we check if distance between Triangle i and j is smaller than a set margin (line 6). If the parent particle of triangle i and j is not the same then this indicate a contact point between the two particles (line 7). The contact point information at line 13 and line 14 is used to derive the forces. The forces accelerate the particles that are then integrated by an explicit time stepping scheme such as explicit Euler.
+
+\clearpage
+
+\begin{algorithm}	
+
+1 \textbf{\textcolor{blue}{FOR}} time = 0; time $<$ simulation time; time+=step
+
+2~~~//contact detection
+		
+3~~~~~~	\textbf{\textcolor{blue}{FOR}} i = 0 to N triangles
+
+4~~~~~~~~~\textbf{\textcolor{blue}{FOR}} j = i+1 to N triangles
+				
+5~~~~~~~~~~~~distance = TTD(i,j)
+				
+6~~~~~~~~~~~~\textbf{\textcolor{blue}{IF}} (distance $<$ margin) AND ParticleID(i) != ParticleID(j)
+
+7~~~~~~~~~~~~~~~contact(PID(i)).add(point, normal)
+
+8~~~~~~~~~~~\textbf{\textcolor{blue}{ENDIF}}
+			
+9~~~~~~~~~\textbf{\textcolor{blue}{	ENDFOR}}
+			
+10~~~~~~\textbf{\textcolor{blue}{ENDFOR}}
+
+11~~~//force derivation
+		
+12~~~~~~\textbf{\textcolor{blue}{FOR}} z = 0 to NB particles
+
+13~~~~~~~~~	\textbf{\textcolor{blue}{FOR}} k = 0 to contacts(z).size()
+
+14~~~~~~~~~~~~~~~force = granular(velocity(z), position(z), contacts(z).getcontact(k))
+
+15~~~~~~~~~	\textbf{\textcolor{blue}{ENDFOR}}
+
+16~~~~~~\textbf{\textcolor{blue}{ENDFOR}}
+	
+17~~~//explicit time stepping
+
+18 \textbf{\textcolor{blue}{ENDFOR}}
+
+\protect\caption{\label{alg1}DEM Serial Simulation Pseudo code}
+\end{algorithm}
+
+
+\begin{algorithm}	
+  0 \textbf{\textcolor{blue}{FUNCTION}} force = penaltyForce(normal, relativeVelocity, depth, massA, massB)
+  
+  1~~mass = 1.0 / ((1/massA) + (1/massB));
+  
+  2~~velocitymagnitude = DOT(relativeVelocity, normal);
+  
+  3~~magnitude = SPRING*depth + DAMPER*sqrt(SPRING*mass)*velocitymagnitude;
+  
+  4~~force = magnitude*normal;
+  
+  5 \textbf{\textcolor{blue}{ENDFUNCTION}}
+\protect\caption{\label{alg2}Spring-dashpot force algorithm}
+\end{algorithm}
+
+Algorithm \ref{alg2} shows the spring-based force derivation approach \cite{Koziara2008, solberg2000, Wachs2012, Williams1999}. To define contact points without penetration, we use the boundary layer margins to extend the surface boundary. Margin size is set based on velocities and time step size. When in contact, the margin overlap is used as the interpenetration depth. The contact point is at the middlepoint of the distance and normal direction is either side of the distance. At line 0, given the contact point normal, relative linear velocities, penetration depth and the mass of the two bodies we derive the interaction force to update the position of particle triangles on every time step.
+
+\clearpage
+
+\section{Domain Decomposition for Contact Detection}
+\vspace{5mm}
+\begin{itemize}
+\item Completed since last report: Implemented domain decomposition for distributed memory load balancing using library, MPI blocking communication for data migration. 
+\item New concepts: Overlapping process communication for contact detection with ghost data. Asynchronous communication waiting
+time significant as number of ranks increase.
+\item Open questions: multilayer grid/spacetree implementation for DEM 
+\end{itemize}
+
+We further scale the computation of triangle-to-triangle contact with the Message Passing Interface (MPI) \cite{Forum:1994:MMI:898758} for distributed memory computation. Our DEM-based contact detection is inspired by molecular dynamics simulations, where millions of spheres are simulated. State-of-the-art MD computation is decomposed into smaller computational sub-domains and communication exchanges necessary boundary information. Similar computational stages are applied by us in the DEM-based contact detection algorithm. We study synchronous and asynchronous modes of data exchange and how two communication strategies can be exploited to increase performance and minimize computation.
+
+The distributed memory DEM contact detection algorithm is performed in three stages. In stage one the computational domain is divided into equally balanced sub-domains. In stage two, data migration assigns the sub-domains to MPI instances. In stage three, we compute the distances to determine contact between all triangles. In stage four we accumulate the forces and in stage five we perform the explicit time step integration.
+
+To scale the performance of contact detection simulation, the computational workload has to be processed in parallel by splitting the domain into sub-domains and computation deployment is based on it, making the decomposition an important stage. Decomposition affects load balancing and the communication patterns of the simulation. Communication is essential when sub-domains are inter-dependent since new boundaries are introduced with decomposition. It is important to decompose evenly whilst also reducing sub-domain communication. There are three types of decomposition that are widely used in different contexts \cite{Eckhardt2014, Plimpton1995} that can apply in DEM. Decomposition by particle, decomposition by force and spatial decomposition. 
+
+In domain decomposition by particle \cite{koziara2011}, the domain is divided such that all sub-domains hold equal number of particles. For N particles we split the domain to N parts and we assign them to P processors (N/P). The sub-domain boundary is always located at the space between particles. In this method an all-to-all communication is required to detect contact points because they are always located at the sub-domain boundary. The global communication is a major disadvantage for small particles as each processor communicates with all other processors, staggering the overall parallel processing. Another disadvantage is the non-equal splitting (N/P) as some particles may require more computation than others (i.e. more triangles). The main advantage of particle-based decomposition is the implementation simplicity \cite{Plimpton1995}.
+
+An alternative decomposition approach found in literature is force-based decomposition that is often applied in molecular dynamics (MD) and smoother particle hydrodynamic (SPH) simulations \cite{Bowers2007, Gaburov, Gonnet2014, Plimpton1995, Rycroft2012, Shaw2005}. The method formulates a interaction force matrix that solves the contact detection and the forces as a group of linear equations. The matrix is decomposed into small blocks and shared on each process to solve in parallel. Force based decomposition assume short-range interactions and thus a dense force matrix to solve. In force based methods, the advantage is that computation is decomposed without any spatial information from the particles. The major disadvantage in DEM applications is the assumption of dense and uniform sparse force matrices, the assumption can be wrong leading to imbalanced domains on run-time.   
+
+According to N-body simulation literature \cite{Eckhardt2014, Fleissner, Wachs2012a, zomorodian2002} the state-of-the-art method for supercomputing applications is the spatial decomposition. Our decomposition is based on the spatial position of vertices using Recursive Coordinate Bisection (RCB) \cite{ZoltanIsorropiaOverview2012}. In RCB, the computational domain is first divided into two regions by a cutting plane orthogonal to one of the coordinate axes so that half the work load is in each of the sub-regions. The splitting direction is determined by computing in which coordinate direction the set of objects is most elongated, based upon the geometric locations of the objects. Each triangle vertex thus is owned and persistently stored exclusively on one process/sub-domain for the whole duration of the timestep. 
+
+Spatial decomposition implicitly creates logical boundaries that split space and computation (c.f. Figure \ref{fig5}). The contact detection complexity of N trianglesthat belong to $n_{i}$ particles without boundary boxes is $\sum\limits_{i=0}^n n_{i}$ = O($n^2$) in big-O notation (Algorithm \ref{alg1}). Contrary, with equally spaced boundary boxes/cells, if C is the maximum number of particles then there are $26$ neighboring cells and $max(n_{i})$ is the maximum number of triangles per particle i which result to $n_{1} \times 26 \times C \times max(n_{i})$ triangles per particle i in the local cell neighborhood. For all N triangles in the domain there are $N \times 26 \times C \times max(n_{i})$ per neighborhood. Boundary boxes due to spatial decomposition reduce the overall computational complexity to $O(n)$. Similarly, in MD simulations a cut-off range set the range of interaction fields per particle to remove redundant computation. Equally spaced boundary boxes rely on octree-based variants data structures that are great for recursive eight cell space subdivision. Our decomposition relies on non-uniform recursive subdivisions that rely on kd-tree-based data structure decomposition \cite{Brown2015} (i.e. RCB) and the number of neighbours can be arbitrarily many as they are not equally spaced, but they are equally vertex-sized. 
+
+The number of neighbours for both methods may have an implication on communication patterns between processes. It is an open question what are the performance implications on uniform spaced octree-based decomposition versus the non-uniform kd-tree based decomposition. It is an area of investigation since on an octree-based approach information about the level of refinement is known a priori by the sub-domain boundary size, which is an interesting application for multiscale simulations. 
+
+When spatial decomposition finishes we migrate the data to the processors (Algorithm \ref{alg7} line 2) with blocking synchronous communication. At each time step the triangles migrate according to the DEM kinematics. In addition to migration, a local area data exchange is required to communicate the boundaries of the sub-domains that cut triangles at the boundary. 
+
+\section{Conclusion and Future Work}
+
+We implement a new fast but also robust hybrid algorithm that exploits modern CPU architectures. In addition, we study different schemes of domain decomposition in literature. I implement the state-of-the-art spatial domain decomposition and load balancing using Zoltan. Manual migration has been implemented using blocking MPI communication. We implement an asynchronous communication for data exchange of ghost data and compare two possible strategies. Finally based on benchmark measurements we pick the best performing scheme that overlaps computation, increases performance and decreases data exchange volume.
+
+The next stage of my research is to investigate contact detection strategies for large scale supercomputing on a multiscale setting using adaptive multiscale grids. I'm also interested in vectorized memory layout implications on MPI buffered communication. Lastly, the source code will be generalized to form a open source library that any simulation tool can use. 
+
+According to the project plan of the previous report, the work packages have been completed as projected.
+ 
+\subsection{Acknowledgments}
+This work has been sponsored by EPSRC (Engineering and Physical Sciences Research Council) and EDF Energy as part of an ICASE studentship. This work also made use of the facilities of N8 HPC provided and funded by the N8 consortium and EPSRC (Grant No. N8HPC{\_}DUR{\_}TW{\_}PEANO). The Centre is co-ordinated by the Universities of Leeds and Manchester. We also thank University of Durham for the supercomputing resources and technical assistance. All underlying software is open source and available at: https://github.com/KonstantinosKr/delta.
+
+\subsection{Work Packages}
+
+\clearpage
+\nocite{*}
+\bibliography{papers}{}
+\bibliographystyle{plain}
+
+
+\end{document}
+
+
+
+
+
+
+
