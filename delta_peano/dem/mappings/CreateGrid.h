@@ -48,11 +48,11 @@ class dem::mappings::CreateGrid {
       BlackHole,
       RandomWithAlignedCubes,
       RandomWithCubes,
-      Random,
+	  RandomGranulates,
       TwoParticlesCrash,
 	  hopper,
 	  freefall,
-	  flatwall,
+	  freefallshort,
 	  friction,
 	  frictionSlide,
 	  sla

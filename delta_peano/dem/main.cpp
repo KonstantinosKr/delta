@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 			  << "  hopper" << std::endl
 			  << "  hopper300" << std::endl
 			  << "  freefall" << std::endl
-			  << "  flatwall" << std::endl
+			  << "  freefallshort" << std::endl
 			  << "  friction" << std::endl
 			  << "  frictionSlide" << std::endl
 
@@ -162,7 +162,7 @@ int main(int argc, char** argv)
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="random-velocities") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::Random, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomGranulates, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
   else if (scenario=="two-particles-crash") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
@@ -176,8 +176,8 @@ int main(int argc, char** argv)
   else if (scenario=="freefall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, gridHMax, particleDiamMax, particleDiamMin, gridType, epsilon, noTriangles);
   }
-  else if (scenario=="flatwall") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::flatwall, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+  else if (scenario=="freefallshort") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallshort, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="friction") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::friction, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
