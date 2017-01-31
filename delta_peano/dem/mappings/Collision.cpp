@@ -247,13 +247,12 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		double timeStepSize = _state.getTimeStepSize();
 		records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
-		if(!_activeCollisions.count(currentParticle._persistentRecords._globalParticleId)>0  &&
-		   !currentParticle._persistentRecords._isObstacle) continue;
+		//if(currentParticle._persistentRecords._isObstacle) continue;
 
 		/*logInfo("touchVertexFirstTime(...)",
-		  		  "particle no " << currentParticle._persistentRecords._globalParticleNumber
+		  		  "particle no " << currentParticle._persistentRecords._globalParticleId
 				  				 << " collide with other particle(s) in "
-								 << _activeCollisions[currentParticle._persistentRecords._globalParticleNumber].size()
+								 << _activeCollisions[currentParticle._persistentRecords._globalParticleId].size()
 								 << " contact points");*/
 
 		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleId].begin();
@@ -294,10 +293,10 @@ void dem::mappings::Collision::touchVertexFirstTime(
 											currentParticle._persistentRecords._mass,
 											torque, timeStepSize);
 
-			//logInfo( "touchVertexFirstTime(...)", "add force f=" << force[0] << ", " << force[1] << ", " << force[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
-			//logInfo( "touchVertexFirstTime(...)", "add torque t=" << torque[0] << ", " << torque[1] << ", " << torque[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleNumber() );
-			//logInfo( "touchVertexFirstTime(...)", "add angvel av=" << currentParticle._persistentRecords._angular(0) << ", " << currentParticle._persistentRecords._angular(1) << ", " << currentParticle._persistentRecords._angular(2) );
-			//logInfo( "touchVertexFirstTime(...)", "add vel av=" << currentParticle._persistentRecords._velocity(0) << ", " << currentParticle._persistentRecords._velocity(1) << ", " << currentParticle._persistentRecords._velocity(2));
+			/*logInfo( "touchVertexFirstTime(...)", "add force f=" << force[0] << ", " << force[1] << ", " << force[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleId() );
+			logInfo( "touchVertexFirstTime(...)", "add torque t=" << torque[0] << ", " << torque[1] << ", " << torque[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleId() );
+			logInfo( "touchVertexFirstTime(...)", "add angvel av=" << currentParticle._persistentRecords._angular(0) << ", " << currentParticle._persistentRecords._angular(1) << ", " << currentParticle._persistentRecords._angular(2) );
+			logInfo( "touchVertexFirstTime(...)", "add vel av=" << currentParticle._persistentRecords._velocity(0) << ", " << currentParticle._persistentRecords._velocity(1) << ", " << currentParticle._persistentRecords._velocity(2));*/
 		}
 		_activeCollisions.erase(currentParticle._persistentRecords._globalParticleId);
 	}

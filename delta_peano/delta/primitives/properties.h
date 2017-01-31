@@ -25,7 +25,7 @@
 
 #include <vector>
 #include <math.h>
-
+#include "delta/hull/alg.h"
 
 namespace delta {
   namespace primitives {
@@ -64,6 +64,8 @@ namespace delta {
     		double& mass,
     		double center[3],
     		double inertia[9]);
+
+    void computeInverseInertia(double inertia[9], double inverse[9], bool isObject);
 
     double simplex_J (double *a, double *b, double *c, double *d);
 

@@ -1,5 +1,3 @@
-#include <delta/primitives/graphite.h>
-#include <delta/primitives/surface.h>
 #include "dem/mappings/CreateGrid.h"
 
 #include "delta/primitives/cubes.h"
@@ -7,28 +5,13 @@
 #include "delta/primitives/properties.h"
 #include "delta/primitives/hopper.h"
 #include "delta/primitives/blender.h"
+#include <delta/primitives/graphite.h>
+#include <delta/primitives/surface.h>
+
 #include "peano/grid/aspects/VertexStateAnalysis.h"
 
 #include <string>
-
-#define INVERT(F, INV, DET)\
-if (((DET) =\
- ((F)[0]*((F)[4]*(F)[8]-(F)[5]*(F)[7])+\
-  (F)[3]*((F)[2]*(F)[7]-(F)[1]*(F)[8])+\
- ((F)[1]*(F)[5]-(F)[2]*(F)[4])*(F)[6])) != 0.0)\
-{\
-  (DET) = 1.0 / (DET);\
-  (INV) [0] = ((F)[4]*(F)[8]-(F)[5]*(F)[7])*(DET);\
-  (INV) [1] = ((F)[2]*(F)[7]-(F)[1]*(F)[8])*(DET);\
-  (INV) [2] = ((F)[1]*(F)[5]-(F)[2]*(F)[4])*(DET);\
-  (INV) [3] = ((F)[5]*(F)[6]-(F)[3]*(F)[8])*(DET);\
-  (INV) [4] = ((F)[0]*(F)[8]-(F)[2]*(F)[6])*(DET);\
-  (INV) [5] = ((F)[2]*(F)[3]-(F)[0]*(F)[5])*(DET);\
-  (INV) [6] = ((F)[3]*(F)[7]-(F)[4]*(F)[6])*(DET);\
-  (INV) [7] = ((F)[1]*(F)[6]-(F)[0]*(F)[7])*(DET);\
-  (INV) [8] = ((F)[0]*(F)[4]-(F)[1]*(F)[3])*(DET);\
-  (DET) = 1.0 / (DET);\
-}
+#include <iostream>
 
 /**
  * @todo Please tailor the parameters to your mapping's properties.
@@ -57,6 +40,7 @@ peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification() 
 
 tarch::logging::Log                  dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
 dem::mappings::CreateGrid::Scenario  dem::mappings::CreateGrid::_scenario;
+dem::mappings::CreateGrid::VScheme 	 dem::mappings::CreateGrid::_velocityScheme;
 double                               dem::mappings::CreateGrid::_maxH;
 double                               dem::mappings::CreateGrid::_minParticleDiam;
 double                               dem::mappings::CreateGrid::_maxParticleDiam;
@@ -64,14 +48,17 @@ dem::mappings::CreateGrid::GridType  dem::mappings::CreateGrid::_gridType;
 double								 dem::mappings::CreateGrid::_epsilon;
 int 								 dem::mappings::CreateGrid::_noPointsPerParticle;
 
-void dem::mappings::CreateGrid::setScenario(Scenario scenario, double maxH, double particleDiamMin, double particleDiamMax, GridType gridType, double epsilon, int noPointsPerParticle) {
+void dem::mappings::CreateGrid::setScenario(Scenario scenario, VScheme velocityScheme, double maxH, double particleDiamMin, double particleDiamMax,
+											GridType gridType, double epsilon, int noPointsPerGranulate)
+{
 	_scenario        = scenario;
+	_velocityScheme  = velocityScheme;
 	_maxH            = maxH;
 	_minParticleDiam = particleDiamMin;
 	_maxParticleDiam = particleDiamMax;
 	_gridType        = gridType;
 	_epsilon 		 = epsilon;
-	_noPointsPerParticle = noPointsPerParticle;
+	_noPointsPerParticle = noPointsPerGranulate;
 }
 
 void dem::mappings::CreateGrid::beginIteration(
@@ -145,6 +132,9 @@ void dem::mappings::CreateGrid::createCell(
 {
 	logTraceInWith4Arguments( "createCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
+	/*
+	 * root cell enviroment creation (mainly for obstacles) or large scenario setups (nuclear SLA)
+	 */
 	if (coarseGridCell.isRoot())
 	{
 		std::vector<double>  xCoordinates;
@@ -157,44 +147,48 @@ void dem::mappings::CreateGrid::createCell(
 								  fineGridVerticesEnumerator.getCellCenter()(1),
 								  fineGridVerticesEnumerator.getCellCenter()(2)};
 
-		int	newParticleNumber = vertex.createNewParticle(centreAsArray);
-
 		switch (_scenario)
 		{
 			case freefallshort:
+			{
+				/*
+				 *freefallshort;
+				 * experiment where a small amount of particle freefall on to a table
+				 */
 
-				double _wallWidth = 0.3;
+				delta::primitives::generateSurface(centreAsArray, 0.3, 0.01, xCoordinates, yCoordinates, zCoordinates);
+
+				double diameter = 0.3;
+				double influenceRadius = 0.3 * 1.8;
+				double epsilon = _epsilon;
+				double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				int particleId = _numberOfParticles;
+				bool isObstacle = true;
+				int material = 1;
+
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+				int newParticleNumber = vertex.createNewParticle(centreAsArray,
+										xCoordinates, yCoordinates, zCoordinates,
+										centerOfMass, inertia, inverse,
+										mass, diameter, influenceRadius, epsilon,
+										hMin, isObstacle, material, particleId);
 
 				_numberOfParticles++; _numberOfObstacles++;
-
-				delta::primitives::generateSurface(centreAsArray, _wallWidth, 0.01, xCoordinates, yCoordinates, zCoordinates);
-
-				for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
-				{
-					vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
-					vertex.getYCoordinatesAsVector(newParticleNumber).push_back( yCoordinates[i] );
-					vertex.getZCoordinatesAsVector(newParticleNumber).push_back( zCoordinates[i] );
-
-					vertex.getXRefCoordinatesAsVector(newParticleNumber).push_back(xCoordinates[i]);
-					vertex.getYRefCoordinatesAsVector(newParticleNumber).push_back(yCoordinates[i]);
-					vertex.getZRefCoordinatesAsVector(newParticleNumber).push_back(zCoordinates[i]);
-				}
-
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 
-				vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
-				vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _wallWidth;
-				vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.8;
-				vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon;
-				vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-				vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = 1;
-				vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
-				vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
 				return;
-			break;
+				break;
+			}
 		case hopper:
+		{
 			/*
+			 * hopper experiment;
 			 *
+			 * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom
 			 *
 			 */
 			double _hopperWidth = 0.26;
@@ -202,156 +196,131 @@ void dem::mappings::CreateGrid::createCell(
 
 			delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
 
-			_numberOfParticles++; _numberOfObstacles++;
+			double diameter = _hopperWidth*1.8;
+			double influenceRadius = _hopperWidth * 1.8;
+			double epsilon = _epsilon*1.5;
+			double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+			int particleId = _numberOfParticles;
+			bool isObstacle = true;
+			int material = 1;
+
+			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+			int newParticleNumber = vertex.createNewParticle(centreAsArray,
+									xCoordinates, yCoordinates, zCoordinates,
+									centerOfMass, inertia, inverse,
+									mass, diameter, influenceRadius, epsilon,
+									hMin, isObstacle, material, particleId);
 
 			//delta::primitives::meshDenseMultiplier(5, xCoordinates, yCoordinates, zCoordinates);
-			for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
-			{
-				vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
-				vertex.getYCoordinatesAsVector(newParticleNumber).push_back( yCoordinates[i] );
-				vertex.getZCoordinatesAsVector(newParticleNumber).push_back( zCoordinates[i] );
 
-				vertex.getXRefCoordinatesAsVector(newParticleNumber).push_back(xCoordinates[i]);
-				vertex.getYRefCoordinatesAsVector(newParticleNumber).push_back(yCoordinates[i]);
-				vertex.getZRefCoordinatesAsVector(newParticleNumber).push_back(zCoordinates[i]);
-			}
-
+			_numberOfParticles++; _numberOfObstacles++;
 			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-
-			vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
-
-			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _hopperWidth*1.8;
-			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _hopperWidth * 1.8;
-			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon*1.5;
-			vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId     =  _numberOfParticles;
-			vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
-			vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
 
 			xCoordinates.clear();
 			yCoordinates.clear();
 			zCoordinates.clear();
 
-			newParticleNumber = vertex.createNewParticle(centreAsArray);
+			/**
+			 * ******************* flooring creation
+			 */
 
 			centreAsArray[1] = 0;
 
-			_numberOfParticles++; _numberOfObstacles++;
 			delta::primitives::generateSurface( centreAsArray, 1, 0.1, xCoordinates, yCoordinates, zCoordinates);
 
-			for (int i=0; i<static_cast<int>(xCoordinates.size()); i++) {
-				vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
-				vertex.getYCoordinatesAsVector(newParticleNumber).push_back( yCoordinates[i] );
-				vertex.getZCoordinatesAsVector(newParticleNumber).push_back( zCoordinates[i] );
+			diameter = 1;
+			influenceRadius = 1;
+			epsilon = _epsilon*3;
+			hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+			particleId = _numberOfParticles;
+			isObstacle = true;
+			material = 2;
 
-				vertex.getXRefCoordinatesAsVector(newParticleNumber).push_back(xCoordinates[i]);
-				vertex.getYRefCoordinatesAsVector(newParticleNumber).push_back(yCoordinates[i]);
-				vertex.getZRefCoordinatesAsVector(newParticleNumber).push_back(zCoordinates[i]);
-			}
-
-			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-
-			vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
-			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = 1;
-			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = 1;
-			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon*3;
-			vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = _numberOfParticles;
-			vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
-			vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 2;
-
-			vertex.getParticle(newParticleNumber)._persistentRecords._mass = 100;
-			return;
-			break;
-		case friction:
-
-			_numberOfParticles++; _numberOfObstacles++;
-			double _wallWidth = 1;
-			delta::primitives::generateSurface(centreAsArray, _wallWidth, 0.01, xCoordinates, yCoordinates, zCoordinates);
-
-			for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
-			{
-				vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
-				vertex.getYCoordinatesAsVector(newParticleNumber).push_back( yCoordinates[i] );
-				vertex.getZCoordinatesAsVector(newParticleNumber).push_back( zCoordinates[i] );
-
-				vertex.getXRefCoordinatesAsVector(newParticleNumber).push_back(xCoordinates[i]);
-				vertex.getYRefCoordinatesAsVector(newParticleNumber).push_back(yCoordinates[i]);
-				vertex.getZRefCoordinatesAsVector(newParticleNumber).push_back(zCoordinates[i]);
-			}
-
-			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-
-			vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
-			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _wallWidth;
-			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.2;
-			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon;
-			vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = _numberOfParticles;
-			vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
-			vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 2;
-			return;
-			break;
-		case frictionSlide:
-
-			_numberOfParticles++; _numberOfObstacles++;
-			double _wallWidth = 1;
-			delta::primitives::generateSurface( centreAsArray, _wallWidth, 0.02, xCoordinates, yCoordinates, zCoordinates);
-
-			for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
-			{
-				vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
-				vertex.getYCoordinatesAsVector(newParticleNumber).push_back( yCoordinates[i] );
-				vertex.getZCoordinatesAsVector(newParticleNumber).push_back( zCoordinates[i] );
-
-				vertex.getXRefCoordinatesAsVector(newParticleNumber).push_back(xCoordinates[i]);
-				vertex.getYRefCoordinatesAsVector(newParticleNumber).push_back(yCoordinates[i]);
-				vertex.getZRefCoordinatesAsVector(newParticleNumber).push_back(zCoordinates[i]);
-			}
-
-			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-
-			vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
-			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = _wallWidth;
-			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius      = _wallWidth * 1.8;
-			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = 0;
-			vertex.getParticle(newParticleNumber)._persistentRecords._hMin                 = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = _numberOfParticles;
-			vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = true;
-			vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 2;
-
-			iREAL inertia[9], mass = 1, centerOfMass[3], rho = 10000;
+			rho = 10000;
 
 			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 
-			vertex.getParticle(newParticleNumber)._persistentRecords._mass = mass;
+			newParticleNumber = vertex.createNewParticle(centreAsArray,
+									xCoordinates, yCoordinates, zCoordinates,
+									centerOfMass, inertia, inverse,
+									mass, diameter, influenceRadius, epsilon,
+									hMin, isObstacle, material, particleId);
 
-			vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(0) = centerOfMass[0];
-			vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(1) = centerOfMass[1];
-			vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(2) = centerOfMass[2];
-			vertex.getParticle(newParticleNumber)._persistentRecords._referentialCentreOfMass(0) = centerOfMass[0];
-			vertex.getParticle(newParticleNumber)._persistentRecords._referentialCentreOfMass(1) = centerOfMass[1];
-			vertex.getParticle(newParticleNumber)._persistentRecords._referentialCentreOfMass(2) = centerOfMass[2];
+			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+			_numberOfParticles++; _numberOfObstacles++;
 
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(0) = inertia[0];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(1) = inertia[1];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(2) = inertia[2];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(3) = inertia[3];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(4) = inertia[4];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(5) = inertia[5];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(6) = inertia[6];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(7) = inertia[7];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(8) = inertia[8];
-
-			// invert inertia properties
-			iREAL a[9], x[9], det;
-			for (int j = 0; j < 9; j ++){a[j] = vertex.getParticle(newParticleNumber)._persistentRecords._inertia(j);}
-			INVERT (a, x, det);
-			for (int j = 0; j < 9; j ++){vertex.getParticle(newParticleNumber)._persistentRecords._inverse(j) = x[j];}
-			//zero inverse because it is an object
-			for (int j = 0; j < 9; j ++){vertex.getParticle(newParticleNumber)._persistentRecords._inverse(j) = 0;}
 			return;
 			break;
+		}
+		case frictionStatic:
+		{
+			/*
+			 *
+			 */
+			delta::primitives::generateSurface(centreAsArray, 1, 0.01, xCoordinates, yCoordinates, zCoordinates);
+
+			double diameter = 1;
+			double influenceRadius = 1 * 1.2;
+			double epsilon = _epsilon;
+			double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+			int particleId = _numberOfParticles;
+			bool isObstacle = true;
+			int material = 2;
+
+			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+			int newParticleNumber = vertex.createNewParticle(centreAsArray,
+									xCoordinates, yCoordinates, zCoordinates,
+									centerOfMass, inertia, inverse,
+									mass, diameter, influenceRadius, epsilon,
+									hMin, isObstacle, material, particleId);
+
+			_numberOfParticles++; _numberOfObstacles++;
+			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+
+			return;
+			break;
+		}
+		case frictionSlide:
+		{
+			/*
+			 *
+			 */
+			delta::primitives::generateSurface( centreAsArray, 1, 0.02, xCoordinates, yCoordinates, zCoordinates);
+
+			double diameter = 1;
+			double influenceRadius = 1 * 1.8;
+			double epsilon = 0;
+			double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+			int particleId = _numberOfParticles;
+			bool isObstacle = true;
+			int material = 2;
+
+			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+			int newParticleNumber = vertex.createNewParticle(centreAsArray,
+									xCoordinates, yCoordinates, zCoordinates,
+									centerOfMass, inertia, inverse,
+									mass, diameter, influenceRadius, epsilon,
+									hMin, isObstacle, material, particleId);
+
+			_numberOfParticles++; _numberOfObstacles++;
+			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+
+			return;
+			break;
+		}
 		}
 	}
 
@@ -372,12 +341,16 @@ void dem::mappings::CreateGrid::createCell(
 		int particlesInCellPerAxis = std::floor(fineGridVerticesEnumerator.getCellSize()(0) / _maxParticleDiam);
 
 		if (particlesInCellPerAxis==0)
-		{   particlesInCellPerAxis = 1;
+		{
+			particlesInCellPerAxis = 1;
 
 			_maxParticleDiam = fineGridVerticesEnumerator.getCellSize()(0);
 			_minParticleDiam = std::min(_minParticleDiam,_maxParticleDiam);
 			logWarning( "createCell(...)", "particle size has been too small for coarsest prescribed grid. Reduce particle size to " << std::min(_minParticleDiam,_maxParticleDiam) << "-" << fineGridVerticesEnumerator.getCellSize()(0) );
-		}else{logDebug( "createCell", "particlesInCellPerAxis="<< particlesInCellPerAxis );}
+
+		}else{
+			logDebug( "createCell", "particlesInCellPerAxis="<< particlesInCellPerAxis );
+		}
 
 		dfor(k,particlesInCellPerAxis)
 		{
@@ -385,13 +358,9 @@ void dem::mappings::CreateGrid::createCell(
 
 			double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) ) / std::sqrt( DIMENSIONS );
 
-			logDebug( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter );
-
 			dem::Vertex&  vertex = fineGridVertices[ fineGridVerticesEnumerator(0) ];
 
 			double centreAsArray[] = {centre(0),centre(1),centre(2)};
-
-			int  newParticleNumber;
 
 			// We need these temporary guys if we use an aligned vector from Peano.
 			// Peano's aligned vector and the default std::vector are not compatible.
@@ -399,9 +368,8 @@ void dem::mappings::CreateGrid::createCell(
 			std::vector<double>  yCoordinates;
 			std::vector<double>  zCoordinates;
 
-			if (_scenario == BlackHoleWithAlignedCubes)
+			if (_scenario == BlackHoleWithRandomOrientedCubes)
 			{
-				newParticleNumber = vertex.createNewParticle( centre );
 				if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
 				delta::primitives::generateCube( centreAsArray, particleDiameter,
 						static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
@@ -411,7 +379,6 @@ void dem::mappings::CreateGrid::createCell(
 			}
 			else if (_scenario == BlackHoleWithCubes)
 			{
-				newParticleNumber = vertex.createNewParticle( centre );
 				if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
 				delta::primitives::generateCube( centreAsArray, particleDiameter,
 						0.0, // around x-axis 1/8
@@ -419,10 +386,8 @@ void dem::mappings::CreateGrid::createCell(
 						1.0/8.0, // around z-axis 1/8
 						xCoordinates, yCoordinates, zCoordinates );
 			}
-			else if (_scenario == TwoParticlesCrash || _scenario == RandomGranulates || _scenario == freefall)
+			else if (_scenario == TwoParticlesCrash || _scenario == RandomWithGranulates || _scenario == RandomWithCubes || _scenario == freefall)
 			{
-				newParticleNumber = vertex.createNewParticle( centre );
-
 				if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
 				{
 					delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
@@ -441,7 +406,6 @@ void dem::mappings::CreateGrid::createCell(
 				   centreAsArray[1] < coarseCenterHopperMarginUpper+0.2 && centreAsArray[1] > coarseCenterHopperMarginUpper &&
 				   centreAsArray[2] < coarseCenterHopperMarginUpper && centreAsArray[2] > coarseCenterHopperMarginLower)
 				{
-					newParticleNumber = vertex.createNewParticle( centre );
 					if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
 					{
 						delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
@@ -461,8 +425,6 @@ void dem::mappings::CreateGrid::createCell(
 					centreAsArray[1] < coarseCenterHopperMarginUpper+0.2 && centreAsArray[1] > coarseCenterHopperMarginUpper &&
 					centreAsArray[2] < coarseCenterHopperMarginUpper && centreAsArray[2] > coarseCenterHopperMarginLower)
 				{
-					newParticleNumber = vertex.createNewParticle( centre );
-
 					if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
 					{
 						delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
@@ -472,13 +434,12 @@ void dem::mappings::CreateGrid::createCell(
 					}
 				} else {return;}
 			}
-			else if(_scenario == friction)
+			else if(_scenario == frictionStatic)
 			{
 				if(centreAsArray[0] < 0.45 && centreAsArray[0] > 0.30 &&
 				   centreAsArray[1] < 1-0.30 && centreAsArray[1] > 1-0.45 &&
 				   centreAsArray[2] < 1-0.30 && centreAsArray[2] > 1-0.45)
 				{
-					newParticleNumber = vertex.createNewParticle( centre );
 					if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
 					{
 						delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
@@ -495,7 +456,6 @@ void dem::mappings::CreateGrid::createCell(
 				   centreAsArray[2] < 1-0.30 && centreAsArray[2] > 1-0.45)
 				{
 					centreAsArray[1] = centreAsArray[1] + (0.16 - _epsilon*2);
-					newParticleNumber = vertex.createNewParticle( centreAsArray );
 					if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
 					{
 						delta::primitives::generateCube(centreAsArray, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
@@ -507,77 +467,51 @@ void dem::mappings::CreateGrid::createCell(
 				} else {return;}
 			}
 
-			for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
-			{
-				vertex.getXCoordinatesAsVector(newParticleNumber).push_back( xCoordinates[i] );
-				vertex.getYCoordinatesAsVector(newParticleNumber).push_back( yCoordinates[i] );
-				vertex.getZCoordinatesAsVector(newParticleNumber).push_back( zCoordinates[i] );
+			int numberOfTtriangles = xCoordinates.size()/DIMENSIONS;
+			double diameter = particleDiameter;
+			double influenceRadius = (particleDiameter/2) + (_epsilon * 6);
+			double epsilon = _epsilon;
+			double hMin;
+			if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
+			{hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+			}else{hMin = 0;}
+			int particleId = _numberOfParticles;
+			bool isObstacle = false;
+			int material = 1;
 
-				vertex.getXRefCoordinatesAsVector(newParticleNumber).push_back(xCoordinates[i]);
-				vertex.getYRefCoordinatesAsVector(newParticleNumber).push_back(yCoordinates[i]);
-				vertex.getZRefCoordinatesAsVector(newParticleNumber).push_back(zCoordinates[i]);
-			}
+			iREAL inertia[9], inverse[9], centerOfMass[3], mass = 1, rho = 600;
+
+			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+			int newParticleNumber = vertex.createNewParticle(centreAsArray,
+									xCoordinates, yCoordinates, zCoordinates,
+									centerOfMass, inertia, inverse,
+									mass, diameter, influenceRadius, epsilon,
+									hMin, isObstacle, material, particleId);
+
+			logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
 
 			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 			_numberOfParticles++;
 
-			vertex.getParticle(newParticleNumber)._persistentRecords._numberOfTriangles    = vertex.getXCoordinatesAsVector(newParticleNumber).size()/DIMENSIONS;
-			vertex.getParticle(newParticleNumber)._persistentRecords._diameter             = particleDiameter;
-			vertex.getParticle(newParticleNumber)._persistentRecords._epsilon 			   = _epsilon;
-			vertex.getParticle(newParticleNumber)._persistentRecords._influenceRadius 	   = (particleDiameter/2) + (vertex.getParticle(newParticleNumber)._persistentRecords._epsilon * 6);
-			vertex.getParticle(newParticleNumber)._persistentRecords._globalParticleId = _numberOfParticles;
-			vertex.getParticle(newParticleNumber)._persistentRecords._isObstacle 		   = false;
-			vertex.getParticle(newParticleNumber)._persistentRecords._material 			   = 1;
 
-			if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-			{vertex.getParticle(newParticleNumber)._persistentRecords._hMin             = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			}else{vertex.getParticle(newParticleNumber)._persistentRecords._hMin        = 0;}
-
-			iREAL inertia[9], mass = 1, rho = 600;
-
-			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centreAsArray, inertia);
-
-			vertex.getParticle(newParticleNumber)._persistentRecords._mass = mass;
-
-			vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(0) = centreAsArray[0];
-			vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(1) = centreAsArray[1];
-			vertex.getParticle(newParticleNumber)._persistentRecords._centreOfMass(2) = centreAsArray[2];
-			vertex.getParticle(newParticleNumber)._persistentRecords._referentialCentreOfMass(0) = centreAsArray[0];
-			vertex.getParticle(newParticleNumber)._persistentRecords._referentialCentreOfMass(1) = centreAsArray[1];
-			vertex.getParticle(newParticleNumber)._persistentRecords._referentialCentreOfMass(2) = centreAsArray[2];
-
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(0) = inertia[0];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(1) = inertia[1];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(2) = inertia[2];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(3) = inertia[3];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(4) = inertia[4];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(5) = inertia[5];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(6) = inertia[6];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(7) = inertia[7];
-			vertex.getParticle(newParticleNumber)._persistentRecords._inertia(8) = inertia[8];
-
-			// invert inertia properties
-			iREAL a[9], x[9], det;
-			for (int j = 0; j < 9; j ++){a[j] = vertex.getParticle(newParticleNumber)._persistentRecords._inertia(j);}
-			INVERT (a, x, det);
-			for (int j = 0; j < 9; j ++){vertex.getParticle(newParticleNumber)._persistentRecords._inverse(j) = x[j];}
-
-			/*velocities for each scenario
+			/**
+			 * Set velocities for particle filling for scenario
 			 *
 			 */
-			switch (_scenario)
+
+			switch (_velocityScheme)
 			{
-				case TwoParticlesCrash:
-					vertex.getParticle(newParticleNumber)._persistentRecords._velocity = tarch::la::Vector<DIMENSIONS,double>(0.5) - fineGridVerticesEnumerator.getVertexPosition(k);
-					vertex.getParticle(newParticleNumber)._persistentRecords._angular = tarch::la::Vector<DIMENSIONS,double>(0.0);
-					break;
-				case RandomWithAlignedCubes:
+			 	case noVScheme:
+			 		break;
+				case randomLinear:
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity =
 						2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0,
 						2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0,
 						2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0;
 					break;
-				case RandomGranulates:
+				case randomLinearAngular:
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity =
 						2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0,
 						2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0,
@@ -588,17 +522,21 @@ void dem::mappings::CreateGrid::createCell(
 						static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
 						static_cast<double>( rand() ) / static_cast<double>(RAND_MAX);
 					break;
-				case friction:
+				case crash:
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity = tarch::la::Vector<DIMENSIONS,double>(0.5) - fineGridVerticesEnumerator.getVertexPosition(k);
 					break;
-				case frictionSlide:
-					/*vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = 0.5;
+				case crashAB:
+					vertex.getParticle(newParticleNumber)._persistentRecords._velocity = tarch::la::Vector<DIMENSIONS,double>(0.5) - fineGridVerticesEnumerator.getVertexPosition(k);
+					vertex.getParticle(newParticleNumber)._persistentRecords._angular = tarch::la::Vector<DIMENSIONS,double>(0.0);
+					break;
+				case CrashSlideWithAngle:
+					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = 0.5;
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = 0;
-					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = 0;*/
+					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = 0;
 
-					/*vertex.getParticle(newParticleNumber)._persistentRecords._angular(0) = 5;
+					vertex.getParticle(newParticleNumber)._persistentRecords._angular(0) = 5;
 					vertex.getParticle(newParticleNumber)._persistentRecords._angular(1) = 5;
-					vertex.getParticle(newParticleNumber)._persistentRecords._angular(2) = 0;*/
+					vertex.getParticle(newParticleNumber)._persistentRecords._angular(2) = 0;
 					break;
 			}
 		}

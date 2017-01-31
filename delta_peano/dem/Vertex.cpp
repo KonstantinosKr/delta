@@ -2,25 +2,6 @@
 #include "peano/utils/Loop.h"
 #include "peano/grid/Checkpoint.h"
 
-#define INVERT(F, INV, DET)\
-if (((DET) =\
- ((F)[0]*((F)[4]*(F)[8]-(F)[5]*(F)[7])+\
-  (F)[3]*((F)[2]*(F)[7]-(F)[1]*(F)[8])+\
- ((F)[1]*(F)[5]-(F)[2]*(F)[4])*(F)[6])) != 0.0)\
-{\
-  (DET) = 1.0 / (DET);\
-  (INV) [0] = ((F)[4]*(F)[8]-(F)[5]*(F)[7])*(DET);\
-  (INV) [1] = ((F)[2]*(F)[7]-(F)[1]*(F)[8])*(DET);\
-  (INV) [2] = ((F)[1]*(F)[5]-(F)[2]*(F)[4])*(DET);\
-  (INV) [3] = ((F)[5]*(F)[6]-(F)[3]*(F)[8])*(DET);\
-  (INV) [4] = ((F)[0]*(F)[8]-(F)[2]*(F)[6])*(DET);\
-  (INV) [5] = ((F)[2]*(F)[3]-(F)[0]*(F)[5])*(DET);\
-  (INV) [6] = ((F)[3]*(F)[7]-(F)[4]*(F)[6])*(DET);\
-  (INV) [7] = ((F)[1]*(F)[6]-(F)[0]*(F)[7])*(DET);\
-  (INV) [8] = ((F)[0]*(F)[4]-(F)[1]*(F)[3])*(DET);\
-  (DET) = 1.0 / (DET);\
-}
-
 dem::Vertex::Vertex():
   Base() { 
   _vertexData.setParticles( -1 );
@@ -38,37 +19,74 @@ dem::Vertex::Vertex(const Base::PersistentVertex& argument):
   // @todo Insert your code here
 }
 
-
 void dem::Vertex::init() {
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
   _vertexData.setVetoCoarsening(false);
 }
 
-
 void dem::Vertex::destroy() const {
   ParticleHeap::getInstance().deleteData( _vertexData.getParticles() );
   ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels() );
 }
 
-int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>&   centre)
+int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>&   center,
+		  std::vector<double>&  xCoordinates,
+		  std::vector<double>&  yCoordinates,
+		  std::vector<double>&  zCoordinates,
+		  const tarch::la::Vector<DIMENSIONS,double>&   centerOfMass, double inertia[9], double inverse[9],
+		  double mass, double diameter, double influenceRadius, double epsilon, double hMin,
+		  bool isObstacle, int material, int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
-  newParticle._persistentRecords._centre 			= centre;
-  newParticle._persistentRecords._centreOfMass      = centre;
-  newParticle._persistentRecords._referentialCentreOfMass = centre;
-  newParticle._persistentRecords._epsilon			= 0;
-  newParticle._persistentRecords._mass				= 1;
+  newParticle._persistentRecords._centre(0) = center(0);
+  newParticle._persistentRecords._centre(1) = center(1);
+  newParticle._persistentRecords._centre(2) = center(2);
+
+  newParticle._persistentRecords._centreOfMass(0) = centerOfMass(0);
+  newParticle._persistentRecords._centreOfMass(1) = centerOfMass(1);
+  newParticle._persistentRecords._centreOfMass(2) = centerOfMass(2);
+
+  newParticle._persistentRecords._referentialCentreOfMass(0) = centerOfMass(0);
+  newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass(1);
+  newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass(2);
+
+  newParticle._persistentRecords._inertia(0) = inertia[0];
+  newParticle._persistentRecords._inertia(1) = inertia[1];
+  newParticle._persistentRecords._inertia(2) = inertia[2];
+  newParticle._persistentRecords._inertia(3) = inertia[3];
+  newParticle._persistentRecords._inertia(4) = inertia[4];
+  newParticle._persistentRecords._inertia(5) = inertia[5];
+  newParticle._persistentRecords._inertia(6) = inertia[6];
+  newParticle._persistentRecords._inertia(7) = inertia[7];
+  newParticle._persistentRecords._inertia(8) = inertia[8];
+
+  newParticle._persistentRecords._inverse(0) = inverse[0];
+  newParticle._persistentRecords._inverse(1) = inverse[1];
+  newParticle._persistentRecords._inverse(2) = inverse[2];
+  newParticle._persistentRecords._inverse(3) = inverse[3];
+  newParticle._persistentRecords._inverse(4) = inverse[4];
+  newParticle._persistentRecords._inverse(5) = inverse[5];
+  newParticle._persistentRecords._inverse(6) = inverse[6];
+  newParticle._persistentRecords._inverse(7) = inverse[7];
+  newParticle._persistentRecords._inverse(8) = inverse[8];
+
+  newParticle._persistentRecords._mass				= mass;
+  newParticle._persistentRecords._diameter			= diameter;
+  newParticle._persistentRecords._influenceRadius 	= influenceRadius;
+  newParticle._persistentRecords._epsilon			= epsilon;
+  newParticle._persistentRecords._hMin 				= hMin;
+
+  newParticle._persistentRecords._numberOfTriangles = xCoordinates.size()/DIMENSIONS;
+  newParticle._persistentRecords._isObstacle 		= isObstacle;
+  newParticle._persistentRecords._material 			= material;
+  newParticle._persistentRecords._globalParticleId  = particleId;
+
   newParticle._persistentRecords._velocity          = tarch::la::Vector<DIMENSIONS,double>(0.0);
   newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,double>(0.0);
-
-  newParticle._persistentRecords._hMin 				= 0;
-  newParticle._persistentRecords._influenceRadius	= 0;
-  newParticle._persistentRecords._diameter			= 0;
-  newParticle._persistentRecords._numberOfTriangles = 0;
 
   newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
@@ -76,6 +94,18 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._vertices(3) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(4) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(5) = DEMDoubleHeap::getInstance().createData();
+
+
+  for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
+  {
+	getXCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( xCoordinates[i] );
+	getYCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( yCoordinates[i] );
+	getZCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( zCoordinates[i] );
+
+	getXRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(xCoordinates[i]);
+	getYRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(yCoordinates[i]);
+	getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
+  }
 
   newParticle._persistentRecords._orientation(0) = 1;
   newParticle._persistentRecords._orientation(1) = 0;
@@ -86,9 +116,6 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._orientation(6) = 0;
   newParticle._persistentRecords._orientation(7) = 0;
   newParticle._persistentRecords._orientation(8) = 1;
-
-  newParticle._persistentRecords._inertia = tarch::la::Vector<9,double>(0.0);
-  newParticle._persistentRecords._inverse = tarch::la::Vector<9,double>(0.0);
 
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }

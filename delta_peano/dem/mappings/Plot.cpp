@@ -229,7 +229,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 
     assertion1( particle._persistentRecords._centreOfMass(0)==particle._persistentRecords._centreOfMass(0), particle.toString() );
 
-    particleVertexLink[1] = _vertexWriter->plotVertex( particle._persistentRecords._centreOfMass );
+    particleVertexLink[1] = _vertexWriter->plotVertex( particle._persistentRecords._centre );
 
     if(!particle._persistentRecords._isObstacle)
     {

@@ -84,8 +84,13 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      * @param particleId  Each particle has a unique id and we have to know to
      *                    which particle a triangle belongs to
      */
-    int createNewParticle(
-      const tarch::la::Vector<DIMENSIONS,double>&  centre
+    int createNewParticle(const tarch::la::Vector<DIMENSIONS,double>&   center,
+  		  std::vector<double>&  xCoordinates,
+  		  std::vector<double>&  yCoordinates,
+  		  std::vector<double>&  zCoordinates,
+  		  const tarch::la::Vector<DIMENSIONS,double>&   centerOfMass, double inertia[9], double inverse[9],
+  		  double mass, double diameter, double influenceRadius, double epsilon, double hMin,
+  		  bool isObstacle, int material, int particleId
     );
 
     int getNumberOfParticles() const;

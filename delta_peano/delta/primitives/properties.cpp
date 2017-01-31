@@ -201,3 +201,18 @@ void delta::primitives::computeInertia(
 
   printf("Inertia %f %f %f %f %f %f %f %f %f\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
 }
+
+void delta::primitives::computeInverseInertia(double inertia[9], double inverse[9], bool isObject)
+{
+	iREAL det;
+	INVERT (inertia, inverse, det);
+
+	//zero inverse because it is an object
+	if(isObject)
+	{
+		for (int j = 0; j < 9; j ++)
+		{
+			//inverse[j] = 0;
+		}
+	}
+}

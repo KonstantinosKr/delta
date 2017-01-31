@@ -24,7 +24,6 @@
 #include "dem/Cell.h"
 #include "dem/State.h"
 #include "delta/primitives/triangle.h"
-#include "delta/primitives/properties.h"
 
 namespace dem {
   namespace mappings {
@@ -43,19 +42,26 @@ namespace dem {
 class dem::mappings::CreateGrid {
   public:
     enum Scenario {
-      BlackHoleWithAlignedCubes,
+      BlackHoleWithRandomOrientedCubes,
       BlackHoleWithCubes,
-      BlackHole,
-      RandomWithAlignedCubes,
       RandomWithCubes,
-	  RandomGranulates,
+	  RandomWithGranulates,
       TwoParticlesCrash,
 	  hopper,
 	  freefall,
 	  freefallshort,
-	  friction,
+	  frictionStatic,
 	  frictionSlide,
 	  sla
+    };
+
+    enum VScheme {
+    	noVScheme,
+    	randomLinear,
+		randomLinearAngular,
+		crash,
+		crashAB,
+		CrashSlideWithAngle
     };
 
     enum GridType {
@@ -65,7 +71,8 @@ class dem::mappings::CreateGrid {
       ReluctantAdaptiveGrid
     };
 
-    static void setScenario(Scenario scenario, double minH, double particleDiamMax, double particleDiamMin, GridType gridType, double epsilon, int noPointsPerGranulate);
+    static void setScenario(Scenario scenario, VScheme velocityScheme, double maxH, double particleDiamMin, double particleDiamMax,
+    						GridType gridType, double epsilon, int noPointsPerGranulate);
 
   private:
     /**
@@ -74,6 +81,7 @@ class dem::mappings::CreateGrid {
     static tarch::logging::Log  _log;
 
     static Scenario _scenario;
+    static VScheme  _velocityScheme;
     static double   _maxH;
     static double   _minParticleDiam;
     static double   _maxParticleDiam;
