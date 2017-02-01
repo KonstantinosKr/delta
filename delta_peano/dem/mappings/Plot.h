@@ -8,9 +8,9 @@
 #ifndef DEM_MAPPINGS_Plot_H_
 #define DEM_MAPPINGS_Plot_H_
 
-
 #include "tarch/logging/Log.h"
 #include "tarch/la/Vector.h"
+#include "tarch/logging/CommandLineLogger.h"
 
 #include "peano/grid/VertexEnumerator.h"
 #include "peano/MappingSpecification.h"

@@ -62,6 +62,8 @@ void dem::mappings::Plot::beginIteration(
   _particleCounter       = 0;
   _collisionPointCounter = 0;
 
+  tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"particle.log");
+
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -171,6 +173,9 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   _writer->writeToFile( snapshotFileName.str() );
 
   _snapshotCounter++;
+
+
+  tarch::logging::CommandLineLogger::getInstance().closeOutputStreamAndReopenNewOne();
 
   delete _vertexWriter;
   delete _cellWriter;
@@ -333,8 +338,30 @@ void dem::mappings::Plot::touchVertexLastTime(
       _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
     }
-  }
 
+    logInfo("runAsMaster(...)",   "partiId=" << particle._persistentRecords._globalParticleId  <<", mass___=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
+			  	  	  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin___=" << particle._persistentRecords._hMin << std::endl
+							   << "noOfTri=" << particle._persistentRecords._numberOfTriangles <<", isObsta=" << particle._persistentRecords._isObstacle << ", materia=" << particle._persistentRecords._material << std::endl
+    					       << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
+							   << "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl<< "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl
+							   << "rangulX=" << particle._persistentRecords._referentialAngular(0) <<", rangulY=" << particle._persistentRecords._referentialAngular(1) << ", rangulZ=" << particle._persistentRecords._referentialAngular(2) << std::endl
+							   << "centreX=" << particle._persistentRecords._centre(0) <<", centreY=" << particle._persistentRecords._centre(1) << ", centreZ=" << particle._persistentRecords._centre(2) << std::endl
+							   << "cOfMasX=" << particle._persistentRecords._centreOfMass(0) <<", cOfMasY=" << particle._persistentRecords._centreOfMass(1) << ", cOfMasZ=" << particle._persistentRecords._centreOfMass(2) << std::endl
+							   << "rcOfMaX=" << particle._persistentRecords._referentialCentreOfMass(0) <<", rcOfMaY=" << particle._persistentRecords._referentialCentreOfMass(1) << ", rcOfMaZ=" << particle._persistentRecords._referentialCentreOfMass(2) << std::endl
+							   << "iner[0]=" << particle._persistentRecords._inertia(0) <<", iner[1]=" << particle._persistentRecords._inertia(1) << ", iner[2]=" << particle._persistentRecords._inertia(2) << std::endl
+							   << "iner[3]=" << particle._persistentRecords._inertia(3) <<", iner[4]=" << particle._persistentRecords._inertia(4) << ", iner[5]=" << particle._persistentRecords._inertia(5) << std::endl
+							   << "iner[6]=" << particle._persistentRecords._inertia(6) <<", iner[7]=" << particle._persistentRecords._inertia(7) << ", iner[8]=" << particle._persistentRecords._inertia(8) << std::endl
+							   << "inve[0]=" << particle._persistentRecords._inverse(0) <<", inve[1]=" << particle._persistentRecords._inverse(1) << ", inve[2]=" << particle._persistentRecords._inverse(2) << std::endl
+							   << "inve[3]=" << particle._persistentRecords._inverse(3) <<", inve[4]=" << particle._persistentRecords._inverse(4) << ", inve[5]=" << particle._persistentRecords._inverse(5) << std::endl
+							   << "inve[6]=" << particle._persistentRecords._inverse(6) <<", inve[7]=" << particle._persistentRecords._inverse(7) << ", inve[8]=" << particle._persistentRecords._inverse(8) << std::endl
+							   << "orie[0]=" << particle._persistentRecords._orientation(0) <<", orie[1]=" << particle._persistentRecords._orientation(1) << ", orie[2]=" << particle._persistentRecords._orientation(2) << std::endl
+							   << "orie[3]=" << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
+							   << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
+  }
+  //logInfo
+  //logWarning
+  //logError
+  //logDebug
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 

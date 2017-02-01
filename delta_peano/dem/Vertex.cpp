@@ -74,6 +74,16 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._inverse(7) = inverse[7];
   newParticle._persistentRecords._inverse(8) = inverse[8];
 
+  newParticle._persistentRecords._orientation(0) = 1;
+  newParticle._persistentRecords._orientation(1) = 0;
+  newParticle._persistentRecords._orientation(2) = 0;
+  newParticle._persistentRecords._orientation(3) = 0;
+  newParticle._persistentRecords._orientation(4) = 1;
+  newParticle._persistentRecords._orientation(5) = 0;
+  newParticle._persistentRecords._orientation(6) = 0;
+  newParticle._persistentRecords._orientation(7) = 0;
+  newParticle._persistentRecords._orientation(8) = 1;
+
   newParticle._persistentRecords._mass				= mass;
   newParticle._persistentRecords._diameter			= diameter;
   newParticle._persistentRecords._influenceRadius 	= influenceRadius;
@@ -107,15 +117,6 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 	getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
   }
 
-  newParticle._persistentRecords._orientation(0) = 1;
-  newParticle._persistentRecords._orientation(1) = 0;
-  newParticle._persistentRecords._orientation(2) = 0;
-  newParticle._persistentRecords._orientation(3) = 0;
-  newParticle._persistentRecords._orientation(4) = 1;
-  newParticle._persistentRecords._orientation(5) = 0;
-  newParticle._persistentRecords._orientation(6) = 0;
-  newParticle._persistentRecords._orientation(7) = 0;
-  newParticle._persistentRecords._orientation(8) = 1;
 
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
