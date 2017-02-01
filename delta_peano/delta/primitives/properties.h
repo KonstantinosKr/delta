@@ -125,5 +125,12 @@ namespace delta {
     (d) [2]*(a) [2] + (d) [2]*(b) [2] + (d) [2]*(c) [2] + 2.*(d) [2]*(d) [2] \
     ))
 
+    double getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass);
+
+    double getKineticEnergy(double velocity[3], double mass);
+
+    double getRotationalEnergy(double angular[3], double inertia[9]);
+
   }
+
 }

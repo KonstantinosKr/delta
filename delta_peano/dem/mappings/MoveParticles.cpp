@@ -36,7 +36,6 @@ peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexFirstTime
 peano::MappingSpecification   dem::mappings::MoveParticles::enterCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
-
 peano::MappingSpecification   dem::mappings::MoveParticles::leaveCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
@@ -49,23 +48,6 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
 
 tarch::logging::Log		dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" );
 double    dem::mappings::MoveParticles::gravity = 0.0;
-
-double getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass){
-	iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
-	iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
-
-	return rotation+kinetic;
-}
-
-double getKineticEnergy(double velocity[3], double mass){
-	iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
-	return kinetic;
-}
-
-double getRotationalEnergy(double angular[3], double inertia[9]){
-	iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
-	return rotation;
-}
 
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
   dem::Vertex&               fineGridVertex)
@@ -94,9 +76,9 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
     particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
 
-    particle._persistentRecords._centre(0) = particle._persistentRecords._centreOfMass(0);
-    particle._persistentRecords._centre(1) = particle._persistentRecords._centreOfMass(1);
-    particle._persistentRecords._centre(2) = particle._persistentRecords._centreOfMass(2);
+    particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
+    particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
+    particle._persistentRecords._centre(2) += timeStepSize*particle._persistentRecords._velocity(2);
 
     double* x = fineGridVertex.getXCoordinates(i);
     double* y = fineGridVertex.getYCoordinates(i);
@@ -127,26 +109,27 @@ void dem::mappings::MoveParticles::reassignParticles(
 ) {
     int numberOfReassignments = 0;
     dfor2(k)
-    int i=0;
-    while (i<fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles()) {
-      records::Particle&  particle = fineGridVertices[ fineGridVerticesEnumerator(k) ].getParticle(i);
+		int i=0;
+		while (i<fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles())
+		{
+		  records::Particle&  particle = fineGridVertices[ fineGridVerticesEnumerator(k) ].getParticle(i);
 
-      tarch::la::Vector<DIMENSIONS,int> correctVertex;
-      for (int d=0; d<DIMENSIONS; d++)
-      {
-        correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
-      }
+		  tarch::la::Vector<DIMENSIONS,int> correctVertex;
+		  for (int d=0; d<DIMENSIONS; d++)
+		  {
+			correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
+		  }
 
-      if (correctVertex!=k) {
-        fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].appendParticle(particle);
-        logDebug( "reassignParticles(...)", "reassign particle " << particle.toString() << " to " << fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].toString() );
-        fineGridVertices[ fineGridVerticesEnumerator(k) ].releaseParticle(i);
-        numberOfReassignments++;
-      }
-      else {
-        i++;
-      }
-    }
+		  if (correctVertex!=k) {
+			fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].appendParticle(particle);
+			logDebug( "reassignParticles(...)", "reassign particle " << particle.toString() << " to " << fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].toString() );
+			fineGridVertices[ fineGridVerticesEnumerator(k) ].releaseParticle(i);
+			numberOfReassignments++;
+		  }
+		  else {
+			i++;
+		  }
+		}
   enddforx
   _state.incNumberOfParticleReassignments(numberOfReassignments);
 }

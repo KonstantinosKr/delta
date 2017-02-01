@@ -400,11 +400,11 @@ void dem::mappings::CreateGrid::createCell(
 			{
 				double _hopperWidth = 0.26;
 
-				double coarseCenterHopperMarginUpper = 0.5 + (_hopperWidth/2);
-				double coarseCenterHopperMarginLower = 0.5 - (_hopperWidth/2);
-				if(centreAsArray[0] < coarseCenterHopperMarginUpper && centreAsArray[0] > coarseCenterHopperMarginLower &&
-				   centreAsArray[1] < coarseCenterHopperMarginUpper+0.2 && centreAsArray[1] > coarseCenterHopperMarginUpper &&
-				   centreAsArray[2] < coarseCenterHopperMarginUpper && centreAsArray[2] > coarseCenterHopperMarginLower)
+				double upper = 0.5 + (_hopperWidth/2);
+				double lower = 0.5 - (_hopperWidth/2);
+				if(centreAsArray[0] < upper && centreAsArray[0] > lower &&
+				   centreAsArray[1] < upper+0.2 && centreAsArray[1] > upper &&
+				   centreAsArray[2] < upper && centreAsArray[2] > lower)
 				{
 					if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
 					{
@@ -419,11 +419,11 @@ void dem::mappings::CreateGrid::createCell(
 			{
 				double _wallWidth = 0.25;
 
-				double coarseCenterHopperMarginUpper = 0.5 + (_wallWidth/2);
-				double coarseCenterHopperMarginLower = 0.5 - (_wallWidth/2);
-				if(centreAsArray[0] < coarseCenterHopperMarginUpper && centreAsArray[0] > coarseCenterHopperMarginLower &&
-					centreAsArray[1] < coarseCenterHopperMarginUpper+0.2 && centreAsArray[1] > coarseCenterHopperMarginUpper &&
-					centreAsArray[2] < coarseCenterHopperMarginUpper && centreAsArray[2] > coarseCenterHopperMarginLower)
+				double upper = 0.5 + (_wallWidth/2);
+				double lower = 0.5 - (_wallWidth/2);
+				if(centreAsArray[0] < upper && centreAsArray[0] > lower &&
+					centreAsArray[1] < upper+0.2 && centreAsArray[1] > upper &&
+					centreAsArray[2] < upper && centreAsArray[2] > lower)
 				{
 					if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
 					{
@@ -495,7 +495,6 @@ void dem::mappings::CreateGrid::createCell(
 			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 			_numberOfParticles++;
 
-
 			/**
 			 * Set velocities for particle filling for scenario
 			 *
@@ -504,6 +503,13 @@ void dem::mappings::CreateGrid::createCell(
 			switch (_velocityScheme)
 			{
 			 	case noVScheme:
+			 		vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = 0;
+					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = 0;
+					vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = 0;
+
+					vertex.getParticle(newParticleNumber)._persistentRecords._angular(0) = 0;
+					vertex.getParticle(newParticleNumber)._persistentRecords._angular(1) = 0;
+					vertex.getParticle(newParticleNumber)._persistentRecords._angular(2) = 0;
 			 		break;
 				case randomLinear:
 					vertex.getParticle(newParticleNumber)._persistentRecords._velocity =
