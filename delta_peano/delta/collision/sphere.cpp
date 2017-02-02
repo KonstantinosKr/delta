@@ -37,14 +37,14 @@ std::vector<delta::collision::contactpoint> delta::collision::sphere(
 	      double   zCoordinatesOfPointsOfGeometryA,
 		  double   diameterA,
 		  double   epsilonA,
-		  int      materialA,
+		  bool     frictionA,
 
 	      double   xCoordinatesOfPointsOfGeometryB,
 	      double   yCoordinatesOfPointsOfGeometryB,
 	      double   zCoordinatesOfPointsOfGeometryB,
 		  double   diameterB,
 	      double   epsilonB,
-		  int	   materialB,
+		  bool     frictionB,
 		  bool&    penetration)
 {
 	std::vector<contactpoint> result;
@@ -66,7 +66,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphere(
 	double yPB = yCoordinatesOfPointsOfGeometryB - ((diameterB/2) * ynormal);
 	double zPB = zCoordinatesOfPointsOfGeometryB - ((diameterB/2) * znormal);
 
-	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
+	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
 
 	if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
 	{
@@ -289,14 +289,14 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 	      double   zCoordinatesOfPointsOfGeometryA,
 		  double   diameterA,
 		  double   epsilonA,
-		  int      materialA,
+		  bool     frictionA,
 
 	      double   *xCoordinatesOfPointsOfGeometryB,
 	      double   *yCoordinatesOfPointsOfGeometryB,
 	      double   *zCoordinatesOfPointsOfGeometryB,
 		  int   	numberOfTrianglesOfGeometryB,
-	      double   epsilonB,
-		  int      materialB,
+	      double    epsilonB,
+		  bool      frictionB,
 		  bool&     penetration)
 {
 	std::vector<contactpoint> result;
@@ -338,7 +338,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 		yPB = Q[1];
 		zPB = Q[2];
 
-		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
+		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
 
 		if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
 		{
@@ -361,14 +361,14 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
 	      double   zCoordinatesOfPointsOfGeometryA,
 		  double   diameterA,
 		  double   epsilonA,
-		  int      materialA,
+		  bool     frictionA,
 
 	      double   *xCoordinatesOfPointsOfGeometryB,
 	      double   *yCoordinatesOfPointsOfGeometryB,
 	      double   *zCoordinatesOfPointsOfGeometryB,
 		  int   	numberOfTrianglesOfGeometryB,
 	      double   epsilonB,
-		  int      materialB,
+		  bool     frictionB,
 		  bool&    penetration)
 {
 	std::vector<contactpoint> result;
@@ -410,7 +410,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
 		yPB = Q[1];
 		zPB = Q[2];
 
-		contactpoint newContactPoint(xPB, yPB, zPB, epsilonB, xPA, yPA, zPA, epsilonA, materialA+materialB);
+		contactpoint newContactPoint(xPB, yPB, zPB, epsilonB, xPA, yPA, zPA, epsilonA, frictionA && frictionB);
 		if (newContactPoint.getDistance() <= (epsilonA+epsilonB))
 		{
 			result.push_back( newContactPoint );

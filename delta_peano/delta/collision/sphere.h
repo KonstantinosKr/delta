@@ -38,14 +38,14 @@ namespace delta {
       double   zCoordinatesOfPointsOfGeometryA,
       double   diameterA,
 	  double   epsilonA,
-	  int      materialA,
+	  bool     frictionA,
 
       double   xCoordinatesOfPointsOfGeometryB,
       double   yCoordinatesOfPointsOfGeometryB,
       double   zCoordinatesOfPointsOfGeometryB,
       double   diameterB,
       double   epsilonB,
-	  int      materialB,
+	  bool     frictionB,
 	  bool&    penetration
     );
 
@@ -55,14 +55,14 @@ namespace delta {
       double   zCoordinatesOfPointsOfGeometryA,
       double   diameterA,
 	  double   epsilonA,
-	  int      materialA,
+	  bool     frictionA,
 
       double   *xCoordinatesOfPointsOfGeometryB,
       double   *yCoordinatesOfPointsOfGeometryB,
       double   *zCoordinatesOfPointsOfGeometryB,
 	  int   	numberOfTrianglesOfGeometryB,
       double   epsilonB,
-	  int 	   materialB,
+	  bool 	   frictionB,
 	  bool&    penetration
     );
 
@@ -72,14 +72,14 @@ namespace delta {
           double   zCoordinatesOfPointsOfGeometryA,
           double   diameterA,
     	  double   epsilonA,
-		  int      materialA,
+		  bool     frictionA,
 
           double   *xCoordinatesOfPointsOfGeometryB,
           double   *yCoordinatesOfPointsOfGeometryB,
           double   *zCoordinatesOfPointsOfGeometryB,
     	  int      numberOfTrianglesOfGeometryB,
           double   epsilonB,
-		  int      materialB,
+		  bool     frictionB,
 		  bool&    penetration
         );
 

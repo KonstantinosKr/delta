@@ -25,11 +25,11 @@ delta::collision::contactpoint::contactpoint(const contactpoint& copy) {
   Q[1] = copy.Q[1];
   Q[2] = copy.Q[2];
 
-  friction[0] = copy.friction[0];
-  friction[1] = copy.friction[1];
-  friction[2] = copy.friction[2];
+  frictionVector[0] = copy.frictionVector[0];
+  frictionVector[1] = copy.frictionVector[1];
+  frictionVector[2] = copy.frictionVector[2];
 
-  frictionType = copy.frictionType;
+  friction = copy.friction;
   epsilonTotal = copy.epsilonTotal;
 }
 
@@ -46,7 +46,7 @@ delta::collision::contactpoint::contactpoint(
   const double&  yPB,
   const double&  zPB,
   const double&  epsilonB,
-  const int&	 type
+  const bool&	 type
 ) {
 
   x[0] = (xPA+xPB)/2.0;
@@ -69,7 +69,7 @@ delta::collision::contactpoint::contactpoint(
   normal[1] = ((yPA-yPB)/getDistance());
   normal[2] = ((zPA-zPB)/getDistance());
 
-  frictionType = type;
+  friction = type;
 }
 
 #if ompTriangle || ompParticle

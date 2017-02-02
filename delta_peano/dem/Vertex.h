@@ -90,7 +90,7 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
   		  std::vector<double>&  zCoordinates,
   		  const tarch::la::Vector<DIMENSIONS,double>&   centerOfMass, double inertia[9], double inverse[9],
   		  double mass, double diameter, double influenceRadius, double epsilon, double hMin,
-  		  bool isObstacle, int material, int particleId
+  		  bool isObstacle, int material, bool friction, int particleId
     );
 
     int getNumberOfParticles() const;

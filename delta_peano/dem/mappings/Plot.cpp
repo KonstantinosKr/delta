@@ -77,75 +77,85 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   for (std::map<int, std::vector<Collision::Collisions> >::const_iterator p = Collision::_activeCollisions.begin();
       p != Collision::_activeCollisions.end(); p++)
   {
-	for (std::vector<Collision::Collisions>::const_iterator pp = p->second.begin(); pp != p->second.end(); pp++)
-    {
-	    for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp->_contactPoints.begin();
-        ppp != pp->_contactPoints.end(); ppp++)
-      { //printf("Contacts:%d, between:%d and %d\n", contacts++, p->first, pp->_copyOfPartnerParticle._persistentRecords._globalParticleNumber);
-    	tarch::la::Vector<3,double> v;
-        v = ppp->x[0], ppp->x[1], ppp->x[2];
-        int contactPointVertexIndex = _vertexWriter->plotVertex( v );
-        int contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
+	  for (std::vector<Collision::Collisions>::const_iterator pp = p->second.begin(); pp != p->second.end(); pp++)
+	  {
+		  for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp->_contactPoints.begin();
+				  ppp != pp->_contactPoints.end(); ppp++)
+		  {
+			  	//printf("Contacts:%d, between:%d and %d\n", contacts++, p->first, pp->_copyOfPartnerParticle._persistentRecords._globalParticleNumber);
+			  	tarch::la::Vector<3,double> v;
+				v = ppp->x[0], ppp->x[1], ppp->x[2];
+				int contactPointVertexIndex = _vertexWriter->plotVertex( v );
+				int contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
 
-        v = ppp->normal[0], ppp->normal[1], ppp->normal[2];
-        _velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
+				v = ppp->normal[0], ppp->normal[1], ppp->normal[2];
+				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
 
-        if(ppp->frictionType>2)
-        {
-        	v = ppp->friction[0], ppp->friction[1], ppp->friction[2];
-        	_frictionNormals->plotVertex(contactPointVertexIndex, v);
-        }else
-        {
-        	_frictionNormals->plotVertex(contactPointVertexIndex, 0);
-        }
-        _particleVelocity->plotVertex(contactPointVertexIndex,0);
-        _particleAngular->plotVertex(contactPointVertexIndex,0);
-        _particleDiameter->plotVertex(contactPointVertexIndex,0);
-        _particleEpsilon->plotVertex(contactPointVertexIndex,0);
-        _particleInfluence->plotVertex(contactPointVertexIndex,0);
-        _vertexColoring->plotVertex(contactPointVertexIndex,p->first);
+				if(ppp->friction)
+				{
+					v = ppp->frictionVector[0], ppp->frictionVector[1], ppp->frictionVector[2];
+					_frictionNormals->plotVertex(contactPointVertexIndex, v);
+				}else
+				{
+					_frictionNormals->plotVertex(contactPointVertexIndex, 0);
+				}
+				_particleVelocity->plotVertex(contactPointVertexIndex,0);
+				_particleAngular->plotVertex(contactPointVertexIndex,0);
+				_particleDiameter->plotVertex(contactPointVertexIndex,0);
+				_particleEpsilon->plotVertex(contactPointVertexIndex,0);
+				_particleInfluence->plotVertex(contactPointVertexIndex,0);
+				_vertexColoring->plotVertex(contactPointVertexIndex,p->first);
 
-        _type->plotCell(contactPointIndex,2);
-        _level->plotCell(contactPointIndex,-1);
-        _faceVertexAssociation->plotCell(contactPointIndex,-1);
+				_type->plotCell(contactPointIndex,2);
+				_level->plotCell(contactPointIndex,-1);
+				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
-        v = ppp->P[0], ppp->P[1], ppp->P[2];
-        contactPointVertexIndex = _vertexWriter->plotVertex( v );
-        contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
-        _velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
-        _frictionNormals->plotVertex(contactPointVertexIndex, 0);
-        _particleVelocity->plotVertex(contactPointVertexIndex,0);
-        _particleAngular->plotVertex(contactPointVertexIndex,0);
+				/*logInfo("runAsMaster(...)", std::endl
+				   << "contactId=" << ppp->friction  <<", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
+				   << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
+				   << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
+				   << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
+				   << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
+				   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);*/
 
-        _particleDiameter->plotVertex(contactPointVertexIndex,0);
-        _particleEpsilon->plotVertex(contactPointVertexIndex,0);
-        _particleInfluence->plotVertex(contactPointVertexIndex,0);
-        _vertexColoring->plotVertex(contactPointVertexIndex,0);
 
-        _type->plotCell(contactPointIndex,4);
-        _level->plotCell(contactPointIndex,-1);
-        _faceVertexAssociation->plotCell(contactPointIndex,-1);
+				v = ppp->P[0], ppp->P[1], ppp->P[2];
+				contactPointVertexIndex = _vertexWriter->plotVertex( v );
+				contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
+				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
+				_frictionNormals->plotVertex(contactPointVertexIndex, 0);
+				_particleVelocity->plotVertex(contactPointVertexIndex,0);
+				_particleAngular->plotVertex(contactPointVertexIndex,0);
 
-        v = ppp->Q[0], ppp->Q[1], ppp->Q[2];
-        contactPointVertexIndex = _vertexWriter->plotVertex( v );
-        contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
-        _velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
-        _frictionNormals->plotVertex(contactPointVertexIndex, 0);
-        _particleVelocity->plotVertex(contactPointVertexIndex,0);
-        _particleAngular->plotVertex(contactPointVertexIndex,0);
+				_particleDiameter->plotVertex(contactPointVertexIndex,0);
+				_particleEpsilon->plotVertex(contactPointVertexIndex,0);
+				_particleInfluence->plotVertex(contactPointVertexIndex,0);
+				_vertexColoring->plotVertex(contactPointVertexIndex,0);
 
-        _particleDiameter->plotVertex(contactPointVertexIndex,0);
-        _particleEpsilon->plotVertex(contactPointVertexIndex,0);
-        _particleInfluence->plotVertex(contactPointVertexIndex,0);
-        _vertexColoring->plotVertex(contactPointVertexIndex,0);
+				_type->plotCell(contactPointIndex,4);
+				_level->plotCell(contactPointIndex,-1);
+				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
-        _type->plotCell(contactPointIndex,4);
-        _level->plotCell(contactPointIndex,-1);
-        _faceVertexAssociation->plotCell(contactPointIndex,-1);
+				v = ppp->Q[0], ppp->Q[1], ppp->Q[2];
+				contactPointVertexIndex = _vertexWriter->plotVertex( v );
+				contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
+				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
+				_frictionNormals->plotVertex(contactPointVertexIndex, 0);
+				_particleVelocity->plotVertex(contactPointVertexIndex,0);
+				_particleAngular->plotVertex(contactPointVertexIndex,0);
 
-        _collisionPointCounter++;
-      }
-    }
+				_particleDiameter->plotVertex(contactPointVertexIndex,0);
+				_particleEpsilon->plotVertex(contactPointVertexIndex,0);
+				_particleInfluence->plotVertex(contactPointVertexIndex,0);
+				_vertexColoring->plotVertex(contactPointVertexIndex,0);
+
+				_type->plotCell(contactPointIndex,4);
+				_level->plotCell(contactPointIndex,-1);
+				_faceVertexAssociation->plotCell(contactPointIndex,-1);
+
+				_collisionPointCounter++;
+		  }
+	  }
   }
 
   _vertexWriter->close();
@@ -339,8 +349,8 @@ void dem::mappings::Plot::touchVertexLastTime(
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
     }
 
-    logInfo("runAsMaster(...)",   "partiId=" << particle._persistentRecords._globalParticleId  <<", mass___=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
-			  	  	  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin___=" << particle._persistentRecords._hMin << std::endl
+    logInfo("runAsMaster(...)", std::endl << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
+			  	  	  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin=" << particle._persistentRecords._hMin << std::endl
 							   << "noOfTri=" << particle._persistentRecords._numberOfTriangles <<", isObsta=" << particle._persistentRecords._isObstacle << ", materia=" << particle._persistentRecords._material << std::endl
     					       << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
 							   << "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl<< "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl

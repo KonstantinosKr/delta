@@ -53,14 +53,14 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
   dem::Vertex&               fineGridVertex)
 {
 
+  double timeStepSize = _state.getTimeStepSize();
+
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
 
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
-    if(particle._persistentRecords._isObstacle){continue;}
-
-    double timeStepSize = _state.getTimeStepSize();
+    //if(particle._persistentRecords._isObstacle){continue;}
 
     particle._persistentRecords._velocity(1) += -(timeStepSize * (gravity/ particle._persistentRecords._mass));
 
@@ -68,17 +68,17 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
     //particle._persistentRecords._epsilon = dem::mappings::CreateGrid::_epsilon + (particle._persistentRecords._influenceRadius*velocity*timeStepSize);
     //particle._persistentRecords._influenceRadius = particle._persistentRecords._influenceRadius + (particle._persistentRecords._influenceRadius*(timeStepSize*velocity));
 
-	delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
-										  &particle._persistentRecords._referentialAngular(0),
-										  &particle._persistentRecords._orientation(0), timeStepSize);
+    particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
+    particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
+    particle._persistentRecords._centre(2) += timeStepSize*particle._persistentRecords._velocity(2);
 
     particle._persistentRecords._centreOfMass(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
 
-    particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
-    particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
-    particle._persistentRecords._centre(2) += timeStepSize*particle._persistentRecords._velocity(2);
+	delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
+										  &particle._persistentRecords._referentialAngular(0),
+										  &particle._persistentRecords._orientation(0), timeStepSize);
 
     double* x = fineGridVertex.getXCoordinates(i);
     double* y = fineGridVertex.getYCoordinates(i);
@@ -155,7 +155,6 @@ void dem::mappings::MoveParticles::reflectParticles(
 	  {
 		  particle._persistentRecords._velocity(2) = std::abs(particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(2));
 	  }
-
 	  if (particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2>1.0)
 	  {
 		  particle._persistentRecords._velocity(0) = std::abs(particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(0));

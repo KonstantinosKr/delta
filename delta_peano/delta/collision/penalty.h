@@ -54,14 +54,14 @@ namespace delta {
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
 	  double    epsilonA,
-	  int       materialA,
+	  bool      frictionA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
       double*   yCoordinatesOfPointsOfGeometryB,
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
-	  int       materialB
+	  bool      frictionB
     );
 
     std::vector<contactpoint> penalty(
@@ -70,14 +70,14 @@ namespace delta {
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
 	  double    epsilonA,
-	  int      materialA,
+	  bool      frictionA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
       double*   yCoordinatesOfPointsOfGeometryB,
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
-	  int       materialB
+	  bool      frictionB
     );
 
     /**

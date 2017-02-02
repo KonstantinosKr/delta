@@ -32,14 +32,14 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   double*   yCoordinatesOfPointsOfGeometryA,
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
-  int       materialA,
+  bool      frictionA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
   double*   yCoordinatesOfPointsOfGeometryB,
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
-  int       materialB
+  bool      frictionB
 ) {
   std::vector<contactpoint> result;
 
@@ -97,7 +97,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
         );
       }
 
-      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
+      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
       if (newContactPoint.getDistance()<minDistance) 
       {
         nearestContactPoint = newContactPoint;
@@ -123,14 +123,14 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   double*   yCoordinatesOfPointsOfGeometryA,
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
-  int       materialA,
+  bool      frictionA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
   double*   yCoordinatesOfPointsOfGeometryB,
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
-  int       materialB
+  bool      frictionB
 ) {
   std::vector<contactpoint> result;
 
@@ -188,7 +188,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
         );
       }
 
-      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
+      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
       if (newContactPoint.getDistance()<minDistance)
       {
         nearestContactPoint = newContactPoint;
@@ -214,14 +214,14 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
   double*   yCoordinatesOfPointsOfGeometryA,
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
-  int       materialA,
+  bool      frictionA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
   double*   yCoordinatesOfPointsOfGeometryB,
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
-  int       materialB
+  bool      frictionB
 ) {
   std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
 
@@ -270,7 +270,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
             xPA, yPA, zPA, xPB, yPB, zPB, 
 	    MaxErrorOfPenaltyMethod, failed); 
 
-        contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
+        contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
        if (newContactPoint.getDistance()<minDistance) {
         nearestContactPoint = newContactPoint;
         minDistance         = newContactPoint.getDistance();
@@ -305,7 +305,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
           zCoordinatesOfPointsOfGeometryB+(iB),
           xPA, yPA, zPA, xPB, yPB, zPB);
 
-		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
+		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
         if (newContactPoint.getDistance()<minDistance) {
           nearestContactPoint = newContactPoint;
           minDistance         = newContactPoint.getDistance();
@@ -332,14 +332,14 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
   double*   yCoordinatesOfPointsOfGeometryA,
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
-  int       materialA,
+  bool      frictionA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
   double*   yCoordinatesOfPointsOfGeometryB,
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
-  int       materialB
+  bool      frictionB
 ) {
   std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
 
@@ -388,7 +388,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
             xPA, yPA, zPA, xPB, yPB, zPB,
 	    MaxErrorOfPenaltyMethod, failed);
 
-        contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
+        contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
        if (newContactPoint.getDistance()<minDistance) {
         nearestContactPoint = newContactPoint;
         minDistance         = newContactPoint.getDistance();
@@ -419,7 +419,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
            zCoordinatesOfPointsOfGeometryB+(iB),
            xPA, yPA, zPA, xPB, yPB, zPB);
 
-	    contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
+	    contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
         if (newContactPoint.getDistance()<minDistance) {
           nearestContactPoint = newContactPoint;
           minDistance         = newContactPoint.getDistance();
