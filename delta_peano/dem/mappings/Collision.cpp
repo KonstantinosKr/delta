@@ -36,6 +36,7 @@ peano::MappingSpecification   dem::mappings::Collision::leaveCellSpecification()
 peano::MappingSpecification   dem::mappings::Collision::ascendSpecification() {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
+
 peano::MappingSpecification   dem::mappings::Collision::descendSpecification() {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
@@ -59,8 +60,10 @@ void dem::mappings::Collision::beginIteration(
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
 	delta::collision::cleanPenaltyStatistics();
 
-	tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"force.log");
-
+	if(solverState.getNumberOfContactPoints()!=0 || !Collision::_activeCollisions.empty())
+	{
+		tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"force.log");
+	}
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -87,8 +90,11 @@ void dem::mappings::Collision::endIteration(
 			logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
 		}
 	}
-
-	tarch::logging::CommandLineLogger::getInstance().closeOutputStreamAndReopenNewOne();
+	if(solverState.getNumberOfContactPoints()!=0 || !Collision::_activeCollisions.empty())
+	{
+		tarch::logging::CommandLineLogger::getInstance().closeOutputStreamAndReopenNewOne();
+		tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"");
+	}
 
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
@@ -1038,12 +1044,10 @@ dem::mappings::Collision::Collision() {
 	logTraceOut( "Collision()" );
 }
 
-
 dem::mappings::Collision::~Collision() {
 	logTraceIn( "~Collision()" );
 	logTraceOut( "~Collision()" );
 }
-
 
 #if defined(SharedMemoryParallelisation)
 dem::mappings::Collision::Collision(const Collision&  masterThread):
