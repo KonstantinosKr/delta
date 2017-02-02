@@ -59,6 +59,8 @@ void dem::mappings::Collision::beginIteration(
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
 	delta::collision::cleanPenaltyStatistics();
 
+	tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"force.log");
+
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -85,6 +87,8 @@ void dem::mappings::Collision::endIteration(
 			logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
 		}
 	}
+
+	tarch::logging::CommandLineLogger::getInstance().closeOutputStreamAndReopenNewOne();
 
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
@@ -248,7 +252,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 
 		records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
-		//if(currentParticle._persistentRecords._isObstacle) continue;
+		if(currentParticle._persistentRecords._isObstacle) continue;
 
 		/*logInfo("touchVertexFirstTime(...)",
 		  		  "particle no " << currentParticle._persistentRecords._globalParticleId
@@ -256,12 +260,15 @@ void dem::mappings::Collision::touchVertexFirstTime(
 								 << _activeCollisions[currentParticle._persistentRecords._globalParticleId].size()
 								 << " contact points");*/
 
+		double force[3]  = {0.0,0.0,0.0};
+		double torque[3] = {0.0,0.0,0.0};
+
 		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleId].begin();
 			 p != _activeCollisions[currentParticle._persistentRecords._globalParticleId].end(); p++)
 		{
-			double force[3]  = {0.0,0.0,0.0};
-			double torque[3] = {0.0,0.0,0.0};
 
+			double rforce[3]  = {0.0,0.0,0.0};
+			double rtorque[3] = {0.0,0.0,0.0};
 			delta::forces::getContactForces(
 				p->_contactPoints,
 				&(currentParticle._persistentRecords._centreOfMass(0)),
@@ -280,26 +287,36 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				p->_copyOfPartnerParticle._persistentRecords._mass,
 				&(p->_copyOfPartnerParticle._persistentRecords._inverse(0)),
 				&(p->_copyOfPartnerParticle._persistentRecords._orientation(0)),
-				force, torque,
+				rforce, rtorque,
 				(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
 
-			currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle._persistentRecords._mass);
-			currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle._persistentRecords._mass);
-			currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle._persistentRecords._mass);
+			force[0] += rforce[0];
+			force[1] += rforce[1];
+			force[2] += rforce[2];
 
-			delta::dynamics::updateAngular(&currentParticle._persistentRecords._angular(0),
-											&currentParticle._persistentRecords._referentialAngular(0),
-											&currentParticle._persistentRecords._orientation(0),
-											&currentParticle._persistentRecords._inertia(0),
-											&currentParticle._persistentRecords._inverse(0),
-											currentParticle._persistentRecords._mass,
-											torque, timeStepSize);
+			torque[0] += rtorque[0];
+			torque[1] += rtorque[1];
+			torque[2] += rtorque[2];
 
-			/*logInfo( "touchVertexFirstTime(...)", "add force f=" << force[0] << ", " << force[1] << ", " << force[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleId() );
-			logInfo( "touchVertexFirstTime(...)", "add torque t=" << torque[0] << ", " << torque[1] << ", " << torque[2] << " to particle no " << currentParticle._persistentRecords.getGlobalParticleId() );
-			logInfo( "touchVertexFirstTime(...)", "add angvel av=" << currentParticle._persistentRecords._angular(0) << ", " << currentParticle._persistentRecords._angular(1) << ", " << currentParticle._persistentRecords._angular(2) );
-			logInfo( "touchVertexFirstTime(...)", "add vel av=" << currentParticle._persistentRecords._velocity(0) << ", " << currentParticle._persistentRecords._velocity(1) << ", " << currentParticle._persistentRecords._velocity(2));*/
+			logInfo( "touchVertexFirstTime(...)", std::endl
+							<< "masterParticleNo=" << currentParticle._persistentRecords.getGlobalParticleId()
+							<< ", slaveParticleNo=" << p->_copyOfPartnerParticle._persistentRecords._globalParticleId
+							<< "fX=" << rforce[0] << ", fY=" << rforce[1] << ", fZ=" << rforce[2] << std::endl
+							<< "tX=" << rtorque[0] << ", tY=" << rtorque[1] << ", tZ=" << rtorque[2]);
 		}
+
+		currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle._persistentRecords._mass);
+		currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle._persistentRecords._mass);
+		currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle._persistentRecords._mass);
+
+		delta::dynamics::updateAngular(&currentParticle._persistentRecords._angular(0),
+										&currentParticle._persistentRecords._referentialAngular(0),
+										&currentParticle._persistentRecords._orientation(0),
+										&currentParticle._persistentRecords._inertia(0),
+										&currentParticle._persistentRecords._inverse(0),
+										currentParticle._persistentRecords._mass,
+										torque, timeStepSize);
+
 		_activeCollisions.erase(currentParticle._persistentRecords._globalParticleId);
 	}
 

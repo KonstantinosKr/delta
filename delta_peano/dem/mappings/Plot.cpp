@@ -71,6 +71,8 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
 
+  tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"contacts.log");
+
   assertion( Collision::_collisionsOfNextTraversal.empty() );
   assertion( solverState.getNumberOfContactPoints()==0 || !Collision::_activeCollisions.empty() );
 
@@ -110,13 +112,15 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
-				/*logInfo("runAsMaster(...)", std::endl
-				   << "contactId=" << ppp->friction  <<", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
+				logInfo("runAsMaster(...)", std::endl
+				   << "contactId=" << std::to_string(1) << "friction=" << ppp->friction << "distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
 				   << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
 				   << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
+				   << "forceX=" << ppp->force[0] <<", forceY=" << ppp->force[1] << ", forceZ=" << ppp->force[2] << std::endl
+				   << "torqueX=" << ppp->torque[0] <<", torqueY=" << ppp->torque[1] << ", torqueZ=" << ppp->torque[2] << std::endl
 				   << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
 				   << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
-				   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);*/
+				   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
 
 
 				v = ppp->P[0], ppp->P[1], ppp->P[2];

@@ -60,7 +60,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
-    //if(particle._persistentRecords._isObstacle){continue;}
+    if(particle._persistentRecords._isObstacle){continue;}
 
     particle._persistentRecords._velocity(1) += -(timeStepSize * (gravity/ particle._persistentRecords._mass));
 

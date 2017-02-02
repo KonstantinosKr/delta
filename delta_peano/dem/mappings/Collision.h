@@ -11,6 +11,7 @@
 
 #include "tarch/logging/Log.h"
 #include "tarch/la/Vector.h"
+#include "tarch/logging/CommandLineLogger.h"
 
 #include "peano/grid/VertexEnumerator.h"
 #include "peano/MappingSpecification.h"

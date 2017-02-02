@@ -230,7 +230,7 @@ void dem::mappings::CreateGrid::createCell(
 			 * ******************* flooring creation
 			 */
 
-			centreAsArray[1] = 0;
+			centreAsArray[1] = 0.25;
 
 			delta::primitives::generateSurface( centreAsArray, 1, 0.1, xCoordinates, yCoordinates, zCoordinates);
 
@@ -276,7 +276,7 @@ void dem::mappings::CreateGrid::createCell(
 			int material = 1;
 			bool friction = false;
 
-			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 100000;
 
 			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
 			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
@@ -306,10 +306,10 @@ void dem::mappings::CreateGrid::createCell(
 			double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 			int particleId = _numberOfParticles;
 			bool isObstacle = true;
-			int material = 2;
-			bool friction = true;
+			int material = 1;
+			bool friction = false;
 
-			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 1000000;
 
 			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
 			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
@@ -483,7 +483,7 @@ void dem::mappings::CreateGrid::createCell(
 			int particleId = _numberOfParticles;
 			bool isObstacle = false;
 			int material = 1;
-			bool friction = false;
+			bool friction = true;
 
 			iREAL inertia[9], inverse[9], centerOfMass[3], mass = 1, rho = 600;
 

@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     		  << "  every-batch" << std::endl
 			  << "  every-checkpoint" << std::endl << std::endl
     		  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot gravity collision-model mesh-multiplier [core-count]" << std::endl
-			  << "eg: ./dem-icc-release-vec 0.5 0.5 0.5 hopper 10000 regular-grid 0.00001 every-batch 1 bf 50 10" << std::endl;
+			  << "eg: ./dem-3d-release-vec 0.5 0.5 0.5 hopper 10000 regular-grid 0.00001 every-batch 1 bf 50 10" << std::endl;
 
 
     return -1;

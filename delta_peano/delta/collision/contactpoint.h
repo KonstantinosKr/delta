@@ -41,8 +41,10 @@ struct delta::collision::contactpoint {
   iREAL P[3];
   iREAL Q[3];
   iREAL frictionVector[3];
+  iREAL force[3];
+  iREAL torque[3];
   bool friction;
-  double epsilonTotal;
+  iREAL epsilonTotal;
 
   contactpoint();
   contactpoint(const contactpoint& copy);
@@ -65,7 +67,7 @@ struct delta::collision::contactpoint {
     const double&  yPB,
     const double&  zPB,
 	const double&  epsilonB,
-	const bool&     type
+	const bool&    type
   );
 
   /**
