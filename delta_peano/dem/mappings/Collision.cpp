@@ -60,10 +60,6 @@ void dem::mappings::Collision::beginIteration(
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
 	delta::collision::cleanPenaltyStatistics();
 
-	if(solverState.getNumberOfContactPoints()!=0 || !Collision::_activeCollisions.empty())
-	{
-		tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"force.log");
-	}
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -90,11 +86,7 @@ void dem::mappings::Collision::endIteration(
 			logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
 		}
 	}
-	if(solverState.getNumberOfContactPoints()!=0 || !Collision::_activeCollisions.empty())
-	{
-		tarch::logging::CommandLineLogger::getInstance().closeOutputStreamAndReopenNewOne();
-		tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"");
-	}
+
 
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
@@ -269,10 +261,10 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		double force[3]  = {0.0,0.0,0.0};
 		double torque[3] = {0.0,0.0,0.0};
 
+
 		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleId].begin();
 			 p != _activeCollisions[currentParticle._persistentRecords._globalParticleId].end(); p++)
 		{
-
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
 			delta::forces::getContactForces(
@@ -305,8 +297,9 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			torque[2] += rtorque[2];
 
 			logInfo( "touchVertexFirstTime(...)", std::endl
+					   	    << "#####FORCE-DATA#####" << std::endl
 							<< "masterParticleNo=" << currentParticle._persistentRecords.getGlobalParticleId()
-							<< ", slaveParticleNo=" << p->_copyOfPartnerParticle._persistentRecords._globalParticleId
+							<< ", slaveParticleNo=" << p->_copyOfPartnerParticle._persistentRecords._globalParticleId << std::endl
 							<< "fX=" << rforce[0] << ", fY=" << rforce[1] << ", fZ=" << rforce[2] << std::endl
 							<< "tX=" << rtorque[0] << ", tY=" << rtorque[1] << ", tZ=" << rtorque[2]);
 		}

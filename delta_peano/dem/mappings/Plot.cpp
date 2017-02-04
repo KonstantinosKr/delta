@@ -62,17 +62,12 @@ void dem::mappings::Plot::beginIteration(
   _particleCounter       = 0;
   _collisionPointCounter = 0;
 
-  tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"particle.log");
-
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
 void dem::mappings::Plot::endIteration( dem::State&  solverState)
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
-
-  if(solverState.getNumberOfContactPoints()!=0 || !Collision::_activeCollisions.empty())
-  tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"contacts.log");
 
   assertion( Collision::_collisionsOfNextTraversal.empty() );
   assertion( solverState.getNumberOfContactPoints()==0 || !Collision::_activeCollisions.empty() );
@@ -114,7 +109,10 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
 				logInfo("endIteration(...)", std::endl
-				   << "contactId=" << std::to_string(1) << "friction=" << ppp->friction << "distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
+				   << "#####CONTACT-DATA#####"
+				   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", " << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId()
+				   << ", friction=" << ppp->friction
+				   << ", distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
 				   << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
 				   << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
 				   << "forceX=" << ppp->force[0] <<", forceY=" << ppp->force[1] << ", forceZ=" << ppp->force[2] << std::endl
@@ -188,9 +186,6 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   _writer->writeToFile( snapshotFileName.str() );
 
   _snapshotCounter++;
-
-  tarch::logging::CommandLineLogger::getInstance().closeOutputStreamAndReopenNewOne();
-  tarch::logging::CommandLineLogger::getInstance().setLogFormat("",true,false,false,true,true,"");
 
   delete _vertexWriter;
   delete _cellWriter;
@@ -354,7 +349,9 @@ void dem::mappings::Plot::touchVertexLastTime(
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
     }
 
-    logInfo("touchVertexLastTime(...)", std::endl << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
+    logInfo("touchVertexLastTime(...)", std::endl
+    						   << "#####PARTICLE-DATA#####" << std::endl
+    						   << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
 			  	  	  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin=" << particle._persistentRecords._hMin << std::endl
 							   << "noOfTri=" << particle._persistentRecords._numberOfTriangles <<", isObsta=" << particle._persistentRecords._isObstacle << ", materia=" << particle._persistentRecords._material << std::endl
     					       << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
@@ -373,10 +370,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 							   << "orie[3]=" << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
 							   << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
   }
-  //logInfo
-  //logWarning
-  //logError
-  //logDebug
+
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
