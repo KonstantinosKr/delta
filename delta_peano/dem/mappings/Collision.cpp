@@ -165,36 +165,6 @@ void dem::mappings::Collision::addCollision(
 		}
 	}
 
-	//plotting purposes
-	/*for(unsigned int k = 0; k<newContactPoints.size(); k++)
-	{
-	   if(newContactPoints[k].getDistance() <= newContactPoints[k].epsilonTotal/2) _state.informStateThatTwoParticlesAreClose();
-
-	   iREAL z[3];
-	   iREAL vi[3];
-
-	   //contact point - position i
-	   z[0] = newContactPoints[k].x[0]-particleA._persistentRecords._centreOfMass[0];
-	   z[1] = newContactPoints[k].x[1]-particleA._persistentRecords._centreOfMass[1];
-	   z[2] = newContactPoints[k].x[2]-particleA._persistentRecords._centreOfMass[2];
-
-       //cross product - relative angular i to contact point plus linear i
-       vi[0] = particleA._persistentRecords._angular[1]*z[2]-particleA._persistentRecords._angular[2]*z[1] + particleA._persistentRecords._velocity[0];
-       vi[1] = particleA._persistentRecords._angular[2]*z[0]-particleA._persistentRecords._angular[0]*z[2] + particleA._persistentRecords._velocity[1];
-       vi[2] = particleA._persistentRecords._angular[0]*z[1]-particleA._persistentRecords._angular[1]*z[0] + particleA._persistentRecords._velocity[2];
-
-	   iREAL vt[3];
-	   vt[0] = vi[0] - newContactPoints[k].normal[0]*((vi[0]*newContactPoints[k].normal[0]) + (vi[1]*newContactPoints[k].normal[1]) + (vi[2]*newContactPoints[k].normal[2]));
-	   vt[1] = vi[1] - newContactPoints[k].normal[1]*((vi[0]*newContactPoints[k].normal[0]) + (vi[1]*newContactPoints[k].normal[1]) + (vi[2]*newContactPoints[k].normal[2]));
-	   vt[2] = vi[2] - newContactPoints[k].normal[2]*((vi[0]*newContactPoints[k].normal[0]) + (vi[1]*newContactPoints[k].normal[1]) + (vi[2]*newContactPoints[k].normal[2]));
-
-	   newContactPoints[k].friction[0] =  -vt[0];
-	   newContactPoints[k].friction[1] =  -vt[1];
-	   newContactPoints[k].friction[2] =  -vt[2];
-
-	  //printf("ID: %d friction collision:%f %f %f\n", particleA._persistentRecords._globalParticleNumber, newContactPoints[k].friction[0], newContactPoints[k].friction[1], newContactPoints[k].friction[2]);
-	}*/
-
 	/*
 	 * Problem here was:
 	 * Although all normals were pointing to opposite direction for each particle due to how we loop particles
@@ -220,12 +190,7 @@ void dem::mappings::Collision::addCollision(
 		#pragma omp critical
 	#endif
 	dataSetB->_contactPoints.insert( dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
-	//logInfo( "addCollision(...)", "add collision for particles " << particleA._persistentRecords._globalParticleNumber << " and " << particleB._persistentRecords._globalParticleNumber);
 
-	/*for (int i = 0; i < newContactPoints.size(); i++)
-	{
-		printf("NEW CONP%f %f %f\n", newContactPoints[i].x[0], newContactPoints[i].x[1], newContactPoints[i].x[2]);
-	}*/
 	#ifdef ompParticle
 		#pragma omp critical
 	#endif
@@ -246,27 +211,24 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	double timeStepSize = _state.getTimeStepSize();
 
 	for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
-	{ // No need to loop over virtual particles here as well
+	{ // No need to loop over virtual particles here
 
 		records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
-		if(currentParticle._persistentRecords._isObstacle) continue;
-
-		/*logInfo("touchVertexFirstTime(...)",
-		  		  "particle no " << currentParticle._persistentRecords._globalParticleId
-				  				 << " collide with other particle(s) in "
-								 << _activeCollisions[currentParticle._persistentRecords._globalParticleId].size()
-								 << " contact points");*/
+		if(currentParticle._persistentRecords._isObstacle || _activeCollisions[currentParticle._persistentRecords._globalParticleId].size() == 0) continue;
 
 		double force[3]  = {0.0,0.0,0.0};
 		double torque[3] = {0.0,0.0,0.0};
 
 
+		int counter = 0;
 		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleId].begin();
 			 p != _activeCollisions[currentParticle._persistentRecords._globalParticleId].end(); p++)
 		{
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
+
+			logInfo( "touchVertexFirstTime(...)", std::endl << "#####FORCE-DATA#####" << std::endl);
 			delta::forces::getContactForces(
 				p->_contactPoints,
 				&(currentParticle._persistentRecords._centreOfMass(0)),
@@ -297,11 +259,12 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			torque[2] += rtorque[2];
 
 			logInfo( "touchVertexFirstTime(...)", std::endl
-					   	    << "#####FORCE-DATA#####" << std::endl
-							<< "masterParticleNo=" << currentParticle._persistentRecords.getGlobalParticleId()
-							<< ", slaveParticleNo=" << p->_copyOfPartnerParticle._persistentRecords._globalParticleId << std::endl
-							<< "fX=" << rforce[0] << ", fY=" << rforce[1] << ", fZ=" << rforce[2] << std::endl
-							<< "tX=" << rtorque[0] << ", tY=" << rtorque[1] << ", tZ=" << rtorque[2]);
+					<< "forceId=" << std::to_string(counter+currentParticle._persistentRecords.getGlobalParticleId() + p->_copyOfPartnerParticle._persistentRecords.getGlobalParticleId())
+					<< ", masterParticleNo=" << currentParticle._persistentRecords.getGlobalParticleId() << ", slaveParticleNo=" << p->_copyOfPartnerParticle._persistentRecords.getGlobalParticleId() << std::endl
+					<< "massA=" << currentParticle._persistentRecords._mass << ", massB" << p->_copyOfPartnerParticle._persistentRecords._mass << ", nulldata3=0" << std::endl
+					<< "fX=" << rforce[0] << ", fY=" << rforce[1] << ", fZ=" << rforce[2] << std::endl
+					<< "tX=" << rtorque[0] << ", tY=" << rtorque[1] << ", tZ=" << rtorque[2]);
+			counter ++;
 		}
 
 		currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle._persistentRecords._mass);

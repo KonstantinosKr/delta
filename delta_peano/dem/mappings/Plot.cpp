@@ -109,14 +109,12 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
 				logInfo("endIteration(...)", std::endl
-				   << "#####CONTACT-DATA#####"
-				   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", " << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId()
-				   << ", friction=" << ppp->friction
-				   << ", distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
+				   << "#####CONTACT-DATA#####" << std::endl
+				   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
+				   << "friction=" << ppp->friction << ", nulldata1=0" << ", nulldata2=0" << std::endl
+				   << "distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
 				   << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
 				   << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
-				   << "forceX=" << ppp->force[0] <<", forceY=" << ppp->force[1] << ", forceZ=" << ppp->force[2] << std::endl
-				   << "torqueX=" << ppp->torque[0] <<", torqueY=" << ppp->torque[1] << ", torqueZ=" << ppp->torque[2] << std::endl
 				   << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
 				   << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
 				   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);

@@ -556,7 +556,6 @@ void dem::mappings::CreateGrid::createCell(
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
 
-
 void dem::mappings::CreateGrid::endIteration(
 		dem::State&  solverState
 ) {

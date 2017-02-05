@@ -149,7 +149,9 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	f[1] = force*normal[1];
 	f[2] = force*normal[2];
 
-	//printf("Velocity:%f depth:%f spring:%f totalforce:%f damp:%f mass:%f\n", velocity, depth, SPRING*depth, force, damp, mass);
+	printf("relativeVelocity=%f, depth=%f, spring=%f\n", velocity, depth, SPRING*depth);
+	printf("totalforce=%f, damp=%f, mass=%f\n", force, damp, mass);
+
 	return force;
 }
 
@@ -255,6 +257,7 @@ void delta::forces::getContactForces(
         friction[1] = 0.0;
         friction[2] = 0.0;
 
+        printf("#####start-subContact#####\nid=%i, DAMPER=%f, SPRING=%f\n", k, DAMPER, SPRING);
         if(isSphere)
         {
         	forc = delta::forces::springSphere(conpnt[k].normal, conpnt[k].depth, vij, massA, massB, f);
@@ -310,6 +313,7 @@ void delta::forces::getContactForces(
 			}
         }
 
+        printf("#####start-subContact#####\n");
         conpnt[k].force[0] = force[0];
         conpnt[k].force[1] = force[1];
         conpnt[k].force[2] = force[2];
