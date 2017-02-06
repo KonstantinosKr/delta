@@ -1,9 +1,9 @@
 import readLog
+import matplotlib.pyplot as plt
+import numpy as np
 
 #particle properties
-
 #contact properties
-
 #force properties
 
 listparticleId, listmass, listdiameter, listinfluenceRadius, listepsilon, listhMin, \
@@ -16,4 +16,15 @@ listsubContactid, listsubDamper, listsubSpring, listsubrelativeVelocity, listsub
 particleXaxis, contactXaxis, forceXaxis, subforceXaxis = readLog.readLog()
 
 for i in range(0, len(listforce)):
-    print listforce[i][1]
+    print (listforce[i][1])
+
+fig, ax = plt.subplots()
+ax.plot(particleXaxis, listparticleId, label='--', linestyle='-', marker='o', markersize=10, markevery=1)
+
+print(listmassB)
+
+plt.xlabel("time")
+plt.ylabel("unit")
+legend = plt.legend(loc='best', shadow=True)
+plt.title('----')
+plt.show()

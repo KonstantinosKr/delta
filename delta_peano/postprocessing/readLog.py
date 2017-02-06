@@ -168,7 +168,7 @@ def splitContactLinePivot(readLine, index):
     col2 = segline[1].split("=")[1]
     col3 = segline[2].split("=")[1]
 
-    print str(col1) + " " + str(col2) + " " + str(col3)
+    #print str(col1) + " " + str(col2) + " " + str(col3)
 
     if index == 1:
         contactId = col1
@@ -245,7 +245,7 @@ t = [0 for x in range(3)]
 def splitForceLinePivot(readLine, index, subindex):
 
     segline = readLine.split(",")
-    print segline
+    #print segline
     col1 = segline[0].split("=")[1]
     col2 = segline[1].split("=")[1]
     col3 = segline[2].split("=")[1]
@@ -315,6 +315,7 @@ def readLog():
     contactXindex = 0
     particleXindex = 0
     forceXindex = 0
+    subforceXindex = 0
     it = 0
     ind = 0
     subind = 0
@@ -325,7 +326,7 @@ def readLog():
             #iteration data starts on next line
             it = line.split(",")[0].split("=")[1]
             iteration.append(it)
-            print "iteration " + it
+            print("iteration " + it)
             continue
 
         if "#####PARTICLE-DATA#####" in line:
@@ -379,7 +380,8 @@ def readLog():
                 state = "force"
                 ind += 1
                 subind = 0
-                subforceXaxis.append(forceXindex)
+                subforceXaxis.append(subforceXindex)
+                subforceXindex += 1
             if ind == 5:
                 state = ""
                 forceXaxis.append(forceXindex)
