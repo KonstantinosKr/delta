@@ -23,7 +23,6 @@
  */
 
 #include "sphere.h"
-#include "algo.h"
 #include <complex>
 #include <limits>
 #include <iostream>

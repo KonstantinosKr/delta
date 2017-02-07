@@ -202,6 +202,14 @@ dim3-icc-release-vec: LFLAGS=#-lrt
 dim3-icc-release-vec: EXECUTABLE=dem-3d-release-vec
 dim3-icc-release-vec: header build
 
+dim3-icc-release-vec-stats: CC=icpc --std=c++11
+dim3-icc-release-vec-stats: DIM=-DDim3
+dim3-icc-release-vec-stats: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -DSTATS
+dim3-icc-release-vec-stats: CFLAGS=-fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost
+dim3-icc-release-vec-stats: LFLAGS=#-lrt
+dim3-icc-release-vec-stats: EXECUTABLE=dem-3d-release-vec
+dim3-icc-release-vec-stats: header build
+
 dim3-icc-release-omp: CC=icpc --std=c++11
 dim3-icc-release-omp: DIM=-DDim3
 dim3-icc-release-omp: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics

@@ -496,8 +496,9 @@ void dem::mappings::CreateGrid::createCell(
 									mass, diameter, influenceRadius, epsilon,
 									hMin, isObstacle, material, friction, particleId);
 
+			#ifdef STATS
 			logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
-
+			#endif
 			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 			_numberOfParticles++;
 

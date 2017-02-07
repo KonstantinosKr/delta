@@ -220,7 +220,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		double force[3]  = {0.0,0.0,0.0};
 		double torque[3] = {0.0,0.0,0.0};
 
-
 		int counter = 0;
 		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleId].begin();
 			 p != _activeCollisions[currentParticle._persistentRecords._globalParticleId].end(); p++)
@@ -258,12 +257,14 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			torque[1] += rtorque[1];
 			torque[2] += rtorque[2];
 
+			#ifdef STATS
 			logInfo( "touchVertexFirstTime(...)", std::endl
 					<< "forceId=" << std::to_string(counter+currentParticle._persistentRecords.getGlobalParticleId() + p->_copyOfPartnerParticle._persistentRecords.getGlobalParticleId())
 					<< ", masterParticleNo=" << currentParticle._persistentRecords.getGlobalParticleId() << ", slaveParticleNo=" << p->_copyOfPartnerParticle._persistentRecords.getGlobalParticleId() << std::endl
 					<< "massA=" << currentParticle._persistentRecords._mass << ", massB" << p->_copyOfPartnerParticle._persistentRecords._mass << ", nulldata3=0" << std::endl
 					<< "fX=" << rforce[0] << ", fY=" << rforce[1] << ", fZ=" << rforce[2] << std::endl
 					<< "tX=" << rtorque[0] << ", tY=" << rtorque[1] << ", tZ=" << rtorque[2]);
+			#endif
 			counter ++;
 		}
 

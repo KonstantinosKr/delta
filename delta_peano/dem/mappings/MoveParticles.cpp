@@ -64,10 +64,6 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 
     particle._persistentRecords._velocity(1) += -(timeStepSize * (gravity/ particle._persistentRecords._mass));
 
-    //double velocity = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0))+(particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1))+(particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
-    //particle._persistentRecords._epsilon = dem::mappings::CreateGrid::_epsilon + (particle._persistentRecords._influenceRadius*velocity*timeStepSize);
-    //particle._persistentRecords._influenceRadius = particle._persistentRecords._influenceRadius + (particle._persistentRecords._influenceRadius*(timeStepSize*velocity));
-
     particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centre(2) += timeStepSize*particle._persistentRecords._velocity(2);

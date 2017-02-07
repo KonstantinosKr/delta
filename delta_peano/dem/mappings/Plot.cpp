@@ -108,6 +108,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
+				#ifdef STATS
 				logInfo("endIteration(...)", std::endl
 				   << "#####CONTACT-DATA#####" << std::endl
 				   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
@@ -118,7 +119,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				   << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
 				   << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
 				   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
-
+				#endif
 
 				v = ppp->P[0], ppp->P[1], ppp->P[2];
 				contactPointVertexIndex = _vertexWriter->plotVertex( v );
@@ -346,7 +347,7 @@ void dem::mappings::Plot::touchVertexLastTime(
       _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
     }
-
+#ifdef STATS
     logInfo("touchVertexLastTime(...)", std::endl
     						   << "#####PARTICLE-DATA#####" << std::endl
     						   << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
@@ -367,6 +368,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 							   << "orie[0]=" << particle._persistentRecords._orientation(0) <<", orie[1]=" << particle._persistentRecords._orientation(1) << ", orie[2]=" << particle._persistentRecords._orientation(2) << std::endl
 							   << "orie[3]=" << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
 							   << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
+#endif
   }
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );

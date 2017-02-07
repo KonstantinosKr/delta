@@ -36,6 +36,44 @@
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces DEM Serial Simulation Pseudo code}}{4}}
 \newlabel{alg2}{{2}{4}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Spring-dashpot force algorithm}}{4}}
+\citation{Eckhardt2014}
+\citation{Fleissner}
+\citation{Eckhardt2014}
+\citation{Software:Peano}
+\citation{Weinzierl:16:PIC}
+\citation{Weinzierl:2009:Diss}
+\citation{Weinzierl:11:Peano}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Grid meta data structures}{5}}
+\newlabel{section:grid}{{3}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Left: Whenever the grid traversal enters a cell, it checks whether particles assigned to one vertex do collide with particles assigned to another vertex. To avoid redundant collision computations, we check only some vertex pairs (dotted, larger lines). Middle: Two particles approach each other. As they are of different size, they might be held on different spacetree resolution levels. Right: In the adaptive case, particles are dropped from the coarse levels into the fine grid (rectangular marker) if new grid levels are added. The bright round vertices are children of the marked coarse grid vertex. The bright and the dark round markers' vertices together are the descendants of the marked coarse grid vertex. }}{6}}
+\newlabel{figure:collision-cube}{{1}{6}}
+\citation{Plimpton1995}
+\citation{dime}
+\citation{Weinzierl:2009:Diss}
+\citation{Weinzierl:11:Peano}
+\newlabel{algorithm:grid-based-dem}{{29}{7}}
+\citation{Plimpton1995}
+\citation{Knuth71}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Two particles crash into each other. The adaptive grid refining around each particle while its diameter constrains the mesh size (left column). The reluctant adaptive grid works with a coarser resolution as long as particles are far away from each other (right column). Just before they collide, the grid is refined and particles are dropped down the resolution levels. }}{9}}
+\newlabel{figure:adaptive-vs-reluctant-grid}{{2}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Shared memory parallelisation}{10}}
+\newlabel{section:shared-memory}{{4}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Grids shared memory scaling 22540 triangle elements (BF solver).}}{11}}
+\newlabel{figure:omp_regular_reluctant_triangle_20}{{3}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Grids shared memory scaling 98540 triangle elements (BF solver).}}{12}}
+\newlabel{figure:omp_regular_reluctant_triangle_200}{{4}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Triangle based shared memory running hybrid-on-batches (HBatches).}}{13}}
+\newlabel{figure:hbatches_triangles_triangle_omp}{{5}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Triangle based shared memory running hybrid-on-triangle-pairs (HTriangles)}}{14}}
+\newlabel{figure:htriangles_triangles_triangle_omp}{{6}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Triangle based shared memory running hybrid-on-triangle-pairs (HTriangles)}}{14}}
+\newlabel{figure:bfvshbatches_triangle_omp}{{7}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Particle based nested shared memory brute force (bf)}}{15}}
+\newlabel{figure:particletriangle_omp}{{8}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Cell based parallelism on Peano compared to serial runs using Intel TBB}}{15}}
+\newlabel{figure:tbb_vs_serial}{{9}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Cell based parallelism on Peano compared to serial runs using Intel TBB}}{16}}
+\newlabel{figure:tbb_scaling}{{10}{16}}
 \citation{Forum:1994:MMI:898758}
 \citation{Eckhardt2014}
 \citation{Plimpton1995}
@@ -47,76 +85,16 @@
 \citation{Plimpton1995}
 \citation{Rycroft2012}
 \citation{Shaw2005}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Domain Decomposition for Contact Detection}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Domain Decomposition for Contact Detection}{17}}
 \citation{Eckhardt2014}
 \citation{Fleissner}
 \citation{Wachs2012a}
 \citation{zomorodian2002}
 \citation{ZoltanIsorropiaOverview2012}
 \citation{Brown2015}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusion and Future Work}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Acknowledgments}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Work Packages}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion and Future Work}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Acknowledgments}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Work Packages}{19}}
 \citation{*}
 \bibdata{papers}
-\bibcite{AlonsoMarroqu2013}{1}
-\bibcite{Alvarez2007}{2}
-\bibcite{ZoltanIsorropiaOverview2012}{3}
-\bibcite{Bowers2007}{4}
-\bibcite{Bridson2002}{5}
-\bibcite{Brown2015}{6}
-\bibcite{Coffey2002}{7}
-\bibcite{Dagum:1998:OIA:615255.615542}{8}
-\bibcite{Dongarra2011}{9}
-\bibcite{Eberly1999}{10}
-\bibcite{Eckhardt2014}{11}
-\bibcite{Eckhardt}{12}
-\bibcite{Eichenberger2004}{13}
-\bibcite{Ericson2005}{14}
-\bibcite{Fleissner}{15}
-\bibcite{Forum:1994:MMI:898758}{16}
-\bibcite{Franchetti2008}{17}
-\bibcite{Freund1968}{18}
-\bibcite{Gaburov}{19}
-\bibcite{Girolami2012}{20}
-\bibcite{Gonnet2013}{21}
-\bibcite{Gonnet2014}{22}
-\bibcite{Hansen2000}{23}
-\bibcite{Harmon2012}{24}
-\bibcite{Harmon2008}{25}
-\bibcite{Hoemmen2007}{26}
-\bibcite{Hou}{27}
-\bibcite{Iglberger2010}{28}
-\bibcite{Iglberger2009}{29}
-\bibcite{Iglberger2011}{30}
-\bibcite{Jensen2014}{31}
-\bibcite{Juurlink}{32}
-\bibcite{Kaczmarczyk2011}{33}
-\bibcite{Karajan2014}{34}
-\bibcite{Karras2012}{35}
-\bibcite{Kaufman2005a}{36}
-\bibcite{koziara2011}{37}
-\bibcite{Koziara2008}{38}
-\bibcite{Koziara2010}{39}
-\bibcite{Koziara2005}{40}
-\bibcite{Krestenitis2015}{41}
-\bibcite{Krestenitis2016}{42}
-\bibcite{Lee2002}{43}
-\bibcite{Ni2015}{44}
-\bibcite{Omelyan1998}{45}
-\bibcite{Parteli2013}{46}
-\bibcite{Plimpton1995}{47}
-\bibcite{Rycroft2012}{48}
-\bibcite{Satish2009}{49}
-\bibcite{Shaw2005}{50}
-\bibcite{Shen2015}{51}
-\bibcite{Smith1995}{52}
-\bibcite{solberg2000}{53}
-\bibcite{Tian}{54}
-\bibcite{psti}{55}
-\bibcite{Tropp2006}{56}
-\bibcite{Wachs2012}{57}
-\bibcite{Wachs2012a}{58}
-\bibcite{Williams1999}{59}
-\bibcite{zomorodian2002}{60}
 \bibstyle{plain}

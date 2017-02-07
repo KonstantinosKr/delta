@@ -166,17 +166,20 @@ void delta::primitives::computeInertia(
   }
 
   mass = me;
+#ifdef STATS
   printf("mass: %f\n", mass);
   printf("sx:%f sy:%f sz:%f\n", sx, sy, sz);
+#endif
   center[0] = (sx / me);
   center[1] = (sy / me);
   center[2] = (sz / me);
-
+#ifdef STATS
   printf("c %f c %f c %f\n", center[0], center[1], center[2]);
+#endif
 
-
+#ifdef STATS
   printf("euler %f %f %f %f %f %f %f %f %f\n", euler[0], euler[1], euler[2], euler[3], euler[4], euler[5], euler[6], euler[7], euler[8]);
-
+#endif
   euler[0] -= (2*sx - center[0]*me)*center[0];
   euler[4] -= (2*sy - center[1]*me)*center[1];
   euler[8] -= (2*sz - center[2]*me)*center[2];
@@ -198,8 +201,9 @@ void delta::primitives::computeInertia(
   inertia[5] = -euler[5];
   inertia[6] = -euler[6];
   inertia[7] = -euler[7]; /* inertia = tr(euler)*one - euler */
-
+#ifdef STATS
   printf("Inertia %f %f %f %f %f %f %f %f %f\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
+#endif
 }
 
 void delta::primitives::computeInverseInertia(double inertia[9], double inverse[9], bool isObject)
@@ -212,7 +216,7 @@ void delta::primitives::computeInverseInertia(double inertia[9], double inverse[
 	{
 		for (int j = 0; j < 9; j ++)
 		{
-			//inverse[j] = 0;
+			inverse[j] = 0;
 		}
 	}
 }
