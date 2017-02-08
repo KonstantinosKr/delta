@@ -24,46 +24,278 @@ listcontactId, listmasterId, listSlaveId, listhasFriction, listdistance, listdep
 listxContactPosition, listnormalX, listp, listq, \
 listforceId, listforcemasterParticleNo, listforceslaveParticleNo, listmassA, listmassB, listforce, listfriction, \
 listsubContactid, listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring, listsubtotalForce, listsubdamp, listsubcontactmass, \
-particleXaxis, contactXaxis, forceXaxis, subforceXaxis = readLog.readLog()
+particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iterations = readLog.readLog()
 
 def getSimSteps():
-    return
-
+    return len(iterations)
 
 def getPlotSteps():
-    count = 0
-    for i in len(particleXaxis):
-        count += 1
-    return count
+    return getSimSteps()/50
 
 def getParticleCount():
-    return particleXaxis/getPlotSteps()
+    return len(particleXaxis)/getPlotSteps()
 
-
-print(getParticleCount())
+def getListOfUniqueParticleIds():
+    list = []
+    for i in range(0, len(particleXaxis)):
+        found = false
+        for j in range(0, len(list)):
+            if listparticleId[i] == list[j]:
+                found = true
+        if found == false:
+            list.append(particleId[i])
+    return list
 
 def getParticleData(particleIndex):
-    listparticleId, listmass, listdiameter, listinfluenceRadius, listepsilon, listhMin, \
-    listnoOfTriangles, listisObstacle, listmaterial, listlinear, listangular, listrangular, \
-    listcentre, listcOfMas, listrcOfMa, listiner, listinve, listorie,
-    #for i in range(0, getPlotSteps()):
-    #    for j in range(0, getParticleCount()):
-            #if particleIndex == listparticleId:
 
-    return 0
+    listFilteredParticleId = []
+    listFilteredMass = []
+    listFilteredDiameter = []
+    listFilteredInfluenceRadius = []
+    listFilteredEpsilon = []
+    listFilteredthMin = []
+    listFilterednoOfTriangles = []
+    listFilteredisObstacle = []
+    listFilteredmaterial = []
+    listFilteredlinear = []
+    listFilteredAngular = []
+    listFilteredrangular = []
+    listFilteredcentre = []
+    listFilteredcOfMas = []
+    listFilteredrcOfMa = []
+    listFilterediner = []
+    listFilteredinve = []
+    listFilteredorie = []
 
-"""
+    for i in range(0, getPlotSteps()*getParticleCount()):
+        if particleIndex == listparticleId[i]:
+            listFilteredParticleId.append(listParticleId[i])
+            listFilteredMass.append(listmass[i])
+            listFilteredDiameter.append(listdiameter[i])
+            listFilteredInfluenceRadius.append(listinfluenceRadius[i])
+            listFilteredEpsilon.append(listepsilon[i])
+            listFilteredthMin.append(listhMin[i])
+            listFilterednoOfTriangles.append(listnoOfTriangles[i])
+            listFilteredisObstacle.append(listisObstacle[i])
+            listFilteredmaterial.append(listmaterial[i])
+            listFilteredlinear.append(listlinear[i])
+            listFilteredAngular.append(listangular[i])
+            listFilteredrangular.append(listrangular[i])
+            listFilteredcentre.append(listcentre[i])
+            listFilteredcOfMas.append(listcOfMas[i])
+            listFilteredrcOfMa.append(listrcOfMa[i])
+            listFilterediner.append(listiner[i])
+            listFilteredinve.append(listinve[i])
+            listFilteredorie.append(listorie[i])
+
+    return listFilteredParticleId, listFilteredMass, listFilteredDiameter, \
+            listFilteredInfluenceRadius, listFilteredEpsilon, listFilteredthMin, listFilterednoOfTriangles, \
+            listFilteredisObstacle, listFilteredmaterial, listFilteredlinear, listFilteredAngular, \
+            listFilteredrangular, listFilteredcentre, listFilteredcOfMas, \
+            listFilteredrcOfMa, listFilterediner, listFilteredinve, listFilteredorie
+
+
 def getContactData(masterIndex, slaveIndex, interchangeable):
 
-    return
+    listFilteredContactId = []
+    listFilteredMasterId = []
+    listFilteredSlaveId = []
+    listFilteredHasfriction = []
+    listFilteredDistance = []
+    listFilteredDepth = []
+    listFilteredEpsilon = []
+    listFilteredContactPosition = []
+    listFilteredNormalX = []
+    listFilteredP = []
+    listFilteredQ = []
+
+    for i in range(0, len(listcontactId)):
+        if not interchangeable:
+            if masterIndex == listmasterId[i] and slaveindex == listSlaveId[i]:
+                listFilteredContactId.append(listcontactId[i])
+                listFilteredMasterId.append(listmasterId[i])
+                listFilteredSlaveId.append(listSlaveId[i])
+                listFilteredHasfriction.append(listhasFriction[i])
+                listFilteredDistance.append(listdistance[i])
+                listFilteredDepth.append(listdepth[i])
+                listFilteredEpsilon.append(listepsilonTotal[i])
+                listFilteredContactPosition.append(listxContactPosition[i])
+                listFilteredNormalX.append(listnormalX[i])
+                listFilteredP.append(listp[i])
+                listFilteredQ.append(listq[i])
+        else:
+            if (masterIndex == listmasterId[i] and slaveindex == listSlaveId[i]) or (slaveIndex == listmasterId[i] and masterindex == listSlaveId[i]):
+                listFilteredContactId.append(listcontactId[i])
+                listFilteredMasterId.append(listmasterId[i])
+                listFilteredSlaveId.append(listSlaveId[i])
+                listFilteredHasfriction.append(listhasFriction[i])
+                listFilteredDistance.append(listdistance[i])
+                listFilteredDepth.append(listdepth[i])
+                listFilteredEpsilon.append(listepsilonTotal[i])
+                listFilteredContactPosition.append(listxContactPosition[i])
+                listFilteredNormalX.append(listnormalX[i])
+                listFilteredP.append(listp[i])
+                listFilteredQ.append(listq[i])
+
+    return  listFilteredContactId, listFilteredMasterId, listFilteredSlaveId, listFilteredHasfriction, \
+            listFilteredDistance, listFilteredDepth, listFilteredEpsilon, listFilteredContactPosition, \
+            listFilteredNormalX, listFilteredP, listFilteredQ
 
 
-def getForce(masterIndex, slaveIndex):
+def getContactData(particleIndex):
 
-    return
+    listFilteredContactId = []
+    listFilteredMasterId = []
+    listFilteredSlaveId = []
+    listFilteredHasfriction = []
+    listFilteredDistance = []
+    listFilteredDepth = []
+    listFilteredEpsilon = []
+    listFilteredContactPosition = []
+    listFilteredNormalX = []
+    listFilteredP = []
+    listFilteredQ = []
+
+    for i in range(0, len(listcontactId)):
+        if particleIndex == listmasterId[i] or particleIndex == listSlaveId[i]:
+            listFilteredContactId.append(listcontactId[i])
+            listFilteredMasterId.append(listmasterId[i])
+            listFilteredSlaveId.append(listSlaveId[i])
+            listFilteredHasfriction.append(listhasFriction[i])
+            listFilteredDistance.append(listdistance[i])
+            listFilteredDepth.append(listdepth[i])
+            listFilteredEpsilon.append(listepsilonTotal[i])
+            listFilteredContactPosition.append(listxContactPosition[i])
+            listFilteredNormalX.append(listnormalX[i])
+            listFilteredP.append(listp[i])
+            listFilteredQ.append(listq[i])
+
+    return  listFilteredContactId, listFilteredMasterId, listFilteredSlaveId, listFilteredHasfriction, \
+            listFilteredDistance, listFilteredDepth, listFilteredEpsilon, listFilteredContactPosition, \
+            listFilteredNormalX, listFilteredP, listFilteredQ
+
+
+def getForce(masterIndex, slaveIndex, interchangeable):
+
+    listFilteredForceId = []
+    listFilteredForceMasterParticleNo = []
+    listFilteredForceSlaveParticleNo = []
+    listFilteredMassA = []
+    listFilteredMassB = []
+    listFilteredForce = []
+    listFilteredfriction = []
+
+    for i in range(0, len(forceXaxis)):
+        if interchangeable:
+            if masterIndex == listforcemasterParticleNo[i] and slaveIndex == listforceslaveParticleNo[i]:
+                listFilteredForceId.append(listforceId[i])
+                listFilteredForceMasterParticleNo.append(listFilteredForceMasterParticleNo[i])
+                listFilteredForceSlaveParticleNo.append(listFilteredForceSlaveParticleNo[i])
+                listFilteredMassA.append(listmassA[i])
+                listFilteredMassB.append(listmassB[i])
+                listFilteredForce.append(listforce[i])
+                listFilteredfriction.append(listfriction[i])
+        else:
+            if (masterIndex == listforcemasterParticleNo[i] and slaveIndex == listforceslaveParticleNo[i]) or (slaveIndex == listforcemasterParticleNo[i] and masterIndex == listforceslaveParticleNo[i]):
+                listFilteredForceId.append(listforceId[i])
+                listFilteredForceMasterParticleNo.append(listFilteredForceMasterParticleNo[i])
+                listFilteredForceSlaveParticleNo.append(listFilteredForceSlaveParticleNo[i])
+                listFilteredMassA.append(listmassA[i])
+                listFilteredMassB.append(listmassB[i])
+                listFilteredForce.append(listforce[i])
+                listFilteredfriction.append(listfriction[i])
+
+    return listFilteredForceId, listFilteredForceMasterParticleNo, listFilteredForceSlaveParticleNo, listFilteredMassA, \
+           listFilteredMassB, listFilteredForce, listFilteredfriction
+
+
+def getForce(particleIndex):
+
+    listFilteredForceId = []
+    listFilteredForceMasterParticleNo = []
+    listFilteredForceSlaveParticleNo = []
+    listFilteredMassA = []
+    listFilteredMassB = []
+    listFilteredForce = []
+    listFilteredfriction = []
+
+    for i in range(0, len(forceXaxis)):
+        if particleIndex == listforcemasterParticleNo[i] or particleIndex == listforceslaveParticleNo[i]:
+            listFilteredForceId.append(listforceId[i])
+            listFilteredForceMasterParticleNo.append(listFilteredForceMasterParticleNo[i])
+            listFilteredForceSlaveParticleNo.append(listFilteredForceSlaveParticleNo[i])
+            listFilteredMassA.append(listmassA[i])
+            listFilteredMassB.append(listmassB[i])
+            listFilteredForce.append(listforce[i])
+            listFilteredfriction.append(listfriction[i])
+
+    return listFilteredForceId, listFilteredForceMasterParticleNo, listFilteredForceSlaveParticleNo, listFilteredMassA, \
+           listFilteredMassB, listFilteredForce, listFilteredfriction
 
 
 def getContactDataOfInteraction(masterIndex, slaveIndex, interchangeable):
 
-    return
-"""
+    listFilteredSubContactId = []
+    listFilteredSubDamper = []
+    listFilteredSubString = []
+    listFilteredSubRelativeVelocity = []
+    listFilteredSubDepth = []
+    listFilteredSubSpring = []
+    listFilteredSubTotalForce = []
+    listFilteredSubDamp = []
+    listFilteredSubContactMass = []
+
+    for i in range(0, len(forceXaxis)):
+        if interchangeable:
+            if masterIndex == listforcemasterParticleNo[i] and slaveIndex == listforceslaveParticleNo[i]:
+                listFilteredSubContactId.append(listsubContactid[i])
+                listFilteredSubDamper.append(listsubDamper[i])
+                listFilteredSubString.append(listsubSpring[i])
+                listFilteredSubRelativeVelocity.append(listsubrelativeVelocity[i])
+                listFilteredSubDepth.append(listsubdepth[i])
+                listFilteredSubSpring.append(listsubspring[i])
+                listFilteredSubTotalForce.append(listsubtotalForce[i])
+                listFilteredSubDamp.append(listsubdamp[i])
+                listFilteredSubContactMass.append(listsubcontactmass[i])
+        else:
+            if (masterIndex == listforcemasterParticleNo[i] and slaveIndex == listforceslaveParticleNo[i]) or (slaveIndex == listforcemasterParticleNo[i] and masterIndex == listforceslaveParticleNo[i]):
+                listFilteredSubContactId.append(listsubContactid[i])
+                listFilteredSubDamper.append(listsubDamper[i])
+                listFilteredSubString.append(listsubSpring[i])
+                listFilteredSubRelativeVelocity.append(listsubrelativeVelocity[i])
+                listFilteredSubDepth.append(listsubdepth[i])
+                listFilteredSubSpring.append(listsubspring[i])
+                listFilteredSubTotalForce.append(listsubtotalForce[i])
+                listFilteredSubDamp.append(listsubdamp[i])
+                listFilteredSubContactMass.append(listsubcontactmass[i])
+
+    return  listFilteredSubContactId, listFilteredSubDamper, listFilteredSubString, listFilteredSubRelativeVelocity, \
+            listFilteredSubDepth, listFilteredSubSpring, listFilteredSubTotalForce, listFilteredSubDamp, listFilteredSubContactMass
+
+
+def getContactDataOfInteraction(particleIndex):
+
+    listFilteredSubContactId = []
+    listFilteredSubDamper = []
+    listFilteredSubString = []
+    listFilteredSubRelativeVelocity = []
+    listFilteredSubDepth = []
+    listFilteredSubSpring = []
+    listFilteredSubTotalForce = []
+    listFilteredSubDamp = []
+    listFilteredSubContactMass = []
+
+    for i in range(0, len(forceXaxis)):
+        if particleIndex == listforcemasterParticleNo[i] or particleIndex == listforceslaveParticleNo[i]:
+            listFilteredSubContactId.append(listsubContactid[i])
+            listFilteredSubDamper.append(listsubDamper[i])
+            listFilteredSubString.append(listsubSpring[i])
+            listFilteredSubRelativeVelocity.append(listsubrelativeVelocity[i])
+            listFilteredSubDepth.append(listsubdepth[i])
+            listFilteredSubSpring.append(listsubspring[i])
+            listFilteredSubTotalForce.append(listsubtotalForce[i])
+            listFilteredSubDamp.append(listsubdamp[i])
+            listFilteredSubContactMass.append(listsubcontactmass[i])
+
+    return  listFilteredSubContactId, listFilteredSubDamper, listFilteredSubString, listFilteredSubRelativeVelocity, \
+            listFilteredSubDepth, listFilteredSubSpring, listFilteredSubTotalForce, listFilteredSubDamp, listFilteredSubContactMass

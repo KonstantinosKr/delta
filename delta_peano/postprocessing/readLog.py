@@ -394,4 +394,4 @@ def readLog():
            listxContactPosition, listnormalX, listp, listq, \
            listforceId, listforcemasterParticleNo, listforceslaveParticleNo, listmassA, listmassB, listforce, listfriction, \
             listsubContactid,listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring, listsubtotalForce, listsubdamp, listsubcontactmass, \
-            particleXaxis, contactXaxis, forceXaxis, subforceXaxis
+            particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iteration
