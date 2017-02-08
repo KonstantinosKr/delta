@@ -62,7 +62,7 @@ void delta::sys::Sys::initCheckpoint(int iteration){
 	_checkpointFile << "#THIS IS A DELTA CHECKPOINT FILE\n";
 	_checkpointFile << "#NOPARTICLE|NOOBSTACLES|TIMESTEPSIZE|ITERATION|TOTALITERATIONS\n";
 	_checkpointFile << "%:" << _noOfParticles << ":" << _noOfObstacles+":" <<
-					   _timeStepSize+":" << _currentIteration << ":" << _totalIterations+"\n";
+					   _timeStepSize<<":" << _currentIteration << ":" << _totalIterations<<"\n";
 }
 
 void delta::sys::Sys::closeCheckpoint(){
