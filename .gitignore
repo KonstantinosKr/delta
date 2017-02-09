@@ -11,3 +11,5 @@ delta_peano/tarch
 delta_peano/it-*
 *.log
 *.pyc
+*.txt
+delta_peano/pdt

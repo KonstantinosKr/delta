@@ -23,7 +23,7 @@
  
  \code
  java -jar ~/workspace/peano/pdt/pdt.jar --create-project dem dem
- java -jar ~/workspace/peano/pdt/pdt.jar --generate-gluecode dem/project.peano-specification dem ~/workspace/peano/pdt/usrtemplates
+ java -jar pdt/pdt.jar --generate-gluecode dem/project.peano-specification dem pdt/usrtemplates
  \endcode
  
  You do need Peano's pdt (Peano Development Toolkit) to run this operation though. 
@@ -37,6 +37,21 @@
  - Change C++ standard to C++11 (in GNU it is -std=c++0x)
  - If you use Eclipse rather than the makefile, you might want to exclude insituvis from your build (see Resource Configuration dialogue)
  
- 
+General
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/
+export TBB_INC=-I/opt/intel/tbb/include/
+export TBB_SHLIB="-L/opt/intel/tbb/lib/ -ltbb"
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
+export PATH=/opt/intel/bin/:$PATH
+
+
+desktop - Durham
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/intel64/gcc4.7/
+export TBB_INC=-I/opt/intel/tbb/include/
+export TBB_SHLIB="-L/opt/intel/tbb/lib/intel64/gcc4.7/ -ltbb"
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
+export PATH=/opt/intel/bin/:$PATH
+
+
  */
  
