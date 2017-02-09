@@ -8,7 +8,6 @@ delta_peano/dem/*.optrpt
 delta_peano/***/*.optrpt
 delta_peano/peano
 delta_peano/tarch
-delta_peano/dem/VertexOperations.optrpt
-delta_peano/dem/repositories/RepositoryFactory.optrpt
-delta_peano/dem/runners/RunnerParallelWordker.optrpt
 delta_peano/it-*
+*.log
+*.pyc
