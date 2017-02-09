@@ -1,6 +1,5 @@
 import readLog
-import matplotlib.pyplot as plt
-import numpy as np
+
 
 #PARTICLE PROPERTIES - SNAPPED PER PLOT - axis - particleXaxis
 #listparticleId, listmass, listdiameter, listinfluenceRadius, listepsilon, listhMin,
@@ -23,7 +22,7 @@ listcentre, listcOfMas, listrcOfMa, listiner, listinve, listorie, \
 listcontactId, listmasterId, listSlaveId, listhasFriction, listdistance, listdepth, listepsilonTotal, \
 listxContactPosition, listnormalX, listp, listq, \
 listforceId, listforcemasterParticleNo, listforceslaveParticleNo, listmassA, listmassB, listforce, listfriction, \
-listsubContactid, listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring, listsubtotalForce, listsubdamp, listsubcontactmass, \
+listsubContactid, listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring_depth, listsubtotalForce, listsubdamp, listsubcontactmass, \
 particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iterations = readLog.readLog()
 
 def getSimSteps():
@@ -240,7 +239,7 @@ def getContactDataOfInteraction(masterIndex, slaveIndex, interchangeable):
     listFilteredSubString = []
     listFilteredSubRelativeVelocity = []
     listFilteredSubDepth = []
-    listFilteredSubSpring = []
+    listFilteredSubSpring_Depth = []
     listFilteredSubTotalForce = []
     listFilteredSubDamp = []
     listFilteredSubContactMass = []
@@ -253,7 +252,7 @@ def getContactDataOfInteraction(masterIndex, slaveIndex, interchangeable):
                 listFilteredSubString.append(listsubSpring[i])
                 listFilteredSubRelativeVelocity.append(listsubrelativeVelocity[i])
                 listFilteredSubDepth.append(listsubdepth[i])
-                listFilteredSubSpring.append(listsubspring[i])
+                listFilteredSubSpring_Depth.append(listsubspring_depth[i])
                 listFilteredSubTotalForce.append(listsubtotalForce[i])
                 listFilteredSubDamp.append(listsubdamp[i])
                 listFilteredSubContactMass.append(listsubcontactmass[i])
@@ -264,13 +263,13 @@ def getContactDataOfInteraction(masterIndex, slaveIndex, interchangeable):
                 listFilteredSubString.append(listsubSpring[i])
                 listFilteredSubRelativeVelocity.append(listsubrelativeVelocity[i])
                 listFilteredSubDepth.append(listsubdepth[i])
-                listFilteredSubSpring.append(listsubspring[i])
+                listFilteredSubSpring_Depth.append(listsubspring_depth[i])
                 listFilteredSubTotalForce.append(listsubtotalForce[i])
                 listFilteredSubDamp.append(listsubdamp[i])
                 listFilteredSubContactMass.append(listsubcontactmass[i])
 
     return  listFilteredSubContactId, listFilteredSubDamper, listFilteredSubString, listFilteredSubRelativeVelocity, \
-            listFilteredSubDepth, listFilteredSubSpring, listFilteredSubTotalForce, listFilteredSubDamp, listFilteredSubContactMass
+            listFilteredSubDepth, listFilteredSubSpring_Depth, listFilteredSubTotalForce, listFilteredSubDamp, listFilteredSubContactMass
 
 
 def getContactDataOfInteraction(particleIndex):

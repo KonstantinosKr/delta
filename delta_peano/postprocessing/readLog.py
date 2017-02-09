@@ -225,7 +225,7 @@ listsubSpring = []
 
 listsubrelativeVelocity = []
 listsubdepth = []
-listsubspring = []
+listsubspring_depth = []
 
 listsubtotalForce = []
 listsubdamp = []
@@ -264,11 +264,11 @@ def splitForceLinePivot(readLine, index, subindex):
         elif subindex == 2:
             subrelativeV = col1
             subdepth = col2
-            subspring = col3
+            subspring_depth = col3
 
             listsubrelativeVelocity.append(subrelativeV)
             listsubdepth.append(subdepth)
-            listsubspring.append(subspring)
+            listsubspring_depth.append(subspring_depth)
         elif subindex == 3:
             subtotalforce = col1
             subdamp = col2
@@ -303,7 +303,7 @@ def splitForceLinePivot(readLine, index, subindex):
         t[0] = col1
         t[1] = col2
         t[2] = col3
-        listfriction.append(t)
+        listfriction_torque.append(t)
 
 iteration = []
 particleXaxis = []
@@ -326,7 +326,7 @@ def readLog():
             #iteration data starts on next line
             it = line.split(",")[0].split("=")[1]
             iteration.append(it)
-            print("iteration " + it)
+            #print("iteration " + it)
             continue
 
         if "#####PARTICLE-DATA#####" in line:
@@ -393,5 +393,5 @@ def readLog():
            listcontactId, listmasterId, listSlaveId, listhasFriction, listdistance, listdepth, listepsilonTotal, \
            listxContactPosition, listnormalX, listp, listq, \
            listforceId, listforcemasterParticleNo, listforceslaveParticleNo, listmassA, listmassB, listforce, listfriction, \
-            listsubContactid,listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring, listsubtotalForce, listsubdamp, listsubcontactmass, \
+            listsubContactid,listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring_depth, listsubtotalForce, listsubdamp, listsubcontactmass, \
             particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iteration

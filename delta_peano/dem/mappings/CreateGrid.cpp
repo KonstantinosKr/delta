@@ -149,6 +149,200 @@ void dem::mappings::CreateGrid::createCell(
 
 		switch (_scenario)
 		{
+			case sla:
+			{
+				/*
+				 *nuclear single layer array;
+				 * experiment of seismic shakes
+				 *
+				 * concept: drop all components in coarse grid then reassign vertex to refined grid
+				 */
+
+				/*first create floor
+				 *
+				 */
+				centreAsArray[1] = 0.25;
+
+				delta::primitives::generateSurface( centreAsArray, 1, 0.1, xCoordinates, yCoordinates, zCoordinates);
+
+				iREAL diameter = 1;
+				iREAL influenceRadius = 1;
+				iREAL epsilon = _epsilon*3;
+				iREAL hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				iREAL particleId = _numberOfParticles;
+				bool isObstacle = true;
+				int material = 2;
+				bool friction = true;
+
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+				int newParticleNumber = vertex.createNewParticle(centreAsArray,
+										xCoordinates, yCoordinates, zCoordinates,
+										centerOfMass, inertia, inverse,
+										mass, diameter, influenceRadius, epsilon,
+										hMin, isObstacle, material, friction, particleId);
+
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+				_numberOfParticles++; _numberOfObstacles++;
+
+				//read nuclear graphite schematics
+				std::vector<std::vector<int>> componentGrid;
+				delta::sys::parseModelGridSchematics("agr_sla_.delta", componentGrid);
+
+				///place components of 2d array structure
+				int gridX = 10; int gridY = 10;
+				for(int i = 0; i<componentGrid.size(); i++)
+				{
+					for(int j = 0; j<componentGrid[i].size(); j++)
+					{
+						int component = componentGrid[i][j];
+						switch (component)
+						{
+							case 0:
+							{
+								delta::primitives::generateSurface(centreAsArray, 0.3, 0.01, xCoordinates, yCoordinates, zCoordinates);
+
+								double diameter = 0.3;
+								double influenceRadius = 0.3 * 1.8;
+								double epsilon = _epsilon;
+								double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+								int particleId = _numberOfParticles;
+								bool isObstacle = true;
+								int material = 1;
+								bool friction = false;
+
+								iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+								delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+								delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+								int newParticleNumber = vertex.createNewParticle(centreAsArray,
+														xCoordinates, yCoordinates, zCoordinates,
+														centerOfMass, inertia, inverse,
+														mass, diameter, influenceRadius, epsilon,
+														hMin, isObstacle, material, friction, particleId);
+
+								_numberOfParticles++; _numberOfObstacles++;
+								_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+							}
+							case 1:
+							{
+								delta::primitives::generateSurface(centreAsArray, 0.3, 0.01, xCoordinates, yCoordinates, zCoordinates);
+
+								double diameter = 0.3;
+								double influenceRadius = 0.3 * 1.8;
+								double epsilon = _epsilon;
+								double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+								int particleId = _numberOfParticles;
+								bool isObstacle = true;
+								int material = 1;
+								bool friction = false;
+
+								iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+								delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+								delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+								int newParticleNumber = vertex.createNewParticle(centreAsArray,
+														xCoordinates, yCoordinates, zCoordinates,
+														centerOfMass, inertia, inverse,
+														mass, diameter, influenceRadius, epsilon,
+														hMin, isObstacle, material, friction, particleId);
+
+								_numberOfParticles++; _numberOfObstacles++;
+								_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+							}
+							case 2:
+							{
+								delta::primitives::generateSurface(centreAsArray, 0.3, 0.01, xCoordinates, yCoordinates, zCoordinates);
+
+								double diameter = 0.3;
+								double influenceRadius = 0.3 * 1.8;
+								double epsilon = _epsilon;
+								double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+								int particleId = _numberOfParticles;
+								bool isObstacle = true;
+								int material = 1;
+								bool friction = false;
+
+								iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+								delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+								delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+								int newParticleNumber = vertex.createNewParticle(centreAsArray,
+														xCoordinates, yCoordinates, zCoordinates,
+														centerOfMass, inertia, inverse,
+														mass, diameter, influenceRadius, epsilon,
+														hMin, isObstacle, material, friction, particleId);
+
+								_numberOfParticles++; _numberOfObstacles++;
+								_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+							}
+							case 3:
+							{
+								delta::primitives::generateSurface(centreAsArray, 0.3, 0.01, xCoordinates, yCoordinates, zCoordinates);
+
+								double diameter = 0.3;
+								double influenceRadius = 0.3 * 1.8;
+								double epsilon = _epsilon;
+								double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+								int particleId = _numberOfParticles;
+								bool isObstacle = true;
+								int material = 1;
+								bool friction = false;
+
+								iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+								delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+								delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+								int newParticleNumber = vertex.createNewParticle(centreAsArray,
+														xCoordinates, yCoordinates, zCoordinates,
+														centerOfMass, inertia, inverse,
+														mass, diameter, influenceRadius, epsilon,
+														hMin, isObstacle, material, friction, particleId);
+
+								_numberOfParticles++; _numberOfObstacles++;
+								_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+							}
+							case 4:
+							{
+								delta::primitives::generateSurface(centreAsArray, 0.3, 0.01, xCoordinates, yCoordinates, zCoordinates);
+
+								double diameter = 0.3;
+								double influenceRadius = 0.3 * 1.8;
+								double epsilon = _epsilon;
+								double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+								int particleId = _numberOfParticles;
+								bool isObstacle = true;
+								int material = 1;
+								bool friction = false;
+
+								iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+
+								delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+								delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+								int newParticleNumber = vertex.createNewParticle(centreAsArray,
+														xCoordinates, yCoordinates, zCoordinates,
+														centerOfMass, inertia, inverse,
+														mass, diameter, influenceRadius, epsilon,
+														hMin, isObstacle, material, friction, particleId);
+
+								_numberOfParticles++; _numberOfObstacles++;
+								_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+							}
+						}
+					}
+				}
+
+				return;
+				break;
+			}
 			case freefallshort:
 			{
 				/*
@@ -184,148 +378,148 @@ void dem::mappings::CreateGrid::createCell(
 				return;
 				break;
 			}
-		case hopper:
-		{
-			/*
-			 * hopper experiment;
-			 *
-			 * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom
-			 *
-			 */
-			double _hopperWidth = 0.26;
-			double _hopperHatch = 0.10;
+			case hopper:
+			{
+				/*
+				 * hopper experiment;
+				 *
+				 * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom
+				 *
+				 */
+				double _hopperWidth = 0.26;
+				double _hopperHatch = 0.10;
 
-			delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
+				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
 
-			double diameter = _hopperWidth*1.8;
-			double influenceRadius = _hopperWidth * 1.8;
-			double epsilon = _epsilon*1.5;
-			double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			int particleId = _numberOfParticles;
-			bool isObstacle = true;
-			int material = 1;
-			bool friction = false;
+				double diameter = _hopperWidth*1.8;
+				double influenceRadius = _hopperWidth * 1.8;
+				double epsilon = _epsilon*1.5;
+				double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				int particleId = _numberOfParticles;
+				bool isObstacle = true;
+				int material = 1;
+				bool friction = false;
 
-			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
 
-			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 
-			int newParticleNumber = vertex.createNewParticle(centreAsArray,
-									xCoordinates, yCoordinates, zCoordinates,
-									centerOfMass, inertia, inverse,
-									mass, diameter, influenceRadius, epsilon,
-									hMin, isObstacle, material, friction, particleId);
+				int newParticleNumber = vertex.createNewParticle(centreAsArray,
+										xCoordinates, yCoordinates, zCoordinates,
+										centerOfMass, inertia, inverse,
+										mass, diameter, influenceRadius, epsilon,
+										hMin, isObstacle, material, friction, particleId);
 
-			//delta::primitives::meshDenseMultiplier(5, xCoordinates, yCoordinates, zCoordinates);
+				//delta::primitives::meshDenseMultiplier(5, xCoordinates, yCoordinates, zCoordinates);
 
-			_numberOfParticles++; _numberOfObstacles++;
-			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+				_numberOfParticles++; _numberOfObstacles++;
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 
-			xCoordinates.clear();
-			yCoordinates.clear();
-			zCoordinates.clear();
+				xCoordinates.clear();
+				yCoordinates.clear();
+				zCoordinates.clear();
 
-			/**
-			 * ******************* flooring creation
-			 */
+				/**
+				 * ******************* flooring creation
+				 */
 
-			centreAsArray[1] = 0.25;
+				centreAsArray[1] = 0.25;
 
-			delta::primitives::generateSurface( centreAsArray, 1, 0.1, xCoordinates, yCoordinates, zCoordinates);
+				delta::primitives::generateSurface( centreAsArray, 1, 0.1, xCoordinates, yCoordinates, zCoordinates);
 
-			diameter = 1;
-			influenceRadius = 1;
-			epsilon = _epsilon*3;
-			hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			particleId = _numberOfParticles;
-			isObstacle = true;
-			material = 2;
-			friction = true;
+				diameter = 1;
+				influenceRadius = 1;
+				epsilon = _epsilon*3;
+				hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				particleId = _numberOfParticles;
+				isObstacle = true;
+				material = 2;
+				friction = true;
 
-			rho = 10000;
+				rho = 10000;
 
-			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 
-			newParticleNumber = vertex.createNewParticle(centreAsArray,
-									xCoordinates, yCoordinates, zCoordinates,
-									centerOfMass, inertia, inverse,
-									mass, diameter, influenceRadius, epsilon,
-									hMin, isObstacle, material, friction, particleId);
+				newParticleNumber = vertex.createNewParticle(centreAsArray,
+										xCoordinates, yCoordinates, zCoordinates,
+										centerOfMass, inertia, inverse,
+										mass, diameter, influenceRadius, epsilon,
+										hMin, isObstacle, material, friction, particleId);
 
-			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-			_numberOfParticles++; _numberOfObstacles++;
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+				_numberOfParticles++; _numberOfObstacles++;
 
-			return;
-			break;
-		}
-		case frictionStatic:
-		{
-			/*
-			 *
-			 */
-			delta::primitives::generateSurface(centreAsArray, 1, 0.01, xCoordinates, yCoordinates, zCoordinates);
+				return;
+				break;
+			}
+			case frictionStatic:
+			{
+				/*
+				 *
+				 */
+				delta::primitives::generateSurface(centreAsArray, 1, 0.01, xCoordinates, yCoordinates, zCoordinates);
 
-			double diameter = 1;
-			double influenceRadius = 1 * 1.2;
-			double epsilon = _epsilon;
-			double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			int particleId = _numberOfParticles;
-			bool isObstacle = true;
-			int material = 1;
-			bool friction = false;
+				double diameter = 1;
+				double influenceRadius = 1 * 1.2;
+				double epsilon = _epsilon;
+				double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				int particleId = _numberOfParticles;
+				bool isObstacle = true;
+				int material = 1;
+				bool friction = false;
 
-			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 100000;
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 100000;
 
-			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 
-			int newParticleNumber = vertex.createNewParticle(centreAsArray,
-									xCoordinates, yCoordinates, zCoordinates,
-									centerOfMass, inertia, inverse,
-									mass, diameter, influenceRadius, epsilon,
-									hMin, isObstacle, material, friction, particleId);
+				int newParticleNumber = vertex.createNewParticle(centreAsArray,
+										xCoordinates, yCoordinates, zCoordinates,
+										centerOfMass, inertia, inverse,
+										mass, diameter, influenceRadius, epsilon,
+										hMin, isObstacle, material, friction, particleId);
 
-			_numberOfParticles++; _numberOfObstacles++;
-			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+				_numberOfParticles++; _numberOfObstacles++;
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 
-			return;
-			break;
-		}
-		case frictionSlide:
-		{
-			/*
-			 *
-			 */
-			delta::primitives::generateSurface( centreAsArray, 1, 0.02, xCoordinates, yCoordinates, zCoordinates);
+				return;
+				break;
+			}
+			case frictionSlide:
+			{
+				/*
+				 *
+				 */
+				delta::primitives::generateSurface( centreAsArray, 1, 0.02, xCoordinates, yCoordinates, zCoordinates);
 
-			double diameter = 1;
-			double influenceRadius = 1 * 1.8;
-			double epsilon = 0;
-			double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			int particleId = _numberOfParticles;
-			bool isObstacle = true;
-			int material = 1;
-			bool friction = false;
+				double diameter = 1;
+				double influenceRadius = 1 * 1.8;
+				double epsilon = 0;
+				double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				int particleId = _numberOfParticles;
+				bool isObstacle = true;
+				int material = 1;
+				bool friction = false;
 
-			iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 1000000;
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 1000000;
 
-			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 
-			int newParticleNumber = vertex.createNewParticle(centreAsArray,
-									xCoordinates, yCoordinates, zCoordinates,
-									centerOfMass, inertia, inverse,
-									mass, diameter, influenceRadius, epsilon,
-									hMin, isObstacle, material, friction, particleId);
+				int newParticleNumber = vertex.createNewParticle(centreAsArray,
+										xCoordinates, yCoordinates, zCoordinates,
+										centerOfMass, inertia, inverse,
+										mass, diameter, influenceRadius, epsilon,
+										hMin, isObstacle, material, friction, particleId);
 
-			_numberOfParticles++; _numberOfObstacles++;
-			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+				_numberOfParticles++; _numberOfObstacles++;
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 
-			return;
-			break;
-		}
+				return;
+				break;
+			}
 		}
 	}
 
