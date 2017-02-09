@@ -11,3 +11,4 @@ delta_peano/it-*
 *.optrpt
 *.o
 *.mk
+*.vect
