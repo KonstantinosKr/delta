@@ -21,13 +21,13 @@ exp4o=/scratch/rfmw74/regularG4bfOMPPARTICLE6_200
 exp5o=/scratch/rfmw74/regularG4bfOMPPARTICLE8_200
 exp6o=/scratch/rfmw74/regularG4bfOMPPARTICLE16_200
 
-exp0="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 9.81 bf 0.1 200"
-exp1="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 9.81 bf 0.1 200"
-exp2="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 9.81 bf 0.1 200"
-exp3="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 9.81 bf 0.1 200"
-exp4="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 9.81 bf 0.1 200"
-exp5="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 9.81 bf 0.1 200"
-exp6="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 9.81 bf 0.1 200"
+exp0="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 10 1 bf 0.1 200"
+exp1="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 10 1 bf 0.1 200"
+exp2="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 10 1 bf 0.1 200"
+exp3="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 10 1 bf 0.1 200"
+exp4="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 10 1 bf 0.1 200"
+exp5="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 10 1 bf 0.1 200"
+exp6="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 regular-grid 0.0001 never 10 1 bf 0.1 200"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

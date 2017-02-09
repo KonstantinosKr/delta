@@ -10,6 +10,8 @@
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
 
+#include <iomanip>
+
 #define epsilon 0.004
 
 tarch::logging::Log _log("");
@@ -41,9 +43,10 @@ int main(int argc, char** argv)
   const int NumberOfArguments = 13;
   #endif
 
+  printf("noOfArguments:%i, argc:%i\n", NumberOfArguments, argc);
   if (argc!=NumberOfArguments) {
-    std::cerr << "Delta - Peano | Grid-based Non-Spherical Particle Dynamics Simulator" << std::endl
-			  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot gravity collision-model mesh-multiplier [core-count]" << std::endl
+    std::cerr << "Delta - Peano | Grid-based Non-Spherical Particle Dynamics Simulator" << std::endl << std::endl
+			  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
               << std::endl
               << " grid_h_max          maximum mesh width of grid" << std::endl
               << " particle_diam_min   minimal diameter of particles" << std::endl
@@ -89,12 +92,21 @@ int main(int argc, char** argv)
               << "  upon-change" << std::endl
     		  << "  every-batch" << std::endl
 			  << "  every-checkpoint" << std::endl << std::endl
-    		  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot gravity collision-model mesh-multiplier [core-count]" << std::endl
-			  << "eg: ./dem-3d-release-vec 0.5 0.5 0.5 hopper 10000 regular-grid 0.00001 every-batch 1 bf 50 10" << std::endl;
+    		  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
+			  << "eg: ./dem-3d-release-vec 0.5 0.5 0.5 hopper 10000 regular-grid 0.00001 every-batch 10 1 bf 50 2" << std::endl;
 
+    std::cout << "gridHMAX:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
+  			<< "scenario:" << (argv[4]) << ", numberOfTimeSteps:" << atof(argv[5]) << ", gridTypeIdentifier:" << (argv[6]) << std::endl
+  			<< "iterations:" << atof(argv[7]) << ", plotIdentifier:" << (argv[8]) << ", realSnapshot:" << atof(argv[9]) << std::endl
+  			<< "gravity:" << atof(argv[10]) << ", collisionModel:" << (argv[11])  << ", noTriangles:" << atof(argv[12]) << std::endl;
 
     return -1;
   }
+
+  std::cout << "gridHMAX:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
+			<< "scenario:" << (argv[4]) << ", numberOfTimeSteps:" << atof(argv[5]) << ", gridTypeIdentifier:" << (argv[6]) << std::endl
+			<< "iterations:" << atof(argv[7]) << ", plotIdentifier:" << (argv[8]) << ", realSnapshot:" << atof(argv[9]) << std::endl
+			<< "gravity:" << atof(argv[10]) << ", collisionModel:" << (argv[11])  << ", noTriangles:" << atof(argv[12]) << std::endl;
 
   const double       gridHMax            = atof(argv[1]);
   const double       particleDiamMax     = atof(argv[2]);
@@ -104,9 +116,9 @@ int main(int argc, char** argv)
   const std::string  gridTypeIdentifier  = argv[6];
   const double       iterations        = atof(argv[7]);
   const std::string  plotIdentifier      = argv[8];
-  const double       gravity             = atof(argv[9]);
-  const std::string  collisionModel      = argv[10];
-  const double		 realSnapshot		 = atof(argv[11]);
+  const double		 realSnapshot		 = atof(argv[9]);
+  const double       gravity             = atof(argv[10]);
+  const std::string  collisionModel      = argv[11];
   const int			 noTriangles 		 = atof(argv[12]);
 
   #ifdef SharedMemoryParallelisation
@@ -207,7 +219,7 @@ int main(int argc, char** argv)
 	plot = dem::runners::Runner::Adaptive;
   }
   else {
-    std::cerr << "invalid plot option. Please run without arguments to see list of valid plot variants" << std::endl;
+    std::cerr << "invalid plot option: " << plotIdentifier << "Please run without arguments to see list of valid plot variants" << std::endl;
     programExitCode = 2;
   }
 
