@@ -17,13 +17,13 @@ exp6o=reluctant3sphere-hybrid-on-batchesSIMDTriangleOMP-16THREADS
 exp7o=reluctantG3sphere-hybrid-on-batchesSIMDTriangleOMP-16THREADS
 
 exp0="./dem-3d-release-vecTRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 sphere-hybrid-on-on-batches"
-exp1="./dem-3d-release-vecTRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-adaptive-grid 0.001 never 9.81 sphere-hybrid-on-batches"
-exp2="./dem-3d-release-vecTRIANGLE 0.1 0.05 0.05 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 sphere-hybrid-on-batches"
-exp3="./dem-3d-release-vecTRIANGLE 0.1 0.05 0.05 random-velocities 500 reluctant-adaptive-grid 0.001 never 9.81 sphere-hybrid-on-batches"
-exp4="./dem-3d-release-vecTRIANGLE 0.1 0.05 0.01 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 sphere-hybrid-on-batches"
-exp5="./dem-3d-release-vecTRIANGLE 0.1 0.05 0.01 random-velocities 500 reluctant-adaptive-grid 0.001 never 9.81 sphere-hybrid-on-batches"
-exp6="./dem-3d-release-vecTRIANGLE 0.1 0.05 0.001 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 sphere-hybrid-on-batches"
-exp7="./dem-3d-release-vecTRIANGLE 0.1 0.05 0.001 random-velocities 500 reluctant-adaptive-grid 0.001 never 9.81 sphere-hybrid-on-batches"
+exp1="./dem-3d-release-vecTRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-adaptive-grid 0.001 never 1 10 sphere-hybrid-on-batches"
+exp2="./dem-3d-release-vecTRIANGLE 0.05 0.05 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 sphere-hybrid-on-batches"
+exp3="./dem-3d-release-vecTRIANGLE 0.05 0.05 random-velocities 500 reluctant-adaptive-grid 0.001 never 1 10 sphere-hybrid-on-batches"
+exp4="./dem-3d-release-vecTRIANGLE 0.05 0.01 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 sphere-hybrid-on-batches"
+exp5="./dem-3d-release-vecTRIANGLE 0.05 0.01 random-velocities 500 reluctant-adaptive-grid 0.001 never 1 10 sphere-hybrid-on-batches"
+exp6="./dem-3d-release-vecTRIANGLE 0.05 0.001 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 sphere-hybrid-on-batches"
+exp7="./dem-3d-release-vecTRIANGLE 0.05 0.001 random-velocities 500 reluctant-adaptive-grid 0.001 never 1 10 sphere-hybrid-on-batches"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT} > ${JOB_SCRIPT}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT}_tmp > ${JOB_SCRIPT}_tmp1

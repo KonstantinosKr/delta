@@ -12,3 +12,6 @@ delta_peano/it-*
 *.o
 *.mk
 *.vect
+*.DS_Store
+*.xml
+*._*
