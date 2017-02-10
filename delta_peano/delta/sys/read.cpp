@@ -43,12 +43,12 @@ void delta::sys::parseModelGridSchematics(std::string inputfile, std::vector<std
 		while (std::getline (myfile, line))
 		{
 			std::vector<std::string> vstring = splitString(line, ",");
-			std::cout << vstring[0] << " " << vstring[1] << " " << vstring[2] << "\n";
+			//std::cout << vstring[0] << " " << vstring[1] << " " << vstring[2] << "\n";
 
 			componentX.push_back(vstring[2]);
 
 			if(std::stoi(vstring[0]) == 46) {
-				std::cout << std::stoi(vstring[0]) << "\n";
+				//std::cout << std::stoi(vstring[0]) << "\n";
 				componentGrid.push_back(componentX);
 			}
 		}
