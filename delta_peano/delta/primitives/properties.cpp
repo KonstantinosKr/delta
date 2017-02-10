@@ -35,11 +35,12 @@ void delta::primitives::moveMeshFromOriginToPosition(double center[3],
 	}
 }
 
-void delta::primitives::rotateX(double degree,
+void delta::primitives::rotateX(double alphaX,
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates)
 {
+	const double pi = std::acos(-1);
   for (int i=0; i<36; i++) {
 	double x = xCoordinates[i];
 	double y = yCoordinates[i];
@@ -57,12 +58,12 @@ void delta::primitives::rotateX(double degree,
   }
 }
 
-void delta::primitives::rotateY(double degree,
+void delta::primitives::rotateY(double alphaY,
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates)
 {
-
+	const double pi = std::acos(-1);
 	  for (int i=0; i<36; i++) {
 	    double x = xCoordinates[i];
 	    double y = yCoordinates[i];
@@ -80,12 +81,12 @@ void delta::primitives::rotateY(double degree,
 	  }
 }
 
-void delta::primitives::rotateZ(double degree,
+void delta::primitives::rotateZ(double alphaZ,
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates)
 {
-
+	const double pi = std::acos(-1);
 	  for (int i=0; i<36; i++) {
 	    double x = xCoordinates[i];
 	    double y = yCoordinates[i];
@@ -129,7 +130,7 @@ double delta::primitives::computeMaxWidth(std::vector<double>&  xCoordinates,
 			B[1] = yCoordinates[j];
 			B[2] = zCoordinates[j];
 
-			double result = computeDistance(A,B);
+			double result = computeDistanceAB(A,B);
 			if (max < result) max = result;
 		}
 	}
@@ -190,11 +191,10 @@ double delta::primitives::computeMaxZWidth(std::vector<double>&  zCoordinates)
 	return max;
 }
 
-void delta::primitives::centerOfGeometry(
-      std::vector<double>&  xCoordinates,
-      std::vector<double>&  yCoordinates,
-      std::vector<double>&  zCoordinates,
-      double& 	centreOfGeometry[3])
+void delta::primitives::centerOfGeometry(double 	centreOfGeometry[3],
+										  std::vector<double>&  xCoordinates,
+										  std::vector<double>&  yCoordinates,
+										  std::vector<double>&  zCoordinates)
 {
 	centreOfGeometry[0] = 0.0;
 	centreOfGeometry[1] = 0.0;

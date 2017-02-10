@@ -49,7 +49,7 @@ void delta::primitives::generateKey(
 	delta::sys::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	double centerOfGeometry[3];
-	delta::primitives::centerOfGeometry(xCoordinates, yCoordinates, zCoordinates, centerOfGeometry);
+	delta::primitives::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 	delta::primitives::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 
 	for(int i=0;i<xCoordinates.size();i+=3)

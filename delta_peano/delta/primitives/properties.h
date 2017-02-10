@@ -44,17 +44,17 @@ namespace delta {
 			std::vector<double>&  yCoordinates,
 			std::vector<double>&  zCoordinates);
 
-	void delta::primitives::rotateX(double degree,
+	void rotateX(double alphaX,
 			std::vector<double>&  xCoordinates,
 			std::vector<double>&  yCoordinates,
 			std::vector<double>&  zCoordinates);
 
-	void delta::primitives::rotateY(double degree,
+	void rotateY(double alphaY,
 			std::vector<double>&  xCoordinates,
 			std::vector<double>&  yCoordinates,
 			std::vector<double>&  zCoordinates);
 
-	void delta::primitives::rotateZ(double degree,
+	void rotateZ(double alphaZ,
 			std::vector<double>&  xCoordinates,
 			std::vector<double>&  yCoordinates,
 			std::vector<double>&  zCoordinates);
@@ -81,11 +81,10 @@ namespace delta {
 	  double&                     refcentreOfMassZ);
 
     void centerOfGeometry(
+		double centreOfGeometry[3],
 	  std::vector<double>&  xCoordinates,
 	  std::vector<double>&  yCoordinates,
-	  std::vector<double>&  zCoordinates,
-	  double& 	centreOfGeometry[3]);
-
+	  std::vector<double>&  zCoordinates);
 
     double computeHMin(
       const std::vector<double>&  xCoordinates,
