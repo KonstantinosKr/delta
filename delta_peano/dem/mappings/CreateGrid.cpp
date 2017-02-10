@@ -163,7 +163,7 @@ void dem::mappings::CreateGrid::createCell(
 				 */
 				centreAsArray[1] = 0.25;
 
-				delta::primitives::generateSurface( centreAsArray, 1, 0.1, xCoordinates, yCoordinates, zCoordinates);
+				delta::primitives::generateSurface( centreAsArray, 1, 0.05, xCoordinates, yCoordinates, zCoordinates);
 
 				iREAL diameter = 1;
 				iREAL influenceRadius = 1;
@@ -173,6 +173,7 @@ void dem::mappings::CreateGrid::createCell(
 				bool isObstacle = true;
 				int material = 2;
 				bool friction = true;
+
 
 				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
 
@@ -188,13 +189,43 @@ void dem::mappings::CreateGrid::createCell(
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 				_numberOfParticles++; _numberOfObstacles++;
 
+				xCoordinates.clear();
+				yCoordinates.clear();
+				zCoordinates.clear();
+
+				centreAsArray[1] = 0.5;
+				///BRICKS GEOMETRY CREATION
+
+				delta::primitives::generateBrick( centreAsArray, 1, xCoordinates, yCoordinates, zCoordinates);
+
+				diameter = 1;
+				influenceRadius = 1;
+				epsilon = _epsilon*3;
+				hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				particleId = _numberOfParticles;
+				isObstacle = true;
+				material = 2;
+				friction = true;
+
+				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+				newParticleNumber = vertex.createNewParticle(centreAsArray,
+										xCoordinates, yCoordinates, zCoordinates,
+										centerOfMass, inertia, inverse,
+										mass, diameter, influenceRadius, epsilon,
+										hMin, isObstacle, material, friction, particleId);
+
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+				_numberOfParticles++; _numberOfObstacles++;
+
 				//read nuclear graphite schematics
 				std::vector<std::vector<std::string>> componentGrid;
 				delta::sys::parseModelGridSchematics("input/nuclear_core", componentGrid);
 
 				///place components of 2d array structure
 				int gridX = 10; int gridY = 10;
-				for(int i = 0; i<componentGrid.size(); i++)
+				/*for(int i = 0; i<componentGrid.size(); i++)
 				{
 					for(int j = 0; j<componentGrid[i].size(); j++)
 					{
@@ -227,7 +258,7 @@ void dem::mappings::CreateGrid::createCell(
 							_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 						}
 					}
-				}
+				}*/
 
 				return;
 				break;
@@ -483,6 +514,10 @@ void dem::mappings::CreateGrid::createCell(
 				else{
 					delta::primitives::generateParticle( centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
 				}
+			}
+			else if(_scenario == sla)
+			{
+				return;
 			}
 			else if(_scenario == hopper)
 			{
