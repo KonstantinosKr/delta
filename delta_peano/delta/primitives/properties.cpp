@@ -41,7 +41,7 @@ void delta::primitives::rotateX(double alphaX,
 		std::vector<double>&  zCoordinates)
 {
 	const double pi = std::acos(-1);
-  for (int i=0; i<36; i++) {
+  for (int i=0; i<xCoordinates.size(); i++) {
 	double x = xCoordinates[i];
 	double y = yCoordinates[i];
 	double z = zCoordinates[i];
@@ -64,7 +64,7 @@ void delta::primitives::rotateY(double alphaY,
 		std::vector<double>&  zCoordinates)
 {
 	const double pi = std::acos(-1);
-	  for (int i=0; i<36; i++) {
+	  for (int i=0; i<xCoordinates.size(); i++) {
 	    double x = xCoordinates[i];
 	    double y = yCoordinates[i];
 	    double z = zCoordinates[i];
@@ -87,7 +87,7 @@ void delta::primitives::rotateZ(double alphaZ,
 		std::vector<double>&  zCoordinates)
 {
 	const double pi = std::acos(-1);
-	  for (int i=0; i<36; i++) {
+	  for (int i=0; i<xCoordinates.size(); i++) {
 	    double x = xCoordinates[i];
 	    double y = yCoordinates[i];
 	    double z = zCoordinates[i];
