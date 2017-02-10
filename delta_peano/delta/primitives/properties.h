@@ -26,17 +26,48 @@
 #include <vector>
 #include <math.h>
 #include "delta/hull/alg.h"
+#include <cmath>
+#include <stdlib.h>
 
 namespace delta {
   namespace primitives {
 
-    void centerOfMass(
-      const std::vector<double>&  xCoordinates,
-      const std::vector<double>&  yCoordinates,
-      double&                     mass,
-      double&                     centreOfMassX,
-      double&                     centreOfMassY
-    );
+	void moveMeshFromPositionToOrigin(
+			double center[3],
+			std::vector<double>&  xCoordinates,
+			std::vector<double>&  yCoordinates,
+			std::vector<double>&  zCoordinates);
+
+	void moveMeshFromOriginToPosition(
+			double center[3],
+			std::vector<double>&  xCoordinates,
+			std::vector<double>&  yCoordinates,
+			std::vector<double>&  zCoordinates);
+
+	void delta::primitives::rotateX(double degree,
+			std::vector<double>&  xCoordinates,
+			std::vector<double>&  yCoordinates,
+			std::vector<double>&  zCoordinates);
+
+	void delta::primitives::rotateY(double degree,
+			std::vector<double>&  xCoordinates,
+			std::vector<double>&  yCoordinates,
+			std::vector<double>&  zCoordinates);
+
+	void delta::primitives::rotateZ(double degree,
+			std::vector<double>&  xCoordinates,
+			std::vector<double>&  yCoordinates,
+			std::vector<double>&  zCoordinates);
+
+	double computeMaxWidth(std::vector<double>&  xCoordinates,
+						   std::vector<double>&  yCoordinates,
+						   std::vector<double>&  zCoordinates);
+
+	double computeMaxXWidth(std::vector<double>&  xCoordinates);
+	double computeMaxYWidth(std::vector<double>&  yCoordinates);
+	double computeMaxZWidth(std::vector<double>&  zCoordinates);
+
+	double computeDistanceAB(double A[3], double B[3]);
 
     void centerOfMass(
       std::vector<double>&  xCoordinates,
@@ -47,14 +78,19 @@ namespace delta {
       double&                     centreOfMassZ,
 	  double&                     refcentreOfMassX,
 	  double&                     refcentreOfMassY,
-	  double&                     refcentreOfMassZ
-    );
+	  double&                     refcentreOfMassZ);
+
+    void centerOfGeometry(
+	  std::vector<double>&  xCoordinates,
+	  std::vector<double>&  yCoordinates,
+	  std::vector<double>&  zCoordinates,
+	  double& 	centreOfGeometry[3]);
+
 
     double computeHMin(
       const std::vector<double>&  xCoordinates,
       const std::vector<double>&  yCoordinates,
-      const std::vector<double>&  zCoordinates
-    );
+      const std::vector<double>&  zCoordinates);
 
     void computeInertia(
     		const std::vector<double>&  xCoordinates,

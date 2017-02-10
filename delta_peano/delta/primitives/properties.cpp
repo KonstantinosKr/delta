@@ -1,25 +1,217 @@
 #include "delta/primitives/properties.h"
 #include <stdio.h>
 
-void delta::primitives::centerOfMass(
-      const std::vector<double>&  xCoordinates,
-      const std::vector<double>&  yCoordinates,
-      double&                     mass,
-      double&                     centreOfMassX,
-      double&                     centreOfMassY
-) {
-  mass          = 1.0;
-  centreOfMassX = 0.0;
-  centreOfMassY = 0.0;
-  
-  int nVertices = xCoordinates.size();
-  for(int i=0;i<nVertices;i++)
-  {
-    centreOfMassX += xCoordinates[i];
-    centreOfMassY += yCoordinates[i];
+void delta::primitives::moveMeshFromPositionToOrigin(double center[3],
+										  std::vector<double>&  xCoordinates,
+										  std::vector<double>&  yCoordinates,
+										  std::vector<double>&  zCoordinates)
+{
+	for(int i=0;i<xCoordinates.size();i++)
+	{
+		xCoordinates[i] = xCoordinates[i]-center[0];
+		yCoordinates[i] = yCoordinates[i]-center[1];
+		zCoordinates[i] = zCoordinates[i]-center[2];
+	}
+}
+
+void delta::primitives::moveMeshFromOriginToPosition(double center[3],
+										  std::vector<double>&  xCoordinates,
+										  std::vector<double>&  yCoordinates,
+										  std::vector<double>&  zCoordinates)
+{
+	for(int i=0;i<xCoordinates.size();i+=3)
+	{
+		xCoordinates[i] = (xCoordinates[i])+center[0];
+		yCoordinates[i] = (yCoordinates[i])+center[1];
+		zCoordinates[i] = (zCoordinates[i])+center[2];
+
+		xCoordinates[i+1] = (xCoordinates[i+1])+center[0];
+		yCoordinates[i+1] = (yCoordinates[i+1])+center[1];
+		zCoordinates[i+1] = (zCoordinates[i+1])+center[2];
+
+		xCoordinates[i+2] = (xCoordinates[i+2])+center[0];
+		yCoordinates[i+2] = (yCoordinates[i+2])+center[1];
+		zCoordinates[i+2] = (zCoordinates[i+2])+center[2];
+	}
+}
+
+void delta::primitives::rotateX(double degree,
+		std::vector<double>&  xCoordinates,
+		std::vector<double>&  yCoordinates,
+		std::vector<double>&  zCoordinates)
+{
+  for (int i=0; i<36; i++) {
+	double x = xCoordinates[i];
+	double y = yCoordinates[i];
+	double z = zCoordinates[i];
+
+	double M[] = {
+	   1.0,                 0.0,                   0.0,
+	   0.0,  std::cos(2*pi*alphaX),  std::sin(2*pi*alphaX),
+	   0.0, -std::sin(2*pi*alphaX),  std::cos(2*pi*alphaX)
+	};
+
+	xCoordinates[i] =   M[0] * x + M[1] * y + M[2] * z;
+	yCoordinates[i] =   M[3] * x + M[4] * y + M[5] * z;
+	zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
   }
-  centreOfMassX = centreOfMassX/(nVertices*3);
-  centreOfMassY = centreOfMassY/(nVertices*3);
+}
+
+void delta::primitives::rotateY(double degree,
+		std::vector<double>&  xCoordinates,
+		std::vector<double>&  yCoordinates,
+		std::vector<double>&  zCoordinates)
+{
+
+	  for (int i=0; i<36; i++) {
+	    double x = xCoordinates[i];
+	    double y = yCoordinates[i];
+	    double z = zCoordinates[i];
+
+	    double M[] = {
+	      std::cos(2*pi*alphaY),  0.0, std::sin(2*pi*alphaY),
+	      0.0,                    1.0,                   0.0,
+	     -std::sin(2*pi*alphaY),  0.0, std::cos(2*pi*alphaY)
+	    };
+
+	    xCoordinates[i] =   M[0] * x + M[1] * y + M[2] * z;
+	    yCoordinates[i] =   M[3] * x + M[4] * y + M[5] * z;
+	    zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
+	  }
+}
+
+void delta::primitives::rotateZ(double degree,
+		std::vector<double>&  xCoordinates,
+		std::vector<double>&  yCoordinates,
+		std::vector<double>&  zCoordinates)
+{
+
+	  for (int i=0; i<36; i++) {
+	    double x = xCoordinates[i];
+	    double y = yCoordinates[i];
+	    double z = zCoordinates[i];
+
+	    double M[] = {
+	      std::cos(2*pi*alphaZ),  std::sin(2*pi*alphaZ),  0.0,
+	     -std::sin(2*pi*alphaZ),  std::cos(2*pi*alphaZ),  0.0,
+	                       0.0,                   0.0,  1.0
+	    };
+
+	    xCoordinates[i] =   M[0] * x + M[1] * y + M[2] * z;
+	    yCoordinates[i] =   M[3] * x + M[4] * y + M[5] * z;
+	    zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
+	  }
+}
+
+double delta::primitives::computeDistanceAB(double A[3], double B[3])
+{
+	return std::sqrt(((B-A)*(B-A))+((B-A)*(B-A))+((B-A)*(B-A)));
+}
+
+double delta::primitives::computeMaxWidth(std::vector<double>&  xCoordinates,
+										std::vector<double>&  yCoordinates,
+										std::vector<double>&  zCoordinates)
+{
+	double max = -1E99;
+
+	for(int i=0;i<xCoordinates.size();i++)
+	{
+		double A[3];
+
+		A[0] = xCoordinates[i];
+		A[1] = yCoordinates[i];
+		A[2] = zCoordinates[i];
+
+		for(int j=i+1;j<xCoordinates.size();j++)
+		{
+			double B[3];
+			B[0] = xCoordinates[j];
+			B[1] = yCoordinates[j];
+			B[2] = zCoordinates[j];
+
+			double result = computeDistance(A,B);
+			if (max < result) max = result;
+		}
+	}
+	return max;
+}
+
+double delta::primitives::computeMaxXWidth(std::vector<double>&  xCoordinates)
+{
+	double max = -1E99;
+
+	for(int i=0;i<xCoordinates.size();i++)
+	{
+		double A = xCoordinates[i];
+
+		for(int j=i+1;j<xCoordinates.size();j++)
+		{
+			double B = xCoordinates[j];
+			double distance = std::abs(B - A);
+			if (max < distance) max = distance;
+		}
+	}
+	return max;
+}
+
+double delta::primitives::computeMaxYWidth(std::vector<double>&  yCoordinates)
+{
+	double max = -1E99;
+
+	for(int i=0;i<yCoordinates.size();i++)
+	{
+		double A = yCoordinates[i];
+
+		for(int j=i+1;j<yCoordinates.size();j++)
+		{
+			double B = yCoordinates[j];
+			double distance = std::abs(B - A);
+			if (max < distance) max = distance;
+		}
+	}
+	return max;
+}
+
+double delta::primitives::computeMaxZWidth(std::vector<double>&  zCoordinates)
+{
+	double max = -1E99;
+
+	for(int i=0;i<zCoordinates.size();i++)
+	{
+		double A = zCoordinates[i];
+
+		for(int j=i+1;j<zCoordinates.size();j++)
+		{
+			double B = zCoordinates[j];
+			double distance = std::abs(B - A);
+			if (max < distance) max = distance;
+		}
+	}
+	return max;
+}
+
+void delta::primitives::centerOfGeometry(
+      std::vector<double>&  xCoordinates,
+      std::vector<double>&  yCoordinates,
+      std::vector<double>&  zCoordinates,
+      double& 	centreOfGeometry[3])
+{
+	centreOfGeometry[0] = 0.0;
+	centreOfGeometry[1] = 0.0;
+	centreOfGeometry[2] = 0.0;
+
+	int nVertices = xCoordinates.size();
+
+	for(int i=0;i<nVertices;i++)
+	{
+		centreOfGeometry[0] += xCoordinates[i];
+		centreOfGeometry[1] += yCoordinates[i];
+		centreOfGeometry[2] += zCoordinates[i];
+	}
+
+	centreOfGeometry[0] = centreOfGeometry[0]/(nVertices*3);
+	centreOfGeometry[1] = centreOfGeometry[1]/(nVertices*3);
+	centreOfGeometry[2] = centreOfGeometry[2]/(nVertices*3);
 }
 
 void delta::primitives::centerOfMass(

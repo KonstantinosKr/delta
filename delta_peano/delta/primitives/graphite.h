@@ -27,6 +27,8 @@
 
 
 #include <vector>
+#include "delta/sys/read.h"
+#include "delta/primitives/properties.h"
 
 
 namespace delta {

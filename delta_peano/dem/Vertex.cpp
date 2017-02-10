@@ -228,7 +228,6 @@ dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getYCoordinatesAsVector( int parti
   return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) );
 }
 
-
 dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getZCoordinatesAsVector( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
   return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) );
@@ -287,7 +286,6 @@ void dem::Vertex::restrictParticleResponsibilityData(const Vertex& fineGridVerte
   _vertexData.setVetoCoarsening( _vertexData.getVetoCoarsening() || fineGridVertex._vertexData.getVetoCoarsening() ||  fineGridVertex.getNumberOfParticles()>0);
 }
 
-
 void dem::Vertex::eraseIfParticleDistributionPermits() {
   if (!_vertexData.getVetoCoarsening() &&
     getRefinementControl()==Records::Refined)
@@ -299,7 +297,6 @@ void dem::Vertex::eraseIfParticleDistributionPermits() {
 void dem::Vertex::clearInheritedCoarseGridParticles() {
   ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).clear();
 }
-
 
 void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
 {
