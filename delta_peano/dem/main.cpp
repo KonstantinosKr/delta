@@ -101,12 +101,15 @@ int main(int argc, char** argv)
   			<< "gravity:" << atof(argv[10]) << ", collisionModel:" << (argv[11])  << ", noTriangles:" << atof(argv[12]) << std::endl;
 
     return -1;
-  }
+  } else if (argc == NumberOfArguments)
+  {
 
-  std::cout << "gridHMAX:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
+	  std::cout << "gridHMAX:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
 			<< "scenario:" << (argv[4]) << ", numberOfTimeSteps:" << atof(argv[5]) << ", gridTypeIdentifier:" << (argv[6]) << std::endl
 			<< "iterations:" << atof(argv[7]) << ", plotIdentifier:" << (argv[8]) << ", realSnapshot:" << atof(argv[9]) << std::endl
 			<< "gravity:" << atof(argv[10]) << ", collisionModel:" << (argv[11])  << ", noTriangles:" << atof(argv[12]) << std::endl;
+
+  }
 
   const double       gridHMax            = atof(argv[1]);
   const double       particleDiamMax     = atof(argv[2]);

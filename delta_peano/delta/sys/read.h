@@ -11,10 +11,14 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <string.h>
+#include <stdlib.h>
+#include <fstream>
+
 
 namespace delta {
 	namespace sys {
-		void parseModelGridSchematics(std::string inputfile, std::vector<std::vector<int>> &componentGrid);
+		void parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid);
 	}
 }
 
