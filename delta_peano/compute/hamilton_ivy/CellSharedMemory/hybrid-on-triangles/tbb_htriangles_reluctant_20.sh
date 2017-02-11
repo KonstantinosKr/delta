@@ -21,13 +21,13 @@ exp4o=/scratch/rfmw74/reluctantG4hybrid-on-trianglesTBB6_20
 exp5o=/scratch/rfmw74/reluctantG4hybrid-on-trianglesTBB8_20
 exp6o=/scratch/rfmw74/reluctantG4hybrid-on-trianglesTBB16_20
 
-exp0="./dem-3d-release-tbb 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 1"
-exp1="./dem-3d-release-tbb 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 2"
-exp2="./dem-3d-release-tbb 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 3"
-exp3="./dem-3d-release-tbb 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 4"
-exp4="./dem-3d-release-tbb 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 6"
-exp5="./dem-3d-release-tbb 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 8"
-exp6="./dem-3d-release-tbb 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 16"
+exp0="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 1"
+exp1="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 2"
+exp2="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 3"
+exp3="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 4"
+exp4="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 6"
+exp5="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 8"
+exp6="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20 16"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

@@ -21,13 +21,13 @@ exp4o=/scratch/rfmw74/reluctantG4hybrid-on-trianglesTBBOMPTRIANGLE6_20
 exp5o=/scratch/rfmw74/reluctantG4hybrid-on-trianglesTBBOMPTRIANGLE8_20
 exp6o=/scratch/rfmw74/reluctantG4hybrid-on-trianglesTBBOMPTRIANGLE16_20
 
-exp0="./dem-3d-release-tbb-omp-triangle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
-exp1="./dem-3d-release-tbb-omp-triangle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
-exp2="./dem-3d-release-tbb-omp-triangle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
-exp3="./dem-3d-release-tbb-omp-triangle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
-exp4="./dem-3d-release-tbb-omp-triangle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
-exp5="./dem-3d-release-tbb-omp-triangle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
-exp6="./dem-3d-release-tbb-omp-triangle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
+exp0="./dem-3d-release-tbb-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
+exp1="./dem-3d-release-tbb-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
+exp2="./dem-3d-release-tbb-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
+exp3="./dem-3d-release-tbb-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
+exp4="./dem-3d-release-tbb-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
+exp5="./dem-3d-release-tbb-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
+exp6="./dem-3d-release-tbb-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 20"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

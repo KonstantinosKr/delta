@@ -1,8 +1,8 @@
  0.000237942  16:24:02     [cn6044]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[vertex] the free tag 1
- 0.000357866  16:24:02     [cn6044]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell] the free tag 2
- 0.000371695  16:24:02     [cn6044]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell-marker] the free tag 3
+ 0.0.357866  16:24:02     [cn6044]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell] the free tag 2
+ 0.0.371695  16:24:02     [cn6044]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell-marker] the free tag 3
  0.000683308  16:24:02     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "dem.tests" .... ok
- 0.000703335  16:24:02     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "dem"  ok
+ 0.000.3335  16:24:02     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "dem"  ok
  0.000717163  16:24:02     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.datatraversal.tests" .... ok
  0.000726938  16:24:02     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.datatraversal"  ok
  0.000819921  16:24:02     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.grid.tests" .................... ok
@@ -143,7 +143,7 @@
  42.3713      16:24:44     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=114, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  42.5915      16:24:45     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=115, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  42.8106      16:24:45     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=116, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 43.0303      16:24:45     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=117, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 43.0.3      16:24:45     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=117, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  43.249       16:24:45     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=118, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  43.4689      16:24:45     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=119, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  43.6874      16:24:46     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=120, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -601,7 +601,7 @@
  139.411      16:26:21     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=572, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  139.618      16:26:22     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=573, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  139.825      16:26:22     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=574, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 140.034      16:26:22     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=575, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 140.34      16:26:22     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=575, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  140.24       16:26:22     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=576, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  140.448      16:26:22     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=577, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  140.655      16:26:23     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=578, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -1583,8 +1583,8 @@
  359.244      16:30:01     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1554, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=48440, t=0, dt=0.0001
  359.777      16:30:02     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1555, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=48382, t=0, dt=0.0001
  360.307      16:30:02     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1556, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=48440, t=0, dt=0.0001
- 360.838      16:30:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1557, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=47816, t=0, dt=0.0001
- 361.368      16:30:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1558, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=48440, t=0, dt=0.0001
+ 360.838      16:30.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1557, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=47816, t=0, dt=0.0001
+ 361.368      16:30.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1558, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=48440, t=0, dt=0.0001
  361.902      16:30:04     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1559, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=48382, t=0, dt=0.0001
  362.432      16:30:04     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1560, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=48440, t=0, dt=0.0001
  362.963      16:30:05     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1561, reassigns=0, triangle-cmp=4.53864e+06, grid-vertices=47816, t=0, dt=0.0001
@@ -2135,7 +2135,7 @@
  608.748      16:34:11     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2106, reassigns=0, triangle-cmp=2.21894e+06, grid-vertices=42062, t=0, dt=0.0001
  609.177      16:34:11     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2107, reassigns=1, triangle-cmp=2.19879e+06, grid-vertices=42062, t=0, dt=0.0001
  609.606      16:34:12     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2108, reassigns=0, triangle-cmp=2.21645e+06, grid-vertices=42062, t=0, dt=0.0001
- 610.036      16:34:12     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2109, reassigns=2, triangle-cmp=2.21645e+06, grid-vertices=42062, t=0, dt=0.0001
+ 610.36      16:34:12     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2109, reassigns=2, triangle-cmp=2.21645e+06, grid-vertices=42062, t=0, dt=0.0001
  610.465      16:34:12     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2110, reassigns=0, triangle-cmp=2.21645e+06, grid-vertices=42062, t=0, dt=0.0001
  610.895      16:34:13     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2111, reassigns=1, triangle-cmp=2.21645e+06, grid-vertices=42062, t=0, dt=0.0001
  611.324      16:34:13     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2112, reassigns=0, triangle-cmp=2.20032e+06, grid-vertices=42062, t=0, dt=0.0001
@@ -2422,27 +2422,27 @@
  784.381      16:37:06     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2393, reassigns=0, triangle-cmp=6.28058e+06, grid-vertices=40901, t=0, dt=0.0001
  784.963      16:37:07     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2394, reassigns=1, triangle-cmp=6.28209e+06, grid-vertices=40752, t=0, dt=0.0001
  785.545      16:37:08     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2395, reassigns=1, triangle-cmp=6.29898e+06, grid-vertices=40752, t=0, dt=0.0001
- 786.124      16:37:08     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2396, reassigns=0, triangle-cmp=6.24289e+06, grid-vertices=40703, t=0, dt=0.0001
+ 786.124      16:37:08     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2396, reassigns=0, triangle-cmp=6.24289e+06, grid-vertices=40.3, t=0, dt=0.0001
  786.704      16:37:09     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2397, reassigns=1, triangle-cmp=6.25978e+06, grid-vertices=40752, t=0, dt=0.0001
  787.283      16:37:09     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2398, reassigns=0, triangle-cmp=6.24289e+06, grid-vertices=40752, t=0, dt=0.0001
  787.864      16:37:10     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2399, reassigns=0, triangle-cmp=6.25978e+06, grid-vertices=40752, t=0, dt=0.0001
- 788.443      16:37:10     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2400, reassigns=0, triangle-cmp=6.24289e+06, grid-vertices=40703, t=0, dt=0.0001
+ 788.443      16:37:10     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2400, reassigns=0, triangle-cmp=6.24289e+06, grid-vertices=40.3, t=0, dt=0.0001
  789.024      16:37:11     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2401, reassigns=1, triangle-cmp=6.28994e+06, grid-vertices=40752, t=0, dt=0.0001
  789.604      16:37:12     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2402, reassigns=2, triangle-cmp=6.27305e+06, grid-vertices=40752, t=0, dt=0.0001
  790.184      16:37:12     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2403, reassigns=2, triangle-cmp=6.23928e+06, grid-vertices=40752, t=0, dt=0.0001
- 790.759      16:37:13     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2404, reassigns=2, triangle-cmp=6.11711e+06, grid-vertices=40703, t=0, dt=0.0001
+ 790.759      16:37:13     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2404, reassigns=2, triangle-cmp=6.11711e+06, grid-vertices=40.3, t=0, dt=0.0001
  791.337      16:37:13     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2405, reassigns=1, triangle-cmp=6.18651e+06, grid-vertices=40752, t=0, dt=0.0001
  791.913      16:37:14     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2406, reassigns=1, triangle-cmp=6.12439e+06, grid-vertices=40752, t=0, dt=0.0001
  792.489      16:37:14     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2407, reassigns=1, triangle-cmp=6.14127e+06, grid-vertices=40752, t=0, dt=0.0001
- 793.065      16:37:15     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2408, reassigns=0, triangle-cmp=6.12439e+06, grid-vertices=40703, t=0, dt=0.0001
+ 793.065      16:37:15     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2408, reassigns=0, triangle-cmp=6.12439e+06, grid-vertices=40.3, t=0, dt=0.0001
  793.641      16:37:16     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2409, reassigns=0, triangle-cmp=6.14127e+06, grid-vertices=40752, t=0, dt=0.0001
  794.217      16:37:16     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2410, reassigns=0, triangle-cmp=6.12439e+06, grid-vertices=40752, t=0, dt=0.0001
  794.794      16:37:17     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2411, reassigns=0, triangle-cmp=6.14127e+06, grid-vertices=40752, t=0, dt=0.0001
- 795.37       16:37:17     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2412, reassigns=1, triangle-cmp=6.15869e+06, grid-vertices=40703, t=0, dt=0.0001
+ 795.37       16:37:17     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2412, reassigns=1, triangle-cmp=6.15869e+06, grid-vertices=40.3, t=0, dt=0.0001
  795.948      16:37:18     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2413, reassigns=0, triangle-cmp=6.14127e+06, grid-vertices=40752, t=0, dt=0.0001
  796.523      16:37:18     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2414, reassigns=1, triangle-cmp=6.12439e+06, grid-vertices=40752, t=0, dt=0.0001
  797.099      16:37:19     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2415, reassigns=2, triangle-cmp=6.12102e+06, grid-vertices=40752, t=0, dt=0.0001
- 797.674      16:37:20     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2416, reassigns=0, triangle-cmp=6.10413e+06, grid-vertices=40703, t=0, dt=0.0001
+ 797.674      16:37:20     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2416, reassigns=0, triangle-cmp=6.10413e+06, grid-vertices=40.3, t=0, dt=0.0001
  798.25       16:37:20     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2417, reassigns=1, triangle-cmp=6.12102e+06, grid-vertices=40752, t=0, dt=0.0001
  798.826      16:37:21     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2418, reassigns=2, triangle-cmp=6.13683e+06, grid-vertices=40752, t=0, dt=0.0001
  799.401      16:37:21     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2419, reassigns=1, triangle-cmp=6.06348e+06, grid-vertices=40716, t=0, dt=0.0001
@@ -2703,7 +2703,7 @@
  958.447      16:40:00     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2674, reassigns=1, triangle-cmp=1.10301e+07, grid-vertices=44806, t=0, dt=0.0001
  959.226      16:40:01     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2675, reassigns=0, triangle-cmp=1.09833e+07, grid-vertices=44835, t=0, dt=0.0001
  960.003      16:40:02     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2676, reassigns=2, triangle-cmp=1.09564e+07, grid-vertices=44884, t=0, dt=0.0001
- 960.78       16:40:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2677, reassigns=1, triangle-cmp=1.0885e+07, grid-vertices=44884, t=0, dt=0.0001
+ 960.78       16:40.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2677, reassigns=1, triangle-cmp=1.0885e+07, grid-vertices=44884, t=0, dt=0.0001
  961.555      16:40:04     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2678, reassigns=2, triangle-cmp=1.0898e+07, grid-vertices=44806, t=0, dt=0.0001
  962.329      16:40:04     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2679, reassigns=1, triangle-cmp=1.0806e+07, grid-vertices=44835, t=0, dt=0.0001
  963.1        16:40:05     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2680, reassigns=2, triangle-cmp=1.07955e+07, grid-vertices=44884, t=0, dt=0.0001
@@ -2986,7 +2986,7 @@
  1176.16      16:43:38     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2957, reassigns=4, triangle-cmp=1.10588e+07, grid-vertices=42264, t=0, dt=0.0001
  1176.96      16:43:39     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2958, reassigns=1, triangle-cmp=1.1068e+07, grid-vertices=42076, t=0, dt=0.0001
  1177.76      16:43:40     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2959, reassigns=1, triangle-cmp=1.11386e+07, grid-vertices=42044, t=0, dt=0.0001
- 1178.55      16:43:41     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2960, reassigns=1, triangle-cmp=1.10503e+07, grid-vertices=42056, t=0, dt=0.0001
+ 1178.55      16:43:41     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2960, reassigns=1, triangle-cmp=1.10.3e+07, grid-vertices=42056, t=0, dt=0.0001
  1179.35      16:43:41     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2961, reassigns=1, triangle-cmp=1.11386e+07, grid-vertices=42040, t=0, dt=0.0001
  1180.14      16:43:42     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2962, reassigns=0, triangle-cmp=1.10489e+07, grid-vertices=41792, t=0, dt=0.0001
  1180.94      16:43:43     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2963, reassigns=0, triangle-cmp=1.11196e+07, grid-vertices=41943, t=0, dt=0.0001
@@ -3387,7 +3387,7 @@
  1558.22      16:50:00     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3358, reassigns=5, triangle-cmp=1.61006e+07, grid-vertices=37191, t=0, dt=0.0001
  1559.15      16:50:01     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3359, reassigns=0, triangle-cmp=1.60072e+07, grid-vertices=37191, t=0, dt=0.0001
  1560.08      16:50:02     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3360, reassigns=0, triangle-cmp=1.59541e+07, grid-vertices=36907, t=0, dt=0.0001
- 1561.01      16:50:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3361, reassigns=2, triangle-cmp=1.58756e+07, grid-vertices=36907, t=0, dt=0.0001
+ 1561.01      16:50.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3361, reassigns=2, triangle-cmp=1.58756e+07, grid-vertices=36907, t=0, dt=0.0001
  1561.93      16:50:04     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3362, reassigns=1, triangle-cmp=1.58908e+07, grid-vertices=36907, t=0, dt=0.0001
  1562.86      16:50:05     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3363, reassigns=1, triangle-cmp=1.59439e+07, grid-vertices=36907, t=0, dt=0.0001
  1563.85      16:50:06     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3364, reassigns=68, triangle-cmp=1.78291e+07, grid-vertices=36907, t=0, dt=0.0001
@@ -3419,7 +3419,7 @@
  1596.35      16:50:38     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3390, reassigns=6, triangle-cmp=2.4874e+07, grid-vertices=39945, t=0, dt=0.0001
  1597.58      16:50:40     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3391, reassigns=4, triangle-cmp=2.5025e+07, grid-vertices=39820, t=0, dt=0.0001
  1598.82      16:50:41     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3392, reassigns=3, triangle-cmp=2.5018e+07, grid-vertices=39768, t=0, dt=0.0001
- 1600.05      16:50:42     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3393, reassigns=3, triangle-cmp=2.50503e+07, grid-vertices=39662, t=0, dt=0.0001
+ 1600.05      16:50:42     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3393, reassigns=3, triangle-cmp=2.50.3e+07, grid-vertices=39662, t=0, dt=0.0001
  1601.28      16:50:43     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3394, reassigns=5, triangle-cmp=2.47586e+07, grid-vertices=39708, t=0, dt=0.0001
  1602.51      16:50:44     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3395, reassigns=0, triangle-cmp=2.49251e+07, grid-vertices=39708, t=0, dt=0.0001
  1603.73      16:50:46     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3396, reassigns=2, triangle-cmp=2.4775e+07, grid-vertices=39648, t=0, dt=0.0001
@@ -3475,7 +3475,7 @@
  1664.44      16:51:46     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3446, reassigns=2, triangle-cmp=2.4103e+07, grid-vertices=38665, t=0, dt=0.0001
  1665.64      16:51:48     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3447, reassigns=3, triangle-cmp=2.43278e+07, grid-vertices=38665, t=0, dt=0.0001
  1666.83      16:51:49     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3448, reassigns=3, triangle-cmp=2.40585e+07, grid-vertices=38593, t=0, dt=0.0001
- 1668.02      16:51:50     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3449, reassigns=3, triangle-cmp=2.40003e+07, grid-vertices=38547, t=0, dt=0.0001
+ 1668.02      16:51:50     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3449, reassigns=3, triangle-cmp=2.40.3e+07, grid-vertices=38547, t=0, dt=0.0001
  1669.2       16:51:51     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3450, reassigns=2, triangle-cmp=2.38954e+07, grid-vertices=38593, t=0, dt=0.0001
  1670.39      16:51:52     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3451, reassigns=5, triangle-cmp=2.39693e+07, grid-vertices=38593, t=0, dt=0.0001
  1671.57      16:51:54     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3452, reassigns=4, triangle-cmp=2.3708e+07, grid-vertices=38593, t=0, dt=0.0001
@@ -3616,7 +3616,7 @@
  1828.54      16:54:31     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3587, reassigns=3, triangle-cmp=2.20425e+07, grid-vertices=41659, t=0, dt=0.0001
  1829.71      16:54:32     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3588, reassigns=4, triangle-cmp=2.19671e+07, grid-vertices=40983, t=0, dt=0.0001
  1830.88      16:54:33     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3589, reassigns=1, triangle-cmp=2.20656e+07, grid-vertices=40983, t=0, dt=0.0001
- 1832.05      16:54:34     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3590, reassigns=4, triangle-cmp=2.20203e+07, grid-vertices=40791, t=0, dt=0.0001
+ 1832.05      16:54:34     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3590, reassigns=4, triangle-cmp=2.20.3e+07, grid-vertices=40791, t=0, dt=0.0001
  1833.22      16:54:35     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3591, reassigns=3, triangle-cmp=2.21187e+07, grid-vertices=40757, t=0, dt=0.0001
  1834.39      16:54:36     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3592, reassigns=4, triangle-cmp=2.1934e+07, grid-vertices=40870, t=0, dt=0.0001
  1835.56      16:54:38     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3593, reassigns=5, triangle-cmp=2.2053e+07, grid-vertices=40821, t=0, dt=0.0001
@@ -3715,7 +3715,7 @@
  1945.29      16:56:27     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3686, reassigns=51, triangle-cmp=2.41658e+07, grid-vertices=41872, t=0, dt=0.0001
  1946.75      16:56:29     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3687, reassigns=197, triangle-cmp=3.04936e+07, grid-vertices=43244, t=0, dt=0.0001
  1948.25      16:56:30     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3688, reassigns=31, triangle-cmp=3.07646e+07, grid-vertices=46637, t=0, dt=0.0001
- 1949.77      16:56:32     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3689, reassigns=14, triangle-cmp=3.0703e+07, grid-vertices=48010, t=0, dt=0.0001
+ 1949.77      16:56:32     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3689, reassigns=14, triangle-cmp=3.0.3e+07, grid-vertices=48010, t=0, dt=0.0001
  1951.28      16:56:33     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3690, reassigns=4, triangle-cmp=3.06483e+07, grid-vertices=48233, t=0, dt=0.0001
  1952.78      16:56:35     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3691, reassigns=9, triangle-cmp=3.06401e+07, grid-vertices=47409, t=0, dt=0.0001
  1954.26      16:56:36     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3692, reassigns=2, triangle-cmp=3.02952e+07, grid-vertices=46715, t=0, dt=0.0001
@@ -3854,7 +3854,7 @@
  2157.06      16:59:59     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3825, reassigns=0, triangle-cmp=3.15253e+07, grid-vertices=38654, t=0, dt=0.0001
  2158.53      17:00:00     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3826, reassigns=2, triangle-cmp=3.13035e+07, grid-vertices=38771, t=0, dt=0.0001
  2160.01      17:00:02     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3827, reassigns=5, triangle-cmp=3.15251e+07, grid-vertices=38639, t=0, dt=0.0001
- 2161.48      17:00:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3828, reassigns=7, triangle-cmp=3.11986e+07, grid-vertices=39102, t=0, dt=0.0001
+ 2161.48      17:00.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3828, reassigns=7, triangle-cmp=3.11986e+07, grid-vertices=39102, t=0, dt=0.0001
  2162.95      17:00:05     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3829, reassigns=5, triangle-cmp=3.13249e+07, grid-vertices=38641, t=0, dt=0.0001
  2164.43      17:00:06     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3830, reassigns=4, triangle-cmp=3.13317e+07, grid-vertices=38431, t=0, dt=0.0001
  2165.87      17:00:08     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=3831, reassigns=1, triangle-cmp=3.14649e+07, grid-vertices=38074, t=0, dt=0.0001
@@ -4232,7 +4232,7 @@
  2756.04      17:09:58     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4203, reassigns=6, triangle-cmp=3.78574e+07, grid-vertices=36761, t=0, dt=0.0001
  2757.66      17:10:00     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4204, reassigns=6, triangle-cmp=3.78437e+07, grid-vertices=36857, t=0, dt=0.0001
  2759.27      17:10:01     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4205, reassigns=5, triangle-cmp=3.76783e+07, grid-vertices=36797, t=0, dt=0.0001
- 2760.89      17:10:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4206, reassigns=8, triangle-cmp=3.75479e+07, grid-vertices=36655, t=0, dt=0.0001
+ 2760.89      17:10.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4206, reassigns=8, triangle-cmp=3.75479e+07, grid-vertices=36655, t=0, dt=0.0001
  2762.5       17:10:04     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4207, reassigns=4, triangle-cmp=3.75836e+07, grid-vertices=36340, t=0, dt=0.0001
  2764.1       17:10:06     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4208, reassigns=5, triangle-cmp=3.74364e+07, grid-vertices=35950, t=0, dt=0.0001
  2765.7       17:10:08     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4209, reassigns=4, triangle-cmp=3.74643e+07, grid-vertices=35958, t=0, dt=0.0001
@@ -4390,7 +4390,7 @@
  3048.58      17:14:51     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4361, reassigns=8, triangle-cmp=4.63338e+07, grid-vertices=40184, t=0, dt=0.0001
  3050.5       17:14:52     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4362, reassigns=6, triangle-cmp=4.63569e+07, grid-vertices=40014, t=0, dt=0.0001
  3052.42      17:14:54     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4363, reassigns=2, triangle-cmp=4.62486e+07, grid-vertices=40091, t=0, dt=0.0001
- 3054.35      17:14:56     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4364, reassigns=12, triangle-cmp=4.66715e+07, grid-vertices=40103, t=0, dt=0.0001
+ 3054.35      17:14:56     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4364, reassigns=12, triangle-cmp=4.66715e+07, grid-vertices=40.3, t=0, dt=0.0001
  3056.26      17:14:58     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4365, reassigns=5, triangle-cmp=4.61712e+07, grid-vertices=40140, t=0, dt=0.0001
  3058.18      17:15:00     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4366, reassigns=4, triangle-cmp=4.62427e+07, grid-vertices=39999, t=0, dt=0.0001
  3060.11      17:15:02     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4367, reassigns=6, triangle-cmp=4.61503e+07, grid-vertices=40369, t=0, dt=0.0001
@@ -4413,7 +4413,7 @@
  3092         17:15:34     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4384, reassigns=8, triangle-cmp=4.40099e+07, grid-vertices=39754, t=0, dt=0.0001
  3093.86      17:15:36     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4385, reassigns=1, triangle-cmp=4.39028e+07, grid-vertices=40710, t=0, dt=0.0001
  3095.71      17:15:38     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4386, reassigns=6, triangle-cmp=4.37729e+07, grid-vertices=40314, t=0, dt=0.0001
- 3097.57      17:15:40     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4387, reassigns=7, triangle-cmp=4.36911e+07, grid-vertices=40403, t=0, dt=0.0001
+ 3097.57      17:15:40     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4387, reassigns=7, triangle-cmp=4.36911e+07, grid-vertices=40.3, t=0, dt=0.0001
  3099.4       17:15:41     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4388, reassigns=4, triangle-cmp=4.35458e+07, grid-vertices=39003, t=0, dt=0.0001
  3101.24      17:15:43     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4389, reassigns=4, triangle-cmp=4.35155e+07, grid-vertices=39744, t=0, dt=0.0001
  3103.07      17:15:45     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4390, reassigns=1, triangle-cmp=4.33216e+07, grid-vertices=39559, t=0, dt=0.0001
@@ -4559,7 +4559,7 @@
  3355.61      17:19:58     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4530, reassigns=17, triangle-cmp=4.357e+07, grid-vertices=37341, t=0, dt=0.0001
  3357.44      17:19:59     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4531, reassigns=5, triangle-cmp=4.34391e+07, grid-vertices=37924, t=0, dt=0.0001
  3359.26      17:20:01     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4532, reassigns=2, triangle-cmp=4.35712e+07, grid-vertices=37767, t=0, dt=0.0001
- 3361.11      17:20:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4533, reassigns=1, triangle-cmp=4.35245e+07, grid-vertices=37600, t=0, dt=0.0001
+ 3361.11      17:20.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4533, reassigns=1, triangle-cmp=4.35245e+07, grid-vertices=37600, t=0, dt=0.0001
  3362.94      17:20:05     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4534, reassigns=9, triangle-cmp=4.36417e+07, grid-vertices=36947, t=0, dt=0.0001
  3364.76      17:20:07     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4535, reassigns=11, triangle-cmp=4.34416e+07, grid-vertices=36900, t=0, dt=0.0001
  3366.6       17:20:09     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4536, reassigns=10, triangle-cmp=4.36445e+07, grid-vertices=37256, t=0, dt=0.0001
@@ -4853,7 +4853,7 @@
  3884.65      17:28:47     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4824, reassigns=6, triangle-cmp=4.31722e+07, grid-vertices=33894, t=0, dt=0.0001
  3886.44      17:28:48     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4825, reassigns=4, triangle-cmp=4.3151e+07, grid-vertices=34085, t=0, dt=0.0001
  3888.23      17:28:50     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4826, reassigns=8, triangle-cmp=4.32097e+07, grid-vertices=34330, t=0, dt=0.0001
- 3890.03      17:28:52     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4827, reassigns=3, triangle-cmp=4.33125e+07, grid-vertices=34415, t=0, dt=0.0001
+ 3890.3      17:28:52     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4827, reassigns=3, triangle-cmp=4.33125e+07, grid-vertices=34415, t=0, dt=0.0001
  3891.81      17:28:54     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4828, reassigns=6, triangle-cmp=4.31387e+07, grid-vertices=34350, t=0, dt=0.0001
  3893.6       17:28:56     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4829, reassigns=11, triangle-cmp=4.29907e+07, grid-vertices=33981, t=0, dt=0.0001
  3895.37      17:28:57     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4830, reassigns=4, triangle-cmp=4.28431e+07, grid-vertices=33826, t=0, dt=0.0001
@@ -4893,7 +4893,7 @@
  3955.56      17:29:58     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4864, reassigns=5, triangle-cmp=4.21866e+07, grid-vertices=33744, t=0, dt=0.0001
  3957.33      17:29:59     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4865, reassigns=5, triangle-cmp=4.24155e+07, grid-vertices=33822, t=0, dt=0.0001
  3959.09      17:30:01     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4866, reassigns=5, triangle-cmp=4.231e+07, grid-vertices=33578, t=0, dt=0.0001
- 3960.85      17:30:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4867, reassigns=5, triangle-cmp=4.25265e+07, grid-vertices=33479, t=0, dt=0.0001
+ 3960.85      17:30.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4867, reassigns=5, triangle-cmp=4.25265e+07, grid-vertices=33479, t=0, dt=0.0001
  3962.6       17:30:05     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4868, reassigns=3, triangle-cmp=4.22975e+07, grid-vertices=33419, t=0, dt=0.0001
  3964.35      17:30:06     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4869, reassigns=6, triangle-cmp=4.21522e+07, grid-vertices=33497, t=0, dt=0.0001
  3966.1       17:30:08     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=4870, reassigns=7, triangle-cmp=4.21326e+07, grid-vertices=33419, t=0, dt=0.0001

@@ -424,7 +424,7 @@
  188.681      15:06:12     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=395, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  189.132      15:06:12     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=396, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  189.585      15:06:13     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=397, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 190.036      15:06:13     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=398, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 190.36      15:06:13     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=398, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  190.487      15:06:13     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=399, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  190.939      15:06:14     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=400, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  191.391      15:06:14     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=401, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -536,7 +536,7 @@
  238.685      15:07:02     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=507, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  239.13       15:07:02     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=508, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  239.577      15:07:03     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=509, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 240.031      15:07:03     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=510, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 240.31      15:07:03     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=510, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  240.478      15:07:03     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=511, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  240.923      15:07:04     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=512, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  241.367      15:07:04     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=513, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -939,9 +939,9 @@
  418.285      15:10:01     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=910, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  418.732      15:10:02     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=911, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  419.18       15:10:02     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=912, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 419.626      15:10:03     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=913, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 420.073      15:10:03     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=914, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 420.521      15:10:03     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=915, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 419.626      15:10.3     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=913, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 420.073      15:10.3     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=914, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 420.521      15:10.3     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=915, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  420.967      15:10:04     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=916, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  421.413      15:10:04     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=917, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  421.859      15:10:05     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=918, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -1691,7 +1691,7 @@
  975.853      15:19:19     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1662, reassigns=0, triangle-cmp=105672, grid-vertices=46534, t=0, dt=0.0001
  977.246      15:19:20     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1663, reassigns=4, triangle-cmp=105672, grid-vertices=46534, t=0, dt=0.0001
  978.643      15:19:22     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1664, reassigns=11, triangle-cmp=107644, grid-vertices=46534, t=0, dt=0.0001
- 980.034      15:19:23     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1665, reassigns=0, triangle-cmp=107644, grid-vertices=46329, t=0, dt=0.0001
+ 980.34      15:19:23     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1665, reassigns=0, triangle-cmp=107644, grid-vertices=46329, t=0, dt=0.0001
  981.432      15:19:24     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1666, reassigns=0, triangle-cmp=107644, grid-vertices=46534, t=0, dt=0.0001
  982.83       15:19:26     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1667, reassigns=0, triangle-cmp=107644, grid-vertices=46534, t=0, dt=0.0001
  984.222      15:19:27     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1668, reassigns=2, triangle-cmp=105980, grid-vertices=46534, t=0, dt=0.0001
@@ -1720,7 +1720,7 @@
  1016.23      15:19:59     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1691, reassigns=0, triangle-cmp=93520, grid-vertices=46534, t=0, dt=0.0001
  1017.62      15:20:01     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1692, reassigns=1, triangle-cmp=93520, grid-vertices=46534, t=0, dt=0.0001
  1018.98      15:20:02     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1693, reassigns=0, triangle-cmp=94480, grid-vertices=46329, t=0, dt=0.0001
- 1020.35      15:20:03     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1694, reassigns=0, triangle-cmp=94480, grid-vertices=46534, t=0, dt=0.0001
+ 1020.35      15:20.3     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1694, reassigns=0, triangle-cmp=94480, grid-vertices=46534, t=0, dt=0.0001
  1021.72      15:20:05     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1695, reassigns=0, triangle-cmp=94480, grid-vertices=46534, t=0, dt=0.0001
  1023.08      15:20:06     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1696, reassigns=0, triangle-cmp=94480, grid-vertices=46534, t=0, dt=0.0001
  1024.45      15:20:07     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1697, reassigns=0, triangle-cmp=94480, grid-vertices=46329, t=0, dt=0.0001
@@ -2132,7 +2132,7 @@
  1575.76      15:29:19     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2103, reassigns=0, triangle-cmp=122760, grid-vertices=45471, t=0, dt=0.0001
  1577.18      15:29:20     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2104, reassigns=0, triangle-cmp=122760, grid-vertices=45471, t=0, dt=0.0001
  1578.61      15:29:22     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2105, reassigns=0, triangle-cmp=122760, grid-vertices=45393, t=0, dt=0.0001
- 1580.03      15:29:23     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2106, reassigns=1, triangle-cmp=122760, grid-vertices=45471, t=0, dt=0.0001
+ 1580.3      15:29:23     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2106, reassigns=1, triangle-cmp=122760, grid-vertices=45471, t=0, dt=0.0001
  1581.46      15:29:24     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2107, reassigns=1, triangle-cmp=122760, grid-vertices=45471, t=0, dt=0.0001
  1582.88      15:29:26     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2108, reassigns=0, triangle-cmp=122760, grid-vertices=45322, t=0, dt=0.0001
  1584.3       15:29:27     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2109, reassigns=3, triangle-cmp=122760, grid-vertices=45244, t=0, dt=0.0001
@@ -2186,8 +2186,8 @@
  1657.71      15:30:41     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2157, reassigns=1, triangle-cmp=280168, grid-vertices=48011, t=0, dt=0.0001
  1659.31      15:30:42     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2158, reassigns=1, triangle-cmp=278288, grid-vertices=48040, t=0, dt=0.0001
  1660.9       15:30:44     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2159, reassigns=1, triangle-cmp=277336, grid-vertices=48040, t=0, dt=0.0001
- 1662.49      15:30:45     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2160, reassigns=0, t*** glibc detected *** /panfs/panasas1.hpc.dur.ac.uk/rfmw74/delta/delta_peano/penalty/./dem-3d-release-omp-particle: free(): corrupted unsorted chunks: 0x0000000003597f40 ***
-*** glibc detected *** /panfs/panasas1.hpc.dur.ac.uk/rfmw74/delta/delta_peano/penalty/./dem-3d-release-omp-particle: free(): corrupted unsorted chunks: 0x000000000313d9c0 ***
+ 1662.49      15:30:45     [cn6059]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=2160, reassigns=0, t*** glibc detected *** /panfs/panasas1.hpc.dur.ac.uk/rfmw74/delta/delta_peano/penalty/./dem-3d-release-omp-particle: free(): corrupted unsorted chunks: 0x0000000.3597f40 ***
+*** glibc detected *** /panfs/panasas1.hpc.dur.ac.uk/rfmw74/delta/delta_peano/penalty/./dem-3d-release-omp-particle: free(): corrupted unsorted chunks: 0x0000000.313d9c0 ***
 ======= Backtrace: =========
 ======= Backtrace: =========
 /lib64/libc.so.6(+0x75f4e)[0x7f94a90cdf4e]
@@ -2228,7 +2228,7 @@
 00400000-00784000 r-xp 00000000 00:21 1620829826                         /panfs/panasas1.hpc.dur.ac.uk/rfmw74/delta/delta_peano/penalty/dem-3d-release-omp-particle
 00983000-0098a000 rw-p 00383000 00:21 1620829826                         /panfs/panasas1.hpc.dur.ac.uk/rfmw74/delta/delta_peano/penalty/dem-3d-release-omp-particle
 0098a000-0098d000 rw-p 00000000 00:00 0 
-02772000-03f42000 rw-p 00000000 00:00 0                                  [heap]
+02772000.3f42000 rw-p 00000000 00:00 0                                  [heap]
 7f9494000000-7f9494021000 rw-p 00000000 00:00 0 
 7f9494021000-7f9498000000 ---p 00000000 00:00 0 
 7f9498000000-7f9498021000 rw-p 00000000 00:00 0 
@@ -2247,7 +2247,7 @@
 7f94a8e54000-7f94a8e56000 r-xp 00000000 00:12 35629                      /lib64/libdl-2.12.so
 7f94a8e56000-7f94a9056000 ---p 00002000 00:12 35629                      /lib64/libdl-2.12.so
 7f94a9056000-7f94a9057000 r--p 00002000 00:12 35629                      /lib64/libdl-2.12.so
-7f94a9057000-7f94a9058000 rw-p 00003000 00:12 35629                      /lib64/libdl-2.12.so
+7f94a9057000-7f94a9058000 rw-p 00.3000 00:12 35629                      /lib64/libdl-2.12.so
 7f94a9058000-7f94a91e2000 r-xp 00000000 00:12 35482                      /lib64/libc-2.12.so
 7f94a91e2000-7f94a93e2000 ---p 0018a000 00:12 35482                      /lib64/libc-2.12.so
 7f94a93e2000-7f94a93e6000 r--p 0018a000 00:12 35482                      /lib64/libc-2.12.so
@@ -2264,8 +2264,8 @@
 7f94a97f8000-7f94a97ff000 rw-p 000ef000 00:18 29442219                   /gpfs/hamilton6/apps/intel/xe_2015/advisor_xe_2015.1.10.380555/lib64/libstdc++.so.6.0.12
 7f94a97ff000-7f94a9814000 rw-p 00000000 00:00 0 
 7f94a9814000-7f94a9917000 r-xp 00000000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
-7f94a9917000-7f94a9b17000 ---p 00103000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
-7f94a9b17000-7f94a9b18000 r--p 00103000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
+7f94a9917000-7f94a9b17000 ---p 00.3000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
+7f94a9b17000-7f94a9b18000 r--p 00.3000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
 7f94a9b18000-7f94a9b23000 rw-p 00104000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
 7f94a9b23000-7f94a9b50000 rw-p 00000000 00:00 0 
 7f94a9b50000-7f94a9bd3000 r-xp 00000000 00:12 35404                      /lib64/libm-2.12.so
@@ -2276,7 +2276,7 @@
 00400000-00784000 r-xp 00000000 00:21 1620829826                         /panfs/panasas1.hpc.dur.ac.uk/rfmw74/delta/delta_peano/penalty/dem-3d-release-omp-particle
 00983000-0098a000 rw-p 00383000 00:21 1620829826                         /panfs/panasas1.hpc.dur.ac.uk/rfmw74/delta/delta_peano/penalty/dem-3d-release-omp-particle
 0098a000-0098d000 rw-p 00000000 00:00 0 
-02772000-03f42000 rw-p 00000000 00:00 0                                  [heap]
+02772000.3f42000 rw-p 00000000 00:00 0                                  [heap]
 7f9494000000-7f9494021000 rw-p 00000000 00:00 0 
 7f9494021000-7f9498000000 ---p 00000000 00:00 0 
 7f9498000000-7f9498021000 rw-p 00000000 00:00 0 
@@ -2302,7 +2302,7 @@
 7f94a8e54000-7f94a8e56000 r-xp 00000000 00:12 35629                      /lib64/libdl-2.12.so
 7f94a8e56000-7f94a9056000 ---p 00002000 00:12 35629                      /lib64/libdl-2.12.so
 7f94a9056000-7f94a9057000 r--p 00002000 00:12 35629                      /lib64/libdl-2.12.so
-7f94a9057000-7f94a9058000 rw-p 00003000 00:12 35629                      /lib64/libdl-2.12.so
+7f94a9057000-7f94a9058000 rw-p 00.3000 00:12 35629                      /lib64/libdl-2.12.so
 7f94a9058000-7f94a91e2000 r-xp 00000000 00:12 35482                      /lib64/libc-2.12.so
 7f94a91e2000-7f94a93e2000 ---p 0018a000 00:12 35482                      /lib64/libc-2.12.so
 7f94a93e2000-7f94a93e6000 r--p 0018a000 00:12 35482                      /lib64/libc-2.12.so
@@ -2329,8 +2329,8 @@ riangle-cmp=277336, grid-vertices=48089, t=0, dt=0.0001
 7f94a97f8000-7f94a97ff000 rw-p 000ef000 00:18 29442219                   /gpfs/hamilton6/apps/intel/xe_2015/advisor_xe_2015.1.10.380555/lib64/libstdc++.so.6.0.12
 7f94a97ff000-7f94a9814000 rw-p 00000000 00:00 0 
 7f94a9814000-7f94a9917000 r-xp 00000000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
-7f94a9917000-7f94a9b17000 ---p 00103000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
-7f94a9b17000-7f94a9b18000 r--p 00103000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
+7f94a9917000-7f94a9b17000 ---p 00.3000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
+7f94a9b17000-7f94a9b18000 r--p 00.3000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
 7f94a9b18000-7f94a9b23000 rw-p 00104000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
 7f94a9b23000-7f94a9b50000 rw-p 00000000 00:00 0 
 7f94a9b50000-7f94a9bd3000 r-xp 00000000 00:12 35404                      /lib64/libm-2.12.so

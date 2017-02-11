@@ -13,11 +13,11 @@ exp2o=/scratch/rfmw74/reluctantPenalty-4THREADS
 exp3o=/scratch/rfmw74/reluctantHtriangles-4THREADS
 exp4o=/scratch/rfmw74/reluctantHbatches-4THREADS
 
-exp0="amplxe-cl -r /scratch/rfmw74/proreluctantSphere-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 sphere 200"
-exp1="amplxe-cl -r /scratch/rfmw74/proReluctantBf-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 bf 200"
-exp2="amplxe-cl -r /scratch/rfmw74/proReluctantPenalty-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 penalty 200"
-exp3="amplxe-cl -r /scratch/rfmw74/proReluctantHtriangles-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 200"
-exp4="amplxe-cl -r /scratch/rfmw74/proReluctantHbatches-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-batches 200"
+exp0="amplxe-cl -r /scratch/rfmw74/proreluctantSphere-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 sphere 200"
+exp1="amplxe-cl -r /scratch/rfmw74/proReluctantBf-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 bf 200"
+exp2="amplxe-cl -r /scratch/rfmw74/proReluctantPenalty-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 penalty 200"
+exp3="amplxe-cl -r /scratch/rfmw74/proReluctantHtriangles-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-triangle-pairs 200"
+exp4="amplxe-cl -r /scratch/rfmw74/proReluctantHbatches-4THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 1 10 hybrid-on-batches 200"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT} > ${JOB_SCRIPT}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT}_tmp > ${JOB_SCRIPT}_tmp1

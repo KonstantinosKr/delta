@@ -44,6 +44,14 @@ export TBB_SHLIB="-L/opt/intel/tbb/lib/ -ltbb"
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
 export PATH=/opt/intel/bin/:$PATH
 
+/opt/intel/compilers_and_libraries/mac/lib/
+
+Mac
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/
+export TBB_INC=-I/opt/intel/tbb/include/
+export TBB_SHLIB="-L/opt/intel/tbb/lib/ -ltbb"
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2017.1.126/mac/tbb/lib/
+
 
 desktop - Durham
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/intel64/gcc4.7/

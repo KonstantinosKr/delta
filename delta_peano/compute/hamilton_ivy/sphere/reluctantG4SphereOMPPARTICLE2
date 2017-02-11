@@ -69,7 +69,7 @@
  31.5587      21:58:28     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=40, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  32.3793      21:58:29     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=41, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  33.2074      21:58:30     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=42, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
- 34.0303      21:58:31     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=43, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
+ 34.0.3      21:58:31     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=43, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  34.8502      21:58:32     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=44, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  35.68        21:58:33     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=45, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  36.5035      21:58:33     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=46, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
@@ -183,7 +183,7 @@
  124.429      22:00:01     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=154, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  124.831      22:00:02     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=155, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  125.285      22:00:02     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=156, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
- 126.105      22:00:03     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=157, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
+ 126.105      22:00.3     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=157, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  126.922      22:00:04     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=158, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  127.749      22:00:05     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=159, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  128.566      22:00:05     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=160, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
@@ -1153,7 +1153,7 @@
  724.291      22:10:01     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1124, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  725.099      22:10:02     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1125, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  725.53       22:10:02     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1126, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
- 726.338      22:10:03     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1127, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
+ 726.338      22:10.3     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1127, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  727.146      22:10:04     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1128, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  727.843      22:10:05     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1129, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  728.65       22:10:06     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1130, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001

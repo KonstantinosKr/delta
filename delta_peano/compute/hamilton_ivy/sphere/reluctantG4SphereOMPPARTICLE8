@@ -14,7 +14,7 @@
  0.000935316  22:39:48     [cn6114]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "tarch"  ok
  0.000944376  22:39:48     [cn6114]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running global test case collection  ok
  0.00102258   22:39:48     [cn6114]rank:0 info         peano::utils::UserInterface::writeHeader()             
- 0.00103831   22:39:48     [cn6114]rank:0 info         peano::utils::UserInterface::writeHeader()              Application based upon the PDE framework Peano - 3rd Generation
+ 0.00.3831   22:39:48     [cn6114]rank:0 info         peano::utils::UserInterface::writeHeader()              Application based upon the PDE framework Peano - 3rd Generation
  0.00105      22:39:48     [cn6114]rank:0 info         peano::utils::UserInterface::writeHeader()              build: dim=3
  0.00105929   22:39:48     [cn6114]rank:0 info         peano::utils::UserInterface::writeHeader()              optimisations: d-loop persistent-attributes packed opt-static-subtrees recursion-unrolling 
  0.00106859   22:39:48     [cn6114]rank:0 info         peano::utils::UserInterface::writeHeader()              (C) 2005 - 2016   www.peano-framework.org
@@ -22,8 +22,8 @@
  0.00109124   22:39:48     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  create grid 
  0.00111628   22:39:48     [cn6114]rank:0 info         dem::mappings::CreateGrid::beginIteration()             maxH=0.3    
  0.0155702    22:39:48     [cn6114]rank:0 warning      dem::mappings::CreateGrid::createCell(...)              particle size has been too small for coarsest prescribed grid. Reduce particle size to 0.003-0.111111 (file:dem/mappings/CreateGrid.cpp,line:513)
- 0.0324984    22:39:48     [cn6114]rank:0 info         dem::mappings::CreateGrid::endIteration(State)          created 729 particles with 0 obstacles 0 triangles
- 0.032537     22:39:48     [cn6114]rank:0 info         dem::mappings::CreateGrid::beginIteration()             maxH=0.3    
+ 0.324984    22:39:48     [cn6114]rank:0 info         dem::mappings::CreateGrid::endIteration(State)          created 729 particles with 0 obstacles 0 triangles
+ 0.32537     22:39:48     [cn6114]rank:0 info         dem::mappings::CreateGrid::beginIteration()             maxH=0.3    
  0.0453625    22:39:48     [cn6114]rank:0 info         dem::mappings::CreateGrid::endIteration(State)          created 0 particles with 0 obstacles 0 triangles
  0.0453961    22:39:48     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  start time stepping
  0.0454144    22:39:48     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=0, reassigns=0, contact-points=0, particle-cmp=0, grid-vertices=1032 | snapshot
@@ -40,7 +40,7 @@
  11.6924      22:40:00     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=11, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  12.8366      22:40:01     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=12, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  13.9733      22:40:02     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=13, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
- 15.1176      22:40:03     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=14, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
+ 15.1176      22:40.3     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=14, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  16.2538      22:40:04     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=15, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  17.3928      22:40:05     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=16, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  18.5393      22:40:06     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=17, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
@@ -233,7 +233,7 @@
  236.503      22:43:44     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=204, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  237.68       22:43:46     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=205, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  238.858      22:43:47     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=206, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
- 240.037      22:43:48     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=207, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
+ 240.37      22:43:48     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=207, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  241.217      22:43:49     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=208, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  242.396      22:43:50     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=209, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  243.573      22:43:52     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=210, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
@@ -386,7 +386,7 @@
  416.506      22:46:44     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=357, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  417.68       22:46:46     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=358, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  418.856      22:46:47     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=359, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
- 420.031      22:46:48     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=360, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
+ 420.31      22:46:48     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=360, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  421.205      22:46:49     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=361, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  422.379      22:46:50     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=362, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  423.554      22:46:52     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=363, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
@@ -552,7 +552,7 @@
  611.543      22:49:59     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=523, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  612.718      22:50:01     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=524, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  613.893      22:50:02     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=525, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
- 615.071      22:50:03     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=526, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
+ 615.071      22:50.3     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=526, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  616.245      22:50:04     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=527, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  617.42       22:50:05     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=528, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  618.595      22:50:07     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=529, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
@@ -760,7 +760,7 @@
  856.491      22:54:04     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=731, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  857.668      22:54:06     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=732, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  858.851      22:54:07     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=733, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
- 860.031      22:54:08     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=734, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
+ 860.31      22:54:08     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=734, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  861.211      22:54:09     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=735, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  862.391      22:54:10     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=736, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  863.569      22:54:12     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=737, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
@@ -1173,7 +1173,7 @@
  1336.57      23:02:05     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1144, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  1337.72      23:02:06     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1145, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  1338.88      23:02:07     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1146, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
- 1340.03      23:02:08     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1147, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
+ 1340.3      23:02:08     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1147, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  1341.18      23:02:09     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1148, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  1342.34      23:02:10     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1149, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
  1343.49      23:02:11     [cn6114]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1150, reassigns=0, particle-cmp=729, grid-vertices=35672, t=0, dt=0.0001
@@ -1586,7 +1586,7 @@
 7faa92798000-7faa9279a000 r-xp 00000000 00:12 35684                      /lib64/libdl-2.12.so
 7faa9279a000-7faa9299a000 ---p 00002000 00:12 35684                      /lib64/libdl-2.12.so
 7faa9299a000-7faa9299b000 r--p 00002000 00:12 35684                      /lib64/libdl-2.12.so
-7faa9299b000-7faa9299c000 rw-p 00003000 00:12 35684                      /lib64/libdl-2.12.so
+7faa9299b000-7faa9299c000 rw-p 00.3000 00:12 35684                      /lib64/libdl-2.12.so
 7faa9299c000-7faa92b26000 r-xp 00000000 00:12 35537                      /lib64/libc-2.12.so
 7faa92b26000-7faa92d26000 ---p 0018a000 00:12 35537                      /lib64/libc-2.12.so
 7faa92d26000-7faa92d2a000 r--p 0018a000 00:12 35537                      /lib64/libc-2.12.so
@@ -1603,8 +1603,8 @@
 7faa9313c000-7faa93143000 rw-p 000ef000 00:18 29442219                   /gpfs/hamilton6/apps/intel/xe_2015/advisor_xe_2015.1.10.380555/lib64/libstdc++.so.6.0.12
 7faa93143000-7faa93158000 rw-p 00000000 00:00 0 
 7faa93158000-7faa9325b000 r-xp 00000000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
-7faa9325b000-7faa9345b000 ---p 00103000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
-7faa9345b000-7faa9345c000 r--p 00103000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
+7faa9325b000-7faa9345b000 ---p 00.3000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
+7faa9345b000-7faa9345c000 r--p 00.3000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
 7faa9345c000-7faa93467000 rw-p 00104000 00:18 31284517                   /gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/compiler/lib/intel64/libiomp5.so
 7faa93467000-7faa93494000 rw-p 00000000 00:00 0 
 7faa93494000-7faa93517000 r-xp 00000000 00:12 35459                      /lib64/libm-2.12.so

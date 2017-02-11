@@ -1,26 +1,26 @@
  0.000119686  14:52:31     [cn6044]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[vertex] the free tag 1
  0.000222683  14:52:31     [cn6044]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell] the free tag 2
  0.000236034  14:52:31     [cn6044]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell-marker] the free tag 3
- 0.03913      14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "dem.tests" .... ok
- 0.0391579    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "dem"  ok
- 0.0391746    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.datatraversal.tests" .... ok
- 0.039185     14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.datatraversal"  ok
- 0.0392451    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.grid.tests" .................... ok
- 0.0392594    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.grid"  ok
- 0.0393028    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.heap.tests" .. ok
- 0.0393147    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.heap"  ok
- 0.0393238    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano"  ok
- 0.0393581    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "tarch.la" ............ ok
- 0.0393691    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "tarch"  ok
- 0.0393779    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running global test case collection  ok
- 0.0394471    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()             
- 0.0394628    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              Application based upon the PDE framework Peano - 3rd Generation
- 0.0394742    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              build: dim=3
- 0.0394833    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              optimisations: d-loop persistent-attributes packed opt-static-subtrees recursion-unrolling 
- 0.0394921    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              (C) 2005 - 2016   www.peano-framework.org
- 0.0395014    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              processes: 1, threads: 1
- 0.0395136    14:52:31     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  create grid 
- 0.0395384    14:52:31     [cn6044]rank:0 info         dem::mappings::CreateGrid::beginIteration()             maxH=0.3    
+ 0.3913      14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "dem.tests" .... ok
+ 0.391579    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "dem"  ok
+ 0.391746    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.datatraversal.tests" .... ok
+ 0.39185     14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.datatraversal"  ok
+ 0.392451    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.grid.tests" .................... ok
+ 0.392594    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.grid"  ok
+ 0.393028    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.heap.tests" .. ok
+ 0.393147    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano.heap"  ok
+ 0.393238    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "peano"  ok
+ 0.393581    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "tarch.la" ............ ok
+ 0.393691    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running test case collection "tarch"  ok
+ 0.393779    14:52:31     [cn6044]rank:0 info         tarch::tests::TreeTestCaseCollection::run()             running global test case collection  ok
+ 0.394471    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()             
+ 0.394628    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              Application based upon the PDE framework Peano - 3rd Generation
+ 0.394742    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              build: dim=3
+ 0.394833    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              optimisations: d-loop persistent-attributes packed opt-static-subtrees recursion-unrolling 
+ 0.394921    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              (C) 2005 - 2016   www.peano-framework.org
+ 0.395014    14:52:31     [cn6044]rank:0 info         peano::utils::UserInterface::writeHeader()              processes: 1, threads: 1
+ 0.395136    14:52:31     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  create grid 
+ 0.395384    14:52:31     [cn6044]rank:0 info         dem::mappings::CreateGrid::beginIteration()             maxH=0.3    
  0.0542073    14:52:31     [cn6044]rank:0 warning      dem::mappings::CreateGrid::createCell(...)              particle size has been too small for coarsest prescribed grid. Reduce particle size to 0.003-0.111111 (file:dem/mappings/CreateGrid.cpp,line:427)
  0.148034     14:52:31     [cn6044]rank:0 info         dem::mappings::CreateGrid::endIteration(State)          created 729 particles with 0 obstacles 22540 triangles
  0.148078     14:52:31     [cn6044]rank:0 info         dem::mappings::CreateGrid::beginIteration()             maxH=0.3    
@@ -422,7 +422,7 @@
  298.268      14:57:29     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=393, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  298.709      14:57:30     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=394, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  299.159      14:57:30     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=395, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 300.036      14:57:31     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=396, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 300.36      14:57:31     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=396, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  300.914      14:57:32     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=397, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  301.794      14:57:33     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=398, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  302.678      14:57:34     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=399, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -635,7 +635,7 @@
  449.25       15:00:00     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=606, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  450.11       15:00:01     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=607, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  450.965      15:00:02     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=608, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 451.838      15:00:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=609, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 451.838      15:00.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=609, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  452.699      15:00:04     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=610, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  453.562      15:00:05     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=611, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  454.43       15:00:05     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=612, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -725,7 +725,7 @@
  527.421      15:01:18     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=696, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  528.296      15:01:19     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=697, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  529.17       15:01:20     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=698, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 530.039      15:01:21     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=699, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 530.39      15:01:21     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=699, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  530.91       15:01:22     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=700, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  531.778      15:01:23     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=701, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  532.65       15:01:24     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=702, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -1306,7 +1306,7 @@
  1027.47      15:09:38     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1277, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1028.33      15:09:39     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1278, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1029.18      15:09:40     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1279, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 1030.03      15:09:41     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1280, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 1030.3      15:09:41     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1280, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1030.88      15:09:42     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1281, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1031.73      15:09:43     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1282, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1032.58      15:09:44     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1283, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -1332,7 +1332,7 @@
  1049.72      15:10:01     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1303, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1050.58      15:10:02     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1304, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1051.45      15:10:02     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1305, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 1052.3       15:10:03     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1306, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 1052.3       15:10.3     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1306, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1053.16      15:10:04     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1307, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1054.02      15:10:05     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1308, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1054.88      15:10:06     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1309, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -1341,7 +1341,7 @@
  1057.45      15:10:08     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1312, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1058.31      15:10:09     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1313, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1059.17      15:10:10     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1314, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 1060.03      15:10:11     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1315, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 1060.3      15:10:11     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1315, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1060.88      15:10:12     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1316, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1061.74      15:10:13     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1317, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1062.6       15:10:14     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1318, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
@@ -1376,7 +1376,7 @@
  1087.45      15:10:38     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1347, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1088.31      15:10:39     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1348, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1089.17      15:10:40     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1349, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
- 1090.03      15:10:41     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1350, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
+ 1090.3      15:10:41     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1350, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1090.89      15:10:42     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1351, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1091.74      15:10:43     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1352, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
  1092.6       15:10:44     [cn6044]rank:0 info         dem::runners::Runner::runAsMaster(...)                  iteration i=1353, reassigns=0, triangle-cmp=0, grid-vertices=35672, t=0, dt=0.0001
