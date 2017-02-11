@@ -161,7 +161,7 @@ void dem::mappings::CreateGrid::createCell(
 				/*first create floor
 				 *
 				 */
-				centreAsArray[1] = 0.25;
+				centreAsArray[1] = 0.5;
 
 				delta::primitives::generateSurface( centreAsArray, 1, 0.05, xCoordinates, yCoordinates, zCoordinates);
 
@@ -173,7 +173,6 @@ void dem::mappings::CreateGrid::createCell(
 				bool isObstacle = true;
 				int material = 2;
 				bool friction = true;
-
 
 				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
 
@@ -193,8 +192,8 @@ void dem::mappings::CreateGrid::createCell(
 				yCoordinates.clear();
 				zCoordinates.clear();
 
-				centreAsArray[1] = 0.5;
 				///BRICKS GEOMETRY CREATION
+				centreAsArray[1] = 0.5+0.11;
 
 				delta::primitives::generateBrick( centreAsArray, 1, xCoordinates, yCoordinates, zCoordinates);
 
@@ -219,20 +218,35 @@ void dem::mappings::CreateGrid::createCell(
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 				_numberOfParticles++; _numberOfObstacles++;
 
+				xCoordinates.clear();
+				yCoordinates.clear();
+				zCoordinates.clear();
+
+				centreAsArray[1] = 0.5+0.05;
+
 				//read nuclear graphite schematics
 				std::vector<std::vector<std::string>> componentGrid;
 				delta::sys::parseModelGridSchematics("input/nuclear_core", componentGrid);
 
+
+				double vcellLength = 1.0/componentGrid.size();
+				double halfvcelllength = vcellLength/2.0;
+
+				centreAsArray[0] = halfvcelllength;
+				centreAsArray[2] = halfvcelllength;
 				///place components of 2d array structure
-				int gridX = 10; int gridY = 10;
-				/*for(int i = 0; i<componentGrid.size(); i++)
+
+				for(int i = 0; i<componentGrid.size()-1; i++)
 				{
-					for(int j = 0; j<componentGrid[i].size(); j++)
+					centreAsArray[0] = halfvcelllength;
+					for(int j = 0; j<2; j++)
 					{
-						std::string component = componentGrid[i][j];
-						if (component.compare("a") == 0)
+						//std::string component = componentGrid[i][j];
+
+						//if (component.compare("a") == 0)
 						{
-							delta::primitives::generateSurface(centreAsArray, 0.3, 0.01, xCoordinates, yCoordinates, zCoordinates);
+							centreAsArray[0] += vcellLength;
+							delta::primitives::generateSurface( centreAsArray, halfvcelllength*1.8, halfvcelllength*2, xCoordinates, yCoordinates, zCoordinates);
 
 							double diameter = 0.3;
 							double influenceRadius = 0.3 * 1.8;
@@ -256,9 +270,14 @@ void dem::mappings::CreateGrid::createCell(
 
 							_numberOfParticles++; _numberOfObstacles++;
 							_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+
+							xCoordinates.clear();
+							yCoordinates.clear();
+							zCoordinates.clear();
 						}
 					}
-				}*/
+					centreAsArray[2] += vcellLength;
+				}
 
 				return;
 				break;

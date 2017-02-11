@@ -44,6 +44,11 @@ namespace delta {
 			std::vector<double>&  yCoordinates,
 			std::vector<double>&  zCoordinates);
 
+	void scaleXYZ(double scale,
+			std::vector<double>&  xCoordinates,
+			std::vector<double>&  yCoordinates,
+			std::vector<double>&  zCoordinates);
+
 	void rotateX(double alphaX,
 			std::vector<double>&  xCoordinates,
 			std::vector<double>&  yCoordinates,

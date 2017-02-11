@@ -35,27 +35,41 @@ void delta::primitives::moveMeshFromOriginToPosition(double center[3],
 	}
 }
 
+void delta::primitives::scaleXYZ(double scale,
+		std::vector<double>&  xCoordinates,
+		std::vector<double>&  yCoordinates,
+		std::vector<double>&  zCoordinates)
+{
+	for(int i=0;i<xCoordinates.size();i++)
+	{
+		xCoordinates[i] = xCoordinates[i]*scale;
+		yCoordinates[i] = yCoordinates[i]*scale;
+		zCoordinates[i] = zCoordinates[i]*scale;
+	}
+}
+
 void delta::primitives::rotateX(double alphaX,
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates)
 {
 	const double pi = std::acos(-1);
-  for (int i=0; i<xCoordinates.size(); i++) {
-	double x = xCoordinates[i];
-	double y = yCoordinates[i];
-	double z = zCoordinates[i];
+	for (int i=0; i<xCoordinates.size(); i++)
+	{
+		double x = xCoordinates[i];
+		double y = yCoordinates[i];
+		double z = zCoordinates[i];
 
-	double M[] = {
-	   1.0,                 0.0,                   0.0,
-	   0.0,  std::cos(2*pi*alphaX),  std::sin(2*pi*alphaX),
-	   0.0, -std::sin(2*pi*alphaX),  std::cos(2*pi*alphaX)
-	};
+		double M[] = {
+		   1.0,                 0.0,                   0.0,
+		   0.0,  std::cos(2*pi*alphaX),  std::sin(2*pi*alphaX),
+		   0.0, -std::sin(2*pi*alphaX),  std::cos(2*pi*alphaX)
+		};
 
-	xCoordinates[i] =   M[0] * x + M[1] * y + M[2] * z;
-	yCoordinates[i] =   M[3] * x + M[4] * y + M[5] * z;
-	zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
-  }
+		xCoordinates[i] =   M[0] * x + M[1] * y + M[2] * z;
+		yCoordinates[i] =   M[3] * x + M[4] * y + M[5] * z;
+		zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
+	}
 }
 
 void delta::primitives::rotateY(double alphaY,
@@ -64,21 +78,21 @@ void delta::primitives::rotateY(double alphaY,
 		std::vector<double>&  zCoordinates)
 {
 	const double pi = std::acos(-1);
-	  for (int i=0; i<xCoordinates.size(); i++) {
-	    double x = xCoordinates[i];
-	    double y = yCoordinates[i];
-	    double z = zCoordinates[i];
+	for (int i=0; i<xCoordinates.size(); i++) {
+		double x = xCoordinates[i];
+		double y = yCoordinates[i];
+		double z = zCoordinates[i];
 
-	    double M[] = {
-	      std::cos(2*pi*alphaY),  0.0, std::sin(2*pi*alphaY),
-	      0.0,                    1.0,                   0.0,
-	     -std::sin(2*pi*alphaY),  0.0, std::cos(2*pi*alphaY)
-	    };
+		double M[] = {
+		  std::cos(2*pi*alphaY),  0.0, std::sin(2*pi*alphaY),
+		  0.0,                    1.0,                   0.0,
+		 -std::sin(2*pi*alphaY),  0.0, std::cos(2*pi*alphaY)
+		};
 
-	    xCoordinates[i] =   M[0] * x + M[1] * y + M[2] * z;
-	    yCoordinates[i] =   M[3] * x + M[4] * y + M[5] * z;
-	    zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
-	  }
+		xCoordinates[i] =   M[0] * x + M[1] * y + M[2] * z;
+		yCoordinates[i] =   M[3] * x + M[4] * y + M[5] * z;
+		zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
+	}
 }
 
 void delta::primitives::rotateZ(double alphaZ,
@@ -87,21 +101,21 @@ void delta::primitives::rotateZ(double alphaZ,
 		std::vector<double>&  zCoordinates)
 {
 	const double pi = std::acos(-1);
-	  for (int i=0; i<xCoordinates.size(); i++) {
-	    double x = xCoordinates[i];
-	    double y = yCoordinates[i];
-	    double z = zCoordinates[i];
+	for (int i=0; i<xCoordinates.size(); i++) {
+		double x = xCoordinates[i];
+		double y = yCoordinates[i];
+		double z = zCoordinates[i];
 
-	    double M[] = {
-	      std::cos(2*pi*alphaZ),  std::sin(2*pi*alphaZ),  0.0,
-	     -std::sin(2*pi*alphaZ),  std::cos(2*pi*alphaZ),  0.0,
-	                       0.0,                   0.0,  1.0
-	    };
+		double M[] = {
+		  std::cos(2*pi*alphaZ),  std::sin(2*pi*alphaZ),  0.0,
+		 -std::sin(2*pi*alphaZ),  std::cos(2*pi*alphaZ),  0.0,
+						   0.0,                   0.0,  1.0
+		};
 
-	    xCoordinates[i] =   M[0] * x + M[1] * y + M[2] * z;
-	    yCoordinates[i] =   M[3] * x + M[4] * y + M[5] * z;
-	    zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
-	  }
+		xCoordinates[i] =   M[0] * x + M[1] * y + M[2] * z;
+		yCoordinates[i] =   M[3] * x + M[4] * y + M[5] * z;
+		zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
+	}
 }
 
 double delta::primitives::computeDistanceAB(double A[3], double B[3])
