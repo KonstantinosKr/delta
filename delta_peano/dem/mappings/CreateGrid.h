@@ -20,6 +20,9 @@
 
 #include "dem/mappings/Collision.h"
 
+#include <array>
+#include <vector>
+
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"

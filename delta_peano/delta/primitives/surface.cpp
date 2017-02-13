@@ -301,46 +301,5 @@ void delta::primitives::generateCuboid(
 
  free(tr);
 }
-/*
-void delta::primitives::generateSurface(
-		double center[3],
-		double width,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates
-)
-{
-	const int numberOfTriangles = 2;
 
-	xCoordinates.resize( numberOfTriangles*3 );
-	yCoordinates.resize( numberOfTriangles*3 );
-	zCoordinates.resize( numberOfTriangles*3 );
-
-	//CREATE FIRST TRIANGLE
-	//T1A
-	xCoordinates[0] = center[0]-width/2;
-	yCoordinates[0] = center[1];
-	zCoordinates[0] = center[2]-width/2;
-	//T1B
-	xCoordinates[1] = center[0]-width/2;
-	yCoordinates[1] = center[1];
-	zCoordinates[1] = center[2]+width/2;
-	//T1C
-	xCoordinates[2] = center[0]+width/2;
-	yCoordinates[2] = center[1];
-	zCoordinates[2] = center[2]+width/2;
-
-	//T2A
-	xCoordinates[3] = center[0]-width/2;
-	yCoordinates[3] = center[1];
-	zCoordinates[3] = center[2]-width/2;
-	//T2B
-	xCoordinates[4] = center[0]+width/2;
-	yCoordinates[4] = center[1];
-	zCoordinates[4] = center[2]-width/2;
-	//T2C
-	xCoordinates[5] = center[0]+width/2;
-	yCoordinates[5] = center[1];
-	zCoordinates[5] = center[2]+width/2;
-}*/
 

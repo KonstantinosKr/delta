@@ -34,14 +34,23 @@
 namespace delta {
   namespace primitives {
 
-     void generateBrick(
+     void generateBrickFB(
        double    center[3],
        double    h,
        std::vector<double>&  xCoordinates,
        std::vector<double>&  yCoordinates,
        std::vector<double>&  zCoordinates
      );
-     void generateKey(
+
+     void generateKeyXK(
+       double    center[3],
+       double    h,
+       std::vector<double>&  xCoordinates,
+       std::vector<double>&  yCoordinates,
+       std::vector<double>&  zCoordinates
+     );
+
+     void generateKeyYK(
        double    center[3],
        double    h,
        std::vector<double>&  xCoordinates,

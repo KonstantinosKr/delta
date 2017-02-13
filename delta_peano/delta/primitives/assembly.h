@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
 
- Copyright (c) 26 May 2016 Konstantinos Krestenitis
+ Copyright (c) 2015 Konstantinos Krestenitis
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,17 @@
  SOFTWARE.
  */
 
+#include <vector>
+#include <array>
 
+namespace delta {
+  namespace primitives {
+  	  double getDiscritizationLength(double length, int number);
 
+  	  std::vector<std::array<double, 3>> array1d(double xAxisLength, int partsNo, double initY);
 
+  	  std::vector<std::array<double, 3>> array2d(double xyAxisLength, int partsNo, double initY);
+
+  	  std::vector<std::array<double, 3>> array3d(double xyzAxisLength, int partsNo, double initY);
+  }
+ }

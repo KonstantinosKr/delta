@@ -7,6 +7,7 @@
 #include "delta/primitives/blender.h"
 #include <delta/primitives/graphite.h>
 #include <delta/primitives/surface.h>
+#include <delta/primitives/assembly.h>
 
 #include "peano/grid/aspects/VertexStateAnalysis.h"
 
@@ -195,7 +196,7 @@ void dem::mappings::CreateGrid::createCell(
 				///BRICKS GEOMETRY CREATION
 				centreAsArray[1] = 0.5+0.11;
 
-				delta::primitives::generateBrick( centreAsArray, 1, xCoordinates, yCoordinates, zCoordinates);
+				delta::primitives::generateBrickFB( centreAsArray, 1, xCoordinates, yCoordinates, zCoordinates);
 
 				diameter = 1;
 				influenceRadius = 1;
@@ -228,25 +229,35 @@ void dem::mappings::CreateGrid::createCell(
 				std::vector<std::vector<std::string>> componentGrid;
 				delta::sys::parseModelGridSchematics("input/nuclear_core", componentGrid);
 
-
 				double vcellLength = 1.0/componentGrid.size();
 				double halfvcelllength = vcellLength/2.0;
 
 				centreAsArray[0] = halfvcelllength;
 				centreAsArray[2] = halfvcelllength;
+
+				double position[3];
 				///place components of 2d array structure
 
-				for(int i = 0; i<componentGrid.size()-1; i++)
+		/*		for(int i = 0; i<componentGrid.size()-1; i++)
 				{
 					centreAsArray[0] = halfvcelllength;
 					for(int j = 0; j<2; j++)
 					{
 						//std::string component = componentGrid[i][j];
-
+*/
 						//if (component.compare("a") == 0)
+
+						std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(1, 10, centreAsArray[1]);
+
+						for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
 						{
-							centreAsArray[0] += vcellLength;
-							delta::primitives::generateSurface( centreAsArray, halfvcelllength*1.8, halfvcelllength*2, xCoordinates, yCoordinates, zCoordinates);
+							//centreAsArray[0] += vcellLength;
+
+							position[0] = i[0][0];
+							position[1] = i[0][1];
+							position[2] = i[0][2];
+
+							delta::primitives::generateSurface( position, halfvcelllength, halfvcelllength, xCoordinates, yCoordinates, zCoordinates);
 
 							double diameter = 0.3;
 							double influenceRadius = 0.3 * 1.8;
@@ -262,7 +273,7 @@ void dem::mappings::CreateGrid::createCell(
 							delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
 							delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 
-							int newParticleNumber = vertex.createNewParticle(centreAsArray,
+							int newParticleNumber = vertex.createNewParticle(position,
 													xCoordinates, yCoordinates, zCoordinates,
 													centerOfMass, inertia, inverse,
 													mass, diameter, influenceRadius, epsilon,
@@ -275,9 +286,9 @@ void dem::mappings::CreateGrid::createCell(
 							yCoordinates.clear();
 							zCoordinates.clear();
 						}
-					}
-					centreAsArray[2] += vcellLength;
-				}
+					//}
+					//centreAsArray[2] += vcellLength;
+					//}
 
 				return;
 				break;
