@@ -8,69 +8,67 @@
 #include "assembly.h"
 
 
-double delta::primitives::getDiscritizationLength(double length, int number)
+double delta::primitives::getxDiscritizationLength(double length, int number)
 {
 	return length/number;
 }
 
-std::vector<std::array<double, 3>> delta::primitives::array1d(double xAxisLength, int partsNo, double initY)
+std::vector<std::array<double, 3>> delta::primitives::array1d(double position[3], double xAxisLength, int partsNo)
 {
 	std::vector<std::array<double, 3>> array;
 	std::array<double, 3> point = {0.0, 0.0, 0.0};
 
-	double xBoxlength = getDiscritizationLength(xAxisLength, partsNo);
-	double halfXBoxlength = xBoxlength/2;
-	point[0] = halfXBoxlength;
-	point[1] = initY;
+	double length = getxDiscritizationLength(xAxisLength, partsNo);
 
+	point[0] = position[0];
+	point[1] = position[1];
+	point[2] = position[2];
 	array.push_back(point);
 
 	for(int i=0;i<partsNo-1;i++)
 	{
-		point[0] += halfXBoxlength;
-
+		point[0] += length;
 		array.push_back(point);
 	}
 	return array;
 }
 
-std::vector<std::array<double, 3>> delta::primitives::array2d(double xyAxisLength, int partsNo, double initY)
+std::vector<std::array<double, 3>> delta::primitives::array2d(double position[3], double xyAxisLength, int partsNo)
 {
 	std::vector<std::array<double, 3>> array;
-	std::array<double, 3> point = {0.0, 0.0, 0.0};
 
-	double xyBoxlength = getDiscritizationLength(xyAxisLength, partsNo);
-	double halfXYBoxlength = xyBoxlength/2;
-	point[0] = halfXYBoxlength;
-	point[1] = initY;
-	point[2] = halfXYBoxlength;
+	double length = getxDiscritizationLength(xyAxisLength, partsNo);
 
-	for(int i=0;i<partsNo-1;i++)
+	for(int i=0;i<partsNo;i++)
 	{
-		std::vector<std::array<double, 3>>delta::primitives::array1d(xyAxisLength, partsNo, initY);
-		point[2] += halfXYBoxlength;
-		array.push_back(point);
+		std::vector<std::array<double, 3>> tmp = delta::primitives::array1d(position, xyAxisLength, partsNo);
+		for(std::vector<std::array<double, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
+		{
+			array.push_back(*j);
+		}
+		position[2] += length;
 	}
 
 	return array;
 }
 
-std::vector<std::array<double, 3>> delta::primitives::array3d(double xyzAxisLength, int partsNo, double initY)
+std::vector<std::array<double, 3>> delta::primitives::array3d(double position[3], double xyzAxisLength, int partsNo)
 {
 	std::vector<std::array<double, 3>> array;
-	std::array<double, 3> point = {0.0, 0.0, 0.0};
 
-	double xyzBoxlength = getDiscritizationLength(xyzAxisLength, partsNo);
-	double halfXYZBoxlength = xyzBoxlength/2;
-	point[0] = halfXYZBoxlength;
-	point[1] = initY;
-	point[2] = halfXYZBoxlength;
-
-	for(int i=0;i<partsNo-1;i++)
+	double length = getxDiscritizationLength(xyzAxisLength, partsNo);
+	for(int i=0;i<partsNo;i++)
 	{
-		delta::primitives::array2d(xyzAxisLength, partsNo, initY);
-		point[1] += halfXYZBoxlength;
-		array.push_back(point);
+		std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, xyzAxisLength, partsNo);
+		for(std::vector<std::array<double, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
+		{
+			array.push_back(*j);
+		}
+		position[0] = length/2;
+		position[1] += length;
+		position[2] = length/2;
+		if(position[1] > 1.0)
+			break;
 	}
 
 	return array;

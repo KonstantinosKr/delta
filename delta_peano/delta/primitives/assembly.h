@@ -27,12 +27,12 @@
 
 namespace delta {
   namespace primitives {
-  	  double getDiscritizationLength(double length, int number);
+  	  double getxDiscritizationLength(double length, int number);
 
-  	  std::vector<std::array<double, 3>> array1d(double xAxisLength, int partsNo, double initY);
+  	  std::vector<std::array<double, 3>> array1d(double position[3], double xAxisLength, int partsNo);
 
-  	  std::vector<std::array<double, 3>> array2d(double xyAxisLength, int partsNo, double initY);
+  	  std::vector<std::array<double, 3>> array2d(double position[3], double xyAxisLength, int partsNo);
 
-  	  std::vector<std::array<double, 3>> array3d(double xyzAxisLength, int partsNo, double initY);
+  	  std::vector<std::array<double, 3>> array3d(double position[3], double xyzAxisLength, int partsNo);
   }
  }

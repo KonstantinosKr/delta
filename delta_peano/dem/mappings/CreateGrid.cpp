@@ -229,66 +229,54 @@ void dem::mappings::CreateGrid::createCell(
 				std::vector<std::vector<std::string>> componentGrid;
 				delta::sys::parseModelGridSchematics("input/nuclear_core", componentGrid);
 
-				double vcellLength = 1.0/componentGrid.size();
-				double halfvcelllength = vcellLength/2.0;
-
-				centreAsArray[0] = halfvcelllength;
-				centreAsArray[2] = halfvcelllength;
-
 				double position[3];
 				///place components of 2d array structure
 
-		/*		for(int i = 0; i<componentGrid.size()-1; i++)
+				double xBoxlength = delta::primitives::getxDiscritizationLength(1, 5);
+				double halfXBoxlength = xBoxlength/2;
+
+				position[0] = halfXBoxlength;
+				position[1] = centreAsArray[1];
+				position[2] = halfXBoxlength;
+
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, 1, 5);
+
+				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
 				{
-					centreAsArray[0] = halfvcelllength;
-					for(int j = 0; j<2; j++)
-					{
-						//std::string component = componentGrid[i][j];
-*/
-						//if (component.compare("a") == 0)
+					std::array<double, 3> ar = *i;
+					position[0] = ar[0];
+					position[1] = ar[1];
+					position[2] = ar[2];
 
-						std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(1, 10, centreAsArray[1]);
+					delta::primitives::generateSurface( position, xBoxlength*0.98, xBoxlength*0.98, xCoordinates, yCoordinates, zCoordinates);
 
-						for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
-						{
-							//centreAsArray[0] += vcellLength;
+					double diameter = 0.3;
+					double influenceRadius = 0.3 * 1.8;
+					double epsilon = _epsilon;
+					double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+					int particleId = _numberOfParticles;
+					bool isObstacle = true;
+					int material = 1;
+					bool friction = false;
 
-							position[0] = i[0][0];
-							position[1] = i[0][1];
-							position[2] = i[0][2];
+					iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
 
-							delta::primitives::generateSurface( position, halfvcelllength, halfvcelllength, xCoordinates, yCoordinates, zCoordinates);
+					delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+					delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 
-							double diameter = 0.3;
-							double influenceRadius = 0.3 * 1.8;
-							double epsilon = _epsilon;
-							double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-							int particleId = _numberOfParticles;
-							bool isObstacle = true;
-							int material = 1;
-							bool friction = false;
+					int newParticleNumber = vertex.createNewParticle(position,
+											xCoordinates, yCoordinates, zCoordinates,
+											centerOfMass, inertia, inverse,
+											mass, diameter, influenceRadius, epsilon,
+											hMin, isObstacle, material, friction, particleId);
 
-							iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+					_numberOfParticles++; _numberOfObstacles++;
+					_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 
-							delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-							delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
-
-							int newParticleNumber = vertex.createNewParticle(position,
-													xCoordinates, yCoordinates, zCoordinates,
-													centerOfMass, inertia, inverse,
-													mass, diameter, influenceRadius, epsilon,
-													hMin, isObstacle, material, friction, particleId);
-
-							_numberOfParticles++; _numberOfObstacles++;
-							_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-
-							xCoordinates.clear();
-							yCoordinates.clear();
-							zCoordinates.clear();
-						}
-					//}
-					//centreAsArray[2] += vcellLength;
-					//}
+					xCoordinates.clear();
+					yCoordinates.clear();
+					zCoordinates.clear();
+				}
 
 				return;
 				break;
