@@ -28,6 +28,8 @@
 #include "delta/hull/alg.h"
 #include <cmath>
 #include <stdlib.h>
+#include <limits>
+#include <array>
 
 namespace delta {
   namespace primitives {
@@ -64,7 +66,15 @@ namespace delta {
 			std::vector<double>&  yCoordinates,
 			std::vector<double>&  zCoordinates);
 
-	double computeMaxWidth(std::vector<double>&  xCoordinates,
+	std::array<double, 3> minBoundaryVertex(std::vector<double>&  xCoordinates,
+									std::vector<double>&  yCoordinates,
+									std::vector<double>&  zCoordinates);
+
+	std::array<double, 3> maxBoundaryVertex(std::vector<double>&  xCoordinates,
+									std::vector<double>&  yCoordinates,
+									std::vector<double>&  zCoordinates);
+
+	double computeDiagonal(std::vector<double>&  xCoordinates,
 						   std::vector<double>&  yCoordinates,
 						   std::vector<double>&  zCoordinates);
 
@@ -72,7 +82,15 @@ namespace delta {
 	double computeMaxYWidth(std::vector<double>&  yCoordinates);
 	double computeMaxZWidth(std::vector<double>&  zCoordinates);
 
-	double computeDistanceAB(double A[3], double B[3]);
+	double getMaxXAxis(std::vector<double>&  xCoordinates);
+	double getMaxYAxis(std::vector<double>&  yCoordinates);
+	double getMaxZAxis(std::vector<double>&  zCoordinates);
+
+	double getMinXAxis(std::vector<double>&  xCoordinates);
+	double getMinYAxis(std::vector<double>&  yCoordinates);
+	double getMinZAxis(std::vector<double>&  zCoordinates);
+
+	double computeDistanceAB(std::array<double, 3> A, std::array<double, 3> B);
 
     void centerOfMass(
       std::vector<double>&  xCoordinates,

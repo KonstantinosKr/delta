@@ -118,42 +118,52 @@ void delta::primitives::rotateZ(double alphaZ,
 	}
 }
 
-double delta::primitives::computeDistanceAB(double A[3], double B[3])
+double delta::primitives::computeDistanceAB(std::array<double, 3> A, std::array<double, 3> B)
 {
-	return std::sqrt(((B-A)*(B-A))+((B-A)*(B-A))+((B-A)*(B-A)));
+	return std::sqrt(((B[0]-A[0])*(B[0]-A[0]))+((B[1]-A[1])*(B[1]-A[1]))+((B[2]-A[2])*(B[2]-A[2])));
 }
 
-double delta::primitives::computeMaxWidth(std::vector<double>&  xCoordinates,
+std::array<double, 3> delta::primitives::minBoundaryVertex(std::vector<double>&  xCoordinates,
+													std::vector<double>&  yCoordinates,
+													std::vector<double>&  zCoordinates)
+{
+	std::array<double, 3> vertex;
+
+	vertex[0] = getMinXAxis(xCoordinates);
+	vertex[1] = getMinYAxis(yCoordinates);
+	vertex[2] = getMinZAxis(zCoordinates);
+
+	return vertex;
+}
+
+std::array<double, 3> delta::primitives::maxBoundaryVertex(std::vector<double>&  xCoordinates,
+													std::vector<double>&  yCoordinates,
+													std::vector<double>&  zCoordinates)
+{
+	std::array<double, 3> vertex;
+
+	vertex[0] = getMaxXAxis(xCoordinates);
+	vertex[1] = getMaxYAxis(yCoordinates);
+	vertex[2] = getMaxZAxis(zCoordinates);
+
+	return vertex;
+}
+
+double delta::primitives::computeDiagonal(std::vector<double>&  xCoordinates,
 										std::vector<double>&  yCoordinates,
 										std::vector<double>&  zCoordinates)
 {
-	double max = -1E99;
+	std::array<double, 3> minPoint, maxPoint;
 
-	for(int i=0;i<xCoordinates.size();i++)
-	{
-		double A[3];
+	minPoint = minBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	maxPoint = maxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
 
-		A[0] = xCoordinates[i];
-		A[1] = yCoordinates[i];
-		A[2] = zCoordinates[i];
-
-		for(int j=i+1;j<xCoordinates.size();j++)
-		{
-			double B[3];
-			B[0] = xCoordinates[j];
-			B[1] = yCoordinates[j];
-			B[2] = zCoordinates[j];
-
-			double result = computeDistanceAB(A,B);
-			if (max < result) max = result;
-		}
-	}
-	return max;
+	return computeDistanceAB(minPoint,maxPoint);
 }
 
 double delta::primitives::computeMaxXWidth(std::vector<double>&  xCoordinates)
 {
-	double max = -1E99;
+	double max = 0;
 
 	for(int i=0;i<xCoordinates.size();i++)
 	{
@@ -203,6 +213,72 @@ double delta::primitives::computeMaxZWidth(std::vector<double>&  zCoordinates)
 		}
 	}
 	return max;
+}
+
+double delta::primitives::getMaxXAxis(std::vector<double>&  xCoordinates)
+{
+	double max = std::numeric_limits<double>::min();
+
+	for(int i=0;i<xCoordinates.size();i++)
+	{
+		if (max < xCoordinates[i]) max = xCoordinates[i];
+	}
+	return max;
+}
+
+double delta::primitives::getMaxYAxis(std::vector<double>&  yCoordinates)
+{
+	double max = std::numeric_limits<double>::min();
+
+	for(int i=0;i<yCoordinates.size();i++)
+	{
+		if (max < yCoordinates[i]) max = yCoordinates[i];
+	}
+	return max;
+}
+
+double delta::primitives::getMaxZAxis(std::vector<double>&  zCoordinates)
+{
+	double max = std::numeric_limits<double>::min();
+
+	for(int i=0;i<zCoordinates.size();i++)
+	{
+		if (max < zCoordinates[i]) max = zCoordinates[i];
+	}
+	return max;
+}
+
+double delta::primitives::getMinXAxis(std::vector<double>&  xCoordinates)
+{
+	double min = std::numeric_limits<double>::max();
+
+	for(int i=0;i<xCoordinates.size();i++)
+	{
+		if (min > xCoordinates[i]) min = xCoordinates[i];
+	}
+	return min;
+}
+
+double delta::primitives::getMinYAxis(std::vector<double>&  yCoordinates)
+{
+	double min = std::numeric_limits<double>::max();
+
+	for(int i=0;i<yCoordinates.size();i++)
+	{
+		if (min > yCoordinates[i]) min = yCoordinates[i];
+	}
+	return min;
+}
+
+double delta::primitives::getMinZAxis(std::vector<double>&  zCoordinates)
+{
+	double min = std::numeric_limits<double>::max();
+
+	for(int i=0;i<zCoordinates.size();i++)
+	{
+		if (min > zCoordinates[i]) min = zCoordinates[i];
+	}
+	return min;
 }
 
 void delta::primitives::centerOfGeometry(double 	centreOfGeometry[3],

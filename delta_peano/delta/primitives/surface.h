@@ -27,12 +27,22 @@
 
 
 #include <vector>
+#include <array>
 
 #include "delta/hull/hull.h"
 #include "delta/hull/alg.h"
 
 namespace delta {
   namespace primitives {
+
+	void generateBoundBox(
+		double center[3],
+		std::array<double, 3> minPoint,
+		std::array<double, 3> maxPoint,
+		std::vector<double>&  xCoordinates,
+		std::vector<double>&  yCoordinates,
+		std::vector<double>&  zCoordinates
+	);
 
     void generateSurface(
       double    center[3],
@@ -43,13 +53,15 @@ namespace delta {
       std::vector<double>&  zCoordinates
     );
 
-    void generateSurface(
-	  double    center[3],
-	  double 	width,
-	  std::vector<double>&  xCoordinates,
-	  std::vector<double>&  yCoordinates,
-	  std::vector<double>&  zCoordinates
-	);
+    void generateXYZBox(
+    		double center[3],
+    		double xw,
+    		double yw,
+    		double zw,
+    		std::vector<double>&  xCoordinates,
+    		std::vector<double>&  yCoordinates,
+    		std::vector<double>&  zCoordinates
+    );
 
     void generateCuboid(
 	  double    center[3],
