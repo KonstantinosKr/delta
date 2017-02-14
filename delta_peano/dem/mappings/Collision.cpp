@@ -215,7 +215,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 
 		records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
-		if(currentParticle._persistentRecords._isObstacle || _activeCollisions[currentParticle._persistentRecords._globalParticleId].size() == 0) continue;
+		//if(currentParticle._persistentRecords._isObstacle || _activeCollisions[currentParticle._persistentRecords._globalParticleId].size() == 0) continue;
 
 		double force[3]  = {0.0,0.0,0.0};
 		double torque[3] = {0.0,0.0,0.0};
@@ -227,7 +227,9 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
 
+			#ifdef STATS
 			logInfo( "touchVertexFirstTime(...)", std::endl << "#####FORCE-DATA#####" << std::endl);
+			#endif
 			delta::forces::getContactForces(
 				p->_contactPoints,
 				&(currentParticle._persistentRecords._centreOfMass(0)),

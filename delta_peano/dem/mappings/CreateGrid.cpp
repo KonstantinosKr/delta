@@ -168,8 +168,8 @@ void dem::mappings::CreateGrid::createCell(
 				double floorHeight = 0.05;
 				delta::primitives::generateSurface( centreAsArray, 1, floorHeight, xCoordinates, yCoordinates, zCoordinates);
 
-				iREAL diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-				iREAL influenceRadius = diameter+_epsilon*3;
+				double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+				double influenceRadius = diameter/2 * 1.1;
 				iREAL hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				bool isObstacle = true;
 				int material = 2;
@@ -198,7 +198,7 @@ void dem::mappings::CreateGrid::createCell(
 				delta::sys::parseModelGridSchematics("input/nuclear_core", componentGrid);
 
 				///place components of 2d array structure
-				int elements = 2;
+				int elements = 5;
 				double xBoxlength = delta::primitives::getxDiscritizationLength(1, elements);
 				double halfXBoxlength = xBoxlength/2;
 
@@ -566,25 +566,29 @@ void dem::mappings::CreateGrid::createCell(
 			}
 
 			int numberOfTtriangles = xCoordinates.size()/DIMENSIONS;
-			double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-			double influenceRadius = diameter/2 * 1.1;
-			double hMin;
-			if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-			{hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-			}else{hMin = 0;}
-			bool isObstacle = false;
-			int material = 1;
-			bool friction = true;
 
 			iREAL inertia[9], inverse[9], centerOfMass[3], mass = 1, rho = 600;
 
-			delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-			delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+			double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+			double influenceRadius = diameter/2 * 1.1;
+			double hMin;
+			bool isObstacle = false;
+			int material = 1;
+			bool friction = true;
+			if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
+			{
+				hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+			}else
+			{
+				hMin = 0;
+				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+			}
 
 			int newParticleNumber = vertex.createNewParticle(centreAsArray,
 									xCoordinates, yCoordinates, zCoordinates,
 									centerOfMass, inertia, inverse,
-									mass, diameter, influenceRadius, _epsilon,
+									1, diameter, influenceRadius, _epsilon,
 									hMin, isObstacle, material, friction, _numberOfParticles);
 
 			#ifdef STATS
