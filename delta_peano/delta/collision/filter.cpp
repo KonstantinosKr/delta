@@ -42,7 +42,7 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
 						 A[1]*B[1]+
 						 A[2]*B[2];
 
-			printf("Distance:%f DOT:%f\n", distance, dot);
+			//printf("Distance:%f DOT:%f\n", distance, dot);
 			if (dot >= 0.70)
 			{
 				ignore = true;
