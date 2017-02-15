@@ -35,13 +35,13 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 		  std::vector<double>&  xCoordinates,
 		  std::vector<double>&  yCoordinates,
 		  std::vector<double>&  zCoordinates,
-		  double centerOfMass[3], double inertia[9], double inverse[9],
-		  double mass, double epsilon, double hMin,
-		  bool isObstacle, int material, bool friction, int particleId)
+		  double epsilon, bool isObstacle, int material, bool friction, int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
+
+  double centerOfMass[3], inertia[9], inverse[9], mass;
 
   delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
   delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
@@ -87,6 +87,16 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._orientation(6) = 0;
   newParticle._persistentRecords._orientation(7) = 0;
   newParticle._persistentRecords._orientation(8) = 1;
+
+  double hMin;
+  if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
+  {
+	  hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+  }else
+  {
+	  hMin = 0;
+	  mass = 1;
+  }
 
   newParticle._persistentRecords._mass				= mass;
   newParticle._persistentRecords._diameter			= delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
