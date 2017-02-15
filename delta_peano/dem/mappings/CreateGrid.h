@@ -56,7 +56,8 @@ class dem::mappings::CreateGrid {
 	  freefallshort,
 	  frictionStatic,
 	  frictionSlide,
-	  sla
+	  sla,
+	  nuclearArray2d
     };
 
     enum VScheme {

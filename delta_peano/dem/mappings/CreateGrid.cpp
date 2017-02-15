@@ -14,6 +14,10 @@
 #include <string>
 #include <iostream>
 
+#define GOLD 10000
+#define WOOD 5000
+#define WOOD2 800
+
 /**
  * @todo Please tailor the parameters to your mapping's properties.
  */
@@ -172,19 +176,14 @@ void dem::mappings::CreateGrid::createCell(
 				double influenceRadius = diameter/2 * 1.1;
 				iREAL hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				bool isObstacle = true;
-				int material = 2;
 				bool friction = true;
 
-				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
-
-				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = GOLD;
 
 				int newParticleNumber = vertex.createNewParticle(centreAsArray,
 										xCoordinates, yCoordinates, zCoordinates,
-										centerOfMass, inertia, inverse,
-										mass, diameter, influenceRadius, _epsilon,
-										hMin, isObstacle, material, friction, _numberOfParticles);
+										centerOfMass, inertia, inverse, mass, _epsilon,
+										hMin, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 				_numberOfParticles++; _numberOfObstacles++;
@@ -194,39 +193,37 @@ void dem::mappings::CreateGrid::createCell(
 				zCoordinates.clear();
 
 				//measurements
-				/*double position[3];
+				double position[3];
 				position[0] = 0;
 				position[1] = 0;
 				position[2] = 0;
 				delta::primitives::generateBrickFB( position, 1, xCoordinates, yCoordinates, zCoordinates);
-				delta::primitives::getMinXAxis()
-
+				double width = delta::primitives::computeXZWidth(xCoordinates, yCoordinates, zCoordinates);
+				double yw = delta::primitives::computeXw(xCoordinates, yCoordinates, zCoordinates);
 
 				xCoordinates.clear();
 				yCoordinates.clear();
-				zCoordinates.clear();*/
-
+				zCoordinates.clear();
 
 				//read nuclear graphite schematics
-				std::vector<std::vector<std::string>> componentGrid;
-				std::vector<std::string> components;
+				std::vector<std::vector<std::string>> componentGrid; std::vector<std::string> components;
 				delta::sys::parseModelGridSchematics("input/nuclear_core", componentGrid, components);
 
-				std::cout<< "size: " << components.size() << std::endl;
-
-				for(std::vector<std::string>::iterator i = components.begin(); i != components.end(); i++)
-				{
-					//if(*i != "*")
-					//std::cout<< *i << std::endl;
-				}
 				///place components of 2d array structure
 				int elements = 46;
 				double xBoxlength = delta::primitives::getxDiscritizationLength(1, elements);
 				double halfXBoxlength = xBoxlength/2;
 
-				double position[3];
+				double scaleDownPercentage;
+				if(xBoxlength < width)
+				{//brick is bigger than grid
+					double excess = width - xBoxlength;
+					scaleDownPercentage = ((width - excess)/width);
+					printf("SCALE DOWN: %f xw:%f boxWidth:%f excess:%f\n", scaleDownPercentage, width, xBoxlength, excess);
+				}
+
 				position[0] = halfXBoxlength;
-				position[1] = (centreAsArray[1]+(floorHeight/2))+halfXBoxlength;
+				position[1] = (centreAsArray[1]+(floorHeight/2))+((yw/2)*scaleDownPercentage);
 				position[2] = halfXBoxlength;
 
 				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, 1, elements);
@@ -245,24 +242,19 @@ void dem::mappings::CreateGrid::createCell(
 						//std::cout<< components[counter] << std::endl;
 
 						//delta::primitives::generateSurface( position, xBoxlength*0.98, xBoxlength*0.98, xCoordinates, yCoordinates, zCoordinates);
-						delta::primitives::generateBrickFB( position, 1, xCoordinates, yCoordinates, zCoordinates);
+						delta::primitives::generateBrickFB( position, scaleDownPercentage, xCoordinates, yCoordinates, zCoordinates);
 
-						double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-						double influenceRadius = diameter/2 * 1.1;
 						double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+						isObstacle = false;
 
-						iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
-
-						delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-						delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+						iREAL inertia[9], inverse[9], mass, centerOfMass[3], rho = GOLD;
 
 						int newParticleNumber = vertex.createNewParticle(position,
 												xCoordinates, yCoordinates, zCoordinates,
 												centerOfMass, inertia, inverse,
-												mass, diameter, influenceRadius, _epsilon,
-												hMin, false, 1, false, _numberOfParticles);
+												mass, _epsilon, hMin, false, rho, false, _numberOfParticles);
 
-						_numberOfParticles++; _numberOfObstacles++;
+						_numberOfParticles++;
 						_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 
 						xCoordinates.clear();
@@ -277,6 +269,110 @@ void dem::mappings::CreateGrid::createCell(
 				return;
 				break;
 			}
+			case nuclearArray2d:
+			{
+				/*
+				 *nuclear single layer array;
+				 * experiment of seismic shakes
+				 *
+				 * concept: drop all components in coarse grid then reassign vertex to refined grid
+				 */
+
+				/*
+				 * create floor
+				 *
+				 */
+				centreAsArray[1] = 0.5;
+
+				double floorHeight = 0.05;
+				delta::primitives::generateSurface( centreAsArray, 1, floorHeight, xCoordinates, yCoordinates, zCoordinates);
+
+				iREAL hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+				bool isObstacle = true;
+				bool friction = true;
+
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = GOLD;
+
+				int newParticleNumber = vertex.createNewParticle(centreAsArray,
+										xCoordinates, yCoordinates, zCoordinates,
+										centerOfMass, inertia, inverse,
+										mass, _epsilon, hMin, isObstacle, rho, friction, _numberOfParticles);
+
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+				_numberOfParticles++; _numberOfObstacles++;
+
+				xCoordinates.clear();
+				yCoordinates.clear();
+				zCoordinates.clear();
+
+				//measurements
+				double position[3];
+				position[0] = 0;
+				position[1] = 0;
+				position[2] = 0;
+				delta::primitives::generateBrickFB( position, 1, xCoordinates, yCoordinates, zCoordinates);
+				double width = delta::primitives::computeXZWidth(xCoordinates, yCoordinates, zCoordinates);
+				double yw = delta::primitives::computeXw(xCoordinates, yCoordinates, zCoordinates);
+
+				xCoordinates.clear();
+				yCoordinates.clear();
+				zCoordinates.clear();
+
+				///place components of 2d array structure
+				int elements = 5;
+				double xBoxlength = delta::primitives::getxDiscritizationLength(1, elements);
+				double halfXBoxlength = xBoxlength/2;
+
+				double scalePercentage;
+				if(xBoxlength < width)
+				{//brick is bigger than grid
+					double excess = width - xBoxlength;
+					scalePercentage = ((width - excess)/width);
+					printf("SCALE DOWN: %f xw:%f boxWidth:%f excess:%f\n", scalePercentage, width, xBoxlength, excess);
+				}else
+				{
+					double excess = xBoxlength - width;
+					scalePercentage = 1+((xBoxlength - excess)/xBoxlength);
+					printf("SCALE UP: %f xw:%f boxWidth:%f excess:%f\n", scalePercentage, width, xBoxlength, excess);
+				}
+
+				position[0] = halfXBoxlength;
+				position[1] = (centreAsArray[1]+(floorHeight/2))+((yw/2)*scalePercentage);
+				position[2] = halfXBoxlength;
+
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, 1, elements);
+
+				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
+				{
+					std::array<double, 3> ar = *i;
+
+					position[0] = ar[0];
+					position[1] = ar[1];
+					position[2] = ar[2];
+
+					//delta::primitives::generateSurface( position, xBoxlength*0.98, xBoxlength*0.98, xCoordinates, yCoordinates, zCoordinates);
+					delta::primitives::generateBrickFB( position, scalePercentage, xCoordinates, yCoordinates, zCoordinates);
+
+					double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+
+					iREAL inertia[9], inverse[9], mass, centerOfMass[3], rho = GOLD;
+
+					int newParticleNumber = vertex.createNewParticle(position,
+											xCoordinates, yCoordinates, zCoordinates,
+											centerOfMass, inertia, inverse,
+											mass, _epsilon, hMin, false, rho, false, _numberOfParticles);
+
+					_numberOfParticles++;
+					_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+
+					xCoordinates.clear();
+					yCoordinates.clear();
+					zCoordinates.clear();
+				}
+
+				return;
+				break;
+			}
 			case freefallshort:
 			{
 				/*
@@ -286,23 +382,16 @@ void dem::mappings::CreateGrid::createCell(
 
 				delta::primitives::generateSurface(centreAsArray, 0.3, 0.01, xCoordinates, yCoordinates, zCoordinates);
 
-				double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-				double influenceRadius = diameter/2 * 1.1;
 				double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				bool isObstacle = true;
-				int material = 1;
 				bool friction = false;
 
-				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
-
-				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = GOLD;
 
 				int newParticleNumber = vertex.createNewParticle(centreAsArray,
 										xCoordinates, yCoordinates, zCoordinates,
 										centerOfMass, inertia, inverse,
-										mass, diameter, influenceRadius, _epsilon,
-										hMin, isObstacle, material, friction, _numberOfParticles);
+										mass, _epsilon, hMin, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfParticles++; _numberOfObstacles++;
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -323,26 +412,17 @@ void dem::mappings::CreateGrid::createCell(
 
 				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
 
-				double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-				double influenceRadius = diameter/2 * 1.1;
 				double epsilon = _epsilon*1.5;
 				double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				bool isObstacle = true;
-				int material = 1;
 				bool friction = false;
 
-				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
-
-				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = GOLD;
 
 				int newParticleNumber = vertex.createNewParticle(centreAsArray,
 										xCoordinates, yCoordinates, zCoordinates,
 										centerOfMass, inertia, inverse,
-										mass, diameter, influenceRadius, epsilon,
-										hMin, isObstacle, material, friction, _numberOfParticles);
-
-				//delta::primitives::meshDenseMultiplier(5, xCoordinates, yCoordinates, zCoordinates);
+										mass, epsilon, hMin, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfParticles++; _numberOfObstacles++;
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -359,24 +439,15 @@ void dem::mappings::CreateGrid::createCell(
 
 				delta::primitives::generateSurface( centreAsArray, 1, 0.1, xCoordinates, yCoordinates, zCoordinates);
 
-				diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-				influenceRadius = diameter/2 * 1.1;
-				epsilon = _epsilon*3;
 				hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				isObstacle = true;
-				material = 2;
 				friction = true;
-
-				rho = 10000;
-
-				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				rho = GOLD;
 
 				newParticleNumber = vertex.createNewParticle(centreAsArray,
 										xCoordinates, yCoordinates, zCoordinates,
 										centerOfMass, inertia, inverse,
-										mass, diameter, influenceRadius, epsilon,
-										hMin, isObstacle, material, friction, _numberOfParticles);
+										mass, _epsilon, hMin, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 				_numberOfParticles++; _numberOfObstacles++;
@@ -391,23 +462,16 @@ void dem::mappings::CreateGrid::createCell(
 				 */
 				delta::primitives::generateSurface(centreAsArray, 1, 0.01, xCoordinates, yCoordinates, zCoordinates);
 
-				double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-				double influenceRadius = diameter/2 * 1.1;
 				double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				bool isObstacle = true;
-				int material = 1;
 				bool friction = false;
 
-				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 100000;
-
-				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = GOLD;
 
 				int newParticleNumber = vertex.createNewParticle(centreAsArray,
 										xCoordinates, yCoordinates, zCoordinates,
 										centerOfMass, inertia, inverse,
-										mass, diameter, influenceRadius, _epsilon,
-										hMin, isObstacle, material, friction, _numberOfParticles);
+										mass, _epsilon, hMin, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfParticles++; _numberOfObstacles++;
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -422,23 +486,16 @@ void dem::mappings::CreateGrid::createCell(
 				 */
 				delta::primitives::generateSurface( centreAsArray, 1, 0.02, xCoordinates, yCoordinates, zCoordinates);
 
-				double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-				double influenceRadius = diameter/2 * 1.1;
 				double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 				bool isObstacle = true;
-				int material = 1;
 				bool friction = false;
 
-				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 1000000;
-
-				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = GOLD;
 
 				int newParticleNumber = vertex.createNewParticle(centreAsArray,
 										xCoordinates, yCoordinates, zCoordinates,
 										centerOfMass, inertia, inverse,
-										mass, diameter, influenceRadius, _epsilon,
-										hMin, isObstacle, material, friction, _numberOfParticles);
+										mass, _epsilon, hMin, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfParticles++; _numberOfObstacles++;
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -525,6 +582,10 @@ void dem::mappings::CreateGrid::createCell(
 			{
 				return;
 			}
+			else if(_scenario == nuclearArray2d)
+			{
+				return;
+			}
 			else if(_scenario == hopper)
 			{
 				double _hopperWidth = 0.26;
@@ -598,29 +659,21 @@ void dem::mappings::CreateGrid::createCell(
 
 			int numberOfTtriangles = xCoordinates.size()/DIMENSIONS;
 
-			iREAL inertia[9], inverse[9], centerOfMass[3], mass = 1, rho = 600;
-
-			double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-			double influenceRadius = diameter/2 * 1.1;
-			double hMin;
-			bool isObstacle = false;
-			int material = 1;
+			iREAL inertia[9], inverse[9], centerOfMass[3], mass = 1, rho = WOOD2;
 			bool friction = true;
+			double hMin;
 			if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
 			{
 				hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 			}else
 			{
 				hMin = 0;
-				delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-				delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 			}
 
 			int newParticleNumber = vertex.createNewParticle(centreAsArray,
 									xCoordinates, yCoordinates, zCoordinates,
 									centerOfMass, inertia, inverse,
-									1, diameter, influenceRadius, _epsilon,
-									hMin, isObstacle, material, friction, _numberOfParticles);
+									1, _epsilon, hMin, false, rho, friction, _numberOfParticles);
 
 			#ifdef STATS
 			logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);

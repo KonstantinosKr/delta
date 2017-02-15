@@ -66,6 +66,26 @@ namespace delta {
 			std::vector<double>&  yCoordinates,
 			std::vector<double>&  zCoordinates);
 
+	double computeXYZWidth(std::vector<double>&  xCoordinates,
+						std::vector<double>&  yCoordinates,
+						std::vector<double>&  zCoordinates);
+
+	double computeXZWidth(std::vector<double>&  xCoordinates,
+						std::vector<double>&  yCoordinates,
+						std::vector<double>&  zCoordinates);
+
+	double computeXw(std::vector<double>&  xCoordinates,
+					std::vector<double>&  yCoordinates,
+					std::vector<double>&  zCoordinates);
+
+	double computeYw(std::vector<double>&  xCoordinates,
+					std::vector<double>&  yCoordinates,
+					std::vector<double>&  zCoordinates);
+
+	double computeZw(std::vector<double>&  xCoordinates,
+					std::vector<double>&  yCoordinates,
+					std::vector<double>&  zCoordinates);
+
 	std::array<double, 3> minBoundaryVertex(std::vector<double>&  xCoordinates,
 									std::vector<double>&  yCoordinates,
 									std::vector<double>&  zCoordinates);

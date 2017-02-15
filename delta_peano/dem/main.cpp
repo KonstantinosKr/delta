@@ -77,6 +77,8 @@ int main(int argc, char** argv)
 			  << "  freefallshort" << std::endl
 			  << "  friction" << std::endl
 			  << "  frictionSlide" << std::endl
+			  << "  sla"<< std::endl
+			  << "  nuclearArray2d" << std::endl
 
               << "Grid types" << std::endl
               << "==========" << std::endl
@@ -199,6 +201,9 @@ int main(int argc, char** argv)
   }
   else if (scenario=="sla") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla, dem::mappings::CreateGrid::noVScheme, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+  }
+  else if (scenario=="nuclearArray2d") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray2d, dem::mappings::CreateGrid::noVScheme, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;

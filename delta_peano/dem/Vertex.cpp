@@ -1,6 +1,7 @@
 #include "dem/Vertex.h"
 #include "peano/utils/Loop.h"
 #include "peano/grid/Checkpoint.h"
+#include "delta/primitives/properties.h"
 
 dem::Vertex::Vertex():
   Base() { 
@@ -34,25 +35,28 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 		  std::vector<double>&  xCoordinates,
 		  std::vector<double>&  yCoordinates,
 		  std::vector<double>&  zCoordinates,
-		  const tarch::la::Vector<DIMENSIONS,double>&   centerOfMass, double inertia[9], double inverse[9],
-		  double mass, double diameter, double influenceRadius, double epsilon, double hMin,
+		  double centerOfMass[3], double inertia[9], double inverse[9],
+		  double mass, double epsilon, double hMin,
 		  bool isObstacle, int material, bool friction, int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
+  delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
+  delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
   newParticle._persistentRecords._centre(0) = center(0);
   newParticle._persistentRecords._centre(1) = center(1);
   newParticle._persistentRecords._centre(2) = center(2);
 
-  newParticle._persistentRecords._centreOfMass(0) = centerOfMass(0);
-  newParticle._persistentRecords._centreOfMass(1) = centerOfMass(1);
-  newParticle._persistentRecords._centreOfMass(2) = centerOfMass(2);
+  newParticle._persistentRecords._centreOfMass(0) = centerOfMass[0];
+  newParticle._persistentRecords._centreOfMass(1) = centerOfMass[1];
+  newParticle._persistentRecords._centreOfMass(2) = centerOfMass[2];
 
-  newParticle._persistentRecords._referentialCentreOfMass(0) = centerOfMass(0);
-  newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass(1);
-  newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass(2);
+  newParticle._persistentRecords._referentialCentreOfMass(0) = centerOfMass[0];
+  newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass[1];
+  newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass[2];
 
   newParticle._persistentRecords._inertia(0) = inertia[0];
   newParticle._persistentRecords._inertia(1) = inertia[1];
@@ -85,8 +89,8 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._orientation(8) = 1;
 
   newParticle._persistentRecords._mass				= mass;
-  newParticle._persistentRecords._diameter			= diameter;
-  newParticle._persistentRecords._influenceRadius 	= influenceRadius;
+  newParticle._persistentRecords._diameter			= delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+  newParticle._persistentRecords._influenceRadius 	= newParticle._persistentRecords._diameter/2 * 1.1;
   newParticle._persistentRecords._epsilon			= epsilon;
   newParticle._persistentRecords._hMin 				= hMin;
 

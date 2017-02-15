@@ -123,6 +123,64 @@ double delta::primitives::computeDistanceAB(std::array<double, 3> A, std::array<
 	return std::sqrt(((B[0]-A[0])*(B[0]-A[0]))+((B[1]-A[1])*(B[1]-A[1]))+((B[2]-A[2])*(B[2]-A[2])));
 }
 
+double delta::primitives::computeXYZWidth(std::vector<double>&  xCoordinates,
+											std::vector<double>&  yCoordinates,
+											std::vector<double>&  zCoordinates)
+{
+	double xw = delta::primitives::computeXw(xCoordinates, yCoordinates, zCoordinates);
+	double yw = delta::primitives::computeXw(xCoordinates, yCoordinates, zCoordinates);
+	double zw = delta::primitives::computeXw(xCoordinates, yCoordinates, zCoordinates);
+
+	double tmp = xw > yw ? xw : yw;
+	double width = tmp>zw ? tmp : zw;
+
+	return width;
+}
+
+double delta::primitives::computeXZWidth(std::vector<double>&  xCoordinates,
+											std::vector<double>&  yCoordinates,
+											std::vector<double>&  zCoordinates)
+{
+	double xw = delta::primitives::computeXw(xCoordinates, yCoordinates, zCoordinates);
+	double zw = delta::primitives::computeXw(xCoordinates, yCoordinates, zCoordinates);
+	double width = xw>zw ? xw : zw;
+
+	return width;
+}
+
+
+double delta::primitives::computeXw(std::vector<double>&  xCoordinates,
+				std::vector<double>&  yCoordinates,
+				std::vector<double>&  zCoordinates)
+{
+
+	std::array<double, 3> min = delta::primitives::minBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<double, 3> max = delta::primitives::maxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+
+	return std::abs(min[0] - max[0]);
+}
+
+double delta::primitives::computeYw(std::vector<double>&  xCoordinates,
+		std::vector<double>&  yCoordinates,
+		std::vector<double>&  zCoordinates)
+{
+
+	std::array<double, 3> min = delta::primitives::minBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<double, 3> max = delta::primitives::maxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+
+	return std::abs(min[1] - max[1]);
+}
+
+double delta::primitives::computeZw(std::vector<double>&  xCoordinates,
+		std::vector<double>&  yCoordinates,
+		std::vector<double>&  zCoordinates)
+{
+	std::array<double, 3> min = delta::primitives::minBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<double, 3> max = delta::primitives::maxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+
+	return std::abs(min[2] - max[2]);
+}
+
 std::array<double, 3> delta::primitives::minBoundaryVertex(std::vector<double>&  xCoordinates,
 													std::vector<double>&  yCoordinates,
 													std::vector<double>&  zCoordinates)
