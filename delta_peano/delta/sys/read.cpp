@@ -30,7 +30,8 @@ std::vector<std::string> splitString(std::string input, std::string delimiter)
  return output;
 }
 
-void delta::sys::parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid)
+
+void delta::sys::parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid, std::vector<std::string> &componentSeq)
 {
 	std::string line;
 	//46 * 46
@@ -39,17 +40,16 @@ void delta::sys::parseModelGridSchematics(std::string inputfile, std::vector<std
 
 	if (myfile.is_open())
 	{
-		std::vector<std::string> componentX;
 		while (std::getline (myfile, line))
 		{
 			std::vector<std::string> vstring = splitString(line, ",");
-			//std::cout << vstring[0] << " " << vstring[1] << " " << vstring[2] << "\n";
+			//std::cout << vstring[2] << "\n";
 
-			componentX.push_back(vstring[2]);
+			componentSeq.push_back(vstring[2]);
 
 			if(std::stoi(vstring[0]) == 46) {
 				//std::cout << std::stoi(vstring[0]) << "\n";
-				componentGrid.push_back(componentX);
+				componentGrid.push_back(componentSeq);
 			}
 		}
 

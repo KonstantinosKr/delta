@@ -193,12 +193,34 @@ void dem::mappings::CreateGrid::createCell(
 				yCoordinates.clear();
 				zCoordinates.clear();
 
+				//measurements
+				/*double position[3];
+				position[0] = 0;
+				position[1] = 0;
+				position[2] = 0;
+				delta::primitives::generateBrickFB( position, 1, xCoordinates, yCoordinates, zCoordinates);
+				delta::primitives::getMinXAxis()
+
+
+				xCoordinates.clear();
+				yCoordinates.clear();
+				zCoordinates.clear();*/
+
+
 				//read nuclear graphite schematics
 				std::vector<std::vector<std::string>> componentGrid;
-				delta::sys::parseModelGridSchematics("input/nuclear_core", componentGrid);
+				std::vector<std::string> components;
+				delta::sys::parseModelGridSchematics("input/nuclear_core", componentGrid, components);
 
+				std::cout<< "size: " << components.size() << std::endl;
+
+				for(std::vector<std::string>::iterator i = components.begin(); i != components.end(); i++)
+				{
+					//if(*i != "*")
+					//std::cout<< *i << std::endl;
+				}
 				///place components of 2d array structure
-				int elements = 5;
+				int elements = 46;
 				double xBoxlength = delta::primitives::getxDiscritizationLength(1, elements);
 				double halfXBoxlength = xBoxlength/2;
 
@@ -207,8 +229,9 @@ void dem::mappings::CreateGrid::createCell(
 				position[1] = (centreAsArray[1]+(floorHeight/2))+halfXBoxlength;
 				position[2] = halfXBoxlength;
 
-				std::vector<std::array<double, 3>> tmp = delta::primitives::array1d(position, 1, elements);
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, 1, elements);
 
+				int counter = 0;
 				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
 				{
 					std::array<double, 3> ar = *i;
@@ -217,30 +240,38 @@ void dem::mappings::CreateGrid::createCell(
 					position[1] = ar[1];
 					position[2] = ar[2];
 
-					//delta::primitives::generateSurface( position, xBoxlength*0.98, xBoxlength*0.98, xCoordinates, yCoordinates, zCoordinates);
-					delta::primitives::generateBrickFB( position, 1, xCoordinates, yCoordinates, zCoordinates);
+					if(components[counter] == "FB")
+					{
+						//std::cout<< components[counter] << std::endl;
 
-					double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-					double influenceRadius = diameter/2 * 1.1;
-					double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+						//delta::primitives::generateSurface( position, xBoxlength*0.98, xBoxlength*0.98, xCoordinates, yCoordinates, zCoordinates);
+						delta::primitives::generateBrickFB( position, 1, xCoordinates, yCoordinates, zCoordinates);
 
-					iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
+						double diameter = delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+						double influenceRadius = diameter/2 * 1.1;
+						double hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 
-					delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
-					delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+						iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = 10000;
 
-					int newParticleNumber = vertex.createNewParticle(position,
-											xCoordinates, yCoordinates, zCoordinates,
-											centerOfMass, inertia, inverse,
-											mass, diameter, influenceRadius, _epsilon,
-											hMin, false, 1, false, _numberOfParticles);
+						delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, rho, mass, centerOfMass, inertia);
+						delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 
-					_numberOfParticles++; _numberOfObstacles++;
-					_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+						int newParticleNumber = vertex.createNewParticle(position,
+												xCoordinates, yCoordinates, zCoordinates,
+												centerOfMass, inertia, inverse,
+												mass, diameter, influenceRadius, _epsilon,
+												hMin, false, 1, false, _numberOfParticles);
 
-					xCoordinates.clear();
-					yCoordinates.clear();
-					zCoordinates.clear();
+						_numberOfParticles++; _numberOfObstacles++;
+						_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+
+						xCoordinates.clear();
+						yCoordinates.clear();
+						zCoordinates.clear();
+					}
+					counter++;
+					if(counter > 600)
+						break;
 				}
 
 				return;

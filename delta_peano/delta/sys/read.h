@@ -18,7 +18,7 @@
 
 namespace delta {
 	namespace sys {
-		void parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid);
+		void parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid, std::vector<std::string> &componentSeq);
 		void readVTKGeometry(char* fileinput,
 						   std::vector<double>&  xCoordinates,
 						   std::vector<double>&  yCoordinates,
