@@ -203,7 +203,8 @@ void dem::mappings::CreateGrid::createCell(
 
 				///place components of 2d array structure
 				int elements = 46;
-				double xBoxlength = delta::primitives::getxDiscritizationLength(1, elements);
+				double length = 0.5;
+				double xBoxlength = delta::primitives::getxDiscritizationLength(length, elements);
 				double halfXBoxlength = xBoxlength/2;
 
 				double scaleDownPercentage;
@@ -218,7 +219,7 @@ void dem::mappings::CreateGrid::createCell(
 				position[1] = (centreAsArray[1]+(floorHeight/2))+((yw/2)*scaleDownPercentage);
 				position[2] = halfXBoxlength;
 
-				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, 1, elements);
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, length, elements);
 
 				int counter = 0;
 				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
@@ -277,7 +278,7 @@ void dem::mappings::CreateGrid::createCell(
 				bool isObstacle = true;
 				bool friction = true;
 
-				iREAL inertia[9], inverse[9], mass = 1, centerOfMass[3], rho = GOLD;
+				iREAL rho = GOLD;
 
 				int newParticleNumber = vertex.createNewParticle(centreAsArray,
 										xCoordinates, yCoordinates, zCoordinates,
@@ -302,7 +303,8 @@ void dem::mappings::CreateGrid::createCell(
 
 				///place components of 2d array structure
 				int elements = 5;
-				double xBoxlength = delta::primitives::getxDiscritizationLength(1, elements);
+				double length = 0.5;
+				double xBoxlength = delta::primitives::getxDiscritizationLength(length, elements);
 				double halfXBoxlength = xBoxlength/2;
 
 				double scalePercentage;
@@ -322,7 +324,7 @@ void dem::mappings::CreateGrid::createCell(
 				position[1] = (centreAsArray[1]+(floorHeight/2))+((yw/2)*scalePercentage);
 				position[2] = halfXBoxlength;
 
-				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, 1, elements);
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, length, elements);
 
 				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
 				{
@@ -333,7 +335,7 @@ void dem::mappings::CreateGrid::createCell(
 					position[2] = ar[2];
 
 					//delta::primitives::generateSurface( position, xBoxlength*0.98, xBoxlength*0.98, xCoordinates, yCoordinates, zCoordinates);
-					delta::primitives::generateBrickFB( position, scalePercentage, xCoordinates, yCoordinates, zCoordinates);
+					delta::primitives::generateBrickFB( position, scalePercentage*0.8, xCoordinates, yCoordinates, zCoordinates);
 
 					iREAL rho = GOLD;
 
