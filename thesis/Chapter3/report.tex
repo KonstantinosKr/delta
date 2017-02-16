@@ -60,6 +60,10 @@ Professor Jon Trevelyan\\
 
 \clearpage
 
+\tableofcontents
+
+\clearpage
+
 \section{Introduction}
 We present a Discrete Element Method (DEM) contact detection code that simulates rigid non-spherical particles on manycore shared memory machines and distributed memory computers. DEM is used to study granular particles in fields like soil mechanics. We rely on triangulated particle meshes to model surfaces. Spherical or multi-sphere models currently are state-of-the-art - due to a lack of well-suited software and runtime demands. Non-spherical particles promise to facilitate more accurate physics than sphere-based approaches \cite{AlonsoMarroqu2013}. The focus on triangles for rigid contact mechanics facilitates memory layouts allowing vectorised computation \cite{Alvarez2007, Koziara2005, Krestenitis2015}. It is vital to yield high performance on current and upcoming processor architectures to enable engineers to simulate more realistic materials.
 
@@ -71,19 +75,43 @@ The state-of-the-art large scale DEM work, to the best of my knowledge, relies o
 
 The remainder of the paper is structured as follows. In Section 2, we describe the serial DEM  algorithm. In Section 3 we review two triangle-to-triangle distance algorithms. We create a new hybrid shared memory method that benefits from fast convergence and robustness. Next, in Section 3, we propose a distributed memory algorithm for contact detection that use asynchronous communication to overlap computation over communication. Section 4, discusses the future research directions.
 
-\section{Algorithmic Overview}
-\vspace{5mm}
-\begin{itemize}
-\item Completed since last report: Implemented serial DEM simulation with triangle-to-triangle contact detection using spring-dashpot contact forces, explicit time step.
-\item New concepts: New shared memory hybrid method for computation of triangle-to-triangle distance.
-\item Open questions: Best-case design of distributed memory implementation is not clear yet, real-world experiments are missing.
-\end{itemize}
+\section{Outline Summary of Thesis}
+
+\subsection{Overview}
 
 In contact mechanics, fluid-stucture interaction or other fields, it is an essential task to compute the distance between geometries to determine contact. Contact detection also is the most expensive algorithmic step \cite{Koziara2010, Wachs2012}. We present a Discrete Element Method (DEM) code that simulate particles that interact with spring-based contact. Non-spherical particles promise to facilitate more accurate physics than sphere-based approaches \cite{AlonsoMarroqu2013, Girolami2012}. The contact detection routine determines contact based on the distance between the triangles of every particle against all other. If two triangles are closer than a prescribed threshold, they are considered to contact each other. The use of triangles for rigid body contact dynamics rather than arbitrary polygons simplifies geometric checks and facilitates memory layouts that allow vectorised computation \cite{Eichenberger2004, Juurlink, Krestenitis2015, Krestenitis2016}.
 
-The serial DEM Algorithm \ref{alg1} demonstrates the execution of contact detection, an O($n^2$) operation. In line 3 and line 4 the nested for loop indicate the complexity of iterating through all triangle pairs. In line 5 TTD(i, j) invokes a Triangle-to-Triangle Distance (TTD) algorithm that determines the distance between triangle i and triangle j. Based on the boundary layer margin contact model \cite{Krestenitis2015} to avoid penetration, we check if distance between Triangle i and j is smaller than a set margin (line 6). If the parent particle of triangle i and j is not the same then this indicate a contact point between the two particles (line 7). The contact point information at line 13 and line 14 is used to derive the forces. The forces accelerate the particles that are then integrated by an explicit time stepping scheme such as explicit Euler.
+\subsubsection{Geometric Approximation}
 
-\clearpage
+*polygons, sphere, multisphere
+
+To create objects that 
+
+\subsubsection{Interaction Model}
+
+\begin{algorithm}	
+  0 \textbf{\textcolor{blue}{FUNCTION}} force = penaltyForce(normal, relativeVelocity, depth, massA, massB)
+  
+  1~~mass = 1.0 / ((1/massA) + (1/massB));
+  
+  2~~velocitymagnitude = DOT(relativeVelocity, normal);
+  
+  3~~magnitude = SPRING*depth + DAMPER*sqrt(SPRING*mass)*velocitymagnitude;
+  
+  4~~force = magnitude*normal;
+  
+  5 \textbf{\textcolor{blue}{ENDFUNCTION}}
+\protect\caption{\label{alg2}Spring-dashpot force algorithm}
+\end{algorithm}
+
+Algorithm \ref{alg2} shows the spring-based force derivation approach \cite{Koziara2008, solberg2000, Wachs2012, Williams1999}. To define contact points without penetration, we use the boundary layer margins to extend the surface boundary. Margin size is set based on velocities and time step size. When in contact, the margin overlap is used as the interpenetration depth. The contact point is at the middlepoint of the distance and normal direction is either side of the distance. At line 0, given the contact point normal, relative linear velocities, penetration depth and the mass of the two bodies we derive the interaction force to update the position of particle triangles on every time step.
+
+
+\subsection{Algorithmic Overview}
+
+
+
+The DEM Algorithm \ref{alg1} demonstrates the execution of contact detection, an O($n^2$) operation. In line 3 and line 4 the nested for loop indicate the complexity of iterating through all triangle pairs. In line 5 TTD(i, j) invokes a Triangle-to-Triangle Distance (TTD) algorithm that determines the distance between triangle i and triangle j. Based on the boundary layer margin contact model \cite{Krestenitis2015} to avoid penetration, we check if distance between Triangle i and j is smaller than a set margin (line 6). If the parent particle of triangle i and j is not the same then this indicate a contact point between the two particles (line 7). The contact point information at line 13 and line 14 is used to derive the forces. The forces accelerate the particles that are then integrated by an explicit time stepping scheme such as explicit Euler.
 
 \begin{algorithm}	
 
@@ -127,28 +155,249 @@ The serial DEM Algorithm \ref{alg1} demonstrates the execution of contact detect
 \end{algorithm}
 
 
-\begin{algorithm}	
-  0 \textbf{\textcolor{blue}{FUNCTION}} force = penaltyForce(normal, relativeVelocity, depth, massA, massB)
-  
-  1~~mass = 1.0 / ((1/massA) + (1/massB));
-  
-  2~~velocitymagnitude = DOT(relativeVelocity, normal);
-  
-  3~~magnitude = SPRING*depth + DAMPER*sqrt(SPRING*mass)*velocitymagnitude;
-  
-  4~~force = magnitude*normal;
-  
-  5 \textbf{\textcolor{blue}{ENDFUNCTION}}
-\protect\caption{\label{alg2}Spring-dashpot force algorithm}
+\subsection{Domain Decomposition}
+
+\subsubsection{Vectorization}
+
+**interaction models exploit SIMD architecture
+**properties of SIMD, bit precision
+**implementation, memory layout, implications
+
+\subsubsection{Shared Memory}
+
+In the shared memory chapter of the thesis
+
+
+\subsubsection{Distributed Memory}
+
+In chapter distributed memory computation, the areas covered will be the feeding of compute nodes with dense arithmetic operations and the communication behaviour that emerges from this.
+
+
+\subsection{Case Study}
+
+*two case studies, study behaviour of grid and paradigm and effect on performance (memory, intensity, etc)
+
+\subsubsection{Hopper Flow}
+
+*hopper flow scenario description
+
+\subsubsection{AGR Seismic Shake}
+
+*seismic scenario, setup of objects/geometry, experiment setup and properties
+
+
+
+
+
+
+\section{Progress Report}
+
+\subsubsection{Overview}
+
+
+
+\subsubsection{Geometric Approximation}
+
+%describe the setup
+We utilise particles approximated by a random spherical point cloud, arbitrary particle surfaces are generated with the Delauny triangulation algorithm. The algorithm is scaled in three respects; number of non-spherical particles, irregularity of particle radius size, and mesh size.
+
+
+\subsubsection{Interaction Model}
+
+%Brute Force
+The brute force is the naive approach to contact detection, it computes all distances between geometrical primitives of the triangles. The method computes the distance between all line segments of one triangle with the line segments of the other using the segment-to-segment (Algorithm \ref{alg3}, line 22-30) distance function \cite{Ericson2005, Tropp2006}. Then for every point of one triangle it computes the distance against the other triangle using the point-to-triangle (Algorithm \ref{alg3}, line 3-8) function \cite{Eberly1999, Ericson2005}. The method requires evaluating the minimum distance among all comparisons performed to find the overall minimum distance in the end.
+
+The algorithm is straight-forward because it relies on only two geometric comparisons. As seen in Algorithm \ref{alg3} in lines 3 to 21 the six comparisons yield one that defines the distance. For segment-to-segment, let $v_{1i}$, $e_{1i}$, $v_{2i}$, $e_{2i}$ be the vertices and edges of triangles $T_1$ and $T_2$. The brute force approach computes all fifteen distances $v_{1i}$-to-$T_2$, $v_{2i}$-to-$T_1$, $e_{1i}$-to-$e_{2i}$, and then we select the shortest distance. As seen in Algorithm \ref{alg3} in line 22 to 37 the algorithm determines the segment-to-segment distance between all segments of the triangle pair. Finally the algorithms finds the minimum of the two sets of comparisons to get the P and Q vertices that define the distance between two triangles. 
+
+Optimization of the brute force method can at most rely on avoiding redundant evaluations parts of the computation. It is not possible to avoid logical branching because we have to evaluate all if statements to arrive to the solution. Therefore it is not possible to optimize the method for SIMD parallelism because of the branching. 
+
+\begin{algorithm}
+0~~\textbf{\textcolor{blue}{FUNCTION}} [min,P,Q] = \textbf{\textcolor{blue}{bf}}(A,B,C, D,E,F)
+
+1~~T1=[A;B;C;];~~T2=[D;E;F;];
+
+3~~[ptlist(1), P0(1,:)]= pt([D;E;F], T1(1,:));
+
+4~~[ptlist(2), P0(2,:)]= pt([D;E;F], T1(2,:));
+
+5~~[ptlist(3), P0(3,:)]= pt([D;E;F], T1(3,:));
+
+6~~[ptlist(4), P0(4,:)]= pt([A;B;C], T2(1,:));
+
+7~~[ptlist(5), P0(5,:)]= pt([A;B;C], T2(2,:));
+
+8~~[ptlist(6), P0(6,:)]= pt([A;B;C], T2(3,:));
+
+9~~ptmin = min(ptlist);
+
+10~~\textbf{\textcolor{blue}{FOR}} i=1:6
+
+11~~~~\textbf{\textcolor{blue}{IF}}(ptmin==ptlist(i))
+
+12~~~~~~\textbf{\textcolor{blue}{IF}}(i<4)
+
+13~~~~~~~~p1 = T1(i,:);~~p2 = P0(i,:);
+
+15~~~~~~\textbf{\textcolor{blue}{ELSE}}
+
+16~~~~~~~~p1 = P0(i,:);~~p2 = T2(i-3,:);
+
+18~~~~~~\textbf{\textcolor{blue}{END;}}~~\textbf{\textcolor{blue}{break;}}
+
+20~~~~\textbf{\textcolor{blue}{END;}}
+
+21~~\textbf{\textcolor{blue}{END;}}
+
+22~~[ss(1),sp1(1,:),sp2(1,:)]=segseg(T1(1,:),T1(2,:),T2(1,:),T2(2,:));
+
+23~~[ss(2),sp1(2,:),sp2(2,:)]=segseg(T1(1,:),T1(2,:),T2(2,:),T2(3,:));
+
+24~~[ss(3),sp1(3,:),sp2(3,:)]=segseg(T1(1,:),T1(2,:),T2(3,:),T2(1,:));
+
+25~~[ss(4),sp1(4,:),sp2(4,:)]=segseg(T1(2,:),T1(3,:),T2(1,:),T2(2,:));
+
+26~~[ss(5),sp1(5,:),sp2(5,:)]=segseg(T1(2,:),T1(3,:),T2(2,:),T2(3,:));
+
+27~~[ss(6),sp1(6,:),sp2(6,:)]=segseg(T1(2,:),T1(3,:),T2(3,:),T2(1,:));
+
+28~~[ss(7),sp1(7,:),sp2(7,:)]=segseg(T1(3,:),T1(1,:),T2(1,:),T2(2,:));
+
+29~~[ss(8),sp1(8,:),sp2(8,:)]=segseg(T1(3,:),T1(1,:),T2(2,:),T2(3,:));
+
+30~~[ss(9),sp1(9,:),sp2(9,:)]=segseg(T1(3,:),T1(1,:),T2(3,:),T2(1,:));
+
+31~~ssmin = min(ss);
+
+32~~\textbf{\textcolor{blue}{FOR}} i=1:9
+
+33~~~~\textbf{\textcolor{blue}{IF}}(sslist(i) == ssmin)
+
+34~~~~~~csp1 = sp1(i,:);~~csp2 = sp2(i,:);
+
+36~~~~\textbf{\textcolor{blue}{END;}}
+
+37~~\textbf{\textcolor{blue}{END;}}
+
+38~~min = min(ssmin, ptmin);
+
+39~~\textbf{\textcolor{blue}{IF}} min == ptmin
+
+40~~~~P = p1;~~Q = p2;
+
+41~~\textbf{\textcolor{blue}{ELSEIF}} min == ssmin
+
+42~~~~P = csp1(:,:);~~Q = csp2(:,:);
+
+43~~\textbf{\textcolor{blue}{END;}}
+\protect\caption{\label{alg3}MATLAB Brute Force Solver.}
 \end{algorithm}
-
-Algorithm \ref{alg2} shows the spring-based force derivation approach \cite{Koziara2008, solberg2000, Wachs2012, Williams1999}. To define contact points without penetration, we use the boundary layer margins to extend the surface boundary. Margin size is set based on velocities and time step size. When in contact, the margin overlap is used as the interpenetration depth. The contact point is at the middlepoint of the distance and normal direction is either side of the distance. At line 0, given the contact point normal, relative linear velocities, penetration depth and the mass of the two bodies we derive the interaction force to update the position of particle triangles on every time step.
-
 \clearpage
 
+%Penalty
 
-\section{Grid meta data structures}
-\label{section:grid}
+The second approach to solve the triangle-to-triangle  distance problem is by parameterising of the triangles such that the distance between them is formulated by a quadratic function and a solvable minimization problem. This approach is iterative compared to brute force. The method approximate the solution using Newton iterations.
+
+The method relies on an optimization-based formulation of the distance between two points. Let $x$ and $y$ be two points, belonging respectively to triangle $T_1$ and $T_2$. Assuming that points $A, B, C$ are vertices of $T_1$ and that points $D, E, F$ are vertices of $T_2$, $x$ and $y$ can be defined using the following equations: 
+\begin{align*}
+T_{1}:x(a,b)=A+(B-A) \cdot a+(C-A)\cdot b
+\end{align*}
+\begin{align*}
+T_{2}:y(g,d)=D+(E-D) \cdot g+(F-D) \cdot d
+\end{align*} 
+To find the minimum distance between $T_1$ and $T_2$ and the corresponding two closest points $P$, $Q$ on the two triangles we minimize
+\begin{align*}
+f\left(a,b,c,d\right)=\left\Vert x\left(a,b\right)-y\left(c,d\right)\right\Vert ^{2}
+\end{align*} 
+
+What has to be noted is that $x$ and $y$ have to stay within the area of the two triangles. The four parameters of the function $f$ have to comply with six inequality constraints:
+\begin{align*}
+min_{a,b,g,d} f(a,b,g,d)
+\end{align*}  
+$$such \:that: \: \{a\geq0,b\geq0, a+b\leq1, d\geq0, g\geq0, g+d\leq1 \}$$ 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.6\textwidth]{c} \protect\caption{\label{fig1}Example of minimum distance and the corresponding barycentric points (parameters of objective function) on a pair of triangles in 3D. Triangle X:T1 has points A, B, C where barymetric parameters a,b correspond to point $x$ on the triangle. Triangle Y:T2 has points D,E,F where barymetric parameters g,d correspond to a point $x$. The two defined barymetric points define the minimum distance between the two triangles in 3D.}
+\end{figure} 
+
+To find the minimum of the parabolic constraint problem the Newton-Raphson method is used. Newton method use information from the curvature of the problem using the Hessian and gradient to arrive to a minimum point. To enforce the constraints the problem is transformed into a series of unconstrained problems with the augmentation of the objective function $f$ using the penalty-based method.
+
+The penalty function penalizes the iteration so that the boundaries of the feasible region are valid; at least in a weak sense. Although there are factors that determine the number of iterations required the tuned-to-the-problem parameters yield a good number of Newton iterations that cannot be reduced to less than two; (initial guess to penalized boundary step, correction step).
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.5\textwidth]{penalty} \protect\caption{\label{fig2}Illustration of a 2D problem showing the penalty function (red line) penalizing the objective function (black line) f(x) under a constraint $a$ (dash line) to create the feasible region (blue line).}
+\end{figure} 
+
+This iterative approach adds a penalty term to the objective function to penalize the solution when outside of the feasible region: 
+\begin{equation}\label{eq:penalty}
+P(x)=f(x)+r\sum_{i=1...6}max(0,c(x_{i}))^{2}
+\end{equation}
+Where r is the penalty parameter (Figure \ref{fig2}). Newton iterations always converge to a solution slightly on the outside of the feasible region. Convergence can be controlled by the r penalty parameter that controls the sharpness of the curve for the constraints. One aspect that requires care however is the invertibility of the Hessian $\nabla\nabla P$. 
+
+Furthermore that the problem is ill conditioned and a Quasi-Newton method has to be used. The Hessian matrix is not invertible so it is not possible to solve the direction of the search by computing the Hessian and gradient. This illustrates the fact that $f$ has multiple minima and $\nabla\nabla f$ is singular. Consequently, $\nabla\nabla P$ is also singular inside of the feasible region. The ill conditioning is caused by the problem definition itself, where there is a state where there are multiple solutions to the problem based on the orientation of the two triangles. This is also revealed by the two zero eigenvalues of the Hessian. Because of the ill-conditioning, we use a quasi-Newton approach, where the Hessian is approximated by a perturbed operator $\nabla\nabla P + \epsilon I$. $I$ is an identity matrix and $\epsilon$ is suitably small. 
+
+\begin{algorithm}
+0~~\textbf{\textcolor{blue}{FUNCTION}}~x~=~\textbf{penalty}(A,~B,~C,~D,~E,~F,~rho,~tol)
+
+1~~BA~=~B-A;~CA~=~C-A;~ED~=~E-D;~FD~=~F-D;
+
+2~~hf~=~{[}2{*}BA{*}BA',~2{*}CA{*}BA',-2{*}ED{*}BA',-2{*}FD{*}BA';
+
+3~~~~~~~~2{*}BA{*}CA',~2{*}CA{*}CA',-2{*}ED{*}CA',-2{*}FD{*}CA';
+
+4~~~~~~~-2{*}BA{*}ED',-2{*}CA{*}ED',~2{*}ED{*}ED',~2{*}FD{*}ED';
+
+5~~~~~~~-2{*}BA{*}FD',-2{*}CA{*}FD',~2{*}ED{*}FD',~2{*}FD{*}FD'{]};
+
+6~~x~=~{[}0.33;~0.33;~0.33;~0.33{]};
+
+3~~\textbf{\textcolor{blue}{FOR}}~i=1:99
+
+4~~~~X~=~A+BA{*}x(1)~+~CA{*}x(2);
+
+5~~~~Y~=~D+ED{*}x(3)~+~FD{*}x(4);
+
+6~~~~gf~=~{[}2{*}(X-Y){*}BA';~2{*}(X-Y){*}CA';~-2{*}(X-Y){*}ED';~-2{*}(X-Y){*}FD'{]};~
+
+7~~~~h~=~{[}-x(1);~-x(2);~x(1)+x(2)-1;~-x(3);~-x(4);~x(3)+x(4)-1{]};
+
+8~~~~dh~=~{[}-1,~0,~1,~0,~0,~0;~0,~-1,~1,~0,~0,~0;
+
+9~~~~~~~~~~~0,~0,~0,~-1,~0,~1;~0,~0,~0,~0,~-1,~1{]};
+
+10~~~mask~=~h'~$>$=~0;
+
+11~~~dmax~=~dh.{*}~{[}mask;~mask;~mask;~mask{]};
+
+12~~~gra~=~gf~+~rho~{*}~dmax~{*}~max(0,h(:));
+
+17~~~hes~=~hf~+~rho{*}dmax{*}dmax'~+~eye(4,4)/rho\textasciicircum{}2;
+
+18~~~dx~=~hes\textbackslash{}gra;
+
+19~~~DX~=~BA{*}dx(1)~+~CA{*}dx(2);
+
+20~~~DY~=~ED{*}dx(3)~+~FD{*}dx(4);
+
+21~~~error~=~sqrt(DX{*}DX'+DY{*}DY');
+
+22~~~\textbf{\textcolor{blue}{IF}}~error~$<$~tol,~\textbf{\textcolor{blue}{BREAK}};~\textbf{\textcolor{blue}{END}}
+
+23~~~x~=~x~-~dx;
+
+24~\textbf{\textcolor{blue}{END}}
+
+25~\textbf{\textcolor{blue}{END}}
+\protect\caption{\label{alg4}MATLAB Penalty Solver.}
+\end{algorithm}
+
+The penalty algorithm in pseudocode language is shown in Algorithm \ref{alg4}. It accepts A, B, C, D, E, F vector coordinates for triangle T1(A, B, C), T2(D, E, F) as well as the required parameters for the algorithm to be solved. Rho is the penalty parameter that controls the steepness of the P(x) function (equation \ref{eq:penalty}) , eps is the perturbation parameter for the hessian matrix of the problem along its diagonal to make the matrix solvable. Tol is the tolerance for convergence (Floating point accuracy). In line 6 of Algorithm \ref{alg4} an initial guess is chosen to be the center of the two triangles, then the for loop initiates the Newton iterations to find the points on the X, Y triangle planes under the constraints c. For each of the six constraints (line 12) the max function of the penalty is determined so that every possible active constraint is detected. In line 19 and line 20 the gradient and Hessian of P Penalty function is evaluated to be provided to the Gaussian elimination direct solver so that a Newton direction DX is solved. If the Newton step is large enough over the specified tolerance then the iteration is converged else the direction is used and the loop is executed once more recursively.
+
+
+\subsection{Algorithmic Overview}
+
+\subsubsection{Space Decomposition}
 
 Various speedup techniques such as linked-cell lists \cite{Eckhardt2014} and Verlet lists
 \cite{Fleissner, Eckhardt2014} reduce the quadratic complexity in DEM codes.
@@ -195,7 +444,6 @@ decision.
 The decision to cut into three parts results from the fact that we rely on a
 code base based upon three-partitioning \cite{Software:Peano}.
 Bipartitioning, i.e.~the classic octree, works as well.
-
 
 The construction scheme yields a cascade of ragged regular Cartesian grids that
 are embedded into each other.
@@ -247,7 +495,6 @@ all levels of the underlying spacetree.
   }
   \label{figure:collision-cube}
 \end{figure}
-
 
 We then write down the algorithm as a set of events, i.e.~we specify which
 operations are performed if a vertex is read for the very first time \linebreak
@@ -355,7 +602,6 @@ run through the grid \cite{Weinzierl:2009:Diss,Weinzierl:11:Peano} and thus
 guarantee such a two-fold locality.
 
 
-
 \noindent
 More sophisticated explicit schemes can be realised with the same single-touch
 policy if we hold additional data per particle (acceleration, e.g.).
@@ -461,9 +707,62 @@ Throughout the inter-vertex contact detection in \texttt{enterCell}, we further
 bookkeep the minimum diameter of all the particles involved. 
 If this minimal diameter is smaller than the cell, we do refine this cell, too.
 
+\subsubsection{Vectorization (SIMD)}
+All performance tests (Figure \ref{fig17}) used the latest AVX2 (Advanced Vector Extensions) instruction set on an Intel Sandy Bridge 2.0GHz i5 CPU with a memory of 600 MHz DDR3 RAM. For the barrier method isn't worth to do a performance comparison even though its C and ISPC version is implemented but not with great success due to its theoretical computational inefficiencies as discussed earlier in the report. Only the tuned penalty and brute force approaches are considered for real-world applications due their significant parallel speedup. The performance test comprises calculating the minimum distance between ten million pairs of triangles of length ten. The performance is scaled linearly for every magnitude length of pair triangle. 
 
-\section{Shared memory parallelisation}
-\label{section:shared-memory}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=1\textwidth]{perf} \protect\caption{\label{fig17}Run-time comparison of the sequential and parallel penalty and brute force methods using float and double precision, using ISPC, Intel, GCC compilers on a single AVX2 core.}
+\end{figure} 
+
+As it can be observed in Figure \ref{fig17}, the runtimes show that there is significant speedup when SIMD parallelism is used compared to sequential algorithm execution for all methods. For the brute force, serial Intel and GCC are the slowest with no significant difference in performance in using floats or double precision. That is due to little actual floating point computation. It has to be noted that our serial version is optimized considering memory bandwidth. For the Intel SIMD version of brute force, it can be seen that there is 6x speedup compared to its serial sequential variant using single precision. Speed up for double precision (~3x times), both results reflect the logical branching involved in brute force. Nevertheless the speed up is significant. The ISPC compiler for brute force is capable to do vectorization better for double precision than the Intel compiler, which makes the new vectorization compiler well-suited for SIMD programming. As we haven't studied the results assembles codes, we cannot identify where the difference between ISPC and C come from.
+
+As penalty solver is an iterative method, its performance is dependent on the tuned parameters. The $r$ penalty parameter and $eps$ are calculated automatically based on the tuning and algorithm study performed. Moreover, the technique discussed in the implementation chapter for converging in 4 iterations is used without losing significant numerical precision. The penalty method reaches the physical limits of SIMD architectures with 4x speed up for double precision and 8x speedup for single precision. This makes it the fastest algorithm. Intel compiled serial code is significantly faster than Intel and GCC versions of Brute force. GCC compilers for serial are slightly slower, but still faster than brute force GCC serial. ISPC, Intel compiler for SIMD show that they are very fast, slightly showing a speedup for penalty over brute force. 
+
+\begin{table}[h]
+\begin{center}
+    \begin{tabular}{ | l | l | l | p{5cm} |}
+    \hline
+\multicolumn{3}{ |c| }{Intel C++ Compiler Sequential Double Precision} \\
+\hline
+    Algorithm & Penalty Method & Brute Force Method\\ \hline
+    Runtime unhalted (s) & 15.47 & 22.49  \\ \hline
+    MFLOPS/s & 1073 & 962  \\ \hline
+    CPI & 0.49 & 0.48 \\ \hline
+    Memory BW M/s & 579 & 408 \\ \hline
+    Data Volumn GB & 6.7 & 6.77 \\ \hline
+    \end{tabular}
+    \caption{64bit sequential computation; solving ten million random triangle pairs using the two methods.}
+    \label{table1}
+\end{center}
+\end{table}
+
+It can be observed see from performance measurements in Table \ref{table1} using likwid [49] that for serial double precision (same for single precision) both methods are not memory (Memory BW Bandwidth Megabyte per second) but compute-bound. For the machine used, the maximum memory throughput is 13 GB/s, so memory bandwidth is not used to the maximum. That is a result of careful programming, and as mentioned in the implementation section, due to the fact unnecessary memory operations are reduced extensively. The data volumn in Gigabytes is the same for both methods, since both methods use the same amount of input and output data. That is the triangle coordinates, P, Q point solution on the two triangles T1, T2 and the calculated distance which is derived from P and Q vectors. The penalty method is managing to executes faster than brute force because it execute slightly more floating point operations than the brute force (Mega Flops per second MFLOPS/s).
+
+\begin{table}[h]
+\begin{center}
+    \begin{tabular}{ | l | l | l | p{5cm} |}
+    \hline
+\multicolumn{3}{ |c| }{Intel C++ Compiler SIMD Double Precision} \\
+\hline
+    Algorithm & Penalty Method & Brute Force Method\\ \hline
+    Runtime unhalted (s) & 4.54 & 7.78  \\ \hline
+    MFLOPS/s & 3202 & 2808  \\ \hline
+    CPI & 1.26 & 0.91 \\ \hline
+    Memory BW M/s & 1424 & 902 \\ \hline
+    Data Volumn GB & 5.15 & 5.2 \\ \hline
+    \end{tabular}
+    \caption{64bit SIMD computation; solving ten million random triangle pairs using the two methods.}
+    \label{table2}
+\end{center} 
+\end{table}
+
+In Table \ref{table2} it can be seen that the SIMD implementation for both methods increase performance significantly. Their serial counterparts they both achieve more than 2x times speedup, with penalty achieving  3.40x speedup, and brute force 2.89x speedup. The theoretical maximum speedup that is possible to achieve is 4x times for 64bit precision using a 256bit wide register, and even more speedup for wider 512bit registers that are available on Xeon Phi processors. Using ISPC compilers however as shown in Figure \ref{fig17} double precision achieve 4x speedup. For 32bit precision the speedup using AVX 256bit wide instruction sets is near 8x times as it can be seen in Figure \ref{fig17}. 
+
+These performance comparisons are the result of extensive low level programming and tuning of parameters to optimize the solvers. The effort of looking into compiler specific instructions and architecture specific programming has resulted into optimal codes for this triangle to triangle minimum calculation. In practice the SIMD speedups show that both penalty and brute force solvers are suitable but in terms of performance penalty is more favorable, while brute force benefits its numerical robustness. Overall because of the reduced errors and tuning through experiments and testing in addition to performance, the penalty method is the best method to use using either ISPC or Intel compilers and up to eight core concurrency.
+
+
+\subsubsection{Shared Memory (SMT)}
 
 We introduce three levels of shared memory parallelisation on a single machine that exploit multiple levels of locality. The hierarchical categorisation of the methods is based upon the abstract algorithmic distance between shared resource parallel utilisation and actual arithmetic computation. At the highest level we exploit  data access independence of vertex touches we assign cell block tasks to threads. Within each vertex touch particle pairs are grouped into aligned memory blocks thus tasks are launched between particle-to-particle comparisons. Lastly within each particle pair at the innermost level tessellation elements of the mesh are dichotomised and parallel locality is held for the underlying vectorized contact solver.
 
@@ -475,8 +774,7 @@ b) cell vertex level particle-to-particle thread units\\
 
 c) particle level mesh-to-mesh thread units\\
 
-%describe the setup
-We utilise particles approximated by a random spherical point cloud, arbitrary particle surfaces are generated with the Delauny triangulation algorithm. The algorithm is scaled in three respects; number of non-spherical particles, irregularity of particle radius size, and mesh size. Respectively, we provide three parameters in the creation of the simulation domain. $Rmin$, $Rmax$ parameter for max and min radius of particles, $m$ for mesh density, $p$ for number of particles in the domain. These allow observation of the interplay between performance and particle geometry and dynamics within a grid in a modern NUMA architecture. For scaling measuring we use the hybrid and the brute force solvers.
+Respectively, we have three parameters to decompose the simulation domain. $Rmin$, $Rmax$ parameter for max and min radius of particles, $m$ for mesh density, $p$ for number of particles in the domain. These allow observation of the interplay between performance and particle geometry and dynamics within a grid in a modern NUMA architecture. For scaling measuring we use the hybrid and the brute force solvers.
 
 %Initial-termination conditions
 For the experiment the initial space configuration of the particles in respect to the grid is homogeneous and aligned per cell. Initial conditions for the particle dynamics are governed by only gravity and termination is defined by the number of iteration that the granulates are rest condition with energy dissipated on the ground. Termination phase is known a priori. We utilise regular grid and reluctant-adaptive grids for space decomposition and and grid adaptivity to granular kinematics. 
@@ -484,7 +782,7 @@ For the experiment the initial space configuration of the particles in respect t
 \iffalse
 \begin{figure}[htb]
 	\centering
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{0.5\textwidth}
   		\centering
     	\includegraphics[width=1\textwidth]{experiments/omp/omp_mesh_regular-reluctant_20.png}
   		\caption{Shared memory scaling 22540 elements.}
@@ -501,7 +799,7 @@ For the experiment the initial space configuration of the particles in respect t
 
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=1\textwidth]{experiments/omp/omp_mesh_regular-reluctant_20.png}
+    \includegraphics[width=0.7\textwidth]{experiments/omp/omp_mesh_regular-reluctant_20.png}
   \end{center}
   \caption{Grids shared memory scaling 22540 triangle elements (BF solver).}
   \label{figure:omp_regular_reluctant_triangle_20}
@@ -509,7 +807,7 @@ For the experiment the initial space configuration of the particles in respect t
 
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=1\textwidth]{experiments/omp/omp_mesh_regular-reluctant_200.png}
+    \includegraphics[width=0.7\textwidth]{experiments/omp/omp_mesh_regular-reluctant_200.png}
   \end{center}
   \caption{Grids shared memory scaling 98540 triangle elements (BF solver).}
   \label{figure:omp_regular_reluctant_triangle_200}
@@ -521,7 +819,7 @@ Beginning at the innermost tessellation-level with a regular grid (figure \ref{o
 
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{experiments/omp/hbatches_omp_triangles_200.png}
+    \includegraphics[width=0.7\textwidth]{experiments/omp/hbatches_omp_triangles_200.png}
   \end{center}
   \caption{Triangle based shared memory running hybrid-on-batches (HBatches).}
   \label{figure:hbatches_triangles_triangle_omp}
@@ -532,7 +830,7 @@ are $n$ triangle batches wide while hybrid-on-triangles solver relies on fine co
 
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{experiments/omp/htriangle_omp_triangles_200.png}
+    \includegraphics[width=0.7\textwidth]{experiments/omp/htriangle_omp_triangles_200.png}
   \end{center}
   \caption{Triangle based shared memory running hybrid-on-triangle-pairs (HTriangles)}
   \label{figure:htriangles_triangles_triangle_omp}
@@ -541,7 +839,7 @@ are $n$ triangle batches wide while hybrid-on-triangles solver relies on fine co
 
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{experiments/omp/bf_vs_hbatches_omp_200.png}
+    \includegraphics[width=0.7\textwidth]{experiments/omp/bf_vs_hbatches_omp_200.png}
   \end{center}
   \caption{Triangle based shared memory running hybrid-on-triangle-pairs (HTriangles)}
   \label{figure:bfvshbatches_triangle_omp}
@@ -557,7 +855,7 @@ At the outer parallel blocks, particle blocks are threaded within each grid-vert
 
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=1\textwidth]{experiments/random/omp/particle_triangle_based_x0.png}
+    \includegraphics[width=0.7\textwidth]{experiments/random/omp/particle_triangle_based_x0.png}
   \end{center}
   \caption{Particle based nested shared memory brute force (bf)}
   \label{figure:particletriangle_omp}
@@ -568,22 +866,11 @@ At the outer parallel blocks, particle blocks are threaded within each grid-vert
 %Nevertheless it has an impact on brute-force method as it scales smoother than particle-based only parallelism due to overhead. In this case hybrid-on-batches is also the fastest while the hybrid-on-triangle-pairs the slowest. 
 
 
-%STEP C
-
-\begin{figure}[htb]
-  \begin{center}
-    \includegraphics[width=1\textwidth]{experiments/random/omp/tbb_vs_serial.png}
-  \end{center}
-  \caption{Cell based parallelism on Peano compared to serial runs using Intel TBB}
-  \label{figure:tbb_vs_serial}
-\end{figure}
-  
-
 At the highest level of shared memory parallelism is the grid cell-based multicore processing. It is based on the peano-framework that is using Intel TBBs to assign cells on threads. This has significant impact on the overall runtime performance in Figure \ref{figure:tbb_vs_serial} it is compared with plain serial execution. Number of threads on the x axis refer to TBB Cell-based threads, at the contact detection method level the computation is performed without shared memory parallelism but with vectorization enabled. For the specified experiment in Figure {} we observe no cell-based thread scaling but only reduction of time to solution. But when we increase the problem size further (figure \ref{figure:tbb_scaling}) we see that cell-based parallelism scales and it enhances execution time. 
 
 \begin{figure}[htb]
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{experiments/random/omp/tbb_regular_x2.png}
+    \includegraphics[width=0.7\textwidth]{experiments/random/omp/tbb_regular_x2.png}
   \end{center}
   \caption{Cell based parallelism on Peano compared to serial runs using Intel TBB}
   \label{figure:tbb_scaling}
@@ -594,9 +881,118 @@ Overall shared memory parallelisation yield good speed ups both for hybrid and b
 \clearpage
 
 
+\subsubsection{Distributed Memory (SPMD)}
+
+We further scale the computation with the Message Passing Interface (MPI) \cite{Forum:1994:MMI:898758} for distributed memory computation. Our DEM-based contact detection is inspired by molecular dynamics simulations, where millions of spheres are simulated. State-of-the-art MD computation is decomposed into smaller computational sub-domains and communication exchanges necessary boundary information. Similar computational stages are applied by us in the DEM-based contact detection algorithm. We study synchronous and asynchronous modes of data exchange and how two communication strategies can be exploited to increase performance and minimize computation.
 
 
-\section{Domain Decomposition for Contact Detection}
+
+
+The distributed memory DEM contact detection algorithm is performed in four stages. At stage one, data migration assigns the sub-domains to MPI instances. At stage two, we compute the distances to determine contact between particles. In stage four we accumulate the data and in stage four we perform the explicit time step integration.
+
+The number of neighbours has severe implication on communication patterns between processes. It is an open question what are the performance implications on uniform spaced octree-based decomposition versus the non-uniform kd-tree based decomposition. It is an area of investigation since on an octree-based approach information about the level of refinement is known a priori by the sub-domain boundary size, which is an interesting application for multiscale simulations. 
+
+\label{Unstructured Domain Decomposition}
+%Ghost Data Exchange
+
+The triangles that overlap into a remote sub-domain due to the decomposition cuts are temporary copied to one or more sub-domains in order to perform a complete contact detection. In this section, we study MPI communication characteristics when we resolve data dependencies between the sub-domains caused by ghost triangles in order to maximize performance of distributed contact detection. We explore the implication of inter-process communication and local computational performance using two communication strategies that use asynchronous non-blocking communication.
+
+\begin{algorithm}
+1. Load balance triangles
+
+2. Migrate triangles to MPI network using blocking communication
+
+3. Initiate neighbourhood all-to-all asynchronous MPI send/receive
+
+4. Wait for neighbourhood asynchronous communication to terminate
+
+5. Contact detection 
+
+6. Derive contact forces from contact points generated
+
+7. Explicit time integration
+
+\protect\caption{\label{alg7}Naive Asynchronous Data Exchange Pseudocode}
+\end{algorithm}
+
+
+When spatial decomposition finishes we migrate the data to the processors (Algorithm \ref{alg7} line 2) with blocking synchronous communication. At each time step the triangles migrate according to the DEM kinematics. In addition to migration, a local area data exchange is required to communicate the boundaries of the sub-domains that cut triangles at the boundary. 
+
+The first strategy exchanges local data to all neighbours (Algorithm \ref{alg7} line 3).  The goal is to utilize the communication bandwidth while minimise communication administration
+overhead. If the exchange does not reach the upper bandwidth limit then exchange of all data is faster than filtering out the ghost triangles, i.e. doing any preprocessing that finds out which triangle from a sub-domain might be required from a neighbour. Alternatively, we can send out only triangles
+that overlap from one sub-domain into another sub-domain. This filtering of triangles is an $O(N)$ operation. As soon as MPI communication finishes, the algorithm invokes the existing contact
+detection routines exploiting vectorised floating point operations with a single contact detection routine. Exchange of all local data to all neighbours significantly increases the number of triangles to be processed from $T_{local}$ to $(T_{local} * N_{ranks} * T_{remote})$ where $N_{ranks}$ is the number of neighbours of neighbours. The increase of triangles to be checked increases the total computation performed locally because of the redundant triangles.
+
+The disadvantage of such a naive method is that total MPI wait (figure \ref{fig6}) for an all-to-all neighbour data exchange increases with the number of processes. The asynchronous communication wait time results to time wasted with idle processors. The method is potentially useful with decomposition schemes where all data exchange can be processed in the background, i.e. enough bandwidth is available.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=1\textwidth]{wait} \protect\caption{\label{fig6}Waiting time (s) per MPI rank/node for all to all neighbour data exchange over 1000 time steps (25 mil triangles, 10k non-spherical particles).}
+\end{figure}
+
+\begin{algorithm}
+1 Load balance triangles
+
+2 Migrate triangles to MPI network using blocking communication
+
+3 Search overlapping ghost triangles to send
+
+4 Initiate neighbours asynchronous MPI send/receive
+
+5 ~~~~~~Local contact detection
+
+6 ~~~~~~Retrieve required ghost triangles from neighbours
+
+7 ~~~~~~Local against to remote ghost triangle contact detection
+
+8 Wait for neighbourhood asynchronous communication to terminate (No Real Wait)
+
+9 Derive contact forces from contact points generated
+
+10 Explicit time integration
+
+\protect\caption{\label{alg8}Overlapping Asynchronous Data Exchange Pseudocode}
+\end{algorithm}
+
+The second strategy filters out local ghosts from the data structure and sends them to the overlapping neighbouring processes. Using the spatial decomposition information, we find the specific processes/boundary cells that the triangle bounding box overlaps. In this strategy we minimize data exchange at the cost of a filtering overhead and the allocation of buffers in memory. The method aims to minimise the waiting time of MPI processes by overlapping concurrent computation over communication. As shown in Algorithm \ref{alg8} line 5 local contact detection is executed as soon asynchronous MPI communication is initiated overlapping communication. A second contact detection is initiated to determine contact between local and remote ghost triangles at line 7. The strategy is advantageous as neighbour waiting is always zero as long as local contact detection takes longer than the transmission of the data. As shown in Figure \ref{fig6} the waiting time is increased proportionally to the number of MPI ranks, enabling us to increase overlapping computation per process with larger number of processes.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=1\textwidth]{mpi} \protect\caption{\label{fig7}Normalized naive vs filtered contact detection performance per triangle pair running on multiple nodes.}
+\end{figure}
+
+We measure both strategies to determine the performance of normalised computation per triangle. The result in Figure \ref{fig7} shows for each rank and compute node on the x axis, the time required to solve the distance of a pair of triangles. The blue bars show the average normalised time for the second strategy to process a triangle (filtering approach). The red bars show the difference between the overall naive communication time and the filtered method. The time is reduced linearly as the number of ranks increase.
+
+For the measurement set-up in Figures \ref{fig6} and \ref{fig7}, we use Durham University Hamilton supercomputer that has per node 2 x Intel Xeon E5-2650 v2 (Ivy Bridge) 8 cores, 2.6 GHz processors, 64 GB DDR3 memory, 1 x TrueScale 4 x QDR single-port InfiniBand interconnect.
+
+
+
+On distributed memory the number of neighbours has severe implication on communication patterns between processes. It is an open question what are the performance implications on uniform spaced octree-based decomposition versus the non-uniform kd-tree based decomposition. It is an area of investigation since on an octree-based approach information about the level of refinement is known a priori by the sub-domain boundary size, which is an interesting application for multiscale simulations. 
+
+
+
+
+
+\subsection{Case Study}
+
+\subsubsection{Hopper Flow}
+
+\subsubsection{AGR Seismic Shake}
+
+
+
+\section{Timetable}
+
+
+
+\section{Critical Analysis}
+
+\subsection{Open Issues}
+
+\subsection{Contribution}
+
+\subsection{Overall Assessment}
+
 \vspace{5mm}
 \begin{itemize}
 \item Completed since last report: Implemented domain decomposition for distributed memory load balancing using library, MPI blocking communication for data migration. 
@@ -604,26 +1000,6 @@ Overall shared memory parallelisation yield good speed ups both for hybrid and b
 time significant as number of ranks increase.
 \item Open questions: multilayer grid/spacetree implementation for DEM 
 \end{itemize}
-
-We further scale the computation of triangle-to-triangle contact with the Message Passing Interface (MPI) \cite{Forum:1994:MMI:898758} for distributed memory computation. Our DEM-based contact detection is inspired by molecular dynamics simulations, where millions of spheres are simulated. State-of-the-art MD computation is decomposed into smaller computational sub-domains and communication exchanges necessary boundary information. Similar computational stages are applied by us in the DEM-based contact detection algorithm. We study synchronous and asynchronous modes of data exchange and how two communication strategies can be exploited to increase performance and minimize computation.
-
-The distributed memory DEM contact detection algorithm is performed in three stages. In stage one the computational domain is divided into equally balanced sub-domains. In stage two, data migration assigns the sub-domains to MPI instances. In stage three, we compute the distances to determine contact between all triangles. In stage four we accumulate the forces and in stage five we perform the explicit time step integration.
-
-To scale the performance of contact detection simulation, the computational workload has to be processed in parallel by splitting the domain into sub-domains and computation deployment is based on it, making the decomposition an important stage. Decomposition affects load balancing and the communication patterns of the simulation. Communication is essential when sub-domains are inter-dependent since new boundaries are introduced with decomposition. It is important to decompose evenly whilst also reducing sub-domain communication. There are three types of decomposition that are widely used in different contexts \cite{Eckhardt2014, Plimpton1995} that can apply in DEM. Decomposition by particle, decomposition by force and spatial decomposition. 
-
-In domain decomposition by particle \cite{koziara2011}, the domain is divided such that all sub-domains hold equal number of particles. For N particles we split the domain to N parts and we assign them to P processors (N/P). The sub-domain boundary is always located at the space between particles. In this method an all-to-all communication is required to detect contact points because they are always located at the sub-domain boundary. The global communication is a major disadvantage for small particles as each processor communicates with all other processors, staggering the overall parallel processing. Another disadvantage is the non-equal splitting (N/P) as some particles may require more computation than others (i.e. more triangles). The main advantage of particle-based decomposition is the implementation simplicity \cite{Plimpton1995}.
-
-An alternative decomposition approach found in literature is force-based decomposition that is often applied in molecular dynamics (MD) and smoother particle hydrodynamic (SPH) simulations \cite{Bowers2007, Gaburov, Gonnet2014, Plimpton1995, Rycroft2012, Shaw2005}. The method formulates a interaction force matrix that solves the contact detection and the forces as a group of linear equations. The matrix is decomposed into small blocks and shared on each process to solve in parallel. Force based decomposition assume short-range interactions and thus a dense force matrix to solve. In force based methods, the advantage is that computation is decomposed without any spatial information from the particles. The major disadvantage in DEM applications is the assumption of dense and uniform sparse force matrices, the assumption can be wrong leading to imbalanced domains on run-time.   
-
-According to N-body simulation literature \cite{Eckhardt2014, Fleissner, Wachs2012a, zomorodian2002} the state-of-the-art method for supercomputing applications is the spatial decomposition. Our decomposition is based on the spatial position of vertices using Recursive Coordinate Bisection (RCB) \cite{ZoltanIsorropiaOverview2012}. In RCB, the computational domain is first divided into two regions by a cutting plane orthogonal to one of the coordinate axes so that half the work load is in each of the sub-regions. The splitting direction is determined by computing in which coordinate direction the set of objects is most elongated, based upon the geometric locations of the objects. Each triangle vertex thus is owned and persistently stored exclusively on one process/sub-domain for the whole duration of the timestep. 
-
-Spatial decomposition implicitly creates logical boundaries that split space and computation (c.f. Figure \ref{fig5}). The contact detection complexity of N trianglesthat belong to $n_{i}$ particles without boundary boxes is $\sum\limits_{i=0}^n n_{i}$ = O($n^2$) in big-O notation (Algorithm \ref{alg1}). Contrary, with equally spaced boundary boxes/cells, if C is the maximum number of particles then there are $26$ neighboring cells and $max(n_{i})$ is the maximum number of triangles per particle i which result to $n_{1} \times 26 \times C \times max(n_{i})$ triangles per particle i in the local cell neighborhood. For all N triangles in the domain there are $N \times 26 \times C \times max(n_{i})$ per neighborhood. Boundary boxes due to spatial decomposition reduce the overall computational complexity to $O(n)$. Similarly, in MD simulations a cut-off range set the range of interaction fields per particle to remove redundant computation. Equally spaced boundary boxes rely on octree-based variants data structures that are great for recursive eight cell space subdivision. Our decomposition relies on non-uniform recursive subdivisions that rely on kd-tree-based data structure decomposition \cite{Brown2015} (i.e. RCB) and the number of neighbours can be arbitrarily many as they are not equally spaced, but they are equally vertex-sized. 
-
-The number of neighbours for both methods may have an implication on communication patterns between processes. It is an open question what are the performance implications on uniform spaced octree-based decomposition versus the non-uniform kd-tree based decomposition. It is an area of investigation since on an octree-based approach information about the level of refinement is known a priori by the sub-domain boundary size, which is an interesting application for multiscale simulations. 
-
-When spatial decomposition finishes we migrate the data to the processors (Algorithm \ref{alg7} line 2) with blocking synchronous communication. At each time step the triangles migrate according to the DEM kinematics. In addition to migration, a local area data exchange is required to communicate the boundaries of the sub-domains that cut triangles at the boundary. 
-
-\section{Conclusion and Future Work}
 
 We implement a new fast but also robust hybrid algorithm that exploits modern CPU architectures. In addition, we study different schemes of domain decomposition in literature. I implement the state-of-the-art spatial domain decomposition and load balancing using Zoltan. Manual migration has been implemented using blocking MPI communication. We implement an asynchronous communication for data exchange of ghost data and compare two possible strategies. Finally based on benchmark measurements we pick the best performing scheme that overlaps computation, increases performance and decreases data exchange volume.
 
@@ -634,7 +1010,7 @@ According to the project plan of the previous report, the work packages have bee
 \subsection{Acknowledgments}
 This work has been sponsored by EPSRC (Engineering and Physical Sciences Research Council) and EDF Energy as part of an ICASE studentship. This work also made use of the facilities of N8 HPC provided and funded by the N8 consortium and EPSRC (Grant No. N8HPC{\_}DUR{\_}TW{\_}PEANO). The Centre is co-ordinated by the Universities of Leeds and Manchester. We also thank University of Durham for the supercomputing resources and technical assistance. All underlying software is open source and available at: https://github.com/KonstantinosKr/delta.
 
-\subsection{Work Packages}
+
 
 \clearpage
 \nocite{*}
