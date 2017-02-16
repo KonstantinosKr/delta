@@ -83,14 +83,16 @@ In contact mechanics, fluid-stucture interaction or other fields, it is an essen
 
 \subsubsection{Geometric Approximation}
 
-*polygons, sphere, multisphere
+In this section, i go through the use of geometric elements in 3D that approximate simulated rigid body dynamics. According to literature [][][][] spherical elements are the most widely used in DEM simulations. In the thesis i will review multiple elements (sphere, multispheres, ellipsoids) to approximate non-spherical geometries. The element chosen to describe the arbitrary surface of solid bodies affects the geometric approximation, interaction model, particle volume, inertia properties, and resulting simulation overall.
 
-To create objects that 
+For the research project, i chose to increase the geometric approximation by inserting triangulated surfaces from CAD models, or point clouds of non-spherical solids. Reducing geometric error according to the literature [][] promises to increase the accuracy of predicting physical phenomena in simulations. But reducing the approximation error is not free as the computational cost is increased; this is discussed in the algorithmic chapter. 
 
 \subsubsection{Interaction Model}
 
+This section reviews the interaction model used in DEM simulations in literature and in the project. There are four stages that are fundamental to simulate interactions; contact detection, contact point definition, time integration, force derivation. In my thesis i focus in contact detection and contact point generation for non-spherical rigid body interactions.  
+
 \begin{algorithm}	
-  0 \textbf{\textcolor{blue}{FUNCTION}} force = penaltyForce(normal, relativeVelocity, depth, massA, massB)
+  \textbf{\textcolor{blue}{FUNCTION}} f = Force(normal, relativeVelocity, depth, massA, massB)
   
   1~~mass = 1.0 / ((1/massA) + (1/massB));
   
@@ -100,19 +102,23 @@ To create objects that
   
   4~~force = magnitude*normal;
   
-  5 \textbf{\textcolor{blue}{ENDFUNCTION}}
-\protect\caption{\label{alg2}Spring-dashpot force algorithm}
+  \textbf{\textcolor{blue}{ENDFUNCTION}}
+\protect\caption{\label{forceDashpot}Spring-dashpot force algorithm}
 \end{algorithm}
 
-Algorithm \ref{alg2} shows the spring-based force derivation approach \cite{Koziara2008, solberg2000, Wachs2012, Williams1999}. To define contact points without penetration, we use the boundary layer margins to extend the surface boundary. Margin size is set based on velocities and time step size. When in contact, the margin overlap is used as the interpenetration depth. The contact point is at the middlepoint of the distance and normal direction is either side of the distance. At line 0, given the contact point normal, relative linear velocities, penetration depth and the mass of the two bodies we derive the interaction force to update the position of particle triangles on every time step.
+The forces in DEM are modelled with the spring-dashpot model \cite{Koziara2008, solberg2000, Wachs2012, Williams1999}. Algorithm \ref{forceDashpot} shows the spring-dashpot force approach. Where using the contact point normal, mass, relative particle velocity we get a force. Augmentations of spring-dashpot can accommodate multiple physical phenomena like friction, adhesiveness, force fields. 
+
+As a prerequisite to force derivation it is vital to estimate the distance between interaction pairs [] to derive forces. For this i discuss about three newly created models for computing the distance between triangles. The three solvers differ in terms of numerical approximation error and in terms of algorithmic characteristics for parallel processing and memory footprint. In addition i will review available literature on the subject and validate my model against existing methods for non-spherical particle contact detection and point generation. []  
+
+Using the distance derived we define a unique point of contact and the artificial interpenetration depth to compute force normal and magnitude. For arbitrary shaped non-spherical particles this process can become more complex than in spherical particles as multiple contacts can occur in one pair in addition to having redundant points due to mesh refinement over a surface area. 
+    
+Parameter studies for stiffness and damping were not rigorously studied. But a new damping model for non-spherical particle was derived with T.Koziara [] and it is discussed in detail in the thesis as it is significant improvement for energy dissipation of static bodies with angular velocity oscillations/vibrations over surfaces.   
 
 
 \subsection{Algorithmic Overview}
 
-
-
-The DEM Algorithm \ref{alg1} demonstrates the execution of contact detection, an O($n^2$) operation. In line 3 and line 4 the nested for loop indicate the complexity of iterating through all triangle pairs. In line 5 TTD(i, j) invokes a Triangle-to-Triangle Distance (TTD) algorithm that determines the distance between triangle i and triangle j. Based on the boundary layer margin contact model \cite{Krestenitis2015} to avoid penetration, we check if distance between Triangle i and j is smaller than a set margin (line 6). If the parent particle of triangle i and j is not the same then this indicate a contact point between the two particles (line 7). The contact point information at line 13 and line 14 is used to derive the forces. The forces accelerate the particles that are then integrated by an explicit time stepping scheme such as explicit Euler.
-
+The algorithmic sequence is discussed in detail to demonstrate to evolution of a serial DEM code into a scalable parallel code. The discussion is based on three pillar concepts; computational hotspots, data locality/communication, theoretical peak performance. Based on those principles the DEM code is evolved into a scalable parallel code.
+ 
 \begin{algorithm}	
 
 1 \textbf{\textcolor{blue}{FOR}} time = 0; time $<$ simulation time; time+=step
@@ -147,58 +153,65 @@ The DEM Algorithm \ref{alg1} demonstrates the execution of contact detection, an
 
 16~~~~~~\textbf{\textcolor{blue}{ENDFOR}}
 	
-17~~~//explicit time stepping
+17~~~//explicit time integration
 
 18 \textbf{\textcolor{blue}{ENDFOR}}
 
-\protect\caption{\label{alg1}DEM Serial Simulation Pseudo code}
+\protect\caption{\label{algorithmPseudo}DEM Serial Pseudo code}
 \end{algorithm}
 
+The Algorithm \ref{algorithmPseudo} demonstrates the execution sequence of DEM. The contact detection stage has a O($n^2$) complexity at the lowest level of element decomposition (each particle is decomposed into triangular elements). At line 3 and line 4 the nested for loop indicate the complexity of iterating through all triangle pairs. At line 5 TTD(i, j) invokes a Triangle-to-Triangle Distance (TTD) algorithm that determines the distance between triangle i and triangle j. Based on the boundary layer margin contact model \cite{Krestenitis2015} to avoid penetration, we check whether distance between Triangle i and j is smaller than a set margin (line 6). If the parent particle of triangle i and j is not the same then this indicate a contact point between the two particles (line 7). The contact point information at line 13 and line 14 is used to derive the forces. The forces derivation and Euler explicit time integration stages define the interaction. 
 
-\subsection{Domain Decomposition}
+First we discuss the hotspots of the code, which based on complexity studies and experimental validation lye on the contact detection stage. To reduce the hotspot we attempt to reduce the overall algorithmic complexity by space decomposition, adaptivity and utilization of multiple parallel computational paradigms. I cover two paradigms in the Flynn taxonomy Single Instruction Multiple Data (SIMD), Single Program Multiple Data (SPMD) and three levels of simultaneous parallelism. At the finest granularity i exploit instruction level pipe-lining on a single core. Then concurrent multi-threading (SMT) is applied to allocate workload to cores on a single compute node. Furthermore distributed memory is discussed (SPMD) and implications of communication between processes.
 
-\subsubsection{Vectorization}
+\subsubsection{Space Decomposition}
 
-**interaction models exploit SIMD architecture
-**properties of SIMD, bit precision
-**implementation, memory layout, implications
+Space decomposition chapter is focusing on the utilisation of techniques to reduce the overal complexity of the algorithm while providing dense arithmetic locality, intensity to the cores. Decomposition is investigated in two chapters, structured and unstructured data and space decomposition. Both approaches have implications in communication, all levels of computation. 
+
+For unstructured domain decomposition space is divided into subdomains using the recursive bisection (RCB) method where points are mapped int a kd-tree variant in the computational space. This ensures load balancing stability at all times but at the cost of recursive refinement and non-aligned memory mapping. On the other hand, i discuss that structured domain decomposition offers greater locality, memory alignment. As the refinement level is located at the particle level the produced tree mapping (quadtree) is shorter than point level and the levels are more deterministic. In addition a uniform structured space decomposition provides better communication scalability.  
+
+\subsubsection{Vectorisation}
+
+Vectorisation covers the techniques utilised to efficiently optimize the computation. The section covers memory layout requirements and code practices in HPC. A discussion about structure of arrays (SoA) and array of structures (AoS) and their implication on SIMD as well as cache. Other optimization techniques discussed fall into loop analysis; loop fusion, memory alignment, loop unrolling, loop splitting, loop unswitching.
 
 \subsubsection{Shared Memory}
 
-In the shared memory chapter of the thesis
-
+In the shared memory chapter, i discuss three levels of shared memory implementations; mesh level parallelism, particle level and cell level. All three levels are discussed as well as the interplay of physical space and computational space. The physical space can trigger different hotspots at multiple levels of parallelism affecting the arithmetic intensity of each thread. That means dense tessellation of the mesh, dense particle arrangements, and multi-clustered particle arrangements have all different shared memory characteristics and has implications to the locality of reference and granularity of threading. Moreover, topics covered are implementation techniques like ccNUMA awareness, thread level load balancing, arithmetic granularity. 
 
 \subsubsection{Distributed Memory}
 
-In chapter distributed memory computation, the areas covered will be the feeding of compute nodes with dense arithmetic operations and the communication behaviour that emerges from this.
-
+In chapter distributed memory computation, i cover the feeding of compute nodes with dense arithmetic operations, communication behaviour in different load balancers and grid frameworks.
+For non-uniform space decomposition i show techniques that overlap computation with communication but also scalability studies that prove the method is ineffective for large scale DEM applications. The report will include uniform structured space decomposition scalability measurements and communication pattern that emerge in large scale multiscale DEM simulations. 
 
 \subsection{Case Study}
 
-*two case studies, study behaviour of grid and paradigm and effect on performance (memory, intensity, etc)
+In this research project we implement multiple case studies to validate numerical stability and perform performance benchmarks. Relying on two engineering application we explore two contrasting scenarios; flow of non-spherical granulates from a hopper structure and low oscillatory vibrations of a nuclear reactor assembly on a shaking table. The case study investigate and validate the behaviour geometric approximation the affect it has on the physics domain, the interplay of data communication within a level of paralelism (shared memory, distributed memory), grid adaptivity behaviour, FLOPs-memory benchmarks.
 
 \subsubsection{Hopper Flow}
 
-*hopper flow scenario description
+The hopper scenario involves a hopper structure placed above a ground. Hopper scenarios are found in process engineering and manufacturing in geo-technical and pharmaceutical industry []. An important process is filtering and sorting granular particles of different shapes and size by tracking their physical geometry, moment of inertia.
 
-\subsubsection{AGR Seismic Shake}
+In phase one, multi scale spherical particles are placed above the hopper structure, gravity is applied and they are allowed to fall through the structure. In phase two we rerun the same experiment but with non-spherical particles. Data about the simulation of each particle kinematics and interaction is stored. Phase one and phase two is compared to experimentally validate the difference in geometric approximation and increase in physics quality.
 
-*seismic scenario, setup of objects/geometry, experiment setup and properties
+\subsubsection{Seismic Shake}
 
-
-
+In the second scenario we import the geometry of a single array Advanced Gas Cooled nuclear reactor onto a artificial shaking table. The shaking table simulates the physical seismic shaking table of earthquake analysis labs. In my case study to keep engineering simple i do not thoroughly study shaking tables that induce more than one degrees of freedom to the stressed structure. Again as in the hopper scenario i showcase how the computational domain and its underlying domain is 
+mapped into the hardware. Geometric approximation error is again important and spherical DEM has higher error and experimental studies show [] that these errors propagate from the kinematics studies into elasticity, fracture simulations due to the interdependency between them in a complete seismic numerical/computational experiment.
 
 \section{Progress Report}
 
 \subsubsection{Overview}
 
+
+
 \subsubsection{Geometric Approximation}
 
 Unlike conventional large scale DEM frameworks that use spherical particles [][][], we choose to increase the surface approximation of our simulated geometries by using non-spherical particles to simulate non-spherical interactions. According to experimental studies [] in DEM, the surface can affect the interaction physics thus the results. In the case of using spheres to describe particles that are not spherical particles, approximation of properties like mass, torque, moment of inertia is not possible. Interactions between spherical particles that approximate the geometry, properties and interaction behaviour of non-spherical particles cannot be captured in the simulated environment without some degree of error []. 
 
-Coarse particle applications that require non-spherical particle surface can be found in process engineering, seismic engineering, manufacturing, etc []. Due to the computational time and error of approximation trade off it is widely accepted to compromise on the geometric approximation depending on applications where capturing macroscopic phenomena is sufficient []. Multisphere  
 
-For the code library, we use primarily non-spherical particles as with numerical modelling and computational optimizations it possible to close the gap in geometric approximation trade off. Spherical particles are used to validate their different behaviour against non-spherical particles experimentally in case studies. To create granular geometries for the simulations we utilise particles approximated by a random spherical point cloud, surfaces are generated with the convex hull and Delauny triangulation algorithm. For experimental purposes we can adjust the irregularity of granular particles, radius and the mesh density. For pre-designed CAD geometries we can import the mesh directly into the simulation domain.
+Coarse particle applications that require non-spherical particle surface can be found in process engineering, seismic engineering, manufacturing, etc []. Due to the computational time and error of approximation trade off it is widely accepted to compromise on the geometric approximation depending on applications where capturing macroscopic phenomena is sufficient []. Multisphere   
+
+For the code library, we use primarily non-spherical particles as with numerical modelling and computational optimizations it possible to close the gap in geometric approximation trade off. Spherical particles are used to validate their different behaviour against non-spherical particles experimentally in case studies. To create granular geometries for the simulations we utilise particles approximated by a random spherical point cloud, surfaces are generated with the convex hull and Delauny triangulation algorithm. For experimental purposes we can adjust the irregularity of granular particles, radius and the mesh density. For pre-designed CAD geometries we can import the mesh directly into the simulation domain. 
 
 
 \subsubsection{Interaction Model}
@@ -708,7 +721,7 @@ Throughout the inter-vertex contact detection in \texttt{enterCell}, we further
 bookkeep the minimum diameter of all the particles involved. 
 If this minimal diameter is smaller than the cell, we do refine this cell, too.
 
-\subsubsection{Vectorization (SIMD)}
+\subsubsection{Vectorization}
 
 All performance tests (Figure \ref{fig17}) use AVX2 (Advanced Vector Extensions) instruction set on an Intel Sandy Bridge 2.0GHz i5 CPU with a memory of 600 MHz DDR3 RAM. The performance test comprises calculating the minimum distance between ten million pairs of triangles of length ten.
 
@@ -765,7 +778,7 @@ In Table \ref{table2} the SIMD implementation for both methods increase pay off 
 These performance is the result of low level programming and tuning to optimize the solver execution and memory latency. Compiler specifications for loop unrolling, loop fusion, solver fusion, memory alignment and use of structures of arrays (SoA) as well as clear loop data independence pays off.
 
 
-\subsubsection{Shared Memory (SMT)}
+\subsubsection{Shared Memory}
 
 We introduce three levels of shared memory parallelisation on a single machine that exploit multiple levels of locality. The hierarchical categorisation of the methods is based upon the abstract algorithmic distance between shared resource parallel utilisation and actual arithmetic computation. At the highest level we exploit  data access independence of vertex touches we assign cell block tasks to threads. Within each vertex touch particle pairs are grouped into aligned memory blocks thus tasks are launched between particle-to-particle comparisons. Lastly within each particle pair at the innermost level tessellation elements of the mesh are dichotomised and parallel locality is held for the underlying vectorized contact solver.
 
@@ -884,12 +897,9 @@ Overall shared memory parallelisation yield good speed ups both for hybrid and b
 \clearpage
 
 
-\subsubsection{Distributed Memory (SPMD)}
+\subsubsection{Distributed Memory}
 
-We further scale the computation with the Message Passing Interface (MPI) \cite{Forum:1994:MMI:898758} for distributed memory computation. Our DEM-based contact detection is inspired by molecular dynamics simulations, where millions of spheres are simulated. State-of-the-art MD computation is decomposed into smaller computational sub-domains and communication exchanges necessary boundary information. Similar computational stages are applied by us in the DEM-based contact detection algorithm. We study synchronous and asynchronous modes of data exchange and how two communication strategies can be exploited to increase performance and minimize computation.
-
-
-
+We scale the computation with the Message Passing Interface (MPI) \cite{Forum:1994:MMI:898758} for distributed memory computation. We study synchronous and asynchronous modes of data exchange and how two communication strategies can be exploited to increase performance and minimize computation.
 
 The distributed memory DEM contact detection algorithm is performed in four stages. At stage one, data migration assigns the sub-domains to MPI instances. At stage two, we compute the distances to determine contact between particles. In stage four we accumulate the data and in stage four we perform the explicit time step integration.
 
@@ -973,32 +983,34 @@ For the measurement set-up in Figures \ref{fig6} and \ref{fig7}, we use Durham U
 On distributed memory the number of neighbours has severe implication on communication patterns between processes. It is an open question what are the performance implications on uniform spaced octree-based decomposition versus the non-uniform kd-tree based decomposition. It is an area of investigation since on an octree-based approach information about the level of refinement is known a priori by the sub-domain boundary size, which is an interesting application for multiscale simulations. 
 
 
-
-
-
 \subsection{Case Study}
 
 
 \subsubsection{Hopper Flow}
 
+
 geometry description (photo)
 *flow of particles
  
 
-\subsubsection{AGR Seismic Shake}
+\subsubsection{Seismic Shake}
 geometry description (photo)
 seismic shake
 
-\section{Timetable}
+
 
 
 
 \section{Critical Analysis}
 
+\subsection{Timetable}
+
 \subsection{Open Issues}
 *Vtunes/stream, multiscale communication, large case studies
 
 *local timestepping. 
+
+*computational space decomposition or further decomposition (two dense particles vs four less dense particles)
 
 \subsection{Contribution}
 contact models (penalty, hybrid), 
@@ -1009,20 +1021,17 @@ multiscale communication, unscalability of MPI unstructured decomposition,
 \subsection{Overall Assessment}
 
 
-
 \vspace{5mm}
 \begin{itemize}
-\item Completed since last report: Implemented domain decomposition for distributed memory load balancing using library, MPI blocking communication for data migration. 
-\item New concepts: Overlapping process communication for contact detection with ghost data. Asynchronous communication waiting
-time significant as number of ranks increase.
-\item Open questions: multilayer grid/spacetree implementation for DEM 
+\item Completed since last report: grid/spacetree implementation of DEM, shared memory benchmarks, interaction model (moment of inertia, rotations, material properties, damping, static and rolling friction), some preprocessing, some postprocessing 
+\item New concepts: grid storage, grid shared memory, reluctant space adaptivity, adaptive time step size
+\item Open questions: multiscale communication, benchmark of distributed memory
 \end{itemize}
 
 We implement a new fast but also robust hybrid algorithm that exploits modern CPU architectures. In addition, we study different schemes of domain decomposition in literature. I implement the state-of-the-art spatial domain decomposition and load balancing using Zoltan. Manual migration has been implemented using blocking MPI communication. We implement an asynchronous communication for data exchange of ghost data and compare two possible strategies. Finally based on benchmark measurements we pick the best performing scheme that overlaps computation, increases performance and decreases data exchange volume.
 
 The next stage of my research is to investigate contact detection strategies for large scale supercomputing on a multiscale setting using adaptive multiscale grids. I'm also interested in vectorized memory layout implications on MPI buffered communication. Lastly, the source code will be generalized to form a open source library that any simulation tool can use. 
 
-According to the project plan of the previous report, the work packages have been completed as projected.
  
 \subsection{Acknowledgments}
 This work has been sponsored by EPSRC (Engineering and Physical Sciences Research Council) and EDF Energy as part of an ICASE studentship. This work also made use of the facilities of N8 HPC provided and funded by the N8 consortium and EPSRC (Grant No. N8HPC{\_}DUR{\_}TW{\_}PEANO). The Centre is co-ordinated by the Universities of Leeds and Manchester. We also thank University of Durham for the supercomputing resources and technical assistance. All underlying software is open source and available at: https://github.com/KonstantinosKr/delta.
