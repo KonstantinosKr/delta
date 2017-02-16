@@ -188,21 +188,22 @@ In chapter distributed memory computation, the areas covered will be the feeding
 
 
 
-
-
 \section{Progress Report}
 
 \subsubsection{Overview}
 
-
-
 \subsubsection{Geometric Approximation}
 
-%describe the setup
-We utilise particles approximated by a random spherical point cloud, arbitrary particle surfaces are generated with the Delauny triangulation algorithm. The algorithm is scaled in three respects; number of non-spherical particles, irregularity of particle radius size, and mesh size.
+Unlike conventional large scale DEM frameworks that use spherical particles [][][], we choose to increase the surface approximation of our simulated geometries by using non-spherical particles to simulate non-spherical interactions. According to experimental studies [] in DEM, the surface can affect the interaction physics thus the results. In the case of using spheres to describe particles that are not spherical particles, approximation of properties like mass, torque, moment of inertia is not possible. Interactions between spherical particles that approximate the geometry, properties and interaction behaviour of non-spherical particles cannot be captured in the simulated environment without some degree of error []. 
+
+Coarse particle applications that require non-spherical particle surface can be found in process engineering, seismic engineering, manufacturing, etc []. Due to the computational time and error of approximation trade off it is widely accepted to compromise on the geometric approximation depending on applications where capturing macroscopic phenomena is sufficient []. Multisphere  
+
+For the code library, we use primarily non-spherical particles as with numerical modelling and computational optimizations it possible to close the gap in geometric approximation trade off. Spherical particles are used to validate their different behaviour against non-spherical particles experimentally in case studies. To create granular geometries for the simulations we utilise particles approximated by a random spherical point cloud, surfaces are generated with the convex hull and Delauny triangulation algorithm. For experimental purposes we can adjust the irregularity of granular particles, radius and the mesh density. For pre-designed CAD geometries we can import the mesh directly into the simulation domain.
 
 
 \subsubsection{Interaction Model}
+
+Other than the implementation of the DEM model for kinematics; force derivation, damping coefficient, static friction, rolling friction, torque, angular/linear velocities, mass, moment of inertia matrix computation, rotation matrix, time integration, and contact normals computation, the focus of research is in the computational hotspot of interactions. The contact detection stage is modelled with the introduction of two new numerical models; the brute force and the Newton-penalty methods. Both methods challenge current contact point determination numerical models of arbitrary convex and non-convex polyhedra geometries[]. 
 
 %Brute Force
 The brute force is the naive approach to contact detection, it computes all distances between geometrical primitives of the triangles. The method computes the distance between all line segments of one triangle with the line segments of the other using the segment-to-segment (Algorithm \ref{alg3}, line 22-30) distance function \cite{Ericson2005, Tropp2006}. Then for every point of one triangle it computes the distance against the other triangle using the point-to-triangle (Algorithm \ref{alg3}, line 3-8) function \cite{Eberly1999, Ericson2005}. The method requires evaluating the minimum distance among all comparisons performed to find the overall minimum distance in the end.
@@ -708,16 +709,17 @@ bookkeep the minimum diameter of all the particles involved.
 If this minimal diameter is smaller than the cell, we do refine this cell, too.
 
 \subsubsection{Vectorization (SIMD)}
-All performance tests (Figure \ref{fig17}) used the latest AVX2 (Advanced Vector Extensions) instruction set on an Intel Sandy Bridge 2.0GHz i5 CPU with a memory of 600 MHz DDR3 RAM. For the barrier method isn't worth to do a performance comparison even though its C and ISPC version is implemented but not with great success due to its theoretical computational inefficiencies as discussed earlier in the report. Only the tuned penalty and brute force approaches are considered for real-world applications due their significant parallel speedup. The performance test comprises calculating the minimum distance between ten million pairs of triangles of length ten. The performance is scaled linearly for every magnitude length of pair triangle. 
+
+All performance tests (Figure \ref{fig17}) use AVX2 (Advanced Vector Extensions) instruction set on an Intel Sandy Bridge 2.0GHz i5 CPU with a memory of 600 MHz DDR3 RAM. The performance test comprises calculating the minimum distance between ten million pairs of triangles of length ten.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\textwidth]{perf} \protect\caption{\label{fig17}Run-time comparison of the sequential and parallel penalty and brute force methods using float and double precision, using ISPC, Intel, GCC compilers on a single AVX2 core.}
 \end{figure} 
 
-As it can be observed in Figure \ref{fig17}, the runtimes show that there is significant speedup when SIMD parallelism is used compared to sequential algorithm execution for all methods. For the brute force, serial Intel and GCC are the slowest with no significant difference in performance in using floats or double precision. That is due to little actual floating point computation. It has to be noted that our serial version is optimized considering memory bandwidth. For the Intel SIMD version of brute force, it can be seen that there is 6x speedup compared to its serial sequential variant using single precision. Speed up for double precision (~3x times), both results reflect the logical branching involved in brute force. Nevertheless the speed up is significant. The ISPC compiler for brute force is capable to do vectorization better for double precision than the Intel compiler, which makes the new vectorization compiler well-suited for SIMD programming. As we haven't studied the results assembles codes, we cannot identify where the difference between ISPC and C come from.
+In Figure \ref{fig17} SIMD implementations are compared against serials. For brute force, serial Intel and GCC are the slowest with no significant difference in using either precision this is due to lower arithmetic intensity. Intel SIMD  brute force shows 6x speedup compared to its serial sequential variant using single precision. Speed up in double precision is lower(~3x times), both experiments reflect the effect of branching involved in brute force. The ISPC compiler for brute force is capable to do vectorization better for double precision than the Intel compiler. As we haven't studied the resulting assembler code we cannot identify where the difference between ISPC and C come from.
 
-As penalty solver is an iterative method, its performance is dependent on the tuned parameters. The $r$ penalty parameter and $eps$ are calculated automatically based on the tuning and algorithm study performed. Moreover, the technique discussed in the implementation chapter for converging in 4 iterations is used without losing significant numerical precision. The penalty method reaches the physical limits of SIMD architectures with 4x speed up for double precision and 8x speedup for single precision. This makes it the fastest algorithm. Intel compiled serial code is significantly faster than Intel and GCC versions of Brute force. GCC compilers for serial are slightly slower, but still faster than brute force GCC serial. ISPC, Intel compiler for SIMD show that they are very fast, slightly showing a speedup for penalty over brute force. 
+On the other hand penalty solver is an iterative method, its performance is dependent on the tuned parameters. The $r$ penalty parameter and $eps$ are calculated automatically based on parameter tuning. The technique discussed in the implementation chapter for converging in 4 iterations is used without losing significant numerical precision. The penalty method reaches 4x speed up for double precision and 8x speedup for single precision. This makes it the fastest algorithm. Intel serial code is significantly faster than Intel and GCC versions of Brute force. GCC compilers for serial are slightly slower, but still faster than brute force GCC serial. 
 
 \begin{table}[h]
 \begin{center}
@@ -737,7 +739,7 @@ As penalty solver is an iterative method, its performance is dependent on the tu
 \end{center}
 \end{table}
 
-It can be observed see from performance measurements in Table \ref{table1} using likwid [49] that for serial double precision (same for single precision) both methods are not memory (Memory BW Bandwidth Megabyte per second) but compute-bound. For the machine used, the maximum memory throughput is 13 GB/s, so memory bandwidth is not used to the maximum. That is a result of careful programming, and as mentioned in the implementation section, due to the fact unnecessary memory operations are reduced extensively. The data volumn in Gigabytes is the same for both methods, since both methods use the same amount of input and output data. That is the triangle coordinates, P, Q point solution on the two triangles T1, T2 and the calculated distance which is derived from P and Q vectors. The penalty method is managing to executes faster than brute force because it execute slightly more floating point operations than the brute force (Mega Flops per second MFLOPS/s).
+It is observed in Table \ref{table1} using likwid [49] that for serial double precision (same for single precision) both methods are not memory (Memory BW Bandwidth Megabyte per second) but compute-bound. For the machine used, the maximum memory throughput is 13 GB/s, so memory bandwidth is not used to the maximum. The data volumn in Gigabytes is the same for both methods, since both methods use the same amount of input and output data. That is the triangle coordinates, P, Q point solution on the two triangles T1, T2 and the calculated distance which is derived from P and Q vectors.
 
 \begin{table}[h]
 \begin{center}
@@ -757,9 +759,10 @@ It can be observed see from performance measurements in Table \ref{table1} using
 \end{center} 
 \end{table}
 
-In Table \ref{table2} it can be seen that the SIMD implementation for both methods increase performance significantly. Their serial counterparts they both achieve more than 2x times speedup, with penalty achieving  3.40x speedup, and brute force 2.89x speedup. The theoretical maximum speedup that is possible to achieve is 4x times for 64bit precision using a 256bit wide register, and even more speedup for wider 512bit registers that are available on Xeon Phi processors. Using ISPC compilers however as shown in Figure \ref{fig17} double precision achieve 4x speedup. For 32bit precision the speedup using AVX 256bit wide instruction sets is near 8x times as it can be seen in Figure \ref{fig17}. 
+In Table \ref{table2} the SIMD implementation for both methods increase pay off significantly. Compared to serial counterparts both achieve at least 2x times speedup, with penalty achieving  3.40x speedup, and brute force 2.89x speedup. The theoretical maximum speedup that is possible to achieve is 4x times for 64bit precision 256bit wide register. ISPC compilers however as shown in Figure \ref{fig17} double precision give 4x speedup. For 32bit precision the speedup is near 8x (figure \ref{fig17}).
 
-These performance comparisons are the result of extensive low level programming and tuning of parameters to optimize the solvers. The effort of looking into compiler specific instructions and architecture specific programming has resulted into optimal codes for this triangle to triangle minimum calculation. In practice the SIMD speedups show that both penalty and brute force solvers are suitable but in terms of performance penalty is more favorable, while brute force benefits its numerical robustness. Overall because of the reduced errors and tuning through experiments and testing in addition to performance, the penalty method is the best method to use using either ISPC or Intel compilers and up to eight core concurrency.
+
+These performance is the result of low level programming and tuning to optimize the solver execution and memory latency. Compiler specifications for loop unrolling, loop fusion, solver fusion, memory alignment and use of structures of arrays (SoA) as well as clear loop data independence pays off.
 
 
 \subsubsection{Shared Memory (SMT)}
@@ -975,11 +978,16 @@ On distributed memory the number of neighbours has severe implication on communi
 
 \subsection{Case Study}
 
+
 \subsubsection{Hopper Flow}
 
+geometry description (photo)
+*flow of particles
+ 
+
 \subsubsection{AGR Seismic Shake}
-
-
+geometry description (photo)
+seismic shake
 
 \section{Timetable}
 
@@ -988,10 +996,19 @@ On distributed memory the number of neighbours has severe implication on communi
 \section{Critical Analysis}
 
 \subsection{Open Issues}
+*Vtunes/stream, multiscale communication, large case studies
+
+*local timestepping. 
 
 \subsection{Contribution}
+contact models (penalty, hybrid), 
+shared memory hybrid variants
+grid usage (linked-cell, reluctant adaptivity), 
+multiscale communication, unscalability of MPI unstructured decomposition, 
 
 \subsection{Overall Assessment}
+
+
 
 \vspace{5mm}
 \begin{itemize}
@@ -1009,8 +1026,6 @@ According to the project plan of the previous report, the work packages have bee
  
 \subsection{Acknowledgments}
 This work has been sponsored by EPSRC (Engineering and Physical Sciences Research Council) and EDF Energy as part of an ICASE studentship. This work also made use of the facilities of N8 HPC provided and funded by the N8 consortium and EPSRC (Grant No. N8HPC{\_}DUR{\_}TW{\_}PEANO). The Centre is co-ordinated by the Universities of Leeds and Manchester. We also thank University of Durham for the supercomputing resources and technical assistance. All underlying software is open source and available at: https://github.com/KonstantinosKr/delta.
-
-
 
 \clearpage
 \nocite{*}
