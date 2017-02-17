@@ -57,7 +57,7 @@ int main(int argc, char** argv)
               << " step-size           floating point number" << std::endl
               << " plot                see plot variants below" << std::endl
               << " gravity             floating point number" << std::endl
-              << " collision-model     choose from sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, gjk, add sphere- for sphere check" << std::endl
+              << " collision-model     choose from none, sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, gjk, add sphere- for sphere check" << std::endl
 			  << " max-step-size       adaptive max step" << std::endl
 			  << " mesh-per-particle   multiplier for mesh size and sphericity" << std::endl
 			  << " [core-count]        only required in TBB shared memory" << std::endl
@@ -187,6 +187,9 @@ int main(int argc, char** argv)
   else if (scenario=="hopper300") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
   }
+  else if (scenario=="hopper1000") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.03, 0.003, 0.03, gridType, epsilon, noTriangles);
+  }
   else if (scenario=="freefall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, dem::mappings::CreateGrid::noVScheme, gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
   }
@@ -272,6 +275,9 @@ int main(int argc, char** argv)
   }
   else if (collisionModel=="gjk") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;
+  }
+  else if (collisionModel=="none") {
+      dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
   }
   else {
     std::cerr << "invalid collision model option. Please run without arguments to see list of valid variants" << std::endl;

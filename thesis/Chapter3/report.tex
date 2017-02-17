@@ -208,10 +208,14 @@ mapped into the hardware. Geometric approximation error is again important and s
 
 Unlike conventional large scale DEM frameworks that use spherical particles [][][], we choose to increase the surface approximation of our simulated geometries by using non-spherical particles to simulate non-spherical interactions. According to experimental studies [] in DEM, the surface can affect the interaction physics thus the results. In the case of using spheres to describe particles that are not spherical particles, approximation of properties like mass, torque, moment of inertia is not possible. Interactions between spherical particles that approximate the geometry, properties and interaction behaviour of non-spherical particles cannot be captured in the simulated environment without some degree of error []. 
 
+Coarse particle applications that require non-spherical particle surface can be found in process engineering, seismic engineering, manufacturing, etc []. Due to the computational time and error of approximation trade off it is widely accepted to compromise on the geometric approximation depending on applications where capturing macroscopic phenomena can be sufficient []. Multisphere particles are reducing the error of approximation and improve the capture of properties like inertia, mass and angular velocity phenomena [].   
 
-Coarse particle applications that require non-spherical particle surface can be found in process engineering, seismic engineering, manufacturing, etc []. Due to the computational time and error of approximation trade off it is widely accepted to compromise on the geometric approximation depending on applications where capturing macroscopic phenomena is sufficient []. Multisphere   
+For the library, we primarily use non-spherical particles as with numerical modelling and computational optimizations it possible to close the gap in geometric approximation trade off. Spherical particles are used to validate their different behaviour against non-spherical particles experimentally in case studies. To create granular geometries for the simulations we utilise particles approximated by a random spherical point cloud, surfaces are generated with the convex hull and Delauny triangulation algorithm. For experimental purposes we can adjust the irregularity of granular particles, radius and the mesh density. For pre-designed CAD geometries we can import the mesh directly into the simulation domain. 
 
-For the code library, we use primarily non-spherical particles as with numerical modelling and computational optimizations it possible to close the gap in geometric approximation trade off. Spherical particles are used to validate their different behaviour against non-spherical particles experimentally in case studies. To create granular geometries for the simulations we utilise particles approximated by a random spherical point cloud, surfaces are generated with the convex hull and Delauny triangulation algorithm. For experimental purposes we can adjust the irregularity of granular particles, radius and the mesh density. For pre-designed CAD geometries we can import the mesh directly into the simulation domain. 
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.5\textwidth]{sketches/coarse.png} \protect\caption{\label{granulate} A coarse surface granulate generated with convex hull algorithm.}
+\end{figure} 
 
 
 \subsubsection{Interaction Model}
@@ -723,22 +727,69 @@ If this minimal diameter is smaller than the cell, we do refine this cell, too.
 
 \subsubsection{Vectorization}
 
-All performance tests (Figure \ref{fig17}) use AVX2 (Advanced Vector Extensions) instruction set on an Intel Sandy Bridge 2.0GHz i5 CPU with a memory of 600 MHz DDR3 RAM. The performance test comprises calculating the minimum distance between ten million pairs of triangles of length ten.
+There are three different types of data sets in our minimalistic DEM codes: 
+geometric data, behavioural data and meta data. 
+Behavioural data is collision data.
+It is modelled as struct with location and a normal vector.
+Sets $\mathbb{C}$ of collision points are modelled as (dynamic) array of structs
+(AoS) augmented with a copy of the collision partner as detailed before.
+Spacetrees are our meta data.
+The geometry data finally determines how straightforward and fast the collision
+detection is. Collision detection is the computationally heavy activity in the
+algorithm.
+While other DEM discussions speak of a computational phase \cite{Wachs2012, Wachs2012a, Rycroft2012, Parteli2013}, we
+prefer the term activity, as the collision detections are split among the grid traversal
+and interwoven with other activities.
+
+\begin{figure}
+ \begin{center}
+  \includegraphics[width=0.5\textwidth]{sketches/data-structure.pdf}
+ \end{center}
+ \caption{
+   Right: The two layer data layout of our DEM code with an AoS on the particle
+   level but SoA for the vector entries with replicated vector entries.
+ }
+ \label{figure:data-structure}
+\end{figure}
+
+We propose to realise the geometric data in two layers (Figure
+\ref{figure:data-structure}).
+A hull struct holds all particle properties such as velocities, rotation, mass,
+geometric centre and mass centre.
+Vertices refer to these hulls with arrays of structures (AoS).
+Hulls link with pointers to the actual geometric data. 
+This data is realised as structure of array, i.e.~there is a sequence of
+x-coordinates, a sequence of y-coordinates and a sequence of z-coordinates.
+These sequences are blown up with redundant data.
+The first three entries in the x array hold the x coordinates of the three
+vertices of the first triangle of the particle mesh.
+The entries four through six hold the coordinates of the second triangle and so
+forth. 
+The degree of redundancy is determined by the particle mesh.
+
+We accept the increased memory consumption of such a structure but in return are
+able to avoid any indirect addressing, process all geometry data in the
+collision checks in a stream-like fashion and can align all vector entries. 
+SoA data are notouriously difficult to handle if subsets of a dataset are to be
+transferred or data is to be reordered \cite{Eichenberger2004}.
+In our particle handling, a particle is an atomic unity.
+It is never teared apart or resorted during the simulation run.
+A particle mesh is topologically invariant.
+
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=1\textwidth]{perf} \protect\caption{\label{fig17}Run-time comparison of the sequential and parallel penalty and brute force methods using float and double precision, using ISPC, Intel, GCC compilers on a single AVX2 core.}
+\includegraphics[width=1\textwidth]{perf} \protect\caption{\label{fig17}Run-time comparison of the sequential and parallel penalty and brute force methods using float and double precision, using ISPC, Intel, GCC compilers on a single AVX2 core, ten million pairs of triangles.}
 \end{figure} 
 
-In Figure \ref{fig17} SIMD implementations are compared against serials. For brute force, serial Intel and GCC are the slowest with no significant difference in using either precision this is due to lower arithmetic intensity. Intel SIMD  brute force shows 6x speedup compared to its serial sequential variant using single precision. Speed up in double precision is lower(~3x times), both experiments reflect the effect of branching involved in brute force. The ISPC compiler for brute force is capable to do vectorization better for double precision than the Intel compiler. As we haven't studied the resulting assembler code we cannot identify where the difference between ISPC and C come from.
-
-On the other hand penalty solver is an iterative method, its performance is dependent on the tuned parameters. The $r$ penalty parameter and $eps$ are calculated automatically based on parameter tuning. The technique discussed in the implementation chapter for converging in 4 iterations is used without losing significant numerical precision. The penalty method reaches 4x speed up for double precision and 8x speedup for single precision. This makes it the fastest algorithm. Intel serial code is significantly faster than Intel and GCC versions of Brute force. GCC compilers for serial are slightly slower, but still faster than brute force GCC serial. 
+In Figure \ref{fig17} SIMD implementations are compared against serials. For brute force, serial Intel and GCC are the slowest with no significant difference in using either precision this is due to lower arithmetic intensity. Intel SIMD  brute force shows 6x speedup compared to its serial sequential variant using single precision. Speed up in double precision is lower(~3x times), both experiments reflect the effect of branching involved in brute force. 
+The penalty method reaches 4x speed up for double precision and 8x speedup for single precision. This makes it the fastest algorithm. Intel serial code is significantly faster than Intel and GCC versions of Brute force. GCC compilers for serial are slightly slower, but still faster than brute force GCC serial. The ISPC compiler for brute force is capable to do vectorization bette for double precision than the Intel compiler. As wer haven't studied the resulting assembler code we cannot identify where the difference between ISPC and C come from. All performance tests (Figure \ref{fig17}) use AVX2 (Advanced Vector Extensions) instruction set on an Intel Sandy Bridge 2.0GHz i5 CPU with a memory of 600 MHz DDR3 RAM.
 
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{ | l | l | l | p{5cm} |}
     \hline
-\multicolumn{3}{ |c| }{Intel C++ Compiler Sequential Double Precision} \\
+\multicolumn{3}{ |c| }{Intel C++ Compiler Serial Double Precision} \\
 \hline
     Algorithm & Penalty Method & Brute Force Method\\ \hline
     Runtime unhalted (s) & 15.47 & 22.49  \\ \hline
@@ -752,7 +803,7 @@ On the other hand penalty solver is an iterative method, its performance is depe
 \end{center}
 \end{table}
 
-It is observed in Table \ref{table1} using likwid [49] that for serial double precision (same for single precision) both methods are not memory (Memory BW Bandwidth Megabyte per second) but compute-bound. For the machine used, the maximum memory throughput is 13 GB/s, so memory bandwidth is not used to the maximum. The data volumn in Gigabytes is the same for both methods, since both methods use the same amount of input and output data. That is the triangle coordinates, P, Q point solution on the two triangles T1, T2 and the calculated distance which is derived from P and Q vectors.
+In Table \ref{table1} using likwid [49] both methods are not memory (Memory BW Bandwidth Megabyte per second) but compute-bound. For the machine used, the maximum memory throughput is 13 GB/s, so memory bandwidth does not peak. The data volume is same for both methods as input and output is identical. 
 
 \begin{table}[h]
 \begin{center}
@@ -773,10 +824,6 @@ It is observed in Table \ref{table1} using likwid [49] that for serial double pr
 \end{table}
 
 In Table \ref{table2} the SIMD implementation for both methods increase pay off significantly. Compared to serial counterparts both achieve at least 2x times speedup, with penalty achieving  3.40x speedup, and brute force 2.89x speedup. The theoretical maximum speedup that is possible to achieve is 4x times for 64bit precision 256bit wide register. ISPC compilers however as shown in Figure \ref{fig17} double precision give 4x speedup. For 32bit precision the speedup is near 8x (figure \ref{fig17}).
-
-
-These performance is the result of low level programming and tuning to optimize the solver execution and memory latency. Compiler specifications for loop unrolling, loop fusion, solver fusion, memory alignment and use of structures of arrays (SoA) as well as clear loop data independence pays off.
-
 
 \subsubsection{Shared Memory}
 
@@ -894,21 +941,15 @@ At the highest level of shared memory parallelism is the grid cell-based multico
 
 Overall shared memory parallelisation yield good speed ups both for hybrid and brute force using adaptive grids with triangle-based parallelism show good time-to-solution For large problem sizes the combination of cell-based plus triangle-based parallelism using hybrid-on-batches is the preferred option. Additional speedup can be gained if spheres are used as a filtering bounding box stage to our triangle-to-triangle contact detection.
 
-\clearpage
-
+\clearpage 
 
 \subsubsection{Distributed Memory}
 
-We scale the computation with the Message Passing Interface (MPI) \cite{Forum:1994:MMI:898758} for distributed memory computation. We study synchronous and asynchronous modes of data exchange and how two communication strategies can be exploited to increase performance and minimize computation.
+We scale the computation with the Message Passing Interface (MPI) \cite{Forum:1994:MMI:898758} for distributed memory computation. We study synchronous and asynchronous modes of data exchange and how two communication strategies can be exploited to increase performance and minimize computation. The algorithm is performed in four stages; At stage one, data migration assigns the sub-domains to MPI instances. At stage two, we compute the distances to determine contact between particles. In stage four we accumulate the data and in stage four we perform time step integration.
 
-The distributed memory DEM contact detection algorithm is performed in four stages. At stage one, data migration assigns the sub-domains to MPI instances. At stage two, we compute the distances to determine contact between particles. In stage four we accumulate the data and in stage four we perform the explicit time step integration.
+The number of neighbours has severe implication on communication patterns between processes. It is an open question what are the performance implications on uniform octree-based grids versus the non-uniform kd-tree based decomposition. It is an area of investigation. On uniform grids information about the level of refinement is known a priori by the sub-domain boundary size, which has interesting implications on multiscale simulations. 
 
-The number of neighbours has severe implication on communication patterns between processes. It is an open question what are the performance implications on uniform spaced octree-based decomposition versus the non-uniform kd-tree based decomposition. It is an area of investigation since on an octree-based approach information about the level of refinement is known a priori by the sub-domain boundary size, which is an interesting application for multiscale simulations. 
-
-\label{Unstructured Domain Decomposition}
-%Ghost Data Exchange
-
-The triangles that overlap into a remote sub-domain due to the decomposition cuts are temporary copied to one or more sub-domains in order to perform a complete contact detection. In this section, we study MPI communication characteristics when we resolve data dependencies between the sub-domains caused by ghost triangles in order to maximize performance of distributed contact detection. We explore the implication of inter-process communication and local computational performance using two communication strategies that use asynchronous non-blocking communication.
+The triangles that overlap into a remote sub-domain due to the decomposition cuts are temporary copied to one or more sub-domains to perform a complete contact detection. In this section, we study MPI communication characteristics when we resolve data dependencies between the sub-domains caused by ghost triangles in order to maximize performance of distributed contact detection. We explore the implication of inter-process communication and local computational performance using two communication strategies that use asynchronous non-blocking communication.
 
 \begin{algorithm}
 1. Load balance triangles
@@ -974,73 +1015,72 @@ The second strategy filters out local ghosts from the data structure and sends t
 \includegraphics[width=1\textwidth]{mpi} \protect\caption{\label{fig7}Normalized naive vs filtered contact detection performance per triangle pair running on multiple nodes.}
 \end{figure}
 
-We measure both strategies to determine the performance of normalised computation per triangle. The result in Figure \ref{fig7} shows for each rank and compute node on the x axis, the time required to solve the distance of a pair of triangles. The blue bars show the average normalised time for the second strategy to process a triangle (filtering approach). The red bars show the difference between the overall naive communication time and the filtered method. The time is reduced linearly as the number of ranks increase.
-
-For the measurement set-up in Figures \ref{fig6} and \ref{fig7}, we use Durham University Hamilton supercomputer that has per node 2 x Intel Xeon E5-2650 v2 (Ivy Bridge) 8 cores, 2.6 GHz processors, 64 GB DDR3 memory, 1 x TrueScale 4 x QDR single-port InfiniBand interconnect.
-
-
-
-On distributed memory the number of neighbours has severe implication on communication patterns between processes. It is an open question what are the performance implications on uniform spaced octree-based decomposition versus the non-uniform kd-tree based decomposition. It is an area of investigation since on an octree-based approach information about the level of refinement is known a priori by the sub-domain boundary size, which is an interesting application for multiscale simulations. 
-
+We measure both strategies to determine the performance of normalised computation per triangle. The result in Figure \ref{fig7} shows for each rank and compute node on the x axis, the time required to solve the distance of a pair of triangles. The blue bars show the average normalised time for the second strategy to process a triangle (filtering approach). The red bars show the difference between the overall naive communication time and the filtered method. The time is reduced linearly as the number of ranks increase. Figures \ref{fig6} and \ref{fig7} use Durham University Hamilton supercomputer that has per node 2 x Intel Xeon E5-2650 v2 (Ivy Bridge) 8 cores, 2.6 GHz processors, 64 GB DDR3 memory, 1 x TrueScale 4 x QDR single-port InfiniBand interconnect.
 
 \subsection{Case Study}
 
 
 \subsubsection{Hopper Flow}
 
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.7\textwidth]{sketches/hopper} \protect\caption{\label{hopper} Hopper structure and 120k non-spherical particles.}
+\end{figure}
 
-geometry description (photo)
-*flow of particles
- 
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.7\textwidth]{sketches/granulatecloseup} \protect\caption{\label{hoppercloseup}Close up of non-spherical granulates.}
+\end{figure}
+
 
 \subsubsection{Seismic Shake}
-geometry description (photo)
-seismic shake
+\begin{figure}[!h]
+\centering
+\includegraphics[width=1\textwidth]{sketches/nuclear} \protect\caption{\label{nuclear}Advanced gas cooled nuclear reactor array.}
+\end{figure}
 
-
-
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.7\textwidth]{sketches/nuclearcloseup} \protect\caption{\label{nuclearcloseup}Close up of meshed surface of nuclear graphite bricks of reactor.}
+\end{figure}
 
 
 \section{Critical Analysis}
 
-\subsection{Timetable}
-
 \subsection{Open Issues}
-*Vtunes/stream, multiscale communication, large case studies
 
-*local timestepping. 
+In this research project, there are still some open issues that are to be addressed over the remaining duration. Firstly, i want to investigate multiscale particle communication on large scale distributed memory adaptive grids. Communication patterns that emerge in coarse-to-fine, fine-to-neighbour-coarse may affect scalability over multiple compute nodes. Another aspect of experimenting with the grid is load balancing where cells are weighted based on computational load in addition to space decomposition, weighted cells ensure that a densely meshed particle of fine cells is balanced with coarsely meshed particles on coarse cells. This has to be studied further to fully exploit multi grid capabilities. Other than scaling, if time allows, it would be helpful to benchmark all levels of computation with profiling tools. 
 
-*computational space decomposition or further decomposition (two dense particles vs four less dense particles)
+Another open issue is post processing of output data. Meta-data can become too large to be processed by one core depending on the number of time steps and number of particles. Visualisation is also not possible for large scale data without further processing or data decomposition. 
+
+\subsection{Timetable}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\textwidth]{chart} \protect\caption{\label{nuclearcloseup}Timetable for remaining time.}
+\end{figure}
 
 \subsection{Contribution}
-contact models (penalty, hybrid), 
-shared memory hybrid variants
-grid usage (linked-cell, reluctant adaptivity), 
-multiscale communication, unscalability of MPI unstructured decomposition, 
+
+Over the duration of this research several areas are covered and new insights are contributed. At the contact model level i introduce new numerical solvers for estimating the contact points by exploiting SIMD hardware. Building on top of the solvers and the background grid two hybrid schemes for shared memory DEM is introduced, one at the mesh level and one at the particle level both exhibit contrasting characteristics. 
+
+At the grid level, we introduce a linked-cell approach to DEM to reduce the complexity O(n) of the overall computation. We store data at the vertex of the grid and combined by the reluctant adaptivity it pays off computationally. Multiscale particle communication over the grid will also be interesting contribution in computational DEM.
 
 \subsection{Overall Assessment}
 
-
 \vspace{5mm}
 \begin{itemize}
-\item Completed since last report: grid/spacetree implementation of DEM, shared memory benchmarks, interaction model (moment of inertia, rotations, material properties, damping, static and rolling friction), some preprocessing, some postprocessing 
+\item Completed since last report: grid/spacetree implementation of DEM, shared memory benchmarks, interaction model (moment of inertia, rotations, material properties, damping, static and rolling friction), some preprocessing
 \item New concepts: grid storage, grid shared memory, reluctant space adaptivity, adaptive time step size
 \item Open questions: multiscale communication, benchmark of distributed memory
 \end{itemize}
 
-We implement a new fast but also robust hybrid algorithm that exploits modern CPU architectures. In addition, we study different schemes of domain decomposition in literature. I implement the state-of-the-art spatial domain decomposition and load balancing using Zoltan. Manual migration has been implemented using blocking MPI communication. We implement an asynchronous communication for data exchange of ghost data and compare two possible strategies. Finally based on benchmark measurements we pick the best performing scheme that overlaps computation, increases performance and decreases data exchange volume.
-
-The next stage of my research is to investigate contact detection strategies for large scale supercomputing on a multiscale setting using adaptive multiscale grids. I'm also interested in vectorized memory layout implications on MPI buffered communication. Lastly, the source code will be generalized to form a open source library that any simulation tool can use. 
-
+Overall the project covers all areas of large scale DEM overlooking into state of the art HPC aspects of other large scale numerical models. We investigated aspects of contact mechanics, kinematics, low level programming, parallel computation and that helps to fully integrate parallel computation with numerical modelling. Awareness of current state of the art implementations by other research groups also works as a reference to my own work.I believe that overall the research does not replace DEM model but instead could be useful as an augmentation library for contact detection for large scale DEM. The code library is very modular at every computational stage and particles elements can easily accommodate additional elements i.e. Reuleaux triangles.   
  
 \subsection{Acknowledgments}
 This work has been sponsored by EPSRC (Engineering and Physical Sciences Research Council) and EDF Energy as part of an ICASE studentship. This work also made use of the facilities of N8 HPC provided and funded by the N8 consortium and EPSRC (Grant No. N8HPC{\_}DUR{\_}TW{\_}PEANO). The Centre is co-ordinated by the Universities of Leeds and Manchester. We also thank University of Durham for the supercomputing resources and technical assistance. All underlying software is open source and available at: https://github.com/KonstantinosKr/delta.
 
-\clearpage
-\nocite{*}
-\bibliography{papers}{}
 \bibliographystyle{plain}
-
+\bibliography{./papers}
 
 \end{document}
 

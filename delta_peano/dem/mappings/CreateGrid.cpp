@@ -203,7 +203,7 @@ void dem::mappings::CreateGrid::createCell(
 
 				///place components of 2d array structure
 				int elements = 46;
-				double length = 0.5;
+				double length = 1;
 				double xBoxlength = delta::primitives::getxDiscritizationLength(length, elements);
 				double halfXBoxlength = xBoxlength/2;
 
@@ -250,8 +250,8 @@ void dem::mappings::CreateGrid::createCell(
 						zCoordinates.clear();
 					}
 					counter++;
-					if(counter > 600)
-						break;
+					//if(counter > 600)
+					//	break;
 				}
 
 				return;
@@ -302,8 +302,8 @@ void dem::mappings::CreateGrid::createCell(
 				zCoordinates.clear();
 
 				///place components of 2d array structure
-				int elements = 5;
-				double length = 0.5;
+				int elements = 10;
+				double length = 1;
 				double xBoxlength = delta::primitives::getxDiscritizationLength(length, elements);
 				double halfXBoxlength = xBoxlength/2;
 
@@ -335,7 +335,7 @@ void dem::mappings::CreateGrid::createCell(
 					position[2] = ar[2];
 
 					//delta::primitives::generateSurface( position, xBoxlength*0.98, xBoxlength*0.98, xCoordinates, yCoordinates, zCoordinates);
-					delta::primitives::generateBrickFB( position, scalePercentage*0.8, xCoordinates, yCoordinates, zCoordinates);
+					delta::primitives::generateBrickFB( position, scalePercentage*0.9, xCoordinates, yCoordinates, zCoordinates);
 
 					iREAL rho = GOLD;
 

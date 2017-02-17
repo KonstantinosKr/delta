@@ -78,7 +78,8 @@ class dem::mappings::Collision {
         SphereHybridOnBatches,
     	SphereBruteForce,
 		SpherePenalty,
-    	GJK
+    	GJK,
+		none
     };
 
     static bool _enableOverlapCheck;
