@@ -415,7 +415,7 @@ void dem::mappings::CreateGrid::createCell(
 				friction = true;
 				rho = GOLD;
 
-				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+				newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										_epsilon, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -626,7 +626,7 @@ void dem::mappings::CreateGrid::createCell(
 			iREAL rho = WOOD2;
 			bool friction = true;
 
-			int newParticleNumber = createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+			int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 									_epsilon, false, rho, friction, _numberOfParticles);
 
 			#ifdef STATS
