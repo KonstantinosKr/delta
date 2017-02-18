@@ -152,6 +152,8 @@ void dem::mappings::CreateGrid::createCell(
 								  fineGridVerticesEnumerator.getCellCenter()(1),
 								  fineGridVerticesEnumerator.getCellCenter()(2)};
 
+		int newParticleNumber;
+
 		switch (_scenario)
 		{
 			case sla:
@@ -176,7 +178,7 @@ void dem::mappings::CreateGrid::createCell(
 				bool friction = true;
 				iREAL rho = GOLD;
 
-				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+				newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										_epsilon, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -238,7 +240,7 @@ void dem::mappings::CreateGrid::createCell(
 
 						iREAL rho = GOLD;
 
-						vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
+						newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
 												_epsilon, false, rho, false, _numberOfParticles);
 
 						_numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -278,7 +280,7 @@ void dem::mappings::CreateGrid::createCell(
 
 				iREAL rho = GOLD;
 
-				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										_epsilon, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -336,7 +338,7 @@ void dem::mappings::CreateGrid::createCell(
 
 					iREAL rho = GOLD;
 
-					vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
+					int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
 											_epsilon, false, rho, false, _numberOfParticles);
 
 					_numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -363,7 +365,7 @@ void dem::mappings::CreateGrid::createCell(
 
 				iREAL rho = GOLD;
 
-				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										_epsilon, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfParticles++; _numberOfObstacles++;
@@ -391,7 +393,7 @@ void dem::mappings::CreateGrid::createCell(
 
 				iREAL rho = GOLD;
 
-				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										epsilon, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfParticles++; _numberOfObstacles++;
@@ -413,7 +415,7 @@ void dem::mappings::CreateGrid::createCell(
 				friction = true;
 				rho = GOLD;
 
-				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										_epsilon, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -434,7 +436,7 @@ void dem::mappings::CreateGrid::createCell(
 
 				iREAL rho = GOLD;
 
-				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										_epsilon, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfParticles++; _numberOfObstacles++;
@@ -455,7 +457,7 @@ void dem::mappings::CreateGrid::createCell(
 
 				iREAL rho = GOLD;
 
-				vertex.createNewParticle(centreAsArray,
+				int newParticleNumber = vertex.createNewParticle(centreAsArray,
 										xCoordinates, yCoordinates, zCoordinates,
 										_epsilon, isObstacle, rho, friction, _numberOfParticles);
 
@@ -624,7 +626,7 @@ void dem::mappings::CreateGrid::createCell(
 			iREAL rho = WOOD2;
 			bool friction = true;
 
-			vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+			int newParticleNumber = createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 									_epsilon, false, rho, friction, _numberOfParticles);
 
 			#ifdef STATS
