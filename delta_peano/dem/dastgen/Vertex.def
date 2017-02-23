@@ -87,4 +87,18 @@ class dem::records::Vertex {
   persistent parallelise int           adjacentRanks[TWO_POWER_D];
   persistent parallelise packed bool   adjacentSubtreeForksIntoOtherRank;
   #endif
+  
+  /**
+   * If this flag is set
+   *
+   * - we may not erase
+   * - we may not treat anything as a standard regular grid (unless the cell 
+   *   flag tells us to do so)
+   * - we may not refine (which not automatically ensures the previous 
+   *   property)
+   */
+  #ifdef PersistentRegularSubtrees
+  persistent parallelise bool          parentRegularPersistentSubgrid;
+  persistent parallelise bool          parentRegularPersistentSubgridInPreviousIteration;
+  #endif
 };
