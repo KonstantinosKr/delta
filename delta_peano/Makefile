@@ -174,7 +174,7 @@ dim3-icc-release-vec: CC=icpc --std=c++11
 dim3-icc-release-vec: DIM=-DDim3
 dim3-icc-release-vec: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics
 dim3-icc-release-vec: CFLAGS=-fast -g -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost
-dim3-icc-release-vec: LFLAGS=#-lrt
+dim3-icc-release-vec: LFLAGS=-lrt
 dim3-icc-release-vec: EXECUTABLE=dem-3d-release-vec
 dim3-icc-release-vec: header build
 

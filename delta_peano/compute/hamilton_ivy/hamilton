@@ -1,8 +1,0 @@
-module load gcc/4.9.1
-module load intel/xe_2015.2
-module load intel_mpi/5.0.1
-setenv CC Intel
-module load gcc/4.9.1
-setenv TBB_SHLIB '-L/gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.4 -ltbb'
-module unload gcc/4.9.1
-module load gcc/4.9.1
