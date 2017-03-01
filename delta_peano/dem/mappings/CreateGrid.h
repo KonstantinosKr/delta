@@ -52,6 +52,7 @@ class dem::mappings::CreateGrid {
 	  RandomWithGranulates,
       TwoParticlesCrash,
 	  hopper,
+	  hopperUniformSphere,
 	  freefall,
 	  freefallshort,
 	  frictionStatic,

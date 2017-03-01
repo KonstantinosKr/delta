@@ -179,6 +179,12 @@ int main(int argc, char** argv)
   else if (scenario=="hopper") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
+  else if (scenario=="hopperUniformSphere") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere, dem::mappings::CreateGrid::noVScheme, 0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
+  }
+  else if (scenario=="hopperNonUniformSphere") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
+  }
   else if (scenario=="hopper300") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
   }

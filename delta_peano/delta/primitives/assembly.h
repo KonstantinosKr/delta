@@ -34,5 +34,7 @@ namespace delta {
   	  std::vector<std::array<double, 3>> array2d(double position[3], double xyAxisLength, int partsNo);
 
   	  std::vector<std::array<double, 3>> array3d(double position[3], double xyzAxisLength, int partsNo);
+
+  	  std::vector<std::array<double, 3>> array3d(double position[3], double xyzAxisLength, int partsXYZNo, double yAxisLength, int partsYNo);
   }
  }
