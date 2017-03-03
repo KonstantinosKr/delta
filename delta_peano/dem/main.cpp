@@ -12,7 +12,7 @@
 
 #include <iomanip>
 
-#define epsilon 0.004
+#define epsilon 0.002
 
 tarch::logging::Log _log("");
 
@@ -180,7 +180,7 @@ int main(int argc, char** argv)
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopperUniformSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere, dem::mappings::CreateGrid::noVScheme, 0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere, dem::mappings::CreateGrid::noVScheme, 0.5, 0.02, 0.02, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopperNonUniformSphere") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.11, 0.11, 0.11, gridType, epsilon, noTriangles);

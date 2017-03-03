@@ -382,16 +382,16 @@ void dem::mappings::CreateGrid::createCell(
 				 * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom
 				 *
 				 */
-				double _hopperWidth = 0.25;
+				double _hopperWidth = 0.20;
+				double _hopperHeight = _hopperWidth/1.5;
 				double _hopperHatch = 0.10;
 
-				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
-
-				double epsilon = _epsilon*1.5;
+				double epsilon = _epsilon;
 				bool isObstacle = true;
 				bool friction = false;
-
 				iREAL rho = GOLD;
+
+				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
 
 				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										epsilon, isObstacle, rho, friction, _numberOfParticles);
@@ -405,15 +405,15 @@ void dem::mappings::CreateGrid::createCell(
 
 				iREAL position[3];
 
-				iREAL cuts = 5;
+				iREAL cuts = 8;
 				iREAL margin = (_hopperWidth/cuts)/2;
 
 				position[0] = (centreAsArray[0] - _hopperWidth/2) + margin;
-				position[1] = centreAsArray[1] + _hopperWidth/2;
+				position[1] = centreAsArray[1] + _hopperHeight/2;
 				position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
 
 				//std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, _hopperWidth, cuts);
-				std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, _hopperWidth, cuts, _hopperWidth/2, 3);
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, _hopperWidth, cuts, _hopperWidth/1.5, 6);
 
 				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
 				{
@@ -423,12 +423,12 @@ void dem::mappings::CreateGrid::createCell(
 					position[1] = ar[1];
 					position[2] = ar[2];
 
-					delta::primitives::generateCube(position, 0.03, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+					iREAL rho = WOOD;
 
-					iREAL rho = GOLD;
+					delta::primitives::generateCube(position, 0.015, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 
 					newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
-											_epsilon, false, rho, false, _numberOfParticles);
+											_epsilon, false, rho, true, _numberOfParticles);
 
 					_numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 
@@ -442,13 +442,13 @@ void dem::mappings::CreateGrid::createCell(
 				 * ******************* flooring creation
 				 */
 
-				centreAsArray[1] = 0.25;
-
-				delta::primitives::generateSurface( centreAsArray, 1, 0.1, xCoordinates, yCoordinates, zCoordinates);
+				centreAsArray[1] = 0.3;
 
 				isObstacle = true;
 				friction = true;
 				rho = GOLD;
+
+				delta::primitives::generateSurface( centreAsArray, 0.35, 0.05, xCoordinates, yCoordinates, zCoordinates);
 
 				newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										_epsilon, isObstacle, rho, friction, _numberOfParticles);
@@ -517,12 +517,12 @@ void dem::mappings::CreateGrid::createCell(
 				delta::primitives::generateSurface(centreAsArray, 1, 0.01, xCoordinates, yCoordinates, zCoordinates);
 
 				bool isObstacle = true;
-				bool friction = false;
+				bool friction = true;
 
 				iREAL rho = GOLD;
 
 				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-										_epsilon, isObstacle, rho, friction, _numberOfParticles);
+										_epsilon*2, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfParticles++; _numberOfObstacles++;
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -719,7 +719,7 @@ void dem::mappings::CreateGrid::createCell(
 									_epsilon, false, rho, friction, _numberOfParticles);
 
 			#ifdef STATS
-			logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
+			//logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
 			#endif
 			_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 			_numberOfParticles++;

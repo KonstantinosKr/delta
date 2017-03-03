@@ -16,7 +16,7 @@ namespace delta {
   	double springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3]);
 
   	void friction(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3]);
-  	void frictionSphere(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3]);
+  	void frictionSphere(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3], int materialA, int materialB);
 
     /**
       @param angularVelocityA is a vector that indicates linear velocity from center of mass
@@ -41,6 +41,7 @@ namespace delta {
       iREAL massA,
 	  iREAL inverseA[9],
 	  iREAL rotationA[9],
+	  int   materialA,
       iREAL positionB[3],
 	  iREAL positionBReferential[3],
       iREAL angularB[3],
@@ -49,6 +50,7 @@ namespace delta {
       iREAL massB,
 	  iREAL inverseB[9],
 	  iREAL rotationB[9],
+	  int   materialB,
 	  iREAL force[3],
       iREAL torque[3],
 	  bool  isSphere);

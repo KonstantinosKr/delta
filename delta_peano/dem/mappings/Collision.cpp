@@ -237,17 +237,19 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				&(currentParticle._persistentRecords._angular(0)),
 				&(currentParticle._persistentRecords._referentialAngular(0)),
 				&(currentParticle._persistentRecords._velocity(0)),
-				currentParticle._persistentRecords._mass,
+				currentParticle.getMass(),
 				&(currentParticle._persistentRecords._inverse(0)),
 				&(currentParticle._persistentRecords._orientation(0)),
+				currentParticle.getMaterial(),
 				&(p->_copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
 				&(p->_copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0)),
 				&(p->_copyOfPartnerParticle._persistentRecords._angular(0)),
 				&(p->_copyOfPartnerParticle._persistentRecords._referentialAngular(0)),
 				&(p->_copyOfPartnerParticle._persistentRecords._velocity(0)),
-				p->_copyOfPartnerParticle._persistentRecords._mass,
+				p->_copyOfPartnerParticle.getMass(),
 				&(p->_copyOfPartnerParticle._persistentRecords._inverse(0)),
 				&(p->_copyOfPartnerParticle._persistentRecords._orientation(0)),
+				p->_copyOfPartnerParticle.getMaterial(),
 				rforce, rtorque,
 				(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
 
@@ -325,8 +327,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				case CollisionModel::Sphere:
 				{
 					bool penetration = false;
-					if(fineGridVertex.getParticle(i)._persistentRecords._isObstacle &&
-							!fineGridVertex.getParticle(j)._persistentRecords._isObstacle)
+					if(fineGridVertex.getParticle(i)._persistentRecords._isObstacle && !fineGridVertex.getParticle(j)._persistentRecords._isObstacle)
 					{
 						//printf("ENTERED fine grid sphere BA\n");
 						newContactPoints = delta::collision::sphereWithBarrierBA(
@@ -335,17 +336,18 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getCentre(2),
 							fineGridVertex.getParticle(j).getDiameter(),
 							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._friction,
+							fineGridVertex.getParticle(j).getFriction(),
 
 							fineGridVertex.getXCoordinates(i),
 							fineGridVertex.getYCoordinates(i),
 							fineGridVertex.getZCoordinates(i),
 							fineGridVertex.getNumberOfTriangles(i),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._friction, penetration);
+							fineGridVertex.getParticle(i).getFriction(), penetration);
 
-					} else if(!fineGridVertex.getParticle(i)._persistentRecords._isObstacle &&
-							fineGridVertex.getParticle(j)._persistentRecords._isObstacle)
+						//if(fineGridVertex.getParticle(j).getGlobalParticleId() == 10) printf("BA STAGE1\n");
+
+					} else if(!fineGridVertex.getParticle(i)._persistentRecords._isObstacle && fineGridVertex.getParticle(j)._persistentRecords._isObstacle)
 					{
 						//printf("ENTERED fine grid sphere AB\n");
 						newContactPoints = delta::collision::sphereWithBarrierAB(
@@ -354,14 +356,16 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(i).getCentre(2),
 							fineGridVertex.getParticle(i).getDiameter(),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._friction,
+							fineGridVertex.getParticle(i).getFriction(),
 
 							fineGridVertex.getXCoordinates(j),
 							fineGridVertex.getYCoordinates(j),
 							fineGridVertex.getZCoordinates(j),
 							fineGridVertex.getNumberOfTriangles(j),
 							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._friction, penetration);
+							fineGridVertex.getParticle(j).getFriction(), penetration);
+
+						//if(fineGridVertex.getParticle(i).getGlobalParticleId() == 10) printf("AB STAGE1\n");
 					} else
 					{
 						newContactPoints = delta::collision::sphere(
@@ -370,14 +374,14 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(i).getCentre(2),
 							fineGridVertex.getParticle(i).getDiameter(),
 							fineGridVertex.getParticle(i)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(i)._persistentRecords._friction,
+							fineGridVertex.getParticle(i).getFriction(),
 
 							fineGridVertex.getParticle(j).getCentre(0),
 							fineGridVertex.getParticle(j).getCentre(1),
 							fineGridVertex.getParticle(j).getCentre(2),
 							fineGridVertex.getParticle(j).getDiameter(),
 							fineGridVertex.getParticle(j)._persistentRecords._epsilon,
-							fineGridVertex.getParticle(j)._persistentRecords._friction, penetration);
+							fineGridVertex.getParticle(j).getFriction(), penetration);
 					}
 					break;
 				}
@@ -552,8 +556,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 	{
 		for (int j=0; j<vertexB.getNumberOfRealAndVirtualParticles(); j++)
 		{
-			if(((vertexA.getParticle(i)._persistentRecords._isObstacle) &&
-					(vertexB.getParticle(j)._persistentRecords._isObstacle)) ||
+			if(((vertexA.getParticle(i)._persistentRecords._isObstacle) && (vertexB.getParticle(j)._persistentRecords._isObstacle)) ||
 					((vertexA.getParticle(i)._persistentRecords._globalParticleId) == (vertexB.getParticle(j)._persistentRecords._globalParticleId))) continue;
 
 			if(_enableOverlapCheck)
@@ -574,8 +577,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				case CollisionModel::Sphere:
 				{
 					bool penetration = false;
-					if(vertexA.getParticle(i)._persistentRecords._isObstacle &&
-							!vertexB.getParticle(j)._persistentRecords._isObstacle)
+					if(vertexA.getParticle(i)._persistentRecords._isObstacle && !vertexB.getParticle(j)._persistentRecords._isObstacle)
 					{
 						//printf("ENTERED neighbor grid sphere BA\n");
 						newContactPoints = delta::collision::sphereWithBarrierBA(
@@ -584,16 +586,18 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexB.getParticle(j).getCentre(2),
 							vertexB.getParticle(j).getDiameter(),
 							vertexB.getParticle(j)._persistentRecords._epsilon,
-							vertexB.getParticle(j)._persistentRecords._friction,
+							vertexB.getParticle(j).getFriction(),
 
 							vertexA.getXCoordinates(i),
 							vertexA.getYCoordinates(i),
 							vertexA.getZCoordinates(i),
 							vertexA.getNumberOfTriangles(i),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._friction, penetration);
-					} else if(!vertexA.getParticle(i)._persistentRecords._isObstacle &&
-							vertexB.getParticle(j)._persistentRecords._isObstacle)
+							vertexA.getParticle(i).getFriction(), penetration);
+
+						//if(vertexB.getParticle(j).getGlobalParticleId() == 10) printf("BA STAGE2\n");
+
+					} else if(!vertexA.getParticle(i)._persistentRecords._isObstacle && vertexB.getParticle(j)._persistentRecords._isObstacle)
 					{
 						//printf("ENTERED neighbor grid sphere AB\n");
 						newContactPoints = delta::collision::sphereWithBarrierAB(
@@ -602,14 +606,17 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getParticle(i).getCentre(2),
 							vertexA.getParticle(i).getDiameter(),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._friction,
+							vertexA.getParticle(i).getFriction(),
 
 							vertexB.getXCoordinates(j),
 							vertexB.getYCoordinates(j),
 							vertexB.getZCoordinates(j),
 							vertexB.getNumberOfTriangles(j),
 							vertexB.getParticle(j)._persistentRecords._epsilon,
-							vertexB.getParticle(j)._persistentRecords._friction, penetration);
+							vertexB.getParticle(j).getFriction(), penetration);
+
+						//if(vertexA.getParticle(i).getGlobalParticleId() == 10 && newContactPoints.size() > 0) printf("AB STAGE2:%f\n", newContactPoints[0].getDistance());
+
 					} else
 					{
 						newContactPoints = delta::collision::sphere(
@@ -618,14 +625,14 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 							vertexA.getParticle(i).getCentre(2),
 							vertexA.getParticle(i).getDiameter(),
 							vertexA.getParticle(i)._persistentRecords._epsilon,
-							vertexA.getParticle(i)._persistentRecords._friction,
+							vertexA.getParticle(i).getFriction(),
 
 							vertexB.getParticle(j).getCentre(0),
 							vertexB.getParticle(j).getCentre(1),
 							vertexB.getParticle(j).getCentre(2),
 							vertexB.getParticle(j).getDiameter(),
 							vertexB.getParticle(j)._persistentRecords._epsilon,
-							vertexB.getParticle(j)._persistentRecords._friction, penetration);
+							vertexB.getParticle(j).getFriction(), penetration);
 					}
 					if(penetration)
 					{

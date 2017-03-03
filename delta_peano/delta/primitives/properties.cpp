@@ -549,7 +549,16 @@ void delta::primitives::computeInertia(
 void delta::primitives::computeInverseInertia(double inertia[9], double inverse[9], bool isObject)
 {
 	iREAL det;
-	INVERT (inertia, inverse, det);
+
+    iREAL a[9], x[9];
+
+    for (int j = 0; j < 9; j ++)
+    {
+      a[j] = inertia[j];
+    }
+
+    INVERT (a, x, det);
+	//INVERT (inertia, inverse, det);
 
 	//zero inverse because it is an object
 	if(isObject)
@@ -558,7 +567,15 @@ void delta::primitives::computeInverseInertia(double inertia[9], double inverse[
 		{
 			inverse[j] = 0;
 		}
+	}else{
+		for (int j = 0; j < 9; j ++)
+		{
+		  inverse[j] = x[j];
+		}
 	}
+
+
+
 }
 
 double delta::primitives::getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass){

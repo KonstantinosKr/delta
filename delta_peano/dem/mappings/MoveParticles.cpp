@@ -62,7 +62,9 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 
     if(particle._persistentRecords._isObstacle){continue;}
 
-    particle._persistentRecords._velocity(1) += -(timeStepSize * (gravity/ particle._persistentRecords._mass));
+    particle._persistentRecords._velocity(0) += timeStepSize * ((gravity*0)/ particle._persistentRecords._mass);
+    particle._persistentRecords._velocity(1) += timeStepSize * ((gravity*-11)/ particle._persistentRecords._mass);
+    particle._persistentRecords._velocity(2) += timeStepSize * ((gravity*0)/ particle._persistentRecords._mass);
 
     particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);

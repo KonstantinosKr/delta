@@ -5,11 +5,22 @@
 #define DAMPER 1
 #define FRICTION 0.1
 
-//sphere parameters that work
+//sphere parameters for piling simulation
+/*#define SSPRING 1E6
+#define SDAMPER 0.2
+#define SFRICTION 0.28
+#define SFRICTIONROLLING 0.005*/
+
 #define SSPRING 1E6
 #define SDAMPER 0.2
-#define SFRICTION 0.3
-#define SFRICTIONROLLING 0.005
+#define SFRICTIONWOOD 0.1
+#define SFRICTIONGOLD 0.8
+#define SFRICTIONROLLING 1
+
+#define GOLD 10000
+#define WOOD 5000
+#define WOOD2 800
+
 
 #define NNMUL(A, B, C)\
 {\
@@ -185,10 +196,15 @@ double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeV
   f[1] = force*normal[1];
   f[2] = force*normal[2];
 
+#ifdef STATS
+	printf("relativeVelocity=%f, depth=%f, spring=%f\n", velocity, depth, SPRING*depth);
+	printf("totalforce=%f, damp=%f, mass=%f\n", force, damp, ma);
+#endif
+
   return force;
 }
 
-void delta::forces::frictionSphere(iREAL normal[3], iREAL vi[3], iREAL force, iREAL friction[3])
+void delta::forces::frictionSphere(iREAL normal[3], iREAL vi[3], iREAL force, iREAL friction[3], int materialA, int materialB)
 {
   iREAL vt[3];
 
@@ -196,9 +212,18 @@ void delta::forces::frictionSphere(iREAL normal[3], iREAL vi[3], iREAL force, iR
   vt[1] = vi[1] - normal[1]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
   vt[2] = vi[2] - normal[2]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
 
-  friction[0] =  -vt[0]*SFRICTION*force;
-  friction[1] =  -vt[1]*SFRICTION*force;
-  friction[2] =  -vt[2]*SFRICTION*force;
+  if(materialA == GOLD || materialB == GOLD)
+  {
+	  friction[0] =  -vt[0]*SFRICTIONGOLD*force;
+	  friction[1] =  -vt[1]*SFRICTIONGOLD*force;
+	  friction[2] =  -vt[2]*SFRICTIONGOLD*force;
+  }else
+  {
+	  friction[0] =  -vt[0]*SFRICTIONWOOD*force;
+	  friction[1] =  -vt[1]*SFRICTIONWOOD*force;
+	  friction[2] =  -vt[2]*SFRICTIONWOOD*force;
+  }
+
 }
 
 void delta::forces::getContactForces(
@@ -211,6 +236,7 @@ void delta::forces::getContactForces(
     iREAL massA,
 	iREAL inverseA[9],
 	iREAL rotationA[9],
+	int   materialA,
     iREAL positionBSpatial[3],
 	iREAL positionBReferential[3],
 	iREAL angularB[3],
@@ -219,6 +245,7 @@ void delta::forces::getContactForces(
     iREAL massB,
 	iREAL inverseB[9],
 	iREAL rotationB[9],
+	int   materialB,
 	iREAL force[3],
     iREAL torque[3],
 	bool  isSphere)
@@ -258,24 +285,31 @@ void delta::forces::getContactForces(
         friction[0] = 0.0;
         friction[1] = 0.0;
         friction[2] = 0.0;
-#ifdef STATS
-        printf("#####start-subContact#####\nid=%i, DAMPER=%f, SPRING=%f\n", k, DAMPER, SPRING);
-#endif
+
         if(isSphere)
         {
+#ifdef STATS
+        printf("#####start-subContact#####\nid=%i, SDAMPER=%f, SSPRING=%f\n", k, SDAMPER, SSPRING);
+#endif
         	forc = delta::forces::springSphere(conpnt[k].normal, conpnt[k].depth, vij, massA, massB, f);
 
             if(conpnt[k].friction)
-            	delta::forces::frictionSphere(conpnt[k].normal, vi, forc, friction);
+            	delta::forces::frictionSphere(conpnt[k].normal, vi, forc, friction, materialA, materialB);
+
         }
         else{
+
+#ifdef STATS
+        printf("#####start-subContact#####\nid=%i, DAMPER=%f, SPRING=%f\n", k, DAMPER, SPRING);
+#endif
             forc = delta::forces::spring(conpnt[k].normal,conpnt[k].x, conpnt[k].depth, vij,
             							positionASpatial, positionBSpatial,
 										positionAReferential, positionBReferential, massA, massB,
             							rotationA, rotationB, inverseA, inverseB, f);
 
-            //if(conpnt[k].friction)
-            	//delta::forces::friction(conpnt[k].normal, vi, forc, friction);
+            if(conpnt[k].friction)
+            	delta::forces::friction(conpnt[k].normal, vi, forc, friction);
+
         }
 
         f[0] = f[0] + friction[0];
@@ -310,14 +344,12 @@ void delta::forces::getContactForces(
 
 			if(w>0.0)
 			{
-				torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
-				torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
-				torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
+				//torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
+				//torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
+				//torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
 			}
         }
-#ifdef STATS
-        printf("#####start-subContact#####\n");
-#endif
+
         conpnt[k].force[0] = force[0];
         conpnt[k].force[1] = force[1];
         conpnt[k].force[2] = force[2];
