@@ -45,9 +45,9 @@ listParticleId, listMass, listDiameter, \
 listInfluenceRadius, listEpsilon, listthMin, listNoOfTriangles, \
 listIsObstacle, listMaterial, listLinear, listAngular, \
 listRefangular, listCentre, listCenterOfMass, \
-listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(0, getParticleCount(), 10500)
+listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(0, getParticleCount(), 10000)
 
-print(listParticleId)
+#print(listParticleId)
 
 counter = 0
 for i in listIsObstacle:
@@ -73,42 +73,63 @@ for i in listIsObstacle:
     counter += 1
 
 N = len(listParticleId)
-print(len(listDiameter))
-print(N)
-x = np.array([np.array(i[0]) for i in listCentre])
+#print(len(listDiameter))
+#print(N)
+x = np.array([np.array(i[0]-0.5) for i in listCentre])
 y = np.array([np.array(i[1]) for i in listCentre])
 
 minx = min(x)
 maxx = max(x)
-width = minx-max
+width = abs(minx-maxx)
 miny = min(y)
 maxy = max(y)
-height = miny-maxy
+height = abs(miny-maxy)
 
 midpointX = maxx-width/2
 midpointY = maxy-height/2
 
 counter = 0
+distanceLeft = []
+distanceRight = []
 for i in x:
     if i < midpointX:
-        left = listParticleId[counter]
+        distanceLeft.append(midpointX - i)
     else:
-        right = listParticleId[counter]
+        distanceRight.append(midpointX - i)
     counter += 1
-
-distanceLeft = []
-for i in left:
-    distanceLeft.append(midpointX-x[i])
-
-distanceRight = []
-for i in right:
-    distanceRight.append(midpointX-x[i])
-
 
 colors = np.random.rand(N)
 area = np.array([np.array(i*100000) for i in listDiameter])  # 0 to 15 point radii
 
-print(area)
+#print(area)
 
+####EXPECTED value for particle center
+IEx = sum(x)/N
+print("IEx: %f" % IEx)
+
+IEarray = [a*b for a,b in zip(x,listMass)]
+IEmass = sum(IEarray)/sum(listMass)
+print("IEm: %f" % IEmass)
+
+####WIDTH value of pile
+Mx = abs(max([abs(IEx-i) for i in x]))
+print("Mx: %f" % Mx)
+
+xm = [a*b for a,b in zip(listMass, x)]
+Mm = max([abs(IEmass-i) for i in xm])
+print("Mm: %f" % Mm)
+
+#####Variance value of pile
+Varx = sum([pow(i-IEx,2) for i in x])/N
+print("Varx: %f" % Varx)
+
+xm = [a*b for a,b in zip(listMass, x)]
+Varmass = sum([pow(i-IEmass, 2) for i in xm])/N
+print("Varm: %f" % Varmass)
+
+#####PLOT PILE
 plt.scatter(x, y, s=area, c=colors, alpha=0.5)
 plt.show()
+
+
+
