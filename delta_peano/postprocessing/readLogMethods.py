@@ -24,23 +24,17 @@ listiner = []
 listinve = []
 listorie = []
 
-linear = [0 for x in range(3)]
-angular = [0 for x in range(3)]
-rangular = [0 for x in range(3)]
-centre = [0 for x in range(3)]
-cOfMas = [0 for x in range(3)]
-rcOfMa = [0 for x in range(3)]
-iner = [0 for x in range(9)]
-inve = [0 for x in range(9)]
-orie = [0 for x in range(9)]
+iner = [float(0) for x in range(9)]
+inve = [float(0) for x in range(9)]
+orie = [float(0) for x in range(9)]
 
 def splitParticleLinePivot(readLine, index):
 
     segline = readLine.split(",")
 
-    col1 = segline[0].split("=")[1]
-    col2 = segline[1].split("=")[1]
-    col3 = segline[2].split("=")[1]
+    col1 = float(segline[0].split("=")[1])
+    col2 = float(segline[1].split("=")[1])
+    col3 = float(segline[2].split("=")[1])
 
     #print str(col1) + " " + str(col2) + " " + str(col3)
 
@@ -69,29 +63,17 @@ def splitParticleLinePivot(readLine, index):
         listisObstacle.append(isObstacle)
         listmaterial.append(material)
     elif index == 4:
-        linear[0] = col1
-        linear[1] = col2
-        linear[2] = col3
+        listlinear.append([col1, col2, col3])
     elif index == 5:
-        angular[0] = col1
-        angular[1] = col2
-        angular[2] = col3
+        listangular.append([col1, col2, col3])
     elif index == 6:
-        rangular[0] = col1
-        rangular[1] = col2
-        rangular[2] = col3
+        listrangular.append([col1, col2, col3])
     elif index == 7:
-        centre[0] = col1
-        centre[1] = col2
-        centre[2] = col3
+        listcentre.append([col1, col2, col3])
     elif index == 8:
-        cOfMas[0] = col1
-        cOfMas[1] = col2
-        cOfMas[2] = col3
+        listcOfMas.append([col1, col2, col3])
     elif index == 9:
-        rcOfMa[0] = col1
-        rcOfMa[1] = col2
-        rcOfMa[2] = col3
+        listrcOfMa.append([col1, col2, col3])
     elif index == 10:
         iner[0] = col1
         iner[1] = col2
@@ -129,13 +111,6 @@ def splitParticleLinePivot(readLine, index):
         orie[7] = col2
         orie[8] = col3
 
-        # add particle properties to lists
-        listlinear.append(linear)
-        listangular.append(angular)
-        listrangular.append(rangular)
-        listcentre.append(centre)
-        listcOfMas.append(cOfMas)
-        listrcOfMa.append(rcOfMa)
         listiner.append(iner)
         listinve.append(inve)
         listorie.append(orie)
@@ -153,17 +128,10 @@ listnormalX = []
 listp = []
 listq = []
 
-xContactPosition = [0 for x in range(3)]
-normalX = [0 for x in range(3)]
-force = [0 for x in range(3)]
-friction = [0 for x in range(3)]
-p = [0 for x in range(3)]
-q = [0 for x in range(3)]
-
 def splitContactLinePivot(readLine, index):
 
     segline = readLine.split(",")
-    #print segline
+    print(segline)
     col1 = segline[0].split("=")[1]
     col2 = segline[1].split("=")[1]
     col3 = segline[2].split("=")[1]
@@ -193,29 +161,13 @@ def splitContactLinePivot(readLine, index):
         listdepth.append(depth)
         listepsilonTotal.append(epsilonTotal)
     elif index == 4:
-        xContactPosition[0] = col1
-        xContactPosition[1] = col2
-        xContactPosition[2] = col3
-
-        listxContactPosition.append(xContactPosition)
+        listxContactPosition.append([col1, col2, col3])
     elif index == 5:
-        normalX[0] = col1
-        normalX[1] = col2
-        normalX[2] = col3
-
-        listnormalX.append(normalX)
+        listnormalX.append([col1, col2, col3])
     elif index == 6:
-        p[0] = col1
-        p[1] = col2
-        p[2] = col3
-
-        listp.append(p)
+        listp.append([col1, col2, col3])
     elif index == 7:
-        q[0] = col1
-        q[1] = col2
-        q[2] = col3
-
-        listq.append(q)
+        listq.append([col1, col2, col3])
 
 
 #####subContact#####\n
@@ -239,13 +191,43 @@ listmassB = []
 listforce = []
 listfriction = []
 
-f = [0 for x in range(3)]
-t = [0 for x in range(3)]
-
-def splitForceLinePivot(readLine, index, subindex):
-
+def splitSubContactPivot(readLine, subindex):
+    #print(readLine)
     segline = readLine.split(",")
-    #print segline
+    #print(segline)
+    col1 = segline[0].split("=")[1]
+    col2 = segline[1].split("=")[1]
+    col3 = segline[2].split("=")[1]
+
+    if subindex == 1:
+        subcontactid = col1
+        subdamper = col2
+        subspring = col3
+
+        listsubContactid.append(subcontactid)
+        listsubDamper.append(subdamper)
+        listsubSpring.append(subspring)
+    elif subindex == 2:
+        subrelativeV = col1
+        subdepth = col2
+        subspring_depth = col3
+
+        listsubrelativeVelocity.append(subrelativeV)
+        listsubdepth.append(subdepth)
+        listsubspring_depth.append(subspring_depth)
+    elif subindex == 3:
+        subtotalforce = col1
+        subdamp = col2
+        subcontactmass = col3
+
+        listsubtotalForce.append(subtotalforce)
+        listsubdamp.append(subdamp)
+        listsubcontactmass.append(subcontactmass)
+
+def splitForceLinePivot(readLine, index):
+    #print(readLine)
+    segline = readLine.split(",")
+    #print(segline)
     col1 = segline[0].split("=")[1]
     col2 = segline[1].split("=")[1]
     col3 = segline[2].split("=")[1]
@@ -253,32 +235,6 @@ def splitForceLinePivot(readLine, index, subindex):
     #print str(col1) + " " + str(col2) + " " + str(col3)
 
     if index == 1:
-        if subindex == 1:
-            subcontactid = col1
-            subdamper = col2
-            subspring = col3
-
-            listsubContactid.append(subcontactid)
-            listsubDamper.append(subdamper)
-            listsubSpring.append(subspring)
-        elif subindex == 2:
-            subrelativeV = col1
-            subdepth = col2
-            subspring_depth = col3
-
-            listsubrelativeVelocity.append(subrelativeV)
-            listsubdepth.append(subdepth)
-            listsubspring_depth.append(subspring_depth)
-        elif subindex == 3:
-            subtotalforce = col1
-            subdamp = col2
-            subcontactmass = col3
-
-            listsubtotalForce.append(subtotalforce)
-            listsubdamp.append(subdamp)
-            listsubcontactmass.append(subcontactmass)
-
-    if index == 2:
         forceId = col1
         masterParticleNo = col2
         slaveParticleNo = col3
@@ -286,24 +242,17 @@ def splitForceLinePivot(readLine, index, subindex):
         listforceId.append(forceId)
         listforcemasterParticleNo.append(masterParticleNo)
         listforceslaveParticleNo.append(slaveParticleNo)
-    elif index == 3:
+    elif index == 2:
         massA = col1
         massB = col2
         nulldata3 = col3
 
         listmassA.append(massA)
         listmassB.append(massB)
+    elif index == 3:
+        listforce.append([col1, col2, col3])
     elif index == 4:
-        f[0] = col1
-        f[1] = col2
-        f[2] = col3
-
-        listforce.append(f)
-    elif index == 5:
-        t[0] = col1
-        t[1] = col2
-        t[2] = col3
-        listfriction_torque.append(t)
+        listfriction.append([col1, col2, col3])
 
 iteration = []
 particleXaxis = []
@@ -341,16 +290,22 @@ def readLog():
 
         if "#####FORCE-DATA#####" in line:
             ind = 0
+            subind = 0
+            #state = "force"
+            continue
+
+        if "#####TOTAL-FDATA#####" in line:
+            ind = 0
             state = "force"
             continue
 
         if "start-subContact" in line:
-            ind = 1
+            ind = 0
+            subind = 0
             state = "subcontact"
+            continue
 
         if "end-subContact" in line:
-            ind = 1
-            state = "force"
             continue
 
         if "particle" in state:
@@ -362,7 +317,7 @@ def readLog():
                 particleXaxis.append(particleXindex)
                 particleXindex += 1
 
-        if "contact" in state:
+        if "CONTACT-DATA" in state:
             #print line
             ind += 1
             splitContactLinePivot(line, ind)
@@ -371,18 +326,19 @@ def readLog():
                 contactXaxis.append(contactXindex)
                 contactXindex += 1
 
-        if "force" in state or "subcontact" in state:
-            #print line
-            if "subcontact" in state:
-                subind += 1
-            splitForceLinePivot(line, ind, subind)
-            if subind == 3:
-                state = "force"
-                ind += 1
-                subind = 0
+        if "subcontact" in state:
+            ind += 1
+            splitSubContactPivot(line, ind)
+            if ind == 3:
+                state = ""
                 subforceXaxis.append(subforceXindex)
                 subforceXindex += 1
-            if ind == 5:
+
+        if "force" in state:
+            #print line
+            ind += 1
+            splitForceLinePivot(line, ind)
+            if ind == 4:
                 state = ""
                 forceXaxis.append(forceXindex)
                 forceXindex += 1

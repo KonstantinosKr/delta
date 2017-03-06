@@ -1,31 +1,29 @@
-from plotdata import *
+from plotDataMethods import *
 import matplotlib.pyplot as plt
 import numpy as np
+
 """
-getSimSteps():
-getPlotSteps():
-getParticleCount():
-getListOfUniqueParticleIds():
+getSimSteps()
+getPlotSteps()
+getParticleCount()
+getListOfUniqueParticleIds()
 
-getParticleData(particleIndex):
-    return listParticleId, listMass, listDiameter, \
-            listInfluenceRadius, listEpsilon, listthMin, listNoOfTriangles, \
-            listIsObstacle, listMaterial, listLinear, listAngular, \
-            listRefangular, listCentre, listCenterOfMass, \
-            listRefCenterOfMass, listInertia, listInverse, listOrientation
+listParticleId, listMass, listDiameter, \
+listInfluenceRadius, listEpsilon, listthMin, listNoOfTriangles, \
+listIsObstacle, listMaterial, listLinear, listAngular, \
+listRefangular, listCentre, listCenterOfMass, \
+listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(particleIndex)
 
-getContactData(masterIndex, slaveIndex, interchangeable):
-    return  listContactId, listMasterId, listSlaveId, listHasFriction, \
-            listDistance, listDepth, listEpsilon, listContactPosition, \
-            listNormalX, listP, listQ
+listContactId, listMasterId, listSlaveId, listHasFriction, \
+listDistance, listDepth, listEpsilon, listContactPosition, \
+listNormalX, listP, listQ = getContactData(masterIndex, slaveIndex, interchangeable)
 
-getForce(masterIndex, slaveIndex, interchangeable):
-    return listForceId, listForceMaster, listForceSlave, listMassA, \
-           listMassB, listForce, listFriction
+listForceId, listForceMaster, listForceSlave, listMassA, \
+listMassB, listForce, listFriction = getForce(masterIndex, slaveIndex, interchangeable)
 
-getContactDataOfInteraction(masterIndex, slaveIndex, interchangeable):
-    return  listSubContactId, listSubDamper, listSubSpring, listSubRelativeVelocity, \
-            listSubDepth, listSubSpring_Depth, listSubTotalForce, listSubDamp, listSubContactMass
+listSubContactId, listSubDamper, listSubSpring, listSubRelativeVelocity, \
+listSubDepth, listSubSpring_Depth, listSubTotalForce, listSubDamp, listSubContactMass = getContactDataOfInteraction(masterIndex, slaveIndex, interchangeable)
+
 """
 
 #ParticleData

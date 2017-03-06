@@ -25,7 +25,6 @@ peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::touchVertexFi
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-
 peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::enterCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
@@ -40,10 +39,7 @@ peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::descendSpecif
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-
 tarch::logging::Log                dem::mappings::ReluctantlyAdoptGrid::_log( "dem::mappings::ReluctantlyAdoptGrid" ); 
-
-
 
 void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   dem::Vertex&                                 fineGridVertex,
@@ -58,24 +54,19 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
 
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
-  if (fineGridVertex.getNumberOfParticles()>1) {
-    for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
-      if (
-        fineGridVertex.getParticle(i)._persistentRecords._diameter<fineGridH(0)/3.0
-        &&
-        fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined
-      ) {
+  if (fineGridVertex.getNumberOfParticles()>1)
+  {
+    for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+    {
+      if (fineGridVertex.getParticle(i)._persistentRecords._diameter<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+      {
         logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
         fineGridVertex.refine();
       }
-      else {
-    /*
-          Does not hold as it might happen that we lift particles temporarily through hanging nodes
-          assertion2(
-            fineGridVertex.getParticle(i)._persistentRecords._diameter>=fineGridH(0)/3.0,
-            fineGridVertex.toString(), fineGridVertex.getParticle(i).toString()
-          );
-    */
+      else
+      {
+          /*Does not hold as it might happen that we lift particles temporarily through hanging nodes
+          assertion2(fineGridVertex.getParticle(i)._persistentRecords._diameter>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());*/
       }
     }
   }

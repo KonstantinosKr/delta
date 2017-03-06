@@ -53,20 +53,14 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
 
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
-    if (fineGridVertex.getParticle(i)._persistentRecords._diameter<fineGridH(0)/3.0
-      && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+    if (fineGridVertex.getParticle(i)._persistentRecords._diameter<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
     {
       logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
     }else
     {
-/*
-      Does not hold as it might happen that we lift particles temporarily through hanging nodes
-      assertion2(
-        fineGridVertex.getParticle(i)._persistentRecords._diameter>=fineGridH(0)/3.0,
-        fineGridVertex.toString(), fineGridVertex.getParticle(i).toString()
-      );
-*/
+      /*Does not hold as it might happen that we lift particles temporarily through hanging nodes
+      assertion2(fineGridVertex.getParticle(i)._persistentRecords._diameter>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());*/
     }
   }
 

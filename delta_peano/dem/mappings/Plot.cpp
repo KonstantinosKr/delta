@@ -108,7 +108,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
-				#ifdef STATS
+				#ifdef CONTACTSTATS
 				logInfo("endIteration(...)", std::endl
 				   << "#####CONTACT-DATA#####" << std::endl
 				   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
@@ -347,7 +347,7 @@ void dem::mappings::Plot::touchVertexLastTime(
       _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
     }
-#ifdef STATS
+#ifdef PARTICLESTATS
     logInfo("touchVertexLastTime(...)", std::endl
     						   << "#####PARTICLE-DATA#####" << std::endl
     						   << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl

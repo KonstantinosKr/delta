@@ -1,5 +1,5 @@
-import readLog
-
+import readLogMethods
+import math
 
 #PARTICLE PROPERTIES - SNAPPED PER PLOT - axis - particleXaxis
 #listparticleId, listmass, listdiameter, listinfluenceRadius, listepsilon, listhMin,
@@ -23,7 +23,7 @@ listcontactId, listmasterId, listSlaveId, listhasFriction, listdistance, listdep
 listxContactPosition, listnormalX, listp, listq, \
 listforceId, listforcemasterParticleNo, listforceslaveParticleNo, listmassA, listmassB, listforce, listfriction, \
 listsubContactid, listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring_depth, listsubtotalForce, listsubdamp, listsubcontactmass, \
-particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iterations = readLog.readLog()
+particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iterations = readLogMethods.readLog()
 
 def getSimSteps():
     return len(iterations)
@@ -37,12 +37,12 @@ def getParticleCount():
 def getListOfUniqueParticleIds():
     list = []
     for i in range(0, len(particleXaxis)):
-        found = false
+        found = False
         for j in range(0, len(list)):
             if listparticleId[i] == list[j]:
-                found = true
-        if found == false:
-            list.append(particleId[i])
+                found = True
+        if found == False:
+            list.append(listparticleId[i])
     return list
 
 def getParticleData(particleIndex):
@@ -68,7 +68,62 @@ def getParticleData(particleIndex):
 
     for i in range(0, getPlotSteps()*getParticleCount()):
         if particleIndex == listparticleId[i]:
-            listFilteredParticleId.append(listParticleId[i])
+            listFilteredParticleId.append(listparticleId[i])
+            listFilteredMass.append(listmass[i])
+            listFilteredDiameter.append(listdiameter[i])
+            listFilteredInfluenceRadius.append(listinfluenceRadius[i])
+            listFilteredEpsilon.append(listepsilon[i])
+            listFilteredthMin.append(listhMin[i])
+            listFilterednoOfTriangles.append(listnoOfTriangles[i])
+            listFilteredisObstacle.append(listisObstacle[i])
+            listFilteredmaterial.append(listmaterial[i])
+            listFilteredlinear.append(listlinear[i])
+            listFilteredAngular.append(listangular[i])
+            listFilteredrangular.append(listrangular[i])
+            listFilteredcentre.append(listcentre[i])
+            listFilteredcOfMas.append(listcOfMas[i])
+            listFilteredrcOfMa.append(listrcOfMa[i])
+            listFilterediner.append(listiner[i])
+            listFilteredinve.append(listinve[i])
+            listFilteredorie.append(listorie[i])
+
+    return listFilteredParticleId, listFilteredMass, listFilteredDiameter, \
+            listFilteredInfluenceRadius, listFilteredEpsilon, listFilteredthMin, listFilterednoOfTriangles, \
+            listFilteredisObstacle, listFilteredmaterial, listFilteredlinear, listFilteredAngular, \
+            listFilteredrangular, listFilteredcentre, listFilteredcOfMas, \
+            listFilteredrcOfMa, listFilterediner, listFilteredinve, listFilteredorie
+
+def getParticleData(particleStart, particleEnd, timestep):
+
+    listFilteredParticleId = []
+    listFilteredMass = []
+    listFilteredDiameter = []
+    listFilteredInfluenceRadius = []
+    listFilteredEpsilon = []
+    listFilteredthMin = []
+    listFilterednoOfTriangles = []
+    listFilteredisObstacle = []
+    listFilteredmaterial = []
+    listFilteredlinear = []
+    listFilteredAngular = []
+    listFilteredrangular = []
+    listFilteredcentre = []
+    listFilteredcOfMas = []
+    listFilteredrcOfMa = []
+    listFilterediner = []
+    listFilteredinve = []
+    listFilteredorie = []
+
+    #print(getPlotSteps())
+    #print(timestep)
+    #print(getParticleCount())
+    #print(int(getParticleCount()*getPlotSteps()))
+    #print(int(timestep*getPlotSteps()))
+    #print(int((getParticleCount()*getPlotSteps())+timestep))
+    it = math.floor(timestep/50)
+    for i in range(int((it)*getParticleCount()), int(((it+1)*getParticleCount()))):
+        if int(listparticleId[i]) >= particleStart and int(listparticleId[i]) <= particleEnd:
+            listFilteredParticleId.append(listparticleId[i])
             listFilteredMass.append(listmass[i])
             listFilteredDiameter.append(listdiameter[i])
             listFilteredInfluenceRadius.append(listinfluenceRadius[i])
@@ -110,7 +165,7 @@ def getContactData(masterIndex, slaveIndex, interchangeable):
 
     for i in range(0, len(listcontactId)):
         if not interchangeable:
-            if masterIndex == listmasterId[i] and slaveindex == listSlaveId[i]:
+            if masterIndex == listmasterId[i] and slaveIndex == listSlaveId[i]:
                 listFilteredContactId.append(listcontactId[i])
                 listFilteredMasterId.append(listmasterId[i])
                 listFilteredSlaveId.append(listSlaveId[i])
@@ -123,7 +178,7 @@ def getContactData(masterIndex, slaveIndex, interchangeable):
                 listFilteredP.append(listp[i])
                 listFilteredQ.append(listq[i])
         else:
-            if (masterIndex == listmasterId[i] and slaveindex == listSlaveId[i]) or (slaveIndex == listmasterId[i] and masterindex == listSlaveId[i]):
+            if (masterIndex == listmasterId[i] and slaveIndex == listSlaveId[i]) or (slaveIndex == listmasterId[i] and masterindex == listSlaveId[i]):
                 listFilteredContactId.append(listcontactId[i])
                 listFilteredMasterId.append(listmasterId[i])
                 listFilteredSlaveId.append(listSlaveId[i])
@@ -291,7 +346,7 @@ def getContactDataOfInteraction(particleIndex):
             listFilteredSubString.append(listsubSpring[i])
             listFilteredSubRelativeVelocity.append(listsubrelativeVelocity[i])
             listFilteredSubDepth.append(listsubdepth[i])
-            listFilteredSubSpring.append(listsubspring[i])
+            listFilteredSubSpring.append(listsubSpring[i])
             listFilteredSubTotalForce.append(listsubtotalForce[i])
             listFilteredSubDamp.append(listsubdamp[i])
             listFilteredSubContactMass.append(listsubcontactmass[i])

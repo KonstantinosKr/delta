@@ -459,6 +459,92 @@ void dem::mappings::CreateGrid::createCell(
 				return;
 				break;
 			}
+			case hopperNonUniformSphere:
+			{
+				/*
+				 * hopper experiment;
+				 *
+				 * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom
+				 *
+				 */
+				double _hopperWidth = 0.20;
+				double _hopperHeight = _hopperWidth/1.5;
+				double _hopperHatch = 0.10;
+
+				double epsilon = _epsilon;
+				bool isObstacle = true;
+				bool friction = false;
+				iREAL rho = GOLD;
+
+				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
+
+				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+										epsilon, isObstacle, rho, friction, _numberOfParticles);
+
+				_numberOfParticles++; _numberOfObstacles++;
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+
+				xCoordinates.clear();
+				yCoordinates.clear();
+				zCoordinates.clear();
+
+				iREAL position[3];
+
+				iREAL cuts = 6;
+				iREAL margin = (_hopperWidth/cuts)/2;
+
+				position[0] = (centreAsArray[0] - _hopperWidth/2) + margin;
+				position[1] = centreAsArray[1] + _hopperHeight/2;
+				position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
+
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, _hopperWidth, cuts);
+				//std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, _hopperWidth, cuts, _hopperWidth/1.5, 6);
+
+				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
+				{
+					std::array<double, 3> ar = *i;
+
+					position[0] = ar[0];
+					position[1] = ar[1];
+					position[2] = ar[2];
+
+					iREAL rho = WOOD;
+
+					double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) ) / std::sqrt( DIMENSIONS );
+					delta::primitives::generateCube(position, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+
+					newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
+											_epsilon, false, rho, true, _numberOfParticles);
+
+					_numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+
+					xCoordinates.clear();
+					yCoordinates.clear();
+					zCoordinates.clear();
+
+				}
+
+				/**
+				 * ******************* flooring creation
+				 */
+
+				centreAsArray[1] = 0.3;
+
+				isObstacle = true;
+				friction = true;
+				rho = GOLD;
+
+				delta::primitives::generateSurface( centreAsArray, 0.35, 0.05, xCoordinates, yCoordinates, zCoordinates);
+
+				newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+										_epsilon, isObstacle, rho, friction, _numberOfParticles);
+
+				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+				_numberOfParticles++; _numberOfObstacles++;
+
+				return;
+				break;
+			}
 			case hopper:
 			{
 				/*
@@ -654,7 +740,7 @@ void dem::mappings::CreateGrid::createCell(
 					}
 				} else {return;}
 			}
-			else if(_scenario == hopperUniformSphere)
+			else if(_scenario == hopperUniformSphere || _scenario == hopperNonUniformSphere)
 			{
 				return;
 			}

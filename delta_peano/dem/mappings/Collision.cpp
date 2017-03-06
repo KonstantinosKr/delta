@@ -227,8 +227,8 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
 
-			#ifdef STATS
-			logInfo( "touchVertexFirstTime(...)", std::endl << "#####FORCE-DATA#####" << std::endl);
+			#ifdef FORCESTATS
+			logInfo( "touchVertexFirstTime(...)", std::endl << "#####FORCE-DATA#####");
 			#endif
 			delta::forces::getContactForces(
 				p->_contactPoints,
@@ -261,8 +261,9 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			torque[1] += rtorque[1];
 			torque[2] += rtorque[2];
 
-			#ifdef STATS
+			#ifdef FORCESTATS
 			logInfo( "touchVertexFirstTime(...)", std::endl
+					<< "#####TOTAL-FDATA#####" << std::endl
 					<< "forceId=" << std::to_string(counter+currentParticle._persistentRecords.getGlobalParticleId() + p->_copyOfPartnerParticle._persistentRecords.getGlobalParticleId())
 					<< ", masterParticleNo=" << currentParticle._persistentRecords.getGlobalParticleId() << ", slaveParticleNo=" << p->_copyOfPartnerParticle._persistentRecords.getGlobalParticleId() << std::endl
 					<< "massA=" << currentParticle._persistentRecords._mass << ", massB" << p->_copyOfPartnerParticle._persistentRecords._mass << ", nulldata3=0" << std::endl

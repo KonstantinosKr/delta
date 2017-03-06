@@ -14,7 +14,7 @@
 #define SSPRING 1E6
 #define SDAMPER 0.2
 #define SFRICTIONWOOD 0.1
-#define SFRICTIONGOLD 0.8
+#define SFRICTIONGOLD 0.25
 #define SFRICTIONROLLING 1
 
 #define GOLD 10000
@@ -160,7 +160,7 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	f[1] = force*normal[1];
 	f[2] = force*normal[2];
 
-#ifdef STATS
+#ifdef FORCESTATS
 	printf("relativeVelocity=%f, depth=%f, spring=%f\n", velocity, depth, SPRING*depth);
 	printf("totalforce=%f, damp=%f, mass=%f\n", force, damp, mass);
 #endif
@@ -196,7 +196,7 @@ double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeV
   f[1] = force*normal[1];
   f[2] = force*normal[2];
 
-#ifdef STATS
+#ifdef FORCESTATS
 	printf("relativeVelocity=%f, depth=%f, spring=%f\n", velocity, depth, SPRING*depth);
 	printf("totalforce=%f, damp=%f, mass=%f\n", force, damp, ma);
 #endif
@@ -288,7 +288,7 @@ void delta::forces::getContactForces(
 
         if(isSphere)
         {
-#ifdef STATS
+#ifdef FORCESTATS
         printf("#####start-subContact#####\nid=%i, SDAMPER=%f, SSPRING=%f\n", k, SDAMPER, SSPRING);
 #endif
         	forc = delta::forces::springSphere(conpnt[k].normal, conpnt[k].depth, vij, massA, massB, f);
@@ -299,7 +299,7 @@ void delta::forces::getContactForces(
         }
         else{
 
-#ifdef STATS
+#ifdef FORCESTATS
         printf("#####start-subContact#####\nid=%i, DAMPER=%f, SPRING=%f\n", k, DAMPER, SPRING);
 #endif
             forc = delta::forces::spring(conpnt[k].normal,conpnt[k].x, conpnt[k].depth, vij,
@@ -349,6 +349,10 @@ void delta::forces::getContactForces(
 				//torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
 			}
         }
+
+#ifdef FORCESTATS
+        printf("#####end-subContact#####\n");
+#endif
 
         conpnt[k].force[0] = force[0];
         conpnt[k].force[1] = force[1];
