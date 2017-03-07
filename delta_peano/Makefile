@@ -69,7 +69,7 @@ dim3-gcc-asserts: header build
 dim3-gcc-release-novec: CC=g++ -std=c++0x
 dim3-gcc-release-novec: DIM=-DDim3
 dim3-gcc-release-novec: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics
-dim3-gcc-release-novec: CFLAGS=-O3 -Wall -pedantic -pedantic-errors
+dim3-gcc-release-novec: CFLAGS=-O0 -Wall -pedantic -pedantic-errors
 dim3-gcc-release-novec: LFLAGS=
 dim3-gcc-release-novec: EXECUTABLE=dem-3d-release-novec
 dim3-gcc-release-novec: header build
@@ -77,7 +77,7 @@ dim3-gcc-release-novec: header build
 dim3-gcc-release-vec: CC=g++ --std=c++11
 dim3-gcc-release-vec: DIM=-DDim3
 dim3-gcc-release-vec: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics
-dim3-gcc-release-vec: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing
+dim3-gcc-release-vec: CFLAGS=-O3 -ftree-vectorizer-verbose=5 -fdump-tree-vect-details -fstrict-aliasing
 dim3-gcc-release-vec: LFLAGS=-lrt
 dim3-gcc-release-vec: EXECUTABLE=dem-3d-release-vec
 dim3-gcc-release-vec: header build
@@ -113,14 +113,6 @@ dim3-gcc-release-omp-particle-triangle: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -
 dim3-gcc-release-omp-particle-triangle: LFLAGS=$(LINK_OMP) -lrt
 dim3-gcc-release-omp-particle-triangle: EXECUTABLE=dem-3d-release-omp-particle-triangle
 dim3-gcc-release-omp-particle-triangle: header build
-
-dim3-gcc-asserts-tbb: CC=g++ --std=c++11
-dim3-gcc-asserts-tbb: DIM=-DDim3
-dim3-gcc-asserts-tbb: SETTINGS=-DiREAL=double -DSharedTBB -DAsserts -DbyteAlignment=32 -DTrackGridStatistics
-dim3-gcc-asserts-tbb: CFLAGS=-O0 -g -debug -Wall -fstrict-aliasing $(INCLUDE_TBB)
-dim3-gcc-asserts-tbb: LFLAGS=-lrt $(LINK_TBB)
-dim3-gcc-asserts-tbb: EXECUTABLE=dem-3d-asserts-tbb
-dim3-gcc-asserts-tbb: header build
 
 dim3-gcc-release-tbb: CC=g++ --std=c++11
 dim3-gcc-release-tbb: DIM=-DDim3
@@ -209,14 +201,6 @@ dim3-icc-release-omp-particle: CFLAGS=-fast -qopenmp -qopt-threads-per-core=1 -q
 dim3-icc-release-omp-particle: LFLAGS=$(LINK_OMP) -lrt
 dim3-icc-release-omp-particle: EXECUTABLE=dem-3d-release-omp-particle
 dim3-icc-release-omp-particle: header build
-
-dim3-icc-asserts-tbb: CC=icpc --std=c++11
-dim3-icc-asserts-tbb: DIM=-DDim3
-dim3-icc-asserts-tbb: SETTINGS=-DiREAL=double -DSharedTBB -DAsserts -DbyteAlignment=32 -DTrackGridStatistics
-dim3-icc-asserts-tbb: CFLAGS=-O0 -g -debug -Wall -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
-dim3-icc-asserts-tbb: LFLAGS=-lrt $(LINK_TBB)
-dim3-icc-asserts-tbb: EXECUTABLE=dem-3d-asserts-tbb
-dim3-icc-asserts-tbb: header build
 
 dim3-icc-release-tbb: CC=icpc --std=c++11
 dim3-icc-release-tbb: DIM=-DDim3
