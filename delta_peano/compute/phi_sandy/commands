@@ -1,0 +1,12 @@
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/composer_xe_2015/lib/mic/:/opt/intel/tbb/lib/mic/
+export SINK_LD_LIBRARY_PATH=/opt/intel/composer_xe_2015/lib/mic/:/opt/intel/tbb/lib/mic
+export PATH=$PATH:/opt/intel/bin:/opt/intel/impi/5.1.1.109/bin64
+export TBB_INC=-I/opt/intel/tbb/include/
+export TBB_SHLIB="-L/opt/intel/tbb/lib/mic -ltbb"
+
+
+/opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-gui
+
+nohup /opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-cl -r hybridpairs -collect hotspots -no-auto-finalize -- ./dem-3d-release-novec 0.5 0.5 0.5 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 hybrid-on-triangle-pairs > hybridpairsV &
+
+/opt/intel/mic/bin/micnativeloadex ./dem-3d-release-vecTRIANGLEphi -a "0.5 0.5 0.5 random-velocities 50 regular-grid 0.001 never 0 bf"
