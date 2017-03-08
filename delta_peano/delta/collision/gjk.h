@@ -35,14 +35,16 @@ namespace delta {
      double*   yCoordinatesOfPointsOfGeometryA,
      double*   zCoordinatesOfPointsOfGeometryA,
 	 double    epsilonA,
-	 int       materialA,
+	 bool       frictionA,
+	 int 	   particleA,
 
      int       numberOfTrianglesOfGeometryB,
      double*   xCoordinatesOfPointsOfGeometryB,
      double*   yCoordinatesOfPointsOfGeometryB,
      double*   zCoordinatesOfPointsOfGeometryB,
      double    epsilonB,
-	 int       materialB
+	 bool       frictionB,
+	 int 	    particleB
     );
     
     /* (a,na) and (b,nb) are the two input tables of polyhedrons vertices;

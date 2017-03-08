@@ -13,14 +13,12 @@
 
 #define SSPRING 1E6
 #define SDAMPER 0.2
-#define SFRICTIONWOOD 0.1
+#define SFRICTIONWOOD 0.2
 #define SFRICTIONGOLD 0.25
 #define SFRICTIONROLLING 1
 
 #define GOLD 10000
 #define WOOD 5000
-#define WOOD2 800
-
 
 #define NNMUL(A, B, C)\
 {\

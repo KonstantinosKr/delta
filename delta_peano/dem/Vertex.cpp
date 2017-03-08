@@ -60,9 +60,18 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 	  newParticle._persistentRecords._inertia(6) = inertia[6];
 	  newParticle._persistentRecords._inertia(7) = inertia[7];
 	  newParticle._persistentRecords._inertia(8) = inertia[8];
+
+
+	  newParticle._persistentRecords._centreOfMass(0) = centerOfMass[0];
+	  newParticle._persistentRecords._centreOfMass(1) = centerOfMass[1];
+	  newParticle._persistentRecords._centreOfMass(2) = centerOfMass[2];
+
+	  newParticle._persistentRecords._referentialCentreOfMass(0) = centerOfMass[0];
+	  newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass[1];
+	  newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass[2];
   }else
   {
-	  hMin = 0;
+	  hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 	  iREAL volume = (4/3) * 3.14 * pow(newParticle._persistentRecords._diameter,3);
 	  mass = volume * material*2;
 	  //printf("mass:%f\n", mass);
@@ -76,19 +85,19 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 	  newParticle._persistentRecords._inertia(6) = 0;
 	  newParticle._persistentRecords._inertia(7) = 0;
 	  newParticle._persistentRecords._inertia(8) = 0.4 * mass * newParticle._persistentRecords._diameter * newParticle._persistentRecords._diameter;
+
+	  newParticle._persistentRecords._centreOfMass(0) = centerOfMass[0];
+	  newParticle._persistentRecords._centreOfMass(1) = centerOfMass[1];
+	  newParticle._persistentRecords._centreOfMass(2) = centerOfMass[2];
+
+	  newParticle._persistentRecords._referentialCentreOfMass(0) = centerOfMass[0];
+	  newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass[1];
+	  newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass[2];
   }
 
   newParticle._persistentRecords._centre(0) = center(0);
   newParticle._persistentRecords._centre(1) = center(1);
   newParticle._persistentRecords._centre(2) = center(2);
-
-  newParticle._persistentRecords._centreOfMass(0) = centerOfMass[0];
-  newParticle._persistentRecords._centreOfMass(1) = centerOfMass[1];
-  newParticle._persistentRecords._centreOfMass(2) = centerOfMass[2];
-
-  newParticle._persistentRecords._referentialCentreOfMass(0) = centerOfMass[0];
-  newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass[1];
-  newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass[2];
 
   delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
 

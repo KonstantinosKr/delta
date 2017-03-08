@@ -29,14 +29,16 @@ std::vector<delta::collision::contactpoint> delta::collision::gjk(
 		  double*   yCoordinatesOfPointsOfGeometryA,
 		  double*   zCoordinatesOfPointsOfGeometryA,
 		  double    epsilonA,
-		  int       materialA,
+		  bool      frictionA,
+		  int 		particleA,
 
 		  int       numberOfTrianglesOfGeometryB,
 		  double*   xCoordinatesOfPointsOfGeometryB,
 		  double*   yCoordinatesOfPointsOfGeometryB,
 		  double*   zCoordinatesOfPointsOfGeometryB,
 		  double    epsilonB,
-		  int       materialB
+		  bool       frictionB,
+		  int		particleB
 ) {
   std::vector<contactpoint> result;
   
@@ -84,7 +86,7 @@ std::vector<delta::collision::contactpoint> delta::collision::gjk(
   delete a;
   delete b;
   
-  contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, materialA+materialB);
+  contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA & frictionB);
   printf("DISTANCE: %f\n", newContactPoint.getDistance());
   if(newContactPoint.getDistance()<minDistance)
   {

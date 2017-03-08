@@ -37,6 +37,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphere(
 		  double   diameterA,
 		  double   epsilonA,
 		  bool     frictionA,
+		  int 	   particleA,
 
 	      double   xCoordinatesOfPointsOfGeometryB,
 	      double   yCoordinatesOfPointsOfGeometryB,
@@ -44,6 +45,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphere(
 		  double   diameterB,
 	      double   epsilonB,
 		  bool     frictionB,
+		  int 	   particleB,
 		  bool&    penetration)
 {
 	std::vector<contactpoint> result;
@@ -65,7 +67,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphere(
 	double yPB = yCoordinatesOfPointsOfGeometryB - ((diameterB/2) * ynormal);
 	double zPB = zCoordinatesOfPointsOfGeometryB - ((diameterB/2) * znormal);
 
-	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA & frictionB);
+	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA & frictionB);
 
 	if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
 	{
@@ -289,6 +291,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 		  double   diameterA,
 		  double   epsilonA,
 		  bool     frictionA,
+		  int 	   particleA,
 
 	      double   *xCoordinatesOfPointsOfGeometryB,
 	      double   *yCoordinatesOfPointsOfGeometryB,
@@ -296,6 +299,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 		  int   	numberOfTrianglesOfGeometryB,
 	      double    epsilonB,
 		  bool      frictionB,
+		  int 		particleB,
 		  bool&     penetration)
 {
 	std::vector<contactpoint> result;
@@ -337,7 +341,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 		yPB = Q[1];
 		zPB = Q[2];
 
-		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA & frictionB);
+		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA & frictionB);
 
 		if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
 		{
@@ -355,19 +359,21 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 }
 
 std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierBA(
-	      double   xCoordinatesOfPointsOfGeometryA,
-	      double   yCoordinatesOfPointsOfGeometryA,
-	      double   zCoordinatesOfPointsOfGeometryA,
-		  double   diameterA,
-		  double   epsilonA,
-		  bool     frictionA,
-
-	      double   *xCoordinatesOfPointsOfGeometryB,
-	      double   *yCoordinatesOfPointsOfGeometryB,
-	      double   *zCoordinatesOfPointsOfGeometryB,
-		  int   	numberOfTrianglesOfGeometryB,
-	      double   epsilonB,
+	      double   xCoordinatesOfPointsOfGeometryB,
+	      double   yCoordinatesOfPointsOfGeometryB,
+	      double   zCoordinatesOfPointsOfGeometryB,
+		  double   diameterB,
+		  double   epsilonB,
 		  bool     frictionB,
+		  int 	   particleB,
+
+	      double   *xCoordinatesOfPointsOfGeometryA,
+	      double   *yCoordinatesOfPointsOfGeometryA,
+	      double   *zCoordinatesOfPointsOfGeometryA,
+		  int   	numberOfTrianglesOfGeometryA,
+	      double   epsilonA,
+		  bool     frictionA,
+		  int 	   particleA,
 		  bool&    penetration)
 {
 	std::vector<contactpoint> result;
@@ -377,40 +383,40 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
 	double xPA, yPA, zPA, xPB, yPB, zPB;
 	double distance;
 
-	for(int i=0; i<numberOfTrianglesOfGeometryB*3; i+=3)
+	for(int i=0; i<numberOfTrianglesOfGeometryA*3; i+=3)
 	{
 		double TP1[3], TP2[3], TP3[3];
-		TP1[0] = xCoordinatesOfPointsOfGeometryB[i];
-		TP1[1] = yCoordinatesOfPointsOfGeometryB[i];
-		TP1[2] = zCoordinatesOfPointsOfGeometryB[i];
+		TP1[0] = xCoordinatesOfPointsOfGeometryA[i];
+		TP1[1] = yCoordinatesOfPointsOfGeometryA[i];
+		TP1[2] = zCoordinatesOfPointsOfGeometryA[i];
 
-		TP2[0] = xCoordinatesOfPointsOfGeometryB[i+1];
-		TP2[1] = yCoordinatesOfPointsOfGeometryB[i+1];
-		TP2[2] = zCoordinatesOfPointsOfGeometryB[i+1];
+		TP2[0] = xCoordinatesOfPointsOfGeometryA[i+1];
+		TP2[1] = yCoordinatesOfPointsOfGeometryA[i+1];
+		TP2[2] = zCoordinatesOfPointsOfGeometryA[i+1];
 
-		TP3[0] = xCoordinatesOfPointsOfGeometryB[i+2];
-		TP3[1] = yCoordinatesOfPointsOfGeometryB[i+2];
-		TP3[2] = zCoordinatesOfPointsOfGeometryB[i+2];
+		TP3[0] = xCoordinatesOfPointsOfGeometryA[i+2];
+		TP3[1] = yCoordinatesOfPointsOfGeometryA[i+2];
+		TP3[2] = zCoordinatesOfPointsOfGeometryA[i+2];
 
-		P[0] = xCoordinatesOfPointsOfGeometryA;
-		P[1] = yCoordinatesOfPointsOfGeometryA;
-		P[2] = zCoordinatesOfPointsOfGeometryA;
+		P[0] = xCoordinatesOfPointsOfGeometryB;
+		P[1] = yCoordinatesOfPointsOfGeometryB;
+		P[2] = zCoordinatesOfPointsOfGeometryB;
 
-		distance = pt(TP1, TP2, TP3, P, Q) - (diameterA/2);
+		distance = pt(TP1, TP2, TP3, P, Q) - (diameterB/2);
 
-		double xnormal = (Q[0] - P[0])/(distance+(diameterA/2));
-		double ynormal = (Q[1] - P[1])/(distance+(diameterA/2));
-		double znormal = (Q[2] - P[2])/(distance+(diameterA/2));
+		double xnormal = (Q[0] - P[0])/(distance+(diameterB/2));
+		double ynormal = (Q[1] - P[1])/(distance+(diameterB/2));
+		double znormal = (Q[2] - P[2])/(distance+(diameterB/2));
 
-		xPA = P[0] + ((diameterA/2) * xnormal);
-		yPA = P[1] + ((diameterA/2) * ynormal);
-		zPA = P[2] + ((diameterA/2) * znormal);
+		xPA = P[0] + ((diameterB/2) * xnormal);
+		yPA = P[1] + ((diameterB/2) * ynormal);
+		zPA = P[2] + ((diameterB/2) * znormal);
 
 		xPB = Q[0];
 		yPB = Q[1];
 		zPB = Q[2];
 
-		contactpoint newContactPoint(xPB, yPB, zPB, epsilonB, xPA, yPA, zPA, epsilonA, frictionA & frictionB);
+		contactpoint newContactPoint(xPB, yPB, zPB, epsilonB, particleB, xPA, yPA, zPA, epsilonA, particleA, frictionA & frictionB);
 		if (newContactPoint.getDistance() <= (epsilonA+epsilonB))
 		{
 			result.push_back( newContactPoint );

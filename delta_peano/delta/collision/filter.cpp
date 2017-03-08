@@ -1,6 +1,6 @@
 #include "delta/collision/filter.h"
 
-void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPoints, double hMin, double rA, double rB)
+void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPoints, double rA, double rB)
 {
 	std::vector<contactpoint> tmp;
 
@@ -20,7 +20,7 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
 			double SA = sqrt((rA*2)-(((rA-((tmp[j].depth/2)*2)))*2));
 			double SB = sqrt((rB*2)-(((rB-((tmp[j].depth/2)*2)))*2));
 
-			hMin = std::min(SA,SB);
+			double hMin = std::min(SA,SB);
 
 			//printf("rA:%f depth:%f hMin:%f distance:%f\n", rA, tmp[j].depth, hMin, distance);
 			if (distance == 0)
@@ -56,7 +56,7 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
 	newContactPoints = tmp;
 }
 
-void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredContactPoints, std::vector<contactpoint>& newContactPoints, double hMin, double rA, double rB)
+void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredContactPoints, std::vector<contactpoint>& newContactPoints, double rA, double rB)
 {
 	std::vector<contactpoint> tmp;
 
@@ -75,7 +75,7 @@ void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredCo
 			double SA = sqrt((rA*2)-(((rA-((dataStoredContactPoints[i].depth/2)*2)))*2));
 			double SB = sqrt((rB*2)-(((rB-((dataStoredContactPoints[i].depth/2)*2)))*2));
 
-			hMin = std::min(SA,SB);
+			double hMin = std::min(SA,SB);
 			//printf("rA:%f depth:%f hMin:%f\n", rA, dataStoredContactPoints[j].depth, hMin);
 			if(distance == 0)
 			{
@@ -112,7 +112,7 @@ void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredCo
 	newContactPoints = tmp;
 }
 
-void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPoints, double hMin)
+void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPoints)
 {
 	std::vector<contactpoint> tmpContactPoints;
 
@@ -131,14 +131,8 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
 
 			if (distance == 0)
 			{
-				//printf("hMIN:%f, distance:%f\n", hMin, distance);
 				ignore = true;
 			}
-
-			/*if (distance <= hMin && (newContactPoints[i].getDistance() > newContactPoints[j].getDistance()))
-			{
-				newContactPoints.erase(newContactPoints.begin()+(i));
-			}*/
 		}
 
 		if(!ignore)
@@ -147,11 +141,6 @@ void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPo
 		}
 	}
 	newContactPoints = tmpContactPoints;
-
-	/*for (int i = 0; i < newContactPoints.size(); i++)
-	{
-		printf("NEW2 CONP%f %f %f\n", newContactPoints[i].x[0], newContactPoints[i].x[1], newContactPoints[i].x[2]);
-	}*/
 }
 
 void delta::collision::filterOldContacts(std::vector<contactpoint>& dataStoredContactPoints, std::vector<contactpoint>& newContactPoints, double hMin)

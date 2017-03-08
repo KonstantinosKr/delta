@@ -49,13 +49,15 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
   bool      frictionA,
+  int 		particleA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
   double*   yCoordinatesOfPointsOfGeometryB,
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
-  bool      frictionB
+  bool      frictionB,
+  int 		particleB
 ) {
   const double MaxError = (epsilonA+epsilonB) / 16.0;
 
@@ -106,7 +108,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
 
       numberOfNewtonIterations[numberOfNewtonIterationsRequired]++;
 
-      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
+      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
       if (newContactPoint.getDistance()<minDistance) {
         nearestContactPoint = newContactPoint;
         minDistance         = newContactPoint.getDistance();
@@ -131,13 +133,15 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
   bool      frictionA,
+  int	  	particleA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
   double*   yCoordinatesOfPointsOfGeometryB,
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
-  bool      frictionB
+  bool      frictionB,
+  int		particleB
 ) {
   const double MaxError = (epsilonA+epsilonB) / 16.0;
 
@@ -184,7 +188,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
         xPA, yPA, zPA, xPB, yPB, zPB,
         MaxError, failed);
 
-      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
+      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
       if (newContactPoint.getDistance()<minDistance) {
         nearestContactPoint = newContactPoint;
         minDistance         = newContactPoint.getDistance();

@@ -35,13 +35,15 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
     double*   zCoordinatesOfPointsOfGeometryA,
 	double    epsilonA,
 	bool      frictionA,
+	int 	   particleA,
 
 	int       numberOfTrianglesOfGeometryB,
     double*   xCoordinatesOfPointsOfGeometryB,
     double*   yCoordinatesOfPointsOfGeometryB,
     double*   zCoordinatesOfPointsOfGeometryB,
     double    epsilonB,
-	bool      frictionB
+	bool      frictionB,
+	int 	   particleB
     ) {
   std::vector<contactpoint> result;
 
@@ -81,7 +83,7 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
 		    zCoordinatesOfPointsOfGeometryB+(iB),
 		    xPA, yPA, zPA, xPB, yPB, zPB);
 
-		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, xPB, yPB, zPB, epsilonB, frictionA && frictionB);
+		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
 		if (newContactPoint.getDistance()<minDistance) {
 		  	  nearestContactPoint = newContactPoint;
 			  minDistance         = newContactPoint.getDistance();

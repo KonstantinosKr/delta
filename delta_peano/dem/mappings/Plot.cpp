@@ -72,13 +72,14 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   assertion( Collision::_collisionsOfNextTraversal.empty() );
   assertion( solverState.getNumberOfContactPoints()==0 || !Collision::_activeCollisions.empty() );
 
-  for (std::map<int, std::vector<Collision::Collisions> >::const_iterator p = Collision::_activeCollisions.begin();
-      p != Collision::_activeCollisions.end(); p++)
+  //loop every collision list of every particle
+  for (std::map<int, std::vector<Collision::Collisions> >::const_iterator p = Collision::_activeCollisions.begin(); p != Collision::_activeCollisions.end(); p++)
   {
+	  //loop every partner particle in list of collisions
 	  for (std::vector<Collision::Collisions>::const_iterator pp = p->second.begin(); pp != p->second.end(); pp++)
 	  {
-		  for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp->_contactPoints.begin();
-				  ppp != pp->_contactPoints.end(); ppp++)
+		  //loop every contact point
+		  for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp->_contactPoints.begin(); ppp != pp->_contactPoints.end(); ppp++)
 		  {
 			  	//printf("Contacts:%d, between:%d and %d\n", contacts++, p->first, pp->_copyOfPartnerParticle._persistentRecords._globalParticleNumber);
 			  	tarch::la::Vector<3,double> v;
@@ -86,7 +87,9 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				int contactPointVertexIndex = _vertexWriter->plotVertex( v );
 				int contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
 
+				//check if force normal points towards master
 				v = ppp->normal[0], ppp->normal[1], ppp->normal[2];
+
 				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
 
 				if(ppp->friction)
@@ -149,7 +152,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_particleDiameter->plotVertex(contactPointVertexIndex,0);
 				_particleEpsilon->plotVertex(contactPointVertexIndex,0);
 				_particleInfluence->plotVertex(contactPointVertexIndex,0);
-				_vertexColoring->plotVertex(contactPointVertexIndex,0);
+				_vertexColoring->plotVertex(contactPointVertexIndex,1);
 
 				_type->plotCell(contactPointIndex,4);
 				_level->plotCell(contactPointIndex,-1);

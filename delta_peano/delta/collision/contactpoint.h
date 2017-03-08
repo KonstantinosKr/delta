@@ -45,6 +45,8 @@ struct delta::collision::contactpoint {
   iREAL torque[3];
   bool friction;
   iREAL epsilonTotal;
+  int master;
+  int slave;
 
   contactpoint();
   contactpoint(const contactpoint& copy);
@@ -62,11 +64,13 @@ struct delta::collision::contactpoint {
     const double&  yPA,
     const double&  zPA,
 	const double&  epsilonA,
+	int masterID,
 
     const double&  xPB,
     const double&  yPB,
     const double&  zPB,
 	const double&  epsilonB,
+	int slaveID,
 	const bool&    type
   );
 

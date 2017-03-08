@@ -39,6 +39,7 @@ namespace delta {
       double   diameterA,
 	  double   epsilonA,
 	  bool     frictionA,
+	  int 	   particleA,
 
       double   xCoordinatesOfPointsOfGeometryB,
       double   yCoordinatesOfPointsOfGeometryB,
@@ -46,6 +47,7 @@ namespace delta {
       double   diameterB,
       double   epsilonB,
 	  bool     frictionB,
+	  int 	   particleB,
 	  bool&    penetration
     );
 
@@ -56,6 +58,7 @@ namespace delta {
       double   diameterA,
 	  double   epsilonA,
 	  bool     frictionA,
+	  int	   particleA,
 
       double   *xCoordinatesOfPointsOfGeometryB,
       double   *yCoordinatesOfPointsOfGeometryB,
@@ -63,6 +66,7 @@ namespace delta {
 	  int   	numberOfTrianglesOfGeometryB,
       double   epsilonB,
 	  bool 	   frictionB,
+	  int 	   particleB,
 	  bool&    penetration
     );
 
@@ -73,6 +77,7 @@ namespace delta {
           double   diameterA,
     	  double   epsilonA,
 		  bool     frictionA,
+		  int 	   particleA,
 
           double   *xCoordinatesOfPointsOfGeometryB,
           double   *yCoordinatesOfPointsOfGeometryB,
@@ -80,6 +85,7 @@ namespace delta {
     	  int      numberOfTrianglesOfGeometryB,
           double   epsilonB,
 		  bool     frictionB,
+		  int 	   particleB,
 		  bool&    penetration
         );
 

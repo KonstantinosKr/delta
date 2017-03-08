@@ -39,6 +39,9 @@ delta::collision::contactpoint::contactpoint(const contactpoint& copy) {
 
   friction = copy.friction;
   epsilonTotal = copy.epsilonTotal;
+
+  master = copy.master;
+  slave = copy.slave;
 }
 
 #if ompTriangle || ompParticle
@@ -49,11 +52,13 @@ delta::collision::contactpoint::contactpoint(
   const double&  yPA,
   const double&  zPA,
   const double&  epsilonA,
+  int masterID,
 
   const double&  xPB,
   const double&  yPB,
   const double&  zPB,
   const double&  epsilonB,
+  int slaveID,
   const bool&	 type
 ) {
 
@@ -86,6 +91,9 @@ delta::collision::contactpoint::contactpoint(
   torque[2] = 0;
 
   friction = type;
+
+  master = masterID;
+  slave = slaveID;
 }
 
 #if ompTriangle || ompParticle

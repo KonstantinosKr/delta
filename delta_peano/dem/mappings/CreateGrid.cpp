@@ -16,7 +16,6 @@
 
 #define GOLD 10000
 #define WOOD 5000
-#define WOOD2 800
 
 /**
  * @todo Please tailor the parameters to your mapping's properties.
@@ -412,8 +411,8 @@ void dem::mappings::CreateGrid::createCell(
 				position[1] = centreAsArray[1] + _hopperHeight/2;
 				position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
 
-				//std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, _hopperWidth, cuts);
-				std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, _hopperWidth, cuts, _hopperWidth/1.5, 6);
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, _hopperWidth, cuts);
+				//std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, _hopperWidth, cuts, _hopperWidth/1.5, 6);
 
 				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
 				{
@@ -798,7 +797,7 @@ void dem::mappings::CreateGrid::createCell(
 
 			int numberOfTtriangles = xCoordinates.size()/DIMENSIONS;
 
-			iREAL rho = WOOD2;
+			iREAL rho = WOOD;
 			bool friction = true;
 
 			int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
