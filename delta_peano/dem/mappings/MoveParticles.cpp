@@ -122,8 +122,7 @@ void dem::mappings::MoveParticles::reassignParticles(
 			logDebug( "reassignParticles(...)", "reassign particle " << particle.toString() << " to " << fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].toString() );
 			fineGridVertices[ fineGridVerticesEnumerator(k) ].releaseParticle(i);
 			numberOfReassignments++;
-		  }
-		  else {
+		  } else {
 			i++;
 		  }
 		}

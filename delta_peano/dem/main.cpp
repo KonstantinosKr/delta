@@ -75,14 +75,14 @@ void printManual()
 int main(int argc, char** argv)
 {
   peano::fillLookupTables();
-
   int parallelSetup = peano::initParallelEnvironment(&argc,&argv);
+
   if ( parallelSetup!=0 ) {
     #ifdef Parallel
-    // Please do not use the logging if MPI doesn't work properly.
-    std::cerr << "mpi initialisation wasn't successful. Application shut down" << std::endl;
+	  // Please do not use the logging if MPI doesn't work properly.
+	  std::cerr << "mpi initialisation wasn't successful. Application shut down" << std::endl;
     #else
-    _log.error("main()", "mpi initialisation wasn't successful. Application shut down");
+	  _log.error("main()", "mpi initialisation wasn't successful. Application shut down");
     #endif
     return parallelSetup;
   }
@@ -94,9 +94,9 @@ int main(int argc, char** argv)
   }
 
   #ifdef SharedMemoryParallelisation
-  const int NumberOfArguments = 14;
+  	  const int NumberOfArguments = 14;
   #else
-  const int NumberOfArguments = 13;
+  	  const int NumberOfArguments = 13;
   #endif
 
   printf("noOfArguments:%i, argc:%i\n", NumberOfArguments, argc);
@@ -118,7 +118,7 @@ int main(int argc, char** argv)
   const std::string  scenario            = argv[4];
   const int          numberOfTimeSteps   = atoi(argv[5]);
   const std::string  gridTypeIdentifier  = argv[6];
-  const double       iterations        = atof(argv[7]);
+  const double       iterations        	 = atof(argv[7]);
   const std::string  plotIdentifier      = argv[8];
   const double		 realSnapshot		 = atof(argv[9]);
   const double       gravity             = atof(argv[10]);
@@ -189,52 +189,64 @@ int main(int argc, char** argv)
 
 
   if (scenario=="black-hole-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes, dem::mappings::CreateGrid::randomLinear, gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes, dem::mappings::CreateGrid::randomLinear,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
   }
-  if (scenario=="black-hole-with-randomly-oriented-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithRandomOrientedCubes, dem::mappings::CreateGrid::randomLinearAngular, gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+  else if (scenario=="black-hole-with-randomly-oriented-cubes") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithRandomOrientedCubes, dem::mappings::CreateGrid::randomLinearAngular,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
   }
   else if (scenario=="random-velocities-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes, dem::mappings::CreateGrid::randomLinearAngular, gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes, dem::mappings::CreateGrid::randomLinearAngular,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
   }
   else if (scenario=="random-velocities-with-granulates") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithGranulates, dem::mappings::CreateGrid::randomLinear, gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithGranulates, dem::mappings::CreateGrid::randomLinear,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
   }
   else if (scenario=="two-particles-crash") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash, dem::mappings::CreateGrid::crashAB, gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash, dem::mappings::CreateGrid::crashAB,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopper") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme,
+    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopperUniformSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere, dem::mappings::CreateGrid::noVScheme, 0.5, 0.02, 0.02, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere, dem::mappings::CreateGrid::noVScheme,
+    										0.5, 0.02, 0.02, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopperNonUniformSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere, dem::mappings::CreateGrid::noVScheme, 0.5, 0.005, 0.015, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere, dem::mappings::CreateGrid::noVScheme,
+    										0.5, 0.005, 0.015, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopper300") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme,
+    										0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
   }
   else if (scenario=="hopper1000") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme, 0.03, 0.003, 0.03, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme,
+    										0.03, 0.003, 0.03, gridType, epsilon, noTriangles);
   }
   else if (scenario=="freefall") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, dem::mappings::CreateGrid::noVScheme, gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
-  }
-  else if (scenario=="freefallshort") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallshort, dem::mappings::CreateGrid::noVScheme, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, dem::mappings::CreateGrid::noVScheme,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
   }
   else if (scenario=="frictionStatic") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStatic, dem::mappings::CreateGrid::crash, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStatic, dem::mappings::CreateGrid::crash,
+    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="frictionSlide") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide, dem::mappings::CreateGrid::CrashSlideWithAngle, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide, dem::mappings::CreateGrid::crashSlideWithAngle,
+    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="sla") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla, dem::mappings::CreateGrid::noVScheme, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla, dem::mappings::CreateGrid::noVScheme,
+    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else if (scenario=="nuclearArray2d") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray2d, dem::mappings::CreateGrid::noVScheme, 0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray2d, dem::mappings::CreateGrid::noVScheme,
+    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
   }
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;
@@ -264,42 +276,29 @@ int main(int argc, char** argv)
 
   if (collisionModel=="sphere") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::Sphere;
-  }else if (collisionModel=="bf") {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::BruteForce;
   }
-  else if (collisionModel=="penalty") {
+  else if((collisionModel=="bf") || (collisionModel=="sphere-bf"))
+  {
+    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::BruteForce;
+    if(collisionModel=="sphere-bf") {dem::mappings::Collision::_enableOverlapCheck = true;}
+  }
+  else if((collisionModel=="penalty") || (collisionModel=="sphere-penalty"))
+  {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::Penalty;
+    if(collisionModel=="sphere-penalty") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
   else if (collisionModel=="penaltyStat") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::PenaltyStat;
   }
-  else if (collisionModel=="hybrid-on-triangle-pairs") {
+  else if((collisionModel=="hybrid-on-triangle-pairs") || (collisionModel=="sphere-hybrid-on-triangle-pairs"))
+  {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridOnTrianglePairs;
+    if(collisionModel=="sphere-hybrid-on-triangle-pairs") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
-  else if (collisionModel=="hybrid-on-batches") {
+  else if ((collisionModel=="hybrid-on-batches") || (collisionModel=="sphere-hybrid-on-batches"))
+  {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridOnBatches;
-  }
-  else if (collisionModel=="hybrid-on-triangle-pairsStats") {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridOnTrianglePairs;
-  }
-  else if (collisionModel=="hybrid-on-batchesStats") {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridOnBatches;
-  }
-  else if (collisionModel=="sphere-hybrid-on-triangle-pairs") {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereHybridOnTrianglePairs;
-    dem::mappings::Collision::_enableOverlapCheck = true;
-  }
-  else if (collisionModel=="sphere-hybrid-on-batches") {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereHybridOnBatches;
-    dem::mappings::Collision::_enableOverlapCheck = true;
-  }
-  else if (collisionModel=="sphere-bf") {
-  	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SphereBruteForce;
-  	dem::mappings::Collision::_enableOverlapCheck = true;
-  }
-  else if (collisionModel=="sphere-penalty") {
-  	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::SpherePenalty;
-  	dem::mappings::Collision::_enableOverlapCheck = true;
+    if(collisionModel=="sphere-hybrid-on-batches") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
   else if (collisionModel=="gjk") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;

@@ -45,36 +45,74 @@ listParticleId, listMass, listDiameter, \
 listInfluenceRadius, listEpsilon, listthMin, listNoOfTriangles, \
 listIsObstacle, listMaterial, listLinear, listAngular, \
 listRefangular, listCentre, listCenterOfMass, \
-listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(0, getParticleCount(), 10000)
+listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(0, getParticleCount(), 4000)
+#400 - iteration 4800
+'''
+IEx: -0.000011
+IEm: -0.000011
+Mx: 0.082187
+Mm: 0.000016
+Varx: 0.001331
+Varm: 0.000000
+'''
+#200 - iteration 4000
+'''
+IEx: -0.000581
+IEm: -0.000581
+Mx: 0.092234
+Mm: 0.000593
+Varx: 0.000860
+Varm: 0.000000
 
-#print(listParticleId)
+'''
+#100 - iteration 4000
+'''
+IEx: -0.000234
+IEm: -0.000234
+Mx: 0.059945
+Mm: 0.000249
+Varx: 0.000763
+Varm: 0.000000
+'''
+#50 - iteration 4000
+'''
+IEx: 0.000027
+IEm: 0.000027
+Mx: 0.049429
+Mm: 0.000052
+Varx: 0.000485
+Varm: 0.000000
+'''
 
-counter = 0
-for i in listIsObstacle:
-    if i == 1:
-        del listParticleId[counter]
-        del listMass[counter]
-        del listDiameter[counter]
-        del listInfluenceRadius[counter]
-        del listEpsilon[counter]
-        del listthMin[counter]
-        del listNoOfTriangles[counter]
-        del listIsObstacle[counter]
-        del listMaterial[counter]
-        del listLinear[counter]
-        del listAngular[counter]
-        del listRefangular[counter]
-        del listCentre[counter]
-        del listCenterOfMass[counter]
-        del listRefCenterOfMass[counter]
-        del listInertia[counter]
-        del listInverse[counter]
-        del listOrientation[counter]
-    counter += 1
+idx = []
+for i, val in enumerate(listIsObstacle):
+    if val == 1:
+        idx.append(i)
+
+for i in idx[::-1]:
+    print(i)
+    del listParticleId[i]
+    del listMass[i]
+    del listDiameter[i]
+    del listInfluenceRadius[i]
+    del listEpsilon[i]
+    del listthMin[i]
+    del listNoOfTriangles[i]
+    del listMaterial[i]
+    del listLinear[i]
+    del listAngular[i]
+    del listRefangular[i]
+    del listCentre[i]
+    del listCenterOfMass[i]
+    del listRefCenterOfMass[i]
+    del listInertia[i]
+    del listInverse[i]
+    del listOrientation[i]
+    del listIsObstacle[i]
 
 N = len(listParticleId)
-#print(len(listDiameter))
-#print(N)
+print(N)
+
 x = np.array([np.array(i[0]-0.5) for i in listCentre])
 y = np.array([np.array(i[1]) for i in listCentre])
 

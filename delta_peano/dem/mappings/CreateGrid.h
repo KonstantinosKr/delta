@@ -55,11 +55,12 @@ class dem::mappings::CreateGrid {
 	  hopperUniformSphere,
 	  hopperNonUniformSphere,
 	  freefall,
-	  freefallshort,
 	  frictionStatic,
 	  frictionSlide,
+	  frictionRoll,
 	  sla,
-	  nuclearArray2d
+	  nuclearArray2d,
+	  nuclearArray3d
     };
 
     enum VScheme {
@@ -68,7 +69,7 @@ class dem::mappings::CreateGrid {
 		randomLinearAngular,
 		crash,
 		crashAB,
-		CrashSlideWithAngle
+		crashSlideWithAngle
     };
 
     enum GridType {

@@ -89,6 +89,8 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				//check if force normal points towards master
 				v = ppp->normal[0], ppp->normal[1], ppp->normal[2];
 
+				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
+				/*
 				iREAL tmp[3];
 				bool isMaster = false;
 
@@ -107,7 +109,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				{
 					tarch::la::Vector<3, double> t = {0, 1, 0};
 					_velocitiesAndNormals->plotVertex(contactPointVertexIndex,t);
-				}
+				}*/
 
 				if(ppp->friction)
 				{

@@ -194,10 +194,10 @@ double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeV
   f[1] = force*normal[1];
   f[2] = force*normal[2];
 
-#ifdef FORCESTATS
+  #ifdef FORCESTATS
 	printf("relativeVelocity=%f, depth=%f, spring=%f\n", velocity, depth, SPRING*depth);
 	printf("totalforce=%f, damp=%f, mass=%f\n", force, damp, ma);
-#endif
+  #endif
 
   return force;
 }
@@ -215,8 +215,7 @@ void delta::forces::frictionSphere(iREAL normal[3], iREAL vi[3], iREAL force, iR
 	  friction[0] =  -vt[0]*SFRICTIONGOLD*force;
 	  friction[1] =  -vt[1]*SFRICTIONGOLD*force;
 	  friction[2] =  -vt[2]*SFRICTIONGOLD*force;
-  }else
-  {
+  } else {
 	  friction[0] =  -vt[0]*SFRICTIONWOOD*force;
 	  friction[1] =  -vt[1]*SFRICTIONWOOD*force;
 	  friction[2] =  -vt[2]*SFRICTIONWOOD*force;
@@ -235,6 +234,7 @@ void delta::forces::getContactForces(
 	iREAL inverseA[9],
 	iREAL rotationA[9],
 	int   materialA,
+
     iREAL positionBSpatial[3],
 	iREAL positionBReferential[3],
 	iREAL angularB[3],
@@ -244,6 +244,7 @@ void delta::forces::getContactForces(
 	iREAL inverseB[9],
 	iREAL rotationB[9],
 	int   materialB,
+
 	iREAL force[3],
     iREAL torque[3],
 	bool  isSphere)

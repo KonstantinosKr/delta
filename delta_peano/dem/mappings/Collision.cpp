@@ -173,8 +173,7 @@ void dem::mappings::Collision::addCollision(
 			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA._persistentRecords._diameter/2, particleB._persistentRecords._diameter/2);
 			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA._persistentRecords._diameter/2, particleB._persistentRecords._diameter/2);
 		}
-	}else
-	{	//filter multiple contacts for same area of mesh
+	} else {	//filter multiple contacts for same area of mesh
 		delta::collision::filterNewContacts(newContactPoints);
 		#ifdef ompParticle
 			#pragma omp critical
@@ -384,11 +383,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(i).getGlobalParticleId(),
 							penetration);
 
-						/*if(fineGridVertex.getParticle(j).getGlobalParticleId() == 57 && fineGridVertex.getParticle(i).getGlobalParticleId() == 0)
-						{
-							printf("BA STAGE1\n");
-						}*/
-
 					} else if(!fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle())
 					{
 						//printf("ENTERED fine grid sphere AB\n");
@@ -409,11 +403,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getFriction(),
 							fineGridVertex.getParticle(j).getGlobalParticleId(),
 							penetration);
-
-						/*if(fineGridVertex.getParticle(i).getGlobalParticleId() == 57 && fineGridVertex.getParticle(j).getGlobalParticleId() == 0)
-						{
-							printf("AB STAGE1\n");
-						}*/
 					} else
 					{
 						newContactPoints = delta::collision::sphere(
@@ -626,7 +615,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 		{
 			if(((vertexA.getParticle(i).getIsObstacle()) && (vertexB.getParticle(j).getIsObstacle())) ||
 			   ((vertexA.getParticle(i).getGlobalParticleId()) == (vertexB.getParticle(j).getGlobalParticleId()))) continue;
-
 
 			if(_enableOverlapCheck)
 				if(!delta::collision::isSphereOverlayInContact(
@@ -880,7 +868,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 
 			//printf("DifferentVertexContact:%d\n", newContactPoints.size());
 			//printf("VertexANoParticles:%d VertexBNoParticles:%d\n", vertexA.getNumberOfRealAndVirtualParticles(), vertexB.getNumberOfRealAndVirtualParticles());
-			//printf("VertexA:%d VertexB:%d\n", vertexA.getParticle(i)._persistentRecords._globalParticleNumber, vertexB.getParticle(j)._persistentRecords._globalParticleNumber);
+			//printf("VertexA:%d VertexB:%d\n", vertexA.getParticle(i).getGlobalParticleNumber(), vertexB.getParticle(j).getGlobalParticleNumber());
 			#ifdef ompParticle
 				#pragma omp critical
 			#endif
