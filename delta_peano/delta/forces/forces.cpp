@@ -12,13 +12,13 @@
 #define SFRICTIONROLLING 0.005*/
 
 #define SSPRING 1E6
-#define SDAMPER 0.2
-#define SFRICTIONWOOD 0.2
-#define SFRICTIONGOLD 0.25
+#define SDAMPER 0.1
+#define SFRICTIONGOLD 0.2
+#define SFRICTIONWOOD 0.01
 #define SFRICTIONROLLING 1
 
-#define GOLD 10000
-#define WOOD 5000
+#define GOLD 20000
+#define WOOD 1000
 
 #define NNMUL(A, B, C)\
 {\
@@ -182,7 +182,7 @@ void delta::forces::friction(iREAL normal[3], iREAL vi[3], iREAL force, iREAL fr
 
 double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3])
 {
-  iREAL ma = (1/massA) + (1/massB);
+  iREAL ma = 1/((1/massA) + (1/massB));
 
   iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
 
@@ -293,7 +293,6 @@ void delta::forces::getContactForces(
 
             if(conpnt[k].friction)
             	delta::forces::frictionSphere(conpnt[k].normal, vi, forc, friction, materialA, materialB);
-
         }
         else{
 
@@ -307,7 +306,6 @@ void delta::forces::getContactForces(
 
             if(conpnt[k].friction)
             	delta::forces::friction(conpnt[k].normal, vi, forc, friction);
-
         }
 
         f[0] = f[0] + friction[0];

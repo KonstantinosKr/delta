@@ -36,7 +36,8 @@ class dem::runners::Runner {
       Never,
       UponChange,
 	  EveryBatch,
-	  Adaptive
+	  Adaptive,
+	  Range
     };
   private:
     static tarch::logging::Log _log;

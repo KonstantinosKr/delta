@@ -76,11 +76,15 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   double elapsed = 0.0;
   double timestamp = 0.0;
 
+  int minRange = 0;
+  int maxRange = 10;
   for (int i=0; i<iterations; i++)
   {
-	bool plotThisTraversal = (plot == EveryIteration) || ( plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
-    						  !repository.getState().isGridStationary() || i%50==0 || repository.getState().getNumberOfParticleReassignments()>0 )) ||
-							  (plot == EveryBatch && i%50 == 0) || ((plot == Adaptive && elapsed > realSnapshot) || i == 0);
+	bool plotThisTraversal = (plot == EveryIteration) ||
+							 (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 || !repository.getState().isGridStationary() || i%50==0 || repository.getState().getNumberOfParticleReassignments()>0 )) ||
+							 (plot == EveryBatch && i%50 == 0) ||
+							 ((plot == Adaptive && elapsed > realSnapshot) || i == 0) ||
+							 (plot == Range && ((i >= minRange) && (i < maxRange)));
 
 	if(plotThisTraversal)
     {

@@ -81,7 +81,6 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 		  //loop every contact point
 		  for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp->_contactPoints.begin(); ppp != pp->_contactPoints.end(); ppp++)
 		  {
-			  	//printf("Contacts:%d, between:%d and %d\n", contacts++, p->first, pp->_copyOfPartnerParticle._persistentRecords._globalParticleNumber);
 			  	tarch::la::Vector<3,double> v;
 				v = ppp->x[0], ppp->x[1], ppp->x[2];
 				int contactPointVertexIndex = _vertexWriter->plotVertex( v );
@@ -90,7 +89,25 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				//check if force normal points towards master
 				v = ppp->normal[0], ppp->normal[1], ppp->normal[2];
 
-				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
+				iREAL tmp[3];
+				bool isMaster = false;
+
+				tmp[0] = ((ppp->P[0]-ppp->Q[0])/ppp->getDistance());
+				tmp[1] = ((ppp->P[1]-ppp->Q[1])/ppp->getDistance());
+				tmp[2] = ((ppp->P[2]-ppp->Q[2])/ppp->getDistance());
+				if(tmp[0]==ppp->normal[0] && tmp[1] == ppp->normal[1] && tmp[2] == ppp->normal[2])
+				{
+					isMaster = true;
+				}
+
+				if(isMaster)
+				{
+					_velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
+				}else
+				{
+					tarch::la::Vector<3, double> t = {0, 1, 0};
+					_velocitiesAndNormals->plotVertex(contactPointVertexIndex,t);
+				}
 
 				if(ppp->friction)
 				{
@@ -110,6 +127,20 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_type->plotCell(contactPointIndex,2);
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
+
+				/*if(p->first == 57)
+				{
+				logInfo("endIteration(...)", std::endl
+				   << "#####CONTACT-DATA#####" << std::endl
+				   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
+				   << "friction=" << ppp->friction << ", nulldata1=0" << ", nulldata2=0" << std::endl
+				   << "distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
+				   << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
+				   << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
+				   << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
+				   << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
+				   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
+		  	  	}*/
 
 				#ifdef CONTACTSTATS
 				logInfo("endIteration(...)", std::endl
@@ -252,14 +283,14 @@ void dem::mappings::Plot::touchVertexLastTime(
     {
     	//it will only accept diameter not radius to plot the sphere thus multiply epsilon by 2
         tarch::la::Vector<3,double> v;
-        double mag = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0)+particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1)+particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
-        //double magAng = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0)+particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1)+particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
+
         v = particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2);
     	_velocitiesAndNormals->plotVertex(particleVertexLink[1],v);
+    	double mag = std::sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0)+particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1)+particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
     	_particleVelocity->plotVertex(particleVertexLink[1],mag);
     	v = particle._persistentRecords._angular(0), particle._persistentRecords._angular(1), particle._persistentRecords._angular(2);
     	_particleAngular->plotVertex(particleVertexLink[1],v);
-    	//printf("%f %f %f\n", particle._persistentRecords._angular(0), particle._persistentRecords._angular(1), particle._persistentRecords._angular(2));
+
     	_particleDiameter->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter);
     	_particleEpsilon->plotVertex(particleVertexLink[1], particle._persistentRecords._diameter+(particle._persistentRecords._epsilon*2));
     	_particleInfluence->plotVertex(particleVertexLink[1], particle._persistentRecords._influenceRadius*2);
@@ -350,6 +381,32 @@ void dem::mappings::Plot::touchVertexLastTime(
       _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
     }
+
+    /*
+    if(particle.getGlobalParticleId() == 56)
+    {
+    	logInfo("touchVertexLastTime(...)", std::endl
+    	    						   << "#####PARTICLE-DATA#####" << std::endl
+    	    						   << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
+    				  	  	  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin=" << particle._persistentRecords._hMin << std::endl
+    								   << "noOfTri=" << particle._persistentRecords._numberOfTriangles <<", isObsta=" << particle._persistentRecords._isObstacle << ", materia=" << particle._persistentRecords._material << std::endl
+    	    					       << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
+    								   << "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl
+    								   << "rangulX=" << particle._persistentRecords._referentialAngular(0) <<", rangulY=" << particle._persistentRecords._referentialAngular(1) << ", rangulZ=" << particle._persistentRecords._referentialAngular(2) << std::endl
+    								   << "centreX=" << particle._persistentRecords._centre(0) <<", centreY=" << particle._persistentRecords._centre(1) << ", centreZ=" << particle._persistentRecords._centre(2) << std::endl
+    								   << "cOfMasX=" << particle._persistentRecords._centreOfMass(0) <<", cOfMasY=" << particle._persistentRecords._centreOfMass(1) << ", cOfMasZ=" << particle._persistentRecords._centreOfMass(2) << std::endl
+    								   << "rcOfMaX=" << particle._persistentRecords._referentialCentreOfMass(0) <<", rcOfMaY=" << particle._persistentRecords._referentialCentreOfMass(1) << ", rcOfMaZ=" << particle._persistentRecords._referentialCentreOfMass(2) << std::endl
+    								   << "iner[0]=" << particle._persistentRecords._inertia(0) <<", iner[1]=" << particle._persistentRecords._inertia(1) << ", iner[2]=" << particle._persistentRecords._inertia(2) << std::endl
+    								   << "iner[3]=" << particle._persistentRecords._inertia(3) <<", iner[4]=" << particle._persistentRecords._inertia(4) << ", iner[5]=" << particle._persistentRecords._inertia(5) << std::endl
+    								   << "iner[6]=" << particle._persistentRecords._inertia(6) <<", iner[7]=" << particle._persistentRecords._inertia(7) << ", iner[8]=" << particle._persistentRecords._inertia(8) << std::endl
+    								   << "inve[0]=" << particle._persistentRecords._inverse(0) <<", inve[1]=" << particle._persistentRecords._inverse(1) << ", inve[2]=" << particle._persistentRecords._inverse(2) << std::endl
+    								   << "inve[3]=" << particle._persistentRecords._inverse(3) <<", inve[4]=" << particle._persistentRecords._inverse(4) << ", inve[5]=" << particle._persistentRecords._inverse(5) << std::endl
+    								   << "inve[6]=" << particle._persistentRecords._inverse(6) <<", inve[7]=" << particle._persistentRecords._inverse(7) << ", inve[8]=" << particle._persistentRecords._inverse(8) << std::endl
+    								   << "orie[0]=" << particle._persistentRecords._orientation(0) <<", orie[1]=" << particle._persistentRecords._orientation(1) << ", orie[2]=" << particle._persistentRecords._orientation(2) << std::endl
+    								   << "orie[3]=" << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
+    								   << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
+
+    }*/
 #ifdef PARTICLESTATS
     logInfo("touchVertexLastTime(...)", std::endl
     						   << "#####PARTICLE-DATA#####" << std::endl

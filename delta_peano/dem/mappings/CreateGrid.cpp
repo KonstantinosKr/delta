@@ -13,9 +13,10 @@
 
 #include <string>
 #include <iostream>
+#include <cmath>
 
-#define GOLD 10000
-#define WOOD 5000
+#define GOLD 20000
+#define WOOD 1000
 
 /**
  * @todo Please tailor the parameters to your mapping's properties.
@@ -376,7 +377,7 @@ void dem::mappings::CreateGrid::createCell(
 			case hopperUniformSphere:
 			{
 				/*
-				 * hopper experiment;
+				 * uniform hopper experiment;
 				 *
 				 * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom
 				 *
@@ -393,7 +394,7 @@ void dem::mappings::CreateGrid::createCell(
 				delta::primitives::generateHopper( centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
 
 				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-										epsilon, isObstacle, rho, friction, _numberOfParticles);
+																epsilon, isObstacle, rho, friction, _numberOfParticles);
 
 				_numberOfParticles++; _numberOfObstacles++;
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -402,18 +403,29 @@ void dem::mappings::CreateGrid::createCell(
 				yCoordinates.clear();
 				zCoordinates.clear();
 
+				iREAL xcuts = 8;
+				iREAL ycuts = 5;
+				iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
+				iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
+
+				printf("minParDiameter:%.10f\n", minParticleDiameter);
+
 				iREAL position[3];
-
-				iREAL cuts = 8;
-				iREAL margin = (_hopperWidth/cuts)/2;
-
 				position[0] = (centreAsArray[0] - _hopperWidth/2) + margin;
 				position[1] = centreAsArray[1] + _hopperHeight/2;
 				position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
 
-				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, _hopperWidth, cuts);
-				//std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, _hopperWidth, cuts, _hopperWidth/1.5, 6);
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
 
+				int N = tmp.size();
+				double mass = 0.5/(double)N; //kg
+
+				printf("mass:%f\n", mass);
+
+				double radius = std::pow((3.0*mass)/(4.0 * 3.14 * rho), (1.0/3.0));
+				printf("radius:%f\n", radius);
+
+				int counter = 0;
 				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
 				{
 					std::array<double, 3> ar = *i;
@@ -422,19 +434,15 @@ void dem::mappings::CreateGrid::createCell(
 					position[1] = ar[1];
 					position[2] = ar[2];
 
-					iREAL rho = WOOD;
+					delta::primitives::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 
-					delta::primitives::generateCube(position, 0.015, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-
-					newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
-											_epsilon, false, rho, true, _numberOfParticles);
-
-					_numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+					newParticleNumber = vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
+																			radius, _epsilon, false, WOOD, true, _numberOfParticles);
+					_numberOfParticles++;_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 
 					xCoordinates.clear();
 					yCoordinates.clear();
 					zCoordinates.clear();
-
 				}
 
 				/**

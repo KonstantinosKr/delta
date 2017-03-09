@@ -43,57 +43,29 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 
   double centerOfMass[3], inertia[9], inverse[9], mass, hMin;
 
-  newParticle._persistentRecords._diameter	= delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+  newParticle._persistentRecords._diameter	= delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates)*1.2;
 
-  if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-  {
-	  hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+  hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 
-	  delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
+  delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
 
-	  newParticle._persistentRecords._inertia(0) = inertia[0];
-	  newParticle._persistentRecords._inertia(1) = inertia[1];
-	  newParticle._persistentRecords._inertia(2) = inertia[2];
-	  newParticle._persistentRecords._inertia(3) = inertia[3];
-	  newParticle._persistentRecords._inertia(4) = inertia[4];
-	  newParticle._persistentRecords._inertia(5) = inertia[5];
-	  newParticle._persistentRecords._inertia(6) = inertia[6];
-	  newParticle._persistentRecords._inertia(7) = inertia[7];
-	  newParticle._persistentRecords._inertia(8) = inertia[8];
+  newParticle._persistentRecords._inertia(0) = inertia[0];
+  newParticle._persistentRecords._inertia(1) = inertia[1];
+  newParticle._persistentRecords._inertia(2) = inertia[2];
+  newParticle._persistentRecords._inertia(3) = inertia[3];
+  newParticle._persistentRecords._inertia(4) = inertia[4];
+  newParticle._persistentRecords._inertia(5) = inertia[5];
+  newParticle._persistentRecords._inertia(6) = inertia[6];
+  newParticle._persistentRecords._inertia(7) = inertia[7];
+  newParticle._persistentRecords._inertia(8) = inertia[8];
 
+  newParticle._persistentRecords._centreOfMass(0) = centerOfMass[0];
+  newParticle._persistentRecords._centreOfMass(1) = centerOfMass[1];
+  newParticle._persistentRecords._centreOfMass(2) = centerOfMass[2];
 
-	  newParticle._persistentRecords._centreOfMass(0) = centerOfMass[0];
-	  newParticle._persistentRecords._centreOfMass(1) = centerOfMass[1];
-	  newParticle._persistentRecords._centreOfMass(2) = centerOfMass[2];
-
-	  newParticle._persistentRecords._referentialCentreOfMass(0) = centerOfMass[0];
-	  newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass[1];
-	  newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass[2];
-  }else
-  {
-	  hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-	  iREAL volume = (4/3) * 3.14 * pow(newParticle._persistentRecords._diameter,3);
-	  mass = volume * material*2;
-	  //printf("mass:%f\n", mass);
-
-	  newParticle._persistentRecords._inertia(0) = 0.4 * mass * newParticle._persistentRecords._diameter * newParticle._persistentRecords._diameter;
-	  newParticle._persistentRecords._inertia(1) = 0;
-	  newParticle._persistentRecords._inertia(2) = 0;
-	  newParticle._persistentRecords._inertia(3) = 0;
-	  newParticle._persistentRecords._inertia(4) = 0.4 * mass * newParticle._persistentRecords._diameter * newParticle._persistentRecords._diameter;
-	  newParticle._persistentRecords._inertia(5) = 0;
-	  newParticle._persistentRecords._inertia(6) = 0;
-	  newParticle._persistentRecords._inertia(7) = 0;
-	  newParticle._persistentRecords._inertia(8) = 0.4 * mass * newParticle._persistentRecords._diameter * newParticle._persistentRecords._diameter;
-
-	  newParticle._persistentRecords._centreOfMass(0) = centerOfMass[0];
-	  newParticle._persistentRecords._centreOfMass(1) = centerOfMass[1];
-	  newParticle._persistentRecords._centreOfMass(2) = centerOfMass[2];
-
-	  newParticle._persistentRecords._referentialCentreOfMass(0) = centerOfMass[0];
-	  newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass[1];
-	  newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass[2];
-  }
+  newParticle._persistentRecords._referentialCentreOfMass(0) = centerOfMass[0];
+  newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass[1];
+  newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass[2];
 
   newParticle._persistentRecords._centre(0) = center(0);
   newParticle._persistentRecords._centre(1) = center(1);
@@ -120,7 +92,6 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._orientation(6) = 0;
   newParticle._persistentRecords._orientation(7) = 0;
   newParticle._persistentRecords._orientation(8) = 1;
-
 
   newParticle._persistentRecords._mass				= mass;
   newParticle._persistentRecords._friction			= friction;
@@ -155,6 +126,102 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 	getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
   }
 
+  return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
+}
+
+
+int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIONS,double>&   center,
+		  std::vector<double>&  xCoordinates,
+		  std::vector<double>&  yCoordinates,
+		  std::vector<double>&  zCoordinates,
+		  double radius, double epsilon, bool isObstacle, int material, bool friction, int particleId)
+{
+  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
+
+  records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
+
+  double centerOfMass[3], inertia[9], inverse[9], mass, hMin;
+
+  hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+  iREAL volume = (4.0/3.0) * 3.14 * pow(radius,3);
+  mass = volume * material;
+
+  newParticle._persistentRecords._inertia(0) = 0.4 * mass * radius * radius;
+  newParticle._persistentRecords._inertia(1) = 0;
+  newParticle._persistentRecords._inertia(2) = 0;
+  newParticle._persistentRecords._inertia(3) = 0;
+  newParticle._persistentRecords._inertia(4) = 0.4 * mass * radius * radius;
+  newParticle._persistentRecords._inertia(5) = 0;
+  newParticle._persistentRecords._inertia(6) = 0;
+  newParticle._persistentRecords._inertia(7) = 0;
+  newParticle._persistentRecords._inertia(8) = 0.4 * mass * radius * radius;
+
+  newParticle._persistentRecords._centreOfMass(0) = center(0);
+  newParticle._persistentRecords._centreOfMass(1) = center(0);
+  newParticle._persistentRecords._centreOfMass(2) = center(0);
+
+  newParticle._persistentRecords._referentialCentreOfMass(0) = center(0);
+  newParticle._persistentRecords._referentialCentreOfMass(1) = center(0);
+  newParticle._persistentRecords._referentialCentreOfMass(2) = center(0);
+
+  newParticle._persistentRecords._centre(0) = center(0);
+  newParticle._persistentRecords._centre(1) = center(1);
+  newParticle._persistentRecords._centre(2) = center(2);
+
+  delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+
+  newParticle._persistentRecords._inverse(0) = inverse[0];
+  newParticle._persistentRecords._inverse(1) = inverse[1];
+  newParticle._persistentRecords._inverse(2) = inverse[2];
+  newParticle._persistentRecords._inverse(3) = inverse[3];
+  newParticle._persistentRecords._inverse(4) = inverse[4];
+  newParticle._persistentRecords._inverse(5) = inverse[5];
+  newParticle._persistentRecords._inverse(6) = inverse[6];
+  newParticle._persistentRecords._inverse(7) = inverse[7];
+  newParticle._persistentRecords._inverse(8) = inverse[8];
+
+  newParticle._persistentRecords._orientation(0) = 1;
+  newParticle._persistentRecords._orientation(1) = 0;
+  newParticle._persistentRecords._orientation(2) = 0;
+  newParticle._persistentRecords._orientation(3) = 0;
+  newParticle._persistentRecords._orientation(4) = 1;
+  newParticle._persistentRecords._orientation(5) = 0;
+  newParticle._persistentRecords._orientation(6) = 0;
+  newParticle._persistentRecords._orientation(7) = 0;
+  newParticle._persistentRecords._orientation(8) = 1;
+
+  newParticle._persistentRecords._mass				= mass;
+  newParticle._persistentRecords._friction			= friction;
+  newParticle._persistentRecords._diameter			= radius*2;
+  newParticle._persistentRecords._influenceRadius 	= (radius*2+epsilon) * 1.1;
+  newParticle._persistentRecords._epsilon			= epsilon;
+  newParticle._persistentRecords._hMin 				= hMin;
+
+  newParticle._persistentRecords._numberOfTriangles = xCoordinates.size()/DIMENSIONS;
+  newParticle._persistentRecords._isObstacle 		= isObstacle;
+  newParticle._persistentRecords._material 			= material;
+  newParticle._persistentRecords._globalParticleId  = particleId;
+
+  newParticle._persistentRecords._velocity          = tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,double>(0.0);
+
+  newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(2) = DEMDoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(3) = DEMDoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(4) = DEMDoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(5) = DEMDoubleHeap::getInstance().createData();
+
+  for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
+  {
+	getXCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( xCoordinates[i] );
+	getYCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( yCoordinates[i] );
+	getZCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( zCoordinates[i] );
+
+	getXRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(xCoordinates[i]);
+	getYRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(yCoordinates[i]);
+	getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
+  }
 
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
@@ -354,7 +421,6 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
 		if(!found)
 			ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
 	}
-
 
     /*ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
       ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
