@@ -16,6 +16,62 @@
 
 tarch::logging::Log _log("");
 
+void printManual()
+{
+	std::cerr << "Delta - Peano | Grid-based Non-Spherical Particle Dynamics Simulator" << std::endl << std::endl
+				  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
+	              << std::endl
+	              << " grid_h_max          maximum mesh width of grid" << std::endl
+	              << " particle_diam_min   minimal diameter of particles" << std::endl
+	              << " particle_diam_max   maximal diameter of particles" << std::endl
+	              << " scenario            which scenario to use. See list below for valid configurations " << std::endl
+	              << " iterations          number of iterations or time steps depending on scheme" << std::endl
+	              << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
+	              << " step-size           floating point number" << std::endl
+	              << " plot                see plot variants below" << std::endl
+	              << " gravity             floating point number" << std::endl
+	              << " collision-model     choose from none, sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, gjk, add sphere- for sphere check" << std::endl
+				  << " max-step-size       adaptive max step" << std::endl
+				  << " mesh-per-particle   multiplier for mesh size and sphericity" << std::endl
+				  << " [core-count]        only required in TBB shared memory" << std::endl
+	              << std::endl << std::endl << std::endl << std::endl
+
+	              << "Scenarios" << std::endl
+	              << "=========" << std::endl
+	              << "  black-hole-with-aligned-cubes" << std::endl
+	              << "  black-hole-with-cubes" << std::endl
+	              << "  random-velocities-with-aligned-cubes" << std::endl
+	              << "  random-velocities-with-cubes" << std::endl
+	              << "  random-velocities" << std::endl
+	              << "  two-particles-crash" << std::endl
+				  << "  hopper" << std::endl
+				  << "  hopper300" << std::endl
+				  << "  freefall" << std::endl
+				  << "  freefallshort" << std::endl
+				  << "  friction" << std::endl
+				  << "  frictionSlide" << std::endl
+				  << "  sla"<< std::endl
+				  << "  nuclearArray2d" << std::endl
+
+	              << "Grid types" << std::endl
+	              << "==========" << std::endl
+	              << "  no-grid" << std::endl
+	              << "  regular-grid" << std::endl
+	              << "  adaptive-grid" << std::endl
+	              << "  reluctant-adaptive-grid" << std::endl
+
+	              << "Plot variants" << std::endl
+	              << "=============" << std::endl
+	              << "  never" << std::endl
+	              << "  every-iteration" << std::endl
+	              << "  upon-change" << std::endl
+	    		  << "  every-batch" << std::endl
+				  << "  every-checkpoint" << std::endl
+				  << "  range" << std::endl << std::endl
+	    		  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
+				  << "eg: ./dem-3d-release-vec 0.5 0.5 0.5 hopper 10000 regular-grid 0.00001 every-batch 10 1 bf 50 2" << std::endl;
+}
+
 int main(int argc, char** argv)
 {
   peano::fillLookupTables();
@@ -44,68 +100,16 @@ int main(int argc, char** argv)
   #endif
 
   printf("noOfArguments:%i, argc:%i\n", NumberOfArguments, argc);
-  if (argc!=NumberOfArguments) {
-    std::cerr << "Delta - Peano | Grid-based Non-Spherical Particle Dynamics Simulator" << std::endl << std::endl
-			  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
-              << std::endl
-              << " grid_h_max          maximum mesh width of grid" << std::endl
-              << " particle_diam_min   minimal diameter of particles" << std::endl
-              << " particle_diam_max   maximal diameter of particles" << std::endl
-              << " scenario            which scenario to use. See list below for valid configurations " << std::endl
-              << " iterations          number of iterations or time steps depending on scheme" << std::endl
-              << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
-              << " step-size           floating point number" << std::endl
-              << " plot                see plot variants below" << std::endl
-              << " gravity             floating point number" << std::endl
-              << " collision-model     choose from none, sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, gjk, add sphere- for sphere check" << std::endl
-			  << " max-step-size       adaptive max step" << std::endl
-			  << " mesh-per-particle   multiplier for mesh size and sphericity" << std::endl
-			  << " [core-count]        only required in TBB shared memory" << std::endl
-              << std::endl << std::endl << std::endl << std::endl
-
-              << "Scenarios" << std::endl
-              << "=========" << std::endl
-              << "  black-hole-with-aligned-cubes" << std::endl
-              << "  black-hole-with-cubes" << std::endl
-              << "  random-velocities-with-aligned-cubes" << std::endl
-              << "  random-velocities-with-cubes" << std::endl
-              << "  random-velocities" << std::endl
-              << "  two-particles-crash" << std::endl
-			  << "  hopper" << std::endl
-			  << "  hopper300" << std::endl
-			  << "  freefall" << std::endl
-			  << "  freefallshort" << std::endl
-			  << "  friction" << std::endl
-			  << "  frictionSlide" << std::endl
-			  << "  sla"<< std::endl
-			  << "  nuclearArray2d" << std::endl
-
-              << "Grid types" << std::endl
-              << "==========" << std::endl
-              << "  no-grid" << std::endl
-              << "  regular-grid" << std::endl
-              << "  adaptive-grid" << std::endl
-              << "  reluctant-adaptive-grid" << std::endl
-
-              << "Plot variants" << std::endl
-              << "=============" << std::endl
-              << "  never" << std::endl
-              << "  every-iteration" << std::endl
-              << "  upon-change" << std::endl
-    		  << "  every-batch" << std::endl
-			  << "  every-checkpoint" << std::endl << std::endl
-    		  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
-			  << "eg: ./dem-3d-release-vec 0.5 0.5 0.5 hopper 10000 regular-grid 0.00001 every-batch 10 1 bf 50 2" << std::endl;
-
+  if (argc!=NumberOfArguments || (NumberOfArguments == NumberOfArguments+2 && argv[8] != "range"))
+  {
+	printManual();
     return -1;
   } else if (argc == NumberOfArguments)
   {
-
 	  std::cout << "gridHMAX:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
 			<< "scenario:" << (argv[4]) << ", numberOfTimeSteps:" << atof(argv[5]) << ", gridTypeIdentifier:" << (argv[6]) << std::endl
 			<< "iterations:" << atof(argv[7]) << ", plotIdentifier:" << (argv[8]) << ", realSnapshot:" << atof(argv[9]) << std::endl
 			<< "gravity:" << atof(argv[10]) << ", collisionModel:" << (argv[11])  << ", noTriangles:" << atof(argv[12]) << std::endl;
-
   }
 
   const double       gridHMax            = atof(argv[1]);
@@ -147,13 +151,36 @@ int main(int argc, char** argv)
     gridType = dem::mappings::CreateGrid::NoGrid;
   }
   else if (gridTypeIdentifier=="regular-grid") {
+	if(argc != NumberOfArguments)
+	{
+		printManual();
+	    return -1;
+	}
     gridType = dem::mappings::CreateGrid::RegularGrid;
   }
   else if (gridTypeIdentifier=="adaptive-grid") {
     gridType = dem::mappings::CreateGrid::AdaptiveGrid;
+    if(argc != NumberOfArguments)
+    {
+    	printManual();
+        return -1;
+    }
   }
   else if (gridTypeIdentifier=="reluctant-adaptive-grid") {
     gridType = dem::mappings::CreateGrid::ReluctantAdaptiveGrid;
+    if(argc != NumberOfArguments)
+    {
+    	printManual();
+        return -1;
+    }
+  }
+  else if (gridTypeIdentifier == "range")
+  {
+	  if(argc != NumberOfArguments+2)
+	  {
+		  printManual();
+		  return -1;
+	  }
   }
   else {
     std::cerr << gridTypeIdentifier << " is not a valid grid type. Please run without arguments to see list of valid grid types" << std::endl;

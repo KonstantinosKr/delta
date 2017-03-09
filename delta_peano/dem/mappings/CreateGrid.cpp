@@ -403,8 +403,8 @@ void dem::mappings::CreateGrid::createCell(
 				yCoordinates.clear();
 				zCoordinates.clear();
 
-				iREAL xcuts = 8;
-				iREAL ycuts = 5;
+				iREAL xcuts = 10;
+				iREAL ycuts = 2;
 				iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
 				iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
 
