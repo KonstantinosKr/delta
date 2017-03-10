@@ -61,7 +61,7 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
   _particleCounter       = 0;
   _collisionPointCounter = 0;
 
-  _trackParticle = _trackID >= 0 ? true : false;
+ // _trackParticle = _trackID >= 0 ? true : false;
 
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
@@ -145,7 +145,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
 		  	  	}*/
 
-				if(_trackParticle && _trackID == p->first)
+				/*if(_trackParticle && _trackID == p->first)
 				{
 					logInfo("endIteration(...)", std::endl
 					   << "#####CONTACT-DATA#####" << std::endl
@@ -157,7 +157,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 					   << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
 					   << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
 					   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
-				}
+				}*/
 
 				#ifdef CONTACTSTATS
 				logInfo("endIteration(...)", std::endl
@@ -399,7 +399,7 @@ void dem::mappings::Plot::touchVertexLastTime(
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
     }
 
-    if(_trackParticle && _trackID == particle.getGlobalParticleId())
+    /*if(_trackParticle && _trackID == particle.getGlobalParticleId())
     {
     	logInfo("touchVertexLastTime(...)", std::endl
     	    						   << "#####PARTICLE-DATA#####" << std::endl
@@ -421,7 +421,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     								   << "orie[0]=" << particle._persistentRecords._orientation(0) <<", orie[1]=" << particle._persistentRecords._orientation(1) << ", orie[2]=" << particle._persistentRecords._orientation(2) << std::endl
     								   << "orie[3]=" << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
     								   << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
-    }
+    }*/
 #ifdef PARTICLESTATS
     logInfo("touchVertexLastTime(...)", std::endl
     						   << "#####PARTICLE-DATA#####" << std::endl

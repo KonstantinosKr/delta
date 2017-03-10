@@ -288,7 +288,7 @@ int main(int argc, char** argv)
   }
   else if (plotIdentifier=="track") {
     plot = dem::runners::Runner::Track;
-    dem::mappings::Plot::_trackID = trackID;
+    //dem::mappings::Plot::_trackID = trackID;
   }else {
     std::cerr << "invalid plot option: " << plotIdentifier << "Please run without arguments to see list of valid plot variants" << std::endl;
     programExitCode = 2;

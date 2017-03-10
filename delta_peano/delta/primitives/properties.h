@@ -208,7 +208,6 @@ namespace delta {
     double getKineticEnergy(double velocity[3], double mass);
 
     double getRotationalEnergy(double angular[3], double inertia[9]);
-
   }
 
 }
