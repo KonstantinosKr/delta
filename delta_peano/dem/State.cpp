@@ -103,8 +103,7 @@ void dem::State::finishedTimeStep(double initStep) {
   if (_stateData.getTwoParticlesAreClose()) {
 	  if(_stateData.getTimeStepSize() < 1E-5) return;
 	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()/2.0);
-  }
-  else {//replace with max global step
+  } else {//replace with max global step
 	  if(_stateData.getTimeStepSize() > initStep) return;
 	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()*1.01);
   }

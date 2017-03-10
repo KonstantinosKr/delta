@@ -23,8 +23,6 @@ namespace dem {
   }
 }
 
-
-
 /**
  * Runner
  *
@@ -37,7 +35,8 @@ class dem::runners::Runner {
       UponChange,
 	  EveryBatch,
 	  Adaptive,
-	  Range
+	  Range,
+	  Track
     };
   private:
     static tarch::logging::Log _log;

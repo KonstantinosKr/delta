@@ -5,8 +5,6 @@
 #include "tarch/tests/TestCaseFactory.h"
 
 
-//#include "ttd/ContactPoints.h"
-
 
 registerTest(dem::tests::CollisionTest)
 

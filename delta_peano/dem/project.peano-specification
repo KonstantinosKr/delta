@@ -67,7 +67,6 @@ adapter:
   merge-with-user-defined-mapping: Plot
   merge-with-predefined-mapping: VTKGridVisualiser(grid)
  
-
 adapter:
   name: TimeStepOnReluctantDynamicGrid
   merge-with-user-defined-mapping: Collision

@@ -296,6 +296,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 
 		if(!currentParticle.getIsObstacle())
 		{
+			//FOR DEBUGGING ONE PARTICLE PURPOSES
 			//here is the instability when force is high.
 			/*if(currentParticle.getGlobalParticleId() == 56)
 			{

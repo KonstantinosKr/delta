@@ -12,8 +12,6 @@
 
 #include <iomanip>
 
-#define epsilon 0.002
-
 tarch::logging::Log _log("");
 
 void printManual()
@@ -88,7 +86,8 @@ int main(int argc, char** argv)
   }
 
   int sharedMemorySetup = peano::initSharedMemoryEnvironment();
-  if (sharedMemorySetup!=0) {
+  if (sharedMemorySetup!=0)
+  {
     logError("main()", "shared memory initialisation wasn't successful. Application shut down");
     return sharedMemorySetup;
   }
@@ -99,17 +98,17 @@ int main(int argc, char** argv)
   	  const int NumberOfArguments = 13;
   #endif
 
-  printf("noOfArguments:%i, argc:%i\n", NumberOfArguments, argc);
-  if (argc!=NumberOfArguments || (NumberOfArguments == NumberOfArguments+2 && argv[8] != "range"))
+  	std::cout << "noOfArguments: " <<  NumberOfArguments << "argc: " <<  argc << std::endl;
+
+  if(argc!=NumberOfArguments || (NumberOfArguments == NumberOfArguments+2 && argv[8] != "range"))
   {
 	printManual();
     return -1;
-  } else if (argc == NumberOfArguments)
-  {
+  } else if (argc == NumberOfArguments) {
 	  std::cout << "gridHMAX:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
-			<< "scenario:" << (argv[4]) << ", numberOfTimeSteps:" << atof(argv[5]) << ", gridTypeIdentifier:" << (argv[6]) << std::endl
-			<< "iterations:" << atof(argv[7]) << ", plotIdentifier:" << (argv[8]) << ", realSnapshot:" << atof(argv[9]) << std::endl
-			<< "gravity:" << atof(argv[10]) << ", collisionModel:" << (argv[11])  << ", noTriangles:" << atof(argv[12]) << std::endl;
+				<< "scenario:" << (argv[4]) << ", numberOfTimeSteps:" << atof(argv[5]) << ", gridTypeIdentifier:" << (argv[6]) << std::endl
+				<< "iterations:" << atof(argv[7]) << ", plotIdentifier:" << (argv[8]) << ", realSnapshot:" << atof(argv[9]) << std::endl
+				<< "gravity:" << atof(argv[10]) << ", collisionModel:" << (argv[11])  << ", noTriangles:" << atof(argv[12]) << std::endl;
   }
 
   const double       gridHMax            = atof(argv[1]);
@@ -123,7 +122,7 @@ int main(int argc, char** argv)
   const double		 realSnapshot		 = atof(argv[9]);
   const double       gravity             = atof(argv[10]);
   const std::string  collisionModel      = argv[11];
-  const int			 noTriangles 		 = atof(argv[12]);
+  const int			 meshMultiplier 	 = atof(argv[12]);
 
   #ifdef SharedMemoryParallelisation
   	  const int          numberOfCores       = atoi(argv[13]);
@@ -181,72 +180,86 @@ int main(int argc, char** argv)
 		  printManual();
 		  return -1;
 	  }
-  }
-  else {
+  } else {
     std::cerr << gridTypeIdentifier << " is not a valid grid type. Please run without arguments to see list of valid grid types" << std::endl;
     programExitCode = 2;
   }
 
 
   if (scenario=="black-hole-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes, dem::mappings::CreateGrid::randomLinear,
-    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes,
+    										dem::mappings::CreateGrid::randomLinear,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="black-hole-with-randomly-oriented-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithRandomOrientedCubes, dem::mappings::CreateGrid::randomLinearAngular,
-    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithRandomOrientedCubes,
+    										dem::mappings::CreateGrid::randomLinearAngular,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="random-velocities-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes, dem::mappings::CreateGrid::randomLinearAngular,
-    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes,
+    										dem::mappings::CreateGrid::randomLinearAngular,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="random-velocities-with-granulates") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithGranulates, dem::mappings::CreateGrid::randomLinear,
-    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithGranulates,
+    										dem::mappings::CreateGrid::randomLinear,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="two-particles-crash") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash, dem::mappings::CreateGrid::crashAB,
-    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash,
+    										dem::mappings::CreateGrid::crashAB,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopper") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme,
-    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper,
+    										dem::mappings::CreateGrid::noVScheme,
+    										0.15, 0.15, 0.15, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniformSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere, dem::mappings::CreateGrid::noVScheme,
-    										0.5, 0.02, 0.02, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere,
+    										dem::mappings::CreateGrid::noVScheme,
+    										0.5, 0.02, 0.02, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniformSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere, dem::mappings::CreateGrid::noVScheme,
-    										0.5, 0.005, 0.015, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere,
+    										dem::mappings::CreateGrid::noVScheme,
+    										0.5, 0.005, 0.015, gridType, meshMultiplier);
   }
   else if (scenario=="hopper300") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme,
-    										0.11, 0.11, 0.11, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper,
+    										dem::mappings::CreateGrid::noVScheme,
+    										0.11, 0.11, 0.11, gridType, meshMultiplier);
   }
   else if (scenario=="hopper1000") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper, dem::mappings::CreateGrid::noVScheme,
-    										0.03, 0.003, 0.03, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper,
+    										dem::mappings::CreateGrid::noVScheme,
+    										0.03, 0.003, 0.03, gridType, meshMultiplier);
   }
   else if (scenario=="freefall") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall, dem::mappings::CreateGrid::noVScheme,
-    										gridHMax, particleDiamMin, particleDiamMax, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall,
+    										dem::mappings::CreateGrid::noVScheme,
+    										gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionStatic") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStatic, dem::mappings::CreateGrid::crash,
-    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStatic,
+    										dem::mappings::CreateGrid::crash,
+    										0.15, 0.15, 0.15, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlide") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide, dem::mappings::CreateGrid::crashSlideWithAngle,
-    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide,
+    										dem::mappings::CreateGrid::crashSlideWithAngle,
+    										0.15, 0.15, 0.15, gridType, meshMultiplier);
   }
   else if (scenario=="sla") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla, dem::mappings::CreateGrid::noVScheme,
-    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla,
+    										dem::mappings::CreateGrid::noVScheme,
+    										0.15, 0.15, 0.15, gridType, meshMultiplier);
   }
   else if (scenario=="nuclearArray2d") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray2d, dem::mappings::CreateGrid::noVScheme,
-    										0.15, 0.15, 0.15, gridType, epsilon, noTriangles);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray2d,
+    										dem::mappings::CreateGrid::noVScheme,
+    										0.15, 0.15, 0.15, gridType, meshMultiplier);
   }
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;
@@ -254,6 +267,7 @@ int main(int argc, char** argv)
   }
 
   dem::runners::Runner::Plot plot;
+  int trackID = -1;
   if (plotIdentifier=="never") {
     plot = dem::runners::Runner::Never;
   }
@@ -269,7 +283,13 @@ int main(int argc, char** argv)
   else if (plotIdentifier=="adaptive") {
 	plot = dem::runners::Runner::Adaptive;
   }
-  else {
+  else if (plotIdentifier=="range") {
+  	plot = dem::runners::Runner::Range;
+  }
+  else if (plotIdentifier=="track") {
+    plot = dem::runners::Runner::Track;
+    dem::mappings::Plot::_trackID = trackID;
+  }else {
     std::cerr << "invalid plot option: " << plotIdentifier << "Please run without arguments to see list of valid plot variants" << std::endl;
     programExitCode = 2;
   }
@@ -305,8 +325,7 @@ int main(int argc, char** argv)
   }
   else if (collisionModel=="none") {
       dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
-  }
-  else {
+  } else {
     std::cerr << "invalid collision model option. Please run without arguments to see list of valid variants" << std::endl;
     programExitCode = 2;
   }

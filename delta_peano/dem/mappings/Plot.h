@@ -53,7 +53,7 @@ class dem::mappings::Plot {
     static tarch::logging::Log  _log;
 
     static int  _snapshotCounter;
-
+    static bool _trackParticle;
 
     #ifdef UseInSituVisualiser
     typedef insituvis::Visualiser                                                       Writer;
@@ -82,6 +82,7 @@ class dem::mappings::Plot {
     int _collisionPointCounter;
 
   public:
+    static int _trackID;
     /**
      * These flags are used to inform Peano about your operation. It tells the 
      * framework whether the operation is empty, whether it works only on the 

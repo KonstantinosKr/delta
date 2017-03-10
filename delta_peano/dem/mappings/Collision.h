@@ -116,7 +116,6 @@ class dem::mappings::Collision {
 
     static peano::CommunicationSpecification   communicationSpecification();
 
-
     /**
      * Mapping constructor.
      *

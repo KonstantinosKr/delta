@@ -80,7 +80,7 @@ class dem::mappings::CreateGrid {
     };
 
     static void setScenario(Scenario scenario, VScheme velocityScheme, double maxH, double particleDiamMin, double particleDiamMax,
-    						GridType gridType, double epsilon, int noPointsPerGranulate);
+    						GridType gridType, int noPointsPerGranulate);
 
   private:
     /**

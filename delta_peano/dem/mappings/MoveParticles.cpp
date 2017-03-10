@@ -10,14 +10,9 @@
 
 #include "delta/dynamics/dynamics.h"
 
-
-/**
- * @todo Please tailor the parameters to your mapping's properties.
- */
 peano::CommunicationSpecification   dem::mappings::MoveParticles::communicationSpecification() {
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
-
 /**
  * Reflect
  */
@@ -47,12 +42,10 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
 }
 
 tarch::logging::Log		dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" );
-double    dem::mappings::MoveParticles::gravity = 0.0;
+double					dem::mappings::MoveParticles::gravity = 0.0;
 
-void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
-  dem::Vertex&               fineGridVertex)
+void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Vertex&	fineGridVertex)
 {
-
   double timeStepSize = _state.getTimeStepSize();
 
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
@@ -93,10 +86,16 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(
 										&particle._persistentRecords._referentialCentreOfMass(0));
 		}
 	}
-    //iREAL energy = getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
-    //iREAL rotational = getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
-    //iREAL kinetic = getKineticEnergy(&particle._persistentRecords._velocity(0), particle._persistentRecords._mass);
-    //printf("TOTAL ENERGY:%f ROTATIONAL:%f KINETIC:%f\n", energy, rotational, kinetic);
+	#ifdef ENERGYSTATS
+		iREAL energy = getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
+		iREAL rotational = getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
+		iREAL kinetic = getKineticEnergy(&particle._persistentRecords._velocity(0), particle._persistentRecords._mass);
+		logInfo( "touchVertexFirstTime(...)", std::endl
+				<< "#####ENERGY-DATA#####" << std::endl
+				<< "PARTICLEID=" << particle._persistentRecords._globalParticleId << "NULL=0" << "NULL=0" << std::endl
+				<< "TOTAL ENERGY=" << energy <<  "ROTATIONAL=" << rotational << "KINETIC=" << kinetic << std::endl
+				<< "###END-ENERGY-DATA###" << std::endl);
+	#endif
   }
 }
 
@@ -130,9 +129,8 @@ void dem::mappings::MoveParticles::reassignParticles(
   _state.incNumberOfParticleReassignments(numberOfReassignments);
 }
 
-void dem::mappings::MoveParticles::reflectParticles(
-  dem::Vertex&                               fineGridVertex
-) {
+void dem::mappings::MoveParticles::reflectParticles(dem::Vertex& fineGridVertex)
+{
   assertion(fineGridVertex.isBoundary());
 
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
