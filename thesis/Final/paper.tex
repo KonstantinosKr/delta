@@ -15,9 +15,7 @@
  
 %\usepackage[noline,boxruled,commentsnumbered,linesnumbered,titlenumbered]{algorithm2e}
  
-
-
-\title{A fast triangle-based discrete element code}
+\title{discrete element code}
 \author{
   Konstantinos Krestenitis
   \and
@@ -39,26 +37,26 @@
 
 \marginpar{\footnotesize We should again discuss whether we can get Jon
 on-board}
-\input{00_abstract}
-\input{01_introduction}
-\input{02_algorithm}
-\input{03_grid}
-\input{04_vectorisation}
-\input{05_shared-memory}
-%\input{06_domain-decomposition}
-\input{07_benchmark}
-\input{08_results}
-\input{09_conclusion}
 
+\input{01_introduction}
+\input{02_physicalmodel}
+\input{03_geometric}
+\input{04_algorithm}
+\input{05_multi-scale-decomposition}
+\input{06_vectorisation}
+\input{07_shared-memory}
+\input{08_distributed-memory}
+\input{09_casestudies}
+\input{10_conclusion}
+\input{11_acknowledgements}
+\input{12_appendix}
 
 \bibliographystyle{plain}
 \bibliography{./paper}
 
-
 \appendix
 
 \input{a0_software}
-\input{a1_acknowledgements}
 \input{b0_two-particles}
 \input{b1_comparisons}
 \input{c0_hull}
