@@ -270,7 +270,7 @@ def readLog():
     subind = 0
 
     state = ""
-    for line in open("../log.log", "r"):
+    for line in open("../lognu100.log", "r"):
         if "dem::runners::Runner::runAsMaster(...)                  i=" in line:
             #iteration data starts on next line
             it = line.split(",")[0].split("=")[1]

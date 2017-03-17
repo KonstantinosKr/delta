@@ -45,7 +45,7 @@ listParticleId, listMass, listDiameter, \
 listInfluenceRadius, listEpsilon, listthMin, listNoOfTriangles, \
 listIsObstacle, listMaterial, listLinear, listAngular, \
 listRefangular, listCentre, listCenterOfMass, \
-listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(0, getParticleCount(), 4000)
+listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(0, getParticleCount(), 45000)
 #400 - iteration 4800
 '''
 IEx: -0.000011
@@ -82,6 +82,18 @@ Mx: 0.049429
 Mm: 0.000052
 Varx: 0.000485
 Varm: 0.000000
+
+
+#NONUNIFORM
+
+#100 - iteration 45000
+IEx: 0.001757
+IEm: 0.000561
+Mx: 0.096956
+Mm: 0.000644
+Varx: 0.001516
+Varm: 0.000000
+
 '''
 
 idx = []

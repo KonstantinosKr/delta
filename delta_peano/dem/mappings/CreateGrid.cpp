@@ -14,6 +14,7 @@
 #include <string>
 #include <iostream>
 #include <cmath>
+#include <ctime>
 
 #define epsilon 0.002
 
@@ -489,37 +490,67 @@ void dem::mappings::CreateGrid::createCell(
 				_numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-				iREAL xcuts = 10;
-				iREAL ycuts = 1;
-				iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
-				iREAL subcell = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
-				printf("minParDiameter:%.10f\n", subcell);
+				iREAL xcuts = 10.0;
+				iREAL ycuts = 2.0;
+				iREAL minArraylengthX = (double)_hopperWidth - _epsilon * 6;
+				iREAL minArraylengthY = (double)_hopperHeight - _epsilon * 6;
+
+				iREAL subcellx = ((double)minArraylengthX/(double)xcuts) - _epsilon*4;
+				iREAL subcelly = ((double)minArraylengthY/(double)ycuts) - _epsilon*4;
+
+				iREAL margin = ((double)minArraylengthX/(double)xcuts)/2.0;
+				printf("maxDiameter:%f\n", subcellx);
 
 				iREAL position[3];
-				position[0] = (centreAsArray[0] - _hopperWidth/2) + margin;
-				position[1] = centreAsArray[1] + _hopperHeight/2;
-				position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
+				position[0] = centreAsArray[0] - (minArraylengthX/2 - margin);
+				position[1] = centreAsArray[1] + minArraylengthY/2;
+				position[2] = centreAsArray[2] - (minArraylengthX/2 - margin);
 
-				std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, _hopperWidth, xcuts);
-				//std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, _hopperWidth, xcuts, ycuts, 6);
+				std::vector<std::array<double, 3>> tmp = delta::primitives::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
 
 				int N = tmp.size();
-				double mass = 0.05/(double)N; //0.5 GOLD, 0.05 WOOD//kg
-				double radius = std::pow((3.0*mass)/(4.0 * 3.14 * WOOD), (1.0/3.0));
+				double totalMass = 0.05; //0.5 GOLD, 0.05 WOOD//kg
+				double massPerParticle = totalMass/(double)N;
+				double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * WOOD), (1.0/3.0));
 
+				double reSumMassTotal = 0;
+				std::vector<double> rad;
+				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
+				{
+					_minParticleDiam = subcellx/2;
+					_maxParticleDiam = subcellx;
+					//double test = static_cast<void>(srand(static_cast <unsigned>(time(0))));
+					double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
+					rad.push_back(particleDiameter/2);
+					reSumMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * WOOD; //volume * mass
+				}
+
+				//get total mass
+				printf("TOTAL REMASS:%f\n", reSumMassTotal);
+
+				double rescale = std::pow((totalMass/reSumMassTotal), 1.0/3.0);
+
+				reSumMassTotal=0;
+				for(std::vector<double>::iterator i=rad.begin(); i!=rad.end(); i++)
+				{
+					*i *= rescale;
+					reSumMassTotal += (4.0/3.0) * 3.14 * std::pow(*i,3) * WOOD; //volume * mass
+				}
+				printf("RESCALE:%f\n", rescale);
+				printf("TOTAL REREMASS:%f\n", reSumMassTotal);
+
+				int idx = 0;
 				for(std::vector<std::array<double, 3>>::iterator i=tmp.begin(); i!=tmp.end(); i++)
 				{
 					std::array<double, 3> ar = *i;
 					position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
 
-					double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) ) / std::sqrt( DIMENSIONS);
-					delta::primitives::generateCube(position, particleDiameter, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-
-					newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
-											_epsilon, false, WOOD, true, _numberOfParticles);
-
+					delta::primitives::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+					newParticleNumber = vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
+																			rad[idx], rad[idx]*0.2, false, WOOD, true, _numberOfParticles);
 					_numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 					xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+					idx++;
 				}
 
 				/**

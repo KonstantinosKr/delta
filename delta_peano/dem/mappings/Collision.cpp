@@ -889,195 +889,254 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-
+/*
+	//phase 1
 	// along faces
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(1) ]);
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(2) ]);
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(1) ]);
+	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(2) ]);
+	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
 
-	// additional faces front/back
-	if (fineGridVertices[fineGridVerticesEnumerator(0) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(1) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(2) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(3) ].isBoundary())
+	//phase 2
+	//START front face: diagonal vertex comparison (if a front face vertex is boundary)
+	if (fineGridVertices[fineGridVerticesEnumerator(0) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(1) ].isBoundary() ||
+		fineGridVertices[fineGridVerticesEnumerator(2) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(3) ].isBoundary())
 	{
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(0) ],
-				fineGridVertices[ fineGridVerticesEnumerator(3) ]);
+		//diagonal 1
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(3) ]);
+		//diagonal 1
 
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(1) ],
-				fineGridVertices[ fineGridVerticesEnumerator(2) ]);
+		//diagonal 2
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(2) ]);
+		//diagonal 2
 	}
+	//END front face
 
-	if (fineGridVertices[fineGridVerticesEnumerator(4) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(5) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(6) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(7) ].isBoundary())
+	//phase 3
+	//START back face: all vertices comparison (if a back face vertex is boundary)
+	if (fineGridVertices[fineGridVerticesEnumerator(4) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(5) ].isBoundary() ||
+		fineGridVertices[fineGridVerticesEnumerator(6) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(7) ].isBoundary())
 	{
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(4) ],
-				fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		//bottom line
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		//bottom line
 
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(6) ],
-				fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		//top line
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(6) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		//top line
 
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(4) ],
-				fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		//left line
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		//left line
 
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(5) ],
-				fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		//right line
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		//right line
 
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(4) ],
-				fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		//face diagonals
+		//diagonal 1
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		//diagonal 1
 
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(5) ],
-				fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		//diagonal 2
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		//diagonal 2
 	}
+	//END back face
 
-	// additional faces left/right
-	if (fineGridVertices[fineGridVerticesEnumerator(0) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(2) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(4) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(6) ].isBoundary())
+	//phase 4
+		//LEFT-RIGHT FACE
+		//START left face vertex comparison (if a left face vertex is boundary)
+		if (fineGridVertices[fineGridVerticesEnumerator(0) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(2) ].isBoundary() ||
+			fineGridVertices[fineGridVerticesEnumerator(4) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(6) ].isBoundary())
+		{
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		}
+		//END left face
+
+	//phase 5
+		//START right face all vertices comparison (if a right face vertex is boundary)
+		if (fineGridVertices[fineGridVerticesEnumerator(1) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(3) ].isBoundary() ||
+			fineGridVertices[fineGridVerticesEnumerator(5) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(7) ].isBoundary())
+		{
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(3) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+		}
+		//END right face
+		//END LEFT-RIGHT FACE
+
+
+	//START faces bottom/top
+	//phase 6
+	//START face bottom vertices comparison (if a bottom vertex is boundary)
+	if (fineGridVertices[fineGridVerticesEnumerator(0) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(1) ].isBoundary() ||
+		fineGridVertices[fineGridVerticesEnumerator(4) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(5) ].isBoundary())
 	{
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(2) ],
-				fineGridVertices[ fineGridVerticesEnumerator(5) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(3) ],
-				fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
 	}
+	//END face bottom
 
-	if (fineGridVertices[fineGridVerticesEnumerator(1) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(3) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(5) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(7) ].isBoundary())
+	//phase 7
+	//START face top all vertices comparison (if a top vertex is boundary)
+	if (fineGridVertices[fineGridVerticesEnumerator(2) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(3) ].isBoundary() ||
+		fineGridVertices[fineGridVerticesEnumerator(6) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(7) ].isBoundary())
 	{
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(1) ],
-				fineGridVertices[ fineGridVerticesEnumerator(4) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(3) ],
-				fineGridVertices[ fineGridVerticesEnumerator(6) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(1) ],
-				fineGridVertices[ fineGridVerticesEnumerator(3) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(4) ],
-				fineGridVertices[ fineGridVerticesEnumerator(6) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(1) ],
-				fineGridVertices[ fineGridVerticesEnumerator(6) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(3) ],
-				fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(3) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(6) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
 	}
+	//END face top
 
-	// additional faces bottom/top
-	if (fineGridVertices[fineGridVerticesEnumerator(0) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(1) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(4) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(5) ].isBoundary())
+	//phase 8
+	//START diagonals on faces
+		//front diagonals
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(3) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(2) ]);
+		//front diagonals
+
+		//bottom diagonals
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+		//bottom diagonals
+
+		//left diagonals
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+		//left diagonals
+
+		//right is missing???
+	//END
+	//phase 9
+	//START intra-cell diagonals
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+	//END
+	 */
+
+	//phase 1
+	// along faces
+	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(1) ]);
+	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(2) ]);
+	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+
+	//phase 3
+	//START back face: all vertices comparison (if a back face vertex is boundary)
+	if (fineGridVertices[fineGridVerticesEnumerator(4) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(5) ].isBoundary() ||
+		fineGridVertices[fineGridVerticesEnumerator(6) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(7) ].isBoundary())
 	{
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(4) ],
-				fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		//bottom line
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		//bottom line
 
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(1) ],
-				fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		//top line
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(6) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		//top line
+
+		//left line
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		//left line
+
+		//right line
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		//right line
+
+		//face diagonals
+		//diagonal 1
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		//diagonal 1
+
+		//diagonal 2
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		//diagonal 2
 	}
+	//END back face
 
-	if (fineGridVertices[fineGridVerticesEnumerator(2) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(3) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(6) ].isBoundary() ||
-		fineGridVertices[fineGridVerticesEnumerator(7) ].isBoundary())
+	//phase 4
+		//LEFT-RIGHT FACE
+		//START left face vertex comparison (if a left face vertex is boundary)
+		if (fineGridVertices[fineGridVerticesEnumerator(0) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(2) ].isBoundary() ||
+			fineGridVertices[fineGridVerticesEnumerator(4) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(6) ].isBoundary())
+		{
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		}
+		//END left face
+
+	//phase 5
+		//START right face all vertices comparison (if a right face vertex is boundary)
+		if (fineGridVertices[fineGridVerticesEnumerator(1) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(3) ].isBoundary() ||
+			fineGridVertices[fineGridVerticesEnumerator(5) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(7) ].isBoundary())
+		{
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+			dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		}
+		//END right face
+		//END LEFT-RIGHT FACE
+
+
+	//START faces bottom/top
+	//phase 6
+	//START face bottom vertices comparison (if a bottom vertex is boundary)
+	if (fineGridVertices[fineGridVerticesEnumerator(0) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(1) ].isBoundary() ||
+		fineGridVertices[fineGridVerticesEnumerator(4) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(5) ].isBoundary())
 	{
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(2) ],
-				fineGridVertices[ fineGridVerticesEnumerator(3) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(6) ],
-				fineGridVertices[ fineGridVerticesEnumerator(7) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(2) ],
-				fineGridVertices[ fineGridVerticesEnumerator(6) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(3) ],
-				fineGridVertices[ fineGridVerticesEnumerator(7) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(3) ],
-				fineGridVertices[ fineGridVerticesEnumerator(6) ]);
-
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-				fineGridVertices[ fineGridVerticesEnumerator(2) ],
-				fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4) ], fineGridVertices[ fineGridVerticesEnumerator(3) ]);
 	}
+	//END face bottom
 
-	// diagonals on faces
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(3) ]);
+	//phase 7
+	//START face top all vertices comparison (if a top vertex is boundary)
+	if (fineGridVertices[fineGridVerticesEnumerator(2) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(3) ].isBoundary() ||
+		fineGridVertices[fineGridVerticesEnumerator(6) ].isBoundary() || fineGridVertices[fineGridVerticesEnumerator(7) ].isBoundary())
+	{
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(3) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(6) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+	}
+	//END face top
 
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(1) ],
-			fineGridVertices[ fineGridVerticesEnumerator(2) ]);
+	//phase 8
+	//START diagonals on faces
+		//front diagonals
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(3) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(2) ]);
+		//front diagonals
 
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		//bottom diagonals
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+		//bottom diagonals
 
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(1) ],
-			fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+		//left diagonals
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+		//left diagonals
 
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(6) ]);
-
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(2) ],
-			fineGridVertices[ fineGridVerticesEnumerator(4) ]);
-
-	// intra-cell diagonals
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(0) ],
-			fineGridVertices[ fineGridVerticesEnumerator(7) ]);
-
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(1) ],
-			fineGridVertices[ fineGridVerticesEnumerator(6) ]);
-
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(2) ],
-			fineGridVertices[ fineGridVerticesEnumerator(5) ]);
-
-	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
-			fineGridVertices[ fineGridVerticesEnumerator(3) ],
-			fineGridVertices[ fineGridVerticesEnumerator(4) ]);
-
+		//right is missing???
+	//END
+	//phase 9
+	//START intra-cell diagonals
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(0) ], fineGridVertices[ fineGridVerticesEnumerator(7) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(1) ], fineGridVertices[ fineGridVerticesEnumerator(6) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(2) ], fineGridVertices[ fineGridVerticesEnumerator(5) ]);
+		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3) ], fineGridVertices[ fineGridVerticesEnumerator(4) ]);
+	//END
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
 
