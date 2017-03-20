@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  12 AUG 2016 15:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  20 MAR 2017 13:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -195,13 +195,40 @@ Package: algpseudocode
 Document Style - pseudocode environments for use with the `algorithmicx' style
 ) (./macros.tex) (./paper.aux
 
-LaTeX Warning: Label `algorithm:bf' multiply defined.
+LaTeX Warning: Label `section:algorithm' multiply defined.
+
+
+LaTeX Warning: Label `algorithm:dem-blueprint' multiply defined.
+
+
+LaTeX Warning: Label `figure:minkowski' multiply defined.
+
+
+LaTeX Warning: Label `equation:forces:translational' multiply defined.
+
+
+LaTeX Warning: Label `equation:forces:rotational' multiply defined.
+
+
+LaTeX Warning: Label `section:algorithm' multiply defined.
+
+
+LaTeX Warning: Label `algorithm:dem-blueprint' multiply defined.
+
+
+LaTeX Warning: Label `figure:minkowski' multiply defined.
+
+
+LaTeX Warning: Label `equation:forces:translational' multiply defined.
+
+
+LaTeX Warning: Label `equation:forces:rotational' multiply defined.
 
 
 LaTeX Warning: Label `algorithm:bf' multiply defined.
 
 
-LaTeX Warning: Label `figure:triangle_omp' multiply defined.
+LaTeX Warning: Label `algorithm:bf' multiply defined.
 
 
 LaTeX Warning: Label `figure:triangle_omp' multiply defined.
@@ -222,29 +249,23 @@ LaTeX Warning: Label `figure:triangle_omp' multiply defined.
 LaTeX Warning: Label `figure:triangle_omp' multiply defined.
 
 
-LaTeX Warning: Label `figure:triangle_omp' multiply defined.
-
-
-LaTeX Warning: Label `figure:triangle_omp' multiply defined.
-
-
-LaTeX Warning: Label `figure:triangle_omp' multiply defined.
+LaTeX Warning: Label `section:conclusion' multiply defined.
 
 )
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
  (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count110
@@ -308,36 +329,27 @@ e
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 38.
+LaTeX Font Info:    Try loading font information for U+msa on input line 32.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 38.
+LaTeX Font Info:    Try loading font information for U+msb on input line 32.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 38.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 32.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 38.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 32.
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <6> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 38.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 32.
 
-Underfull \hbox (badness 10000) in paragraph at lines 41--41
-\OT1/cmr/m/n/8 dis-cuss whether
- []
-
-
-Underfull \hbox (badness 1077) in paragraph at lines 41--41
-\OT1/cmr/m/n/8 we can get Jon
- []
-
-(./00_abstract.tex) (./01_introduction.tex
+(./01_introduction.tex
 Underfull \hbox (badness 4660) in paragraph at lines 3--3
 []\OT1/cmr/m/n/8 What is DEM.
  []
@@ -439,13 +451,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 46--46
  []
 
 
-LaTeX Warning: Marginpar on page 2 moved.
-
-
 LaTeX Warning: Reference `section:domain-decomposition' on page 2 undefined on 
 input line 66.
 
-) (./02_algorithm.tex
+
+LaTeX Warning: Reference `section:benchmarks' on page 2 undefined on input line
+ 67.
+
+) (./02_physicalmodel.tex
 Overfull \hbox (1.4853pt too wide) in paragraph at lines 19--20
 [] \OT1/cmr/bx/n/10 if \OT1/cmr/m/n/10 (dis-tance $\OML/cmm/m/it/10 <$ \OT1/cmr
 /m/n/10 mar-gin) AND Par-ti-cleID(i) != Par-ti-cleID(j) \OT1/cmr/bx/n/10 then 
@@ -461,7 +474,7 @@ n/10 )\OML/cmm/m/it/10 :getcontact\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 k\OT1/cmr/m
 /n/10 ))$ 
  []
 
-[2] <sketches/minkowski.pdf, id=20, 310.51007pt x 228.62085pt>
+[2] <sketches/minkowski.pdf, id=19, 310.51007pt x 228.62085pt>
 File: sketches/minkowski.pdf Graphic file (type pdf)
 
 <use sketches/minkowski.pdf>
@@ -486,47 +499,129 @@ LaTeX Warning: Citation `xxx' on page 4 undefined on input line 174.
 
 LaTeX Warning: Citation `xxx' on page 4 undefined on input line 176.
 
-[4]) (./03_grid.tex
-
-LaTeX Warning: Citation `xxx' on page 5 undefined on input line 4.
-
-
-LaTeX Warning: Citation `xxxx' on page 5 undefined on input line 5.
-
-
-LaTeX Warning: Citation `mattutis:24' on page 5 undefined on input line 7.
+) (./03_geometric.tex [4]
+Overfull \hbox (1.4853pt too wide) in paragraph at lines 19--20
+[] \OT1/cmr/bx/n/10 if \OT1/cmr/m/n/10 (dis-tance $\OML/cmm/m/it/10 <$ \OT1/cmr
+/m/n/10 mar-gin) AND Par-ti-cleID(i) != Par-ti-cleID(j) \OT1/cmr/bx/n/10 then 
+ []
 
 
-LaTeX Warning: Citation `wolfgang' on page 5 undefined on input line 7.
+Overfull \hbox (29.02118pt too wide) in paragraph at lines 34--35
+[] $\OML/cmm/m/it/10 force \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 granular\OT1/cmr/
+m/n/10 (\OML/cmm/m/it/10 velocity\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 z\OT1/cmr/m/
+n/10 )\OML/cmm/m/it/10 ; position\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 z\OT1/cmr/m/
+n/10 )\OML/cmm/m/it/10 ; contacts\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 z\OT1/cmr/m/
+n/10 )\OML/cmm/m/it/10 :getcontact\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 k\OT1/cmr/m
+/n/10 ))$ 
+ []
+
+File: sketches/minkowski.pdf Graphic file (type pdf)
+<use sketches/minkowski.pdf>
+Package pdftex.def Info: sketches/minkowski.pdf used on input line 76.
+(pdftex.def)             Requested size: 155.24895pt x 114.30664pt.
+ [5]
+
+LaTeX Warning: Citation `19' on page 6 undefined on input line 120.
 
 
-LaTeX Warning: Citation `mattutis' on page 5 undefined on input line 44.
+LaTeX Warning: Citation `Samiei' on page 6 undefined on input line 120.
+
+[6]
+
+LaTeX Warning: Citation `Samiei' on page 7 undefined on input line 173.
 
 
-LaTeX Warning: Citation `Software:Peano' on page 5 undefined on input line 61.
+LaTeX Warning: Citation `37' on page 7 undefined on input line 173.
 
-[5]
 
-LaTeX Warning: Citation `Weinzierl:16:PIC' on page 6 undefined on input line 70
-.
+LaTeX Warning: Citation `xxx' on page 7 undefined on input line 174.
 
-(./03a_grid-traversal.tex
 
-LaTeX Warning: Citation `Weinzierl:2009:Diss' on page 6 undefined on input line
+LaTeX Warning: Citation `xxx' on page 7 undefined on input line 176.
+
+) (./04_algorithm.tex
+Overfull \hbox (1.4853pt too wide) in paragraph at lines 19--20
+[] \OT1/cmr/bx/n/10 if \OT1/cmr/m/n/10 (dis-tance $\OML/cmm/m/it/10 <$ \OT1/cmr
+/m/n/10 mar-gin) AND Par-ti-cleID(i) != Par-ti-cleID(j) \OT1/cmr/bx/n/10 then 
+ []
+
+
+Overfull \hbox (29.02118pt too wide) in paragraph at lines 34--35
+[] $\OML/cmm/m/it/10 force \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 granular\OT1/cmr/
+m/n/10 (\OML/cmm/m/it/10 velocity\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 z\OT1/cmr/m/
+n/10 )\OML/cmm/m/it/10 ; position\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 z\OT1/cmr/m/
+n/10 )\OML/cmm/m/it/10 ; contacts\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 z\OT1/cmr/m/
+n/10 )\OML/cmm/m/it/10 :getcontact\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 k\OT1/cmr/m
+/n/10 ))$ 
+ []
+
+[7]
+File: sketches/minkowski.pdf Graphic file (type pdf)
+ <use sketches/minkowski.pdf>
+Package pdftex.def Info: sketches/minkowski.pdf used on input line 76.
+(pdftex.def)             Requested size: 155.24895pt x 114.30664pt.
+
+
+LaTeX Warning: Citation `19' on page 8 undefined on input line 120.
+
+
+LaTeX Warning: Citation `Samiei' on page 8 undefined on input line 120.
+
+[8]
+
+LaTeX Warning: Citation `Samiei' on page 9 undefined on input line 173.
+
+
+LaTeX Warning: Citation `37' on page 9 undefined on input line 173.
+
+
+LaTeX Warning: Citation `xxx' on page 9 undefined on input line 174.
+
+
+LaTeX Warning: Citation `xxx' on page 9 undefined on input line 176.
+
+) (./05_multi-scale-decomposition.tex
+
+LaTeX Warning: Citation `xxx' on page 9 undefined on input line 4.
+
+
+LaTeX Warning: Citation `xxxx' on page 9 undefined on input line 5.
+
+
+LaTeX Warning: Citation `mattutis:24' on page 9 undefined on input line 7.
+
+
+LaTeX Warning: Citation `wolfgang' on page 9 undefined on input line 7.
+
+[9]
+
+LaTeX Warning: Citation `mattutis' on page 10 undefined on input line 44.
+
+
+LaTeX Warning: Citation `Software:Peano' on page 10 undefined on input line 61.
+
+
+
+LaTeX Warning: Citation `Weinzierl:16:PIC' on page 10 undefined on input line 7
+0.
+
+(./05a_grid-traversal.tex
+
+LaTeX Warning: Citation `Weinzierl:2009:Diss' on page 10 undefined on input lin
+e 5.
+
+
+LaTeX Warning: Citation `Weinzierl:11:Peano' on page 10 undefined on input line
  5.
 
-
-LaTeX Warning: Citation `Weinzierl:11:Peano' on page 6 undefined on input line 
-5.
-
-<sketches/collision-cube.pdf, id=46, 371.08638pt x 336.9267pt>
+[10] <sketches/collision-cube.pdf, id=60, 371.08638pt x 336.9267pt>
 File: sketches/collision-cube.pdf Graphic file (type pdf)
 
 <use sketches/collision-cube.pdf>
 Package pdftex.def Info: sketches/collision-cube.pdf used on input line 12.
 (pdftex.def)             Requested size: 86.25pt x 78.30893pt.
 
-<experiments/two-bodies/visualisation/adaptive-grid01.png, id=47, 919.435pt x 8
+<experiments/two-bodies/visualisation/adaptive-grid01.png, id=61, 919.435pt x 8
 09.0225pt>
 File: experiments/two-bodies/visualisation/adaptive-grid01.png Graphic file (ty
 pe png)
@@ -535,7 +630,7 @@ Package pdftex.def Info: experiments/two-bodies/visualisation/adaptive-grid01.p
 ng used on input line 14.
 (pdftex.def)             Requested size: 103.50105pt x 91.06665pt.
 
-<sketches/multigrid.pdf, id=48, 500.14809pt x 381.02461pt>
+<sketches/multigrid.pdf, id=62, 500.14809pt x 381.02461pt>
 File: sketches/multigrid.pdf Graphic file (type pdf)
 
 <use sketches/multigrid.pdf>
@@ -556,53 +651,59 @@ Type  H <return>  for immediate help.
                                                   
 l.43  \caption
               {A grid-based DEM implementation.}
-? 
-[6 <./sketches/collision-cube.pdf> <./experiments/two-bodies/visualisation/adap
-tive-grid01.png> <./sketches/multigrid.pdf
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
-pdfTeX warning: pdflatex (file ./sketches/multigrid.pdf): PDF inclusion: multip
-le pdfs with page group included in a single page
+[11 <./sketches/collision-cube.pdf> <./experiments/two-bodies/visualisation/ada
+ptive-grid01.png> <./sketches/multigrid.pdf
+
+pdfTeX warning: /Library/Tex/texbin/pdflatex (file ./sketches/multigrid.pdf): P
+DF inclusion: multiple pdfs with page group included in a single page
 >]
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 95.
- [7]
-
-LaTeX Warning: Citation `xxx' on page 8 undefined on input line 116.
 
 
-LaTeX Warning: Citation `xxx' on page 8 undefined on input line 116.
+LaTeX Warning: Citation `xxx' on page 12 undefined on input line 116.
 
 
-LaTeX Warning: Citation `xxx' on page 8 undefined on input line 116.
+LaTeX Warning: Citation `xxx' on page 12 undefined on input line 116.
 
 
-LaTeX Warning: Citation `dime' on page 8 undefined on input line 138.
+LaTeX Warning: Citation `xxx' on page 12 undefined on input line 116.
+
+[12]
+
+LaTeX Warning: Citation `dime' on page 13 undefined on input line 138.
 
 
-LaTeX Warning: Citation `Weinzierl:2009:Diss' on page 8 undefined on input line
+LaTeX Warning: Citation `Weinzierl:2009:Diss' on page 13 undefined on input lin
+e 141.
+
+
+LaTeX Warning: Citation `Weinzierl:11:Peano' on page 13 undefined on input line
  141.
 
 
-LaTeX Warning: Citation `Weinzierl:11:Peano' on page 8 undefined on input line 
-141.
+LaTeX Warning: Citation `xxx' on page 13 undefined on input line 149.
 
 
-LaTeX Warning: Citation `xxx' on page 8 undefined on input line 149.
+LaTeX Warning: Citation `33' on page 13 undefined on input line 150.
 
 
-LaTeX Warning: Citation `33' on page 8 undefined on input line 150.
+LaTeX Warning: Citation `34' on page 13 undefined on input line 150.
 
 
-LaTeX Warning: Citation `34' on page 8 undefined on input line 150.
+LaTeX Warning: Citation `Reps' on page 13 undefined on input line 154.
 
 
-LaTeX Warning: Citation `Reps' on page 8 undefined on input line 154.
+LaTeX Warning: Citation `Charrier' on page 13 undefined on input line 155.
 
-
-LaTeX Warning: Citation `Charrier' on page 8 undefined on input line 155.
-
-) [8] (./03b_adaptive-grid.tex
-<experiments/two-bodies/visualisation/adaptive-grid00.png, id=68, 1181.41376pt 
+) (./05b_adaptive-grid.tex
+<experiments/two-bodies/visualisation/adaptive-grid00.png, id=78, 1181.41376pt 
 x 809.0225pt>
 File: experiments/two-bodies/visualisation/adaptive-grid00.png Graphic file (ty
 pe png)
@@ -611,7 +712,7 @@ Package pdftex.def Info: experiments/two-bodies/visualisation/adaptive-grid00.p
 ng used on input line 16.
 (pdftex.def)             Requested size: 137.9979pt x 94.49847pt.
 
-<experiments/two-bodies/visualisation/reluctant-adaptive-grid00.png, id=69, 537
+<experiments/two-bodies/visualisation/reluctant-adaptive-grid00.png, id=79, 537
 .00626pt x 555.07375pt>
 File: experiments/two-bodies/visualisation/reluctant-adaptive-grid00.png Graphi
 c file (type png)
@@ -621,7 +722,7 @@ Package pdftex.def Info: experiments/two-bodies/visualisation/reluctant-adaptiv
 e-grid00.png used on input line 18.
 (pdftex.def)             Requested size: 86.25pt x 89.15239pt.
 
-<experiments/two-bodies/visualisation/adaptive-grid02.png, id=70, 919.435pt x 8
+<experiments/two-bodies/visualisation/adaptive-grid02.png, id=80, 919.435pt x 8
 09.0225pt>
 File: experiments/two-bodies/visualisation/adaptive-grid02.png Graphic file (ty
 pe png)
@@ -630,7 +731,7 @@ Package pdftex.def Info: experiments/two-bodies/visualisation/adaptive-grid02.p
 ng used on input line 20.
 (pdftex.def)             Requested size: 103.50105pt x 91.06665pt.
 
-<experiments/two-bodies/visualisation/reluctant-adaptive-grid02.png, id=71, 537
+<experiments/two-bodies/visualisation/reluctant-adaptive-grid02.png, id=81, 537
 .00626pt x 555.07375pt>
 File: experiments/two-bodies/visualisation/reluctant-adaptive-grid02.png Graphi
 c file (type png)
@@ -641,16 +742,16 @@ e-grid02.png used on input line 22.
 (pdftex.def)             Requested size: 103.50105pt x 106.98119pt.
 
 
-LaTeX Warning: Citation `knuth' on page 9 undefined on input line 59.
+LaTeX Warning: Citation `knuth' on page 13 undefined on input line 59.
 
-[9 <./experiments/two-bodies/visualisation/adaptive-grid00.png> <./experiments/
-two-bodies/visualisation/reluctant-adaptive-grid00.png> <./experiments/two-bodi
-es/visualisation/adaptive-grid02.png> <./experiments/two-bodies/visualisation/r
-eluctant-adaptive-grid02.png>])) (./04_vectorisation.tex
+[13] [14 <./experiments/two-bodies/visualisation/adaptive-grid00.png> <./experi
+ments/two-bodies/visualisation/reluctant-adaptive-grid00.png> <./experiments/tw
+o-bodies/visualisation/adaptive-grid02.png> <./experiments/two-bodies/visualisa
+tion/reluctant-adaptive-grid02.png>])) (./06_vectorisation.tex
 
-LaTeX Warning: Citation `xxxx' on page 10 undefined on input line 14.
+LaTeX Warning: Citation `xxxx' on page 15 undefined on input line 14.
 
-[10] <sketches/data-structure.pdf, id=78, 418.36299pt x 159.71051pt>
+[15] <sketches/data-structure.pdf, id=92, 418.36299pt x 159.71051pt>
 File: sketches/data-structure.pdf Graphic file (type pdf)
 
 <use sketches/data-structure.pdf>
@@ -658,9 +759,9 @@ Package pdftex.def Info: sketches/data-structure.pdf used on input line 20.
 (pdftex.def)             Requested size: 172.5pt x 65.85214pt.
 
 
-LaTeX Warning: Citation `mattutis' on page 11 undefined on input line 58.
+LaTeX Warning: Citation `mattutis' on page 16 undefined on input line 58.
 
-(./04a_brute-force.tex [11 <./sketches/data-structure.pdf>]
+(./06a_brute-force.tex [16 <./sketches/data-structure.pdf>]
 
 ! LaTeX Error: File `sketches/ss_box' not found.
 
@@ -671,12 +772,19 @@ Type  H <return>  for immediate help.
 l.24 ...hics[width=0.3\textwidth]{sketches/ss_box}
                                                    \protect\caption{\label{f...
 
-? 
-[12]
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[17]
 Missing character: There is no â in font cmr10!
 Missing character: There is no ‰ in font cmr10!
 Missing character: There is no ¤ in font cmr10!
- [13] <sketches/pt_regions.png, id=97, 246.9225pt x 209.06679pt>
+ [18] <sketches/pt_regions.png, id=110, 246.9225pt x 209.06679pt>
 File: sketches/pt_regions.png Graphic file (type png)
 
 <use sketches/pt_regions.png>
@@ -685,14 +793,14 @@ Package pdftex.def Info: sketches/pt_regions.png used on input line 58.
 Missing character: There is no â in font cmr10!
 Missing character: There is no ˆ in font cmr10!
 Missing character: There is no ’ in font cmr10!
- [14 <./sketches/pt_regions.png>]
+ [19 <./sketches/pt_regions.png>]
 Missing character: There is no â in font cmr10!
 Missing character: There is no ˆ in font cmr10!
 Missing character: There is no ’ in font cmr10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no ˆ in font cmr10!
 Missing character: There is no ’ in font cmr10!
- [15]
+ [20]
 
 ! Package caption Error: \caption outside float.
 
@@ -702,7 +810,12 @@ Type  H <return>  for immediate help.
                                                   
 l.81  \caption
               {Brute-force distance calculation.} \label{algorithm:bf}
-? 
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 ! Package caption Error: \caption outside float.
 
@@ -712,8 +825,13 @@ Type  H <return>  for immediate help.
                                                   
 l.132  \caption
                {Point to triangle distance algorithm.} \label{algorithm:bf}
-? 
-[16
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[21
 
 ]
 
@@ -725,28 +843,33 @@ Type  H <return>  for immediate help.
                                                   
 l.186  \caption
                {Segment to segment distance algorithm.} \label{algorithm:bf}
-? 
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Overfull \hbox (0.4359pt too wide) in paragraph at lines 233--241
 \OT1/cmr/m/n/10 through all pos-si-ble dis-tance con-fig-u-ra-tions (Al-go-rith
-m 5[]). First, we run through
+m 7[]). First, we run through
  []
 
-) (./04b_penalty.tex [17] <sketches/c.png, id=112, 433.62pt x 186.6975pt>
+) (./06b_penalty.tex [22] <sketches/c.png, id=126, 433.62pt x 186.6975pt>
 File: sketches/c.png Graphic file (type png)
 
 <use sketches/c.png>
 Package pdftex.def Info: sketches/c.png used on input line 26.
 (pdftex.def)             Requested size: 207.0021pt x 89.12663pt.
- <sketches/penalty.png, id=113, 553.20964pt x 480.93964pt>
+ <sketches/penalty.png, id=127, 553.20964pt x 480.93964pt>
 File: sketches/penalty.png Graphic file (type png)
 
 <use sketches/penalty.png>
 Package pdftex.def Info: sketches/penalty.png used on input line 38.
 (pdftex.def)             Requested size: 172.5pt x 149.96303pt.
- [18 <./sketches/c.png>]
+ [23 <./sketches/c.png>]
 
-LaTeX Warning: Reference `' on page 19 undefined on input line 50.
+LaTeX Warning: Reference `' on page 24 undefined on input line 50.
 
 
 ! Package caption Error: \caption outside float.
@@ -757,8 +880,13 @@ Type  H <return>  for immediate help.
                                                   
 l.55 	\protect\caption
                       {\label{alg4}Penalty Solver.}
-? 
-[19 <./sketches/penalty.png>]
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[24 <./sketches/penalty.png>]
 
 LaTeX Warning: Command \textbackslash invalid in math mode on input line 94.
 
@@ -766,23 +894,23 @@ LaTeX Warning: Command \textbackslash invalid in math mode on input line 94.
 LaTeX Warning: Command \textbackslash invalid in math mode on input line 94.
 
 
-LaTeX Warning: Reference `' on page 20 undefined on input line 116.
+LaTeX Warning: Reference `' on page 25 undefined on input line 116.
 
 
-LaTeX Warning: Reference `' on page 20 undefined on input line 116.
+LaTeX Warning: Reference `' on page 25 undefined on input line 116.
 
-) (./04c_hybrid.tex [20]
+) (./06c_hybrid.tex [25]
 
-LaTeX Warning: Reference `' on page 21 undefined on input line 2.
+LaTeX Warning: Reference `' on page 26 undefined on input line 2.
 
-<experiments/random/penalty-stats/bar.png, id=126, 1248.1029pt x 690.1785pt>
+<experiments/random/penalty-stats/bar.png, id=140, 1248.1029pt x 690.1785pt>
 File: experiments/random/penalty-stats/bar.png Graphic file (type png)
 
 <use experiments/random/penalty-stats/bar.png>
 Package pdftex.def Info: experiments/random/penalty-stats/bar.png used on input
  line 6.
 (pdftex.def)             Requested size: 345.0pt x 190.77382pt.
- [21 <./experiments/random/penalty-stats/bar.png>]
+ [26 <./experiments/random/penalty-stats/bar.png>]
 
 ! Package caption Error: \caption outside float.
 
@@ -792,7 +920,12 @@ Type  H <return>  for immediate help.
                                                   
 l.17  \caption
               {Hybrid On Triangle Pairs} \label{algorithm:hybridTriangle}
-? 
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 ! Package caption Error: \caption outside float.
 
@@ -802,9 +935,14 @@ Type  H <return>  for immediate help.
                                                   
 l.48  \caption
               {Hybrid On Triangle Batches} \label{algorithm:hybridBatches}
-? 
-[22])) (./05_shared-memory.tex [23]
-<experiments/random/omp/triangle_based_x0.png, id=137, 1263.2796pt x 645.3711pt
+If you do not understand this error, please take a closer look
+at the documentation of the `caption' package, especially the
+section about errors.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[27])) (./07_shared-memory.tex [28]
+<experiments/random/omp/triangle_based_x0.png, id=151, 1263.2796pt x 645.3711pt
 >
 File: experiments/random/omp/triangle_based_x0.png Graphic file (type png)
  <use experiments/random/omp/triangle_based_x0.png>
@@ -812,7 +950,7 @@ Package pdftex.def Info: experiments/random/omp/triangle_based_x0.png used on i
 nput line 22.
 (pdftex.def)             Requested size: 276.00105pt x 140.99731pt.
 
-<experiments/random/omp/particle_based_x0.png, id=138, 1368.0711pt x 680.7834pt
+<experiments/random/omp/particle_based_x0.png, id=152, 1368.0711pt x 680.7834pt
 >
 File: experiments/random/omp/particle_based_x0.png Graphic file (type png)
  <use experiments/random/omp/particle_based_x0.png>
@@ -820,7 +958,7 @@ Package pdftex.def Info: experiments/random/omp/particle_based_x0.png used on i
 nput line 30.
 (pdftex.def)             Requested size: 276.00105pt x 137.33849pt.
 
-<experiments/random/omp/particle_triangle_based_x0.png, id=139, 1429.5006pt x 7
+<experiments/random/omp/particle_triangle_based_x0.png, id=153, 1429.5006pt x 7
 21.2546pt>
 File: experiments/random/omp/particle_triangle_based_x0.png Graphic file (type 
 png)
@@ -828,12 +966,12 @@ png)
 Package pdftex.def Info: experiments/random/omp/particle_triangle_based_x0.png 
 used on input line 40.
 (pdftex.def)             Requested size: 345.0pt x 174.0731pt.
- [24
+ [29
 
  <./experiments/random/omp/triangle_based_x0.png> <./experiments/random/omp/par
-ticle_based_x0.png>] [25 <./experiments/random/omp/particle_triangle_based_x0.p
+ticle_based_x0.png>] [30 <./experiments/random/omp/particle_triangle_based_x0.p
 ng>]
-<experiments/random/omp/tbb_vs_serial.png, id=150, 1334.1042pt x 661.9932pt>
+<experiments/random/omp/tbb_vs_serial.png, id=163, 1334.1042pt x 661.9932pt>
 File: experiments/random/omp/tbb_vs_serial.png Graphic file (type png)
 
 <use experiments/random/omp/tbb_vs_serial.png>
@@ -841,48 +979,48 @@ Package pdftex.def Info: experiments/random/omp/tbb_vs_serial.png used on input
  line 52.
 (pdftex.def)             Requested size: 345.0pt x 171.18486pt.
 
-<experiments/random/omp/tbb_regular_x2.png, id=151, 1377.4662pt x 684.3969pt>
+<experiments/random/omp/tbb_regular_x2.png, id=164, 1377.4662pt x 684.3969pt>
 File: experiments/random/omp/tbb_regular_x2.png Graphic file (type png)
 
 <use experiments/random/omp/tbb_regular_x2.png>
 Package pdftex.def Info: experiments/random/omp/tbb_regular_x2.png used on inpu
 t line 65.
 (pdftex.def)             Requested size: 276.00105pt x 137.12758pt.
- [26
+ [31
 
- <./experiments/random/omp/tbb_vs_serial.png>] [27 <./experiments/random/omp/tb
+ <./experiments/random/omp/tbb_vs_serial.png>] [32 <./experiments/random/omp/tb
 b_regular_x2.png>])
-(./07_benchmark.tex) (./08_results.tex
+(./08_distributed-memory.tex
 
-LaTeX Warning: Reference `xxx' on page 28 undefined on input line 10.
-
-
-LaTeX Warning: Citation `xxxx' on page 28 undefined on input line 13.
+LaTeX Warning: Reference `xxx' on page 33 undefined on input line 10.
 
 
-LaTeX Warning: Citation `Software:Peano' on page 28 undefined on input line 20.
+LaTeX Warning: Citation `xxxx' on page 33 undefined on input line 13.
+
+
+LaTeX Warning: Citation `Software:Peano' on page 33 undefined on input line 20.
 
 
 
-LaTeX Warning: Citation `Weinzierl:15:Compression' on page 28 undefined on inpu
+LaTeX Warning: Citation `Weinzierl:15:Compression' on page 33 undefined on inpu
 t line 24.
 
 
-LaTeX Warning: Citation `Weinzierl:16:PIC' on page 28 undefined on input line 2
+LaTeX Warning: Citation `Weinzierl:16:PIC' on page 33 undefined on input line 2
 8.
 
 
-LaTeX Warning: Citation `xxx' on page 28 undefined on input line 32.
+LaTeX Warning: Citation `xxx' on page 33 undefined on input line 32.
 
 
-LaTeX Warning: Marginpar on page 28 moved.
+LaTeX Warning: Marginpar on page 33 moved.
 
 
-LaTeX Warning: Citation `Treibig:10:Likwid' on page 28 undefined on input line 
+LaTeX Warning: Citation `Treibig:10:Likwid' on page 33 undefined on input line 
 48.
 
 
-<experiments/vectorisation/plots/log_bf_simd.png, id=160, 1490.2074pt x 736.431
+<experiments/vectorisation/plots/log_bf_simd.png, id=174, 1490.2074pt x 736.431
 3pt>
 File: experiments/vectorisation/plots/log_bf_simd.png Graphic file (type png)
  <use experiments/vectorisation/plots/log_bf_simd.png>
@@ -890,7 +1028,7 @@ Package pdftex.def Info: experiments/vectorisation/plots/log_bf_simd.png used o
 n input line 61.
 (pdftex.def)             Requested size: 345.0pt x 170.4881pt.
 
-<experiments/vectorisation/plots/log_penalty_simd.png, id=161, 1597.167pt x 745
+<experiments/vectorisation/plots/log_penalty_simd.png, id=175, 1597.167pt x 745
 .8264pt>
 File: experiments/vectorisation/plots/log_penalty_simd.png Graphic file (type p
 ng)
@@ -899,7 +1037,7 @@ Package pdftex.def Info: experiments/vectorisation/plots/log_penalty_simd.png u
 sed on input line 72.
 (pdftex.def)             Requested size: 345.0pt x 161.10065pt.
 
-<experiments/vectorisation/plots/log_sphere-hybrid-on-batchesSIMD.png, id=162, 
+<experiments/vectorisation/plots/log_sphere-hybrid-on-batchesSIMD.png, id=176, 
 1503.9387pt x 710.4141pt>
 File: experiments/vectorisation/plots/log_sphere-hybrid-on-batchesSIMD.png Grap
 hic file (type png)
@@ -910,7 +1048,7 @@ atchesSIMD.png used on input line 82.
 (pdftex.def)             Requested size: 345.0pt x 162.96904pt.
 
 <experiments/vectorisation/plots/log_sphere-hybrid-triangle-pairs-SIMD.png, id=
-163, 1475.0307pt x 706.0779pt>
+177, 1475.0307pt x 706.0779pt>
 File: experiments/vectorisation/plots/log_sphere-hybrid-triangle-pairs-SIMD.png
  Graphic file (type png)
 
@@ -918,7 +1056,7 @@ File: experiments/vectorisation/plots/log_sphere-hybrid-triangle-pairs-SIMD.png
 Package pdftex.def Info: experiments/vectorisation/plots/log_sphere-hybrid-tria
 ngle-pairs-SIMD.png used on input line 91.
 (pdftex.def)             Requested size: 345.0pt x 165.14183pt.
-<experiments/vectorisation/plots/simd.png, id=164, 578.16pt x 433.62pt>
+<experiments/vectorisation/plots/simd.png, id=178, 578.16pt x 433.62pt>
 File: experiments/vectorisation/plots/simd.png Graphic file (type png)
 
 <use experiments/vectorisation/plots/simd.png>
@@ -926,59 +1064,91 @@ Package pdftex.def Info: experiments/vectorisation/plots/simd.png used on input
  line 100.
 (pdftex.def)             Requested size: 345.0pt x 258.74484pt.
 
-<experiments/vectorisation/plots/serial.png, id=165, 578.16pt x 433.62pt>
+<experiments/vectorisation/plots/serial.png, id=179, 578.16pt x 433.62pt>
 File: experiments/vectorisation/plots/serial.png Graphic file (type png)
 
 <use experiments/vectorisation/plots/serial.png>
 Package pdftex.def Info: experiments/vectorisation/plots/serial.png used on inp
 ut line 108.
 (pdftex.def)             Requested size: 345.0pt x 258.74484pt.
- [28
+ [33
 
-] [29 <./experiments/vectorisation/plots/log_bf_simd.png> <./experiments/vector
-isation/plots/log_penalty_simd.png>] [30 <./experiments/vectorisation/plots/log
+] [34 <./experiments/vectorisation/plots/log_bf_simd.png> <./experiments/vector
+isation/plots/log_penalty_simd.png>] [35 <./experiments/vectorisation/plots/log
 _sphere-hybrid-on-batchesSIMD.png> <./experiments/vectorisation/plots/log_spher
-e-hybrid-triangle-pairs-SIMD.png>] [31 <./experiments/vectorisation/plots/simd.
-png>] [32 <./experiments/vectorisation/plots/serial.png>]
+e-hybrid-triangle-pairs-SIMD.png>] [36 <./experiments/vectorisation/plots/simd.
+png>] [37 <./experiments/vectorisation/plots/serial.png>]
 
-LaTeX Warning: Reference `xxx' on page 33 undefined on input line 123.
+LaTeX Warning: Reference `xxx' on page 38 undefined on input line 123.
 
-) (./09_conclusion.tex)
-Overfull \hbox (3.3246pt too wide) in paragraph at lines 7--52
+) (./09_casestudies.tex) (./10_conclusion.tex
+Overfull \hbox (3.3246pt too wide) in paragraph at lines 7--1
 []\OT1/cmr/m/n/10 Maximale Zeitschrit-tweit-en-wahl. Dadurch ue-ber-gang zu eve
 nt-driven scheme.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 7--52
+Underfull \hbox (badness 10000) in paragraph at lines 7--1
 
  []
 
-No file paper.bbl.
-(./a0_software.tex
+) (./11_acknowledgements.tex
+Overfull \hbox (3.3246pt too wide) in paragraph at lines 7--1
+[]\OT1/cmr/m/n/10 Maximale Zeitschrit-tweit-en-wahl. Dadurch ue-ber-gang zu eve
+nt-driven scheme.
+ []
 
-LaTeX Warning: Citation `Software:Delta' on page 33 undefined on input line 5.
+
+Underfull \hbox (badness 10000) in paragraph at lines 7--1
+
+ []
+
+) (./12_appendix.tex
+
+LaTeX Warning: Citation `Software:Delta' on page 38 undefined on input line 5.
 
 
-LaTeX Warning: Reference `section:domain-decomposition' on page 33 undefined on
+LaTeX Warning: Reference `section:domain-decomposition' on page 38 undefined on
  input line 7.
 
 
-LaTeX Warning: Citation `Software:Peano' on page 33 undefined on input line 10.
+LaTeX Warning: Citation `Software:Peano' on page 38 undefined on input line 10.
 
 
 
-LaTeX Warning: Citation `Weinzierl:2009:Diss' on page 33 undefined on input lin
+LaTeX Warning: Citation `Weinzierl:2009:Diss' on page 38 undefined on input lin
 e 10.
 
 
-LaTeX Warning: Citation `Weinzierl:11:Peano' on page 33 undefined on input line
+LaTeX Warning: Citation `Weinzierl:11:Peano' on page 38 undefined on input line
  10.
 
-) (./a1_acknowledgements.tex) (./b0_two-particles.tex [33
+[38
 
-]
-<experiments/two-bodies/visualisation/regular-grid00.png, id=192, 622.325pt x 6
+])
+No file paper.bbl.
+(./12a_software.tex
+
+LaTeX Warning: Citation `Software:Delta' on page 39 undefined on input line 5.
+
+
+LaTeX Warning: Reference `section:domain-decomposition' on page 39 undefined on
+ input line 7.
+
+
+LaTeX Warning: Citation `Software:Peano' on page 39 undefined on input line 10.
+
+
+
+LaTeX Warning: Citation `Weinzierl:2009:Diss' on page 39 undefined on input lin
+e 10.
+
+
+LaTeX Warning: Citation `Weinzierl:11:Peano' on page 39 undefined on input line
+ 10.
+
+) (./12b_two-particles.tex [39]
+<experiments/two-bodies/visualisation/regular-grid00.png, id=210, 622.325pt x 6
 83.55376pt>
 File: experiments/two-bodies/visualisation/regular-grid00.png Graphic file (typ
 e png)
@@ -987,7 +1157,7 @@ Package pdftex.def Info: experiments/two-bodies/visualisation/regular-grid00.pn
 g used on input line 36.
 (pdftex.def)             Requested size: 103.50105pt x 113.6785pt.
 
-<experiments/two-bodies/visualisation/regular-grid01.png, id=193, 1492.57625pt 
+<experiments/two-bodies/visualisation/regular-grid01.png, id=211, 1492.57625pt 
 x 809.0225pt>
 File: experiments/two-bodies/visualisation/regular-grid01.png Graphic file (typ
 e png)
@@ -996,7 +1166,7 @@ Package pdftex.def Info: experiments/two-bodies/visualisation/regular-grid01.pn
 g used on input line 37.
 (pdftex.def)             Requested size: 103.50105pt x 56.0942pt.
 
-<experiments/two-bodies/visualisation/regular-grid02.png, id=194, 1492.57625pt 
+<experiments/two-bodies/visualisation/regular-grid02.png, id=212, 1492.57625pt 
 x 809.0225pt>
 File: experiments/two-bodies/visualisation/regular-grid02.png Graphic file (typ
 e png)
@@ -1004,11 +1174,9 @@ e png)
 Package pdftex.def Info: experiments/two-bodies/visualisation/regular-grid02.pn
 g used on input line 38.
 (pdftex.def)             Requested size: 103.50105pt x 56.0942pt.
-
-[34 <./experiments/two-bodies/visualisation/regular-grid00.png> <./experiments/
-two-bodies/visualisation/regular-grid01.png> <./experiments/two-bodies/visualis
-ation/regular-grid02.png>]) (./b1_comparisons.tex
-<experiments/random/no-of-collisions/comparison_log_0.png, id=199, 1501.7706pt 
+)
+(./12c_comparisons.tex
+<experiments/random/no-of-collisions/comparison_log_0.png, id=213, 1501.7706pt 
 x 740.7675pt>
 File: experiments/random/no-of-collisions/comparison_log_0.png Graphic file (ty
 pe png)
@@ -1017,7 +1185,10 @@ Package pdftex.def Info: experiments/random/no-of-collisions/comparison_log_0.p
 ng used on input line 5.
 (pdftex.def)             Requested size: 345.0pt x 170.16948pt.
 
-<experiments/random/no-of-collisions/comparison_log_2.png, id=200, 1450.4589pt 
+[40 <./experiments/two-bodies/visualisation/regular-grid00.png> <./experiments/
+two-bodies/visualisation/regular-grid01.png> <./experiments/two-bodies/visualis
+ation/regular-grid02.png>]
+<experiments/random/no-of-collisions/comparison_log_2.png, id=217, 1450.4589pt 
 x 745.8264pt>
 File: experiments/random/no-of-collisions/comparison_log_2.png Graphic file (ty
 pe png)
@@ -1026,8 +1197,7 @@ Package pdftex.def Info: experiments/random/no-of-collisions/comparison_log_2.p
 ng used on input line 9.
 (pdftex.def)             Requested size: 345.0pt x 177.39735pt.
 
-[35 <./experiments/random/no-of-collisions/comparison_log_0.png>]
-<experiments/random/omp/xeon_phi_regular_G0_particle_dynamic.png, id=205, 1545.
+<experiments/random/omp/xeon_phi_regular_G0_particle_dynamic.png, id=218, 1545.
 1326pt x 735.7086pt>
 File: experiments/random/omp/xeon_phi_regular_G0_particle_dynamic.png Graphic f
 ile (type png)
@@ -1037,7 +1207,7 @@ Package pdftex.def Info: experiments/random/omp/xeon_phi_regular_G0_particle_dy
 namic.png used on input line 14.
 (pdftex.def)             Requested size: 345.0pt x 164.26997pt.
 
-<experiments/random/omp/xeon_phi_regular_G0_particle_static.png, id=206, 1525.6
+<experiments/random/omp/xeon_phi_regular_G0_particle_static.png, id=219, 1525.6
 197pt x 706.0779pt>
 File: experiments/random/omp/xeon_phi_regular_G0_particle_static.png Graphic fi
 le (type png)
@@ -1061,17 +1231,17 @@ Package pdftex.def Info: experiments/random/omp/xeon_phi_regular_G0_particle_st
 atic.png used on input line 38.
 (pdftex.def)             Requested size: 345.0pt x 159.6687pt.
 )
-(./c0_hull.tex
+(./12d_hull.tex
 
-LaTeX Warning: Citation `mattutis' on page 36 undefined on input line 5.
-
-
-LaTeX Warning: Citation `3' on page 36 undefined on input line 5.
+LaTeX Warning: Citation `mattutis' on page 41 undefined on input line 5.
 
 
-LaTeX Warning: Citation `5' on page 36 undefined on input line 5.
+LaTeX Warning: Citation `3' on page 41 undefined on input line 5.
 
-<sketches/coarse.png, id=207, 435.6275pt x 359.3425pt>
+
+LaTeX Warning: Citation `5' on page 41 undefined on input line 5.
+
+<sketches/coarse.png, id=220, 435.6275pt x 359.3425pt>
 File: sketches/coarse.png Graphic file (type png)
 
 <use sketches/coarse.png>
@@ -1101,10 +1271,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 33--33
 \OT1/cmr/m/n/8 pic-tures from
  []
 
-) [36 <./experiments/random/no-of-collisions/comparison_log_2.png> <./experimen
-ts/random/omp/xeon_phi_regular_G0_particle_dynamic.png>] [37 <./experiments/ran
-dom/omp/xeon_phi_regular_G0_particle_static.png>] [38 <./sketches/coarse.png>]
-[39] (./paper.aux)
+) [41 <./experiments/random/no-of-collisions/comparison_log_0.png> <./experimen
+ts/random/no-of-collisions/comparison_log_2.png>] [42 <./experiments/random/omp
+/xeon_phi_regular_G0_particle_dynamic.png> <./experiments/random/omp/xeon_phi_r
+egular_G0_particle_static.png>] [43] [44 <./sketches/coarse.png>] (./paper.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1113,44 +1283,42 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4504 strings out of 493089
- 70607 string characters out of 6134842
- 130094 words of memory out of 5000000
- 7809 multiletter control sequences out of 15000+600000
- 13972 words of font info for 54 fonts, out of 8000000 for 9000
+ 4506 strings out of 493089
+ 70789 string characters out of 6134842
+ 130049 words of memory out of 5000000
+ 7807 multiletter control sequences out of 15000+600000
+ 13365 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,11n,38p,1277b,413s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,11n,38p,1277b,423s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><
-/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><
-/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
-sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr
-/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/l
-ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loc
-al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local
-/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/t
-exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/tex
-live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texliv
-e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
-015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2015
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2015/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2015/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2015/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2015/texmf-dist/f
-onts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2015/texmf-di
-st/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on paper.pdf (39 pages, 2745604 bytes).
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb>
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></u
+sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr
+/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/l
+ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local
+/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
+/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/
+2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/20
+15/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2015/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2015/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2015/texmf-d
+ist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2015/tex
+mf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on paper.pdf (44 pages, 2742567 bytes).
 PDF statistics:
- 312 PDF objects out of 1000 (max. 8388607)
- 186 compressed objects within 2 object streams
+ 320 PDF objects out of 1000 (max. 8388607)
+ 191 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  161 words of extra memory for PDF output out of 10000 (max. 10000000)
 
