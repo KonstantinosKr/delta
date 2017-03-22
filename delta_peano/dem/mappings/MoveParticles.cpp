@@ -105,28 +105,29 @@ void dem::mappings::MoveParticles::reassignParticles(
 ) {
     int numberOfReassignments = 0;
     dfor2(k)
-		int i=0;
-		while (i<fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles())
-		{
-		  records::Particle&  particle = fineGridVertices[ fineGridVerticesEnumerator(k) ].getParticle(i);
+      int i=0;
+      while (i<fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles())
+      {
+        records::Particle&  particle = fineGridVertices[ fineGridVerticesEnumerator(k) ].getParticle(i);
 
-		  tarch::la::Vector<DIMENSIONS,int> correctVertex;
-		  for (int d=0; d<DIMENSIONS; d++)
-		  {
-			correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
-		  }
+        tarch::la::Vector<DIMENSIONS,int> correctVertex;
+        for (int d=0; d<DIMENSIONS; d++)
+        {
+          correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
+        }
 
-		  if (correctVertex!=k) {
-			fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].appendParticle(particle);
-			logDebug( "reassignParticles(...)", "reassign particle " << particle.toString() << " to " << fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].toString() );
-			fineGridVertices[ fineGridVerticesEnumerator(k) ].releaseParticle(i);
-			numberOfReassignments++;
-		  } else {
-			i++;
-		  }
-		}
-  enddforx
-  _state.incNumberOfParticleReassignments(numberOfReassignments);
+        if (correctVertex!=k)
+        {
+          fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].appendParticle(particle);
+          logDebug( "reassignParticles(...)", "reassign particle " << particle.toString() << " to " << fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].toString() );
+          fineGridVertices[ fineGridVerticesEnumerator(k) ].releaseParticle(i);
+          numberOfReassignments++;
+        } else {
+        i++;
+        }
+      }
+		enddforx
+		_state.incNumberOfParticleReassignments(numberOfReassignments);
 }
 
 void dem::mappings::MoveParticles::reflectParticles(dem::Vertex& fineGridVertex)

@@ -28,14 +28,14 @@ dem::runners::Runner::~Runner() {
 }
 
 int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads,
-								double timeStepSize, double realSnapshot)
+								              double timeStepSize, double realSnapshot)
 {
 
   peano::geometry::Hexahedron geometry(tarch::la::Vector<DIMENSIONS,double>(1.0), tarch::la::Vector<DIMENSIONS,double>(0.0));
   dem::repositories::Repository* repository = dem::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(geometry,
-												  tarch::la::Vector<DIMENSIONS,double>(1.0),   // domainSize,
-												  tarch::la::Vector<DIMENSIONS,double>(0.0)    // computationalDomainOffset
-												  );
+                                                tarch::la::Vector<DIMENSIONS,double>(1.0),   // domainSize,
+                                                tarch::la::Vector<DIMENSIONS,double>(0.0)    // computationalDomainOffset
+                                                );
   
   #ifdef SharedMemoryParallelisation
 	  tarch::multicore::Core::getInstance().configure(tbbThreads);
@@ -61,7 +61,7 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
 }
 
 int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository, int iterations, Plot plot, dem::mappings::CreateGrid::GridType gridType,
-										double initialTimeStepSize, double realSnapshot)
+										                  double initialTimeStepSize, double realSnapshot)
 {
   peano::utils::UserInterface::writeHeader();
 
@@ -77,32 +77,33 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   double elapsed = 0.0;
   double timestamp = 0.0;
 
-  int minRange = 4000;
+  int    = 4000;
   int maxRange = 8000;
 
   for (int i=0; i<iterations; i++)
   {
-	bool plotThisTraversal = (plot == EveryIteration) ||  (plot == Track) ||
-							 (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
-									 	 	 	 	 !repository.getState().isGridStationary() ||
-													 i%50==0 ||
-													 repository.getState().getNumberOfParticleReassignments()>0 )) ||
-							 (plot == EveryBatch && i%50 == 0) ||
-							 ((plot == Adaptive && elapsed > realSnapshot) || i == 0) ||
-							 (plot == Range && ((i >= minRange) && (i < maxRange)));
+    bool plotThisTraversal = (plot == EveryIteration) ||  (plot == Track) ||
+                             (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
+                                                     !repository.getState().isGridStationary() || i%50==0 ||
+                                                     repository.getState().getNumberOfParticleReassignments()>0 )) ||
+                             (plot == EveryBatch && i%50 == 0) ||
+                             ((plot == Adaptive && elapsed > realSnapshot) || i == 0) ||
+                             (plot == Range && ((i >= minRange) && (i < maxRange)));
 
-	if(plotThisTraversal)
+    if(plotThisTraversal)
     {
       if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
       {
           logInfo("runAsMaster(...)", "i=" << i
             << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
             << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-			<< ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
+            << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
+            << ", cnpt=" << repository.getState().getNumberOfContactPoints()
             << ", grid-v=" << repository.getState().getNumberOfInnerVertices() << " | snap");
       } else {
           logInfo("runAsMaster(...)", "i=" << i
             << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+            << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
             << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
             << ", cnpt=" << repository.getState().getNumberOfContactPoints()
             << ", grid-v=" << repository.getState().getNumberOfInnerVertices() << " | snap");
@@ -113,7 +114,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {
         repository.switchToTimeStepAndPlotOnDynamicGrid();
-      }else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
+      }
+      else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
       {
         repository.switchToTimeStepAndPlotOnReluctantDynamicGrid();
       } else {
@@ -122,19 +124,22 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     } else {
       if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
       {
-		  logInfo("runAsMaster(...)", "i=" << i
-			<< ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-			<< ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
-			<< ", grid-v=" << repository.getState().getNumberOfInnerVertices()
-			<< ", t=" << repository.getState().getTime()
-			<< ", dt=" << repository.getState().getTimeStepSize());
+        logInfo("runAsMaster(...)", "i=" << i
+        << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+        << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
+        << ", cnpt=" << repository.getState().getNumberOfContactPoints()
+        << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
+        << ", t=" << repository.getState().getTime()
+        << ", dt=" << repository.getState().getTimeStepSize());
       } else {
     	  logInfo("runAsMaster(...)", "i=" << i
-			<< ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-			<< ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-			<< ", grid-v=" << repository.getState().getNumberOfInnerVertices()
-			<< ", t=" << repository.getState().getTime()
-			<< ", dt=" << repository.getState().getTimeStepSize());
+        << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+        << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
+        << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
+        << ", cnpt=" << repository.getState().getNumberOfContactPoints()
+        << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
+        << ", t=" << repository.getState().getTime()
+        << ", dt=" << repository.getState().getTimeStepSize());
       }
 
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
@@ -149,7 +154,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     }
 
     timestamp = repository.getState().getTime();
-    if (plot==Adaptive) repository.getState().finishedTimeStep(initialTimeStepSize);
+    repository.getState().finishedTimeStep(initialTimeStepSize);
     elapsed = repository.getState().getTime() - timestamp;
 
     repository.getState().clearAccumulatedData();

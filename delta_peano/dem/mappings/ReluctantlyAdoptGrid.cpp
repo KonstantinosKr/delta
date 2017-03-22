@@ -199,20 +199,19 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
 
   double minDiameter       = std::numeric_limits<double>::max();
   int    numberOfParticles = 0;
+
   dfor2(k)
     numberOfParticles += fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles();
-    for (int i=0; i<fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles(); i++) {
+    for (int i=0; i<fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles(); i++)
+    {
       minDiameter = std::min( minDiameter, fineGridVertices[ fineGridVerticesEnumerator(k) ].getParticle(i)._persistentRecords._diameter );
     }
   enddforx
 
-  if ( numberOfParticles>=2 && minDiameter<fineGridVerticesEnumerator.getCellSize()(0)/3.0 ) {
+  if (numberOfParticles>=2 && minDiameter<fineGridVerticesEnumerator.getCellSize()(0)/3.0 ) {
     dfor2(k)
-      if (
-        !fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode()
-        &&
-        fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined
-      ) {
+      if (!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
+      {
         fineGridVertices[ fineGridVerticesEnumerator(k) ].refine();
       }
     enddforx

@@ -45,7 +45,7 @@ tarch::logging::Log                                                 dem::mapping
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_activeCollisions;
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_collisionsOfNextTraversal;
 dem::mappings::Collision::CollisionModel                            dem::mappings::Collision::_collisionModel;
-bool																dem::mappings::Collision::_enableOverlapCheck;
+bool																                                dem::mappings::Collision::_enableOverlapCheck;
 
 void dem::mappings::Collision::beginIteration(
 		dem::State&  solverState
@@ -341,8 +341,8 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			//printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
 			//printf("I:%d J:%d\n", fineGridVertex.getParticle(i).getGlobalParticleNumber(), fineGridVertex.getParticle(j).getGlobalParticleNumber());
 
-			if ((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
-				(fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
+			if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
+				 (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
 				 continue;
 
 			if(_enableOverlapCheck)
@@ -358,6 +358,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 					fineGridVertex.getParticle(j).getInfluenceRadius())) continue;
 
 			std::vector<delta::collision::contactpoint> newContactPoints;
+
 			switch (_collisionModel)
 			{
 				case CollisionModel::Sphere:
@@ -404,8 +405,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getFriction(),
 							fineGridVertex.getParticle(j).getGlobalParticleId(),
 							penetration);
-					} else
-					{
+					} else {
 						newContactPoints = delta::collision::sphere(
 							fineGridVertex.getParticle(i).getCentre(0),
 							fineGridVertex.getParticle(i).getCentre(1),
@@ -589,13 +589,16 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			}
 
 			if (!newContactPoints.empty())
-				addCollision( newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
+			{
+				addCollision(newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
+			}
 			#ifdef ompParticle
 				#pragma omp critical
 			#endif
 			_state.incNumberOfTriangleComparisons( fineGridVertex.getNumberOfTriangles(i) * fineGridVertex.getNumberOfTriangles(j) );
 		}
 	}
+
 	_state.incNumberOfParticleComparisons(fineGridVertex.getNumberOfParticles() * fineGridVertex.getNumberOfRealAndVirtualParticles())
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
@@ -1046,7 +1049,6 @@ void dem::mappings::Collision::mergeWithWorkerThread(const Collision& workerThre
 }
 #endif
 
-
 void dem::mappings::Collision::createHangingVertex(
 		dem::Vertex&     fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,
@@ -1060,7 +1062,6 @@ void dem::mappings::Collision::createHangingVertex(
 	// @todo Insert your code here
 	logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
 }
-
 
 void dem::mappings::Collision::destroyHangingVertex(
 		const dem::Vertex&   fineGridVertex,
@@ -1076,7 +1077,6 @@ void dem::mappings::Collision::destroyHangingVertex(
 	logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
 
-
 void dem::mappings::Collision::createInnerVertex(
 		dem::Vertex&               fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
@@ -1090,7 +1090,6 @@ void dem::mappings::Collision::createInnerVertex(
 	// @todo Insert your code here
 	logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
-
 
 void dem::mappings::Collision::createBoundaryVertex(
 		dem::Vertex&               fineGridVertex,
@@ -1106,7 +1105,6 @@ void dem::mappings::Collision::createBoundaryVertex(
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
 
-
 void dem::mappings::Collision::destroyVertex(
 		const dem::Vertex&   fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
@@ -1121,7 +1119,6 @@ void dem::mappings::Collision::destroyVertex(
 	logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
 
-
 void dem::mappings::Collision::createCell(
 		dem::Cell&                 fineGridCell,
 		dem::Vertex * const        fineGridVertices,
@@ -1135,7 +1132,6 @@ void dem::mappings::Collision::createCell(
 	// @todo Insert your code here
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
-
 
 void dem::mappings::Collision::destroyCell(
 		const dem::Cell&           fineGridCell,
@@ -1257,7 +1253,6 @@ void dem::mappings::Collision::prepareSendToMaster(
 	logTraceOut( "prepareSendToMaster(...)" );
 }
 
-
 void dem::mappings::Collision::mergeWithMaster(
 		const dem::Cell&           workerGridCell,
 		dem::Vertex * const        workerGridVertices,
@@ -1278,7 +1273,6 @@ void dem::mappings::Collision::mergeWithMaster(
 	logTraceOut( "mergeWithMaster(...)" );
 }
 
-
 void dem::mappings::Collision::receiveDataFromMaster(
 		dem::Cell&                        receivedCell,
 		dem::Vertex *                     receivedVertices,
@@ -1296,7 +1290,6 @@ void dem::mappings::Collision::receiveDataFromMaster(
 	logTraceOut( "receiveDataFromMaster(...)" );
 }
 
-
 void dem::mappings::Collision::mergeWithWorker(
 		dem::Cell&           localCell,
 		const dem::Cell&     receivedMasterCell,
@@ -1308,7 +1301,6 @@ void dem::mappings::Collision::mergeWithWorker(
 	// @todo Insert your code here
 	logTraceOutWith1Argument( "mergeWithWorker(...)", localCell.toString() );
 }
-
 
 void dem::mappings::Collision::mergeWithWorker(
 		dem::Vertex&        localVertex,
@@ -1323,7 +1315,6 @@ void dem::mappings::Collision::mergeWithWorker(
 }
 #endif
 
-
 void dem::mappings::Collision::touchVertexLastTime(
 		dem::Vertex&         fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
@@ -1335,7 +1326,6 @@ void dem::mappings::Collision::touchVertexLastTime(
 ) {
 }
 
-
 void dem::mappings::Collision::leaveCell(
 		dem::Cell&           fineGridCell,
 		dem::Vertex * const  fineGridVertices,
@@ -1346,8 +1336,6 @@ void dem::mappings::Collision::leaveCell(
 		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
 }
-
-
 
 void dem::mappings::Collision::descend(
 		dem::Cell * const          fineGridCells,
@@ -1361,7 +1349,6 @@ void dem::mappings::Collision::descend(
 	// @todo Insert your code here
 	logTraceOut( "descend(...)" );
 }
-
 
 void dem::mappings::Collision::ascend(
 		dem::Cell * const    fineGridCells,

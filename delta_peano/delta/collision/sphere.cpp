@@ -31,22 +31,22 @@
 
 
 std::vector<delta::collision::contactpoint> delta::collision::sphere(
-	      double   xCoordinatesOfPointsOfGeometryA,
-	      double   yCoordinatesOfPointsOfGeometryA,
-	      double   zCoordinatesOfPointsOfGeometryA,
-		  double   diameterA,
-		  double   epsilonA,
-		  bool     frictionA,
-		  int 	   particleA,
+  double   xCoordinatesOfPointsOfGeometryA,
+  double   yCoordinatesOfPointsOfGeometryA,
+  double   zCoordinatesOfPointsOfGeometryA,
+  double   diameterA,
+  double   epsilonA,
+  bool     frictionA,
+  int 	   particleA,
 
-	      double   xCoordinatesOfPointsOfGeometryB,
-	      double   yCoordinatesOfPointsOfGeometryB,
-	      double   zCoordinatesOfPointsOfGeometryB,
-		  double   diameterB,
-	      double   epsilonB,
-		  bool     frictionB,
-		  int 	   particleB,
-		  bool&    penetration)
+  double   xCoordinatesOfPointsOfGeometryB,
+  double   yCoordinatesOfPointsOfGeometryB,
+  double   zCoordinatesOfPointsOfGeometryB,
+  double   diameterB,
+  double   epsilonB,
+  bool     frictionB,
+  int 	   particleB,
+  bool&    penetration)
 {
 	std::vector<contactpoint> result;
 
@@ -285,22 +285,22 @@ double pt(double TP1[3], double TP2[3], double TP3[3], double cPoint[3], double 
 
 
 std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierAB(
-	      double   xCoordinatesOfPointsOfGeometryA,
-	      double   yCoordinatesOfPointsOfGeometryA,
-	      double   zCoordinatesOfPointsOfGeometryA,
-		  double   diameterA,
-		  double   epsilonA,
-		  bool     frictionA,
-		  int 	   particleA,
+  double   xCoordinatesOfPointsOfGeometryA,
+  double   yCoordinatesOfPointsOfGeometryA,
+  double   zCoordinatesOfPointsOfGeometryA,
+  double   diameterA,
+  double   epsilonA,
+  bool     frictionA,
+  int 	   particleA,
 
-	      double   *xCoordinatesOfPointsOfGeometryB,
-	      double   *yCoordinatesOfPointsOfGeometryB,
-	      double   *zCoordinatesOfPointsOfGeometryB,
-		  int   	numberOfTrianglesOfGeometryB,
-	      double    epsilonB,
-		  bool      frictionB,
-		  int 		particleB,
-		  bool&     penetration)
+  double   *xCoordinatesOfPointsOfGeometryB,
+  double   *yCoordinatesOfPointsOfGeometryB,
+  double   *zCoordinatesOfPointsOfGeometryB,
+  int   	  numberOfTrianglesOfGeometryB,
+  double    epsilonB,
+  bool      frictionB,
+  int 		  particleB,
+  bool&     penetration)
 {
 	std::vector<contactpoint> result;
 
@@ -359,22 +359,22 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 }
 
 std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierBA(
-	      double   xCoordinatesOfPointsOfGeometryB,
-	      double   yCoordinatesOfPointsOfGeometryB,
-	      double   zCoordinatesOfPointsOfGeometryB,
-		  double   diameterB,
-		  double   epsilonB,
-		  bool     frictionB,
-		  int 	   particleB,
+  double   xCoordinatesOfPointsOfGeometryB,
+  double   yCoordinatesOfPointsOfGeometryB,
+  double   zCoordinatesOfPointsOfGeometryB,
+  double   diameterB,
+  double   epsilonB,
+  bool     frictionB,
+  int 	   particleB,
 
-	      double   *xCoordinatesOfPointsOfGeometryA,
-	      double   *yCoordinatesOfPointsOfGeometryA,
-	      double   *zCoordinatesOfPointsOfGeometryA,
-		  int   	numberOfTrianglesOfGeometryA,
-	      double   epsilonA,
-		  bool     frictionA,
-		  int 	   particleA,
-		  bool&    penetration)
+  double   *xCoordinatesOfPointsOfGeometryA,
+  double   *yCoordinatesOfPointsOfGeometryA,
+  double   *zCoordinatesOfPointsOfGeometryA,
+  int   	 numberOfTrianglesOfGeometryA,
+  double   epsilonA,
+  bool     frictionA,
+  int 	   particleA,
+  bool&    penetration)
 {
 	std::vector<contactpoint> result;
 
@@ -434,15 +434,15 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
 
 
 bool delta::collision::isSphereOverlayInContact(
-	      double   xCoordinatesOfPointsOfGeometryA,
-	      double   yCoordinatesOfPointsOfGeometryA,
-	      double   zCoordinatesOfPointsOfGeometryA,
-		  double   radiusA,
+  double   xCoordinatesOfPointsOfGeometryA,
+  double   yCoordinatesOfPointsOfGeometryA,
+  double   zCoordinatesOfPointsOfGeometryA,
+  double   radiusA,
 
-	      double   xCoordinatesOfPointsOfGeometryB,
-	      double   yCoordinatesOfPointsOfGeometryB,
-	      double   zCoordinatesOfPointsOfGeometryB,
-		  double   radiusB)
+  double   xCoordinatesOfPointsOfGeometryB,
+  double   yCoordinatesOfPointsOfGeometryB,
+  double   zCoordinatesOfPointsOfGeometryB,
+  double   radiusB)
 {
 
 	bool contact = 0;

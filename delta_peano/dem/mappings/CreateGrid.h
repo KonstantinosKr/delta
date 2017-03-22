@@ -50,27 +50,36 @@ class dem::mappings::CreateGrid {
       BlackHoleWithRandomOrientedCubes,
       BlackHoleWithCubes,
       RandomWithCubes,
-	  RandomWithGranulates,
+      RandomWithGranulates,
       TwoParticlesCrash,
-	  hopper,
-	  hopperUniformSphere,
-	  hopperNonUniformSphere,
-	  freefall,
-	  frictionStatic,
-	  frictionSlide,
-	  frictionRoll,
-	  sla,
-	  nuclearArray2d,
-	  nuclearArray3d
+
+      hopper,
+      hopperUniformSphere,
+      hopperNonUniformSphere,
+
+      hopperUniformMesh,
+      hopperNonUniformMesh,
+      freefall,
+      frictionStaticSphere,
+      frictionSlideSphere,
+      frictionRollSphere,
+
+      frictionStaticMesh,
+      frictionSlideMesh,
+      frictionRollMesh,
+
+      sla,
+      nuclearArray2d,
+      nuclearArray3d
     };
 
     enum VScheme {
-    	noVScheme,
-    	randomLinear,
-		randomLinearAngular,
-		crash,
-		crashAB,
-		crashSlideWithAngle
+      noVScheme,
+      randomLinear,
+      randomLinearAngular,
+      crash,
+      crashAB,
+      crashSlideWithAngle
     };
 
     enum GridType {
