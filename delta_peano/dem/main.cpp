@@ -274,7 +274,7 @@ int main(int argc, char** argv)
                                               0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="frictionRollMesh") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollSphere,
+      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollMesh,
                                               dem::mappings::CreateGrid::noVScheme,
                                               0.5, 0.5, 0.5, gridType, meshMultiplier);
   }

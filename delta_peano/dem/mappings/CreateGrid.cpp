@@ -864,7 +864,7 @@ void dem::mappings::CreateGrid::createCell(
 
         iREAL position[3];
         position[0] = centreAsArray[0];
-        position[1] = centreAsArray[1] + height/2 + radius + eps*2;
+        position[1] = centreAsArray[1] + height/2 + radius + eps;
         position[2] = centreAsArray[2];
 
         delta::primitives::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
@@ -880,7 +880,7 @@ void dem::mappings::CreateGrid::createCell(
       {
         double height = 0.05;
         double width = 0.35;
-        delta::primitives::generateCube(centreAsArray, width, height, width, 0, 0, 0.25, xCoordinates, yCoordinates, zCoordinates);
+        delta::primitives::generateCube(centreAsArray, width, height, width, 0, 0, 0.1, xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                                         _epsilon, true, WOOD, true, _numberOfParticles);
 
@@ -892,7 +892,7 @@ void dem::mappings::CreateGrid::createCell(
 
         iREAL position[3];
         position[0] = centreAsArray[0];
-        position[1] = centreAsArray[1] + height/2 + radius + eps*2;
+        position[1] = centreAsArray[1] + height/2 + radius;
         position[2] = centreAsArray[2];
 
         delta::primitives::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);

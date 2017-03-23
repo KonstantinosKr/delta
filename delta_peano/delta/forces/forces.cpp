@@ -144,7 +144,7 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	iREAL mass = 1.0/W_NN;
 
 	iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
-	printf("VEL:%f\n", velocity);
+	//printf("VEL:%f\n", velocity);
 
 	//iREAL velocity = sqrt(relativeVelocity[0]*relativeVelocity[0]) + (relativeVelocity[1]*relativeVelocity[1]) + (relativeVelocity[2]*relativeVelocity[2]);
 	//printf("VELSQRT:%f\n", velocity);
