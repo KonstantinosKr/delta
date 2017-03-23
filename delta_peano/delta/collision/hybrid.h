@@ -53,72 +53,68 @@ namespace delta {
       double*   xCoordinatesOfPointsOfGeometryA,
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
-	  double    epsilonA,
-	  bool      frictionA,
-	  int 	   particleA,
+      double    epsilonA,
+      bool      frictionA,
+      int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
       double*   yCoordinatesOfPointsOfGeometryB,
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
-	  bool      frictionB,
-	  int 	   particleB
-    );
+      bool      frictionB,
+      int 	    particleB);
 
     std::vector<contactpoint> hybridWithPerBatchFallBack(
       int       numberOfTrianglesOfGeometryA,
       double*   xCoordinatesOfPointsOfGeometryA,
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
-	  double    epsilonA,
-	  bool      frictionA,
-	  int 	   particleA,
+      double    epsilonA,
+      bool      frictionA,
+      int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
       double*   yCoordinatesOfPointsOfGeometryB,
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
-	  bool      frictionB,
-	  int 	   particleB
-    );
+      bool      frictionB,
+      int 	    particleB);
 
     std::vector<contactpoint> hybridWithPerTriangleFallBackStats(
       int       numberOfTrianglesOfGeometryA,
       double*   xCoordinatesOfPointsOfGeometryA,
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
-	  double    epsilonA,
-	  bool      frictionA,
-	  int 	   particleA,
+      double    epsilonA,
+      bool      frictionA,
+      int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
       double*   yCoordinatesOfPointsOfGeometryB,
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
-	  bool      frictionB,
-	  int 	   particleB
-    );
+      bool      frictionB,
+      int 	    particleB);
 
     std::vector<contactpoint> hybridWithPerBatchFallBackStats(
       int       numberOfTrianglesOfGeometryA,
       double*   xCoordinatesOfPointsOfGeometryA,
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
-	  double    epsilonA,
-	  bool      frictionA,
-	  int 	   particleA,
+      double    epsilonA,
+      bool      frictionA,
+      int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
       double*   yCoordinatesOfPointsOfGeometryB,
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
-	  bool      frictionB,
-	  int 	   particleB
-    );
+      bool      frictionB,
+      int 	    particleB);
   }
 }
 

@@ -33,7 +33,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
   bool      frictionA,
-  int 		particleA,
+  int 		  particleA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
@@ -41,8 +41,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
   bool      frictionB,
-  int	    particleB
-) {
+  int	      particleB)
+{
   std::vector<contactpoint> result;
 
   #if defined(__INTEL_COMPILER)
@@ -77,14 +77,13 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
       const int MaxNewtonIterations __attribute__ ((aligned(byteAlignment))) = 8;
       bool failed = 0;
 
-      penalty(
-          xCoordinatesOfPointsOfGeometryA+(iA),
-          yCoordinatesOfPointsOfGeometryA+(iA),
-          zCoordinatesOfPointsOfGeometryA+(iA),
-          xCoordinatesOfPointsOfGeometryB+(iB),
-          yCoordinatesOfPointsOfGeometryB+(iB),
-          zCoordinatesOfPointsOfGeometryB+(iB),
-          xPA, yPA, zPA, xPB, yPB, zPB, MaxErrorOfPenaltyMethod, failed);
+      penalty(xCoordinatesOfPointsOfGeometryA+(iA),
+              yCoordinatesOfPointsOfGeometryA+(iA),
+              zCoordinatesOfPointsOfGeometryA+(iA),
+              xCoordinatesOfPointsOfGeometryB+(iB),
+              yCoordinatesOfPointsOfGeometryB+(iB),
+              zCoordinatesOfPointsOfGeometryB+(iB),
+              xPA, yPA, zPA, xPB, yPB, zPB, MaxErrorOfPenaltyMethod, failed);
 
       if (failed) 
       {
@@ -134,8 +133,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
   bool      frictionB,
-  int 		particleB
-) {
+  int 		particleB)
+{
   std::vector<contactpoint> result;
 
   #if defined(__INTEL_COMPILER)
@@ -170,14 +169,13 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
       const int MaxNewtonIterations __attribute__ ((aligned(byteAlignment))) = 8;
       bool failed = 0;
 
-      penalty(
-          xCoordinatesOfPointsOfGeometryA+(iA),
-          yCoordinatesOfPointsOfGeometryA+(iA),
-          zCoordinatesOfPointsOfGeometryA+(iA),
-          xCoordinatesOfPointsOfGeometryB+(iB),
-          yCoordinatesOfPointsOfGeometryB+(iB),
-          zCoordinatesOfPointsOfGeometryB+(iB),
-          xPA, yPA, zPA, xPB, yPB, zPB, MaxErrorOfPenaltyMethod, failed);
+      penalty(xCoordinatesOfPointsOfGeometryA+(iA),
+              yCoordinatesOfPointsOfGeometryA+(iA),
+              zCoordinatesOfPointsOfGeometryA+(iA),
+              xCoordinatesOfPointsOfGeometryB+(iB),
+              yCoordinatesOfPointsOfGeometryB+(iB),
+              zCoordinatesOfPointsOfGeometryB+(iB),
+              xPA, yPA, zPA, xPB, yPB, zPB, MaxErrorOfPenaltyMethod, failed);
 
       if (failed)
       {
@@ -219,7 +217,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
   bool      frictionA,
-  int 		particleA,
+  int 		  particleA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
@@ -227,8 +225,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
   bool      frictionB,
-  int	    particleB
-) {
+  int	      particleB)
+{
   std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
 
   #if defined(__INTEL_COMPILER)
@@ -256,28 +254,28 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     #pragma simd
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-    	double xPA __attribute__ ((aligned(byteAlignment)));
-    	double yPA __attribute__ ((aligned(byteAlignment)));
-    	double zPA __attribute__ ((aligned(byteAlignment)));
-    	double xPB __attribute__ ((aligned(byteAlignment)));
-    	double yPB __attribute__ ((aligned(byteAlignment)));
-    	double zPB __attribute__ ((aligned(byteAlignment)));
+      double xPA __attribute__ ((aligned(byteAlignment)));
+      double yPA __attribute__ ((aligned(byteAlignment)));
+      double zPA __attribute__ ((aligned(byteAlignment)));
+      double xPB __attribute__ ((aligned(byteAlignment)));
+      double yPB __attribute__ ((aligned(byteAlignment)));
+      double zPB __attribute__ ((aligned(byteAlignment)));
 
-    	const int MaxNewtonIterations __attribute__ ((aligned(byteAlignment))) = 4;
-    	const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
+      const int MaxNewtonIterations __attribute__ ((aligned(byteAlignment))) = 4;
+      const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
         
-        penalty(
-      	    xCoordinatesOfPointsOfGeometryA+(iA),
-            yCoordinatesOfPointsOfGeometryA+(iA),
-            zCoordinatesOfPointsOfGeometryA+(iA),
-            xCoordinatesOfPointsOfGeometryB+(iB),
-            yCoordinatesOfPointsOfGeometryB+(iB),
-            zCoordinatesOfPointsOfGeometryB+(iB),
-            xPA, yPA, zPA, xPB, yPB, zPB, 
-	    MaxErrorOfPenaltyMethod, failed); 
+      penalty(xCoordinatesOfPointsOfGeometryA+(iA),
+              yCoordinatesOfPointsOfGeometryA+(iA),
+              zCoordinatesOfPointsOfGeometryA+(iA),
+              xCoordinatesOfPointsOfGeometryB+(iB),
+              yCoordinatesOfPointsOfGeometryB+(iB),
+              zCoordinatesOfPointsOfGeometryB+(iB),
+              xPA, yPA, zPA, xPB, yPB, zPB,
+              MaxErrorOfPenaltyMethod, failed);
 
-        contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-       if (newContactPoint.getDistance()<minDistance) {
+      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
+      if (newContactPoint.getDistance()<minDistance)
+      {
         nearestContactPoint = newContactPoint;
         minDistance         = newContactPoint.getDistance();
       }
@@ -302,27 +300,26 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
         double yPB __attribute__ ((aligned(byteAlignment)));
         double zPB __attribute__ ((aligned(byteAlignment)));
         
-	bf(
-          xCoordinatesOfPointsOfGeometryA+(iA),
-          yCoordinatesOfPointsOfGeometryA+(iA),
-          zCoordinatesOfPointsOfGeometryA+(iA),
-          xCoordinatesOfPointsOfGeometryB+(iB),
-          yCoordinatesOfPointsOfGeometryB+(iB),
-          zCoordinatesOfPointsOfGeometryB+(iB),
-          xPA, yPA, zPA, xPB, yPB, zPB);
+        bf(xCoordinatesOfPointsOfGeometryA+(iA),
+           yCoordinatesOfPointsOfGeometryA+(iA),
+           zCoordinatesOfPointsOfGeometryA+(iA),
+           xCoordinatesOfPointsOfGeometryB+(iB),
+           yCoordinatesOfPointsOfGeometryB+(iB),
+           zCoordinatesOfPointsOfGeometryB+(iB),
+           xPA, yPA, zPA, xPB, yPB, zPB);
 
-		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-        if (newContactPoint.getDistance()<minDistance) {
+        contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
+        if (newContactPoint.getDistance()<minDistance)
+        {
           nearestContactPoint = newContactPoint;
           minDistance         = newContactPoint.getDistance();
-
         }
       }
     }
     if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB))
     {
       #ifdef ompTriangle
-	#pragma omp critical
+	      #pragma omp critical
       #endif
       result.push_back( nearestContactPoint );
     }
@@ -339,7 +336,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
   bool      frictionA,
-  int	    particleA,
+  int	      particleA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
@@ -347,8 +344,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
   bool      frictionB,
-  int 	  	particleB
-) {
+  int 	  	particleB)
+{
   std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
 
   #if defined(__INTEL_COMPILER)
@@ -386,18 +383,18 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     	const int MaxNewtonIterations __attribute__ ((aligned(byteAlignment))) = 4;
     	const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
 
-        penalty(
-      	    xCoordinatesOfPointsOfGeometryA+(iA),
-            yCoordinatesOfPointsOfGeometryA+(iA),
-            zCoordinatesOfPointsOfGeometryA+(iA),
-            xCoordinatesOfPointsOfGeometryB+(iB),
-            yCoordinatesOfPointsOfGeometryB+(iB),
-            zCoordinatesOfPointsOfGeometryB+(iB),
-            xPA, yPA, zPA, xPB, yPB, zPB,
-	    MaxErrorOfPenaltyMethod, failed);
+      penalty(xCoordinatesOfPointsOfGeometryA+(iA),
+              yCoordinatesOfPointsOfGeometryA+(iA),
+              zCoordinatesOfPointsOfGeometryA+(iA),
+              xCoordinatesOfPointsOfGeometryB+(iB),
+              yCoordinatesOfPointsOfGeometryB+(iB),
+              zCoordinatesOfPointsOfGeometryB+(iB),
+              xPA, yPA, zPA, xPB, yPB, zPB,
+              MaxErrorOfPenaltyMethod, failed);
 
-        contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-       if (newContactPoint.getDistance()<minDistance) {
+      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
+      if (newContactPoint.getDistance()<minDistance)
+      {
         nearestContactPoint = newContactPoint;
         minDistance         = newContactPoint.getDistance();
       }
@@ -419,7 +416,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
         double yPB __attribute__ ((aligned(byteAlignment)));
         double zPB __attribute__ ((aligned(byteAlignment)));
 
-	    bf(xCoordinatesOfPointsOfGeometryA+(iA),
+        bf(xCoordinatesOfPointsOfGeometryA+(iA),
            yCoordinatesOfPointsOfGeometryA+(iA),
            zCoordinatesOfPointsOfGeometryA+(iA),
            xCoordinatesOfPointsOfGeometryB+(iB),
@@ -427,8 +424,9 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
            zCoordinatesOfPointsOfGeometryB+(iB),
            xPA, yPA, zPA, xPB, yPB, zPB);
 
-	    contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-        if (newContactPoint.getDistance()<minDistance) {
+        contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
+        if (newContactPoint.getDistance()<minDistance)
+        {
           nearestContactPoint = newContactPoint;
           minDistance         = newContactPoint.getDistance();
 

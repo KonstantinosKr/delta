@@ -49,7 +49,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
   bool      frictionA,
-  int 		particleA,
+  int 		  particleA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
@@ -57,8 +57,8 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
   bool      frictionB,
-  int 		particleB
-) {
+  int 		  particleB)
+{
   const double MaxError = (epsilonA+epsilonB) / 16.0;
 
   std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
@@ -94,31 +94,31 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
 
       int numberOfNewtonIterationsRequired __attribute__ ((aligned(byteAlignment))) = 0;
 
-      penalty(
-        xCoordinatesOfPointsOfGeometryA+(iA),
-        yCoordinatesOfPointsOfGeometryA+(iA),
-        zCoordinatesOfPointsOfGeometryA+(iA),
-        xCoordinatesOfPointsOfGeometryB+(iB),
-        yCoordinatesOfPointsOfGeometryB+(iB),
-        zCoordinatesOfPointsOfGeometryB+(iB),
-        xPA, yPA, zPA, xPB, yPB, zPB,
-        MaxError,
-        numberOfNewtonIterationsRequired
-      );
+      penalty(xCoordinatesOfPointsOfGeometryA+(iA),
+              yCoordinatesOfPointsOfGeometryA+(iA),
+              zCoordinatesOfPointsOfGeometryA+(iA),
+              xCoordinatesOfPointsOfGeometryB+(iB),
+              yCoordinatesOfPointsOfGeometryB+(iB),
+              zCoordinatesOfPointsOfGeometryB+(iB),
+              xPA, yPA, zPA, xPB, yPB, zPB,
+              MaxError,
+              numberOfNewtonIterationsRequired);
 
       numberOfNewtonIterations[numberOfNewtonIterationsRequired]++;
 
       contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-      if (newContactPoint.getDistance()<minDistance) {
+      if (newContactPoint.getDistance()<minDistance)
+      {
         nearestContactPoint = newContactPoint;
         minDistance         = newContactPoint.getDistance();
       }
     }
-    if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB)) {
-    #ifdef ompTriangle
-    	#pragma omp critical
-    #endif
-        result.push_back( nearestContactPoint );
+    if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB))
+    {
+      #ifdef ompTriangle
+        #pragma omp critical
+      #endif
+      result.push_back( nearestContactPoint );
     }
   }
 
@@ -133,7 +133,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   double*   zCoordinatesOfPointsOfGeometryA,
   double    epsilonA,
   bool      frictionA,
-  int	  	particleA,
+  int	  	  particleA,
 
   int       numberOfTrianglesOfGeometryB,
   double*   xCoordinatesOfPointsOfGeometryB,
@@ -141,7 +141,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   double*   zCoordinatesOfPointsOfGeometryB,
   double    epsilonB,
   bool      frictionB,
-  int		particleB
+  int		    particleB
 ) {
   const double MaxError = (epsilonA+epsilonB) / 16.0;
 
@@ -178,26 +178,27 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
 
       bool failed = 0;
 
-      penalty(
-        xCoordinatesOfPointsOfGeometryA+(iA),
-        yCoordinatesOfPointsOfGeometryA+(iA),
-        zCoordinatesOfPointsOfGeometryA+(iA),
-        xCoordinatesOfPointsOfGeometryB+(iB),
-        yCoordinatesOfPointsOfGeometryB+(iB),
-        zCoordinatesOfPointsOfGeometryB+(iB),
-        xPA, yPA, zPA, xPB, yPB, zPB,
-        MaxError, failed);
+      penalty(xCoordinatesOfPointsOfGeometryA+(iA),
+              yCoordinatesOfPointsOfGeometryA+(iA),
+              zCoordinatesOfPointsOfGeometryA+(iA),
+              xCoordinatesOfPointsOfGeometryB+(iB),
+              yCoordinatesOfPointsOfGeometryB+(iB),
+              zCoordinatesOfPointsOfGeometryB+(iB),
+              xPA, yPA, zPA, xPB, yPB, zPB,
+              MaxError, failed);
 
       contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-      if (newContactPoint.getDistance()<minDistance) {
+      if (newContactPoint.getDistance()<minDistance)
+      {
         nearestContactPoint = newContactPoint;
         minDistance         = newContactPoint.getDistance();
       }
     }
-    if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB)) {
-	#ifdef ompTriangle
-	  #pragma omp critical
-	#endif
+    if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB))
+    {
+      #ifdef ompTriangle
+        #pragma omp critical
+      #endif
     	result.push_back( nearestContactPoint );
     }
   }

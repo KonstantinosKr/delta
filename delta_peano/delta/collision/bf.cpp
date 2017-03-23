@@ -33,18 +33,18 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
     double*   xCoordinatesOfPointsOfGeometryA,
     double*   yCoordinatesOfPointsOfGeometryA,
     double*   zCoordinatesOfPointsOfGeometryA,
-	double    epsilonA,
-	bool      frictionA,
-	int 	   particleA,
+    double    epsilonA,
+    bool      frictionA,
+    int 	    particleA,
 
-	int       numberOfTrianglesOfGeometryB,
+    int       numberOfTrianglesOfGeometryB,
     double*   xCoordinatesOfPointsOfGeometryB,
     double*   yCoordinatesOfPointsOfGeometryB,
     double*   zCoordinatesOfPointsOfGeometryB,
     double    epsilonB,
-	bool      frictionB,
-	int 	   particleB
-    ) {
+    bool      frictionB,
+    int 	    particleB)
+{
   std::vector<contactpoint> result;
 
 #if defined(__INTEL_COMPILER)
@@ -62,41 +62,42 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
 #endif
   for (int iA =0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-	double minDistance = std::numeric_limits<double>::max();
-	contactpoint nearestContactPoint;
+    double minDistance = std::numeric_limits<double>::max();
+    contactpoint nearestContactPoint;
 
-	#pragma simd  
-	for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
-	{
-		double xPA __attribute__ ((aligned(byteAlignment)));
-		double yPA __attribute__ ((aligned(byteAlignment)));
-		double zPA __attribute__ ((aligned(byteAlignment)));
-		double xPB __attribute__ ((aligned(byteAlignment)));
-		double yPB __attribute__ ((aligned(byteAlignment)));
-		double zPB __attribute__ ((aligned(byteAlignment)));
-		  
-		bf( xCoordinatesOfPointsOfGeometryA+(iA),
-		    yCoordinatesOfPointsOfGeometryA+(iA),
-		    zCoordinatesOfPointsOfGeometryA+(iA),
-		    xCoordinatesOfPointsOfGeometryB+(iB),
-		    yCoordinatesOfPointsOfGeometryB+(iB),
-		    zCoordinatesOfPointsOfGeometryB+(iB),
-		    xPA, yPA, zPA, xPB, yPB, zPB);
+    #pragma simd
+    for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
+    {
+      double xPA __attribute__ ((aligned(byteAlignment)));
+      double yPA __attribute__ ((aligned(byteAlignment)));
+      double zPA __attribute__ ((aligned(byteAlignment)));
+      double xPB __attribute__ ((aligned(byteAlignment)));
+      double yPB __attribute__ ((aligned(byteAlignment)));
+      double zPB __attribute__ ((aligned(byteAlignment)));
 
-		contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-		if (newContactPoint.getDistance()<minDistance) {
-		  	  nearestContactPoint = newContactPoint;
-			  minDistance         = newContactPoint.getDistance();
-		}
-	}
-	if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB)) {
-	#ifdef ompTriangle
-		#pragma omp critical
-	#endif
-		result.push_back( nearestContactPoint );
-	}
+      bf( xCoordinatesOfPointsOfGeometryA+(iA),
+          yCoordinatesOfPointsOfGeometryA+(iA),
+          zCoordinatesOfPointsOfGeometryA+(iA),
+          xCoordinatesOfPointsOfGeometryB+(iB),
+          yCoordinatesOfPointsOfGeometryB+(iB),
+          zCoordinatesOfPointsOfGeometryB+(iB),
+          xPA, yPA, zPA, xPB, yPB, zPB);
+
+      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
+      if (newContactPoint.getDistance()<minDistance)
+      {
+         nearestContactPoint = newContactPoint;
+         minDistance         = newContactPoint.getDistance();
+      }
+    }
+    if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB))
+    {
+    #ifdef ompTriangle
+      #pragma omp critical
+    #endif
+      result.push_back( nearestContactPoint );
+    }
   }
-
   return result;
 }
 
@@ -166,8 +167,7 @@ int NoDivTriTriIsect(double V0[3],double V1[3],double V2[3],
   return 0;
 }
 
-void delta::collision::bf(
-                          double   xCoordinatesOfPointsOfGeometryA[3],
+void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
                           double   yCoordinatesOfPointsOfGeometryA[3],
                           double   zCoordinatesOfPointsOfGeometryA[3],
                           double   xCoordinatesOfPointsOfGeometryB[3],
@@ -178,8 +178,8 @@ void delta::collision::bf(
                           double&  zPA,
                           double&  xPB,
                           double&  yPB,
-                          double&  zPB
-                          ) {
+                          double&  zPB)
+{
 
 	iREAL aaa[3], bbb[3], ccc[3];
 	iREAL ddd[3], eee[3], fff[3];

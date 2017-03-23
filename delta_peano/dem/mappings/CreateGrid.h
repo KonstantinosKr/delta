@@ -78,7 +78,6 @@ class dem::mappings::CreateGrid {
       noVScheme,
       randomLinear,
       randomLinearAngular,
-      crashAB,
       crashY,
       crashXY,
       crashXYRotation,
@@ -94,7 +93,7 @@ class dem::mappings::CreateGrid {
     };
 
     static void setScenario(Scenario scenario, VScheme velocityScheme, double maxH, double particleDiamMin, double particleDiamMax,
-    						GridType gridType, int noPointsPerGranulate);
+    						            GridType gridType, int noPointsPerGranulate);
 
   private:
     /**
@@ -107,13 +106,15 @@ class dem::mappings::CreateGrid {
     static double   _maxH;
     static double   _minParticleDiam;
     static double   _maxParticleDiam;
-    static int   _noPointsPerParticle;
+    static int      _noPointsPerParticle;
 
     static GridType _gridType;
 
     int   _numberOfParticles;
     int   _numberOfObstacles;
     int   _numberOfTriangles;
+
+    void setVScheme(dem::Vertex&  vertex, int particleNumber);
 
   public:
     /**

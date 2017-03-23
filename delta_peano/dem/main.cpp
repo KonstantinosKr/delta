@@ -210,7 +210,7 @@ int main(int argc, char** argv)
   }
   else if (scenario=="two-particles-crash") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash,
-                                            dem::mappings::CreateGrid::crashAB,
+                                            dem::mappings::CreateGrid::noVScheme,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniformSphere") {
@@ -288,6 +288,11 @@ int main(int argc, char** argv)
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.15, 0.15, 0.15, gridType, meshMultiplier);
   }
+  else if (scenario=="nuclearArray3d") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray3d,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
+  }
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;
     programExitCode = 2;
@@ -298,22 +303,22 @@ int main(int argc, char** argv)
   if (plotIdentifier=="never") {
     plot = dem::runners::Runner::Never;
   }
-  else if (plotIdentifier=="every-iteration") {
+  else if(plotIdentifier=="every-iteration") {
     plot = dem::runners::Runner::EveryIteration;
   }
-  else if (plotIdentifier=="upon-change") {
+  else if(plotIdentifier=="upon-change") {
     plot = dem::runners::Runner::UponChange;
   }
-  else if (plotIdentifier=="every-batch") {
+  else if(plotIdentifier=="every-batch") {
 	plot = dem::runners::Runner::EveryBatch;
   }
-  else if (plotIdentifier=="adaptive") {
+  else if(plotIdentifier=="adaptive") {
 	plot = dem::runners::Runner::Adaptive;
   }
-  else if (plotIdentifier=="range") {
+  else if(plotIdentifier=="range") {
   	plot = dem::runners::Runner::Range;
   }
-  else if (plotIdentifier=="track") {
+  else if(plotIdentifier=="track") {
     plot = dem::runners::Runner::Track;
     //dem::mappings::Plot::_trackID = trackID;
   }else {

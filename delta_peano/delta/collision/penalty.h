@@ -53,36 +53,34 @@ namespace delta {
       double*   xCoordinatesOfPointsOfGeometryA,
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
-	  double    epsilonA,
-	  bool      frictionA,
-	  int 	   particleA,
+      double    epsilonA,
+      bool      frictionA,
+      int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
       double*   yCoordinatesOfPointsOfGeometryB,
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
-	  bool      frictionB,
-	  int 	   particleB
-    );
+      bool      frictionB,
+      int 	    particleB);
 
     std::vector<contactpoint> penalty(
       int       numberOfTrianglesOfGeometryA,
       double*   xCoordinatesOfPointsOfGeometryA,
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
-	  double    epsilonA,
-	  bool      frictionA,
-	  int 	    particleA,
+      double    epsilonA,
+      bool      frictionA,
+      int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
       double*   yCoordinatesOfPointsOfGeometryB,
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
-	  bool      frictionB,
-	  int 	   particleB
-    );
+      bool      frictionB,
+      int 	    particleB);
 
     /**
      * penalty method for nonlinear constrained optimization of convex problem
@@ -286,7 +284,6 @@ namespace delta {
       double&  yPB,
       double&  zPB,
       double   maxError,
-      int&     numberOfNewtonIterationsRequired
-    );
+      int&     numberOfNewtonIterationsRequired);
   }
 }

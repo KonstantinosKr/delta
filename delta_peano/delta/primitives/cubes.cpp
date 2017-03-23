@@ -516,8 +516,6 @@ void delta::primitives::generateHullCube(
 
   double h = std::sqrt(1.0/12.0)*diagonal;
 
-  printf("r%f h%f\n", diagonal, h);
-
   //0
   v[0][0] = (- h) * mul;
   v[0][1] = (- h) * mul;
