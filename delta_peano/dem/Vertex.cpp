@@ -49,6 +49,9 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 
   delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
 
+  printf("%f %f %f %f %f %f %f %f %f\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
+  printf("%f\n", mass);
+
   newParticle._persistentRecords._inertia(0) = inertia[0];
   newParticle._persistentRecords._inertia(1) = inertia[1];
   newParticle._persistentRecords._inertia(2) = inertia[2];
@@ -146,15 +149,15 @@ int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIO
   iREAL volume = (4.0/3.0) * 3.14 * pow(radius,3);
   mass = volume * material;
 
-  newParticle._persistentRecords._inertia(0) = 0.4 * mass * radius * radius*1000;
+  newParticle._persistentRecords._inertia(0) = 0.4 * mass * radius * radius;
   newParticle._persistentRecords._inertia(1) = 0;
   newParticle._persistentRecords._inertia(2) = 0;
   newParticle._persistentRecords._inertia(3) = 0;
-  newParticle._persistentRecords._inertia(4) = 0.4 * mass * radius * radius*1000;
+  newParticle._persistentRecords._inertia(4) = 0.4 * mass * radius * radius;
   newParticle._persistentRecords._inertia(5) = 0;
   newParticle._persistentRecords._inertia(6) = 0;
   newParticle._persistentRecords._inertia(7) = 0;
-  newParticle._persistentRecords._inertia(8) = 0.4 * mass * radius * radius*1000;
+  newParticle._persistentRecords._inertia(8) = 0.4 * mass * radius * radius;
 
   newParticle._persistentRecords._centreOfMass(0) = center(0);
   newParticle._persistentRecords._centreOfMass(1) = center(0);

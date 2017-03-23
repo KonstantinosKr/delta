@@ -172,7 +172,7 @@ void dem::mappings::CreateGrid::createCell(
 				centreAsArray[1] = 0.5;
 
 				double floorHeight = 0.05;
-				delta::primitives::generateSurface( centreAsArray, 1, floorHeight, xCoordinates, yCoordinates, zCoordinates);
+        delta::primitives::generateHullCube(centreAsArray, 1, floorHeight, 1, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 
 				bool isObstacle = true; bool friction = true; iREAL rho = GOLD;
 
@@ -258,7 +258,7 @@ void dem::mappings::CreateGrid::createCell(
 				centreAsArray[1] = 0.5;
 
 				double floorHeight = 0.05;
-				delta::primitives::generateSurface( centreAsArray, 1, floorHeight, xCoordinates, yCoordinates, zCoordinates);
+        delta::primitives::generateHullCube(centreAsArray, 1, floorHeight, 1, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 
 				bool isObstacle = true; bool friction = true; iREAL rho = GOLD;
 				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
@@ -337,7 +337,7 @@ void dem::mappings::CreateGrid::createCell(
 				centreAsArray[1] = 0.5;
 
 				double floorHeight = 0.05;
-				delta::primitives::generateSurface( centreAsArray, 1, floorHeight, xCoordinates, yCoordinates, zCoordinates);
+        delta::primitives::generateHullCube(centreAsArray, 1, floorHeight, 1, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 
 				bool isObstacle = true; bool friction = true; iREAL rho = GOLD;
 				int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
@@ -457,7 +457,9 @@ void dem::mappings::CreateGrid::createCell(
 
 				centreAsArray[1] = 0.3;
 
-				delta::primitives::generateSurface(centreAsArray, 0.35, 0.05, xCoordinates, yCoordinates, zCoordinates);
+        double height = 0.05;
+        double width = 0.35;
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 
 				isObstacle = true; friction = true;
 				newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
@@ -560,7 +562,9 @@ void dem::mappings::CreateGrid::createCell(
 
 				isObstacle = true; friction = true;
 
-				delta::primitives::generateSurface( centreAsArray, 0.35, 0.05, xCoordinates, yCoordinates, zCoordinates);
+        double height = 0.05;
+        double width = 0.35;
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 				newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										                                 _epsilon, isObstacle, GOLD, friction, _numberOfParticles);
 
@@ -628,7 +632,9 @@ void dem::mappings::CreateGrid::createCell(
 
         centreAsArray[1] = 0.3;
 
-        delta::primitives::generateSurface(centreAsArray, 0.35, 0.05, xCoordinates, yCoordinates, zCoordinates);
+        double height = 0.05;
+        double width = 0.35;
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 
         isObstacle = true; friction = true;
         newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
@@ -731,7 +737,9 @@ void dem::mappings::CreateGrid::createCell(
 
         isObstacle = true; friction = true;
 
-        delta::primitives::generateSurface( centreAsArray, 0.35, 0.05, xCoordinates, yCoordinates, zCoordinates);
+        double height = 0.05;
+        double width = 0.35;
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
         newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                                      _epsilon, isObstacle, GOLD, friction, _numberOfParticles);
 
@@ -742,8 +750,9 @@ void dem::mappings::CreateGrid::createCell(
       }
 			case frictionStaticSphere:
 			{
-			  double height = 0.05;
-				delta::primitives::generateSurface(centreAsArray, 0.35, height, xCoordinates, yCoordinates, zCoordinates);
+        double height = 0.05;
+        double width = 0.35;
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                                          _epsilon, true, GOLD, true, _numberOfParticles);
 
@@ -770,7 +779,8 @@ void dem::mappings::CreateGrid::createCell(
 			case frictionSlideSphere:
 			{
         double height = 0.05;
-        delta::primitives::generateSurface(centreAsArray, 0.35, height, xCoordinates, yCoordinates, zCoordinates);
+        double width = 0.35;
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                                          _epsilon, true, GOLD, true, _numberOfParticles);
 
@@ -798,7 +808,7 @@ void dem::mappings::CreateGrid::createCell(
       {
         double height = 0.05;
         double width = 0.35;
-        delta::primitives::generateCube(centreAsArray, width, height, width, 0, 0, 0.1, xCoordinates, yCoordinates, zCoordinates);
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0.1, xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                                          _epsilon, true, WOOD, true, _numberOfParticles);
 
@@ -825,9 +835,10 @@ void dem::mappings::CreateGrid::createCell(
 			case frictionStaticMesh:
       {
         double height = 0.05;
-        delta::primitives::generateSurface(centreAsArray, 0.35, height, xCoordinates, yCoordinates, zCoordinates);
+        double width = 0.35;
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-                                                        _epsilon, true, WOOD, true, _numberOfParticles);
+                                                         _epsilon, true, WOOD, true, _numberOfParticles);
 
         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -852,9 +863,10 @@ void dem::mappings::CreateGrid::createCell(
       case frictionSlideMesh:
       {
         double height = 0.05;
-        delta::primitives::generateSurface(centreAsArray, 0.35, height, xCoordinates, yCoordinates, zCoordinates);
+        double width = 0.35;
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-                                                        _epsilon, true, WOOD, true, _numberOfParticles);
+                                                         _epsilon, true, WOOD, true, _numberOfParticles);
 
         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -880,9 +892,9 @@ void dem::mappings::CreateGrid::createCell(
       {
         double height = 0.05;
         double width = 0.35;
-        delta::primitives::generateCube(centreAsArray, width, height, width, 0, 0, 0.1, xCoordinates, yCoordinates, zCoordinates);
+        delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0.1, xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-                                                        _epsilon, true, WOOD, true, _numberOfParticles);
+                                                         _epsilon, true, WOOD, true, _numberOfParticles);
 
         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -895,7 +907,9 @@ void dem::mappings::CreateGrid::createCell(
         position[1] = centreAsArray[1] + height/2 + radius;
         position[2] = centreAsArray[2];
 
-        delta::primitives::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+        delta::primitives::generateHullCube(position, (radius*2)*0.9, xCoordinates, yCoordinates, zCoordinates);
+
+        //delta::primitives::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
         newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
                                                      eps, false, WOOD, true, _numberOfParticles);
 
@@ -983,7 +997,7 @@ void dem::mappings::CreateGrid::createCell(
 			}
 
 			int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-									            _epsilon, false, WOOD, true, _numberOfParticles);
+									                                     _epsilon, false, WOOD, true, _numberOfParticles);
 
 			#ifdef STATSPARTICLE
 			  logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);

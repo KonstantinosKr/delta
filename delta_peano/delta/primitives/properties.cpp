@@ -493,7 +493,9 @@ void delta::primitives::computeInertia(
     c[2] = zCoordinates[i+2];
 
     J = rho * simplex_J (zero, a, b, c);
+
     me += simplex_1 (J, zero, a, b, c);
+
     sx += simplex_x (J, zero, a, b, c);
     sy += simplex_y (J, zero, a, b, c);
     sz += simplex_z (J, zero, a, b, c);
@@ -573,9 +575,6 @@ void delta::primitives::computeInverseInertia(double inertia[9], double inverse[
 		  inverse[j] = x[j];
 		}
 	}
-
-
-
 }
 
 double delta::primitives::getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass){

@@ -25,6 +25,12 @@
 
 #include <vector>
 
+#include <cmath>
+#include <assert.h>
+#include <stdlib.h>
+
+#include "delta/hull/hull.h"
+#include "delta/hull/alg.h"
 
 namespace delta {
   namespace primitives {
@@ -64,5 +70,24 @@ namespace delta {
        std::vector<double>&  yCoordinates,
        std::vector<double>&  zCoordinates
      );
+
+     void generateHullCube(
+       double  center[3],
+       double  diagonal,
+       std::vector<double>&  xCoordinates,
+       std::vector<double>&  yCoordinates,
+       std::vector<double>&  zCoordinates);
+
+     void generateHullCube(
+           double  center[3],
+           double x,
+           double y,
+           double z,
+           double alphaX,
+           double alphaY,
+           double alphaZ,
+           std::vector<double>&  xCoordinates,
+           std::vector<double>&  yCoordinates,
+           std::vector<double>&  zCoordinates);
   }
 }

@@ -495,3 +495,254 @@ void delta::primitives::generateCube(
     zCoordinates[i] += center[2];
   }
 }
+
+
+void delta::primitives::generateHullCube(
+  double  center[3],
+  double  diagonal,
+  std::vector<double>&  xCoordinates,
+  std::vector<double>&  yCoordinates,
+  std::vector<double>&  zCoordinates)
+{
+  assert(xCoordinates.empty());
+  assert(yCoordinates.empty());
+  assert(zCoordinates.empty());
+
+  unsigned int mul=1E8;
+
+  int pointsize = 8;
+
+  double v[100000][3];
+
+  double h = std::sqrt(1.0/12.0)*diagonal;
+
+  printf("r%f h%f\n", diagonal, h);
+
+  //0
+  v[0][0] = (- h) * mul;
+  v[0][1] = (- h) * mul;
+  v[0][2] = (+ h) * mul;
+
+  //1
+  v[1][0] = (+ h) * mul;
+  v[1][1] = (- h) * mul;
+  v[1][2] = (+ h) * mul;
+
+  //2
+  v[2][0] = (- h) * mul;
+  v[2][1] = (+ h) * mul;
+  v[2][2] = (+ h) * mul;
+
+  //3
+  v[3][0] = (+ h) * mul;
+  v[3][1] = (+ h) * mul;
+  v[3][2] = (+ h) * mul;
+
+  //4
+  v[4][0] = (- h) * mul;
+  v[4][1] = (- h) * mul;
+  v[4][2] = (- h) * mul;
+
+  //5
+  v[5][0] = (+ h) * mul;
+  v[5][1] = (- h) * mul;
+  v[5][2] = (- h) * mul;
+
+  //6
+  v[6][0] = (- h) * mul;
+  v[6][1] = (+ h) * mul;
+  v[6][2] = (- h) * mul;
+
+  //7
+  v[7][0] = (+ h) * mul;
+  v[7][1] = (+ h) * mul;
+  v[7][2] = (- h) * mul;
+
+
+  delta::hull::GEOMETRIC_EPSILON = 1e-10;
+  delta::hull::TRI* tr = NULL;
+  int pointlength = 0;
+  tr = delta::hull::hull((double *)v, pointsize, &pointlength);
+
+  const int numberOfTriangles = pointlength;
+
+  xCoordinates.resize(numberOfTriangles*3);
+  yCoordinates.resize(numberOfTriangles*3);
+  zCoordinates.resize(numberOfTriangles*3);
+
+  int counter = 0;
+  for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)
+  {//iterate through triangles and assign value
+    xCoordinates[counter] = (t->ver [0][0]/(mul)) + center[0];
+    yCoordinates[counter] = (t->ver [0][1]/(mul)) + center[1];
+    zCoordinates[counter] = (t->ver [0][2]/(mul)) + center[2];
+    counter++;
+
+    xCoordinates[counter] = (t->ver [1][0]/(mul)) + center[0];
+    yCoordinates[counter] = (t->ver [1][1]/(mul)) + center[1];
+    zCoordinates[counter] = (t->ver [1][2]/(mul)) + center[2];
+    counter++;
+
+    xCoordinates[counter] = (t->ver [2][0]/(mul)) + center[0];
+    yCoordinates[counter] = (t->ver [2][1]/(mul)) + center[1];
+    zCoordinates[counter] = (t->ver [2][2]/(mul)) + center[2];
+    counter++;
+  }
+  free(tr);
+}
+
+
+void delta::primitives::generateHullCube(
+        double  center[3],
+        double x,
+        double y,
+        double z,
+        double alphaX,
+        double alphaY,
+        double alphaZ,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates)
+{
+  assert(xCoordinates.empty());
+  assert(yCoordinates.empty());
+  assert(zCoordinates.empty());
+
+  unsigned int mul=1E8;
+
+  int pointsize = 8;
+
+  double v[100000][3];
+
+  x = std::sqrt(1.0/12.0) * x;
+  y = std::sqrt(1.0/12.0) * y;
+  z = std::sqrt(1.0/12.0) * z;
+
+  //0
+  v[0][0] = (- x) * mul;
+  v[0][1] = (- y) * mul;
+  v[0][2] = (+ z) * mul;
+
+  //1
+  v[1][0] = (+ x) * mul;
+  v[1][1] = (- y) * mul;
+  v[1][2] = (+ z) * mul;
+
+  //2
+  v[2][0] = (- x) * mul;
+  v[2][1] = (+ y) * mul;
+  v[2][2] = (+ z) * mul;
+
+  //3
+  v[3][0] = (+ x) * mul;
+  v[3][1] = (+ y) * mul;
+  v[3][2] = (+ z) * mul;
+
+  //4
+  v[4][0] = (- x) * mul;
+  v[4][1] = (- y) * mul;
+  v[4][2] = (- z) * mul;
+
+  //5
+  v[5][0] = (+ x) * mul;
+  v[5][1] = (- y) * mul;
+  v[5][2] = (- z) * mul;
+
+  //6
+  v[6][0] = (- x) * mul;
+  v[6][1] = (+ y) * mul;
+  v[6][2] = (- z) * mul;
+
+  //7
+  v[7][0] = (+ x) * mul;
+  v[7][1] = (+ y) * mul;
+  v[7][2] = (- z) * mul;
+
+
+  delta::hull::GEOMETRIC_EPSILON = 1e-10;
+  delta::hull::TRI* tr = NULL;
+  int pointlength = 0;
+  tr = delta::hull::hull((double *)v, pointsize, &pointlength);
+
+  const int numberOfTriangles = pointlength;
+
+  xCoordinates.resize(numberOfTriangles*3);
+  yCoordinates.resize(numberOfTriangles*3);
+  zCoordinates.resize(numberOfTriangles*3);
+
+  int counter = 0;
+  for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)
+  {//iterate through triangles and assign value
+    xCoordinates[counter] = (t->ver [0][0]/(mul));
+    yCoordinates[counter] = (t->ver [0][1]/(mul));
+    zCoordinates[counter] = (t->ver [0][2]/(mul));
+    counter++;
+
+    xCoordinates[counter] = (t->ver [1][0]/(mul));
+    yCoordinates[counter] = (t->ver [1][1]/(mul));
+    zCoordinates[counter] = (t->ver [1][2]/(mul));
+    counter++;
+
+    xCoordinates[counter] = (t->ver [2][0]/(mul));
+    yCoordinates[counter] = (t->ver [2][1]/(mul));
+    zCoordinates[counter] = (t->ver [2][2]/(mul));
+    counter++;
+  }
+  free(tr);
+
+  const double pi = std::acos(-1);
+
+  for (int i=0; i<xCoordinates.size(); i++) {
+    double xc = xCoordinates[i];
+    double yc = yCoordinates[i];
+    double zc = zCoordinates[i];
+
+    double M[] = {
+     1.0,                 0.0,                   0.0,
+     0.0,  std::cos(2*pi*alphaX),  std::sin(2*pi*alphaX),
+     0.0, -std::sin(2*pi*alphaX),  std::cos(2*pi*alphaX)
+    };
+
+    xCoordinates[i] =   M[0] * xc + M[1] * yc + M[2] * zc;
+    yCoordinates[i] =   M[3] * xc + M[4] * yc + M[5] * zc;
+    zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
+  }
+
+  for (int i=0; i<xCoordinates.size(); i++) {
+    double xc = xCoordinates[i];
+    double yc = yCoordinates[i];
+    double zc = zCoordinates[i];
+
+    double M[] = {
+      std::cos(2*pi*alphaY),  0.0, std::sin(2*pi*alphaY),
+      0.0,                    1.0,                   0.0,
+     -std::sin(2*pi*alphaY),  0.0, std::cos(2*pi*alphaY)
+    };
+
+    xCoordinates[i] =   M[0] * xc + M[1] * yc + M[2] * zc;
+    yCoordinates[i] =   M[3] * xc + M[4] * yc + M[5] * zc;
+    zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
+  }
+
+  for (int i=0; i<xCoordinates.size(); i++) {
+    double xc = xCoordinates[i];
+    double yc = yCoordinates[i];
+    double zc = zCoordinates[i];
+
+    double M[] = {
+      std::cos(2*pi*alphaZ),  std::sin(2*pi*alphaZ),  0.0,
+     -std::sin(2*pi*alphaZ),  std::cos(2*pi*alphaZ),  0.0,
+                       0.0,                   0.0,  1.0
+    };
+
+    xCoordinates[i] =   M[0] * xc + M[1] * yc + M[2] * zc;
+    yCoordinates[i] =   M[3] * xc + M[4] * yc + M[5] * zc;
+    zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
+  }
+
+  for (int i=0; i<xCoordinates.size(); i++) {
+    xCoordinates[i] += center[0];
+    yCoordinates[i] += center[1];
+    zCoordinates[i] += center[2];
+  }
+}
