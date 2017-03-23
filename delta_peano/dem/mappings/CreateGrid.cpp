@@ -854,7 +854,7 @@ void dem::mappings::CreateGrid::createCell(
         double height = 0.05;
         delta::primitives::generateSurface(centreAsArray, 0.35, height, xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-                                                        _epsilon, false, GOLD, true, _numberOfParticles);
+                                                        _epsilon, true, WOOD, true, _numberOfParticles);
 
         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -869,7 +869,7 @@ void dem::mappings::CreateGrid::createCell(
 
         delta::primitives::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
         newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
-                                                     eps, false, GOLD, true, _numberOfParticles);
+                                                     eps, false, WOOD, true, _numberOfParticles);
 
         _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -882,7 +882,7 @@ void dem::mappings::CreateGrid::createCell(
         double width = 0.35;
         delta::primitives::generateCube(centreAsArray, width, height, width, 0, 0, 0.25, xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-                                                        _epsilon, true, GOLD, true, _numberOfParticles);
+                                                        _epsilon, true, WOOD, true, _numberOfParticles);
 
         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -897,7 +897,7 @@ void dem::mappings::CreateGrid::createCell(
 
         delta::primitives::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
         newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
-                                                     eps, true, GOLD, true, _numberOfParticles);
+                                                     eps, false, WOOD, true, _numberOfParticles);
 
         _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
