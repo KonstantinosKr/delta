@@ -53,7 +53,7 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
 
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
-    if (fineGridVertex.getParticle(i)._persistentRecords._diameter<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+    if (fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
     {
       logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
@@ -134,9 +134,11 @@ void dem::mappings::liftAllParticles(
   logTraceInWith1Argument( "liftAllParticles(...)", fineGridVertex.toString() );
 
   int i=0;
-  while (i<fineGridVertex.getNumberOfParticles()) {
+  while (i<fineGridVertex.getNumberOfParticles())
+  {
     tarch::la::Vector<DIMENSIONS,int> destinationVertex;
-    for (int d=0; d<DIMENSIONS; d++) {
+    for (int d=0; d<DIMENSIONS; d++)
+    {
       destinationVertex(d) = fineGridVertex.getParticle(i)._persistentRecords._centre(d) < coarseGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
     }
     coarseGridVertices[ coarseGridVerticesEnumerator(destinationVertex) ].appendParticle( fineGridVertex.getParticle(i) );
@@ -180,7 +182,8 @@ void dem::mappings::dropParticles(
     if (!coarseGridVertexAtSamePosition.isOutside())
     {
       int i=0;
-      while (i<coarseGridVertexAtSamePosition.getNumberOfParticles()) {
+      while (i<coarseGridVertexAtSamePosition.getNumberOfParticles())
+      {
         if (coarseGridVertexAtSamePosition.getParticle(i)._persistentRecords._diameter<coarseGridVerticesEnumerator.getCellSize()(0))
         {
           logDebug( "dropParticle()",

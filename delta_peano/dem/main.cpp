@@ -188,7 +188,6 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-
   if (scenario=="black-hole-with-cubes") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes,
                                             dem::mappings::CreateGrid::randomLinear,
@@ -214,11 +213,6 @@ int main(int argc, char** argv)
                                             dem::mappings::CreateGrid::crashAB,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="hopper") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
-  }
   else if (scenario=="hopperUniformSphere") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere,
                                             dem::mappings::CreateGrid::noVScheme,
@@ -239,16 +233,6 @@ int main(int argc, char** argv)
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.5, 0.005, 0.015, gridType, meshMultiplier);
   }
-  else if (scenario=="hopper300") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.11, 0.11, 0.11, gridType, meshMultiplier);
-  }
-  else if (scenario=="hopper1000") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopper,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.03, 0.003, 0.03, gridType, meshMultiplier);
-  }
   else if (scenario=="freefall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall,
                                             dem::mappings::CreateGrid::noVScheme,
@@ -256,33 +240,43 @@ int main(int argc, char** argv)
   }
   else if (scenario=="frictionStaticSphere") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStaticSphere,
-                                            dem::mappings::CreateGrid::crash,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
+                                            dem::mappings::CreateGrid::crashY,
+                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlideSphere") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideSphere,
-                                            dem::mappings::CreateGrid::crashSlideWithAngle,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
+                                            dem::mappings::CreateGrid::slideX,
+                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
+  }
+  else if (scenario=="frictionSlideRotateSphere") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideSphere,
+                                            dem::mappings::CreateGrid::slideXRotation,
+                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="frictionRollSphere") {
       dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollSphere,
-                                              dem::mappings::CreateGrid::crashSlideWithAngle,
-                                              0.15, 0.15, 0.15, gridType, meshMultiplier);
+                                              dem::mappings::CreateGrid::slideXRotation,
+                                              0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="frictionStaticMesh") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStaticMesh,
-                                            dem::mappings::CreateGrid::crash,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
+                                            dem::mappings::CreateGrid::crashY,
+                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlideMesh") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideMesh,
-                                            dem::mappings::CreateGrid::crashSlideWithAngle,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
+                                            dem::mappings::CreateGrid::slideX,
+                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
+  }
+  else if (scenario=="frictionSlideRotateMesh") {
+      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideMesh,
+                                              dem::mappings::CreateGrid::slideXRotation,
+                                              0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="frictionRollMesh") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollMesh,
-                                              dem::mappings::CreateGrid::crashSlideWithAngle,
-                                              0.15, 0.15, 0.15, gridType, meshMultiplier);
+      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollSphere,
+                                              dem::mappings::CreateGrid::noVScheme,
+                                              0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="sla") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla,

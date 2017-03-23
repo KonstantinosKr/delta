@@ -567,7 +567,7 @@ void delta::primitives::computeInverseInertia(double inertia[9], double inverse[
 		{
 			inverse[j] = 0;
 		}
-	}else{
+	} else {
 		for (int j = 0; j < 9; j ++)
 		{
 		  inverse[j] = x[j];

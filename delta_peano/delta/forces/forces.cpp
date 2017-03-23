@@ -1,16 +1,11 @@
 #include "forces.h"
 
 //particle parameters
-#define SPRING 1E5
-#define DAMPER 1
-#define FRICTION 0.1
+#define SPRING 1E4
+#define DAMPER 60
+#define FRICTION 0.8
 
 //sphere parameters for piling simulation
-/*#define SSPRING 1E6
-#define SDAMPER 0.2
-#define SFRICTION 0.28
-#define SFRICTIONROLLING 0.005*/
-
 #define SSPRING 1E5
 #define SDAMPER 0.8
 #define SFRICTIONGOLD 0.5
@@ -64,28 +59,28 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	iREAL rPositionContactPnti[9];//3x3
 	iREAL rPositionContactPntj[9];
 
-	rPositionContactPnti[0] = 0;										rPositionContactPnti[3] = -positionAReferential[2]-refconptA[2];rPositionContactPnti[6] = positionAReferential[1]-refconptA[1];
-	rPositionContactPnti[1] = positionAReferential[2]-refconptA[2];		rPositionContactPnti[4] = 0;									rPositionContactPnti[7] = -positionAReferential[0]-refconptA[0];
-	rPositionContactPnti[2] = -positionAReferential[1]-refconptA[1];	rPositionContactPnti[5] = positionAReferential[0]-refconptA[0];	rPositionContactPnti[8] = 0;
+	rPositionContactPnti[0] = 0.0;										                rPositionContactPnti[3] = -positionAReferential[2]-refconptA[2];  rPositionContactPnti[6] = positionAReferential[1]-refconptA[1];
+	rPositionContactPnti[1] = positionAReferential[2]-refconptA[2];		rPositionContactPnti[4] = 0.0;									                  rPositionContactPnti[7] = -positionAReferential[0]-refconptA[0];
+	rPositionContactPnti[2] = -positionAReferential[1]-refconptA[1];	rPositionContactPnti[5] = positionAReferential[0]-refconptA[0];	  rPositionContactPnti[8] = 0.0;
 
-	rPositionContactPntj[0] = 0;										rPositionContactPntj[3] = -positionBReferential[2]-refconptB[2];rPositionContactPntj[6] = positionBReferential[1]-refconptB[1];
-	rPositionContactPntj[1] = positionBReferential[2]-refconptB[2];		rPositionContactPntj[4] = 0;									rPositionContactPntj[7] = -positionBReferential[0]-refconptB[0];
-	rPositionContactPntj[2] = -positionBReferential[1]-refconptB[1];	rPositionContactPntj[5] = positionBReferential[0]-refconptB[0];	rPositionContactPntj[8] = 0;
+	rPositionContactPntj[0] = 0.0;										                rPositionContactPntj[3] = -positionBReferential[2]-refconptB[2];  rPositionContactPntj[6] = positionBReferential[1]-refconptB[1];
+	rPositionContactPntj[1] = positionBReferential[2]-refconptB[2];		rPositionContactPntj[4] = 0.0;									                  rPositionContactPntj[7] = -positionBReferential[0]-refconptB[0];
+	rPositionContactPntj[2] = -positionBReferential[1]-refconptB[1];	rPositionContactPntj[5] = positionBReferential[0]-refconptB[0];	  rPositionContactPntj[8] = 0.0;
 
 	iREAL RIi[18];//[Rotation*(RefCentre-RefConPnt)   Identity]
 	iREAL RIj[18];
 
 	NNMUL(rotationA, rPositionContactPnti, RIi);
 
-	RIi[9] = 1;		RIi[12] = 0;	RIi[15] = 0;
-	RIi[10] = 0;	RIi[13] = 1;	RIi[16] = 0;
-	RIi[11] = 0;	RIi[14] = 0;	RIi[17] = 1;
+	RIi[9] = 1.0;		RIi[12] = 0.0;	RIi[15] = 0.0;
+	RIi[10] = 0.0;	RIi[13] = 1.0;	RIi[16] = 0.0;
+	RIi[11] = 0.0;	RIi[14] = 0.0;	RIi[17] = 1.0;
 
 	NNMUL(rotationB, rPositionContactPntj, RIj);
 
-	RIj[9] = 1;		RIj[12] = 0;	RIj[15] = 0;
-	RIj[10] = 0;	RIj[13] = 1;	RIj[16] = 0;
-	RIj[11] = 0;	RIj[14] = 0;	RIj[17] = 1;
+	RIj[9] = 1.0;		RIj[12] = 0.0;	RIj[15] = 0.0;
+	RIj[10] = 0.0;	RIj[13] = 1.0;	RIj[16] = 0.0;
+	RIj[11] = 0.0;	RIj[14] = 0.0;	RIj[17] = 1.0;
 
 	//H_N is a 1x6 matrix; n^T is a 1x3 "matrix" (normal vector transposed);
 	//[Rotation*(RefCentre-RefConPnt)   Identity] is a 3x6 matrix; 1x3 * 3x6 = 1x6;
@@ -111,20 +106,20 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	Hj_n[5] = normal[0]*RIj[15] + normal[1]*RIj[16] + normal[2]*RIj[17];
 
 	iREAL ui[36];
-	ui[0] = inverseA[0]; ui[6] = inverseA[3];	ui[12] = inverseA[6];	ui[18] = 0;			ui[24] = 0; 		ui[30] = 0;
-	ui[1] = inverseA[1]; ui[7] = inverseA[4];	ui[13] = inverseA[7];	ui[19] = 0;			ui[25] = 0; 		ui[31] = 0;
-	ui[2] = inverseA[2]; ui[8] = inverseA[5];	ui[14] = inverseA[8];	ui[20] = 0;   		ui[26] = 0; 		ui[32] = 0;
-	ui[3] = 0; 		   	 ui[9] = 0;				ui[15] = 0;				ui[21] = (1/massA); ui[27] = 0; 		ui[33] = 0;
-	ui[4] = 0;		     ui[10] = 0;			ui[16] = 0;				ui[22] = 0;   		ui[28] = (1/massA); ui[34] = 0;
-	ui[5] = 0;		     ui[11] = 0;			ui[17] = 0;				ui[23] = 0;   		ui[29] = 0; 		ui[35] = (1/massA);
+	ui[0] = inverseA[0]; ui[6] = inverseA[3];	ui[12] = inverseA[6];	ui[18] = 0.0;		  	  ui[24] = 0.0; 		    ui[30] = 0.0;
+	ui[1] = inverseA[1]; ui[7] = inverseA[4];	ui[13] = inverseA[7];	ui[19] = 0.0;			    ui[25] = 0.0; 		    ui[31] = 0.0;
+	ui[2] = inverseA[2]; ui[8] = inverseA[5];	ui[14] = inverseA[8];	ui[20] = 0.0;   		  ui[26] = 0.0; 		    ui[32] = 0.0;
+	ui[3] = 0.0; 		   	 ui[9] = 0.0;				  ui[15] = 0.0;				  ui[21] = (1.0/massA); ui[27] = 0.0; 		    ui[33] = 0.0;
+	ui[4] = 0.0;		     ui[10] = 0.0;			  ui[16] = 0.0;				  ui[22] = 0.0;   		  ui[28] = (1.0/massA); ui[34] = 0.0;
+	ui[5] = 0.0;		     ui[11] = 0.0;			  ui[17] = 0.0;				  ui[23] = 0.0;   		  ui[29] = 0.0; 		    ui[35] = (1.0/massA);
 
 	iREAL uj[36];
-	uj[0] = inverseB[0]; uj[6] = inverseB[3];	uj[12] = inverseB[6];	uj[18] = 0;			uj[24] = 0; 		uj[30] = 0;
-	uj[1] = inverseB[1]; uj[7] = inverseB[4];	uj[13] = inverseB[7];	uj[19] = 0;			uj[25] = 0; 		uj[31] = 0;
-	uj[2] = inverseB[2]; uj[8] = inverseB[5];	uj[14] = inverseB[8];	uj[20] = 0;   		uj[26] = 0; 		uj[32] = 0;
-	uj[3] = 0; 		   	 uj[9] = 0;				uj[15] = 0;				uj[21] = (1/massB); uj[27] = 0; 		uj[33] = 0;
-	uj[4] = 0;		     uj[10] = 0;			uj[16] = 0;				uj[22] = 0;   		uj[28] = (1/massB); uj[34] = 0;
-	uj[5] = 0;		     uj[11] = 0;			uj[17] = 0;				uj[23] = 0;   		uj[29] = 0; 		uj[35] = (1/massB);
+	uj[0] = inverseB[0]; uj[6] = inverseB[3];	uj[12] = inverseB[6];	uj[18] = 0.0;			    uj[24] = 0.0; 		    uj[30] = 0.0;
+	uj[1] = inverseB[1]; uj[7] = inverseB[4];	uj[13] = inverseB[7];	uj[19] = 0.0;			    uj[25] = 0.0; 		    uj[31] = 0.0;
+	uj[2] = inverseB[2]; uj[8] = inverseB[5];	uj[14] = inverseB[8];	uj[20] = 0.0;   		  uj[26] = 0.0; 		    uj[32] = 0.0;
+	uj[3] = 0.0; 		   	 uj[9] = 0;				    uj[15] = 0.0;				  uj[21] = (1.0/massB); uj[27] = 0.0; 		    uj[33] = 0.0;
+	uj[4] = 0.0;		     uj[10] = 0;			    uj[16] = 0.0;				  uj[22] = 0.0;   		  uj[28] = (1.0/massB); uj[34] = 0.0;
+	uj[5] = 0.0;		     uj[11] = 0;			    uj[17] = 0.0;				  uj[23] = 0.0;   		  uj[29] = 0.0; 		    uj[35] = (1.0/massB);
 
 	//H_N (1x6) * [] (6x6)
 	iREAL Hi[6], Hj[6];
@@ -144,13 +139,16 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	Hj[5] = Hj_n[0]*uj[30] + Hj_n[1]*uj[31] + Hj_n[2]*uj[32] + Hj_n[3]*uj[33] + Hj_n[4]*uj[34] + Hj_n[5]*uj[35];
 
 	iREAL W_NN = (Hi[0]*Hi_n[0] + Hi[1]*Hi_n[1] + Hi[2]*Hi_n[2] + Hi[3]*Hi_n[3] + Hi[4]*Hi_n[4] + Hi[5]*Hi_n[5])
-			   + (Hj[0]*Hj_n[0] + Hj[1]*Hj_n[1] + Hj[2]*Hj_n[2] + Hj[3]*Hj_n[3] + Hj[4]*Hj_n[4] + Hj[5]*Hj_n[5]);
+			       + (Hj[0]*Hj_n[0] + Hj[1]*Hj_n[1] + Hj[2]*Hj_n[2] + Hj[3]*Hj_n[3] + Hj[4]*Hj_n[4] + Hj[5]*Hj_n[5]);
 
 	iREAL mass = 1.0/W_NN;
 
 	iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
+	printf("VEL:%f\n", velocity);
 
-	iREAL damp = DAMPER * 10 * sqrt(mass*SPRING)*velocity;
+	//iREAL velocity = sqrt(relativeVelocity[0]*relativeVelocity[0]) + (relativeVelocity[1]*relativeVelocity[1]) + (relativeVelocity[2]*relativeVelocity[2]);
+	//printf("VELSQRT:%f\n", velocity);
+	iREAL damp = DAMPER * 2 * sqrt(mass*SPRING)*velocity;
 
 	iREAL force = SPRING*depth+damp;
 
@@ -182,7 +180,7 @@ void delta::forces::friction(iREAL normal[3], iREAL vi[3], iREAL force, iREAL fr
 
 double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3])
 {
-  iREAL ma = 1/((1/massA) + (1/massB));
+  iREAL ma = 1.0/((1.0/massA) + (1.0/massB));
 
   iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
 
@@ -224,30 +222,30 @@ void delta::forces::frictionSphere(iREAL normal[3], iREAL vi[3], iREAL force, iR
 }
 
 void delta::forces::getContactForces(
-    std::vector<delta::collision::contactpoint> &conpnt,
-    iREAL positionASpatial[3],
-	iREAL positionAReferential[3],
-	iREAL angularA[3],
-    iREAL refAngularA[3],
-    iREAL linearA[3],
-    iREAL massA,
-	iREAL inverseA[9],
-	iREAL rotationA[9],
-	int   materialA,
+  std::vector<delta::collision::contactpoint> &conpnt,
+  iREAL positionASpatial[3],
+  iREAL positionAReferential[3],
+  iREAL angularA[3],
+  iREAL refAngularA[3],
+  iREAL linearA[3],
+  iREAL massA,
+  iREAL inverseA[9],
+  iREAL rotationA[9],
+  int   materialA,
 
-    iREAL positionBSpatial[3],
-	iREAL positionBReferential[3],
-	iREAL angularB[3],
-    iREAL refAngularB[3],
-    iREAL linearB[3],
-    iREAL massB,
-	iREAL inverseB[9],
-	iREAL rotationB[9],
-	int   materialB,
+  iREAL positionBSpatial[3],
+  iREAL positionBReferential[3],
+  iREAL angularB[3],
+  iREAL refAngularB[3],
+  iREAL linearB[3],
+  iREAL massB,
+  iREAL inverseB[9],
+  iREAL rotationB[9],
+  int   materialB,
 
-	iREAL force[3],
-    iREAL torque[3],
-	bool  isSphere)
+  iREAL force[3],
+  iREAL torque[3],
+  bool  isSphere)
 {
 
     for(unsigned int k = 0; k<conpnt.size(); k++)
@@ -296,27 +294,22 @@ void delta::forces::getContactForces(
             	delta::forces::frictionSphere(conpnt[k].normal, vi, forc, friction, materialA, materialB);
         }
         else{
-
 #ifdef FORCESTATS
         printf("#####start-subContact#####\nid=%i, DAMPER=%f, SPRING=%f\n", k, DAMPER, SPRING);
 #endif
             forc = delta::forces::spring(conpnt[k].normal,conpnt[k].x, conpnt[k].depth, vij,
-            							positionASpatial, positionBSpatial,
-										positionAReferential, positionBReferential, massA, massB,
-            							rotationA, rotationB, inverseA, inverseB, f);
+                                        positionASpatial, positionBSpatial,
+                                        positionAReferential, positionBReferential, massA, massB,
+                                        rotationA, rotationB, inverseA, inverseB, f);
 
             if(conpnt[k].friction)
             	delta::forces::friction(conpnt[k].normal, vi, forc, friction);
         }
 
-        f[0] = f[0] + friction[0];
-        f[1] = f[1] + friction[1];
-        f[2] = f[2] + friction[2];
-
         //accumulate force
-        force[0] += f[0];
-        force[1] += f[1];
-        force[2] += f[2];
+        force[0] += f[0] + friction[0];
+        force[1] += f[1] + friction[1];
+        force[2] += f[2] + friction[2];
 
         iREAL arm[3];
         //contact-position = arm
@@ -331,20 +324,20 @@ void delta::forces::getContactForces(
 
         if(isSphere)
         {
-			//relative angular velocities
-			vij[0] = angularA[0] - angularB[0];
-			vij[1] = angularA[1] - angularB[1];
-			vij[2] = angularA[2] - angularB[2];
+          //relative angular velocities
+          vij[0] = angularA[0] - angularB[0];
+          vij[1] = angularA[1] - angularB[1];
+          vij[2] = angularA[2] - angularB[2];
 
-			iREAL w = std::abs(sqrt(vij[0]*vij[0]+vij[1]*vij[1]+vij[2]*vij[2]));
-			//printf("W:%f | wij: %f %f %f\n", w, vij[0], vij[1], vij[2]);
+          iREAL w = std::abs(sqrt(vij[0]*vij[0]+vij[1]*vij[1]+vij[2]*vij[2]));
+          //printf("W:%f | wij: %f %f %f\n", w, vij[0], vij[1], vij[2]);
 
-			if(w>0.0)
-			{
-				//torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
-				//torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
-				//torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
-			}
+          if(w>0.0)
+          {
+            torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
+            torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
+            torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
+          }
         }
 
 #ifdef FORCESTATS
@@ -356,7 +349,9 @@ void delta::forces::getContactForces(
         conpnt[k].force[2] = force[2];
 
         conpnt[k].torque[0] = torque[0];
-		conpnt[k].torque[1] = torque[1];
-		conpnt[k].torque[2] = torque[2];
+        conpnt[k].torque[1] = torque[1];
+        conpnt[k].torque[2] = torque[2];
+        //printf("f%f f%f f%f %i\n", force[0], force[1], force[2], conpnt[k].master);
+        //printf("t%f t%f t%f %i\n", torque[0], torque[1], torque[2], conpnt[k].master);
     }
 }

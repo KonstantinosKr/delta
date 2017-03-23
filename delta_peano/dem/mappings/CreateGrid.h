@@ -53,13 +53,14 @@ class dem::mappings::CreateGrid {
       RandomWithGranulates,
       TwoParticlesCrash,
 
-      hopper,
       hopperUniformSphere,
       hopperNonUniformSphere,
 
       hopperUniformMesh,
       hopperNonUniformMesh,
+
       freefall,
+
       frictionStaticSphere,
       frictionSlideSphere,
       frictionRollSphere,
@@ -77,9 +78,12 @@ class dem::mappings::CreateGrid {
       noVScheme,
       randomLinear,
       randomLinearAngular,
-      crash,
       crashAB,
-      crashSlideWithAngle
+      crashY,
+      crashXY,
+      crashXYRotation,
+      slideX,
+      slideXRotation
     };
 
     enum GridType {

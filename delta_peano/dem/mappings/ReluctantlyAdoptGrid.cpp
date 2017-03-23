@@ -201,14 +201,15 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
   int    numberOfParticles = 0;
 
   dfor2(k)
-    numberOfParticles += fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles();
-    for (int i=0; i<fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles(); i++)
+    numberOfParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles();
+    for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
     {
-      minDiameter = std::min( minDiameter, fineGridVertices[ fineGridVerticesEnumerator(k) ].getParticle(i)._persistentRecords._diameter );
+      minDiameter = std::min(minDiameter, fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getDiameter());
     }
   enddforx
 
-  if (numberOfParticles>=2 && minDiameter<fineGridVerticesEnumerator.getCellSize()(0)/3.0 ) {
+  if(numberOfParticles>=2 && minDiameter<fineGridVerticesEnumerator.getCellSize()(0)/3.0 )
+  {
     dfor2(k)
       if (!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
       {
@@ -220,8 +221,6 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
   logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
 
-
-
 //
 //   NOP
 // =======
@@ -232,13 +231,11 @@ dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid() {
   logTraceOut( "ReluctantlyAdoptGrid()" );
 }
 
-
 dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid() {
   logTraceIn( "~ReluctantlyAdoptGrid()" );
   // @todo Insert your code here
   logTraceOut( "~ReluctantlyAdoptGrid()" );
 }
-
 
 #if defined(SharedMemoryParallelisation)
 dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid(const ReluctantlyAdoptGrid&  masterThread) {
@@ -255,7 +252,6 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorkerThread(const Reluctantl
 }
 #endif
 
-
 void dem::mappings::ReluctantlyAdoptGrid::createCell(
       dem::Cell&                 fineGridCell,
       dem::Vertex * const        fineGridVertices,
@@ -266,7 +262,6 @@ void dem::mappings::ReluctantlyAdoptGrid::createCell(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
 }
-
 
 void dem::mappings::ReluctantlyAdoptGrid::destroyCell(
       const dem::Cell&           fineGridCell,

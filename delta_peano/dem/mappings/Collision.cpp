@@ -26,7 +26,7 @@ peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification()
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification() {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::leaveCellSpecification() {
@@ -87,7 +87,6 @@ void dem::mappings::Collision::endIteration(
 		}
 	}
 
-
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
 
@@ -99,10 +98,10 @@ void dem::mappings::Collision::addCollision(
 ) {
 	assertion( !newContactPoints.empty() );
 
-	/*if(particleA.getGlobalParticleId() == 57 || particleB.getGlobalParticleId() == 57)
+	//if(particleA.getGlobalParticleId() == 57 || particleB.getGlobalParticleId() == 57)
 	{
-		printf("COLLISION DETECTED\n");
-	}*/
+		//printf("COLLISION DETECTED\n");
+	}
 	//START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
 	if ( _collisionsOfNextTraversal.count(particleA._persistentRecords._globalParticleId)==0 ) {
 		_collisionsOfNextTraversal.insert( std::pair<int,std::vector<Collisions>>( particleA._persistentRecords._globalParticleId, std::vector<Collisions>()));
@@ -247,7 +246,8 @@ void dem::mappings::Collision::touchVertexFirstTime(
 
 			#ifdef FORCESTATS
 			logInfo( "touchVertexFirstTime(...)", std::endl << "#####FORCE-DATA#####" << std::endl
-															<<"masterID=" << currentParticle.getGlobalParticleId() << ", slaveID=" << p->_copyOfPartnerParticle.getGlobalParticleId() << std::endl);
+															              <<"masterID=" << currentParticle.getGlobalParticleId()
+															              << ", slaveID=" << p->_copyOfPartnerParticle.getGlobalParticleId() << std::endl);
 			#endif
 
 			//for each partner get contacts
@@ -282,7 +282,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			torque[1] += rtorque[1];
 			torque[2] += rtorque[2];
 
-			//printf("%d\n", counter);
 			#ifdef FORCESTATS
 			logInfo( "touchVertexFirstTime(...)", std::endl
 					<< "#####TOTAL-FDATA#####" << std::endl
@@ -312,12 +311,12 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle.getMass());
 
 			delta::dynamics::updateAngular(&currentParticle._persistentRecords._angular(0),
-											&currentParticle._persistentRecords._referentialAngular(0),
-											&currentParticle._persistentRecords._orientation(0),
-											&currentParticle._persistentRecords._inertia(0),
-											&currentParticle._persistentRecords._inverse(0),
-											currentParticle.getMass(),
-											torque, timeStepSize);
+                                      &currentParticle._persistentRecords._referentialAngular(0),
+                                      &currentParticle._persistentRecords._orientation(0),
+                                      &currentParticle._persistentRecords._inertia(0),
+                                      &currentParticle._persistentRecords._inverse(0),
+                                      currentParticle.getMass(),
+                                      torque, timeStepSize);
 		}
 		_activeCollisions.erase(currentParticle._persistentRecords._globalParticleId);
 	}
@@ -894,23 +893,20 @@ void dem::mappings::Collision::enterCell(
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
 	//phase A
-	//along axes from origin
 	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(1)]);
 	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(2)]);
+	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(3)]);
 	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-
-	//inner-face diagonals
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(3)]);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(2)]);
   dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(5)]);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(4)]);
   dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(6)]);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-
-  //intra-cell diagonals
   dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(7)]);
+
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(2)]);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(4)]);
   dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(6)]);
+
   dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(5)]);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(4)]);
   dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(3)], fineGridVertices[fineGridVerticesEnumerator(4)]);
 
 	//phase B
@@ -989,7 +985,6 @@ void dem::mappings::Collision::enterCell(
     dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[ fineGridVerticesEnumerator(5)]);
   }
 
-
   bool backtopEdge = ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) &&
                       (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary()) &&
                       (fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()));
@@ -1002,20 +997,16 @@ void dem::mappings::Collision::enterCell(
                        (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary()) &&
                        (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()));
 
-
-	//back and top cell
   if(backtopEdge)
 	{
 		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(6)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
 	}
 
-  //back and right cell
   if(backrightEdge)
   {
     dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
   }
 
-  //top and right cell
   if(toprightEdge)
   {
     dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3)], fineGridVertices[ fineGridVerticesEnumerator(7)]);

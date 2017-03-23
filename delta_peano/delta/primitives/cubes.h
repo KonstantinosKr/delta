@@ -51,5 +51,18 @@ namespace delta {
        std::vector<double>&  yCoordinates,
        std::vector<double>&  zCoordinates
      );
+
+     void generateCube(
+       double center[3],
+       double x,
+       double y,
+       double z,
+       double alphaX,
+       double alphaY,
+       double alphaZ,
+       std::vector<double>&  xCoordinates,
+       std::vector<double>&  yCoordinates,
+       std::vector<double>&  zCoordinates
+     );
   }
 }

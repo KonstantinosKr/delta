@@ -33,9 +33,8 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
 
   peano::geometry::Hexahedron geometry(tarch::la::Vector<DIMENSIONS,double>(1.0), tarch::la::Vector<DIMENSIONS,double>(0.0));
   dem::repositories::Repository* repository = dem::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(geometry,
-                                                tarch::la::Vector<DIMENSIONS,double>(1.0),   // domainSize,
-                                                tarch::la::Vector<DIMENSIONS,double>(0.0)    // computationalDomainOffset
-                                                );
+                                                tarch::la::Vector<DIMENSIONS,double>(1.0),  // domainSize
+                                                tarch::la::Vector<DIMENSIONS,double>(0.0)); // computationalDomainOffset
   
   #ifdef SharedMemoryParallelisation
 	  tarch::multicore::Core::getInstance().configure(tbbThreads);
@@ -71,17 +70,20 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   do { repository.iterate(); } while ( !repository.getState().isGridStationary() );
 
   logInfo( "runAsMaster(...)", "start time stepping" );
+
   repository.getState().clearAccumulatedData();
   repository.getState().setInitialTimeStepSize(initialTimeStepSize);
 
   double elapsed = 0.0;
   double timestamp = 0.0;
 
-  int    = 4000;
+  int minRange = 4000;
   int maxRange = 8000;
 
   for (int i=0; i<iterations; i++)
   {
+    timestamp = repository.getState().getTime();
+
     bool plotThisTraversal = (plot == EveryIteration) ||  (plot == Track) ||
                              (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
                                                      !repository.getState().isGridStationary() || i%50==0 ||
@@ -145,7 +147,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {
         repository.switchToTimeStepOnDynamicGrid();
-      }else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
+      }
+      else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
       {
         repository.switchToTimeStepOnReluctantDynamicGrid();
       } else {
@@ -153,9 +156,9 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       }
     }
 
-    timestamp = repository.getState().getTime();
-    repository.getState().finishedTimeStep(initialTimeStepSize);
     elapsed = repository.getState().getTime() - timestamp;
+
+    repository.getState().finishedTimeStep(initialTimeStepSize);
 
     repository.getState().clearAccumulatedData();
     repository.iterate();

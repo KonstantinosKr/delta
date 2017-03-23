@@ -52,7 +52,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
   {
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
-    if(particle._persistentRecords._isObstacle){continue;}
+    if(particle.getIsObstacle()){continue;}
 
     particle._persistentRecords._velocity(1) += timeStepSize*(gravity*-9.8);
 
@@ -65,27 +65,25 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
 
 	delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
-										  &particle._persistentRecords._referentialAngular(0),
-										  &particle._persistentRecords._orientation(0), timeStepSize);
+                                        &particle._persistentRecords._referentialAngular(0),
+                                        &particle._persistentRecords._orientation(0), timeStepSize);
 
-	//if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-	{
-		double* x = fineGridVertex.getXCoordinates(i);
-		double* y = fineGridVertex.getYCoordinates(i);
-		double* z = fineGridVertex.getZCoordinates(i);
+  double* x = fineGridVertex.getXCoordinates(i);
+  double* y = fineGridVertex.getYCoordinates(i);
+  double* z = fineGridVertex.getZCoordinates(i);
 
-		double* refx = fineGridVertex.getXRefCoordinates(i);
-		double* refy = fineGridVertex.getYRefCoordinates(i);
-		double* refz = fineGridVertex.getZRefCoordinates(i);
+  double* refx = fineGridVertex.getXRefCoordinates(i);
+  double* refy = fineGridVertex.getYRefCoordinates(i);
+  double* refz = fineGridVertex.getZRefCoordinates(i);
 
-		for (int j=0; j<particle._persistentRecords._numberOfTriangles*DIMENSIONS; j++)
-		{
-			delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
-										&particle._persistentRecords._orientation(0),
-										&particle._persistentRecords._centreOfMass(0),
-										&particle._persistentRecords._referentialCentreOfMass(0));
-		}
-	}
+  for (int j=0; j<particle._persistentRecords._numberOfTriangles*DIMENSIONS; j++)
+  {
+    delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
+                                    &particle._persistentRecords._orientation(0),
+                                    &particle._persistentRecords._centreOfMass(0),
+                                    &particle._persistentRecords._referentialCentreOfMass(0));
+  }
+
 	#ifdef ENERGYSTATS
 		iREAL energy = getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
 		iREAL rotational = getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
@@ -123,7 +121,7 @@ void dem::mappings::MoveParticles::reassignParticles(
           fineGridVertices[ fineGridVerticesEnumerator(k) ].releaseParticle(i);
           numberOfReassignments++;
         } else {
-        i++;
+          i++;
         }
       }
 		enddforx
@@ -192,11 +190,10 @@ void dem::mappings::MoveParticles::enterCell(
 ) {
   logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-  reassignParticles( fineGridVertices, fineGridVerticesEnumerator );
+  reassignParticles(fineGridVertices, fineGridVerticesEnumerator);
 
   logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
-
 
 void dem::mappings::MoveParticles::touchVertexLastTime(
   dem::Vertex&         fineGridVertex,
@@ -215,7 +212,6 @@ void dem::mappings::MoveParticles::touchVertexLastTime(
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
-
 
 void dem::mappings::MoveParticles::beginIteration(
   dem::State&  solverState
@@ -261,7 +257,6 @@ void dem::mappings::MoveParticles::mergeWithWorkerThread(const MoveParticles& wo
 }
 #endif
 
-
 void dem::mappings::MoveParticles::createHangingVertex(
       dem::Vertex&     fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,
@@ -272,7 +267,6 @@ void dem::mappings::MoveParticles::createHangingVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                   fineGridPositionOfVertex
 ) {
 }
-
 
 void dem::mappings::MoveParticles::destroyHangingVertex(
       const dem::Vertex&   fineGridVertex,
@@ -285,7 +279,6 @@ void dem::mappings::MoveParticles::destroyHangingVertex(
 ) {
 }
 
-
 void dem::mappings::MoveParticles::createInnerVertex(
       dem::Vertex&               fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
@@ -296,7 +289,6 @@ void dem::mappings::MoveParticles::createInnerVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
 }
-
 
 void dem::mappings::MoveParticles::createBoundaryVertex(
       dem::Vertex&               fineGridVertex,
@@ -312,7 +304,6 @@ void dem::mappings::MoveParticles::createBoundaryVertex(
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
 
-
 void dem::mappings::MoveParticles::destroyVertex(
       const dem::Vertex&   fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
@@ -326,7 +317,6 @@ void dem::mappings::MoveParticles::destroyVertex(
   // @todo Insert your code here
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
-
 
 void dem::mappings::MoveParticles::createCell(
       dem::Cell&                 fineGridCell,

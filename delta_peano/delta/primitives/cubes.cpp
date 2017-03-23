@@ -268,3 +268,230 @@ void delta::primitives::generateCube(
     zCoordinates[i] += center[2];
   }
 }
+
+
+
+void delta::primitives::generateCube(
+  double center[3],
+  double x,
+  double y,
+  double z,
+  double alphaX,
+  double alphaY,
+  double alphaZ,
+  std::vector<double>&  xCoordinates,
+  std::vector<double>&  yCoordinates,
+  std::vector<double>&  zCoordinates
+) {
+  assert(xCoordinates.empty());
+  assert(yCoordinates.empty());
+  assert(zCoordinates.empty());
+
+  const int numberOfTriangles = 12;
+
+  const double pi = std::acos(-1);
+
+  xCoordinates.resize( numberOfTriangles*3 );
+  yCoordinates.resize( numberOfTriangles*3 );
+  zCoordinates.resize( numberOfTriangles*3 );
+
+  xCoordinates[0] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[0] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[0] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[1] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[1] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[1] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[2] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[2] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[2] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[3] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[3] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[3] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[4] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[4] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[4] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[5] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[5] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[5] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[6] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[6] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[6] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[7] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[7] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[7] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[8] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[8] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[8] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[9] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[9] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[9] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[10] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[10] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[10] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[11] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[11] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[11] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[12] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[12] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[12] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[13] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[13] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[13] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[14] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[14] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[14] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[15] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[15] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[15] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[16] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[16] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[16] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[17] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[17] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[17] = + z*std::sqrt(1.0/12.0);
+
+  // Now just translated other faces
+  xCoordinates[18] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[18] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[18] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[19] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[19] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[19] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[20] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[20] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[20] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[21] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[21] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[21] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[22] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[22] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[22] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[23] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[23] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[23] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[24] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[24] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[24] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[25] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[25] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[25] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[26] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[26] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[26] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[27] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[27] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[27] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[28] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[28] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[28] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[29] = + x*std::sqrt(1.0/12.0);
+  yCoordinates[29] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[29] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[30] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[30] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[30] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[31] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[31] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[31] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[32] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[32] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[32] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[33] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[33] = + y*std::sqrt(1.0/12.0);
+  zCoordinates[33] = + z*std::sqrt(1.0/12.0);
+
+  xCoordinates[34] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[34] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[34] = - z*std::sqrt(1.0/12.0);
+
+  xCoordinates[35] = - x*std::sqrt(1.0/12.0);
+  yCoordinates[35] = - y*std::sqrt(1.0/12.0);
+  zCoordinates[35] = + z*std::sqrt(1.0/12.0);
+
+
+  for (int i=0; i<36; i++) {
+    double xc = xCoordinates[i];
+    double yc = yCoordinates[i];
+    double zc = zCoordinates[i];
+
+    double M[] = {
+     1.0,                 0.0,                   0.0,
+     0.0,  std::cos(2*pi*alphaX),  std::sin(2*pi*alphaX),
+     0.0, -std::sin(2*pi*alphaX),  std::cos(2*pi*alphaX)
+    };
+
+    xCoordinates[i] =   M[0] * xc + M[1] * yc + M[2] * zc;
+    yCoordinates[i] =   M[3] * xc + M[4] * yc + M[5] * zc;
+    zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
+  }
+
+  for (int i=0; i<36; i++) {
+    double xc = xCoordinates[i];
+    double yc = yCoordinates[i];
+    double zc = zCoordinates[i];
+
+    double M[] = {
+      std::cos(2*pi*alphaY),  0.0, std::sin(2*pi*alphaY),
+      0.0,                    1.0,                   0.0,
+     -std::sin(2*pi*alphaY),  0.0, std::cos(2*pi*alphaY)
+    };
+
+    xCoordinates[i] =   M[0] * xc + M[1] * yc + M[2] * zc;
+    yCoordinates[i] =   M[3] * xc + M[4] * yc + M[5] * zc;
+    zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
+  }
+
+  for (int i=0; i<36; i++) {
+    double xc = xCoordinates[i];
+    double yc = yCoordinates[i];
+    double zc = zCoordinates[i];
+
+    double M[] = {
+      std::cos(2*pi*alphaZ),  std::sin(2*pi*alphaZ),  0.0,
+     -std::sin(2*pi*alphaZ),  std::cos(2*pi*alphaZ),  0.0,
+                       0.0,                   0.0,  1.0
+    };
+
+    xCoordinates[i] =   M[0] * xc + M[1] * yc + M[2] * zc;
+    yCoordinates[i] =   M[3] * xc + M[4] * yc + M[5] * zc;
+    zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
+  }
+
+  for (int i=0; i<36; i++) {
+    xCoordinates[i] += center[0];
+    yCoordinates[i] += center[1];
+    zCoordinates[i] += center[2];
+  }
+}

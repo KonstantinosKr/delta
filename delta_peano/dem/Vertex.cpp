@@ -146,15 +146,15 @@ int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIO
   iREAL volume = (4.0/3.0) * 3.14 * pow(radius,3);
   mass = volume * material;
 
-  newParticle._persistentRecords._inertia(0) = 0.4 * mass * radius * radius;
+  newParticle._persistentRecords._inertia(0) = 0.4 * mass * radius * radius*1000;
   newParticle._persistentRecords._inertia(1) = 0;
   newParticle._persistentRecords._inertia(2) = 0;
   newParticle._persistentRecords._inertia(3) = 0;
-  newParticle._persistentRecords._inertia(4) = 0.4 * mass * radius * radius;
+  newParticle._persistentRecords._inertia(4) = 0.4 * mass * radius * radius*1000;
   newParticle._persistentRecords._inertia(5) = 0;
   newParticle._persistentRecords._inertia(6) = 0;
   newParticle._persistentRecords._inertia(7) = 0;
-  newParticle._persistentRecords._inertia(8) = 0.4 * mass * radius * radius;
+  newParticle._persistentRecords._inertia(8) = 0.4 * mass * radius * radius*1000;
 
   newParticle._persistentRecords._centreOfMass(0) = center(0);
   newParticle._persistentRecords._centreOfMass(1) = center(0);
@@ -190,20 +190,20 @@ int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIO
   newParticle._persistentRecords._orientation(7) = 0;
   newParticle._persistentRecords._orientation(8) = 1;
 
-  newParticle._persistentRecords._mass				= mass;
-  newParticle._persistentRecords._friction			= friction;
-  newParticle._persistentRecords._diameter			= radius*2;
+  newParticle._persistentRecords._mass				      = mass;
+  newParticle._persistentRecords._friction			    = friction;
+  newParticle._persistentRecords._diameter			    = radius*2;
   newParticle._persistentRecords._influenceRadius 	= (radius*2+epsilon) * 1.1;
-  newParticle._persistentRecords._epsilon			= epsilon;
-  newParticle._persistentRecords._hMin 				= hMin;
+  newParticle._persistentRecords._epsilon			      = epsilon;
+  newParticle._persistentRecords._hMin 				      = hMin;
 
   newParticle._persistentRecords._numberOfTriangles = xCoordinates.size()/DIMENSIONS;
-  newParticle._persistentRecords._isObstacle 		= isObstacle;
-  newParticle._persistentRecords._material 			= material;
+  newParticle._persistentRecords._isObstacle 		    = isObstacle;
+  newParticle._persistentRecords._material 			    = material;
   newParticle._persistentRecords._globalParticleId  = particleId;
 
   newParticle._persistentRecords._velocity          = tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._angular		 	      = tarch::la::Vector<DIMENSIONS,double>(0.0);
 
   newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
@@ -214,13 +214,13 @@ int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIO
 
   for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
   {
-	getXCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( xCoordinates[i] );
-	getYCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( yCoordinates[i] );
-	getZCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( zCoordinates[i] );
+    getXCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( xCoordinates[i] );
+    getYCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( yCoordinates[i] );
+    getZCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( zCoordinates[i] );
 
-	getXRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(xCoordinates[i]);
-	getYRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(yCoordinates[i]);
-	getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
+    getXRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(xCoordinates[i]);
+    getYRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(yCoordinates[i]);
+    getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
   }
 
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;

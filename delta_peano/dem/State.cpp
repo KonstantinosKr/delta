@@ -99,8 +99,9 @@ bool dem::State::getPenetrationStatus(){
 }
 
 void dem::State::finishedTimeStep(double initStep) {
-  _stateData.setCurrentTime( _stateData.getCurrentTime() + _stateData.getTimeStepSize() );
-  if (_stateData.getTwoParticlesAreClose()) {
+  _stateData.setCurrentTime(_stateData.getCurrentTime() + _stateData.getTimeStepSize());
+  if (_stateData.getTwoParticlesAreClose())
+  {
 	  if(_stateData.getTimeStepSize() < 1E-5) return;
 	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()/2.0);
   } else {//replace with max global step
