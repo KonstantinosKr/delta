@@ -45,7 +45,16 @@ namespace delta {
   		std::vector<double>&  yCoordinates,
   		std::vector<double>&  zCoordinates);
 
+  bool isCCW(double center[3],
+              std::vector<double>&  xCoordinates,
+              std::vector<double>&  yCoordinates,
+              std::vector<double>&  zCoordinates);
 
+  void toCCW(
+            double center[3],
+            std::vector<double>&  xCoordinates,
+            std::vector<double>&  yCoordinates,
+            std::vector<double>&  zCoordinates);
   }
 }
 

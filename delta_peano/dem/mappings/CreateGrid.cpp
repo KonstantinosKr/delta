@@ -642,6 +642,8 @@ void dem::mappings::CreateGrid::createCell(
         bool isObstacle = true; bool friction = false;
 
         delta::primitives::generateHopper(centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
+        bool ccw = delta::primitives::isCCW(centreAsArray, xCoordinates, yCoordinates, zCoordinates);
+        printf("Hopper %i\n", ccw);
 
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                                          _epsilon, isObstacle, GOLD, friction, _numberOfParticles);
@@ -649,7 +651,7 @@ void dem::mappings::CreateGrid::createCell(
         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-        iREAL xcuts = 10;
+        iREAL xcuts = 5;
         iREAL ycuts = 1;
         iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
         iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
@@ -674,6 +676,8 @@ void dem::mappings::CreateGrid::createCell(
           delta::primitives::generateParticle(position, (radius*2)*0.9, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
           newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
                                                        _epsilon, false, WOOD, true, _numberOfParticles);
+          ccw = delta::primitives::isCCW(centreAsArray, xCoordinates, yCoordinates, zCoordinates);
+                  printf("Particle %i\n", ccw);
 
           _numberOfParticles++;_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
           xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -688,6 +692,9 @@ void dem::mappings::CreateGrid::createCell(
         double height = 0.05;
         double width = 0.35;
         delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+
+        ccw = delta::primitives::isCCW(centreAsArray, xCoordinates, yCoordinates, zCoordinates);
+        printf("floor %i\n", ccw);
 
         isObstacle = true; friction = true;
         newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
@@ -1034,7 +1041,7 @@ void dem::mappings::CreateGrid::createCell(
 
 			double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) ) / std::sqrt( DIMENSIONS );
 
-			dem::Vertex&  vertex = fineGridVertices[ fineGridVerticesEnumerator(0)];
+			dem::Vertex&  vertex = fineGridVertices[fineGridVerticesEnumerator(0)];
 
 			double centreAsArray[] = {centre(0),centre(1),centre(2)};
 

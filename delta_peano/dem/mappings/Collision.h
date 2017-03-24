@@ -60,7 +60,7 @@ class dem::mappings::Collision {
       std::vector<delta::collision::contactpoint> newContactPoints,
       const records::Particle&                    particleA,
       const records::Particle&                    particleB,
-	  bool sphere
+      bool sphere
     );
 
 
@@ -70,17 +70,16 @@ class dem::mappings::Collision {
     	BruteForce,
     	Penalty,
     	PenaltyStat,
-		HybridOnTrianglePairs,
+    	HybridOnTrianglePairs,
     	HybridOnBatches,
     	HybridOnTrianglePairsStats,
     	HybridOnBatchesStats,
     	SphereHybridOnTrianglePairs,
-        SphereHybridOnBatches,
+      SphereHybridOnBatches,
     	SphereBruteForce,
-		SpherePenalty,
+    	SpherePenalty,
     	GJK,
-		none
-    };
+    	none};
 
     static bool _enableOverlapCheck;
 

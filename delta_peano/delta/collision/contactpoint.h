@@ -63,15 +63,15 @@ struct delta::collision::contactpoint {
     const double&  xPA,
     const double&  yPA,
     const double&  zPA,
-	const double&  epsilonA,
-	int masterID,
+    const double&  epsilonA,
+    int masterID,
 
     const double&  xPB,
     const double&  yPB,
     const double&  zPB,
-	const double&  epsilonB,
-	int slaveID,
-	const bool&    type
+    const double&  epsilonB,
+    int slaveID,
+    const bool&    type
   );
 
   /**

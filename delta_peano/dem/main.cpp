@@ -9,6 +9,7 @@
 #include "dem/mappings/CreateGrid.h"
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
+#include "delta/collision/material.h"
 
 #include <iomanip>
 
@@ -45,7 +46,6 @@ void printManual()
           << "  hopperNonUniformSphere" << std::endl
           << "  hopperUniformMesh" << std::endl
           << "  hopperNonUniformMesh" << std::endl
-				  << "  hopper" << std::endl
 				  << "  freefall" << std::endl
 				  << "  frictionStaticSphere" << std::endl
 				  << "  frictionSlideSphere" << std::endl
@@ -55,6 +55,7 @@ void printManual()
           << "  frictionRollMesh" << std::endl
 				  << "  sla"<< std::endl
 				  << "  nuclearArray2d" << std::endl
+				  << "  nuclearArray3d" << std::endl
           << "Grid types" << std::endl
           << "==========" << std::endl
           << "  no-grid" << std::endl
@@ -105,7 +106,7 @@ int main(int argc, char** argv)
 
   if(argc!=NumberOfArguments || (NumberOfArguments == NumberOfArguments+2 && argv[8] != "range"))
   {
-	printManual();
+    printManual();
     return -1;
   } else if (argc == NumberOfArguments) {
 	  std::cout << "gridHMAX:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
@@ -122,10 +123,10 @@ int main(int argc, char** argv)
   const std::string  gridTypeIdentifier  = argv[6];
   const double       iterations        	 = atof(argv[7]);
   const std::string  plotIdentifier      = argv[8];
-  const double		 realSnapshot		 = atof(argv[9]);
+  const double		   realSnapshot		     = atof(argv[9]);
   const double       gravity             = atof(argv[10]);
   const std::string  collisionModel      = argv[11];
-  const int			 meshMultiplier 	 = atof(argv[12]);
+  const int			     meshMultiplier 	   = atof(argv[12]);
 
   #ifdef SharedMemoryParallelisation
   	  const int          numberOfCores       = atoi(argv[13]);
@@ -269,14 +270,14 @@ int main(int argc, char** argv)
                                             0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlideRotateMesh") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideMesh,
-                                              dem::mappings::CreateGrid::slideXRotation,
-                                              0.5, 0.5, 0.5, gridType, meshMultiplier);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideMesh,
+                                            dem::mappings::CreateGrid::slideXRotation,
+                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="frictionRollMesh") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollMesh,
-                                              dem::mappings::CreateGrid::noVScheme,
-                                              0.5, 0.5, 0.5, gridType, meshMultiplier);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollMesh,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
   }
   else if (scenario=="sla") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla,
@@ -363,6 +364,7 @@ int main(int argc, char** argv)
   }
 
   dem::mappings::MoveParticles::gravity	= (gravity>0) ? 9.81 : 0.0;
+  //delta::collision::initMaterial();
 
   // Configure the output
   tarch::logging::CommandLineLogger::getInstance().clearFilterList();
