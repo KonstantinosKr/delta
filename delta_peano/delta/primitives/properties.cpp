@@ -396,6 +396,122 @@ void delta::primitives::centerOfMass(
   refcentreOfMassZ = centreOfMassZ;
 }
 
+void delta::primitives::explode(
+  std::vector<double>&  xCoordinates,
+  std::vector<double>&  yCoordinates,
+  std::vector<double>&  zCoordinates,
+  double length
+) {
+
+  std::vector<double> exCoordinates, eyCoordinates, ezCoordinates;
+
+  for(int i=0;i<xCoordinates.size();i+=3)
+  {
+    iREAL A[3], B[3], C[3];
+    A[0] = xCoordinates[i];
+    A[1] = yCoordinates[i];
+    A[2] = zCoordinates[i];
+
+    B[0] = xCoordinates[i+1];
+    B[1] = yCoordinates[i+1];
+    B[2] = zCoordinates[i+1];
+
+    C[0] = xCoordinates[i+2];
+    C[1] = yCoordinates[i+2];
+    C[2] = zCoordinates[i+2];
+
+    iREAL V[3], W[3], N[3];
+    V[0] = B[0] - A[0];
+    V[1] = B[1] - A[1];
+    V[2] = B[2] - A[2];
+
+    W[0] = C[0] - B[0];
+    W[1] = C[1] - B[1];
+    W[2] = C[2] - B[2];
+
+    N[0] = (V[1]*W[2])-(V[2]*W[1]);
+    N[1] = (V[2]*W[0])-(V[0]*W[2]);
+    N[2] = (V[0]*W[1])-(V[1]*W[0]);
+
+    iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
+    N[0] = N[0]/mag;
+    N[1] = N[1]/mag;
+    N[2] = N[2]/mag;
+
+    exCoordinates.push_back(xCoordinates[i] + length * N[0]);
+    eyCoordinates.push_back(yCoordinates[i] + length * N[1]);
+    ezCoordinates.push_back(zCoordinates[i] + length * N[2]);
+
+    exCoordinates.push_back(xCoordinates[i+1] + length * N[0]);
+    eyCoordinates.push_back(yCoordinates[i+1] + length * N[1]);
+    ezCoordinates.push_back(zCoordinates[i+1] + length * N[2]);
+
+    exCoordinates.push_back(xCoordinates[i+2] + length * N[0]);
+    eyCoordinates.push_back(yCoordinates[i+2] + length * N[1]);
+    ezCoordinates.push_back(zCoordinates[i+2] + length * N[2]);
+  }
+
+  xCoordinates.insert(xCoordinates.end(), exCoordinates.begin(), exCoordinates.end());
+  yCoordinates.insert(yCoordinates.end(), eyCoordinates.begin(), eyCoordinates.end());
+  zCoordinates.insert(zCoordinates.end(), ezCoordinates.begin(), ezCoordinates.end());
+}
+
+void delta::primitives::exploded(
+  std::vector<double>&  xCoordinates,
+  std::vector<double>&  yCoordinates,
+  std::vector<double>&  zCoordinates,
+  double length
+) {
+
+  std::vector<double> exCoordinates, eyCoordinates, ezCoordinates;
+
+  for(int i=0;i<xCoordinates.size();i+=3)
+  {
+    iREAL A[3], B[3], C[3];
+    A[0] = xCoordinates[i];
+    A[1] = yCoordinates[i];
+    A[2] = zCoordinates[i];
+
+    B[0] = xCoordinates[i+1];
+    B[1] = yCoordinates[i+1];
+    B[2] = zCoordinates[i+1];
+
+    C[0] = xCoordinates[i+2];
+    C[1] = yCoordinates[i+2];
+    C[2] = zCoordinates[i+2];
+
+    iREAL V[3], W[3], N[3];
+    V[0] = B[0] - A[0];
+    V[1] = B[1] - A[1];
+    V[2] = B[2] - A[2];
+
+    W[0] = C[0] - B[0];
+    W[1] = C[1] - B[1];
+    W[2] = C[2] - B[2];
+
+    N[0] = (V[1]*W[2])-(V[2]*W[1]);
+    N[1] = (V[2]*W[0])-(V[0]*W[2]);
+    N[2] = (V[0]*W[1])-(V[1]*W[0]);
+
+    iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
+    N[0] = N[0]/mag;
+    N[1] = N[1]/mag;
+    N[2] = N[2]/mag;
+
+    xCoordinates[i] = xCoordinates[i] + length * N[0];
+    yCoordinates[i] = yCoordinates[i] + length * N[1];
+    zCoordinates[i] = zCoordinates[i] + length * N[2];
+
+    xCoordinates[i+1] = xCoordinates[i+1] + length * N[0];
+    yCoordinates[i+1] = yCoordinates[i+1] + length * N[1];
+    zCoordinates[i+1] = zCoordinates[i+1] + length * N[2];
+
+    xCoordinates[i+2] = xCoordinates[i+2] + length * N[0];
+    yCoordinates[i+2] = yCoordinates[i+2] + length * N[1];
+    zCoordinates[i+2] = zCoordinates[i+2] + length * N[2];
+  }
+}
+
 double delta::primitives::computeHMin(
   const std::vector<double>&  xCoordinates,
   const std::vector<double>&  yCoordinates,

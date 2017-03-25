@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <assert.h>
 
-
 void delta::primitives::generateSquare(
   double center[2],
   double h,

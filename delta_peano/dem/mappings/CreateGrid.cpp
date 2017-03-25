@@ -623,7 +623,6 @@ void dem::mappings::CreateGrid::createCell(
 
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;_numberOfParticles++; _numberOfObstacles++;
 				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-
 				return;
 			}
       case hopperUniformMesh:
@@ -642,8 +641,7 @@ void dem::mappings::CreateGrid::createCell(
         bool isObstacle = true; bool friction = false;
 
         delta::primitives::generateHopper(centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
-        bool ccw = delta::primitives::isCCW(centreAsArray, xCoordinates, yCoordinates, zCoordinates);
-        printf("Hopper %i\n", ccw);
+        printf("hopper triangles:%i\n", xCoordinates.size());
 
         int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                                          _epsilon, isObstacle, GOLD, friction, _numberOfParticles);
@@ -676,8 +674,6 @@ void dem::mappings::CreateGrid::createCell(
           delta::primitives::generateParticle(position, (radius*2)*0.9, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
           newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
                                                        _epsilon, false, WOOD, true, _numberOfParticles);
-          ccw = delta::primitives::isCCW(centreAsArray, xCoordinates, yCoordinates, zCoordinates);
-                  printf("Particle %i\n", ccw);
 
           _numberOfParticles++;_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
           xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -692,9 +688,6 @@ void dem::mappings::CreateGrid::createCell(
         double height = 0.05;
         double width = 0.35;
         delta::primitives::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-
-        ccw = delta::primitives::isCCW(centreAsArray, xCoordinates, yCoordinates, zCoordinates);
-        printf("floor %i\n", ccw);
 
         isObstacle = true; friction = true;
         newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,

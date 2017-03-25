@@ -27,28 +27,40 @@
 
 #include <vector>
 
+#include "delta/hull/hull.h"
+#include "delta/hull/alg.h"
+#include <cmath>
+#include "delta/primitives/properties.h"
+
 namespace delta {
   namespace primitives {
 
-    void generateHopper(
-      double    center[3],
-      double 	width,
-      double 	hatch,
-      std::vector<double>&  xCoordinates,
-      std::vector<double>&  yCoordinates,
-      std::vector<double>&  zCoordinates
-    );
+  void generateInnerHopper(
+        double  center[3],
+        double  width,
+        double  height,
+        double  hatch,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates);
+
+  void generateOuterHopper(
+        double  center[3],
+        double  width,
+        double  height,
+        double  hatch,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates);
 
     void generateHopper(
-	double    center[3],
-	double 	width,
-	double  height,
-	double 	hatch,
-	std::vector<double>&  xCoordinates,
-	std::vector<double>&  yCoordinates,
-	std::vector<double>&  zCoordinates
-    );
-
+        double  center[3],
+        double 	width,
+        double  height,
+        double 	hatch,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates);
   }
 }
 

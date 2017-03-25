@@ -395,15 +395,10 @@ void dem::mappings::Plot::touchVertexLastTime(
       B = x[j*3+1], y[j*3+1], z[j*3+1];
       C = x[j*3+2], y[j*3+2], z[j*3+2];
 
-      iREAL normal[3];
       //A + (B − A) x a+(C−A)·b
-      normal[0] = A[0] + (B[0]-A[0]) * 1/3 + (C[0] - A[0]) * 1/3;
-      normal[1] = A[1] + (B[1]-A[1]) * 1/3 + (C[1] - A[1]) * 1/3;
-      normal[2] = A[2] + (B[2]-A[2]) * 1/3 + (C[2] - A[2]) * 1/3;
-
-      np[0] = normal[0];
-      np[1] = normal[1];
-      np[2] = normal[2];
+      np[0] = A[0] + (B[0]-A[0]) * 1/3 + (C[0] - A[0]) * 1/3;;
+      np[1] = A[1] + (B[1]-A[1]) * 1/3 + (C[1] - A[1]) * 1/3;
+      np[2] = A[2] + (B[2]-A[2]) * 1/3 + (C[2] - A[2]) * 1/3;
 
       int vertexPIndex = _vertexWriter->plotVertex(np);
       int dataPointIndex = _cellWriter->plotPoint(vertexPIndex);
@@ -416,27 +411,19 @@ void dem::mappings::Plot::touchVertexLastTime(
       V[1] = B[1] - A[1];
       V[2] = B[2] - A[2];
 
-      W[0] = C[0] - A[0];
-      W[1] = C[1] - A[1];
-      W[2] = C[2] - A[2];
+      W[0] = C[0] - B[0];
+      W[1] = C[1] - B[1];
+      W[2] = C[2] - B[2];
 
       N[0] = (V[1]*W[2])-(V[2]*W[1]);
       N[1] = (V[2]*W[0])-(V[0]*W[2]);
       N[2] = (V[0]*W[1])-(V[1]*W[0]);
 
-      np = N[0]/(fabs(N[0]) + fabs(N[1]) + fabs(N[2])), N[1]/(fabs(N[0]) + fabs(N[1]) + fabs(N[2])), N[2]/(fabs(N[0]) + fabs(N[1]) + fabs(N[2]));
+      iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
 
-/*
-      iREAL Ni[3];
-
-      iREAL mag = std::sqrt(((particle._persistentRecords._centre(0)-normal[0])*(particle._persistentRecords._centre(0)-normal[0]))+((particle._persistentRecords._centre(1)-normal[1])*(particle._persistentRecords._centre(1)-normal[1]))+((particle._persistentRecords._centre(2)-normal[2])*(particle._persistentRecords._centre(2)-normal[2])));
-
-      np[0] = (normal[0] - particle._persistentRecords._centre(0))/mag;
-      np[1] = (normal[1] - particle._persistentRecords._centre(1))/mag;
-      np[2] = (normal[2] - particle._persistentRecords._centre(2))/mag;*/
+      np = N[0]/mag, N[1]/mag, N[2]/mag;
 
       _velocitiesAndNormals->plotVertex(vertexPIndex, np);
-
     }
 
     /*if(_trackParticle && _trackID == particle.getGlobalParticleId())

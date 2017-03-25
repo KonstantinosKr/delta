@@ -64,26 +64,27 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
 
-	delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
+    delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
                                         &particle._persistentRecords._referentialAngular(0),
                                         &particle._persistentRecords._orientation(0), timeStepSize);
-	if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
-	{
-    double* x = fineGridVertex.getXCoordinates(i);
-    double* y = fineGridVertex.getYCoordinates(i);
-    double* z = fineGridVertex.getZCoordinates(i);
 
-    double* refx = fineGridVertex.getXRefCoordinates(i);
-    double* refy = fineGridVertex.getYRefCoordinates(i);
-    double* refz = fineGridVertex.getZRefCoordinates(i);
-
-    for (int j=0; j<particle._persistentRecords._numberOfTriangles*DIMENSIONS; j++)
+    if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
     {
-      delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
+      double* x = fineGridVertex.getXCoordinates(i);
+      double* y = fineGridVertex.getYCoordinates(i);
+      double* z = fineGridVertex.getZCoordinates(i);
+
+      double* refx = fineGridVertex.getXRefCoordinates(i);
+      double* refy = fineGridVertex.getYRefCoordinates(i);
+      double* refz = fineGridVertex.getZRefCoordinates(i);
+
+      for (int j=0; j<particle._persistentRecords._numberOfTriangles*DIMENSIONS; j++)
+      {
+        delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
                                       &particle._persistentRecords._orientation(0),
                                       &particle._persistentRecords._centreOfMass(0),
                                       &particle._persistentRecords._referentialCentreOfMass(0));
-    }
+      }
 	}
 
 	#ifdef ENERGYSTATS

@@ -54,33 +54,33 @@ delta::collision::contactpoint::contactpoint(
   const double&  epsilonA,
   int masterID,
 
-  const double&  xPB,
-  const double&  yPB,
-  const double&  zPB,
+  const double&  xQB,
+  const double&  yQB,
+  const double&  zQB,
   const double&  epsilonB,
   int slaveID,
   const bool&	 type
 ) {
 
-  x[0] = (xPA+xPB)/2.0;
-  x[1] = (yPA+yPB)/2.0;
-  x[2] = (zPA+zPB)/2.0;
+  x[0] = (xPA+xQB)/2.0;
+  x[1] = (yPA+yQB)/2.0;
+  x[2] = (zPA+zQB)/2.0;
 
   P[0] = xPA;
   P[1] = yPA;
   P[2] = zPA;
 
-  Q[0] = xPB;
-  Q[1] = yPB;
-  Q[2] = zPB;
+  Q[0] = xQB;
+  Q[1] = yQB;
+  Q[2] = zQB;
 
   epsilonTotal = epsilonA+epsilonB;
 
   depth = (epsilonTotal - getDistance());
 
-  normal[0] = ((xPA-xPB)/getDistance());
-  normal[1] = ((yPA-yPB)/getDistance());
-  normal[2] = ((zPA-zPB)/getDistance());
+  normal[0] = ((xPA-xQB)/getDistance());
+  normal[1] = ((yPA-yQB)/getDistance());
+  normal[2] = ((zPA-zQB)/getDistance());
 
   force[0] = 0;
   force[1] = 0;

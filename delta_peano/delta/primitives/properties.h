@@ -123,6 +123,18 @@ namespace delta {
 	  double&                     refcentreOfMassY,
 	  double&                     refcentreOfMassZ);
 
+    void explode(
+      std::vector<double>&  xCoordinates,
+      std::vector<double>&  yCoordinates,
+      std::vector<double>&  zCoordinates,
+      double length
+    );
+    void exploded(
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates,
+          double length);
+
     void centerOfGeometry(
 		double centreOfGeometry[3],
 	  std::vector<double>&  xCoordinates,

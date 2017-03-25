@@ -187,39 +187,33 @@ bool delta::primitives::isCCW(
     V[1] = B[1] - A[1];
     V[2] = B[2] - A[2];
 
-    W[0] = C[0] - A[0];
-    W[1] = C[1] - A[1];
-    W[2] = C[2] - A[2];
+    W[0] = C[0] - B[0];
+    W[1] = C[1] - B[1];
+    W[2] = C[2] - B[2];
 
     N[0] = (V[1]*W[2])-(V[2]*W[1]);
     N[1] = (V[2]*W[0])-(V[0]*W[2]);
     N[2] = (V[0]*W[1])-(V[1]*W[0]);
 
-    N[0] = N[0]/(fabs(N[0]) + fabs(N[1]) + fabs(N[2]));
-    N[1] = N[1]/(fabs(N[0]) + fabs(N[1]) + fabs(N[2]));
-    N[2] = N[2]/(fabs(N[0]) + fabs(N[1]) + fabs(N[2]));
+    iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
 
     iREAL No[3], m[3];
     m[0] = (A[0] + (B[0]-A[0]) * 1/3 + (C[0] - A[0]) * 1/3);
     m[1] = (A[1] + (B[1]-A[1]) * 1/3 + (C[1] - A[1]) * 1/3);
     m[2] = (A[2] + (B[2]-A[2]) * 1/3 + (C[2] - A[2]) * 1/3);
 
-    iREAL mag = std::sqrt(((m[0]-center[0])*(m[0]-center[0]))+((m[1]-center[1])*(m[1]-center[1]))+((m[2]-center[2])*(m[2]-center[2])));
+    mag = std::sqrt(((m[0]-center[0])*(m[0]-center[0]))+((m[1]-center[1])*(m[1]-center[1]))+((m[2]-center[2])*(m[2]-center[2])));
 
-    No[0] = (m[0] - center[0]);
-    No[1] = (m[1] - center[1]);
-    No[2] = (m[2] - center[2]);
+    //printf("mag:%f %f %f %f\n", mag, No[0], No[1], No[2]);
+    No[0] = (m[0] - center[0])/mag;
+    No[1] = (m[1] - center[1])/mag;
+    No[2] = (m[2] - center[2])/mag;
 
-    iREAL magNo = std::sqrt((pow(No[0], 2))+(pow(No[1], 2))+(pow(No[2],2)));
+    //double dot = N[0]*No[0]+ N[1]*No[1]+ N[2]*No[2];
 
-    double dot = N[0]*No[0]+
-                 N[1]*No[1]+
-                 N[2]*No[2];
+    //bool in = true;
 
-    iREAL magN = std::sqrt((pow(N[0], 2))+(pow(N[1], 2))+(pow(N[2],2)));
-    bool in = true;
-
-    //printf("normal:%f %f %f Outside:%f %f %f magNo:%f magN:%f\n", N[0], N[1], N[2], No[0], No[1], No[2], magNo, magN);
+    //printf("normal:%f %f %f Outside:%f %f %f dot:%f\n", N[0], N[1], N[2], No[0], No[1], No[2], dot);
   }
   if(normOutside < normInside) return false;
   return true;
