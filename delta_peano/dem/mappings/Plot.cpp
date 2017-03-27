@@ -130,35 +130,26 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_type->plotCell(contactPointIndex,2);
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
-
-				/*if(p->first == 57)
+/*
+				if(_trackParticle)
+				for(int i = 0; i<_trackParticleID.size(); i++)
 				{
-				logInfo("endIteration(...)", std::endl
-				   << "#####CONTACT-DATA#####" << std::endl
-				   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
-				   << "friction=" << ppp->friction << ", nulldata1=0" << ", nulldata2=0" << std::endl
-				   << "distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
-				   << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
-				   << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
-				   << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
-				   << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
-				   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
-		  	  	}*/
-
-				/*if(_trackParticle && _trackID == p->first)
-				{
-					logInfo("endIteration(...)", std::endl
-					   << "#####CONTACT-DATA#####" << std::endl
-					   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
-					   << "friction=" << ppp->friction << ", nulldata1=0" << ", nulldata2=0" << std::endl
-					   << "distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
-					   << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
-					   << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
-					   << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
-					   << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
-					   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
-				}*/
-
+				  //iftrackplotting enabled and one or more id are enables then print their data
+          if(_trackParticleID[i] == p->first)
+          {
+            logInfo("endIteration(...)", std::endl
+               << "#####CONTACT-DATA#####" << std::endl
+               << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
+               << "friction=" << ppp->friction << ", nulldata1=0" << ", nulldata2=0" << std::endl
+               << "distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
+               << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
+               << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
+               << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
+               << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
+               << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
+          }
+        }
+        */
 				#ifdef CONTACTSTATS
 				logInfo("endIteration(...)", std::endl
 				   << "#####CONTACT-DATA#####" << std::endl

@@ -29,7 +29,7 @@
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"
-
+#include <vector>
 
 namespace dem {
   namespace mappings {
@@ -53,7 +53,8 @@ class dem::mappings::Plot {
     static tarch::logging::Log  _log;
 
     static int  _snapshotCounter;
-    static bool _trackParticle;
+    //static bool _trackParticle;
+    //static std::vector<int> _trackParticleID;
 
     #ifdef UseInSituVisualiser
     typedef insituvis::Visualiser                                                       Writer;
