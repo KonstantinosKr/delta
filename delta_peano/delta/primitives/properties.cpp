@@ -19,33 +19,41 @@ void delta::primitives::moveMeshFromOriginToPosition(double center[3],
 										  std::vector<double>&  yCoordinates,
 										  std::vector<double>&  zCoordinates)
 {
-	for(int i=0;i<xCoordinates.size();i+=3)
+	for(int i=0;i<xCoordinates.size();i++)
 	{
 		xCoordinates[i] = (xCoordinates[i])+center[0];
 		yCoordinates[i] = (yCoordinates[i])+center[1];
 		zCoordinates[i] = (zCoordinates[i])+center[2];
-
-		xCoordinates[i+1] = (xCoordinates[i+1])+center[0];
-		yCoordinates[i+1] = (yCoordinates[i+1])+center[1];
-		zCoordinates[i+1] = (zCoordinates[i+1])+center[2];
-
-		xCoordinates[i+2] = (xCoordinates[i+2])+center[0];
-		yCoordinates[i+2] = (yCoordinates[i+2])+center[1];
-		zCoordinates[i+2] = (zCoordinates[i+2])+center[2];
 	}
 }
 
 void delta::primitives::scaleXYZ(double scale,
+    double position[3],
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates)
 {
+  delta::primitives::moveMeshFromPositionToOrigin(position, xCoordinates, yCoordinates, zCoordinates);
 	for(int i=0;i<xCoordinates.size();i++)
 	{
 		xCoordinates[i] = xCoordinates[i]*scale;
 		yCoordinates[i] = yCoordinates[i]*scale;
 		zCoordinates[i] = zCoordinates[i]*scale;
 	}
+	delta::primitives::moveMeshFromOriginToPosition(position, xCoordinates, yCoordinates, zCoordinates);
+}
+
+void delta::primitives::scaleXYZ(double scale,
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
+{
+  for(int i=0;i<xCoordinates.size();i++)
+  {
+    xCoordinates[i] = xCoordinates[i]*scale;
+    yCoordinates[i] = yCoordinates[i]*scale;
+    zCoordinates[i] = zCoordinates[i]*scale;
+  }
 }
 
 void delta::primitives::rotateX(double alphaX,
@@ -574,9 +582,9 @@ double delta::primitives::simplex_J (double *a, double *b, double *c, double *d)
  * computes the inertia using simplex integration from solfec
  */
 void delta::primitives::computeInertia(
-		const std::vector<double>&  xCoordinates,
-		const std::vector<double>&  yCoordinates,
-		const std::vector<double>&  zCoordinates,
+		std::vector<double>&  xCoordinates,
+		std::vector<double>&  yCoordinates,
+		std::vector<double>&  zCoordinates,
 		double rho,
 		double& mass,
 		double center[3],
@@ -662,6 +670,74 @@ void delta::primitives::computeInertia(
 #ifdef STATS
   printf("Inertia %f %f %f %f %f %f %f %f %f\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
 #endif
+}
+
+double delta::primitives::computeMass(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates,
+    double rho)
+{
+  iREAL me, a[3], b[3], c[3], J;
+
+  iREAL zero[3];
+  zero[0] = 0;
+  zero[1] = 0;
+  zero[2] = 0;
+
+  for (int i = 0; i < xCoordinates.size(); i+=3)
+  {
+    a[0] = xCoordinates[i];
+    a[1] = yCoordinates[i];
+    a[2] = zCoordinates[i];
+
+    b[0] = xCoordinates[i+1];
+    b[1] = yCoordinates[i+1];
+    b[2] = zCoordinates[i+1];
+
+    c[0] = xCoordinates[i+2];
+    c[1] = yCoordinates[i+2];
+    c[2] = zCoordinates[i+2];
+
+    J = rho * simplex_J (zero, a, b, c);
+
+    me += simplex_1 (J, zero, a, b, c);
+  }
+  return me;
+}
+
+double delta::primitives::computeVolume(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
+{
+  iREAL vol, a[3], b[3], c[3], J;
+
+  iREAL zero[3];
+  zero[0] = 0;
+  zero[1] = 0;
+  zero[2] = 0;
+
+  for (int i = 0; i < xCoordinates.size(); i+=3)
+  {
+    a[0] = xCoordinates[i];
+    a[1] = yCoordinates[i];
+    a[2] = zCoordinates[i];
+
+    b[0] = xCoordinates[i+1];
+    b[1] = yCoordinates[i+1];
+    b[2] = zCoordinates[i+1];
+
+    c[0] = xCoordinates[i+2];
+    c[1] = yCoordinates[i+2];
+    c[2] = zCoordinates[i+2];
+
+    J = simplex_J (zero, a, b, c);
+
+    vol += simplex_1 (J, zero, a, b, c);
+  }
+
+  return vol;
 }
 
 void delta::primitives::computeInverseInertia(double inertia[9], double inverse[9], bool isObject)

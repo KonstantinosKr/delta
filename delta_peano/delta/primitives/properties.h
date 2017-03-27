@@ -51,6 +51,12 @@ namespace delta {
 			std::vector<double>&  yCoordinates,
 			std::vector<double>&  zCoordinates);
 
+	void scaleXYZ(double scale,
+	    double position[3],
+	    std::vector<double>&  xCoordinates,
+	    std::vector<double>&  yCoordinates,
+	    std::vector<double>&  zCoordinates);
+
 	void rotateX(double alphaX,
 			std::vector<double>&  xCoordinates,
 			std::vector<double>&  yCoordinates,
@@ -147,13 +153,24 @@ namespace delta {
       const std::vector<double>&  zCoordinates);
 
     void computeInertia(
-    		const std::vector<double>&  xCoordinates,
-    		const std::vector<double>&  yCoordinates,
-    		const std::vector<double>&  zCoordinates,
-			double rho,
+    		std::vector<double>&  xCoordinates,
+    		std::vector<double>&  yCoordinates,
+    		std::vector<double>&  zCoordinates,
+    		double rho,
     		double& mass,
     		double center[3],
     		double inertia[9]);
+
+    double computeMass(
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates,
+        double rho);
+
+    double computeVolume(
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates);
 
     void computeInverseInertia(double inertia[9], double inverse[9], bool isObject);
 

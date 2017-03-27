@@ -2,7 +2,7 @@
 
 //particle parameters
 #define SPRING 1E4
-#define DAMPER 300
+#define DAMPER 400
 #define FRICTION 0.8
 
 //sphere parameters for piling simulation

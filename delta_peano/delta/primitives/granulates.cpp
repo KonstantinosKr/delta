@@ -54,7 +54,7 @@ void delta::primitives::generateParticle(
 	
   unsigned int mul=1E8;
 
-  double diameter = h * 0.9; //diameter -> make it slightly smaller
+  double diameter = h; //diameter -> make it slightly smaller
 
   int pointsize = noPointsPerParticle; //number of points for point cloud
 
