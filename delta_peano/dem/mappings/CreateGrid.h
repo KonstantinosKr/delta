@@ -8,7 +8,6 @@
 #ifndef DEM_MAPPINGS_CreateGrid_H_
 #define DEM_MAPPINGS_CreateGrid_H_
 
-
 #include "tarch/logging/Log.h"
 #include "tarch/la/Vector.h"
 
@@ -26,16 +25,17 @@
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"
+
 #include "delta/primitives/triangle.h"
 #include "delta/sys/read.h"
 #include "delta/sys/delta.h"
+#include "delta/collision/material.h"
 
 namespace dem {
   namespace mappings {
     class CreateGrid;
   }
 }
-
 
 /**
  * This is a mapping from the spacetree traversal events to your user-defined activities.
@@ -92,7 +92,8 @@ class dem::mappings::CreateGrid {
       ReluctantAdaptiveGrid
     };
 
-    static void setScenario(Scenario scenario, VScheme velocityScheme, double maxH, double particleDiamMin, double particleDiamMax,
+    static void setScenario(Scenario scenario, VScheme velocityScheme,
+                            double maxH, double particleDiamMin, double particleDiamMax,
     						            GridType gridType, int noPointsPerGranulate);
 
   private:

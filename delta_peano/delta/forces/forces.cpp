@@ -12,28 +12,12 @@
 #define SFRICTIONWOOD 0.05
 #define SFRICTIONROLLING 0.005
 
-#define GOLD 20000
-#define WOOD 1000
-
-#define NNMUL(A, B, C)\
-{\
- (C) [0] = (A)[0]*(B)[0]+(A)[3]*(B)[1]+(A)[6]*(B)[2];\
- (C) [1] = (A)[1]*(B)[0]+(A)[4]*(B)[1]+(A)[7]*(B)[2];\
- (C) [2] = (A)[2]*(B)[0]+(A)[5]*(B)[1]+(A)[8]*(B)[2];\
- (C) [3] = (A)[0]*(B)[3]+(A)[3]*(B)[4]+(A)[6]*(B)[5];\
- (C) [4] = (A)[1]*(B)[3]+(A)[4]*(B)[4]+(A)[7]*(B)[5];\
- (C) [5] = (A)[2]*(B)[3]+(A)[5]*(B)[4]+(A)[8]*(B)[5];\
- (C) [6] = (A)[0]*(B)[6]+(A)[3]*(B)[7]+(A)[6]*(B)[8];\
- (C) [7] = (A)[1]*(B)[6]+(A)[4]*(B)[7]+(A)[7]*(B)[8];\
- (C) [8] = (A)[2]*(B)[6]+(A)[5]*(B)[7]+(A)[8]*(B)[8];\
-}
-
 double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREAL relativeVelocity[3],
-							iREAL positionASpatial[3], iREAL positionBSpatial[3],
-							iREAL positionAReferential[3], iREAL positionBReferential[3],
-							iREAL massA, iREAL massB,
-							iREAL rotationA[9], iREAL rotationB[9],
-							iREAL inverseA[9], iREAL inverseB[9], iREAL f[3])
+                              iREAL positionASpatial[3], iREAL positionBSpatial[3],
+                              iREAL positionAReferential[3], iREAL positionBReferential[3],
+                              iREAL massA, iREAL massB,
+                              iREAL rotationA[9], iREAL rotationB[9],
+                              iREAL inverseA[9], iREAL inverseB[9], iREAL f[3])
 {
 	//RefConPoint = Rotation^T *(spatial contact point - spatial centre) + RefCentre;
 	iREAL refconptA[3], refconptB[3], conptSubPosition[3];
@@ -200,12 +184,11 @@ double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeV
 void delta::forces::frictionSphere(iREAL normal[3], iREAL vi[3], iREAL force, iREAL friction[3], int materialA, int materialB)
 {
   iREAL vt[3];
-
   vt[0] = vi[0] - normal[0]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
   vt[1] = vi[1] - normal[1]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
   vt[2] = vi[2] - normal[2]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
 
-  if(materialA == GOLD || materialB == GOLD)
+  if(materialA == int(delta::collision::material::MaterialType::GOLD) || materialB == int(delta::collision::material::MaterialType::GOLD))
   {
 	  friction[0] =  -vt[0]*SFRICTIONGOLD*force;
 	  friction[1] =  -vt[1]*SFRICTIONGOLD*force;

@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <limits>
 #include <array>
+#include "delta/collision/material.h"
 
 namespace delta {
   namespace primitives {
@@ -101,8 +102,8 @@ namespace delta {
 									std::vector<double>&  zCoordinates);
 
 	double computeDiagonal(std::vector<double>&  xCoordinates,
-						   std::vector<double>&  yCoordinates,
-						   std::vector<double>&  zCoordinates);
+                   std::vector<double>&  yCoordinates,
+                   std::vector<double>&  zCoordinates);
 
 	double computeMaxXWidth(std::vector<double>&  xCoordinates);
 	double computeMaxYWidth(std::vector<double>&  yCoordinates);
@@ -122,41 +123,41 @@ namespace delta {
       std::vector<double>&  xCoordinates,
       std::vector<double>&  yCoordinates,
       std::vector<double>&  zCoordinates,
-      double&                     centreOfMassX,
-      double&                     centreOfMassY,
-      double&                     centreOfMassZ,
-	  double&                     refcentreOfMassX,
-	  double&                     refcentreOfMassY,
-	  double&                     refcentreOfMassZ);
+      double&               centreOfMassX,
+      double&               centreOfMassY,
+      double&               centreOfMassZ,
+      double&               refcentreOfMassX,
+      double&               refcentreOfMassY,
+      double&               refcentreOfMassZ);
 
     void explode(
       std::vector<double>&  xCoordinates,
       std::vector<double>&  yCoordinates,
       std::vector<double>&  zCoordinates,
-      double length
-    );
+      double length);
+
     void exploded(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates,
-          double length);
+      std::vector<double>&  xCoordinates,
+      std::vector<double>&  yCoordinates,
+      std::vector<double>&  zCoordinates,
+      double length);
 
     void centerOfGeometry(
-		double centreOfGeometry[3],
-	  std::vector<double>&  xCoordinates,
-	  std::vector<double>&  yCoordinates,
-	  std::vector<double>&  zCoordinates);
+      double centreOfGeometry[3],
+      std::vector<double>&  xCoordinates,
+      std::vector<double>&  yCoordinates,
+      std::vector<double>&  zCoordinates);
 
     double computeHMin(
-      const std::vector<double>&  xCoordinates,
-      const std::vector<double>&  yCoordinates,
-      const std::vector<double>&  zCoordinates);
+        const std::vector<double>&  xCoordinates,
+        const std::vector<double>&  yCoordinates,
+        const std::vector<double>&  zCoordinates);
 
     void computeInertia(
     		std::vector<double>&  xCoordinates,
     		std::vector<double>&  yCoordinates,
     		std::vector<double>&  zCoordinates,
-    		double rho,
+    		delta::collision::material::MaterialType material,
     		double& mass,
     		double center[3],
     		double inertia[9]);
@@ -165,7 +166,7 @@ namespace delta {
         std::vector<double>&  xCoordinates,
         std::vector<double>&  yCoordinates,
         std::vector<double>&  zCoordinates,
-        double rho);
+        delta::collision::material::MaterialType material);
 
     double computeVolume(
         std::vector<double>&  xCoordinates,

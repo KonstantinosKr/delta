@@ -585,7 +585,7 @@ void delta::primitives::computeInertia(
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates,
-		double rho,
+		delta::collision::material::MaterialType material,
 		double& mass,
 		double center[3],
 		double inertia[9])
@@ -601,6 +601,20 @@ void delta::primitives::computeInertia(
   euler[0] = euler[1] = euler[2] =
   euler[3] = euler[4] = euler[5] =
   euler[6] = euler[7] = euler[8] = 0.0;
+
+  int rho;
+  switch(material)
+  {
+    case delta::collision::material::MaterialType::WOOD:
+      rho = int(delta::collision::material::MaterialDensity::WOOD);
+      break;
+    case delta::collision::material::MaterialType::GOLD:
+      rho = int(delta::collision::material::MaterialDensity::GOLD);
+      break;
+    case delta::collision::material::MaterialType::GRAPHITE:
+      rho = int(delta::collision::material::MaterialDensity::GRAPHITE);
+      break;
+  }
 
   for (int i = 0; i < xCoordinates.size(); i+=3)
   {
@@ -676,7 +690,7 @@ double delta::primitives::computeMass(
     std::vector<double>&  xCoordinates,
     std::vector<double>&  yCoordinates,
     std::vector<double>&  zCoordinates,
-    double rho)
+    delta::collision::material::MaterialType material)
 {
   iREAL me, a[3], b[3], c[3], J;
 
@@ -684,6 +698,19 @@ double delta::primitives::computeMass(
   zero[0] = 0;
   zero[1] = 0;
   zero[2] = 0;
+
+  int rho;
+  switch(material)
+  {
+    case delta::collision::material::MaterialType::WOOD:
+      rho = int(delta::collision::material::MaterialDensity::WOOD);
+      break;
+    case delta::collision::material::MaterialType::GOLD:
+      rho = int(delta::collision::material::MaterialDensity::GOLD);
+      break;
+    case delta::collision::material::MaterialType::GRAPHITE:
+      rho = int(delta::collision::material::MaterialDensity::GRAPHITE);
+  }
 
   for (int i = 0; i < xCoordinates.size(); i+=3)
   {
@@ -700,9 +727,9 @@ double delta::primitives::computeMass(
     c[2] = zCoordinates[i+2];
 
     J = rho * simplex_J (zero, a, b, c);
-
     me += simplex_1 (J, zero, a, b, c);
   }
+
   return me;
 }
 

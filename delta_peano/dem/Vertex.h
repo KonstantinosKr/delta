@@ -18,6 +18,7 @@
 #include "peano/heap/DoubleHeap.h"
 
 #include "dem/mappings/Collision.h"
+#include "delta/collision/material.h"
 
 
 namespace dem { 
@@ -90,14 +91,14 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
   		  std::vector<double>&  xCoordinates,
   		  std::vector<double>&  yCoordinates,
   		  std::vector<double>&  zCoordinates,
-  		  double epsilon, bool isObstacle, int material, bool friction, int particleId
+  		  double epsilon, bool isObstacle, delta::collision::material::MaterialType material, bool friction, int particleId
     );
 
     int  createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIONS,double>&   center,
     		  std::vector<double>&  xCoordinates,
     		  std::vector<double>&  yCoordinates,
     		  std::vector<double>&  zCoordinates,
-    		  double radius, double epsilon, bool isObstacle, int material, bool friction, int particleId);
+    		  double radius, double epsilon, bool isObstacle, delta::collision::material::MaterialType material, bool friction, int particleId);
 
     int getNumberOfParticles() const;
     int getNumberOfTriangles( int particleNumber ) const;

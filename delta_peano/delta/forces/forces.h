@@ -1,8 +1,21 @@
 #include <vector>
 #include "delta/collision/contactpoint.h"
 #include "delta/sys/delta.h"
-#include "math.h"
+#include "delta/collision/material.h"
+#include <cmath>
 
+#define NNMUL(A, B, C)\
+{\
+ (C) [0] = (A)[0]*(B)[0]+(A)[3]*(B)[1]+(A)[6]*(B)[2];\
+ (C) [1] = (A)[1]*(B)[0]+(A)[4]*(B)[1]+(A)[7]*(B)[2];\
+ (C) [2] = (A)[2]*(B)[0]+(A)[5]*(B)[1]+(A)[8]*(B)[2];\
+ (C) [3] = (A)[0]*(B)[3]+(A)[3]*(B)[4]+(A)[6]*(B)[5];\
+ (C) [4] = (A)[1]*(B)[3]+(A)[4]*(B)[4]+(A)[7]*(B)[5];\
+ (C) [5] = (A)[2]*(B)[3]+(A)[5]*(B)[4]+(A)[8]*(B)[5];\
+ (C) [6] = (A)[0]*(B)[6]+(A)[3]*(B)[7]+(A)[6]*(B)[8];\
+ (C) [7] = (A)[1]*(B)[6]+(A)[4]*(B)[7]+(A)[7]*(B)[8];\
+ (C) [8] = (A)[2]*(B)[6]+(A)[5]*(B)[7]+(A)[8]*(B)[8];\
+}
 
 namespace delta {
   namespace forces {
@@ -14,9 +27,8 @@ namespace delta {
                   iREAL rotationA[9], iREAL rotationB[9],
                   iREAL inverseA[9], iREAL inverseB[9], iREAL f[3]);
 
+    void friction(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3]);
   	double springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3]);
-
-  	void friction(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3]);
   	void frictionSphere(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3], int materialA, int materialB);
 
     /**
@@ -56,5 +68,4 @@ namespace delta {
       iREAL torque[3],
       bool  isSphere);
   }
-
 }

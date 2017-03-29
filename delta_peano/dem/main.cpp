@@ -366,7 +366,7 @@ int main(int argc, char** argv)
   }
 
   dem::mappings::MoveParticles::gravity	= (gravity>0) ? 9.81 : 0.0;
-  //delta::collision::initMaterial();
+  //delta::collision::material::initMaterial();
 
   // Configure the output
   tarch::logging::CommandLineLogger::getInstance().clearFilterList();

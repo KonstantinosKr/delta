@@ -87,7 +87,7 @@ void delta::primitives::generateParticle(
   assertion(tr==NULL || pointlength>3);
   */
 
-  const int numberOfTriangles = pointlength;
+  int numberOfTriangles = pointlength;
 
   xCoordinates.resize(numberOfTriangles*3);
   yCoordinates.resize(numberOfTriangles*3);
