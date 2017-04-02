@@ -28,7 +28,7 @@
 #include <assert.h>
 
 
-void delta::primitives::generateInnerHopper(
+void delta::primitives::hopper::generateInnerHopper(
 		double  center[3],
 		double 	width,
 		double  height,
@@ -303,10 +303,10 @@ void delta::primitives::generateInnerHopper(
 	yCoordinates[35] = C[1];
 	zCoordinates[35] = C[2];
 
-	//delta::primitives::explode(xCoordinates, yCoordinates, zCoordinates, 0.1);
+	//delta::primitives::hopper::explode(xCoordinates, yCoordinates, zCoordinates, 0.1);
 }
 
-void delta::primitives::generateOuterHopper(
+void delta::primitives::hopper::generateOuterHopper(
     double  center[3],
     double  width,
     double  height,
@@ -407,8 +407,8 @@ void delta::primitives::generateOuterHopper(
   std::vector<double> eyCoordinates = yCoordinates;
   std::vector<double> ezCoordinates = zCoordinates;
 
-  //delta::primitives::scaleXYZ(1.2, exCoordinates, eyCoordinates, ezCoordinates);
-  delta::primitives::generateInnerHopper(center, width, height, hatch, exCoordinates, eyCoordinates, ezCoordinates);
+  //delta::primitives::hopper::scaleXYZ(1.2, exCoordinates, eyCoordinates, ezCoordinates);
+  delta::primitives::hopper::generateInnerHopper(center, width, height, hatch, exCoordinates, eyCoordinates, ezCoordinates);
 
   xCoordinates.insert(xCoordinates.end(), exCoordinates.begin(), exCoordinates.end());
   yCoordinates.insert(yCoordinates.end(), eyCoordinates.begin(), eyCoordinates.end());
@@ -1057,7 +1057,7 @@ void delta::primitives::generateOuterHopper(
   zCoordinates[35] = tmp[2];
 }
 
-void delta::primitives::generateHopper(
+void delta::primitives::hopper::generateHopper(
     double  center[3],
     double  width,
     double  height,
@@ -1068,7 +1068,7 @@ void delta::primitives::generateHopper(
 )
 {
 
-  delta::primitives::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
-  delta::primitives::generateOuterHopper(center, width+0.005, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
+  delta::primitives::hopper::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
+  delta::primitives::hopper::generateOuterHopper(center, width+0.005, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
 }
 

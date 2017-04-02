@@ -94,22 +94,12 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     if(plotThisTraversal)
     {
-      if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
-      {
-          logInfo("runAsMaster(...)", "i=" << i
-            << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-            << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-            << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
-            << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-            << ", grid-v=" << repository.getState().getNumberOfInnerVertices() << " | snap");
-      } else {
-          logInfo("runAsMaster(...)", "i=" << i
-            << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-            << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
-            << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-            << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-            << ", grid-v=" << repository.getState().getNumberOfInnerVertices() << " | snap");
-      }
+      logInfo("runAsMaster(...)", "i=" << i
+        << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+        << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
+        << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
+        << ", cnpt=" << repository.getState().getNumberOfContactPoints()
+        << ", grid-v=" << repository.getState().getNumberOfInnerVertices() << " | snap");
 
       //delta::sys::Sys::saveIteration(repository.getState().getTimeStepSize(), i, iterations);
 
@@ -124,25 +114,14 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
         repository.switchToTimeStepAndPlot();
       }
     } else {
-      if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
-      {
-        logInfo("runAsMaster(...)", "i=" << i
-        << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-        << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
-        << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-        << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
-        << ", t=" << repository.getState().getTime()
-        << ", dt=" << repository.getState().getTimeStepSize());
-      } else {
-    	  logInfo("runAsMaster(...)", "i=" << i
-        << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-        << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
-        << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-        << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-        << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
-        << ", t=" << repository.getState().getTime()
-        << ", dt=" << repository.getState().getTimeStepSize());
-      }
+      logInfo("runAsMaster(...)", "i=" << i
+      << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+      << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
+      << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
+      << ", cnpt=" << repository.getState().getNumberOfContactPoints()
+      << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
+      << ", t=" << repository.getState().getTime()
+      << ", dt=" << repository.getState().getTimeStepSize());
 
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {

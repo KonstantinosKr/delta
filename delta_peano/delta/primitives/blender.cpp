@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-void delta::primitives::generateBlender(
+void delta::primitives::blender::generateBlender(
 		double    center[3],
 		double 	width,
 		std::vector<double>&  xCoordinates,

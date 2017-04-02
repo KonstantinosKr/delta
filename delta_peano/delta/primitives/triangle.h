@@ -30,31 +30,21 @@
 
 namespace delta {
   namespace primitives {
+    namespace triangle {
+      void bisectTriangle(
+          double xT[3],
+          double yT[3],
+          double zT[3],
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-  void bisectTriangle(
-  		double xT[3],
-  		double yT[3],
-  		double zT[3],
-  		std::vector<double>&  xCoordinates,
-  		std::vector<double>&  yCoordinates,
-  		std::vector<double>&  zCoordinates);
-
-  void meshDenseMultiplier(
-  		int  multiplier,
-  		std::vector<double>&  xCoordinates,
-  		std::vector<double>&  yCoordinates,
-  		std::vector<double>&  zCoordinates);
-
-  bool isCCW(double center[3],
-              std::vector<double>&  xCoordinates,
-              std::vector<double>&  yCoordinates,
-              std::vector<double>&  zCoordinates);
-
-  void toCCW(
-            double center[3],
-            std::vector<double>&  xCoordinates,
-            std::vector<double>&  yCoordinates,
-            std::vector<double>&  zCoordinates);
+      void meshDenseMultiplier(
+          int  multiplier,
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
+    }
   }
 }
 

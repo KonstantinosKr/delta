@@ -34,33 +34,35 @@
 
 namespace delta {
   namespace primitives {
+    namespace hopper{
 
-  void generateInnerHopper(
-        double  center[3],
-        double  width,
-        double  height,
-        double  hatch,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+      void generateInnerHopper(
+            double  center[3],
+            double  width,
+            double  height,
+            double  hatch,
+            std::vector<double>&  xCoordinates,
+            std::vector<double>&  yCoordinates,
+            std::vector<double>&  zCoordinates);
 
-  void generateOuterHopper(
-        double  center[3],
-        double  width,
-        double  height,
-        double  hatch,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+      void generateOuterHopper(
+            double  center[3],
+            double  width,
+            double  height,
+            double  hatch,
+            std::vector<double>&  xCoordinates,
+            std::vector<double>&  yCoordinates,
+            std::vector<double>&  zCoordinates);
 
-    void generateHopper(
-        double  center[3],
-        double 	width,
-        double  height,
-        double 	hatch,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+        void generateHopper(
+            double  center[3],
+            double 	width,
+            double  height,
+            double 	hatch,
+            std::vector<double>&  xCoordinates,
+            std::vector<double>&  yCoordinates,
+            std::vector<double>&  zCoordinates);
+    }
   }
 }
 

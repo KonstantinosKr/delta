@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-void delta::primitives::generateSquare(
+void delta::primitives::cubes::generateSquare(
   double center[2],
   double h,
   double rotationAngle,
@@ -46,7 +46,7 @@ void delta::primitives::generateSquare(
 }
 
 
-void delta::primitives::generateCube(
+void delta::primitives::cubes::generateCube(
   double center[3], double h,
   double alphaX,
   double alphaY,
@@ -270,7 +270,7 @@ void delta::primitives::generateCube(
 
 
 
-void delta::primitives::generateCube(
+void delta::primitives::cubes::generateCube(
   double center[3],
   double x,
   double y,
@@ -496,7 +496,7 @@ void delta::primitives::generateCube(
 }
 
 
-void delta::primitives::generateHullCube(
+void delta::primitives::cubes::generateHullCube(
   double  center[3],
   double  diagonal,
   std::vector<double>&  xCoordinates,
@@ -589,7 +589,7 @@ void delta::primitives::generateHullCube(
 }
 
 
-void delta::primitives::generateHullCube(
+void delta::primitives::cubes::generateHullCube(
         double  center[3],
         double x,
         double y,

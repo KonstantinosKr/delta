@@ -28,7 +28,7 @@
 #include <assert.h>
 #include <cmath>
 
-void delta::primitives::bisectTriangle(
+void delta::primitives::triangle::bisectTriangle(
 		double A[3],
 		double B[3],
 		double C[3],
@@ -124,7 +124,7 @@ void delta::primitives::bisectTriangle(
 	zCoordinates.push_back((C[2] + B[2])*0.5);
 }
 
-void delta::primitives::meshDenseMultiplier(
+void delta::primitives::triangle::meshDenseMultiplier(
 		int  multiplier,
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
@@ -157,74 +157,3 @@ void delta::primitives::meshDenseMultiplier(
 	zCoordinates = zNewCoordinates;
 	if(multiplier>1) meshDenseMultiplier(multiplier-1, xCoordinates, yCoordinates, zCoordinates);
 }
-
-bool delta::primitives::isCCW(
-    double center[3],
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
-{
-  double normOutside = 0;
-  double normInside = 0;
-
-  for(int i=0; i<xCoordinates.size(); i+=3)
-  {
-    iREAL V[3], W[3], N[3], A[3], B[3], C[3];
-
-    A[0] = xCoordinates[i];
-    A[1] = yCoordinates[i];
-    A[2] = zCoordinates[i];
-
-    B[0] = xCoordinates[i+1];
-    B[1] = yCoordinates[i+1];
-    B[2] = zCoordinates[i+1];
-
-    C[0] = xCoordinates[i+2];
-    C[1] = yCoordinates[i+2];
-    C[2] = zCoordinates[i+2];
-
-    V[0] = B[0] - A[0];
-    V[1] = B[1] - A[1];
-    V[2] = B[2] - A[2];
-
-    W[0] = C[0] - B[0];
-    W[1] = C[1] - B[1];
-    W[2] = C[2] - B[2];
-
-    N[0] = (V[1]*W[2])-(V[2]*W[1]);
-    N[1] = (V[2]*W[0])-(V[0]*W[2]);
-    N[2] = (V[0]*W[1])-(V[1]*W[0]);
-
-    iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
-
-    iREAL No[3], m[3];
-    m[0] = (A[0] + (B[0]-A[0]) * 1/3 + (C[0] - A[0]) * 1/3);
-    m[1] = (A[1] + (B[1]-A[1]) * 1/3 + (C[1] - A[1]) * 1/3);
-    m[2] = (A[2] + (B[2]-A[2]) * 1/3 + (C[2] - A[2]) * 1/3);
-
-    mag = std::sqrt(((m[0]-center[0])*(m[0]-center[0]))+((m[1]-center[1])*(m[1]-center[1]))+((m[2]-center[2])*(m[2]-center[2])));
-
-    //printf("mag:%f %f %f %f\n", mag, No[0], No[1], No[2]);
-    No[0] = (m[0] - center[0])/mag;
-    No[1] = (m[1] - center[1])/mag;
-    No[2] = (m[2] - center[2])/mag;
-
-    //double dot = N[0]*No[0]+ N[1]*No[1]+ N[2]*No[2];
-
-    //bool in = true;
-
-    //printf("normal:%f %f %f Outside:%f %f %f dot:%f\n", N[0], N[1], N[2], No[0], No[1], No[2], dot);
-  }
-  if(normOutside < normInside) return false;
-  return true;
-}
-
-void delta::primitives::toCCW(
-    double center[3],
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
-{
-
-}
-

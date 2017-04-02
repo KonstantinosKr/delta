@@ -12,7 +12,7 @@
 #include <string.h>
 
 //Intact Poly Brick
-void delta::primitives::generateBrickFB(
+void delta::primitives::graphite::generateBrickFB(
   double center[3], double h,
   std::vector<double>&  xCoordinates,
   std::vector<double>&  yCoordinates,
@@ -22,18 +22,18 @@ void delta::primitives::generateBrickFB(
 	delta::sys::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	double centerOfGeometry[3];
-	delta::primitives::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
-	delta::primitives::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 
-	delta::primitives::rotateX(-0.25, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::rotateX(-0.25, xCoordinates, yCoordinates, zCoordinates);
 
-	delta::primitives::scaleXYZ(h, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::scaleXYZ(h, xCoordinates, yCoordinates, zCoordinates);
 
-	delta::primitives::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
 }
 
 //Loose keys - orientation X-wise
-void delta::primitives::generateKeyXK(
+void delta::primitives::graphite::generateKeyXK(
   double center[3], double h,
   std::vector<double>&  xCoordinates,
   std::vector<double>&  yCoordinates,
@@ -43,16 +43,16 @@ void delta::primitives::generateKeyXK(
 	delta::sys::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	double centerOfGeometry[3];
-	delta::primitives::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
-	delta::primitives::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 
-	delta::primitives::scaleXYZ(h, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::scaleXYZ(h, xCoordinates, yCoordinates, zCoordinates);
 
-	delta::primitives::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
 }
 
 //Loose keys - orientation Y-wise
-void delta::primitives::generateKeyYK(
+void delta::primitives::graphite::generateKeyYK(
   double center[3], double h,
   std::vector<double>&  xCoordinates,
   std::vector<double>&  yCoordinates,
@@ -62,10 +62,10 @@ void delta::primitives::generateKeyYK(
 	delta::sys::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	double centerOfGeometry[3];
-	delta::primitives::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
-	delta::primitives::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 
-	delta::primitives::scaleXYZ(h, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::scaleXYZ(h, xCoordinates, yCoordinates, zCoordinates);
 
-	delta::primitives::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
+	delta::primitives::properties::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
 }

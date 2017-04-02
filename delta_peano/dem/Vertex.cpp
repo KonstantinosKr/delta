@@ -42,9 +42,9 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
   double centerOfMass[3], inertia[9], inverse[9], mass, hMin;
-  newParticle._persistentRecords._diameter	= delta::primitives::computeDiagonal(xCoordinates, yCoordinates, zCoordinates)*1.2;
-  hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-  delta::primitives::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
+  newParticle._persistentRecords._diameter	= delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates)*1.2;
+  hMin = delta::primitives::properties::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+  delta::primitives::properties::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
 
   //printf("Inertia: %f %f %f %f %f %f %f %f %f\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
   //printf("mass: %f\n", mass);
@@ -71,7 +71,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._centre(1) = center(1);
   newParticle._persistentRecords._centre(2) = center(2);
 
-  delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+  delta::primitives::properties::computeInverseInertia(inertia, inverse, isObstacle);
 
   newParticle._persistentRecords._inverse(0) = inverse[0];
   newParticle._persistentRecords._inverse(1) = inverse[1];
@@ -142,7 +142,7 @@ int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIO
 
   double inertia[9], inverse[9], mass, hMin;
 
-  hMin = delta::primitives::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+  hMin = delta::primitives::properties::computeHMin(xCoordinates, yCoordinates, zCoordinates);
   iREAL volume = (4.0/3.0) * 3.14 * pow(radius,3);
   iREAL density;
 
@@ -181,7 +181,7 @@ int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIO
   newParticle._persistentRecords._centre(1) = center(1);
   newParticle._persistentRecords._centre(2) = center(2);
 
-  delta::primitives::computeInverseInertia(inertia, inverse, isObstacle);
+  delta::primitives::properties::computeInverseInertia(inertia, inverse, isObstacle);
 
   newParticle._persistentRecords._inverse(0) = inverse[0];
   newParticle._persistentRecords._inverse(1) = inverse[1];

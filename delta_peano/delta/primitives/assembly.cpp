@@ -8,12 +8,12 @@
 #include "assembly.h"
 
 
-double delta::primitives::getxDiscritizationLength(double length, int number)
+double delta::primitives::assembly::getxDiscritizationLength(double length, int number)
 {
 	return length/number;
 }
 
-std::vector<std::array<double, 3>> delta::primitives::array1d(double position[3], double xAxisLength, int partsNo)
+std::vector<std::array<double, 3>> delta::primitives::assembly::array1d(double position[3], double xAxisLength, int partsNo)
 {
 	std::vector<std::array<double, 3>> array;
 	std::array<double, 3> point = {0.0, 0.0, 0.0};
@@ -33,7 +33,7 @@ std::vector<std::array<double, 3>> delta::primitives::array1d(double position[3]
 	return array;
 }
 
-std::vector<std::array<double, 3>> delta::primitives::array2d(double position[3], double xyAxisLength, int partsNo)
+std::vector<std::array<double, 3>> delta::primitives::assembly::array2d(double position[3], double xyAxisLength, int partsNo)
 {
 	std::vector<std::array<double, 3>> array;
 
@@ -41,7 +41,7 @@ std::vector<std::array<double, 3>> delta::primitives::array2d(double position[3]
 
 	for(int i=0;i<partsNo;i++)
 	{
-		std::vector<std::array<double, 3>> tmp = delta::primitives::array1d(position, xyAxisLength, partsNo);
+		std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array1d(position, xyAxisLength, partsNo);
 		for(std::vector<std::array<double, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
 		{
 			array.push_back(*j);
@@ -52,7 +52,7 @@ std::vector<std::array<double, 3>> delta::primitives::array2d(double position[3]
 	return array;
 }
 
-std::vector<std::array<double, 3>> delta::primitives::array3d(double position[3], double xyzAxisLength, int partsNo)
+std::vector<std::array<double, 3>> delta::primitives::assembly::array3d(double position[3], double xyzAxisLength, int partsNo)
 {
 	std::vector<std::array<double, 3>> array;
 
@@ -60,7 +60,7 @@ std::vector<std::array<double, 3>> delta::primitives::array3d(double position[3]
 
 	for(int i=0;i<partsNo;i++)
 	{
-		std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, xyzAxisLength, partsNo);
+		std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array2d(position, xyzAxisLength, partsNo);
 		for(std::vector<std::array<double, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
 		{
 			array.push_back(*j);
@@ -75,7 +75,7 @@ std::vector<std::array<double, 3>> delta::primitives::array3d(double position[3]
 	return array;
 }
 
-std::vector<std::array<double, 3>> delta::primitives::array3d(double position[3], double xyzAxisLength, int partsXYZNo, double yAxisLength, int partsYNo)
+std::vector<std::array<double, 3>> delta::primitives::assembly::array3d(double position[3], double xyzAxisLength, int partsXYZNo, double yAxisLength, int partsYNo)
 {
 	std::vector<std::array<double, 3>> array;
 
@@ -83,7 +83,7 @@ std::vector<std::array<double, 3>> delta::primitives::array3d(double position[3]
 
 	for(int i=0;i<partsYNo;i++)
 	{
-		std::vector<std::array<double, 3>> tmp = delta::primitives::array2d(position, xyzAxisLength, partsXYZNo);
+		std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array2d(position, xyzAxisLength, partsXYZNo);
 		for(std::vector<std::array<double, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
 		{
 			array.push_back(*j);

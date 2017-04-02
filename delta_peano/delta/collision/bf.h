@@ -38,17 +38,17 @@ namespace delta {
       double*   xCoordinatesOfPointsOfGeometryA,
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
-	  double    epsilonA,
-	  bool      frictionA,
-	  int 	   particleA,
+      double    epsilonA,
+      bool      frictionA,
+      int 	   particleA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
       double*   yCoordinatesOfPointsOfGeometryB,
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
-	  bool      frictionB,
-	  int 	   particleB
+      bool      frictionB,
+      int 	   particleB
     );
 
 

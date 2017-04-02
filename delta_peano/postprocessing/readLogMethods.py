@@ -131,12 +131,12 @@ listq = []
 def splitContactLinePivot(readLine, index):
 
     segline = readLine.split(",")
-    print(segline)
+    #print(segline)
     col1 = segline[0].split("=")[1]
     col2 = segline[1].split("=")[1]
     col3 = segline[2].split("=")[1]
 
-    #print str(col1) + " " + str(col2) + " " + str(col3)
+    #print(str(col1) + " " + str(col2) + " " + str(col3))
 
     if index == 1:
         contactId = col1
@@ -145,7 +145,7 @@ def splitContactLinePivot(readLine, index):
 
         listcontactId.append(contactId)
         listmasterId.append(MasterId)
-        listdiameter.append(SlaveId)
+        listSlaveId.append(SlaveId)
     elif index == 2:
         hasFriction = col1
         nulldata1 = col2
@@ -255,26 +255,42 @@ def splitForceLinePivot(readLine, index):
         listfriction.append([col1, col2, col3])
 
 iteration = []
+reassigns = []
+parCmp = []
+triCmp = []
+cnpt = []
+gridV = []
+t = []
+dt =[]
+
 particleXaxis = []
 contactXaxis = []
 forceXaxis = []
 subforceXaxis = []
 
-def readLog():
+def readLog(filename):
     contactXindex = 0
     particleXindex = 0
     forceXindex = 0
     subforceXindex = 0
-    it = 0
     ind = 0
-    subind = 0
 
     state = ""
-    for line in open("../log50m.log", "r"):
+    for line in open(filename, "r"):
         if "dem::runners::Runner::runAsMaster(...)                  i=" in line:
             #iteration data starts on next line
+            #print(line.split(","))
             it = line.split(",")[0].split("=")[1]
+            re = line.split(",")[1].split("=")[1]
+            pa = line.split(",")[2].split("=")[1]
+            ti = line.split(",")[3].split("=")[1]
+            cn = line.split(",")[4].split("=")[1]
             iteration.append(it)
+            reassigns.append(re)
+            parCmp.append(pa)
+            triCmp.append(ti)
+            cnpt.append(cn)
+
             #print("iteration " + it)
             continue
 
@@ -285,7 +301,7 @@ def readLog():
 
         if "#####CONTACT-DATA#####" in line:
             ind = 0
-            state = "contact"
+            state = "contactplot"
             continue
 
         if "#####FORCE-DATA#####" in line:
@@ -317,8 +333,8 @@ def readLog():
                 particleXaxis.append(particleXindex)
                 particleXindex += 1
 
-        if "CONTACT-DATA" in state:
-            #print line
+        if "contactplot" in state:
+            #print(line)
             ind += 1
             splitContactLinePivot(line, ind)
             if ind == 7:
@@ -350,4 +366,5 @@ def readLog():
            listxContactPosition, listnormalX, listp, listq, \
            listforceId, listforcemasterParticleNo, listforceslaveParticleNo, listmassA, listmassB, listforce, listfriction, \
             listsubContactid,listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring_depth, listsubtotalForce, listsubdamp, listsubcontactmass, \
-            particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iteration
+            particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iteration, reassigns, parCmp, triCmp, cnpt, gridV, t, dt
+

@@ -1,4 +1,4 @@
-from plotDataMethods import *
+from storeDataMethods import *
 import matplotlib.pyplot as plt
 import numpy as np
 

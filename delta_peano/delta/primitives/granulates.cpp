@@ -10,7 +10,7 @@
 #include "delta/hull/alg.h"
 
 
-void delta::primitives::generateParticle(
+void delta::primitives::granulates::generateParticle(
   double  center[2],
   double  h,
   std::vector<double>&  xCoordinates,
@@ -39,8 +39,20 @@ void delta::primitives::generateParticle(
   }
 }
 
+void delta::primitives::granulates::loadParticle(
+  double  center[3],
+  double  h,
+  std::vector<double>&  xCoordinates,
+  std::vector<double>&  yCoordinates,
+  std::vector<double>&  zCoordinates
+) {
+  char fileinput[100] = "input/rock.vtk";
+  delta::sys::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+  iREAL diagonal = delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+  delta::primitives::properties::scaleXYZ(h/1.0/diagonal, center, xCoordinates, yCoordinates, zCoordinates);
+}
 
-void delta::primitives::generateParticle(
+void delta::primitives::granulates::generateParticle(
   double  center[3],
   double  h,
   std::vector<double>&  xCoordinates,

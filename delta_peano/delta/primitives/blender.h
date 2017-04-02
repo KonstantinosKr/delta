@@ -29,15 +29,15 @@
 
 namespace delta {
   namespace primitives {
-
-    void generateBlender(
-      double    center[3],
-      double 	width,
-      std::vector<double>&  xCoordinates,
-      std::vector<double>&  yCoordinates,
-      std::vector<double>&  zCoordinates
-    );
-
+    namespace blender {
+      void generateBlender(
+        double  center[3],
+        double 	width,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates
+      );
+    }
   }
 }
 

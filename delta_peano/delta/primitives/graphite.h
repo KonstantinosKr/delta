@@ -33,30 +33,31 @@
 
 namespace delta {
   namespace primitives {
-
-     void generateBrickFB(
+    namespace graphite {
+      void generateBrickFB(
        double    center[3],
        double    h,
        std::vector<double>&  xCoordinates,
        std::vector<double>&  yCoordinates,
        std::vector<double>&  zCoordinates
-     );
+      );
 
-     void generateKeyXK(
+      void generateKeyXK(
        double    center[3],
        double    h,
        std::vector<double>&  xCoordinates,
        std::vector<double>&  yCoordinates,
        std::vector<double>&  zCoordinates
-     );
+      );
 
-     void generateKeyYK(
+      void generateKeyYK(
        double    center[3],
        double    h,
        std::vector<double>&  xCoordinates,
        std::vector<double>&  yCoordinates,
        std::vector<double>&  zCoordinates
-     );
+      );
+    }
   }
 }
 

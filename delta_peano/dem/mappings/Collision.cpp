@@ -239,6 +239,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		if(_activeCollisions.count(currentParticle._persistentRecords._globalParticleId)==0) {continue;}
 
 		//collisions with other partner particles
+		int counter = 0;
 		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleId].begin(); p != _activeCollisions[currentParticle._persistentRecords._globalParticleId].end(); p++)
 		{
 			double rforce[3]  = {0.0,0.0,0.0};
@@ -287,9 +288,10 @@ void dem::mappings::Collision::touchVertexFirstTime(
 					<< "#####TOTAL-FDATA#####" << std::endl
 					<< "forceId=" << std::to_string(counter+currentParticle.getGlobalParticleId() + p->_copyOfPartnerParticle.getGlobalParticleId())
 					<< ", masterParticleNo=" << currentParticle.getGlobalParticleId() << ", slaveParticleNo=" << p->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
-					<< "massA=" << currentParticle.getMass() << ", massB" << p->_copyOfPartnerParticle.getMass() << ", nulldata3=0" << std::endl
+					<< "massA=" << currentParticle.getMass() << ", massB=" << p->_copyOfPartnerParticle.getMass() << ", nulldata3=0" << std::endl
 					<< "fX=" << rforce[0] << ", fY=" << rforce[1] << ", fZ=" << rforce[2] << std::endl
 					<< "tX=" << rtorque[0] << ", tY=" << rtorque[1] << ", tZ=" << rtorque[2]);
+			counter++;
 			#endif
 		}
 

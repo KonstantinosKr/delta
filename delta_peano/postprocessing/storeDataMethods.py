@@ -1,6 +1,10 @@
 import readLogMethods
 import math
 
+#filename = "../frictionstaticmesh/vec100.log"
+#filename = "../frictionstaticmesh/omptriangle100.log"
+filename = "../frictionstaticmesh/damp1_massbig.log"
+
 #PARTICLE PROPERTIES - SNAPPED PER PLOT - axis - particleXaxis
 #listparticleId, listmass, listdiameter, listinfluenceRadius, listepsilon, listhMin,
 #listnoOfTriangles, listisObstacle, listmaterial, listlinear, listangular, listrangular,
@@ -23,10 +27,14 @@ listcontactId, listmasterId, listSlaveId, listhasFriction, listdistance, listdep
 listxContactPosition, listnormalX, listp, listq, \
 listforceId, listforcemasterParticleNo, listforceslaveParticleNo, listmassA, listmassB, listforce, listfriction, \
 listsubContactid, listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring_depth, listsubtotalForce, listsubdamp, listsubcontactmass, \
-particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iterations = readLogMethods.readLog()
+particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iterations, reassigns, parCmp, triCmp, cnpt, gridV, t, dt = readLogMethods.readLog(filename)
+
 
 def getSimSteps():
     return len(iterations)
+
+def getSteps():
+    return iterations
 
 def getPlotSteps():
     return getSimSteps()/50
@@ -45,8 +53,19 @@ def getListOfUniqueParticleIds():
             list.append(listparticleId[i])
     return list
 
-def getParticleData(particleIndex):
+def getReassigns():
+    return reassigns
 
+def getParComparisons():
+    return parCmp
+
+def getTriComparisons():
+    return triCmp
+
+def getContactPoints():
+    return cnpt
+
+def getParticleData(particleIndex):
     listFilteredParticleId = []
     listFilteredMass = []
     listFilteredDiameter = []
@@ -66,8 +85,8 @@ def getParticleData(particleIndex):
     listFilteredinve = []
     listFilteredorie = []
 
-    for i in range(0, getPlotSteps()*getParticleCount()):
-        if particleIndex == listparticleId[i]:
+    for i in range(0, int(getPlotSteps())*int(getParticleCount())):
+        if int(particleIndex) == int(listparticleId[i]):
             listFilteredParticleId.append(listparticleId[i])
             listFilteredMass.append(listmass[i])
             listFilteredDiameter.append(listdiameter[i])
@@ -93,7 +112,7 @@ def getParticleData(particleIndex):
             listFilteredrangular, listFilteredcentre, listFilteredcOfMas, \
             listFilteredrcOfMa, listFilterediner, listFilteredinve, listFilteredorie
 
-def getParticleData(particleStart, particleEnd, timestep):
+def getParticleDataRange(particleStart, particleEnd, timestep):
 
     listFilteredParticleId = []
     listFilteredMass = []
@@ -150,7 +169,6 @@ def getParticleData(particleStart, particleEnd, timestep):
 
 
 def getContactData(masterIndex, slaveIndex, interchangeable):
-
     listFilteredContactId = []
     listFilteredMasterId = []
     listFilteredSlaveId = []

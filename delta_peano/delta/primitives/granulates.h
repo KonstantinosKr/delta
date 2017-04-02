@@ -23,24 +23,34 @@
  */
 
 #include <vector>
+#include "delta/primitives/properties.h"
+#include "delta/sys/read.h"
 
 namespace delta {
   namespace primitives {
+    namespace granulates {
+      void generateParticle(
+        double    center[2],
+        double    h,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates
+      );
 
-    void generateParticle(
-      double    center[2],
-      double    h,
-      std::vector<double>&  xCoordinates,
-      std::vector<double>&  yCoordinates
-    );
+      void loadParticle(
+        double  center[3],
+        double  h,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates
+      );
 
-
-    void generateParticle(
-      double    center[3],
-      double    h,
-      std::vector<double>&  xCoordinates,
-      std::vector<double>&  yCoordinates,
-      std::vector<double>&  zCoordinates,
-	  int noPointsPerParticle);
+      void generateParticle(
+        double    center[3],
+        double    h,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates,
+        int noPointsPerParticle);
+    }
   }
 }

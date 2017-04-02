@@ -130,7 +130,8 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_type->plotCell(contactPointIndex,2);
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
-/*
+
+				/*
 				if(_trackParticle)
 				for(int i = 0; i<_trackParticleID.size(); i++)
 				{
@@ -150,6 +151,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
           }
         }
         */
+
 				#ifdef CONTACTSTATS
 				logInfo("endIteration(...)", std::endl
 				   << "#####CONTACT-DATA#####" << std::endl
@@ -420,11 +422,11 @@ void dem::mappings::Plot::touchVertexLastTime(
     /*if(_trackParticle && _trackID == particle.getGlobalParticleId())
     {
     	logInfo("touchVertexLastTime(...)", std::endl
-    	    						   << "#####PARTICLE-DATA#####" << std::endl
-    	    						   << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
-    				  	  	  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin=" << particle._persistentRecords._hMin << std::endl
+    	    						 << "#####PARTICLE-DATA#####" << std::endl
+    	    						 << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
+    				  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin=" << particle._persistentRecords._hMin << std::endl
     								   << "noOfTri=" << particle._persistentRecords._numberOfTriangles <<", isObsta=" << particle._persistentRecords._isObstacle << ", materia=" << particle._persistentRecords._material << std::endl
-    	    					       << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
+    	    					   << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
     								   << "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl
     								   << "rangulX=" << particle._persistentRecords._referentialAngular(0) <<", rangulY=" << particle._persistentRecords._referentialAngular(1) << ", rangulZ=" << particle._persistentRecords._referentialAngular(2) << std::endl
     								   << "centreX=" << particle._persistentRecords._centre(0) <<", centreY=" << particle._persistentRecords._centre(1) << ", centreZ=" << particle._persistentRecords._centre(2) << std::endl
@@ -441,12 +443,22 @@ void dem::mappings::Plot::touchVertexLastTime(
     								   << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
     }*/
 #ifdef PARTICLESTATS
+    iREAL v[] = {particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2)};
+    iREAL a[] = {particle._persistentRecords._angular(0), particle._persistentRecords._angular(1), particle._persistentRecords._angular(2)};
+    iREAL in[] = {particle._persistentRecords._inertia(0), particle._persistentRecords._inertia(1), particle._persistentRecords._inertia(2),
+                  particle._persistentRecords._inertia(3), particle._persistentRecords._inertia(4), particle._persistentRecords._inertia(5),
+                  particle._persistentRecords._inertia(6), particle._persistentRecords._inertia(7), particle._persistentRecords._inertia(8)};
+
+    //iREAL kinrotEnergy = getKineticRotationalEnergy(v, a, in, particle._persistentRecords._mass);
+    //iREAL kinetic = getKineticEnergy(v, particle._persistentRecords._mass);
+    //iREAL rotational = getRotationalEnergy(a, in);
+
     logInfo("touchVertexLastTime(...)", std::endl
-    						   << "#####PARTICLE-DATA#####" << std::endl
-    						   << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
-			  	  	  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin=" << particle._persistentRecords._hMin << std::endl
+    						 << "#####PARTICLE-DATA#####" << std::endl
+    						 << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
+			  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin=" << particle._persistentRecords._hMin << std::endl
 							   << "noOfTri=" << particle._persistentRecords._numberOfTriangles <<", isObsta=" << particle._persistentRecords._isObstacle << ", materia=" << particle._persistentRecords._material << std::endl
-    					       << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
+    					   << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
 							   << "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl
 							   << "rangulX=" << particle._persistentRecords._referentialAngular(0) <<", rangulY=" << particle._persistentRecords._referentialAngular(1) << ", rangulZ=" << particle._persistentRecords._referentialAngular(2) << std::endl
 							   << "centreX=" << particle._persistentRecords._centre(0) <<", centreY=" << particle._persistentRecords._centre(1) << ", centreZ=" << particle._persistentRecords._centre(2) << std::endl
@@ -465,6 +477,21 @@ void dem::mappings::Plot::touchVertexLastTime(
   }
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
+}
+
+
+double getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass){
+  iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
+  iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
+  return rotation+kinetic;
+}
+
+double getKineticEnergy(double velocity[3], double mass){
+  return 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
+}
+
+double getRotationalEnergy(double angular[3], double inertia[9]){
+  return 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
 }
 
 #if defined(SharedMemoryParallelisation)

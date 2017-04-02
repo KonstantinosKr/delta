@@ -27,6 +27,7 @@
 
 namespace delta {
   namespace primitives {
+    namespace assembly {
   	  double getxDiscritizationLength(double length, int number);
 
   	  std::vector<std::array<double, 3>> array1d(double position[3], double xAxisLength, int partsNo);
@@ -36,5 +37,6 @@ namespace delta {
   	  std::vector<std::array<double, 3>> array3d(double position[3], double xyzAxisLength, int partsNo);
 
   	  std::vector<std::array<double, 3>> array3d(double position[3], double xyzAxisLength, int partsXYZNo, double yAxisLength, int partsYNo);
+    }
   }
  }

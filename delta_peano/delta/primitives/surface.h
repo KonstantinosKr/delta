@@ -34,43 +34,44 @@
 
 namespace delta {
   namespace primitives {
+    namespace surface {
+      void generateBoundBox(
+        double center[3],
+        std::array<double, 3> minPoint,
+        std::array<double, 3> maxPoint,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates
+      );
 
-	void generateBoundBox(
-		double center[3],
-		std::array<double, 3> minPoint,
-		std::array<double, 3> maxPoint,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates
-	);
+      void generateSurface(
+        double    center[3],
+        double 	width,
+        double	height,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates
+      );
 
-    void generateSurface(
-      double    center[3],
-      double 	width,
-	  double	height,
-      std::vector<double>&  xCoordinates,
-      std::vector<double>&  yCoordinates,
-      std::vector<double>&  zCoordinates
-    );
+      void generateXYZBox(
+          double center[3],
+          double xw,
+          double yw,
+          double zw,
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates
+      );
 
-    void generateXYZBox(
-    		double center[3],
-    		double xw,
-    		double yw,
-    		double zw,
-    		std::vector<double>&  xCoordinates,
-    		std::vector<double>&  yCoordinates,
-    		std::vector<double>&  zCoordinates
-    );
-
-    void generateCuboid(
-	  double    center[3],
-	  double 	width,
-	  double    height,
-	  std::vector<double>&  xCoordinates,
-	  std::vector<double>&  yCoordinates,
-	  std::vector<double>&  zCoordinates
-	);
+      void generateCuboid(
+        double    center[3],
+        double 	width,
+        double    height,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates
+      );
+    }
   }
 }
 

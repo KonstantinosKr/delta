@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-void delta::primitives::generateBoundBox(
+void delta::primitives::surface::generateBoundBox(
 		double center[3],
 		std::array<double, 3> minPoint,
 		std::array<double, 3> maxPoint,
@@ -43,7 +43,7 @@ void delta::primitives::generateBoundBox(
 	generateXYZBox(center, xw, yw, zw, xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::primitives::generateSurface(
+void delta::primitives::surface::generateSurface(
 		double center[3],
 		double width,
 		double height,
@@ -232,7 +232,7 @@ void delta::primitives::generateSurface(
 
 }
 
-void delta::primitives::generateXYZBox(
+void delta::primitives::surface::generateXYZBox(
 		double center[3],
 		double xw,
 		double yw,
@@ -422,7 +422,7 @@ void delta::primitives::generateXYZBox(
 
 }
 
-void delta::primitives::generateCuboid(
+void delta::primitives::surface::generateCuboid(
 		double center[3],
 		double width,
 		double height,
