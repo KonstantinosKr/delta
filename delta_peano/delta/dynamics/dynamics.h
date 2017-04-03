@@ -24,12 +24,8 @@
 
 namespace delta {
   namespace dynamics {
-
-  void updateAngular(iREAL *angular, iREAL *refAngular, iREAL *rotation, iREAL *inertia, iREAL *inverse, iREAL mass, iREAL *torque, iREAL step);
-
-  void updateRotationMatrix(iREAL *angular, iREAL *refAngular, iREAL *rotation, iREAL step);
-
-  void updateVertices(iREAL *x, iREAL *y, iREAL *z, iREAL *refx, iREAL *refy, iREAL *refz, iREAL *rotation, iREAL *position, iREAL *refposition);
-
+    void updateAngular(iREAL *angular, iREAL *refAngular, iREAL *rotation, iREAL *inertia, iREAL *inverse, iREAL mass, iREAL *torque, iREAL step);
+    void updateRotationMatrix(iREAL *angular, iREAL *refAngular, iREAL *rotation, iREAL step);
+    void updateVertices(iREAL *x, iREAL *y, iREAL *z, iREAL *refx, iREAL *refy, iREAL *refz, iREAL *rotation, iREAL *position, iREAL *refposition);
   }
 }

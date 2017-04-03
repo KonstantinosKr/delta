@@ -304,7 +304,6 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 {
 	std::vector<contactpoint> result;
 
-	double min = 1E99;
 	double P[3], Q[3];
 	double xPA, yPA, zPA, xPB, yPB, zPB;
 	double distance;
@@ -378,7 +377,6 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
 {
 	std::vector<contactpoint> result;
 
-	double min = 1E99;
 	double P[3], Q[3];
 	double xPA, yPA, zPA, xPB, yPB, zPB;
 	double distance;

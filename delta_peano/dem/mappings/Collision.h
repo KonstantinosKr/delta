@@ -63,7 +63,6 @@ class dem::mappings::Collision {
       bool sphere
     );
 
-
   public:
     enum class CollisionModel {
     	Sphere,
@@ -74,10 +73,6 @@ class dem::mappings::Collision {
     	HybridOnBatches,
     	HybridOnTrianglePairsStats,
     	HybridOnBatchesStats,
-    	SphereHybridOnTrianglePairs,
-      SphereHybridOnBatches,
-    	SphereBruteForce,
-    	SpherePenalty,
     	GJK,
     	none};
 

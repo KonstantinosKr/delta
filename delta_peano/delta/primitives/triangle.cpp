@@ -135,7 +135,7 @@ void delta::primitives::triangle::meshDenseMultiplier(
 	std::vector<double>  yNewCoordinates;
 	std::vector<double>  zNewCoordinates;
 
-	for(int i = 0; i<xCoordinates.size();i+=3)
+	for(unsigned i=0;i<xCoordinates.size();i+=3)
 	{
 		double A[3], B[3], C[3];
 		A[0] = xCoordinates[i];

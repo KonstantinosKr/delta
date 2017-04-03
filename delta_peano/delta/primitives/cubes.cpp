@@ -689,7 +689,7 @@ void delta::primitives::cubes::generateHullCube(
 
   const double pi = std::acos(-1);
 
-  for (int i=0; i<xCoordinates.size(); i++) {
+  for (unsigned i=0;i<xCoordinates.size(); i++) {
     double xc = xCoordinates[i];
     double yc = yCoordinates[i];
     double zc = zCoordinates[i];
@@ -705,7 +705,7 @@ void delta::primitives::cubes::generateHullCube(
     zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
   }
 
-  for (int i=0; i<xCoordinates.size(); i++) {
+  for (unsigned i=0;i<xCoordinates.size(); i++) {
     double xc = xCoordinates[i];
     double yc = yCoordinates[i];
     double zc = zCoordinates[i];
@@ -721,7 +721,7 @@ void delta::primitives::cubes::generateHullCube(
     zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
   }
 
-  for (int i=0; i<xCoordinates.size(); i++) {
+  for (unsigned i=0;i<xCoordinates.size(); i++) {
     double xc = xCoordinates[i];
     double yc = yCoordinates[i];
     double zc = zCoordinates[i];
@@ -737,7 +737,7 @@ void delta::primitives::cubes::generateHullCube(
     zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
   }
 
-  for (int i=0; i<xCoordinates.size(); i++) {
+  for (unsigned i=0;i<xCoordinates.size(); i++) {
     xCoordinates[i] += center[0];
     yCoordinates[i] += center[1];
     zCoordinates[i] += center[2];

@@ -181,7 +181,8 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
                           double&  zPB)
 {
 
-	iREAL aaa[3], bbb[3], ccc[3];
+
+  /*iREAL aaa[3], bbb[3], ccc[3];
 	iREAL ddd[3], eee[3], fff[3];
 
 	aaa[0] = xCoordinatesOfPointsOfGeometryA[0];
@@ -211,7 +212,7 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
 	fff[0] = xCoordinatesOfPointsOfGeometryB[2];
 	fff[1] = yCoordinatesOfPointsOfGeometryB[2];
 	fff[2] = zCoordinatesOfPointsOfGeometryB[2];
-
+*/
   //if(NoDivTriTriIsect(aaa, bbb, ccc, ddd, eee, fff))
   {
 	  //printf("PENETRATED!\n");

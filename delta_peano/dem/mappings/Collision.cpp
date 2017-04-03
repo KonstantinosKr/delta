@@ -103,12 +103,12 @@ void dem::mappings::Collision::addCollision(
 		//printf("COLLISION DETECTED\n");
 	}
 	//START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
-	if ( _collisionsOfNextTraversal.count(particleA._persistentRecords._globalParticleId)==0 ) {
-		_collisionsOfNextTraversal.insert( std::pair<int,std::vector<Collisions>>( particleA._persistentRecords._globalParticleId, std::vector<Collisions>()));
+	if ( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
+		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
 	}
 
 	if ( _collisionsOfNextTraversal.count(particleB._persistentRecords._globalParticleId)==0 ) {
-		_collisionsOfNextTraversal.insert( std::pair<int,std::vector<Collisions>>( particleB._persistentRecords._globalParticleId, std::vector<Collisions>()));
+		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleId(), std::vector<Collisions>()));
 	}
 	///////////////END
 
@@ -118,19 +118,19 @@ void dem::mappings::Collision::addCollision(
 	//////////////END
 
 	//START if already exist | find and assign reference collision list to dataA or dataB particle
-	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleId].begin();
-		 p!=_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleId].end();  p++)
+	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].begin();
+		 p!=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].end();  p++)
 	{
-		if (p->_copyOfPartnerParticle._persistentRecords._globalParticleId==particleB._persistentRecords._globalParticleId)
+		if (p->_copyOfPartnerParticle.getGlobalParticleId()==particleB.getGlobalParticleId())
 		{
 			dataSetA = &(*p);
 		}
 	}
 
-	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleId].begin();
-		 p!=_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleId].end(); p++)
+	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].begin();
+		 p!=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].end(); p++)
 	{
-		if (p->_copyOfPartnerParticle._persistentRecords._globalParticleId==particleA._persistentRecords._globalParticleId)
+		if (p->_copyOfPartnerParticle.getGlobalParticleId()==particleA.getGlobalParticleId())
 		{
 			dataSetB = &(*p);
 		}
@@ -145,13 +145,13 @@ void dem::mappings::Collision::addCollision(
 	if (dataSetA==nullptr)
 	{
 		//START push_back collisions object into corresponding both A and B particle index collision list
-		_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleId].push_back( Collisions() );
-		_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleId].push_back( Collisions() );
+		_collisionsOfNextTraversal[particleA.getGlobalParticleId()].push_back( Collisions() );
+		_collisionsOfNextTraversal[particleB.getGlobalParticleId()].push_back( Collisions() );
 		//END push_back
 
 		//START reference of vector to data A and B ready to used
-		dataSetA = &(_collisionsOfNextTraversal[particleA._persistentRecords._globalParticleId].back());
-		dataSetB = &(_collisionsOfNextTraversal[particleB._persistentRecords._globalParticleId].back());
+		dataSetA = &(_collisionsOfNextTraversal[particleA.getGlobalParticleId()].back());
+		dataSetB = &(_collisionsOfNextTraversal[particleB.getGlobalParticleId()].back());
 		//END
 
 		//START add copy of master and slave particles to sets (dual contact reference)
@@ -163,14 +163,14 @@ void dem::mappings::Collision::addCollision(
 
 	if(sphere)
 	{
-		delta::collision::filterNewContacts(newContactPoints, particleA._persistentRecords._diameter/2, particleB._persistentRecords._diameter/2);
+		delta::collision::filterNewContacts(newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
 
 		#ifdef ompParticle
 			#pragma omp critical
 		#endif
 		{
-			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA._persistentRecords._diameter/2, particleB._persistentRecords._diameter/2);
-			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA._persistentRecords._diameter/2, particleB._persistentRecords._diameter/2);
+			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
+			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
 		}
 	} else {	//filter multiple contacts for same area of mesh
 		delta::collision::filterNewContacts(newContactPoints);
@@ -178,8 +178,8 @@ void dem::mappings::Collision::addCollision(
 			#pragma omp critical
 		#endif
 		{
-			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
-			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA._persistentRecords._hMin, particleB._persistentRecords._hMin));
+			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 		}
 	}
 
@@ -236,11 +236,13 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		double torque[3] = {0.0,0.0,0.0};
 
 		//if value doesn't exist in map - no collision - skip particle
-		if(_activeCollisions.count(currentParticle._persistentRecords._globalParticleId)==0) {continue;}
+		if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
 
 		//collisions with other partner particles
+    #ifdef FORCESTATS
 		int counter = 0;
-		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle._persistentRecords._globalParticleId].begin(); p != _activeCollisions[currentParticle._persistentRecords._globalParticleId].end(); p++)
+    #endif
+		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin(); p != _activeCollisions[currentParticle.getGlobalParticleId()].end(); p++)
 		{
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
@@ -320,7 +322,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
                                       currentParticle.getMass(),
                                       torque, timeStepSize);
 		}
-		_activeCollisions.erase(currentParticle._persistentRecords._globalParticleId);
+		_activeCollisions.erase(currentParticle.getGlobalParticleId());
 	}
 
 	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
@@ -587,6 +589,10 @@ void dem::mappings::Collision::touchVertexFirstTime(
 							fineGridVertex.getParticle(j).getGlobalParticleId());
 					break;
 				}
+        case CollisionModel::none:
+        {
+          break;
+        }
 			}
 
 			if (!newContactPoints.empty())
@@ -865,6 +871,10 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 						vertexB.getParticle(j).getFriction(),
 						vertexB.getParticle(j).getGlobalParticleId());
 					break;
+				}
+				case CollisionModel::none:
+				{
+				  break;
 				}
 			}
 

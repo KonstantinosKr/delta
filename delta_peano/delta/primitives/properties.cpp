@@ -6,7 +6,7 @@ void delta::primitives::properties::moveMeshFromPositionToOrigin(double center[3
 										  std::vector<double>&  yCoordinates,
 										  std::vector<double>&  zCoordinates)
 {
-	for(int i=0;i<xCoordinates.size();i++)
+	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
 		xCoordinates[i] = xCoordinates[i]-center[0];
 		yCoordinates[i] = yCoordinates[i]-center[1];
@@ -19,7 +19,7 @@ void delta::primitives::properties::moveMeshFromOriginToPosition(double center[3
 										  std::vector<double>&  yCoordinates,
 										  std::vector<double>&  zCoordinates)
 {
-	for(int i=0;i<xCoordinates.size();i++)
+	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
 		xCoordinates[i] = (xCoordinates[i])+center[0];
 		yCoordinates[i] = (yCoordinates[i])+center[1];
@@ -34,7 +34,7 @@ void delta::primitives::properties::scaleXYZ(double scale,
 		std::vector<double>&  zCoordinates)
 {
   delta::primitives::properties::moveMeshFromPositionToOrigin(position, xCoordinates, yCoordinates, zCoordinates);
-	for(int i=0;i<xCoordinates.size();i++)
+	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
 		xCoordinates[i] = xCoordinates[i]*scale;
 		yCoordinates[i] = yCoordinates[i]*scale;
@@ -48,7 +48,7 @@ void delta::primitives::properties::scaleXYZ(double scale,
     std::vector<double>&  yCoordinates,
     std::vector<double>&  zCoordinates)
 {
-  for(int i=0;i<xCoordinates.size();i++)
+  for(unsigned i=0;i<xCoordinates.size();i++)
   {
     xCoordinates[i] = xCoordinates[i]*scale;
     yCoordinates[i] = yCoordinates[i]*scale;
@@ -62,7 +62,7 @@ void delta::primitives::properties::rotateX(double alphaX,
 		std::vector<double>&  zCoordinates)
 {
 	const double pi = std::acos(-1);
-	for (int i=0; i<xCoordinates.size(); i++)
+	for (unsigned i=0;i<xCoordinates.size(); i++)
 	{
 		double x = xCoordinates[i];
 		double y = yCoordinates[i];
@@ -86,7 +86,7 @@ void delta::primitives::properties::rotateY(double alphaY,
 		std::vector<double>&  zCoordinates)
 {
 	const double pi = std::acos(-1);
-	for (int i=0; i<xCoordinates.size(); i++) {
+	for (unsigned i=0;i<xCoordinates.size(); i++) {
 		double x = xCoordinates[i];
 		double y = yCoordinates[i];
 		double z = zCoordinates[i];
@@ -109,7 +109,7 @@ void delta::primitives::properties::rotateZ(double alphaZ,
 		std::vector<double>&  zCoordinates)
 {
 	const double pi = std::acos(-1);
-	for (int i=0; i<xCoordinates.size(); i++) {
+	for (unsigned i=0;i<xCoordinates.size(); i++) {
 		double x = xCoordinates[i];
 		double y = yCoordinates[i];
 		double z = zCoordinates[i];
@@ -231,11 +231,11 @@ double delta::primitives::properties::computeMaxXWidth(std::vector<double>&  xCo
 {
 	double max = 0;
 
-	for(int i=0;i<xCoordinates.size();i++)
+	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
 		double A = xCoordinates[i];
 
-		for(int j=i+1;j<xCoordinates.size();j++)
+		for(unsigned j=i+1;j<xCoordinates.size();j++)
 		{
 			double B = xCoordinates[j];
 			double distance = std::abs(B - A);
@@ -249,11 +249,11 @@ double delta::primitives::properties::computeMaxYWidth(std::vector<double>&  yCo
 {
 	double max = -1E99;
 
-	for(int i=0;i<yCoordinates.size();i++)
+	for(unsigned i=0;i<yCoordinates.size();i++)
 	{
 		double A = yCoordinates[i];
 
-		for(int j=i+1;j<yCoordinates.size();j++)
+		for(unsigned j=i+1;j<yCoordinates.size();j++)
 		{
 			double B = yCoordinates[j];
 			double distance = std::abs(B - A);
@@ -267,11 +267,11 @@ double delta::primitives::properties::computeMaxZWidth(std::vector<double>&  zCo
 {
 	double max = -1E99;
 
-	for(int i=0;i<zCoordinates.size();i++)
+	for(unsigned i=0;i<zCoordinates.size();i++)
 	{
 		double A = zCoordinates[i];
 
-		for(int j=i+1;j<zCoordinates.size();j++)
+		for(unsigned j=i+1;j<zCoordinates.size();j++)
 		{
 			double B = zCoordinates[j];
 			double distance = std::abs(B - A);
@@ -285,7 +285,7 @@ double delta::primitives::properties::getMaxXAxis(std::vector<double>&  xCoordin
 {
 	double max = std::numeric_limits<double>::min();
 
-	for(int i=0;i<xCoordinates.size();i++)
+	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
 		if (max < xCoordinates[i]) max = xCoordinates[i];
 	}
@@ -296,7 +296,7 @@ double delta::primitives::properties::getMaxYAxis(std::vector<double>&  yCoordin
 {
 	double max = std::numeric_limits<double>::min();
 
-	for(int i=0;i<yCoordinates.size();i++)
+	for(unsigned i=0;i<yCoordinates.size();i++)
 	{
 		if (max < yCoordinates[i]) max = yCoordinates[i];
 	}
@@ -307,7 +307,7 @@ double delta::primitives::properties::getMaxZAxis(std::vector<double>&  zCoordin
 {
 	double max = std::numeric_limits<double>::min();
 
-	for(int i=0;i<zCoordinates.size();i++)
+	for(unsigned i=0;i<zCoordinates.size();i++)
 	{
 		if (max < zCoordinates[i]) max = zCoordinates[i];
 	}
@@ -318,7 +318,7 @@ double delta::primitives::properties::getMinXAxis(std::vector<double>&  xCoordin
 {
 	double min = std::numeric_limits<double>::max();
 
-	for(int i=0;i<xCoordinates.size();i++)
+	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
 		if (min > xCoordinates[i]) min = xCoordinates[i];
 	}
@@ -329,7 +329,7 @@ double delta::primitives::properties::getMinYAxis(std::vector<double>&  yCoordin
 {
 	double min = std::numeric_limits<double>::max();
 
-	for(int i=0;i<yCoordinates.size();i++)
+	for(unsigned i=0;i<yCoordinates.size();i++)
 	{
 		if (min > yCoordinates[i]) min = yCoordinates[i];
 	}
@@ -340,7 +340,7 @@ double delta::primitives::properties::getMinZAxis(std::vector<double>&  zCoordin
 {
 	double min = std::numeric_limits<double>::max();
 
-	for(int i=0;i<zCoordinates.size();i++)
+	for(unsigned i=0;i<zCoordinates.size();i++)
 	{
 		if (min > zCoordinates[i]) min = zCoordinates[i];
 	}
@@ -356,9 +356,9 @@ void delta::primitives::properties::centerOfGeometry(double 	centreOfGeometry[3]
 	centreOfGeometry[1] = 0.0;
 	centreOfGeometry[2] = 0.0;
 
-	int nVertices = xCoordinates.size();
+	unsigned nVertices = xCoordinates.size();
 
-	for(int i=0;i<nVertices;i++)
+	for(unsigned i=0;i<nVertices;i++)
 	{
 		centreOfGeometry[0] += xCoordinates[i];
 		centreOfGeometry[1] += yCoordinates[i];
@@ -386,9 +386,9 @@ void delta::primitives::properties::centerOfMass(
   centreOfMassY = 0.0;
   centreOfMassZ = 0.0;
   
-  int nVertices = xCoordinates.size();
+  unsigned nVertices = xCoordinates.size();
 
-  for(int i=0;i<nVertices;i++)
+  for(unsigned i=0;i<nVertices;i++)
   {
     centreOfMassX += xCoordinates[i];
     centreOfMassY += yCoordinates[i];
@@ -413,7 +413,7 @@ void delta::primitives::properties::explode(
 
   std::vector<double> exCoordinates, eyCoordinates, ezCoordinates;
 
-  for(int i=0;i<xCoordinates.size();i+=3)
+  for(unsigned i=0;i<xCoordinates.size();i+=3)
   {
     iREAL A[3], B[3], C[3];
     A[0] = xCoordinates[i];
@@ -473,7 +473,7 @@ void delta::primitives::properties::exploded(
 
   std::vector<double> exCoordinates, eyCoordinates, ezCoordinates;
 
-  for(int i=0;i<xCoordinates.size();i+=3)
+  for(unsigned i=0;i<xCoordinates.size();i+=3)
   {
     iREAL A[3], B[3], C[3];
     A[0] = xCoordinates[i];
@@ -528,7 +528,7 @@ double delta::primitives::properties::computeHMin(
 {
   double min = 1E99;
 
-  for(int i=0; i < xCoordinates.size(); i+=3)
+  for(unsigned i=0; i<xCoordinates.size(); i+=3)
   {
 	double A[3], B[3], C[3];
 	A[0] = xCoordinates[i];
@@ -616,7 +616,7 @@ void delta::primitives::properties::computeInertia(
       break;
   }
 
-  for (int i = 0; i < xCoordinates.size(); i+=3)
+  for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {
     a[0] = xCoordinates[i];
     a[1] = yCoordinates[i];
@@ -712,7 +712,7 @@ double delta::primitives::properties::computeMass(
       rho = int(delta::collision::material::MaterialDensity::GRAPHITE);
   }
 
-  for (int i = 0; i < xCoordinates.size(); i+=3)
+  for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {
     a[0] = xCoordinates[i];
     a[1] = yCoordinates[i];
@@ -745,7 +745,7 @@ double delta::primitives::properties::computeVolume(
   zero[1] = 0;
   zero[2] = 0;
 
-  for (int i = 0; i < xCoordinates.size(); i+=3)
+  for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {
     a[0] = xCoordinates[i];
     a[1] = yCoordinates[i];

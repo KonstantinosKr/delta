@@ -1,8 +1,8 @@
 #include "forces.h"
 
 //particle parameters
-#define SPRING 1E4
-#define DAMPER 400
+#define SPRING 1E3
+#define DAMPER 0
 #define FRICTION 0.8
 
 //sphere parameters for piling simulation
@@ -138,7 +138,7 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	f[2] = force*normal[2];
 
 #ifdef FORCESTATS
-	printf("relativeVelocity=%f, depth=%f, spring=%f\n", velocity, depth, SPRING*depth);
+	printf("relativeVelocity=%f, depth=%f, spring=%f\n", velocity, depth, SPRING);
 	printf("totalforce=%f, damp=%f, mass=%f\n", force, damp, mass);
 #endif
 

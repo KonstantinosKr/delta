@@ -90,7 +90,7 @@ void delta::sys::Sys::saveParticleGeometry(int id, std::vector<double> xCoordina
 						  std::vector<double> xCoordinatesRef, std::vector<double> yCoordinatesRef, std::vector<double> zCoordinatesRef)
 {
 
-	for(int i=0;i<xCoordinatesSpatial.size();i++)
+	for(unsigned i=0;i<xCoordinatesSpatial.size();i++)
 	{
 		_checkpointFile << "$:" << id << ":" <<
 								xCoordinatesSpatial[i] << ":" <<

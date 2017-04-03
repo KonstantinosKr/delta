@@ -68,7 +68,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
                                         &particle._persistentRecords._referentialAngular(0),
                                         &particle._persistentRecords._orientation(0), timeStepSize);
 
-    if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
+    //if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
     {
       double* x = fineGridVertex.getXCoordinates(i);
       double* y = fineGridVertex.getYCoordinates(i);

@@ -69,18 +69,31 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
 void dem::mappings::Plot::endIteration( dem::State&  solverState)
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
-
+/*
+ * TODO
+ * 1)print mesh epsilon by resizing mess and creating a double
+ * 2)derive forces and print them
+ */
   assertion( Collision::_collisionsOfNextTraversal.empty() );
   assertion( solverState.getNumberOfContactPoints()==0 || !Collision::_activeCollisions.empty() );
 
+  std::vector<std::pair<int,int>> particlePrinted;
   //loop every collision list of every particle
-  for (std::map<int, std::vector<Collision::Collisions> >::const_iterator p = Collision::_activeCollisions.begin(); p != Collision::_activeCollisions.end(); p++)
+  for (auto p:Collision::_activeCollisions)
   {
 	  //loop every partner particle in list of collisions
-	  for (std::vector<Collision::Collisions>::const_iterator pp = p->second.begin(); pp != p->second.end(); pp++)
+	  for (auto pp:p.second)
 	  {
+      #ifdef CONTACTSTATS
+      bool found = false;
+      for(auto x:particlePrinted)
+        if((x.first==p->first && x.second == pp->_copyOfPartnerParticle.getGlobalParticleId()) || (x.second==p->first && x.first == pp->_copyOfPartnerParticle.getGlobalParticleId()))
+          found = true;
+      if(!found) particlePrinted.push_back(std::pair<int,int>(p->first, pp->_copyOfPartnerParticle.getGlobalParticleId()));
+      else continue;
+      #endif
 		  //loop every contact point
-		  for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp->_contactPoints.begin(); ppp != pp->_contactPoints.end(); ppp++)
+		  for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp._contactPoints.begin(); ppp != pp._contactPoints.end(); ppp++)
 		  {
 			  	tarch::la::Vector<3,double> v;
 				v = ppp->x[0], ppp->x[1], ppp->x[2];
@@ -125,7 +138,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_particleDiameter->plotVertex(contactPointVertexIndex,0);
 				_particleEpsilon->plotVertex(contactPointVertexIndex,0);
 				_particleInfluence->plotVertex(contactPointVertexIndex,0);
-				_vertexColoring->plotVertex(contactPointVertexIndex,p->first);
+				_vertexColoring->plotVertex(contactPointVertexIndex,p.first);
 
 				_type->plotCell(contactPointIndex,2);
 				_level->plotCell(contactPointIndex,-1);
@@ -151,8 +164,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
           }
         }
         */
-
-				#ifdef CONTACTSTATS
+        #ifdef CONTACTSTATS
 				logInfo("endIteration(...)", std::endl
 				   << "#####CONTACT-DATA#####" << std::endl
 				   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
@@ -389,7 +401,7 @@ void dem::mappings::Plot::touchVertexLastTime(
       C = x[j*3+2], y[j*3+2], z[j*3+2];
 
       //A + (B − A) x a+(C−A)·b
-      np[0] = A[0] + (B[0]-A[0]) * 1/3 + (C[0] - A[0]) * 1/3;;
+      np[0] = A[0] + (B[0]-A[0]) * 1/3 + (C[0] - A[0]) * 1/3;
       np[1] = A[1] + (B[1]-A[1]) * 1/3 + (C[1] - A[1]) * 1/3;
       np[2] = A[2] + (B[2]-A[2]) * 1/3 + (C[2] - A[2]) * 1/3;
 
@@ -442,17 +454,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     								   << "orie[3]=" << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
     								   << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
     }*/
-#ifdef PARTICLESTATS
-    iREAL v[] = {particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2)};
-    iREAL a[] = {particle._persistentRecords._angular(0), particle._persistentRecords._angular(1), particle._persistentRecords._angular(2)};
-    iREAL in[] = {particle._persistentRecords._inertia(0), particle._persistentRecords._inertia(1), particle._persistentRecords._inertia(2),
-                  particle._persistentRecords._inertia(3), particle._persistentRecords._inertia(4), particle._persistentRecords._inertia(5),
-                  particle._persistentRecords._inertia(6), particle._persistentRecords._inertia(7), particle._persistentRecords._inertia(8)};
-
-    //iREAL kinrotEnergy = getKineticRotationalEnergy(v, a, in, particle._persistentRecords._mass);
-    //iREAL kinetic = getKineticEnergy(v, particle._persistentRecords._mass);
-    //iREAL rotational = getRotationalEnergy(a, in);
-
+    #ifdef PARTICLESTATS
     logInfo("touchVertexLastTime(...)", std::endl
     						 << "#####PARTICLE-DATA#####" << std::endl
     						 << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
@@ -473,25 +475,9 @@ void dem::mappings::Plot::touchVertexLastTime(
 							   << "orie[0]=" << particle._persistentRecords._orientation(0) <<", orie[1]=" << particle._persistentRecords._orientation(1) << ", orie[2]=" << particle._persistentRecords._orientation(2) << std::endl
 							   << "orie[3]=" << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
 							   << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
-#endif
+    #endif
   }
-
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
-}
-
-
-double getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass){
-  iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
-  iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
-  return rotation+kinetic;
-}
-
-double getKineticEnergy(double velocity[3], double mass){
-  return 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
-}
-
-double getRotationalEnergy(double angular[3], double inertia[9]){
-  return 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
 }
 
 #if defined(SharedMemoryParallelisation)

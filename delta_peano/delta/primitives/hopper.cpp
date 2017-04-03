@@ -334,7 +334,7 @@ void delta::primitives::hopper::generateOuterHopper(
   std::vector<double> iLyCoordinates;
   std::vector<double> iLzCoordinates;
 
-  for(int i=0;i<xCoordinates.size(); i++)
+  for(unsigned i=0;i<xCoordinates.size(); i++)
   {
     if(i==10 || i==29 || i==0 || i==34)
     {
@@ -422,7 +422,7 @@ void delta::primitives::hopper::generateOuterHopper(
   std::vector<double> eLyCoordinates;
   std::vector<double> eLzCoordinates;
 
-  for(int i=0;i<xCoordinates.size(); i++)
+  for(unsigned i=0;i<xCoordinates.size(); i++)
   {
     if(i==10 || i==29 || i==0 || i==34)
     {

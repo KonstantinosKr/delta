@@ -130,7 +130,7 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
 
  void delta::dynamics::updateRotationMatrix(iREAL *angular, iREAL *refAngular, iREAL *rotation, iREAL step)
  {
-	iREAL DL[9], L2[9];
+	iREAL DL[9];
  	expmap (step*angular[0], step*angular[1], step*angular[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
 
  	//NNMUL (rotation, DL, rotation);

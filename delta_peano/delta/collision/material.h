@@ -34,7 +34,7 @@ namespace delta {
         GRAPHITEWOOD,
         GRAPHITEGOLD
       };
-
+/*
       static struct InterfaceTri{
           double SFRICTION;
           double DAMPER;
@@ -45,9 +45,9 @@ namespace delta {
           double ROLLFRICTION;
           double DAMPER;
       }sph;
-
-      static std::map<int, InterfaceSph> interfaceSphmap;
-      static std::map<int, InterfaceTri> interfaceTrimap;
+*/
+//      static std::map<int, InterfaceSph> interfaceSphmap;
+//      static std::map<int, InterfaceTri> interfaceTrimap;
       static std::map<int, int> densitymap;
 
       int getInterfaceType(int materialA, int materialB);
