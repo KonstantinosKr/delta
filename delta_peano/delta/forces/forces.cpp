@@ -377,7 +377,7 @@ void delta::forces::getContactForce(
     std::cout << "id=" << 0 << ", SDAMPER=" << SDAMPER << ", SSPRING=" << SSPRING << std::endl
               << "vij[0]=" << vij[0] << ", vij[1]=" << vij[1] << ", vij[2]" << vij[2] << std::endl
               << "relativeVelocity*normal=" << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << conpnt.depth << ", spring*depth=" << SPRING*conpnt.depth << std::endl
-              << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", mass=" << std::fixed << std::setprecision(10) << ma << std::endl;
+              << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", ma=" << std::fixed << std::setprecision(10) << ma << std::endl;
     #endif
     if(conpnt.friction)
       delta::forces::frictionSphere(conpnt.normal, vi, forc, friction, materialA, materialB);
@@ -392,7 +392,7 @@ void delta::forces::getContactForce(
     std::cout << "id=" << 0 << ", DAMPER=" << DAMPER << ", SPRING=" << SPRING << std::endl
               << "vij[0]=" << vij[0] << ", vij[1]=" << vij[1] << ", vij[2]" << vij[2] << std::endl
               << "relativeVelocity*normal=" << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << conpnt.depth << ", spring*depth=" << SPRING*conpnt.depth << std::endl
-              << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", mass=" << std::fixed << std::setprecision(10) << ma << std::endl;
+              << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", 1/W_NN=" << std::fixed << std::setprecision(10) << ma << std::endl;
     #endif
     if(conpnt.friction)
       delta::forces::friction(conpnt.normal, vi, forc, friction);
