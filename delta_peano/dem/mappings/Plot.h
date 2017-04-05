@@ -25,11 +25,12 @@
 #include "insituvis/Visualiser.h"
 #endif
 
-
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"
 #include <vector>
+#include "delta/forces/forces.h"
+#include "dem/mappings/Collision.h"
 
 namespace dem {
   namespace mappings {

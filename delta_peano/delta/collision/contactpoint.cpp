@@ -29,14 +29,6 @@ delta::collision::contactpoint::contactpoint(const contactpoint& copy) {
   frictionVector[1] = copy.frictionVector[1];
   frictionVector[2] = copy.frictionVector[2];
 
-  force[0] = copy.force[0];
-  force[1] = copy.force[1];
-  force[2] = copy.force[2];
-
-  torque[0] = copy.torque[0];
-  torque[1] = copy.torque[1];
-  torque[2] = copy.torque[2];
-
   friction = copy.friction;
   epsilonTotal = copy.epsilonTotal;
 
@@ -81,14 +73,6 @@ delta::collision::contactpoint::contactpoint(
   normal[0] = ((xPA-xQB)/getDistance());
   normal[1] = ((yPA-yQB)/getDistance());
   normal[2] = ((zPA-zQB)/getDistance());
-
-  force[0] = 0;
-  force[1] = 0;
-  force[2] = 0;
-
-  torque[0] = 0;
-  torque[1] = 0;
-  torque[2] = 0;
 
   friction = type;
 

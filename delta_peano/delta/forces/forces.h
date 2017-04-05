@@ -3,6 +3,9 @@
 #include "delta/sys/delta.h"
 #include "delta/collision/material.h"
 #include <cmath>
+#include <iostream>
+#include <iomanip>
+#include <limits>
 
 #define NNMUL(A, B, C)\
 {\
@@ -20,15 +23,15 @@
 namespace delta {
   namespace forces {
 
-  	double spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREAL relativeVelocity[3],
+  	double spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREAL vij[3],
                   iREAL positionASpatial[3], iREAL positionBSpatial[3],
                   iREAL positionAReferential[3], iREAL positionBReferential[3],
                   iREAL massA, iREAL massB,
                   iREAL rotationA[9], iREAL rotationB[9],
-                  iREAL inverseA[9], iREAL inverseB[9], iREAL f[3]);
+                  iREAL inverseA[9], iREAL inverseB[9], iREAL f[3], iREAL &damp, iREAL &ma);
 
     void friction(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3]);
-  	double springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3]);
+  	double springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3], iREAL &damp, iREAL &ma);
   	void frictionSphere(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3], int materialA, int materialB);
 
     /**
@@ -44,8 +47,32 @@ namespace delta {
       @param-returned forceB is the total force returned as vector to indicate magnitude and opposite direction from A
       @param torqueB is the total torque returned as vector to indicate torque
     */
-  	void getContactForces(
+  	void getContactsForces(
       std::vector<delta::collision::contactpoint> &conpnt,
+      iREAL positionASpatial[3],
+      iREAL positionAReferential[3],
+      iREAL angularA[3],
+      iREAL refAngularA[3],
+      iREAL linearA[3],
+      iREAL massA,
+      iREAL inverseA[9],
+      iREAL rotationA[9],
+      int   materialA,
+      iREAL positionB[3],
+      iREAL positionBReferential[3],
+      iREAL angularB[3],
+      iREAL refAngularB[3],
+      iREAL linearB[3],
+      iREAL massB,
+      iREAL inverseB[9],
+      iREAL rotationB[9],
+      int   materialB,
+      iREAL force[3],
+      iREAL torque[3],
+      bool  isSphere);
+
+  	void getContactForce(
+      delta::collision::contactpoint conpnt,
       iREAL positionASpatial[3],
       iREAL positionAReferential[3],
       iREAL angularA[3],

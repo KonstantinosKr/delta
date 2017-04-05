@@ -41,8 +41,6 @@ struct delta::collision::contactpoint {
   iREAL P[3];
   iREAL Q[3];
   iREAL frictionVector[3];
-  iREAL force[3];
-  iREAL torque[3];
   bool friction;
   iREAL epsilonTotal;
   int master;

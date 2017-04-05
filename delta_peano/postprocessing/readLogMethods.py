@@ -123,8 +123,27 @@ listhasFriction = []
 listdistance = []
 listdepth = []
 listepsilonTotal = []
+
+listsubDamper = []
+listsubSpring = []
+
+listsubvij = []
+listsubrelativeVelocity = []
+listsubdepth = []
+listsubspring_depth = []
+
+listsubtotalForce = []
+listsubdamp = []
+listsubcontactmass = []
+
 listxContactPosition = []
 listnormalX = []
+listfriction = []
+listmassA = []
+listmassB = []
+listforce = []
+listtorque = []
+
 listp = []
 listq = []
 
@@ -148,10 +167,12 @@ def splitContactLinePivot(readLine, index):
         listSlaveId.append(SlaveId)
     elif index == 2:
         hasFriction = col1
-        nulldata1 = col2
-        nulldata2 = col3
+        massA = col2
+        massB = col3
 
         listhasFriction.append(hasFriction)
+        listmassA.append(massA)
+        listmassB.append(massB)
     elif index == 3:
         distance = col1
         depth = col2
@@ -161,53 +182,15 @@ def splitContactLinePivot(readLine, index):
         listdepth.append(depth)
         listepsilonTotal.append(epsilonTotal)
     elif index == 4:
-        listxContactPosition.append([col1, col2, col3])
-    elif index == 5:
-        listnormalX.append([col1, col2, col3])
-    elif index == 6:
-        listp.append([col1, col2, col3])
-    elif index == 7:
-        listq.append([col1, col2, col3])
-
-
-#####subContact#####\n
-listsubContactid = []
-listsubDamper = []
-listsubSpring = []
-
-listsubrelativeVelocity = []
-listsubdepth = []
-listsubspring_depth = []
-
-listsubtotalForce = []
-listsubdamp = []
-listsubcontactmass = []
-
-listforceId = []
-listforcemasterParticleNo = []
-listforceslaveParticleNo = []
-listmassA = []
-listmassB = []
-listforce = []
-listfriction = []
-
-def splitSubContactPivot(readLine, subindex):
-    #print(readLine)
-    segline = readLine.split(",")
-    #print(segline)
-    col1 = segline[0].split("=")[1]
-    col2 = segline[1].split("=")[1]
-    col3 = segline[2].split("=")[1]
-
-    if subindex == 1:
         subcontactid = col1
         subdamper = col2
         subspring = col3
 
-        listsubContactid.append(subcontactid)
         listsubDamper.append(subdamper)
         listsubSpring.append(subspring)
-    elif subindex == 2:
+    elif index == 5:
+        listsubvij.append([col1, col2, col3])
+    elif index == 6:
         subrelativeV = col1
         subdepth = col2
         subspring_depth = col3
@@ -215,7 +198,7 @@ def splitSubContactPivot(readLine, subindex):
         listsubrelativeVelocity.append(subrelativeV)
         listsubdepth.append(subdepth)
         listsubspring_depth.append(subspring_depth)
-    elif subindex == 3:
+    elif index == 7:
         subtotalforce = col1
         subdamp = col2
         subcontactmass = col3
@@ -223,36 +206,21 @@ def splitSubContactPivot(readLine, subindex):
         listsubtotalForce.append(subtotalforce)
         listsubdamp.append(subdamp)
         listsubcontactmass.append(subcontactmass)
-
-def splitForceLinePivot(readLine, index):
-    #print(readLine)
-    segline = readLine.split(",")
-    #print(segline)
-    col1 = segline[0].split("=")[1]
-    col2 = segline[1].split("=")[1]
-    col3 = segline[2].split("=")[1]
-
-    #print str(col1) + " " + str(col2) + " " + str(col3)
-
-    if index == 1:
-        forceId = col1
-        masterParticleNo = col2
-        slaveParticleNo = col3
-
-        listforceId.append(forceId)
-        listforcemasterParticleNo.append(masterParticleNo)
-        listforceslaveParticleNo.append(slaveParticleNo)
-    elif index == 2:
-        massA = col1
-        massB = col2
-        nulldata3 = col3
-
-        listmassA.append(massA)
-        listmassB.append(massB)
-    elif index == 3:
-        listforce.append([col1, col2, col3])
-    elif index == 4:
+    elif index == 8:
+        listxContactPosition.append([col1, col2, col3])
+    elif index == 9:
+        listnormalX.append([col1, col2, col3])
+    elif index == 10:
         listfriction.append([col1, col2, col3])
+    elif index == 11:
+        listforce.append([col1, col2, col3])
+    elif index == 12:
+        listforce.append([col1, col2, col3])
+    elif index == 13:
+        listp.append([col1, col2, col3])
+    elif index == 14:
+        listq.append([col1, col2, col3])
+
 
 iteration = []
 reassigns = []
@@ -265,13 +233,10 @@ dt =[]
 
 particleXaxis = []
 contactXaxis = []
-forceXaxis = []
-subforceXaxis = []
 
 def readLog(filename):
     contactXindex = 0
     particleXindex = 0
-    forceXindex = 0
     subforceXindex = 0
     ind = 0
 
@@ -290,7 +255,6 @@ def readLog(filename):
             parCmp.append(pa)
             triCmp.append(ti)
             cnpt.append(cn)
-
             #print("iteration " + it)
             continue
 
@@ -302,26 +266,6 @@ def readLog(filename):
         if "#####CONTACT-DATA#####" in line:
             ind = 0
             state = "contactplot"
-            continue
-
-        if "#####FORCE-DATA#####" in line:
-            ind = 0
-            subind = 0
-            #state = "force"
-            continue
-
-        if "#####TOTAL-FDATA#####" in line:
-            ind = 0
-            state = "force"
-            continue
-
-        if "start-subContact" in line:
-            ind = 0
-            subind = 0
-            state = "subcontact"
-            continue
-
-        if "end-subContact" in line:
             continue
 
         if "particle" in state:
@@ -337,34 +281,16 @@ def readLog(filename):
             #print(line)
             ind += 1
             splitContactLinePivot(line, ind)
-            if ind == 7:
+            if ind == 14:
                 state = ""
                 contactXaxis.append(contactXindex)
                 contactXindex += 1
 
-        if "subcontact" in state:
-            ind += 1
-            splitSubContactPivot(line, ind)
-            if ind == 3:
-                state = ""
-                subforceXaxis.append(subforceXindex)
-                subforceXindex += 1
-
-        if "force" in state:
-            #print line
-            ind += 1
-            splitForceLinePivot(line, ind)
-            if ind == 4:
-                state = ""
-                forceXaxis.append(forceXindex)
-                forceXindex += 1
-
-    return listparticleId, listmass, listdiameter, listinfluenceRadius, listepsilon, listhMin, listnoOfTriangles, \
-           listisObstacle,listmaterial, listlinear, listangular, listrangular, listcentre, listcOfMas, \
-           listrcOfMa, listiner, listinve, listorie, \
-           listcontactId, listmasterId, listSlaveId, listhasFriction, listdistance, listdepth, listepsilonTotal, \
-           listxContactPosition, listnormalX, listp, listq, \
-           listforceId, listforcemasterParticleNo, listforceslaveParticleNo, listmassA, listmassB, listforce, listfriction, \
-            listsubContactid,listsubDamper, listsubSpring, listsubrelativeVelocity, listsubdepth, listsubspring_depth, listsubtotalForce, listsubdamp, listsubcontactmass, \
-            particleXaxis, contactXaxis, forceXaxis, subforceXaxis, iteration, reassigns, parCmp, triCmp, cnpt, gridV, t, dt
+    return  listparticleId, listmass, listdiameter, listinfluenceRadius, listepsilon, listhMin, listnoOfTriangles, \
+            listisObstacle,listmaterial, listlinear, listangular, listrangular, listcentre, listcOfMas, \
+            listrcOfMa, listiner, listinve, listorie, \
+            listcontactId, listmasterId, listSlaveId, listhasFriction, listdistance, listdepth, listepsilonTotal, \
+            listsubDamper, listsubSpring, listsubvij, listsubrelativeVelocity, listsubdepth, listsubspring_depth, listsubtotalForce, listsubdamp, listsubcontactmass, \
+            listxContactPosition, listnormalX, listfriction, listmassA, listmassB, listforce, listtorque, listp, listq, \
+            particleXaxis, contactXaxis, iteration, reassigns, parCmp, triCmp, cnpt, gridV, t, dt
 

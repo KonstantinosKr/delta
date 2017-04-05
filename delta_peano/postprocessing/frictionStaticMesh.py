@@ -29,13 +29,6 @@ listNormalX, listP, listQ = getContactData(masterIndex, slaveIndex, interchangea
 listContactId, listMasterId, listSlaveId, listHasFriction, \
 listDistance, listDepth, listEpsilon, listContactPosition, \
 listNormalX, listP, listQ = getContactData(particleIndex)
-
-listForceId, listForceMaster, listForceSlave, listMassA, \
-listMassB, listForce, listFriction = getForce(masterIndex, slaveIndex, interchangeable)
-
-listSubContactId, listSubDamper, listSubSpring, listSubRelativeVelocity, \
-listSubDepth, listSubSpring_Depth, listSubTotalForce, listSubDamp, listSubContactMass = getContactDataOfInteraction(masterIndex, slaveIndex, interchangeable)
-
 """
 
 getSimSteps()

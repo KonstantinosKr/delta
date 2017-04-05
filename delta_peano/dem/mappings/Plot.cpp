@@ -79,60 +79,134 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 
   std::vector<std::pair<int,int>> particlePrinted;
   //loop every collision list of every particle
-  for (auto p:Collision::_activeCollisions)
+  for(auto p:Collision::_activeCollisions)
   {
+
+
 	  //loop every partner particle in list of collisions
-	  for (auto pp:p.second)
+	  for(auto pp:p.second)
 	  {
-      #ifdef CONTACTSTATS
+	    int masterID = p.first, slaveID = pp._copyOfPartnerParticle.getGlobalParticleId();
+	    iREAL *centreOfMass, *referentialCentreOfMass, *angular, *referentialAngular, *velocity, *inverse, *orientation, mass, material;
+	    //find master data in collision data as slave
+	    for(auto iCollision:Collision::_activeCollisions)
+	    {
+	      for(auto j:iCollision.second)
+	      {
+	        if(j._copyOfPartnerParticle.getGlobalParticleId() == masterID)
+	        {
+	          centreOfMass = &j._copyOfPartnerParticle._persistentRecords._centreOfMass(0);
+	          referentialCentreOfMass = &j._copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0);
+	          angular = &j._copyOfPartnerParticle._persistentRecords._angular(0);
+	          referentialAngular = &j._copyOfPartnerParticle._persistentRecords._referentialAngular(0);
+	          velocity = &j._copyOfPartnerParticle._persistentRecords._velocity(0);
+	          inverse = &j._copyOfPartnerParticle._persistentRecords._inverse(0);
+	          orientation = &j._copyOfPartnerParticle._persistentRecords._orientation(0);
+	          mass = j._copyOfPartnerParticle.getMass();
+	          material = j._copyOfPartnerParticle.getMaterial();
+
+	          break;
+	        }
+	      }
+	    }
+
+	    #ifdef CONTACTSTATS
       bool found = false;
       for(auto x:particlePrinted)
-        if((x.first==p->first && x.second == pp->_copyOfPartnerParticle.getGlobalParticleId()) || (x.second==p->first && x.first == pp->_copyOfPartnerParticle.getGlobalParticleId()))
+        if((x.first==masterID && x.second == slaveID) || (x.second==masterID && x.first == slaveID))
           found = true;
-      if(!found) particlePrinted.push_back(std::pair<int,int>(p->first, pp->_copyOfPartnerParticle.getGlobalParticleId()));
+      if(!found) particlePrinted.push_back(std::pair<int,int>(masterID, slaveID));
       else continue;
       #endif
 		  //loop every contact point
-		  for ( std::vector<delta::collision::contactpoint>::const_iterator ppp = pp._contactPoints.begin(); ppp != pp._contactPoints.end(); ppp++)
+		  for (auto ppp:pp._contactPoints)
 		  {
-			  	tarch::la::Vector<3,double> v;
-				v = ppp->x[0], ppp->x[1], ppp->x[2];
+		    tarch::la::Vector<3,double> v;
+				v = ppp.x[0], ppp.x[1], ppp.x[2];
 				int contactPointVertexIndex = _vertexWriter->plotVertex( v );
 				int contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
 
 				//check if force normal points towards master
-				v = ppp->normal[0], ppp->normal[1], ppp->normal[2];
+				v = ppp.normal[0], ppp.normal[1], ppp.normal[2];
 
 				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
-				/*
-				iREAL tmp[3];
-				bool isMaster = false;
 
-				tmp[0] = ((ppp->P[0]-ppp->Q[0])/ppp->getDistance());
-				tmp[1] = ((ppp->P[1]-ppp->Q[1])/ppp->getDistance());
-				tmp[2] = ((ppp->P[2]-ppp->Q[2])/ppp->getDistance());
-				if(tmp[0]==ppp->normal[0] && tmp[1] == ppp->normal[1] && tmp[2] == ppp->normal[2])
-				{
-					isMaster = true;
-				}
+        double force[3]  = {0.0,0.0,0.0};
+        double torque[3] = {0.0,0.0,0.0};
 
-				if(isMaster)
-				{
-					_velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
-				}else
-				{
-					tarch::la::Vector<3, double> t = {0, 1, 0};
-					_velocitiesAndNormals->plotVertex(contactPointVertexIndex,t);
-				}*/
+        #ifdef CONTACTSTATS
+        /*
+        if(_trackParticle)
+        for(int i = 0; i<_trackParticleID.size(); i++)
+        {
+          //iftrackplotting enabled and one or more id are enables then print their data
+          if(_trackParticleID[i] == p.first)
+          {
 
-				if(ppp->friction)
-				{
-					v = ppp->frictionVector[0], ppp->frictionVector[1], ppp->frictionVector[2];
-					_frictionNormals->plotVertex(contactPointVertexIndex, v);
-				}else
-				{
-					_frictionNormals->plotVertex(contactPointVertexIndex, 0);
-				}
+          }
+        }
+        */
+        std::cout << "#####CONTACT-DATA#####" << std::endl
+                  << "contactId=" << std::to_string(ppp.x[0]+ppp.x[1]+ppp.x[2]) << ", MasterId=" << masterID << ", SlaveId=" << slaveID << std::endl
+                  << "friction=" << ppp.friction << ", massA=" << mass << ", massB=" << pp._copyOfPartnerParticle.getMass() << std::endl
+                  << "distance=" << ppp.getDistance() << ", depth=" << ppp.depth << ", epsilonTotal=" << ppp.epsilonTotal << std::endl;
+
+        delta::forces::getContactForce(ppp,
+                                       centreOfMass,
+                                       referentialCentreOfMass,
+                                       angular,
+                                       referentialAngular,
+                                       velocity,
+                                       mass,
+                                       inverse,
+                                       orientation,
+                                       material,
+                                       &(pp._copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
+                                       &(pp._copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0)),
+                                       &(pp._copyOfPartnerParticle._persistentRecords._angular(0)),
+                                       &(pp._copyOfPartnerParticle._persistentRecords._referentialAngular(0)),
+                                       &(pp._copyOfPartnerParticle._persistentRecords._velocity(0)),
+                                       pp._copyOfPartnerParticle.getMass(),
+                                       &(pp._copyOfPartnerParticle._persistentRecords._inverse(0)),
+                                       &(pp._copyOfPartnerParticle._persistentRecords._orientation(0)),
+                                       pp._copyOfPartnerParticle.getMaterial(),
+                                       force, torque,
+                                       (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
+
+          std::cout  << "xX=" << ppp.x[0] <<", xY=" << ppp.x[1] << ", xZ=" << ppp.x[2] << std::endl
+                     << "normalX=" << ppp.normal[0] <<", normalY=" << ppp.normal[1] << ", normalZ=" << ppp.normal[2] << std::endl
+                     << "frictionX=" << ppp.frictionVector[0] <<", frictionY=" << ppp.frictionVector[1] << ", frictionZ=" << ppp.frictionVector[2] << std::endl
+                     << "fX=" << force[0] << ", fY=" << force[1] << ", fZ=" << force[2] << std::endl
+                     << "tX=" << torque[0] << ", tY=" << torque[1] << ", tZ=" << torque[2] << std::endl
+                     << "pX=" << ppp.P[0] <<", pY=" << ppp.P[1] << ", pZ=" << ppp.P[2] << std::endl
+                     << "qX=" << ppp.Q[0] <<", qY=" << ppp.Q[1] << ", qZ=" << ppp.Q[2] << std::endl;
+          #endif
+
+        /* check if it is master so that normal points towards it
+        bool isMaster = false;
+
+        iREAL tmp[] = {((ppp.P[0]-ppp.Q[0])/ppp.getDistance()), ((ppp.P[1]-ppp.Q[1])/ppp.getDistance()), ((ppp.P[2]-ppp.Q[2])/ppp.getDistance())};
+        if(tmp[0]==ppp.normal[0] && tmp[1] == ppp.normal[1] && tmp[2] == ppp.normal[2])
+        {
+          isMaster = true;
+        }
+
+        if(isMaster)
+        {
+          _velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
+        } else {
+          tarch::la::Vector<3, double> t = {0, 1, 0};
+          _velocitiesAndNormals->plotVertex(contactPointVertexIndex,t);
+        }*/
+
+        if(ppp.friction)
+        {
+          v = torque[0], torque[1], torque[2];
+          _frictionNormals->plotVertex(contactPointVertexIndex, v);
+        } else {
+          _frictionNormals->plotVertex(contactPointVertexIndex, 0);
+        }
+
 				_particleVelocity->plotVertex(contactPointVertexIndex,0);
 				_particleAngular->plotVertex(contactPointVertexIndex,0);
 				_particleDiameter->plotVertex(contactPointVertexIndex,0);
@@ -144,40 +218,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
-				/*
-				if(_trackParticle)
-				for(int i = 0; i<_trackParticleID.size(); i++)
-				{
-				  //iftrackplotting enabled and one or more id are enables then print their data
-          if(_trackParticleID[i] == p->first)
-          {
-            logInfo("endIteration(...)", std::endl
-               << "#####CONTACT-DATA#####" << std::endl
-               << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
-               << "friction=" << ppp->friction << ", nulldata1=0" << ", nulldata2=0" << std::endl
-               << "distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
-               << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
-               << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
-               << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
-               << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
-               << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
-          }
-        }
-        */
-        #ifdef CONTACTSTATS
-				logInfo("endIteration(...)", std::endl
-				   << "#####CONTACT-DATA#####" << std::endl
-				   << "contactId=" << std::to_string(ppp->x[0]+ppp->x[1]+ppp->x[2]) << ", MasterId=" << p->first << ", SlaveId=" << pp->_copyOfPartnerParticle.getGlobalParticleId() << std::endl
-				   << "friction=" << ppp->friction << ", nulldata1=0" << ", nulldata2=0" << std::endl
-				   << "distance=" << ppp->getDistance() << ", depth=" << ppp->depth << ", epsilonTotal=" << ppp->epsilonTotal << std::endl
-				   << "xX=" << ppp->x[0] <<", xY=" << ppp->x[1] << ", xZ=" << ppp->x[2] << std::endl
-				   << "normalX=" << ppp->normal[0] <<", normalY=" << ppp->normal[1] << ", normalZ=" << ppp->normal[2] << std::endl
-				   << "frictionX=" << ppp->frictionVector[0] <<", frictionY=" << ppp->frictionVector[1] << ", frictionZ=" << ppp->frictionVector[2] << std::endl
-				   << "pX=" << ppp->P[0] <<", pY=" << ppp->P[1] << ", pZ=" << ppp->P[2] << std::endl
-				   << "qX=" << ppp->Q[0] <<", qY=" << ppp->Q[1] << ", qZ=" << ppp->Q[2]);
-				#endif
-
-				v = ppp->P[0], ppp->P[1], ppp->P[2];
+				v = ppp.P[0], ppp.P[1], ppp.P[2];
 				contactPointVertexIndex = _vertexWriter->plotVertex( v );
 				contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
 				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
@@ -194,7 +235,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
-				v = ppp->Q[0], ppp->Q[1], ppp->Q[2];
+				v = ppp.Q[0], ppp.Q[1], ppp.Q[2];
 				contactPointVertexIndex = _vertexWriter->plotVertex( v );
 				contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
 				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,0);
@@ -434,32 +475,33 @@ void dem::mappings::Plot::touchVertexLastTime(
     /*if(_trackParticle && _trackID == particle.getGlobalParticleId())
     {
     	logInfo("touchVertexLastTime(...)", std::endl
-    	    						 << "#####PARTICLE-DATA#####" << std::endl
-    	    						 << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
-    				  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin=" << particle._persistentRecords._hMin << std::endl
-    								   << "noOfTri=" << particle._persistentRecords._numberOfTriangles <<", isObsta=" << particle._persistentRecords._isObstacle << ", materia=" << particle._persistentRecords._material << std::endl
-    	    					   << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
-    								   << "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl
-    								   << "rangulX=" << particle._persistentRecords._referentialAngular(0) <<", rangulY=" << particle._persistentRecords._referentialAngular(1) << ", rangulZ=" << particle._persistentRecords._referentialAngular(2) << std::endl
-    								   << "centreX=" << particle._persistentRecords._centre(0) <<", centreY=" << particle._persistentRecords._centre(1) << ", centreZ=" << particle._persistentRecords._centre(2) << std::endl
-    								   << "cOfMasX=" << particle._persistentRecords._centreOfMass(0) <<", cOfMasY=" << particle._persistentRecords._centreOfMass(1) << ", cOfMasZ=" << particle._persistentRecords._centreOfMass(2) << std::endl
-    								   << "rcOfMaX=" << particle._persistentRecords._referentialCentreOfMass(0) <<", rcOfMaY=" << particle._persistentRecords._referentialCentreOfMass(1) << ", rcOfMaZ=" << particle._persistentRecords._referentialCentreOfMass(2) << std::endl
-    								   << "iner[0]=" << particle._persistentRecords._inertia(0) <<", iner[1]=" << particle._persistentRecords._inertia(1) << ", iner[2]=" << particle._persistentRecords._inertia(2) << std::endl
-    								   << "iner[3]=" << particle._persistentRecords._inertia(3) <<", iner[4]=" << particle._persistentRecords._inertia(4) << ", iner[5]=" << particle._persistentRecords._inertia(5) << std::endl
-    								   << "iner[6]=" << particle._persistentRecords._inertia(6) <<", iner[7]=" << particle._persistentRecords._inertia(7) << ", iner[8]=" << particle._persistentRecords._inertia(8) << std::endl
-    								   << "inve[0]=" << particle._persistentRecords._inverse(0) <<", inve[1]=" << particle._persistentRecords._inverse(1) << ", inve[2]=" << particle._persistentRecords._inverse(2) << std::endl
-    								   << "inve[3]=" << particle._persistentRecords._inverse(3) <<", inve[4]=" << particle._persistentRecords._inverse(4) << ", inve[5]=" << particle._persistentRecords._inverse(5) << std::endl
-    								   << "inve[6]=" << particle._persistentRecords._inverse(6) <<", inve[7]=" << particle._persistentRecords._inverse(7) << ", inve[8]=" << particle._persistentRecords._inverse(8) << std::endl
-    								   << "orie[0]=" << particle._persistentRecords._orientation(0) <<", orie[1]=" << particle._persistentRecords._orientation(1) << ", orie[2]=" << particle._persistentRecords._orientation(2) << std::endl
-    								   << "orie[3]=" << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
-    								   << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
-    }*/
+                 << "#####PARTICLE-DATA#####" << std::endl
+                 << "partiId=" << particle.getGlobalParticleId()  <<", mass=" << particle.getMass() << ", diamete=" << particle.getDiameter() << std::endl
+                 << "influRa=" << particle.getInfluenceRadius() <<", epsilon=" << particle.getEpsilon() << ", hMin=" << particle.getHMin() << std::endl
+                 << "noOfTri=" << particle.getNumberOfTriangles() <<", isObsta=" << particle._persistentRecords.getIsObstacle() << ", materia=" << particle.getMaterial() << std::endl
+                 << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
+                 << "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl
+                 << "rangulX=" << particle._persistentRecords._referentialAngular(0) <<", rangulY=" << particle._persistentRecords._referentialAngular(1) << ", rangulZ=" << particle._persistentRecords._referentialAngular(2) << std::endl
+                 << "centreX=" << particle._persistentRecords._centre(0) <<", centreY=" << particle._persistentRecords._centre(1) << ", centreZ=" << particle._persistentRecords._centre(2) << std::endl
+                 << "cOfMasX=" << particle._persistentRecords._centreOfMass(0) <<", cOfMasY=" << particle._persistentRecords._centreOfMass(1) << ", cOfMasZ=" << particle._persistentRecords._centreOfMass(2) << std::endl
+                 << "rcOfMaX=" << particle._persistentRecords._referentialCentreOfMass(0) <<", rcOfMaY=" << particle._persistentRecords._referentialCentreOfMass(1) << ", rcOfMaZ=" << particle._persistentRecords._referentialCentreOfMass(2) << std::endl
+                 << "iner[0]=" << particle._persistentRecords._inertia(0) <<", iner[1]=" << particle._persistentRecords._inertia(1) << ", iner[2]=" << particle._persistentRecords._inertia(2) << std::endl
+                 << "iner[3]=" << particle._persistentRecords._inertia(3) <<", iner[4]=" << particle._persistentRecords._inertia(4) << ", iner[5]=" << particle._persistentRecords._inertia(5) << std::endl
+                 << "iner[6]=" << particle._persistentRecords._inertia(6) <<", iner[7]=" << particle._persistentRecords._inertia(7) << ", iner[8]=" << particle._persistentRecords._inertia(8) << std::endl
+                 << "inve[0]=" << particle._persistentRecords._inverse(0) <<", inve[1]=" << particle._persistentRecords._inverse(1) << ", inve[2]=" << particle._persistentRecords._inverse(2) << std::endl
+                 << "inve[3]=" << particle._persistentRecords._inverse(3) <<", inve[4]=" << particle._persistentRecords._inverse(4) << ", inve[5]=" << particle._persistentRecords._inverse(5) << std::endl
+                 << "inve[6]=" << particle._persistentRecords._inverse(6) <<", inve[7]=" << particle._persistentRecords._inverse(7) << ", inve[8]=" << particle._persistentRecords._inverse(8) << std::endl
+                 << "orie[0]=" << particle._persistentRecords._orientation(0) <<", orie[1]=" << particle._persistentRecords._orientation(1) << ", orie[2]=" << particle._persistentRecords._orientation(2) << std::endl
+                 << "orie[3]=" << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
+                 << "orie[6]=" << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) );
+       }*/
+
     #ifdef PARTICLESTATS
     logInfo("touchVertexLastTime(...)", std::endl
     						 << "#####PARTICLE-DATA#####" << std::endl
-    						 << "partiId=" << particle._persistentRecords._globalParticleId  <<", mass=" << particle._persistentRecords._mass << ", diamete=" << particle._persistentRecords._diameter << std::endl
-			  	  	   << "influRa=" << particle._persistentRecords._influenceRadius <<", epsilon=" << particle._persistentRecords._epsilon << ", hMin=" << particle._persistentRecords._hMin << std::endl
-							   << "noOfTri=" << particle._persistentRecords._numberOfTriangles <<", isObsta=" << particle._persistentRecords._isObstacle << ", materia=" << particle._persistentRecords._material << std::endl
+    						 << "partiId=" << particle.getGlobalParticleId()  <<", mass=" << particle.getMass() << ", diameter=" << particle.getDiameter() << std::endl
+			  	  	   << "influRa=" << particle.getInfluenceRadius() <<", epsilon=" << particle.getEpsilon() << ", hMin=" << particle.getHMin() << std::endl
+							   << "noOfTri=" << particle.getNumberOfTriangles() <<", isObsta=" << particle._persistentRecords.getIsObstacle() << ", materia=" << particle.getMaterial() << std::endl
     					   << "linearX=" << particle._persistentRecords._velocity(0) <<", linearY=" << particle._persistentRecords._velocity(1) << ", linearZ=" << particle._persistentRecords._velocity(2) << std::endl
 							   << "angulaX=" << particle._persistentRecords._angular(0) <<", angulaY=" << particle._persistentRecords._angular(1) << ", angulaZ=" << particle._persistentRecords._angular(2) << std::endl
 							   << "rangulX=" << particle._persistentRecords._referentialAngular(0) <<", rangulY=" << particle._persistentRecords._referentialAngular(1) << ", rangulZ=" << particle._persistentRecords._referentialAngular(2) << std::endl
