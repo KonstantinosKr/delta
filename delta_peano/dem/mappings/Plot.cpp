@@ -201,7 +201,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 
         if(ppp.friction)
         {
-          v = torque[0], torque[1], torque[2];
+          v = ppp.frictionVector[0], ppp.frictionVector[1], ppp.frictionVector[2];
           _frictionNormals->plotVertex(contactPointVertexIndex, v);
         } else {
           _frictionNormals->plotVertex(contactPointVertexIndex, 0);
