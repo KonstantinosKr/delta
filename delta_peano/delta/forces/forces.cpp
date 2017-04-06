@@ -30,9 +30,24 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	refconptA[1] = (conptSubPosition[0]*rotationA[3] + conptSubPosition[1]*rotationA[4] + conptSubPosition[2]*rotationA[5])+positionAReferential[1];
 	refconptA[2] = (conptSubPosition[0]*rotationA[6] + conptSubPosition[1]*rotationA[7] + conptSubPosition[2]*rotationA[8])+positionAReferential[2];
 
+
 	conptSubPosition[0] = conpnt[0] - positionBSpatial[0];
 	conptSubPosition[1] = conpnt[1] - positionBSpatial[1];
 	conptSubPosition[2] = conpnt[2] - positionBSpatial[2];
+
+  /*std::cout << "conpnt:" << std::fixed << std::setprecision(10)
+                             << conpnt[0] << " " << std::fixed << std::setprecision(10)
+                             << conpnt[1] << " " << std::fixed << std::setprecision(10)
+                             << conpnt[2] << " " << std::fixed << std::setprecision(10) << std::endl;
+  std::cout << "positionBSpatial:" << std::fixed << std::setprecision(10)
+                             << positionBSpatial[0] << " " << std::fixed << std::setprecision(10)
+                             << positionBSpatial[1] << " " << std::fixed << std::setprecision(10)
+                             << positionBSpatial[2] << " " << std::fixed << std::setprecision(10) << std::endl;*/
+  /*
+	std::cout << "conptSubPosition:" << std::fixed << std::setprecision(10)
+	                           << conptSubPosition[0] << " " << std::fixed << std::setprecision(10)
+	                           << conptSubPosition[1] << " " << std::fixed << std::setprecision(10)
+	                           << conptSubPosition[2] << " " << std::fixed << std::setprecision(10) << std::endl;*/
 
 	refconptB[0] = (conptSubPosition[0]*rotationB[0] + conptSubPosition[1]*rotationB[1] + conptSubPosition[2]*rotationB[2])+positionBReferential[0];
 	refconptB[1] = (conptSubPosition[0]*rotationB[3] + conptSubPosition[1]*rotationB[4] + conptSubPosition[2]*rotationB[5])+positionBReferential[1];
@@ -50,6 +65,28 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	rPositionContactPntj[0] = 0.0;										                rPositionContactPntj[3] = -positionBReferential[2]-refconptB[2];  rPositionContactPntj[6] = positionBReferential[1]-refconptB[1];
 	rPositionContactPntj[1] = positionBReferential[2]-refconptB[2];		rPositionContactPntj[4] = 0.0;									                  rPositionContactPntj[7] = -positionBReferential[0]-refconptB[0];
 	rPositionContactPntj[2] = -positionBReferential[1]-refconptB[1];	rPositionContactPntj[5] = positionBReferential[0]-refconptB[0];	  rPositionContactPntj[8] = 0.0;
+
+	/*std::cout << "positionBReferential:" << std::fixed << std::setprecision(10)
+	                       << positionBReferential[0] << " " << std::fixed << std::setprecision(10)
+	                       << positionBReferential[1] << " " << std::fixed << std::setprecision(10)
+	                       << positionBReferential[2] << " " << std::fixed << std::setprecision(10) << std::endl;
+
+	std::cout << "refconptB:" << std::fixed << std::setprecision(10)
+	                         << refconptB[0] << " " << std::fixed << std::setprecision(10)
+	                         << refconptB[1] << " " << std::fixed << std::setprecision(10)
+	                         << refconptB[2] << " " << std::fixed << std::setprecision(10) << std::endl;*/
+
+	/*std::cout << "rPositionContactPntj:" << std::fixed << std::setprecision(10)
+                       << rPositionContactPntj[0] << " " << std::fixed << std::setprecision(10)
+                       << rPositionContactPntj[1] << " " << std::fixed << std::setprecision(10)
+                       << rPositionContactPntj[2] << " " << std::fixed << std::setprecision(10)
+                       << rPositionContactPntj[3] << " " << std::fixed << std::setprecision(10)
+                       << rPositionContactPntj[4] << " " << std::fixed << std::setprecision(10)
+                       << rPositionContactPntj[5] << " " << std::fixed << std::setprecision(10)
+                       << rPositionContactPntj[6] << " " << std::fixed << std::setprecision(10)
+                       << rPositionContactPntj[7] << " " << std::fixed << std::setprecision(10)
+                       << rPositionContactPntj[8] << " " << std::fixed << std::setprecision(10) << std::endl;
+  */
 
 	iREAL RIi[18];//[Rotation*(RefCentre-RefConPnt)   Identity]
 	iREAL RIj[18];
@@ -115,12 +152,32 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	Hi[4] = Hi_n[0]*ui[24] + Hi_n[1]*ui[25] + Hi_n[2]*ui[26] + Hi_n[3]*ui[27] + Hi_n[4]*ui[28] + Hi_n[5]*ui[29];
 	Hi[5] = Hi_n[0]*ui[30] + Hi_n[1]*ui[31] + Hi_n[2]*ui[32] + Hi_n[3]*ui[33] + Hi_n[4]*ui[34] + Hi_n[5]*ui[35];
 
+	/*std::cout << "Hj_n:" << std::fixed << std::setprecision(10)
+	                     << Hj_n[0] << " " << std::fixed << std::setprecision(10)
+	                     << Hj_n[1] << " " << std::fixed << std::setprecision(10)
+	                     << Hj_n[2] << " " << std::fixed << std::setprecision(10)
+	                     << Hj_n[3] << " " << std::fixed << std::setprecision(10)
+	                     << Hj_n[4] << " " << std::fixed << std::setprecision(10)
+	                     << Hj_n[5] << " " << std::fixed << std::setprecision(10) << std::endl;
+
+	std::cout << "uj:" << std::fixed << std::setprecision(10)
+                       << uj[0] << " " << std::fixed << std::setprecision(10)
+                       << uj[1] << " " << std::fixed << std::setprecision(10)
+                       << uj[2] << " " << std::fixed << std::setprecision(10)
+                       << uj[3] << " " << std::fixed << std::setprecision(10)
+                       << uj[4] << " " << std::fixed << std::setprecision(10)
+                       << uj[5] << " " << std::fixed << std::setprecision(10) << std::endl;*/
+
+
 	Hj[0] = Hj_n[0]*uj[0] + Hj_n[1]*uj[1] + Hj_n[2]*uj[2] + Hj_n[3]*uj[3] + Hj_n[4]*uj[4] + Hj_n[5]*uj[5];
 	Hj[1] = Hj_n[0]*uj[6] + Hj_n[1]*uj[7] + Hj_n[2]*uj[8] + Hj_n[3]*uj[9] + Hj_n[4]*uj[10] + Hj_n[5]*uj[11];
 	Hj[2] = Hj_n[0]*uj[12] + Hj_n[1]*uj[13] + Hj_n[2]*uj[14] + Hj_n[3]*uj[15] + Hj_n[4]*uj[16] + Hj_n[5]*uj[17];
 	Hj[3] = Hj_n[0]*uj[18] + Hj_n[1]*uj[19] + Hj_n[2]*uj[20] + Hj_n[3]*uj[21] + Hj_n[4]*uj[22] + Hj_n[5]*uj[23];
 	Hj[4] = Hj_n[0]*uj[24] + Hj_n[1]*uj[25] + Hj_n[2]*uj[26] + Hj_n[3]*uj[27] + Hj_n[4]*uj[28] + Hj_n[5]*uj[29];
 	Hj[5] = Hj_n[0]*uj[30] + Hj_n[1]*uj[31] + Hj_n[2]*uj[32] + Hj_n[3]*uj[33] + Hj_n[4]*uj[34] + Hj_n[5]*uj[35];
+
+	//std::cout << "Hi:" << std::fixed << std::setprecision(10) << Hi[0] << " " << std::fixed << std::setprecision(10) << Hi[1] << " " << std::fixed << std::setprecision(10) << Hi[2] << " " << std::fixed << std::setprecision(10) << Hi[3] << " " << std::fixed << std::setprecision(10) << Hi[4] << " " << std::fixed << std::setprecision(10) << Hi[5] << std::endl;
+  //std::cout << "Hj:" << std::fixed << std::setprecision(10) << Hj[0] << " " << std::fixed << std::setprecision(10) << Hj[1] << " " << std::fixed << std::setprecision(10) << Hj[2] << " " << std::fixed << std::setprecision(10) << Hj[3] << " " << std::fixed << std::setprecision(10) << Hj[4] << " " << std::fixed << std::setprecision(10) << Hj[5] << std::endl;
 
 	iREAL W_NN = (Hi[0]*Hi_n[0] + Hi[1]*Hi_n[1] + Hi[2]*Hi_n[2] + Hi[3]*Hi_n[3] + Hi[4]*Hi_n[4] + Hi[5]*Hi_n[5]) +
 			         (Hj[0]*Hj_n[0] + Hj[1]*Hj_n[1] + Hj[2]*Hj_n[2] + Hj[3]*Hj_n[3] + Hj[4]*Hj_n[4] + Hj[5]*Hj_n[5]);
@@ -245,11 +302,7 @@ void delta::forces::getContactsForces(
     vij[1] = vj[1] - vi[1];
     vij[2] = vj[2] - vi[2];
 
-    iREAL f[3], friction[3], forc;
-
-    friction[0] = 0.0;
-    friction[1] = 0.0;
-    friction[2] = 0.0;
+    iREAL f[] = {0.0, 0.0, 0.0}, friction[] = {0.0, 0.0, 0.0}, forc;
 
     if(isSphere)
     {
@@ -265,8 +318,8 @@ void delta::forces::getContactsForces(
                                   positionAReferential, positionBReferential, massA, massB,
                                   rotationA, rotationB, inverseA, inverseB, f, damp, ma);
 
-      if(conpnt[k].friction)
-        delta::forces::friction(conpnt[k].normal, vi, forc, friction);
+      //if(conpnt[k].friction)
+        //delta::forces::friction(conpnt[k].normal, vi, forc, friction);
     }
 
     //accumulate force
@@ -362,11 +415,7 @@ void delta::forces::getContactForce(
   vij[1] = vj[1] - vi[1];
   vij[2] = vj[2] - vi[2];
 
-  iREAL f[3], friction[3], forc;
-
-  friction[0] = 0.0;
-  friction[1] = 0.0;
-  friction[2] = 0.0;
+  iREAL f[] = {0.0, 0.0, 0.0}, friction[] = {0.0, 0.0, 0.0}, forc;
 
   if(isSphere)
   {
@@ -374,10 +423,10 @@ void delta::forces::getContactForce(
     forc = delta::forces::springSphere(conpnt.normal, conpnt.depth, vij, massA, massB, f, damp, ma);
 
     #ifdef CONTACTSTATS
-    std::cout << "id=" << 0 << ", SDAMPER=" << SDAMPER << ", SSPRING=" << SSPRING << std::endl
-              << "vij[0]=" << vij[0] << ", vij[1]=" << vij[1] << ", vij[2]" << vij[2] << std::endl
-              << "relativeVelocity*normal=" << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << conpnt.depth << ", spring*depth=" << SPRING*conpnt.depth << std::endl
-              << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", ma=" << std::fixed << std::setprecision(10) << ma << std::endl;
+    std::cout << "id=" << std::fixed << std::setprecision(10) << 0.0 << ", SDAMPER=" << std::fixed << std::setprecision(10) << SDAMPER << ", SSPRING=" << std::fixed << std::setprecision(10) << SSPRING << std::endl
+              << "vij[0]=" << std::fixed << std::setprecision(10) << vij[0] << ", vij[1]=" << std::fixed << std::setprecision(10) << vij[1] << ", vij[2]" << std::fixed << std::setprecision(10) << vij[2] << std::endl
+              << "vij*normal=" << std::fixed << std::setprecision(10) << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << std::fixed << std::setprecision(10) << conpnt.depth << ", spring*depth=" << std::fixed << std::setprecision(10) << SPRING*conpnt.depth << std::endl
+              << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", 1/W_NN=" << std::fixed << std::setprecision(10) << ma << std::endl;
     #endif
     if(conpnt.friction)
       delta::forces::frictionSphere(conpnt.normal, vi, forc, friction, materialA, materialB);
@@ -389,13 +438,13 @@ void delta::forces::getContactForce(
                                 rotationA, rotationB, inverseA, inverseB, f, damp, ma);
 
     #ifdef CONTACTSTATS
-    std::cout << "id=" << 0 << ", DAMPER=" << DAMPER << ", SPRING=" << SPRING << std::endl
-              << "vij[0]=" << vij[0] << ", vij[1]=" << vij[1] << ", vij[2]" << vij[2] << std::endl
-              << "relativeVelocity*normal=" << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << conpnt.depth << ", spring*depth=" << SPRING*conpnt.depth << std::endl
+    std::cout << "id=" << std::fixed << std::setprecision(10) << 0.0 << ", DAMPER=" << std::fixed << std::setprecision(10) << DAMPER << ", SPRING=" << std::fixed << std::setprecision(10) << SPRING << std::endl
+              << "vij[0]=" << std::fixed << std::setprecision(10) << vij[0] << ", vij[1]=" << std::fixed << std::setprecision(10) << vij[1] << ", vij[2]" << std::fixed << std::setprecision(10) << vij[2] << std::endl
+              << "vij*normal=" << std::fixed << std::setprecision(10) << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << std::fixed << std::setprecision(10) << conpnt.depth << ", spring*depth=" << std::fixed << std::setprecision(10) << SPRING*conpnt.depth << std::endl
               << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", 1/W_NN=" << std::fixed << std::setprecision(10) << ma << std::endl;
     #endif
-    if(conpnt.friction)
-      delta::forces::friction(conpnt.normal, vi, forc, friction);
+    //if(conpnt.friction)
+      //delta::forces::friction(conpnt.normal, vi, forc, friction);
   }
 
   //accumulate force

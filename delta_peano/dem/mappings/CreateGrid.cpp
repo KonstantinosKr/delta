@@ -820,7 +820,7 @@ void dem::mappings::CreateGrid::createCell(
         double eps = radius*0.2;
         width = (radius*2)*0.9;
 
-        iREAL position[] = {centreAsArray[0], centreAsArray[1] + (height/1.5) - (width/2), centreAsArray[2]};
+        iREAL position[] = {centreAsArray[0], centreAsArray[1] + ((height)/1.5)-width/2, centreAsArray[2]};
 
         delta::primitives::cubes::generateHullCube(position, width, xCoordinates, yCoordinates, zCoordinates);
         //delta::primitives::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
