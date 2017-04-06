@@ -322,8 +322,8 @@ void delta::forces::getContactsForces(
                                   positionAReferential, positionBReferential, massA, massB,
                                   rotationA, rotationB, inverseA, inverseB, f, damp, ma);
 
-      //if(conpnt[k].friction)
-        //delta::forces::friction(conpnt[k].normal, vi, forc, friction);
+      if(conpnt[k].friction)
+        delta::forces::friction(conpnt[k].normal, vi, forc, friction);
     }
 
     //accumulate force
@@ -444,8 +444,8 @@ void delta::forces::getContactForce(
               << "vij*normal=" << std::fixed << std::setprecision(10) << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << std::fixed << std::setprecision(10) << conpnt.depth << ", spring*depth=" << std::fixed << std::setprecision(10) << SPRING*conpnt.depth << std::endl
               << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", 1/W_NN=" << std::fixed << std::setprecision(10) << ma << std::endl;
     #endif
-    //if(conpnt.friction)
-      //delta::forces::friction(conpnt.normal, vi, forc, friction);
+    if(conpnt.friction)
+      delta::forces::friction(conpnt.normal, vi, forc, friction);
   }
 
   //accumulate force
