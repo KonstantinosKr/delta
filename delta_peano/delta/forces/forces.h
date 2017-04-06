@@ -93,6 +93,7 @@ namespace delta {
       int   materialB,
       iREAL force[3],
       iREAL torque[3],
+      iREAL frict[3],
       bool  isSphere);
   }
 }

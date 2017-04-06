@@ -131,8 +131,9 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 
 				_velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
 
-        double force[3]  = {0.0,0.0,0.0};
-        double torque[3] = {0.0,0.0,0.0};
+        double force[]  = {0.0,0.0,0.0};
+        double torque[] = {0.0,0.0,0.0};
+        double friction [] = {0.0, 0.0, 0.0};
 
         #ifdef CONTACTSTATS
         /*
@@ -170,12 +171,12 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
                                        &(pp._copyOfPartnerParticle._persistentRecords._inverse(0)),
                                        &(pp._copyOfPartnerParticle._persistentRecords._orientation(0)),
                                        pp._copyOfPartnerParticle.getMaterial(),
-                                       force, torque,
+                                       force, torque, friction,
                                        (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
 
           std::cout  << "xX=" << std::fixed << std::setprecision(10) << ppp.x[0] <<", xY=" << std::fixed << std::setprecision(10) << ppp.x[1] << ", xZ=" << std::fixed << std::setprecision(10) << ppp.x[2] << std::endl
                      << "normalX=" << std::fixed << std::setprecision(10) << ppp.normal[0] <<", normalY=" << std::fixed << std::setprecision(10) << ppp.normal[1] << ", normalZ=" << std::fixed << std::setprecision(10) << ppp.normal[2] << std::endl
-                     << "frictionX=" << std::fixed << std::setprecision(10) << ppp.frictionVector[0] <<", frictionY=" << std::fixed << std::setprecision(10) << ppp.frictionVector[1] << ", frictionZ=" << std::fixed << std::setprecision(10) << ppp.frictionVector[2] << std::endl
+                     << "frictionX=" << std::fixed << std::setprecision(10) << friction[0] <<", frictionY=" << std::fixed << std::setprecision(10) << friction[1] << ", frictionZ=" << std::fixed << std::setprecision(10) << friction[2] << std::endl
                      << "fX=" << std::fixed << std::setprecision(10) << force[0] << ", fY=" << std::fixed << std::setprecision(10) << force[1] << ", fZ=" << std::fixed << std::setprecision(10) << force[2] << std::endl
                      << "tX=" << std::fixed << std::setprecision(10) << torque[0] << ", tY=" << std::fixed << std::setprecision(10) << torque[1] << ", tZ=" << std::fixed << std::setprecision(10) << torque[2] << std::endl
                      << "pX=" << std::fixed << std::setprecision(10) << ppp.P[0] <<", pY=" << std::fixed << std::setprecision(10) << ppp.P[1] << ", pZ=" << std::fixed << std::setprecision(10) << ppp.P[2] << std::endl
@@ -201,7 +202,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 
         if(ppp.friction)
         {
-          v = ppp.frictionVector[0], ppp.frictionVector[1], ppp.frictionVector[2];
+          v = friction[0], friction[1], friction[2];
           _frictionNormals->plotVertex(contactPointVertexIndex, v);
         } else {
           _frictionNormals->plotVertex(contactPointVertexIndex, 0);

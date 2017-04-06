@@ -25,10 +25,6 @@ delta::collision::contactpoint::contactpoint(const contactpoint& copy) {
   Q[1] = copy.Q[1];
   Q[2] = copy.Q[2];
 
-  frictionVector[0] = copy.frictionVector[0];
-  frictionVector[1] = copy.frictionVector[1];
-  frictionVector[2] = copy.frictionVector[2];
-
   friction = copy.friction;
   epsilonTotal = copy.epsilonTotal;
 

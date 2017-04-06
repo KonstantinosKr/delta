@@ -327,10 +327,6 @@ void delta::forces::getContactsForces(
     force[1] += f[1] + friction[1];
     force[2] += f[2] + friction[2];
 
-    conpnt[k].frictionVector[0] = friction[0];
-    conpnt[k].frictionVector[1] = friction[1];
-    conpnt[k].frictionVector[2] = friction[2];
-
     iREAL arm[3];
     //contact-position = arm
     arm[0] = conpnt[k].x[0]-positionASpatial[0];
@@ -386,6 +382,7 @@ void delta::forces::getContactForce(
 
   iREAL force[3],
   iREAL torque[3],
+  iREAL frict[3],
   bool  isSphere)
 {
   iREAL z[3], vi[3], vj[3], vij[3];
@@ -452,9 +449,9 @@ void delta::forces::getContactForce(
   force[1] += f[1] + friction[1];
   force[2] += f[2] + friction[2];
 
-  conpnt.frictionVector[0] = friction[0];
-  conpnt.frictionVector[1] = friction[1];
-  conpnt.frictionVector[2] = friction[2];
+  frict[0] = friction[0];
+  frict[1] = friction[1];
+  frict[2] = friction[2];
 
   iREAL arm[3];
   //contact-position = arm
