@@ -72,7 +72,6 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 /*
  * TODO
  * 1)print mesh epsilon by resizing mess and creating a double
- * 2)derive forces and print them
  */
   assertion( Collision::_collisionsOfNextTraversal.empty() );
   assertion( solverState.getNumberOfContactPoints()==0 || !Collision::_activeCollisions.empty() );
@@ -174,14 +173,14 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
                                        force, torque, friction,
                                        (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
 
-          std::cout  << "xX=" << std::fixed << std::setprecision(10) << ppp.x[0] <<", xY=" << std::fixed << std::setprecision(10) << ppp.x[1] << ", xZ=" << std::fixed << std::setprecision(10) << ppp.x[2] << std::endl
-                     << "normalX=" << std::fixed << std::setprecision(10) << ppp.normal[0] <<", normalY=" << std::fixed << std::setprecision(10) << ppp.normal[1] << ", normalZ=" << std::fixed << std::setprecision(10) << ppp.normal[2] << std::endl
-                     << "frictionX=" << std::fixed << std::setprecision(10) << friction[0] <<", frictionY=" << std::fixed << std::setprecision(10) << friction[1] << ", frictionZ=" << std::fixed << std::setprecision(10) << friction[2] << std::endl
-                     << "fX=" << std::fixed << std::setprecision(10) << force[0] << ", fY=" << std::fixed << std::setprecision(10) << force[1] << ", fZ=" << std::fixed << std::setprecision(10) << force[2] << std::endl
-                     << "tX=" << std::fixed << std::setprecision(10) << torque[0] << ", tY=" << std::fixed << std::setprecision(10) << torque[1] << ", tZ=" << std::fixed << std::setprecision(10) << torque[2] << std::endl
-                     << "pX=" << std::fixed << std::setprecision(10) << ppp.P[0] <<", pY=" << std::fixed << std::setprecision(10) << ppp.P[1] << ", pZ=" << std::fixed << std::setprecision(10) << ppp.P[2] << std::endl
-                     << "qX=" << std::fixed << std::setprecision(10) << ppp.Q[0] <<", qY=" << std::fixed << std::setprecision(10) << ppp.Q[1] << ", qZ=" << std::fixed << std::setprecision(10) << ppp.Q[2] << std::endl;
-          #endif
+        std::cout  << "xX=" << std::fixed << std::setprecision(10) << ppp.x[0] <<", xY=" << std::fixed << std::setprecision(10) << ppp.x[1] << ", xZ=" << std::fixed << std::setprecision(10) << ppp.x[2] << std::endl
+                   << "normalX=" << std::fixed << std::setprecision(10) << ppp.normal[0] <<", normalY=" << std::fixed << std::setprecision(10) << ppp.normal[1] << ", normalZ=" << std::fixed << std::setprecision(10) << ppp.normal[2] << std::endl
+                   << "frictionX=" << std::fixed << std::setprecision(10) << friction[0] <<", frictionY=" << std::fixed << std::setprecision(10) << friction[1] << ", frictionZ=" << std::fixed << std::setprecision(10) << friction[2] << std::endl
+                   << "fX=" << std::fixed << std::setprecision(10) << force[0] << ", fY=" << std::fixed << std::setprecision(10) << force[1] << ", fZ=" << std::fixed << std::setprecision(10) << force[2] << std::endl
+                   << "tX=" << std::fixed << std::setprecision(10) << torque[0] << ", tY=" << std::fixed << std::setprecision(10) << torque[1] << ", tZ=" << std::fixed << std::setprecision(10) << torque[2] << std::endl
+                   << "pX=" << std::fixed << std::setprecision(10) << ppp.P[0] <<", pY=" << std::fixed << std::setprecision(10) << ppp.P[1] << ", pZ=" << std::fixed << std::setprecision(10) << ppp.P[2] << std::endl
+                   << "qX=" << std::fixed << std::setprecision(10) << ppp.Q[0] <<", qY=" << std::fixed << std::setprecision(10) << ppp.Q[1] << ", qZ=" << std::fixed << std::setprecision(10) << ppp.Q[2] << std::endl;
+        #endif
 
         /* check if it is master so that normal points towards it
         bool isMaster = false;
@@ -485,8 +484,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     }*/
 
     #ifdef PARTICLESTATS
-    logInfo("touchVertexLastTime(...)", std::endl
-    						 << "#####PARTICLE-DATA#####" << std::endl
+    std::cout		 << "#####PARTICLE-DATA#####" << std::endl
     						 << "partiId=" << std::fixed << std::setprecision(10) << particle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << particle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << particle.getDiameter() << std::endl
 			  	  	   << "influRa=" << std::fixed << std::setprecision(10) << particle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << particle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << particle.getHMin() << std::endl
 							   << "noOfTri=" << std::fixed << std::setprecision(10) << particle.getNumberOfTriangles() <<", isObsta=" << std::fixed << std::setprecision(10) << particle._persistentRecords.getIsObstacle() << ", materia=" << std::fixed << std::setprecision(10) << particle.getMaterial() << std::endl
@@ -504,8 +502,19 @@ void dem::mappings::Plot::touchVertexLastTime(
 							   << "inve[6]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(6) <<", inve[7]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(7) << ", inve[8]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(8) << std::endl
 							   << "orie[0]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(0) <<", orie[1]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(1) << ", orie[2]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(2) << std::endl
 							   << "orie[3]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(3) <<", orie[4]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(4) << ", orie[5]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(5) << std::endl
-							   << "orie[6]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(6) <<", orie[7]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(7) << ", orie[8]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(8) );
+							   << "orie[6]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(6) <<", orie[7]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(7) << ", orie[8]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(8) << std::endl;
+
+    //#kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
+    //#rotational = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[8]*(angular[2]*angular[2]);
+
+    iREAL linE = 0.5 * particle.getMass()*(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0))+(particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1))+(particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
+    iREAL rotE = 0.5 * particle._persistentRecords._inertia(0)*(particle._persistentRecords._angular(0)*particle._persistentRecords._angular(0))+0.5*particle._persistentRecords._inertia(4)*(particle._persistentRecords._angular(1)*particle._persistentRecords._angular(1))+0.5*particle._persistentRecords._inertia(8)*(particle._persistentRecords._angular(2)*particle._persistentRecords._angular(2));
+    std::cout    << "#####ENERGY-DATA#####" << std::endl
+                 << "linE=" << std::fixed << std::setprecision(10) << linE
+                 << ", rotE=" << std::fixed << std::setprecision(10) << rotE
+                 << ", totE=" << std::fixed << std::setprecision(10) << linE+rotE << std::endl;
     #endif
+
   }
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

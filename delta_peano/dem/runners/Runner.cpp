@@ -99,7 +99,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
         << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
         << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
         << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-        << ", grid-v=" << repository.getState().getNumberOfInnerVertices() << " | snap");
+        << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
+        << ", t=" << repository.getState().getTime() << " | snap");
 
       //delta::sys::Sys::saveIteration(repository.getState().getTimeStepSize(), i, iterations);
 

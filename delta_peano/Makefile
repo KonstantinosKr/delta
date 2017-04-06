@@ -14,6 +14,8 @@ LINK_OMP=$(OMP_SHLIB)
 LINK_OMP=-fopenmp
 LINK_MPI=
 
+DELTA_STATS=-DPARTICLESTATS -DCONTACTSTATS
+
 #COMPILER_CFLAGS=-std=c++0x -fast -fstrict-aliasing  -DMPICH_IGNORE_CXX_SEEK -fno-rtti -no-ipo -ip -xhost -wd603,3128
 
 default: header
@@ -61,17 +63,25 @@ dim3-gcc-release-novec: header build
 
 dim3-gcc-release-vec: CC=g++ --std=c++11
 dim3-gcc-release-vec: DIM=-DDim3
-dim3-gcc-release-vec: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -DPARTICLESTATS -DCONTACTSTATS
+dim3-gcc-release-vec: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics
 dim3-gcc-release-vec: CFLAGS=-O3 -ftree-vectorizer-verbose=5 -fdump-tree-vect-details -fstrict-aliasing
 dim3-gcc-release-vec: LFLAGS=#-lrt
 dim3-gcc-release-vec: EXECUTABLE=dem-3d-release-vec
 dim3-gcc-release-vec: header build
 
+dim3-gcc-release-vec-stats: CC=g++ --std=c++11
+dim3-gcc-release-vec-stats: DIM=-DDim3
+dim3-gcc-release-vec-stats: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics $(DELTA_STATS)
+dim3-gcc-release-vec-stats: CFLAGS=-O3 -ftree-vectorizer-verbose=5 -fdump-tree-vect-details -fstrict-aliasing
+dim3-gcc-release-vec-stats: LFLAGS=#-lrt
+dim3-gcc-release-vec-stats: EXECUTABLE=dem-3d-release-vec
+dim3-gcc-release-vec-stats: header build
+
 dim3-gcc-release-omp-triangle: CC=g++ --std=c++11
 dim3-gcc-release-omp-triangle: DIM=-DDim3
 dim3-gcc-release-omp-triangle: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompTriangle -DTrackGridStatistics
 dim3-gcc-release-omp-triangle: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing
-dim3-gcc-release-omp-triangle: LFLAGS=$(LINK_OMP) -lrt
+dim3-gcc-release-omp-triangle: LFLAGS=$(LINK_OMP) #-lrt
 dim3-gcc-release-omp-triangle: EXECUTABLE=dem-3d-release-omp-triangle
 dim3-gcc-release-omp-triangle: header build
 
@@ -149,7 +159,7 @@ dim3-icc-release-vec: header build
 
 dim3-icc-release-vec-stats: CC=icpc --std=c++11
 dim3-icc-release-vec-stats: DIM=-DDim3
-dim3-icc-release-vec-stats: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics -DPARTICLESTATS -DCONTACTSTATS
+dim3-icc-release-vec-stats: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics $(DELTA_STATS) 
 dim3-icc-release-vec-stats: CFLAGS=-fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost
 dim3-icc-release-vec-stats: LFLAGS=#-lrt
 dim3-icc-release-vec-stats: EXECUTABLE=dem-3d-release-vec
@@ -159,13 +169,13 @@ dim3-icc-release-omp-triangle: CC=icpc --std=c++11
 dim3-icc-release-omp-triangle: DIM=-DDim3
 dim3-icc-release-omp-triangle: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompTriangle -DTrackGridStatistics
 dim3-icc-release-omp-triangle: CFLAGS=-fast -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost
-dim3-icc-release-omp-triangle: LFLAGS=$(LINK_OMP) -lrt
+dim3-icc-release-omp-triangle: LFLAGS=$(LINK_OMP) #-lrt
 dim3-icc-release-omp-triangle: EXECUTABLE=dem-3d-release-omp-triangle
 dim3-icc-release-omp-triangle: header build
 
 dim3-icc-release-omp-triangle-stats: CC=icpc --std=c++11
 dim3-icc-release-omp-triangle-stats: DIM=-DDim3
-dim3-icc-release-omp-triangle-stats: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompTriangle -DTrackGridStatistics -DPARTICLESTATS -DCONTACTSTATS -DFORCESTATS
+dim3-icc-release-omp-triangle-stats: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompTriangle -DTrackGridStatistics -DPARTICLESTATS -DCONTACTSTATS
 dim3-icc-release-omp-triangle-stats: CFLAGS=-fast -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost
 dim3-icc-release-omp-triangle-stats: LFLAGS=$(LINK_OMP) #-lrt
 dim3-icc-release-omp-triangle-stats: EXECUTABLE=dem-3d-release-omp-triangle
@@ -189,11 +199,19 @@ dim3-icc-release-omp-particle: header build
 
 dim3-icc-release-tbb: CC=icpc --std=c++11
 dim3-icc-release-tbb: DIM=-DDim3
-dim3-icc-release-tbb: SETTINGS=-DiREAL=double -DSharedTBB -DbyteAlignment=32 -DTrackGridStatistics
+dim3-icc-release-tbb: SETTINGS=-DiREAL=double -DSharedTBB -DbyteAlignment=32 -DTrackGridStatistics 
 dim3-icc-release-tbb: CFLAGS=-fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
 dim3-icc-release-tbb: LFLAGS= $(LINK_TBB)
 dim3-icc-release-tbb: EXECUTABLE=dem-3d-release-tbb
 dim3-icc-release-tbb: header build
+
+dim3-icc-release-tbb-stats: CC=icpc --std=c++11
+dim3-icc-release-tbb-stats: DIM=-DDim3
+dim3-icc-release-tbb-stats: SETTINGS=-DiREAL=double -DSharedTBB -DbyteAlignment=32 -DTrackGridStatistics $(DELTA_STATS)
+dim3-icc-release-tbb-stats: CFLAGS=-fast -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
+dim3-icc-release-tbb-stats: LFLAGS= $(LINK_TBB)
+dim3-icc-release-tbb-stats: EXECUTABLE=dem-3d-release-tbb
+dim3-icc-release-tbb-stats: header build
 
 dim3-icc-release-mpi-tbb: CC=mpiicc --std=c++11
 dim3-icc-release-mpi-tbb: DIM=-DDim3

@@ -426,27 +426,26 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
   if (!vertex.isOutside() && vertex.getRefinementControl()==Vertex::Records::Refined && (getRefinementControl()!=Vertex::Records::Unrefined || getNumberOfParticles()>0))
   {
 	  //inherit virtual particles from coarse level
-	for(auto &particleCoarse: ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels())) //loop coarse grid vertex real and virtual particles
-	{
-		bool found = false;
-		for(auto &particleLocal: ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()))//loop local grid vertex real and virtual particles
-		{
-			if(particleCoarse._persistentRecords.getGlobalParticleId()==particleLocal._persistentRecords.getGlobalParticleId()){
-				found = true;
-				break;
-			}
-		}
-		if(!found)
-			ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
-	}
+    for(auto &particleCoarse: ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels())) //loop coarse grid vertex real and virtual particles
+    {
+      bool found = false;
+      for(auto &particleLocal: ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()))//loop local grid vertex real and virtual particles
+      {
+        if(particleCoarse._persistentRecords.getGlobalParticleId()==particleLocal._persistentRecords.getGlobalParticleId()){
+          found = true;
+          break;
+        }
+      }
+      if(!found)
+        ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
+    }
 
     /*ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
       ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
-      ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).end());
-*/
+      ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).end());*/
 
-	//inherit real particles from coarse level
-    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
+	  //inherit real particles from coarse level
+      ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
       ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
       ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
   }

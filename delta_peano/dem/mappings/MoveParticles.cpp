@@ -78,25 +78,14 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
       double* refy = fineGridVertex.getYRefCoordinates(i);
       double* refz = fineGridVertex.getZRefCoordinates(i);
 
-      for (int j=0; j<particle._persistentRecords._numberOfTriangles*DIMENSIONS; j++)
+      for (int j=0; j<particle.getNumberOfTriangles()*DIMENSIONS; j++)
       {
         delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
                                         &particle._persistentRecords._orientation(0),
                                         &particle._persistentRecords._centreOfMass(0),
                                         &particle._persistentRecords._referentialCentreOfMass(0));
       }
-	}
-
-	#ifdef ENERGYSTATS
-		iREAL energy = getKineticRotationalEnergy(&particle._persistentRecords._velocity(0), &particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0), particle._persistentRecords._mass);
-		iREAL rotational = getRotationalEnergy(&particle._persistentRecords._angular(0), &particle._persistentRecords._inertia(0));
-		iREAL kinetic = getKineticEnergy(&particle._persistentRecords._velocity(0), particle._persistentRecords._mass);
-		logInfo( "touchVertexFirstTime(...)", std::endl
-				<< "#####ENERGY-DATA#####" << std::endl
-				<< "PARTICLEID=" << particle._persistentRecords._globalParticleId << "NULL=0" << "NULL=0" << std::endl
-				<< "TOTAL ENERGY=" << energy <<  "ROTATIONAL=" << rotational << "KINETIC=" << kinetic << std::endl
-				<< "###END-ENERGY-DATA###" << std::endl);
-	#endif
+    }
   }
 }
 

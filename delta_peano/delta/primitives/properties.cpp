@@ -773,7 +773,7 @@ void delta::primitives::properties::computeInverseInertia(double inertia[9], dou
 
     iREAL a[9], x[9];
 
-    for (int j = 0; j < 9; j ++)
+    for (int j = 0; j < 9; j++)
     {
       a[j] = inertia[j];
     }
@@ -784,12 +784,12 @@ void delta::primitives::properties::computeInverseInertia(double inertia[9], dou
 	//zero inverse because it is an object
 	if(isObject)
 	{
-		for (int j = 0; j < 9; j ++)
+		for (int j = 0; j < 9; j++)
 		{
 			inverse[j] = 0;
 		}
 	} else {
-		for (int j = 0; j < 9; j ++)
+		for (int j = 0; j < 9; j++)
 		{
 		  inverse[j] = x[j];
 		}

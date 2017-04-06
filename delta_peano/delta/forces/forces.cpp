@@ -1,8 +1,8 @@
 #include "forces.h"
 
 //particle parameters
-#define SPRING 1000
-#define DAMPER 1
+#define SPRING 1E3
+#define DAMPER 0.8
 #define FRICTION 0.8
 
 //sphere parameters for piling simulation
@@ -182,7 +182,11 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	iREAL W_NN = (Hi[0]*Hi_n[0] + Hi[1]*Hi_n[1] + Hi[2]*Hi_n[2] + Hi[3]*Hi_n[3] + Hi[4]*Hi_n[4] + Hi[5]*Hi_n[5]) +
 			         (Hj[0]*Hj_n[0] + Hj[1]*Hj_n[1] + Hj[2]*Hj_n[2] + Hj[3]*Hj_n[3] + Hj[4]*Hj_n[4] + Hj[5]*Hj_n[5]);
 
-	ma = 1.0/W_NN;
+	//ma = 1.0/2000.0; //the lower ma (the higher the W_NN > 1000), the more energy is dampped
+
+	//ma = 1.0/W_NN;
+
+	ma = 1.0/((1.0/massA) + (1.0/massB));
 
 	iREAL velocity = (vij[0]*normal[0]) + (vij[1]*normal[1]) + (vij[2]*normal[2]);
 
@@ -216,7 +220,7 @@ double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeV
 
   iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
 
-  damp = 2 * SDAMPER * sqrt(SSPRING*ma)*velocity;
+  damp = 2.0 * SDAMPER * sqrt(SSPRING*ma)*velocity;
 
   iREAL force = SSPRING*depth + damp;
 
