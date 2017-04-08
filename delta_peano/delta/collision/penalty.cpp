@@ -160,14 +160,14 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   #ifdef ompTriangle
     #pragma omp parallel for
   #endif
-  for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
+  for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
     __attribute__ ((aligned(byteAlignment))) double	shortestDistance = (epsilonA+epsilonB);
     contactpoint *nearestContactPoint = nullptr;
 
     #pragma forceinline recursive
     #pragma simd
-    for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
       __attribute__ ((aligned(byteAlignment))) double xPA;// __attribute__ ((aligned(byteAlignment)));
       __attribute__ ((aligned(byteAlignment))) double yPA;// __attribute__ ((aligned(byteAlignment)));
@@ -190,7 +190,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
       double d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
       if (d<=shortestDistance)
       {
-        nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);;
+        nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
         shortestDistance    = d;
       }
     }
