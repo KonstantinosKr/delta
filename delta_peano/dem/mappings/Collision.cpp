@@ -570,7 +570,9 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			#ifdef ompParticle
 				#pragma omp critical
 			#endif
-			_state.incNumberOfTriangleComparisons( fineGridVertex.getNumberOfTriangles(i) * fineGridVertex.getNumberOfTriangles(j) );
+			{
+			  _state.incNumberOfTriangleComparisons(fineGridVertex.getNumberOfTriangles(i) * fineGridVertex.getNumberOfTriangles(j));
+			}
 		}
 	}
 

@@ -42,7 +42,7 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
 }
 
 tarch::logging::Log		dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" );
-double					dem::mappings::MoveParticles::gravity = 0.0;
+double					      dem::mappings::MoveParticles::gravity = 0.0;
 
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Vertex&	fineGridVertex)
 {

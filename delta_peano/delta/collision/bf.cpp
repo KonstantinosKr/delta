@@ -45,57 +45,70 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
     bool      frictionB,
     int 	    particleB)
 {
+#if defined(__INTEL_COMPILER)
+/*  __assume_aligned(xxCoordinatesOfPointsOfGeometryA, byteAlignment);
+  __assume_aligned(yyCoordinatesOfPointsOfGeometryA, byteAlignment);
+  __assume_aligned(zzCoordinatesOfPointsOfGeometryA, byteAlignment);
+
+  __assume_aligned(xxCoordinatesOfPointsOfGeometryB, byteAlignment);
+  __assume_aligned(yyCoordinatesOfPointsOfGeometryB, byteAlignment);
+  __assume_aligned(zzCoordinatesOfPointsOfGeometryB, byteAlignment);*/
+#endif
+
   std::vector<contactpoint> result;
 
-#if defined(__INTEL_COMPILER)
-  __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
-  __assume_aligned(yCoordinatesOfPointsOfGeometryA, byteAlignment);
-  __assume_aligned(zCoordinatesOfPointsOfGeometryA, byteAlignment);
+  numberOfTrianglesOfGeometryA *=3;
+  numberOfTrianglesOfGeometryB *=3;
 
-  __assume_aligned(xCoordinatesOfPointsOfGeometryB, byteAlignment);
-  __assume_aligned(yCoordinatesOfPointsOfGeometryB, byteAlignment);
-  __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
-#endif
-
-#ifdef ompTriangle
-	#pragma omp parallel for 
-#endif
-  for (int iA =0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
+  #ifdef ompTriangle
+	  #pragma omp parallel for schedule(static) shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
+  #endif
+  for(unsigned iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   {
-    double minDistance = std::numeric_limits<double>::max();
-    contactpoint nearestContactPoint;
+    double shortestDistance = (epsilonA+epsilonB);
+    contactpoint *nearestContactPoint = nullptr;
 
     #pragma simd
-    for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
+    for(unsigned iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
     {
-      double xPA __attribute__ ((aligned(byteAlignment)));
-      double yPA __attribute__ ((aligned(byteAlignment)));
-      double zPA __attribute__ ((aligned(byteAlignment)));
-      double xPB __attribute__ ((aligned(byteAlignment)));
-      double yPB __attribute__ ((aligned(byteAlignment)));
-      double zPB __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double xPA=0.0;// __attribute__ ((aligned(byteAlignment))) ;
+      __attribute__ ((aligned(byteAlignment))) double yPA=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double zPA=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double xPB=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double yPB=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double zPB=0.0;// __attribute__ ((aligned(byteAlignment)));
 
-      bf( xCoordinatesOfPointsOfGeometryA+(iA),
-          yCoordinatesOfPointsOfGeometryA+(iA),
-          zCoordinatesOfPointsOfGeometryA+(iA),
-          xCoordinatesOfPointsOfGeometryB+(iB),
-          yCoordinatesOfPointsOfGeometryB+(iB),
-          zCoordinatesOfPointsOfGeometryB+(iB),
-          xPA, yPA, zPA, xPB, yPB, zPB);
+      bf(xCoordinatesOfPointsOfGeometryA+(iA),
+        yCoordinatesOfPointsOfGeometryA+(iA),
+        zCoordinatesOfPointsOfGeometryA+(iA),
+        xCoordinatesOfPointsOfGeometryB+(iB),
+        yCoordinatesOfPointsOfGeometryB+(iB),
+        zCoordinatesOfPointsOfGeometryB+(iB),
+        xPA,
+        yPA,
+        zPA,
+        xPB,
+        yPB,
+        zPB);
 
-      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-      if (newContactPoint.getDistance()<minDistance)
+      double di = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
+      //printf("iA:%i = xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", iA, xPA, yPA, zPA, xPB, yPB, zPB);
+
+      if(di<=shortestDistance)
       {
-         nearestContactPoint = newContactPoint;
-         minDistance         = newContactPoint.getDistance();
+        //printf("CONTACT iA:%i = xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", iA, xPA, yPA, zPA, xPB, yPB, zPB);
+        //printf("distance:%f\n", di);
+        nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
+        shortestDistance    = di;
       }
     }
-    if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB))
+
+    if(nearestContactPoint != nullptr)
     {
-    #ifdef ompTriangle
-      #pragma omp critical
-    #endif
-      result.push_back( nearestContactPoint );
+      #ifdef ompTriangle
+        #pragma omp critical
+      #endif
+      result.push_back(*nearestContactPoint);
     }
   }
   return result;
@@ -167,12 +180,12 @@ int NoDivTriTriIsect(double V0[3],double V1[3],double V2[3],
   return 0;
 }
 
-void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
-                          double   yCoordinatesOfPointsOfGeometryA[3],
-                          double   zCoordinatesOfPointsOfGeometryA[3],
-                          double   xCoordinatesOfPointsOfGeometryB[3],
-                          double   yCoordinatesOfPointsOfGeometryB[3],
-                          double   zCoordinatesOfPointsOfGeometryB[3],
+void delta::collision::bf(double   xxCoordinatesOfPointsOfGeometryA[3],
+                          double   yyCoordinatesOfPointsOfGeometryA[3],
+                          double   zzCoordinatesOfPointsOfGeometryA[3],
+                          double   xxCoordinatesOfPointsOfGeometryB[3],
+                          double   yyCoordinatesOfPointsOfGeometryB[3],
+                          double   zzCoordinatesOfPointsOfGeometryB[3],
                           double&  xPA,
                           double&  yPA,
                           double&  zPA,
@@ -185,116 +198,128 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
   /*iREAL aaa[3], bbb[3], ccc[3];
 	iREAL ddd[3], eee[3], fff[3];
 
-	aaa[0] = xCoordinatesOfPointsOfGeometryA[0];
-	aaa[1] = yCoordinatesOfPointsOfGeometryA[0];
-	aaa[2] = zCoordinatesOfPointsOfGeometryA[0];
+	aaa[0] = xxCoordinatesOfPointsOfGeometryA[0];
+	aaa[1] = yyCoordinatesOfPointsOfGeometryA[0];
+	aaa[2] = zzCoordinatesOfPointsOfGeometryA[0];
 
-	bbb[0] = xCoordinatesOfPointsOfGeometryA[1];
-	bbb[1] = yCoordinatesOfPointsOfGeometryA[1];
-	bbb[2] = zCoordinatesOfPointsOfGeometryA[1];
-
-
-	ccc[0] = xCoordinatesOfPointsOfGeometryA[2];
-	ccc[1] = yCoordinatesOfPointsOfGeometryA[2];
-	ccc[2] = zCoordinatesOfPointsOfGeometryA[2];
+	bbb[0] = xxCoordinatesOfPointsOfGeometryA[1];
+	bbb[1] = yyCoordinatesOfPointsOfGeometryA[1];
+	bbb[2] = zzCoordinatesOfPointsOfGeometryA[1];
 
 
-	ddd[0] = xCoordinatesOfPointsOfGeometryB[0];
-	ddd[1] = yCoordinatesOfPointsOfGeometryB[0];
-	ddd[2] = zCoordinatesOfPointsOfGeometryB[0];
+	ccc[0] = xxCoordinatesOfPointsOfGeometryA[2];
+	ccc[1] = yyCoordinatesOfPointsOfGeometryA[2];
+	ccc[2] = zzCoordinatesOfPointsOfGeometryA[2];
 
 
-	eee[0] = xCoordinatesOfPointsOfGeometryB[1];
-	eee[1] = yCoordinatesOfPointsOfGeometryB[1];
-	eee[2] = zCoordinatesOfPointsOfGeometryB[1];
+	ddd[0] = xxCoordinatesOfPointsOfGeometryB[0];
+	ddd[1] = yyCoordinatesOfPointsOfGeometryB[0];
+	ddd[2] = zzCoordinatesOfPointsOfGeometryB[0];
 
 
-	fff[0] = xCoordinatesOfPointsOfGeometryB[2];
-	fff[1] = yCoordinatesOfPointsOfGeometryB[2];
-	fff[2] = zCoordinatesOfPointsOfGeometryB[2];
+	eee[0] = xxCoordinatesOfPointsOfGeometryB[1];
+	eee[1] = yyCoordinatesOfPointsOfGeometryB[1];
+	eee[2] = zzCoordinatesOfPointsOfGeometryB[1];
+
+
+	fff[0] = xxCoordinatesOfPointsOfGeometryB[2];
+	fff[1] = yyCoordinatesOfPointsOfGeometryB[2];
+	fff[2] = zzCoordinatesOfPointsOfGeometryB[2];
 */
   //if(NoDivTriTriIsect(aaa, bbb, ccc, ddd, eee, fff))
   {
 	  //printf("PENETRATED!\n");
   }
-  
+
+
   iREAL u[3], v[3], nn[3][2], w[3], w0[3][6], dir[3][6], pointArray[3][6];
   
-  u[0] = xCoordinatesOfPointsOfGeometryB[1] - xCoordinatesOfPointsOfGeometryB[0];
-  u[1] = yCoordinatesOfPointsOfGeometryB[1] - yCoordinatesOfPointsOfGeometryB[0];
-  u[2] = zCoordinatesOfPointsOfGeometryB[1] - zCoordinatesOfPointsOfGeometryB[0];
+  u[0] = xxCoordinatesOfPointsOfGeometryB[1] - xxCoordinatesOfPointsOfGeometryB[0];
+  u[1] = yyCoordinatesOfPointsOfGeometryB[1] - yyCoordinatesOfPointsOfGeometryB[0];
+  u[2] = zzCoordinatesOfPointsOfGeometryB[1] - zzCoordinatesOfPointsOfGeometryB[0];
   
-  v[0] = xCoordinatesOfPointsOfGeometryB[2] - xCoordinatesOfPointsOfGeometryB[1];
-  v[1] = yCoordinatesOfPointsOfGeometryB[2] - yCoordinatesOfPointsOfGeometryB[1];
-  v[2] = zCoordinatesOfPointsOfGeometryB[2] - zCoordinatesOfPointsOfGeometryB[1];
-  
+  v[0] = xxCoordinatesOfPointsOfGeometryB[2] - xxCoordinatesOfPointsOfGeometryB[1];
+  v[1] = yyCoordinatesOfPointsOfGeometryB[2] - yyCoordinatesOfPointsOfGeometryB[1];
+  v[2] = zzCoordinatesOfPointsOfGeometryB[2] - zzCoordinatesOfPointsOfGeometryB[1];
+
+  /*
+  printf("xT1A:%f, yT1A:%f, zT1A:%f ", xxCoordinatesOfPointsOfGeometryA[0], xxCoordinatesOfPointsOfGeometryA[1], xxCoordinatesOfPointsOfGeometryA[2]);
+  printf("xT1B:%f, yT1B:%f, zT1B:%f ", yyCoordinatesOfPointsOfGeometryA[0], yyCoordinatesOfPointsOfGeometryA[1], zzCoordinatesOfPointsOfGeometryA[2]);
+  printf("xT1C:%f, yT1C:%f, zT1C:%f\n", zzCoordinatesOfPointsOfGeometryA[0], zzCoordinatesOfPointsOfGeometryA[1], zzCoordinatesOfPointsOfGeometryA[2]);
+  printf("xT2A:%f, yT2A:%f, zT2A:%f ", xxCoordinatesOfPointsOfGeometryB[0], xxCoordinatesOfPointsOfGeometryB[1], xxCoordinatesOfPointsOfGeometryB[2]);
+  printf("xT2B:%f, yT2B:%f, zT2B:%f ", yyCoordinatesOfPointsOfGeometryB[0], yyCoordinatesOfPointsOfGeometryB[1], yyCoordinatesOfPointsOfGeometryB[2]);
+  printf("xT2C:%f, yT2C:%f, zT2C:%f\n", zzCoordinatesOfPointsOfGeometryB[0], zzCoordinatesOfPointsOfGeometryB[1], zzCoordinatesOfPointsOfGeometryB[2]);*/
+
   nn[0][0] = u[1]*v[2] - u[2]*v[1];
   nn[1][0] = u[2]*v[0] - u[0]*v[2];
   nn[2][0] = u[0]*v[1] - u[1]*v[0];
-  if(nn[0][0]==0 && nn[1][0]==0 && nn[2][0]==0){return;}
-  dir[0][0] = xCoordinatesOfPointsOfGeometryA[1] - xCoordinatesOfPointsOfGeometryA[0];
-  dir[1][0] = yCoordinatesOfPointsOfGeometryA[1] - yCoordinatesOfPointsOfGeometryA[0];
-  dir[2][0] = zCoordinatesOfPointsOfGeometryA[1] - zCoordinatesOfPointsOfGeometryA[0];
+
+  //printf("%f %f %f\n", u[0], u[1], u[2]);
+  //if(nn[0][0]==0.0 && nn[1][0]==0.0 && nn[2][0]==0.0){return;}
+
+  dir[0][0] = xxCoordinatesOfPointsOfGeometryA[1] - xxCoordinatesOfPointsOfGeometryA[0];
+  dir[1][0] = yyCoordinatesOfPointsOfGeometryA[1] - yyCoordinatesOfPointsOfGeometryA[0];
+  dir[2][0] = zzCoordinatesOfPointsOfGeometryA[1] - zzCoordinatesOfPointsOfGeometryA[0];
   
-  w0[0][0] = xCoordinatesOfPointsOfGeometryA[0] - xCoordinatesOfPointsOfGeometryB[0];
-  w0[1][0] = yCoordinatesOfPointsOfGeometryA[0] - yCoordinatesOfPointsOfGeometryB[0];
-  w0[2][0] = zCoordinatesOfPointsOfGeometryA[0] - zCoordinatesOfPointsOfGeometryB[0];
+  w0[0][0] = xxCoordinatesOfPointsOfGeometryA[0] - xxCoordinatesOfPointsOfGeometryB[0];
+  w0[1][0] = yyCoordinatesOfPointsOfGeometryA[0] - yyCoordinatesOfPointsOfGeometryB[0];
+  w0[2][0] = zzCoordinatesOfPointsOfGeometryA[0] - zzCoordinatesOfPointsOfGeometryB[0];
   
-  dir[0][1] = xCoordinatesOfPointsOfGeometryA[2] - xCoordinatesOfPointsOfGeometryA[1];
-  dir[1][1] = yCoordinatesOfPointsOfGeometryA[2] - yCoordinatesOfPointsOfGeometryA[1];
-  dir[2][1] = zCoordinatesOfPointsOfGeometryA[2] - zCoordinatesOfPointsOfGeometryA[1];
+  dir[0][1] = xxCoordinatesOfPointsOfGeometryA[2] - xxCoordinatesOfPointsOfGeometryA[1];
+  dir[1][1] = yyCoordinatesOfPointsOfGeometryA[2] - yyCoordinatesOfPointsOfGeometryA[1];
+  dir[2][1] = zzCoordinatesOfPointsOfGeometryA[2] - zzCoordinatesOfPointsOfGeometryA[1];
   
-  w0[0][1] = xCoordinatesOfPointsOfGeometryA[1] - xCoordinatesOfPointsOfGeometryB[0];
-  w0[1][1] = yCoordinatesOfPointsOfGeometryA[1] - yCoordinatesOfPointsOfGeometryB[0];
-  w0[2][1] = zCoordinatesOfPointsOfGeometryA[1] - zCoordinatesOfPointsOfGeometryB[0];
+  w0[0][1] = xxCoordinatesOfPointsOfGeometryA[1] - xxCoordinatesOfPointsOfGeometryB[0];
+  w0[1][1] = yyCoordinatesOfPointsOfGeometryA[1] - yyCoordinatesOfPointsOfGeometryB[0];
+  w0[2][1] = zzCoordinatesOfPointsOfGeometryA[1] - zzCoordinatesOfPointsOfGeometryB[0];
   
-  dir[0][2] = xCoordinatesOfPointsOfGeometryA[0] - xCoordinatesOfPointsOfGeometryA[2];
-  dir[1][2] = yCoordinatesOfPointsOfGeometryA[0] - yCoordinatesOfPointsOfGeometryA[2];
-  dir[2][2] = zCoordinatesOfPointsOfGeometryA[0] - zCoordinatesOfPointsOfGeometryA[2];
+  dir[0][2] = xxCoordinatesOfPointsOfGeometryA[0] - xxCoordinatesOfPointsOfGeometryA[2];
+  dir[1][2] = yyCoordinatesOfPointsOfGeometryA[0] - yyCoordinatesOfPointsOfGeometryA[2];
+  dir[2][2] = zzCoordinatesOfPointsOfGeometryA[0] - zzCoordinatesOfPointsOfGeometryA[2];
   
-  w0[0][2] = xCoordinatesOfPointsOfGeometryA[2] - xCoordinatesOfPointsOfGeometryB[0];
-  w0[1][2] = yCoordinatesOfPointsOfGeometryA[2] - yCoordinatesOfPointsOfGeometryB[0];
-  w0[2][2] = zCoordinatesOfPointsOfGeometryA[2] - zCoordinatesOfPointsOfGeometryB[0];
+  w0[0][2] = xxCoordinatesOfPointsOfGeometryA[2] - xxCoordinatesOfPointsOfGeometryB[0];
+  w0[1][2] = yyCoordinatesOfPointsOfGeometryA[2] - yyCoordinatesOfPointsOfGeometryB[0];
+  w0[2][2] = zzCoordinatesOfPointsOfGeometryA[2] - zzCoordinatesOfPointsOfGeometryB[0];
   
   //T2.1 - T1;
-  u[0] = xCoordinatesOfPointsOfGeometryA[1] - xCoordinatesOfPointsOfGeometryA[0];
-  u[1] = yCoordinatesOfPointsOfGeometryA[1] - yCoordinatesOfPointsOfGeometryA[0];
-  u[2] = zCoordinatesOfPointsOfGeometryA[1] - zCoordinatesOfPointsOfGeometryA[0];
+  u[0] = xxCoordinatesOfPointsOfGeometryA[1] - xxCoordinatesOfPointsOfGeometryA[0];
+  u[1] = yyCoordinatesOfPointsOfGeometryA[1] - yyCoordinatesOfPointsOfGeometryA[0];
+  u[2] = zzCoordinatesOfPointsOfGeometryA[1] - zzCoordinatesOfPointsOfGeometryA[0];
   
-  v[0] = xCoordinatesOfPointsOfGeometryA[2] - xCoordinatesOfPointsOfGeometryA[0];
-  v[1] = yCoordinatesOfPointsOfGeometryA[2] - yCoordinatesOfPointsOfGeometryA[0];
-  v[2] = zCoordinatesOfPointsOfGeometryA[2] - zCoordinatesOfPointsOfGeometryA[0];
+  v[0] = xxCoordinatesOfPointsOfGeometryA[2] - xxCoordinatesOfPointsOfGeometryA[0];
+  v[1] = yyCoordinatesOfPointsOfGeometryA[2] - yyCoordinatesOfPointsOfGeometryA[0];
+  v[2] = zzCoordinatesOfPointsOfGeometryA[2] - zzCoordinatesOfPointsOfGeometryA[0];
   
   nn[0][1] = u[1]*v[2] - u[2]*v[1];
   nn[1][1] = u[2]*v[0] - u[0]*v[2];
   nn[2][1] = u[0]*v[1] - u[1]*v[0];
-  if(nn[0][0]==0 && nn[1][1]==0 && nn[2][1]==0) {
-    return;
-  }
+  //if(nn[0][0]==0.0 && nn[1][1]==0.0 && nn[2][1]==0.0) {
+  //  return;
+  //}
   
-  dir[0][3] = xCoordinatesOfPointsOfGeometryB[1] - xCoordinatesOfPointsOfGeometryB[0];
-  dir[1][3] = yCoordinatesOfPointsOfGeometryB[1] - yCoordinatesOfPointsOfGeometryB[0];
-  dir[2][3] = zCoordinatesOfPointsOfGeometryB[1] - zCoordinatesOfPointsOfGeometryB[0];
+  dir[0][3] = xxCoordinatesOfPointsOfGeometryB[1] - xxCoordinatesOfPointsOfGeometryB[0];
+  dir[1][3] = yyCoordinatesOfPointsOfGeometryB[1] - yyCoordinatesOfPointsOfGeometryB[0];
+  dir[2][3] = zzCoordinatesOfPointsOfGeometryB[1] - zzCoordinatesOfPointsOfGeometryB[0];
   
-  w0[0][3] = xCoordinatesOfPointsOfGeometryB[0] - xCoordinatesOfPointsOfGeometryA[0];
-  w0[1][3] = yCoordinatesOfPointsOfGeometryB[0] - yCoordinatesOfPointsOfGeometryA[0];
-  w0[2][3] = zCoordinatesOfPointsOfGeometryB[0] - zCoordinatesOfPointsOfGeometryA[0];
+  w0[0][3] = xxCoordinatesOfPointsOfGeometryB[0] - xxCoordinatesOfPointsOfGeometryA[0];
+  w0[1][3] = yyCoordinatesOfPointsOfGeometryB[0] - yyCoordinatesOfPointsOfGeometryA[0];
+  w0[2][3] = zzCoordinatesOfPointsOfGeometryB[0] - zzCoordinatesOfPointsOfGeometryA[0];
   
-  dir[0][4] = xCoordinatesOfPointsOfGeometryB[2] - xCoordinatesOfPointsOfGeometryB[1];
-  dir[1][4] = yCoordinatesOfPointsOfGeometryB[2] - yCoordinatesOfPointsOfGeometryB[1];
-  dir[2][4] = zCoordinatesOfPointsOfGeometryB[2] - zCoordinatesOfPointsOfGeometryB[1];
+  dir[0][4] = xxCoordinatesOfPointsOfGeometryB[2] - xxCoordinatesOfPointsOfGeometryB[1];
+  dir[1][4] = yyCoordinatesOfPointsOfGeometryB[2] - yyCoordinatesOfPointsOfGeometryB[1];
+  dir[2][4] = zzCoordinatesOfPointsOfGeometryB[2] - zzCoordinatesOfPointsOfGeometryB[1];
   
-  w0[0][4] = xCoordinatesOfPointsOfGeometryB[1] - xCoordinatesOfPointsOfGeometryA[0];
-  w0[1][4] = yCoordinatesOfPointsOfGeometryB[1] - yCoordinatesOfPointsOfGeometryA[0];
-  w0[2][4] = zCoordinatesOfPointsOfGeometryB[1] - zCoordinatesOfPointsOfGeometryA[0];
+  w0[0][4] = xxCoordinatesOfPointsOfGeometryB[1] - xxCoordinatesOfPointsOfGeometryA[0];
+  w0[1][4] = yyCoordinatesOfPointsOfGeometryB[1] - yyCoordinatesOfPointsOfGeometryA[0];
+  w0[2][4] = zzCoordinatesOfPointsOfGeometryB[1] - zzCoordinatesOfPointsOfGeometryA[0];
   
-  dir[0][5] = xCoordinatesOfPointsOfGeometryB[0] - xCoordinatesOfPointsOfGeometryB[2];
-  dir[1][5] = yCoordinatesOfPointsOfGeometryB[0] - yCoordinatesOfPointsOfGeometryB[2];
-  dir[2][5] = zCoordinatesOfPointsOfGeometryB[0] - zCoordinatesOfPointsOfGeometryB[2];
+  dir[0][5] = xxCoordinatesOfPointsOfGeometryB[0] - xxCoordinatesOfPointsOfGeometryB[2];
+  dir[1][5] = yyCoordinatesOfPointsOfGeometryB[0] - yyCoordinatesOfPointsOfGeometryB[2];
+  dir[2][5] = zzCoordinatesOfPointsOfGeometryB[0] - zzCoordinatesOfPointsOfGeometryB[2];
   
-  w0[0][5] = xCoordinatesOfPointsOfGeometryB[2] - xCoordinatesOfPointsOfGeometryA[0];
-  w0[1][5] = yCoordinatesOfPointsOfGeometryB[2] - yCoordinatesOfPointsOfGeometryA[0];
-  w0[2][5] = zCoordinatesOfPointsOfGeometryB[2] - zCoordinatesOfPointsOfGeometryA[0];
+  w0[0][5] = xxCoordinatesOfPointsOfGeometryB[2] - xxCoordinatesOfPointsOfGeometryA[0];
+  w0[1][5] = yyCoordinatesOfPointsOfGeometryB[2] - yyCoordinatesOfPointsOfGeometryA[0];
+  w0[2][5] = zzCoordinatesOfPointsOfGeometryB[2] - zzCoordinatesOfPointsOfGeometryA[0];
   
   for(int j=0;j<6;j++)
   {
@@ -324,13 +349,13 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
     if (r < 0.0 || r > 1.0 || r != r) { break;}
     
     if(j<3){
-      w[0] = xPA - xCoordinatesOfPointsOfGeometryB[0];
-      w[1] = yPA - yCoordinatesOfPointsOfGeometryB[0];
-      w[2] = zPA - zCoordinatesOfPointsOfGeometryB[0];
+      w[0] = xPA - xxCoordinatesOfPointsOfGeometryB[0];
+      w[1] = yPA - yyCoordinatesOfPointsOfGeometryB[0];
+      w[2] = zPA - zzCoordinatesOfPointsOfGeometryB[0];
     }else{
-      w[0] = xPA - xCoordinatesOfPointsOfGeometryA[0];
-      w[1] = yPA - yCoordinatesOfPointsOfGeometryA[0];
-      w[2] = zPA - zCoordinatesOfPointsOfGeometryA[0];
+      w[0] = xPA - xxCoordinatesOfPointsOfGeometryA[0];
+      w[1] = yPA - yyCoordinatesOfPointsOfGeometryA[0];
+      w[2] = zPA - zzCoordinatesOfPointsOfGeometryA[0];
     }
     
     iREAL D = DOT(u,v)*DOT(u,v) - DOT(u,u)*DOT(v,v);
@@ -348,29 +373,29 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
   
   iREAL a[9], b[9], c[9], d[9], e[9], f[9], p1[3], p2[3], p3[3], p4[3], p5[3], p6[3];
   
-  p1[0] = xCoordinatesOfPointsOfGeometryA[0];
-  p1[1] = yCoordinatesOfPointsOfGeometryA[0];
-  p1[2] = zCoordinatesOfPointsOfGeometryA[0];
+  p1[0] = xxCoordinatesOfPointsOfGeometryA[0];
+  p1[1] = yyCoordinatesOfPointsOfGeometryA[0];
+  p1[2] = zzCoordinatesOfPointsOfGeometryA[0];
   
-  p2[0] = xCoordinatesOfPointsOfGeometryA[1];
-  p2[1] = yCoordinatesOfPointsOfGeometryA[1];
-  p2[2] = zCoordinatesOfPointsOfGeometryA[1];
+  p2[0] = xxCoordinatesOfPointsOfGeometryA[1];
+  p2[1] = yyCoordinatesOfPointsOfGeometryA[1];
+  p2[2] = zzCoordinatesOfPointsOfGeometryA[1];
   
-  p3[0] = xCoordinatesOfPointsOfGeometryA[2];
-  p3[1] = yCoordinatesOfPointsOfGeometryA[2];
-  p3[2] = zCoordinatesOfPointsOfGeometryA[2];
+  p3[0] = xxCoordinatesOfPointsOfGeometryA[2];
+  p3[1] = yyCoordinatesOfPointsOfGeometryA[2];
+  p3[2] = zzCoordinatesOfPointsOfGeometryA[2];
   
-  p4[0] = xCoordinatesOfPointsOfGeometryB[0];
-  p4[1] = yCoordinatesOfPointsOfGeometryB[0];
-  p4[2] = zCoordinatesOfPointsOfGeometryB[0];
+  p4[0] = xxCoordinatesOfPointsOfGeometryB[0];
+  p4[1] = yyCoordinatesOfPointsOfGeometryB[0];
+  p4[2] = zzCoordinatesOfPointsOfGeometryB[0];
   
-  p5[0] = xCoordinatesOfPointsOfGeometryB[1];
-  p5[1] = yCoordinatesOfPointsOfGeometryB[1];
-  p5[2] = zCoordinatesOfPointsOfGeometryB[1];
+  p5[0] = xxCoordinatesOfPointsOfGeometryB[1];
+  p5[1] = yyCoordinatesOfPointsOfGeometryB[1];
+  p5[2] = zzCoordinatesOfPointsOfGeometryB[1];
   
-  p6[0] = xCoordinatesOfPointsOfGeometryB[2];
-  p6[1] = yCoordinatesOfPointsOfGeometryB[2];
-  p6[2] = zCoordinatesOfPointsOfGeometryB[2];
+  p6[0] = xxCoordinatesOfPointsOfGeometryB[2];
+  p6[1] = yyCoordinatesOfPointsOfGeometryB[2];
+  p6[2] = zzCoordinatesOfPointsOfGeometryB[2];
   
   //ab-de, ab-df, ab-ef | bc-de, bc-df, bc-ef | ca-de, ca-df, ca-ef.
   //12-45, 12-46, 12-56 | 23-45, 23-46, 23-56 | 31-45, 31-46, 31-56.
@@ -643,7 +668,7 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
     }
     
     dist = sqrt(dP[0]*dP[0]+dP[1]*dP[1]+dP[2]*dP[2]);
-    
+
     if(dist<ssmin) {
       ssmin = dist;
       ttc = tc;
@@ -856,7 +881,7 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
   e[5] = (p6[0] - p4[0])*(p4[0] - p3[0]) + (p6[1] - p4[1])*(p4[1] - p3[1]) + (p6[2] - p4[2])*(p4[2] - p3[2]);
   f[5] = (p4[0] - p3[0])*(p4[0] - p3[0]) + (p4[1] - p3[1])*(p4[1] - p3[1]) + (p4[2] - p3[2])*(p4[2] - p3[2]);
   
-  iREAL ss = 0, tt = 0;
+  iREAL ss = 0.0, tt = 0.0;
   iREAL ptmin = 1E30;
   int id=0;
   for( int j=0; j<6;j++)
@@ -865,7 +890,7 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
     iREAL s   = b[j]*e[j] - c[j]*d[j];
     iREAL t   = b[j]*d[j] - a[j]*e[j];
     
-    iREAL sqrDistance=0;
+    iREAL sqrDistance=0.0;
     
     if ((s+t) <= det)
     {
@@ -1027,7 +1052,7 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
     }
     
     // account for numerical round-off error
-    if (sqrDistance < 0){sqrDistance = 0;}
+    if (sqrDistance <= 0.0){sqrDistance = 0.0;}
     
     iREAL dist = sqrt(sqrDistance);
     if(dist<ptmin)
@@ -1038,15 +1063,18 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
       id = j;
     }
   }
-  if(ptmin > ssmin) {return;}
   
+  if(ptmin > ssmin) {return;}
+
   switch(id)
   {
     case 0:
       xPA = p1[0] + ((p3[0] - p1[0]) * tt) + ((p2[0] - p1[0]) * ss);
       yPA = p1[1] + ((p3[1] - p1[1]) * tt) + ((p2[1] - p1[1]) * ss);
       zPA = p1[2] + ((p3[2] - p1[2]) * tt) + ((p2[2] - p1[2]) * ss);
-      
+
+      //printf("xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", xPA, yPA, zPA, xPB, yPB, zPB);
+      //printf("id%i\n", id);
       xPB = p4[0];
       yPB = p4[1];
       zPB = p4[2];
@@ -1059,6 +1087,9 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
       xPB = p5[0];
       yPB = p5[1];
       zPB = p5[2];
+
+      //printf("xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", xPA, yPA, zPA, xPB, yPB, zPB);
+      //printf("id%i\n", id);
       break;
     case 2:
       xPA = p1[0] + ((p3[0] - p1[0]) * tt) + ((p2[0] - p1[0]) * ss);
@@ -1068,6 +1099,9 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
       xPB = p6[0];
       yPB = p6[1];
       zPB = p6[2];
+
+      //printf("xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", xPA, yPA, zPA, xPB, yPB, zPB);
+      //printf("id%i\n", id);
       break;
     case 3:
       xPA = p1[0];
@@ -1077,6 +1111,9 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
       xPB = p4[0] + ((p6[0] - p4[0]) * tt) + ((p5[0] - p4[0]) * ss);
       yPB = p4[1] + ((p6[1] - p4[1]) * tt) + ((p5[1] - p4[1]) * ss);
       zPB = p4[2] + ((p6[2] - p4[2]) * tt) + ((p5[2] - p4[2]) * ss);
+
+      //printf("xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", xPA, yPA, zPA, xPB, yPB, zPB);
+      //printf("id%i\n", id);
       break;
     case 4:
       xPA = p2[0];
@@ -1086,6 +1123,9 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
       xPB = p4[0] + ((p6[0] - p4[0]) * tt) + ((p5[0] - p4[0]) * ss);
       yPB = p4[1] + ((p6[1] - p4[1]) * tt) + ((p5[1] - p4[1]) * ss);
       zPB = p4[2] + ((p6[2] - p4[2]) * tt) + ((p5[2] - p4[2]) * ss);
+
+      //printf("xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", xPA, yPA, zPA, xPB, yPB, zPB);
+      //printf("id%i\n", id);
       break;
     case 5:
       xPA = p3[0];
@@ -1095,6 +1135,9 @@ void delta::collision::bf(double   xCoordinatesOfPointsOfGeometryA[3],
       xPB = p4[0] + ((p6[0] - p4[0]) * tt) + ((p5[0] - p4[0]) * ss);
       yPB = p4[1] + ((p6[1] - p4[1]) * tt) + ((p5[1] - p4[1]) * ss);
       zPB = p4[2] + ((p6[2] - p4[2]) * tt) + ((p5[2] - p4[2]) * ss);
+
+      //printf("xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", xPA, yPA, zPA, xPB, yPB, zPB);
+      //printf("id%i\n", id);
       break;
   }
 }

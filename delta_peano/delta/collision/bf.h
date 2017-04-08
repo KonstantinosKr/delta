@@ -40,7 +40,7 @@ namespace delta {
       double*   zCoordinatesOfPointsOfGeometryA,
       double    epsilonA,
       bool      frictionA,
-      int 	   particleA,
+      int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
@@ -48,7 +48,7 @@ namespace delta {
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
       bool      frictionB,
-      int 	   particleB
+      int 	    particleB
     );
 
 

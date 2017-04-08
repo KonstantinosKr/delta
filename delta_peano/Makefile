@@ -175,8 +175,8 @@ dim3-icc-release-omp-triangle: header build
 
 dim3-icc-release-omp-triangle-stats: CC=icpc --std=c++11
 dim3-icc-release-omp-triangle-stats: DIM=-DDim3
-dim3-icc-release-omp-triangle-stats: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompTriangle -DTrackGridStatistics -DPARTICLESTATS -DCONTACTSTATS
-dim3-icc-release-omp-triangle-stats: CFLAGS=-fast -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost
+dim3-icc-release-omp-triangle-stats: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DompTriangle -DTrackGridStatistics $(DELTA_STATS)
+dim3-icc-release-omp-triangle-stats: CFLAGS=-O3 -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost
 dim3-icc-release-omp-triangle-stats: LFLAGS=$(LINK_OMP) #-lrt
 dim3-icc-release-omp-triangle-stats: EXECUTABLE=dem-3d-release-omp-triangle
 dim3-icc-release-omp-triangle-stats: header build
