@@ -65,8 +65,8 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
   #endif
   for(unsigned iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   {
-    double shortestDistance = (epsilonA+epsilonB);
-    contactpoint *nearestContactPoint = nullptr;
+    __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
 
     #pragma simd
     for(unsigned iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)

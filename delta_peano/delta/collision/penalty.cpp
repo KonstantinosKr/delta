@@ -61,7 +61,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
 {
   const double MaxError = (epsilonA+epsilonB) / 16.0;
 
-  std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
+  std::vector<contactpoint> result;
 
   #if defined(__INTEL_COMPILER)
   __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
@@ -78,21 +78,21 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
   #endif
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-    double	minDistance = std::numeric_limits<double>::max();
-    contactpoint nearestContactPoint;
+    __attribute__ ((aligned(byteAlignment))) double	shortestDistance = (epsilonA+epsilonB);
+    contactpoint *nearestContactPoint = nullptr;
 
     #pragma forceinline recursive
     #pragma simd
     for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-      double xPA __attribute__ ((aligned(byteAlignment)));
-      double yPA __attribute__ ((aligned(byteAlignment)));
-      double zPA __attribute__ ((aligned(byteAlignment)));
-      double xPB __attribute__ ((aligned(byteAlignment)));
-      double yPB __attribute__ ((aligned(byteAlignment)));
-      double zPB __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double xPA;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double yPA;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double zPA;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double xPB;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double yPB;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double zPB;// __attribute__ ((aligned(byteAlignment)));
 
-      int numberOfNewtonIterationsRequired __attribute__ ((aligned(byteAlignment))) = 0;
+      __attribute__ ((aligned(byteAlignment))) int numberOfNewtonIterationsRequired  = 0;
 
       penalty(xCoordinatesOfPointsOfGeometryA+(iA),
               yCoordinatesOfPointsOfGeometryA+(iA),
@@ -106,19 +106,19 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
 
       numberOfNewtonIterations[numberOfNewtonIterationsRequired]++;
 
-      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-      if (newContactPoint.getDistance()<minDistance)
+      double d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
+      if (d<=shortestDistance)
       {
-        nearestContactPoint = newContactPoint;
-        minDistance         = newContactPoint.getDistance();
+        nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);;
+        shortestDistance    = d;
       }
     }
-    if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB))
+    if (nearestContactPoint != nullptr)
     {
       #ifdef ompTriangle
         #pragma omp critical
       #endif
-      result.push_back( nearestContactPoint );
+      result.push_back(*nearestContactPoint);
     }
   }
 
@@ -162,19 +162,19 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   #endif
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-    double	minDistance = std::numeric_limits<double>::max();
-    contactpoint nearestContactPoint;
+    __attribute__ ((aligned(byteAlignment))) double	shortestDistance = (epsilonA+epsilonB);
+    contactpoint *nearestContactPoint = nullptr;
 
     #pragma forceinline recursive
     #pragma simd
     for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-      double xPA __attribute__ ((aligned(byteAlignment)));
-      double yPA __attribute__ ((aligned(byteAlignment)));
-      double zPA __attribute__ ((aligned(byteAlignment)));
-      double xPB __attribute__ ((aligned(byteAlignment)));
-      double yPB __attribute__ ((aligned(byteAlignment)));
-      double zPB __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double xPA;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double yPA;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double zPA;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double xPB;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double yPB;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double zPB;// __attribute__ ((aligned(byteAlignment)));
 
       bool failed = 0;
 
@@ -187,22 +187,21 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
               xPA, yPA, zPA, xPB, yPB, zPB,
               MaxError, failed);
 
-      contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-      if (newContactPoint.getDistance()<minDistance)
+      double d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
+      if (d<=shortestDistance)
       {
-        nearestContactPoint = newContactPoint;
-        minDistance         = newContactPoint.getDistance();
+        nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);;
+        shortestDistance    = d;
       }
     }
-    if (nearestContactPoint.getDistance()<=(epsilonA+epsilonB))
+    if (nearestContactPoint != nullptr)
     {
       #ifdef ompTriangle
         #pragma omp critical
       #endif
-    	result.push_back( nearestContactPoint );
+      result.push_back(*nearestContactPoint);
     }
   }
-
   return result;
 }
 
