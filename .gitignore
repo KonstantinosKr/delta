@@ -15,3 +15,5 @@ delta_peano/it-*
 *.DS_Store
 *.xml
 *._*
+thesis/Final/paper.aux
+thesis/Final/paper.synctex.gz

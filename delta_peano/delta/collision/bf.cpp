@@ -92,12 +92,8 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
         zPB);
 
       double di = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
-      //printf("iA:%i = xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", iA, xPA, yPA, zPA, xPB, yPB, zPB);
-
       if(di<=shortestDistance)
       {
-        //printf("CONTACT iA:%i = xPA:%f, yPA:%f, zPA:%f, xQB:%f, yQB:%f, zQB:%f\n", iA, xPA, yPA, zPA, xPB, yPB, zPB);
-        //printf("distance:%f\n", di);
         nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
         shortestDistance    = di;
       }
