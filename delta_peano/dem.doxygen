@@ -44,22 +44,43 @@ export TBB_SHLIB="-L/opt/intel/tbb/lib/ -ltbb"
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
 export PATH=/opt/intel/bin/:$PATH
 
-/opt/intel/compilers_and_libraries/mac/lib/
+phi1 - sandy
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/intel64/gcc4.4/
+export TBB_SHLIB="-L/opt/intel/tbb/lib/intel64/gcc4.4/ -ltbb"
+export TBB_INC=-I/opt/intel/tbb/include/
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
 
-Mac
+phi1 - icpc xeon phi KNC
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/composer_xe_2015/lib/mic/:/opt/intel/tbb/lib/mic/
+export SINK_LD_LIBRARY_PATH=/opt/intel/composer_xe_2015/lib/mic/:/opt/intel/tbb/lib/mic
+export PATH=$PATH:/opt/intel/bin:/opt/intel/impi/5.1.1.109/bin64
+export TBB_INC=-I/opt/intel/tbb/include/
+export TBB_SHLIB="-L/opt/intel/tbb/lib/mic -ltbb"
+
+phi 1 - g++ xeonphi KNC
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/composer_xe_2015/lib/mic/:/opt/intel/tbb/lib/mic/
+export PATH=$PATH:/opt/intel/bin:/opt/intel/impi/5.1.1.109/bin64
+export TBB_INC=-I/opt/intel/tbb/include/
+export TBB_SHLIB="-L/opt/intel/tbb/lib/intel64/gcc4.4/ -ltbb"
+
+/opt/intel/mic/bin/micnativeloadex ./dem-3d-release-vec -a "0.5 0.5 0.5 random-velocities 50 regular-grid 0.001 never 0 bf"
+
+phi 1 - VTunes 
+/opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-gui
+
+nohup /opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-cl -r xperiment -collect hotspots -no-auto-finalize -- ./dem-3d-release-novec > lol.log &
+
+Mac - ivy bridge
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/
 export TBB_INC=-I/opt/intel/tbb/include/
 export TBB_SHLIB="-L/opt/intel/tbb/lib/ -ltbb"
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2017.1.126/mac/tbb/lib/
 
-
-desktop - Durham
+Desktop - Durham
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/intel64/gcc4.7/
 export TBB_INC=-I/opt/intel/tbb/include/
 export TBB_SHLIB="-L/opt/intel/tbb/lib/intel64/gcc4.7/ -ltbb"
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
 export PATH=/opt/intel/bin/:$PATH
-
-
- */
+*/
  
