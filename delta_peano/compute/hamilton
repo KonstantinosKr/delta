@@ -1,0 +1,46 @@
+#!/bin/bash
+### The build environment#
+# By default, Hamilton is configured to use gcc 4.4. Which is too old for some of Peano's core routines.
+#
+module load gcc/4.9.1
+
+#
+# Load the Intel compiler
+#
+module load intel/xe_2015.2
+module load intel_mpi/5.0.1
+
+#
+# By default, Hamilton uses csh. Here, environment variables are set with setenv
+#
+setenv CC Intel
+
+#
+# I have no clue why but it seems to be important to load the gcc after Intel as
+# the Intel compiler seems to set pathes to a different gcc.
+#
+
+module load gcc/4.9.1
+
+#
+# Something goes wrong with TBBs on Hamilton if we use our makefile. It seems that csh doesn't like the
+# "..." around TBB_SHLIB. So we remove them manually.
+#
+
+setenv TBB_SHLIB '-L/gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.4 -ltbb'
+
+#
+#
+# Run make. I have this feeling that sometimes one make instance overtakes the other, so I call it tice.
+# Usually, the last call just reinvokes the linker again.
+#
+
+make clean
+make -j16
+make
+
+#
+# To make the stuff work, we manually have to unload the gcc and then reload it again. Stupid thing.
+#
+module unload gcc/4.9.1
+module load gcc/4.9.1

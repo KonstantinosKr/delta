@@ -1,12 +1,12 @@
 /**
- 
+
  @mainpage "An efficient, triangle-based discrete element implementation @ Peano"
 
 
  <h1>Prepare environment</h1>
- 
- If you haven't done so, you have to download/checkout Peano to some place in 
- your system. See www.peano-framework.org for details. Afterwards, please 
+
+ If you haven't done so, you have to download/checkout Peano to some place in
+ your system. See www.peano-framework.org for details. Afterwards, please
  change into your git directory applications/peano and do the following steps:
 
  \code
@@ -14,35 +14,46 @@
  ln -s your-peano-path/tarch tarch
  ln -s ../../src/delta delta
  \endcode
- 
+
  Afterward, make should do the job.
 
  <h1>Regenerate all the generated/glue code</h1>
- 
+
  Please change into the directory holding peano, tarch, dem, and so forth. Type in
- 
+
  \code
  java -jar ~/workspace/peano/pdt/pdt.jar --create-project dem dem
  java -jar pdt/pdt.jar --generate-gluecode dem/project.peano-specification dem pdt/usrtemplates
  \endcode
- 
- You do need Peano's pdt (Peano Development Toolkit) to run this operation though. 
- 
- 
+
+ You do need Peano's pdt (Peano Development Toolkit) to run this operation though.
+
+
  <h1>Compiler settings (if you want to write your own makefile)</h1>
- 
+
  - Compile with -DDim3 at least. -DAsserts is recommended for non-production runs.
  - Set the compile flag -DiREAL=double
  - Set search directory to src, i.e. adopt -I...
  - Change C++ standard to C++11 (in GNU it is -std=c++0x)
  - If you use Eclipse rather than the makefile, you might want to exclude insituvis from your build (see Resource Configuration dialogue)
- 
+
 General
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/
 export TBB_INC=-I/opt/intel/tbb/include/
 export TBB_SHLIB="-L/opt/intel/tbb/lib/ -ltbb"
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
 export PATH=/opt/intel/bin/:$PATH
+
+Hamilton
+module load gcc/4.9.1
+module load intel/xe_2015.2
+module load intel_mpi/5.0.1
+setenv CC Intel
+module load gcc/4.9.1
+setenv TBB_SHLIB '-L/gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.4 -ltbb'
+make
+module unload gcc/4.9.1
+module load gcc/4.9.1
 
 phi1 - sandy
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/intel64/gcc4.4/
@@ -65,7 +76,7 @@ export TBB_SHLIB="-L/opt/intel/tbb/lib/intel64/gcc4.4/ -ltbb"
 
 /opt/intel/mic/bin/micnativeloadex ./dem-3d-release-vec -a "0.5 0.5 0.5 random-velocities 50 regular-grid 0.001 never 0 bf"
 
-phi 1 - VTunes 
+phi 1 - VTunes
 /opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-gui
 
 nohup /opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-cl -r xperiment -collect hotspots -no-auto-finalize -- ./dem-3d-release-novec > lol.log &
@@ -83,4 +94,3 @@ export TBB_SHLIB="-L/opt/intel/tbb/lib/intel64/gcc4.7/ -ltbb"
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
 export PATH=/opt/intel/bin/:$PATH
 */
- 
