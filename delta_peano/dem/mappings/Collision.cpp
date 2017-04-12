@@ -173,13 +173,13 @@ void dem::mappings::Collision::addCollision(
 			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
 		}
 	} else {	//filter multiple contacts for same area of mesh
-		delta::collision::filterNewContacts(newContactPoints);
+		//delta::collision::filterNewContacts(newContactPoints);
 		#ifdef ompParticle
 			#pragma omp critical
 		#endif
 		{
-			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
-			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+			//delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+			//delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 		}
 	}
 

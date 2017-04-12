@@ -128,7 +128,7 @@ dim3-gcc-release-mpi-tbb: header build
 dim3-gcc-release-tbb-omp-triangle: CC=g++ --std=c++11
 dim3-gcc-release-tbb-omp-triangle: DIM=-DDim3
 dim3-gcc-release-tbb-omp-triangle: SETTINGS=-DiREAL=double -DSharedTBB -DompTriangle -DTrackGridStatistics -DbyteAlignment=32
-dim3-gcc-release-tbb-omp-triangle: CFLAGS=-O3 -fopenmp -fstrict-aliasing $(INCLUDE_TBB)
+dim3-gcc-release-tbb-omp-triangle: CFLAGS=-O3 -march=native -fopenmp -fstrict-aliasing $(INCLUDE_TBB)
 dim3-gcc-release-tbb-omp-triangle: LFLAGS=$(LINK_OMP) $(LINK_TBB)
 dim3-gcc-release-tbb-omp-triangle: EXECUTABLE=dem-3d-release-tbb-omp-triangle
 dim3-gcc-release-tbb-omp-triangle: header build
@@ -232,7 +232,7 @@ dim3-icc-release-mpi-tbb: header build
 dim3-icc-release-tbb-omp-triangle: CC=icpc --std=c++11
 dim3-icc-release-tbb-omp-triangle: DIM=-DDim3
 dim3-icc-release-tbb-omp-triangle: SETTINGS=-DiREAL=double -DSharedTBB -DompTriangle -DTrackGridStatistics -DbyteAlignment=32
-dim3-icc-release-tbb-omp-triangle: CFLAGS=-fast -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
+dim3-icc-release-tbb-omp-triangle: CFLAGS=-fast -march=native -qopenmp -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
 dim3-icc-release-tbb-omp-triangle: LFLAGS=$(LINK_OMP) $(LINK_TBB)
 dim3-icc-release-tbb-omp-triangle: EXECUTABLE=dem-3d-release-tbb-omp-triangle
 dim3-icc-release-tbb-omp-triangle: header build

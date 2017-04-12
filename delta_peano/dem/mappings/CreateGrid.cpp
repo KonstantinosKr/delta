@@ -534,7 +534,7 @@ void dem::mappings::CreateGrid::createCell(
         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-        iREAL xcuts = 5; iREAL ycuts = 1;
+        iREAL xcuts = 10; iREAL ycuts = 1;
         iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
         iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
         printf("minParDiameter:%.10f\n", minParticleDiameter);

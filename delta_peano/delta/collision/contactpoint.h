@@ -56,7 +56,7 @@ struct delta::collision::contactpoint {
    *
    * Please note that the field particleNumber is not set.
    */
-  #pragma omp declare simd notinbranch
+
   contactpoint(
     const double&  xPA,
     const double&  yPA,
@@ -75,7 +75,6 @@ struct delta::collision::contactpoint {
   /**
    * Get distance from contact point to next triangle.
    */
-  #pragma omp declare simd notinbranch
   double getDistance() const;
 
   std::string toString() const;
