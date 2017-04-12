@@ -12,7 +12,7 @@ JOB_SCRIPT3=runjobBatch4
 JOB_SCRIPT4=runjobBatch6
 JOB_SCRIPT5=runjobBatch8
 JOB_SCRIPT6=runjobBatch16
-JOB_SCRIPT6=runjobBatch24
+JOB_SCRIPT7=runjobBatch24
 
 exp0o=/ddn/data/rfmw74/h7regularbfTBB1_2000
 exp1o=/ddn/data/rfmw74/h7regularbfTBB2_2000
@@ -21,7 +21,7 @@ exp3o=/ddn/data/rfmw74/h7regularbfTBB4_2000
 exp4o=/ddn/data/rfmw74/h7regularbfTBB6_2000
 exp5o=/ddn/data/rfmw74/h7regularbfTBB8_2000
 exp6o=/ddn/data/rfmw74/h7regularbfTBB16_2000
-exp6o=/ddn/data/rfmw74/h7regularbfTBB24_2000
+exp7o=/ddn/data/rfmw74/h7regularbfTBB24_2000
 
 exp0="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 regular-grid 0.0001 never 10 1 bf 2000 1"
 exp1="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 regular-grid 0.0001 never 10 1 bf 2000 2"
@@ -30,7 +30,7 @@ exp3="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 regular-grid 0.0001 never
 exp4="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 regular-grid 0.0001 never 10 1 bf 2000 6"
 exp5="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 regular-grid 0.0001 never 10 1 bf 2000 8"
 exp6="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 regular-grid 0.0001 never 10 1 bf 2000 16"
-exp6="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 regular-grid 0.0001 never 10 1 bf 2000 24"
+exp7="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 regular-grid 0.0001 never 10 1 bf 2000 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

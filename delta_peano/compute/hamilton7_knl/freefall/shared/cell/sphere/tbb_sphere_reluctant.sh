@@ -13,7 +13,7 @@ JOB_SCRIPT4=runjobBatch6
 JOB_SCRIPT5=runjobBatch8
 JOB_SCRIPT6=runjobBatch16
 JOB_SCRIPT6=runjobBatch24
-JOB_SCRIPT6=runjobBatch24
+JOB_SCRIPT7=runjobBatch24
 
 exp0o=/ddn/data/rfmw74/h7reluctantSphereTBB1
 exp1o=/ddn/data/rfmw74/h7reluctantSphereTBB2
@@ -22,7 +22,7 @@ exp3o=/ddn/data/rfmw74/h7reluctantSphereTBB4
 exp4o=/ddn/data/rfmw74/h7reluctantSphereTBB6
 exp5o=/ddn/data/rfmw74/h7reluctantSphereTBB8
 exp6o=/ddn/data/rfmw74/h7reluctantSphereTBB16
-exp6o=/ddn/data/rfmw74/h7reluctantSphereTBB24
+exp7o=/ddn/data/rfmw74/h7reluctantSphereTBB24
 
 exp0="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 sphere 0.1 1"
 exp1="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 sphere 0.1 2"
@@ -31,7 +31,7 @@ exp3="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0
 exp4="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 sphere 0.1 6"
 exp5="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 sphere 0.1 8"
 exp6="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 sphere 0.1 16"
-exp6="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 sphere 0.1 24"
+exp7="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 sphere 0.1 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

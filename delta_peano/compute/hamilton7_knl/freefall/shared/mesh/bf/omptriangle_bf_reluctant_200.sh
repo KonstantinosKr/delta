@@ -12,7 +12,7 @@ JOB_SCRIPT3=runjobBatch4
 JOB_SCRIPT4=runjobBatch6
 JOB_SCRIPT5=runjobBatch8
 JOB_SCRIPT6=runjobBatch16
-JOB_SCRIPT6=runjobBatch24
+JOB_SCRIPT7=runjobBatch24
 
 exp0o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE1_200
 exp1o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE2_200
@@ -21,7 +21,7 @@ exp3o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE4_200
 exp4o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE6_200
 exp5o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE8_200
 exp6o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE16_200
-exp6o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE24_200
+exp7o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE24_200
 
 exp0="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 200"
 exp1="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 200"
@@ -30,7 +30,7 @@ exp3="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adapti
 exp4="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 200"
 exp5="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 200"
 exp6="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 200"
-exp6="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 200"
+exp7="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 200"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
