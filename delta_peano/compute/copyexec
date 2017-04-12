@@ -1,0 +1,18 @@
+tbb
+cp ../dem-3d-release-tbb hamilton7_knl/freefall/shared/cell/bf/ &&
+cp ../dem-3d-release-tbb hamilton7_knl/freefall/shared/cell/sphere/ &&
+
+cell
+cp ../dem-3d-release-omp-triangle hamilton7_knl/freefall/shared/mesh/bf/ &&
+cp ../dem-3d-release-omp-triangle hamilton7_knl/freefall/shared/mesh/hybrid-on-triangles/ &&
+cp ../dem-3d-release-omp-triangle hamilton7_knl/freefall/shared/mesh/hybrid-on-batches/ &&
+
+cp ../dem-3d-release-omp-particle hamilton7_knl/freefall/shared/particle/bf/ &&
+cp ../dem-3d-release-omp-particle hamilton7_knl/freefall/shared/particle/sphere/ &&
+
+vec
+cp ../dem-3d-release-vec hamilton7_knl/freefall/vec/ &&
+cp ../dem-3d-release-vec hamilton7_knl/freefall/grid/ &&
+
+novec
+cp ../dem-3d-release-novec hamilton7_knl/freefall/novec/ &&
