@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7reluctantbfOMPPARTICLE8_2000
 exp6o=/ddn/data/rfmw74/h7reluctantbfOMPPARTICLE16_2000
 exp6o=/ddn/data/rfmw74/h7reluctantbfOMPPARTICLE24_2000
 
-exp0="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000 1"
-exp1="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000 2"
-exp2="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000 3"
-exp3="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000 4"
-exp4="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000 6"
-exp5="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000 8"
-exp6="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000 16"
-exp6="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000 24"
+exp0="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"
+exp1="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"
+exp2="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"
+exp3="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"
+exp4="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"
+exp5="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"
+exp6="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"
+exp6="./dem-3d-release-omp-particle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
