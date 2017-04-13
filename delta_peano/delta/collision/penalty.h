@@ -29,7 +29,7 @@
 #include <float.h>
 #include "algo.h"
 
-#define MaxNumberOfNewtonIterations 8
+#define MaxNumberOfNewtonIterations 16
 namespace delta {
   namespace collision {
     void cleanPenaltyStatistics();

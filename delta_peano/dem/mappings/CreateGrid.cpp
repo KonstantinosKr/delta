@@ -906,6 +906,7 @@ void dem::mappings::CreateGrid::createCell(
       }
 	}
 
+  printf("passed1\n");
 	if(_scenario == sla                 || _scenario == nuclearArray2d         || _scenario == nuclearArray3d || TwoParticlesCrash ||
     _scenario == hopperUniformSphere  || _scenario == hopperNonUniformSphere ||
     _scenario == hopperUniformMesh    || _scenario == hopperNonUniformMesh   ||
@@ -915,9 +916,11 @@ void dem::mappings::CreateGrid::createCell(
     return;
   }
 
+	printf("passed2\n");
 	if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(fineGridVertices, fineGridVerticesEnumerator,Vertex::Records::Unrefined) &&
 	    !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices,fineGridVerticesEnumerator))
 	{
+	  printf("entered\n");
 		int particlesInCellPerAxis = std::floor(fineGridVerticesEnumerator.getCellSize()(0) / _maxParticleDiam);
 		if(particlesInCellPerAxis==0)
 		{
