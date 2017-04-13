@@ -906,17 +906,16 @@ void dem::mappings::CreateGrid::createCell(
       }
 	}
 
-  printf("passed1\n");
-	if(_scenario == sla                 || _scenario == nuclearArray2d         || _scenario == nuclearArray3d || TwoParticlesCrash ||
+	if(_scenario == sla                 || _scenario == nuclearArray2d         || _scenario == nuclearArray3d || _scenario == TwoParticlesCrash ||
     _scenario == hopperUniformSphere  || _scenario == hopperNonUniformSphere ||
     _scenario == hopperUniformMesh    || _scenario == hopperNonUniformMesh   ||
     _scenario == frictionStaticSphere || _scenario == frictionSlideSphere    || _scenario == frictionRollSphere ||
     _scenario == frictionStaticMesh   || _scenario == frictionSlideMesh      || _scenario == frictionRollMesh)
   {
+	  std::cout << _scenario;
     return;
   }
 
-	printf("passed2\n");
 	if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(fineGridVertices, fineGridVerticesEnumerator,Vertex::Records::Unrefined) &&
 	    !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices,fineGridVerticesEnumerator))
 	{
