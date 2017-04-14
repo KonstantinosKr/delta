@@ -461,10 +461,7 @@ void dem::mappings::CreateGrid::createCell(
 				iREAL margin = ((double)minArraylengthX/(double)xcuts)/2.0;
 				printf("maxDiameter:%f\n", subcellx);
 
-				iREAL position[3];
-				position[0] = centreAsArray[0] - (minArraylengthX/2 - margin);
-				position[1] = centreAsArray[1] + minArraylengthY/2;
-				position[2] = centreAsArray[2] - (minArraylengthX/2 - margin);
+				iREAL position[] = {centreAsArray[0] - (minArraylengthX/2 - margin), centreAsArray[1] + minArraylengthY/2, centreAsArray[2] - (minArraylengthX/2 - margin)};
 
 				std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
 
@@ -486,7 +483,7 @@ void dem::mappings::CreateGrid::createCell(
 				}
 
 				//get total mass
-				printf("TOTAL REMASS:%f\n", reMassTotal);
+				//printf("TOTAL REMASS:%f\n", reMassTotal);
 
 				double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
 
@@ -496,8 +493,8 @@ void dem::mappings::CreateGrid::createCell(
 					i *= rescale;
 					reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
 				}
-				printf("RESCALE:%f\n", rescale);
-				printf("TOTAL REREMASS:%f\n", reMassTotal);
+				//printf("RESCALE:%f\n", rescale);
+				//printf("TOTAL REREMASS:%f\n", reMassTotal);
 
 				int idx = 0;
 				for(auto i:tmp)
@@ -572,12 +569,12 @@ void dem::mappings::CreateGrid::createCell(
           double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
           reMassTotal += mt;
           masssphere += mt;
-          printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+          //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
           xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
         }
 
         double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-        printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
+        //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
 
         reMassTotal=0;
         for(unsigned j=0; j<xCoordinatesArray.size(); j++)

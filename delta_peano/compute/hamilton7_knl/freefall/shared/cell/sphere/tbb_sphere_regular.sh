@@ -84,7 +84,7 @@ rm ${JOB_SCRIPT6}_tmp1
 
 sed "s,{OUTPUT_FILE},$exp7o,g" ${JOB_SCRIPT7} > ${JOB_SCRIPT7}_tmp
 sed "s,{RUN},$exp7,g" ${JOB_SCRIPT7}_tmp > ${JOB_SCRIPT7}_tmp1
-sbatch ${JOB_SCRIPT5}_tmp1
+sbatch ${JOB_SCRIPT7}_tmp1
 
 rm ${JOB_SCRIPT7}_tmp
 rm ${JOB_SCRIPT7}_tmp1
