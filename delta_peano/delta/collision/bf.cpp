@@ -61,7 +61,7 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
   numberOfTrianglesOfGeometryB *=3;
 
   #ifdef ompTriangle
-	  #pragma omp parallel for schedule(static) shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
+	  #pragma omp parallel for simd schedule(static) shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
   #endif
   for(unsigned iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   {
@@ -176,6 +176,7 @@ int NoDivTriTriIsect(double V0[3],double V1[3],double V2[3],
   return 0;
 }
 
+#pragma omp declare simd
 void delta::collision::bf(double   xxCoordinatesOfPointsOfGeometryA[3],
                           double   yyCoordinatesOfPointsOfGeometryA[3],
                           double   zzCoordinatesOfPointsOfGeometryA[3],

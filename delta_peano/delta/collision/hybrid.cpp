@@ -43,6 +43,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   bool      frictionB,
   int	      particleB)
 {
+  __attribute__ ((aligned(byteAlignment))) double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
   std::vector<contactpoint> result;
 
   #if defined(__INTEL_COMPILER)
@@ -60,49 +61,44 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   #endif
   for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-    __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
-    contactpoint *nearestContactPoint = nullptr;
+    __attribute__ ((aligned(byteAlignment))) double xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
+    __attribute__ ((aligned(byteAlignment))) bool failed[10000];
 
     #pragma forceinline recursive
     #pragma simd
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-      __attribute__ ((aligned(byteAlignment))) double xPA;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double yPA;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double zPA;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double xPB;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double yPB;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double zPB;// __attribute__ ((aligned(byteAlignment)));
-      const double MaxErrorOfPenaltyMethod __attribute__ ((aligned(byteAlignment))) = (epsilonA+epsilonB)/16;
-      const int MaxNewtonIterations __attribute__ ((aligned(byteAlignment))) = 8;
-      bool failed = 0;
-
+      failed[iB] = 0;
       penalty(xCoordinatesOfPointsOfGeometryA+(iA),
               yCoordinatesOfPointsOfGeometryA+(iA),
               zCoordinatesOfPointsOfGeometryA+(iA),
               xCoordinatesOfPointsOfGeometryB+(iB),
               yCoordinatesOfPointsOfGeometryB+(iB),
               zCoordinatesOfPointsOfGeometryB+(iB),
-              xPA, yPA, zPA, xPB, yPB, zPB, MaxErrorOfPenaltyMethod, failed);
+              xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB], MaxErrorOfPenaltyMethod, failed[iB]);
 
-      if (failed) 
+      dd[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
+    }
+
+    __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
+    contactpoint *nearestContactPoint = nullptr;
+
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
+    {
+      if(failed[iB])
       {
-    	  bf(
-          xCoordinatesOfPointsOfGeometryA+(iA),
-          yCoordinatesOfPointsOfGeometryA+(iA),
-          zCoordinatesOfPointsOfGeometryA+(iA),
-          xCoordinatesOfPointsOfGeometryB+(iB),
-          yCoordinatesOfPointsOfGeometryB+(iB),
-          zCoordinatesOfPointsOfGeometryB+(iB),
-          xPA, yPA, zPA, xPB, yPB, zPB
-        );
+        bf(xCoordinatesOfPointsOfGeometryA+(iA),
+           yCoordinatesOfPointsOfGeometryA+(iA),
+           zCoordinatesOfPointsOfGeometryA+(iA),
+           xCoordinatesOfPointsOfGeometryB+(iB),
+           yCoordinatesOfPointsOfGeometryB+(iB),
+           zCoordinatesOfPointsOfGeometryB+(iB),
+           xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB]);
       }
-
-      double d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
-      if (d<=shortestDistance)
+      if (dd[iB]<=shortestDistance)
       {
-        nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-        shortestDistance    = d;
+        nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
+        shortestDistance    = dd[iB];
       }
     }
 
@@ -315,6 +311,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
         }
       }
     }
+
     if(nearestContactPoint != nullptr)
     {
       #ifdef ompTriangle

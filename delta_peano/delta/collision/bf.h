@@ -61,6 +61,7 @@ namespace delta {
      *
      * @param xPA Output parameter. x coordinate on triangle A.
      */
+    #pragma omp declare simd
     void bf(
       double   xCoordinatesOfTriangleA[3],
       double   yCoordinatesOfTriangleA[3],
