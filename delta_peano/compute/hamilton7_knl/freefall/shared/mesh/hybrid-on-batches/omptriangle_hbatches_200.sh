@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE8_200
 exp6o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE16_200
 exp7o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE24_200
 
-exp0="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
-exp1="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
-exp2="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
-exp3="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
-exp4="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
-exp5="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
-exp6="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
-exp7="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
+exp0="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
+exp1="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
+exp2="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
+exp3="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
+exp4="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
+exp5="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
+exp6="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
+exp7="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 200"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
