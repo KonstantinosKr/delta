@@ -338,7 +338,7 @@ extern void delta::collision::penalty(
     dh[5] = dh[7] = (x[2]+x[3]-1 <= 0) ? 0.0 : 1;
     mx[5] = (x[2]+x[3]-1 <=0) ? 0.0 : x[2]+x[3]-1;
 
-    delta = i < 3 ? delta : 1E5*delta;
+    delta = 1E3*delta;
 
     SUBXY[0] = (xCoordinatesOfTriangleA[0]+(BA[0] * x[0])+(CA[0] * x[1])) - (xCoordinatesOfTriangleB[0]+(ED[0] * x[2])+(FD[0] * x[3]));
     SUBXY[1] = (yCoordinatesOfTriangleA[0]+(BA[1] * x[0])+(CA[1] * x[1])) - (yCoordinatesOfTriangleB[0]+(ED[1] * x[2])+(FD[1] * x[3]));

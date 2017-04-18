@@ -29,7 +29,7 @@ void printManual()
           << " step-size           floating point number" << std::endl
           << " plot                see plot variants below" << std::endl
           << " gravity             floating point number" << std::endl
-          << " collision-model     choose from none, sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybrid-on-triangle-pairsStats, hybrid-on-batchesStats, gjk, add sphere- for sphere check" << std::endl
+          << " collision-model     choose from none, sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybridStat, gjk, add sphere- for sphere check" << std::endl
 				  << " max-step-size       adaptive max step" << std::endl
 				  << " mesh-per-particle   multiplier for mesh size and sphericity" << std::endl
 				  << " [core-count]        only required in TBB shared memory" << std::endl
@@ -354,6 +354,11 @@ int main(int argc, char** argv)
   {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridOnBatches;
     if(collisionModel=="sphere-hybrid-on-batches") {dem::mappings::Collision::_enableOverlapCheck = true;}
+  }
+  else if ((collisionModel=="hybridStat") || (collisionModel=="sphere-hybridStat"))
+  {
+    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridStat;
+    if(collisionModel=="sphere-hybridStat") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
   else if (collisionModel=="gjk") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;

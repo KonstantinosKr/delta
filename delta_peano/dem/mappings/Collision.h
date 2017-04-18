@@ -71,8 +71,7 @@ class dem::mappings::Collision {
     	PenaltyStat,
     	HybridOnTrianglePairs,
     	HybridOnBatches,
-    	HybridOnTrianglePairsStats,
-    	HybridOnBatchesStats,
+    	HybridStat,
     	GJK,
     	none};
 

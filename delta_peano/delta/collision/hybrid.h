@@ -82,14 +82,15 @@ namespace delta {
       bool      frictionB,
       int 	    particleB);
 
-    std::vector<contactpoint> hybridWithPerTriangleFallBackStats(
+
+    std::vector<contactpoint> hybridStat(
       int       numberOfTrianglesOfGeometryA,
       double*   xCoordinatesOfPointsOfGeometryA,
       double*   yCoordinatesOfPointsOfGeometryA,
       double*   zCoordinatesOfPointsOfGeometryA,
       double    epsilonA,
       bool      frictionA,
-      int 	    particleA,
+      int       particleA,
 
       int       numberOfTrianglesOfGeometryB,
       double*   xCoordinatesOfPointsOfGeometryB,
@@ -97,24 +98,19 @@ namespace delta {
       double*   zCoordinatesOfPointsOfGeometryB,
       double    epsilonB,
       bool      frictionB,
-      int 	    particleB);
+      int       particleB);
 
-    std::vector<contactpoint> hybridWithPerBatchFallBackStats(
-      int       numberOfTrianglesOfGeometryA,
-      double*   xCoordinatesOfPointsOfGeometryA,
-      double*   yCoordinatesOfPointsOfGeometryA,
-      double*   zCoordinatesOfPointsOfGeometryA,
-      double    epsilonA,
-      bool      frictionA,
-      int 	    particleA,
 
-      int       numberOfTrianglesOfGeometryB,
-      double*   xCoordinatesOfPointsOfGeometryB,
-      double*   yCoordinatesOfPointsOfGeometryB,
-      double*   zCoordinatesOfPointsOfGeometryB,
-      double    epsilonB,
-      bool      frictionB,
-      int 	    particleB);
+    static int numberOfPenaltyFails;
+    static int numberOfBatchFails;
+    static int batchSize;
+    static double batchError;
+
+    void cleanHybridStatistics();
+    int getPenaltyFails();
+    int getBatchFails();
+    int getBatchSize();
+    double getBatchError();
   }
 }
 

@@ -594,13 +594,13 @@ void dem::mappings::CreateGrid::createCell(
           reMassTotal += mt;
           masssphere += ms;
 
-          printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+          //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
           xCoordinatesArray[j] = xCoordinates;
           yCoordinatesArray[j] = yCoordinates;
           zCoordinatesArray[j] = zCoordinates;
           xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
         }
-        printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
+        //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
 
         for(unsigned i=0; i<xCoordinatesArray.size(); i++)
         {
@@ -682,12 +682,12 @@ void dem::mappings::CreateGrid::createCell(
           double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
           reMassTotal += mt;
           masssphere += mt;
-          printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+          //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
           xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
         }
 
         double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-        printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
+        //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
 
         reMassTotal=0;
         for(unsigned j=0; j<xCoordinatesArray.size(); j++)
@@ -707,14 +707,14 @@ void dem::mappings::CreateGrid::createCell(
           reMassTotal += mt;
           masssphere += ms;
 
-          printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+          //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
           xCoordinatesArray[j] = xCoordinates;
           yCoordinatesArray[j] = yCoordinates;
           zCoordinatesArray[j] = zCoordinates;
           xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
         }
 
-        printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
+        //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
 
         for(unsigned i=0; i<xCoordinatesArray.size(); i++)
         {

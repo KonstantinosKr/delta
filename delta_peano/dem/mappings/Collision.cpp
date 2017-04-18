@@ -60,6 +60,9 @@ void dem::mappings::Collision::beginIteration(
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
 	delta::collision::cleanPenaltyStatistics();
 
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+  delta::collision::cleanHybridStatistics();
+
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -86,6 +89,15 @@ void dem::mappings::Collision::endIteration(
 			logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
 		}
 	}
+
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+  {
+    logInfo( "endIteration(State)", std::endl
+                                 << "Penalty Fails: " << delta::collision::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::collision::getPenaltyFails()/(double)delta::collision::getBatchSize() << std::endl
+                                 << "Batch Size: " << delta::collision::getBatchSize() << std::endl
+                                 << "Batch Fails: " << delta::collision::getBatchFails() << " BatchFail avg: " << (double)delta::collision::getBatchFails()/(double)delta::collision::getBatchSize() << std::endl
+                                 << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
+  }
 
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
@@ -477,46 +489,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 						fineGridVertex.getParticle(j).getGlobalParticleId());
 					break;
 				}
-				case CollisionModel::HybridOnTrianglePairsStats:
-				{
-					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
-						fineGridVertex.getNumberOfTriangles(i),
-						fineGridVertex.getXCoordinates(i),
-						fineGridVertex.getYCoordinates(i),
-						fineGridVertex.getZCoordinates(i),
-						fineGridVertex.getParticle(i).getEpsilon(),
-						fineGridVertex.getParticle(i).getFriction(),
-						fineGridVertex.getParticle(i).getGlobalParticleId(),
-
-						fineGridVertex.getNumberOfTriangles(j),
-						fineGridVertex.getXCoordinates(j),
-						fineGridVertex.getYCoordinates(j),
-						fineGridVertex.getZCoordinates(j),
-						fineGridVertex.getParticle(j).getEpsilon(),
-						fineGridVertex.getParticle(j).getFriction(),
-						fineGridVertex.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::HybridOnBatchesStats:
-				{
-					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
-						fineGridVertex.getNumberOfTriangles(i),
-						fineGridVertex.getXCoordinates(i),
-						fineGridVertex.getYCoordinates(i),
-						fineGridVertex.getZCoordinates(i),
-						fineGridVertex.getParticle(i).getEpsilon(),
-						fineGridVertex.getParticle(i).getFriction(),
-						fineGridVertex.getParticle(i).getGlobalParticleId(),
-
-						fineGridVertex.getNumberOfTriangles(j),
-						fineGridVertex.getXCoordinates(j),
-						fineGridVertex.getYCoordinates(j),
-						fineGridVertex.getZCoordinates(j),
-						fineGridVertex.getParticle(j).getEpsilon(),
-						fineGridVertex.getParticle(j).getFriction(),
-						fineGridVertex.getParticle(j).getGlobalParticleId());
-					break;
-				}
 				case CollisionModel::HybridOnTrianglePairs:
 				{
 					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
@@ -537,6 +509,26 @@ void dem::mappings::Collision::touchVertexFirstTime(
 						fineGridVertex.getParticle(j).getGlobalParticleId());
 					break;
 				}
+        case CollisionModel::HybridStat:
+        {
+          newContactPoints = delta::collision::hybridStat(
+            fineGridVertex.getNumberOfTriangles(i),
+            fineGridVertex.getXCoordinates(i),
+            fineGridVertex.getYCoordinates(i),
+            fineGridVertex.getZCoordinates(i),
+            fineGridVertex.getParticle(i).getEpsilon(),
+            fineGridVertex.getParticle(i).getFriction(),
+            fineGridVertex.getParticle(i).getGlobalParticleId(),
+
+            fineGridVertex.getNumberOfTriangles(j),
+            fineGridVertex.getXCoordinates(j),
+            fineGridVertex.getYCoordinates(j),
+            fineGridVertex.getZCoordinates(j),
+            fineGridVertex.getParticle(j).getEpsilon(),
+            fineGridVertex.getParticle(j).getFriction(),
+            fineGridVertex.getParticle(j).getGlobalParticleId());
+          break;
+        }
 				case CollisionModel::GJK:
 				{
 					newContactPoints = delta::collision::gjk(
@@ -782,29 +774,9 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 						vertexB.getParticle(j).getGlobalParticleId());
 					break;
 				}
-				case CollisionModel::HybridOnBatchesStats:
+				case CollisionModel::HybridStat:
 				{
-					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
-						vertexA.getNumberOfTriangles(i),
-						vertexA.getXCoordinates(i),
-						vertexA.getYCoordinates(i),
-						vertexA.getZCoordinates(i),
-						vertexA.getParticle(i).getEpsilon(),
-						vertexA.getParticle(i).getFriction(),
-						vertexA.getParticle(i).getGlobalParticleId(),
-
-						vertexB.getNumberOfTriangles(j),
-						vertexB.getXCoordinates(j),
-						vertexB.getYCoordinates(j),
-						vertexB.getZCoordinates(j),
-						vertexB.getParticle(j).getEpsilon(),
-						vertexB.getParticle(j).getFriction(),
-						vertexB.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::HybridOnTrianglePairsStats:
-				{
-					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
+					newContactPoints = delta::collision::hybridStat(
 						vertexA.getNumberOfTriangles(i),
 						vertexA.getXCoordinates(i),
 						vertexA.getYCoordinates(i),
