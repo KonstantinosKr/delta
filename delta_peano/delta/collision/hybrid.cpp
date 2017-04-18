@@ -66,7 +66,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   bool      frictionB,
   int	      particleB)
 {
-  __attribute__ ((aligned(byteAlignment))) double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/8;
+  __attribute__ ((aligned(byteAlignment))) double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
   std::vector<contactpoint> result;
 
   #if defined(__INTEL_COMPILER)
@@ -174,7 +174,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
   {
     __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
-    __attribute__ ((aligned(byteAlignment))) const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/8;
+    __attribute__ ((aligned(byteAlignment))) const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
 
     __attribute__ ((aligned(byteAlignment))) double xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
     __attribute__ ((aligned(byteAlignment))) bool failed[10000];
@@ -206,7 +206,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
 
     double localbatchError = counter * MaxErrorOfPenaltyMethod;
 
-    if(localbatchError > ((double)MaxErrorOfPenaltyMethod*(double)numberOfTrianglesOfGeometryB)/2)
+    if(localbatchError > ((double)MaxErrorOfPenaltyMethod*(double)numberOfTrianglesOfGeometryB)/32)
     {
       fail = true;
     }
@@ -290,7 +290,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridStat(
   {
     __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
-    __attribute__ ((aligned(byteAlignment))) const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/8;
+    __attribute__ ((aligned(byteAlignment))) const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
 
     __attribute__ ((aligned(byteAlignment))) double xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
     __attribute__ ((aligned(byteAlignment))) bool failed[10000];
@@ -336,7 +336,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridStat(
     {
     numberOfPenaltyFails += counter;
     }
-    if(localbatchError > ((double)MaxErrorOfPenaltyMethod*(double)numberOfTrianglesOfGeometryB)/2)
+    if(localbatchError > ((double)MaxErrorOfPenaltyMethod*(double)numberOfTrianglesOfGeometryB)/32)
     {
       fail = true;
       #ifdef ompTriangle
