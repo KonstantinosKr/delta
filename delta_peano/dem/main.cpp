@@ -237,7 +237,7 @@ int main(int argc, char** argv)
   else if (scenario=="hopperUniformMesh1k") {
       dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformMesh1k,
                                               dem::mappings::CreateGrid::noVScheme,
-                                              0.5, 0.001, 0.001, gridType, meshMultiplier);
+                                              0.5, 0.005, 0.015, gridType, meshMultiplier);
     }
   else if (scenario=="freefall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall,
