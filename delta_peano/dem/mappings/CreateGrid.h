@@ -58,7 +58,7 @@ class dem::mappings::CreateGrid {
 
       hopperUniformMesh,
       hopperNonUniformMesh,
-      hopperUniformMesh1k,
+      hopperUniformMesh10k,
 
       freefall,
 

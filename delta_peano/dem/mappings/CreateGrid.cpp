@@ -734,7 +734,7 @@ void dem::mappings::CreateGrid::createCell(
         _numberOfTriangles += xCoordinates.size()/DIMENSIONS;_numberOfParticles++; _numberOfObstacles++;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
         return;
-     } if(_scenario == hopperUniformMesh1k)
+     } if(_scenario == hopperUniformMesh10k)
      {
          /*uniform hopper experiment;  particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom*/
          //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-adaptive-grid 0.0000005 every-batch 10 1 sphere 50 | tee log400.log
@@ -746,7 +746,7 @@ void dem::mappings::CreateGrid::createCell(
          _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
          xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-         iREAL xcuts = 100; iREAL ycuts = 10;
+         iREAL xcuts = 100; iREAL ycuts = 1;
          iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
          iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
          printf("minParDiameter:%.10f\n", minParticleDiameter);
