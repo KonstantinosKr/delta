@@ -308,7 +308,7 @@ extern void delta::collision::penalty(
    x[3] = 0.33;
 
   //Newton loop
-  #pragma simd
+  //#pragma simd
   for(int i=0;i<4 ;i++)
   {
    //Declare loop variables;
@@ -338,8 +338,6 @@ extern void delta::collision::penalty(
     dh[5] = dh[7] = (x[2]+x[3]-1 <= 0) ? 0.0 : 1;
     mx[5] = (x[2]+x[3]-1 <=0) ? 0.0 : x[2]+x[3]-1;
 
-    delta = 1E3*delta;
-
     SUBXY[0] = (xCoordinatesOfTriangleA[0]+(BA[0] * x[0])+(CA[0] * x[1])) - (xCoordinatesOfTriangleB[0]+(ED[0] * x[2])+(FD[0] * x[3]));
     SUBXY[1] = (yCoordinatesOfTriangleA[0]+(BA[1] * x[0])+(CA[1] * x[1])) - (yCoordinatesOfTriangleB[0]+(ED[1] * x[2])+(FD[1] * x[3]));
     SUBXY[2] = (zCoordinatesOfTriangleA[0]+(BA[2] * x[0])+(CA[2] * x[1])) - (zCoordinatesOfTriangleB[0]+(ED[2] * x[2])+(FD[2] * x[3]));
@@ -365,6 +363,8 @@ extern void delta::collision::penalty(
     dx[2] = (b[2] - (a[14] * dx[3])) / a[10];
     dx[1] = (b[1] - (a[9] * dx[2] + a[13] * dx[3])) / a[5];
     dx[0] = (b[0] - (a[4] * dx[1] + hessian[8] * dx[2] + hessian[12] * dx[3])) / a[0];
+
+    delta = 1E4*delta;
 
     failed = (DOT4(dx,dx)/DOT4(x,x)>MaxErrorOfPenaltyMethod*MaxErrorOfPenaltyMethod) ? 1 : 0;
 

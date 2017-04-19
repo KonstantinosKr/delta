@@ -177,13 +177,12 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     __attribute__ ((aligned(byteAlignment))) const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
 
     __attribute__ ((aligned(byteAlignment))) double xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
-    __attribute__ ((aligned(byteAlignment))) bool failed[10000];
+    __attribute__ ((aligned(byteAlignment))) bool failed[10000] = {0};
 
     #pragma forceinline recursive
     #pragma simd
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-        failed[iB] = 0;
         penalty(xCoordinatesOfPointsOfGeometryA+(iA),
                 yCoordinatesOfPointsOfGeometryA+(iA),
                 zCoordinatesOfPointsOfGeometryA+(iA),
@@ -196,6 +195,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     }
 
     bool fail = false; int counter=0;
+    #pragma simd reduction(+:counter)
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
       if(failed[iB])
@@ -348,7 +348,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridStat(
     // If the maximum error in the whole computation exceeds our limit, we fall
     // back to brute force. For this, we reset nearestContactPoint and
     // minDistance and then run the interior loop over iB again with bf().
-    if (fail)
+    if(fail)
     {
       #pragma forceinline recursive
       #pragma simd
