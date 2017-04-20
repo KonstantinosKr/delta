@@ -14,14 +14,14 @@ JOB_SCRIPT5=runjobBatch8
 JOB_SCRIPT6=runjobBatch16
 JOB_SCRIPT7=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE1_2000
-exp1o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE2_2000
-exp2o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE3_2000
-exp3o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE4_2000
-exp4o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE6_2000
-exp5o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE8_2000
-exp6o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE16_2000
-exp7o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE24_2000
+exp0o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE1_2000_freefall
+exp1o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE2_2000_freefall
+exp2o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE3_2000_freefall
+exp3o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE4_2000_freefall
+exp4o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE6_2000_freefall
+exp5o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE8_2000_freefall
+exp6o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE16_2000_freefall
+exp7o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE24_2000_freefall
 
 exp0="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"
 exp1="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 bf 2000"

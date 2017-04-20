@@ -14,14 +14,14 @@ JOB_SCRIPT5=runjobBatch8
 JOB_SCRIPT6=runjobBatch16
 JOB_SCRIPT7=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE1_20
-exp1o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE2_20
-exp2o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE3_20
-exp3o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE4_20
-exp4o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE6_20
-exp5o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE8_20
-exp6o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE16_20
-exp7o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE24_20
+exp0o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE1_20_freefall
+exp1o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE2_20_freefall
+exp2o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE3_20_freefall
+exp3o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE4_20_freefall
+exp4o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE6_20_freefall
+exp5o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE8_20_freefall
+exp6o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE16_20_freefall
+exp7o=/ddn/data/rfmw74/h7reluctanthybrid-on-batchesOMPTRIANGLE24_20_freefall
 
 exp0="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 20"
 exp1="./dem-3d-release-omp-triangle 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-batches 20"
