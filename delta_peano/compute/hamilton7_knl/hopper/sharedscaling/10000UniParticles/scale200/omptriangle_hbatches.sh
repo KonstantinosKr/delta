@@ -14,23 +14,23 @@ JOB_SCRIPT5=runjobBatch8
 JOB_SCRIPT6=runjobBatch16
 JOB_SCRIPT7=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE1_50
-exp1o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE2_50
-exp2o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE3_50
-exp3o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE4_50
-exp4o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE6_50
-exp5o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE8_50
-exp6o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE16_50
-exp7o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE24_50
+exp0o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE1_200_10000hopper
+exp1o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE2_200_10000hopper
+exp2o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE3_200_10000hopper
+exp3o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE4_200_10000hopper
+exp4o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE6_200_10000hopper
+exp5o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE8_200_10000hopper
+exp6o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE16_200_10000hopper
+exp7o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE24_200_10000hopper
 
-exp0="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 regular-grid 0.00001 never 10 1 penalty 50"
-exp1="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 regular-grid 0.00001 never 10 1 penalty 50"
-exp2="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 regular-grid 0.00001 never 10 1 penalty 50"
-exp3="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 regular-grid 0.00001 never 10 1 penalty 50"
-exp4="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 regular-grid 0.00001 never 10 1 penalty 50"
-exp5="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 regular-grid 0.00001 never 10 1 penalty 50"
-exp6="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 regular-grid 0.00001 never 10 1 penalty 50"
-exp7="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 regular-grid 0.00001 never 10 1 penalty 50"
+exp0="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 reluctant-adaptive-grid 0.00001 never 10 1 hybrid-on-batches 200"
+exp1="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 reluctant-adaptive-grid 0.00001 never 10 1 hybrid-on-batches 200"
+exp2="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 reluctant-adaptive-grid 0.00001 never 10 1 hybrid-on-batches 200"
+exp3="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 reluctant-adaptive-grid 0.00001 never 10 1 hybrid-on-batches 200"
+exp4="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 reluctant-adaptive-grid 0.00001 never 10 1 hybrid-on-batches 200"
+exp5="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 reluctant-adaptive-grid 0.00001 never 10 1 hybrid-on-batches 200"
+exp6="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 reluctant-adaptive-grid 0.00001 never 10 1 hybrid-on-batches 200"
+exp7="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh10k 100 reluctant-adaptive-grid 0.00001 never 10 1 hybrid-on-batches 200"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
