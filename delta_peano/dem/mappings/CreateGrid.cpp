@@ -1108,6 +1108,7 @@ void dem::mappings::CreateGrid::createCell(
 	if(_scenario == sla                 || _scenario == nuclearArray2d         || _scenario == nuclearArray3d || _scenario == TwoParticlesCrash ||
     _scenario == hopperUniformSphere  || _scenario == hopperNonUniformSphere ||
     _scenario == hopperUniformMesh    || _scenario == hopperNonUniformMesh   ||
+    _scenario == hopperUniformMesh1k  || _scenario == hopperUniformMesh10k ||
     _scenario == frictionStaticSphere || _scenario == frictionSlideSphere    || _scenario == frictionRollSphere ||
     _scenario == frictionStaticMesh   || _scenario == frictionSlideMesh      || _scenario == frictionRollMesh)
   {
