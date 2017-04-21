@@ -734,7 +734,7 @@ void dem::mappings::CreateGrid::createCell(
         _numberOfTriangles += xCoordinates.size()/DIMENSIONS;_numberOfParticles++; _numberOfObstacles++;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
         return;
-     } if(_scenario == hopperUniformMesh10k)
+     } if(_scenario == hopperUniformMesh1k)
      {
          /*uniform hopper experiment;  particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom*/
          //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-adaptive-grid 0.0000005 every-batch 10 1 sphere 50 | tee log400.log
@@ -746,7 +746,108 @@ void dem::mappings::CreateGrid::createCell(
          _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
          xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-         iREAL xcuts = 10; iREAL ycuts = 1;
+         iREAL xcuts = 10; iREAL ycuts = 10;
+         iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
+         iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
+         printf("minParDiameter:%.10f\n", minParticleDiameter);
+
+         iREAL position[3];
+         position[0] = (centreAsArray[0] - _hopperWidth/2) + margin;
+         position[1] = centreAsArray[1] + _hopperHeight/2;
+         position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
+
+         std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
+         int N = tmp.size();
+         double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+         double massPerParticle = totalMass/(double)N;
+         double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
+
+         std::vector<std::vector<double>>  xCoordinatesArray;
+         std::vector<std::vector<double>>  yCoordinatesArray;
+         std::vector<std::vector<double>>  zCoordinatesArray;
+
+         double reMassTotal = 0;
+         double masssphere = 0;
+         for(auto i:tmp)
+         {
+           position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
+
+           delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+
+           xCoordinatesArray.push_back(xCoordinates);
+           yCoordinatesArray.push_back(yCoordinates);
+           zCoordinatesArray.push_back(zCoordinates);
+
+           double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
+           double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
+           double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+           double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
+           reMassTotal += mt;
+           masssphere += mt;
+           //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+           xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+         }
+
+         double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+         //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
+
+         reMassTotal=0;
+         for(unsigned j=0; j<xCoordinatesArray.size(); j++)
+         {
+           xCoordinates = xCoordinatesArray[j];
+           yCoordinates = yCoordinatesArray[j];
+           zCoordinates = zCoordinatesArray[j];
+
+           std::array<double, 3> ar = tmp[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
+           delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
+
+           double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
+           double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
+           double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+           double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
+
+           reMassTotal += mt;
+           masssphere += ms;
+
+           //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+           xCoordinatesArray[j] = xCoordinates;
+           yCoordinatesArray[j] = yCoordinates;
+           zCoordinatesArray[j] = zCoordinates;
+           xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+         }
+         //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
+
+         for(unsigned i=0; i<xCoordinatesArray.size(); i++)
+         {
+           std::array<double, 3> ar = tmp[i]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
+           vertex.createNewParticle(position, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
+                                    _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+           _numberOfParticles++; _numberOfTriangles += xCoordinatesArray[i].size()/DIMENSIONS;
+         }
+
+         /*flooring creation*/
+         centreAsArray[1] = 0.3;
+         double height = 0.05; double width = 0.35;
+         delta::primitives::cubes::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
+
+         _numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++; _numberOfObstacles++;
+         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+         return;
+     }if(_scenario == hopperUniformMesh10k)
+     {
+         /*uniform hopper experiment;  particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom*/
+         //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-adaptive-grid 0.0000005 every-batch 10 1 sphere 50 | tee log400.log
+         double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.10;
+         delta::primitives::hopper::generateHopper(centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
+         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
+
+         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+
+         iREAL xcuts = 100; iREAL ycuts = 1;
          iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
          iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
          printf("minParDiameter:%.10f\n", minParticleDiameter);
