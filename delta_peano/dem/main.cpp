@@ -321,10 +321,10 @@ int main(int argc, char** argv)
     plot = dem::runners::Runner::UponChange;
   }
   else if(plotIdentifier=="every-batch") {
-	plot = dem::runners::Runner::EveryBatch;
+    plot = dem::runners::Runner::EveryBatch;
   }
   else if(plotIdentifier=="adaptive") {
-	plot = dem::runners::Runner::Adaptive;
+    plot = dem::runners::Runner::Adaptive;
   }
   else if(plotIdentifier=="range") {
   	plot = dem::runners::Runner::Range;

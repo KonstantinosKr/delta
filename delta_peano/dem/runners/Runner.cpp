@@ -89,7 +89,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
                                                      !repository.getState().isGridStationary() || i%50==0 ||
                                                      repository.getState().getNumberOfParticleReassignments()>0 )) ||
                              (plot == EveryBatch && i%50 == 0) ||
-                             ((plot == Adaptive && elapsed > realSnapshot) || i == 0) ||
+                             ((plot == Adaptive && ((elapsed > realSnapshot) || (i == 0)))) ||
                              (plot == Range && ((i >= minRange) && (i < maxRange)));
 
     if(plotThisTraversal)
