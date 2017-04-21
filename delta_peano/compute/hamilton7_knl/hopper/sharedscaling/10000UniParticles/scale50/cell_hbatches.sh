@@ -12,8 +12,8 @@ JOB_SCRIPT3=runjobBatch4
 JOB_SCRIPT4=runjobBatch6
 JOB_SCRIPT5=runjobBatch8
 JOB_SCRIPT6=runjobBatch12
-JOB_SCRIPT6=runjobBatch16
-JOB_SCRIPT7=runjobBatch24
+JOB_SCRIPT7=runjobBatch16
+JOB_SCRIPT8=runjobBatch24
 
 exp0o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesTBB1_50_10000particlehopper
 exp1o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesTBB2_50_10000particlehopper
