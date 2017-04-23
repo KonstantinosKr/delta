@@ -15,15 +15,15 @@ JOB_SCRIPT6=runjobBatch12
 JOB_SCRIPT7=runjobBatch16
 JOB_SCRIPT8=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB1_50_50hopper
-exp1o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB2_50_50hopper
-exp2o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB3_50_50hopper
-exp3o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB4_50_50hopper
-exp4o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB6_50_50hopper
-exp5o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB8_50_50hopper
-exp6o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB12_50_50hopper
-exp7o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB16_50_50hopper
-exp8o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB24_50_50hopper
+exp0o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB1_50_1000hopper
+exp1o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB2_50_1000hopper
+exp2o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB3_50_1000hopper
+exp3o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB4_50_1000hopper
+exp4o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB6_50_1000hopper
+exp5o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB8_50_1000hopper
+exp6o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB12_50_1000hopper
+exp7o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB16_50_1000hopper
+exp8o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsCELLTBB24_50_1000hopper
 
 exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 5 regular-grid 0.00001 never 10 1 hybrid-on-triangle-pairs 50 1"
 exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 5 regular-grid 0.00001 never 10 1 hybrid-on-triangle-pairs 50 2"
