@@ -7,7 +7,7 @@
 
 JOB_SCRIPT5=runjobBatch8
 
-exp5o=/ddn/data/rfmw74/h7reluctantbfTBB8_20
+exp5o=/ddn/data/rfmw74/h7reluctantPenaltySTATS
 
 exp5="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 50000 reluctant-adaptive-grid 0.00001 never 10 1 penaltyStat 50 8"
 

@@ -7,7 +7,6 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --output={OUTPUT_FILE}
 #SBATCH -t 72:00:00
-#SBATCH --exclusive
 
 module purge
 module load intel/xe_2015.2
