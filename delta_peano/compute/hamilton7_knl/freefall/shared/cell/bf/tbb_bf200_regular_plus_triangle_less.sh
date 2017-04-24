@@ -6,7 +6,7 @@
 # $1 path to the output file
 
 JOB_SCRIPT5=runjobBatchTBB6OMP2
-JOB_SCRIPT6=runjobBatchTBB14OMP2
+JOB_SCRIPT6=runjobBatchTBB12OMP4
 JOB_SCRIPT7=runjobBatchTBB20OMP4
 
 exp5o=/ddn/data/rfmw74/h7regularbfTBB6_200_plus_2triangle-8
