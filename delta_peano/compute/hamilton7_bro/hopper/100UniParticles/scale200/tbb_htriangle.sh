@@ -21,7 +21,7 @@ exp2o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB3_200
 exp3o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB4_200
 exp4o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB6_200
 exp5o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB8_200
-exp6o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB16_200
+exp6o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB12_200
 exp7o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB16_200
 exp8o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB24_200
 
