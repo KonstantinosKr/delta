@@ -4,9 +4,9 @@
 #SBATCH  --mail-user konstantinos.krestenitis@durham.ac.uk
 #SBATCH -N 1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=2
 #SBATCH --output={OUTPUT_FILE}
-#SBATCH -t 1:00:00
+#SBATCH -t 2:00:00
 #SBATCH --exclusive
 
 module purge
@@ -15,6 +15,6 @@ module load intelmpi/intel/5.0.1
 module unload gcc/4.9.1
 module load gcc/4.9.1
 
-setenv OMP_NUM_THREADS 12
+setenv OMP_NUM_THREADS 2
 
 srun {RUN}
