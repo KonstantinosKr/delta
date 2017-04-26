@@ -748,8 +748,8 @@ void dem::mappings::CreateGrid::createCell(
 
          iREAL xcuts = 10; iREAL ycuts = 10;
          iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
-         iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
-         printf("minParDiameter:%.10f\n", minParticleDiameter);
+         iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(double)(margin*2.0);
+         std::cout << "minParDiameter:" << (double)minParticleDiameter << std::endl;
 
          iREAL position[3];
          position[0] = (centreAsArray[0] - _hopperWidth/2) + margin;

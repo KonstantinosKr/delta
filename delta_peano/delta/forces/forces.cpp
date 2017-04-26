@@ -6,7 +6,7 @@
 #define FRICTION 0.8
 
 //sphere parameters for piling simulation
-#define SSPRING 1E5
+#define SSPRING 1E3
 #define SDAMPER 0.8
 #define SFRICTIONGOLD 0.5
 #define SFRICTIONWOOD 0.05
@@ -354,9 +354,9 @@ void delta::forces::getContactsForces(
 
       if(w>0.0)
       {
-        torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
-        torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
-        torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
+        //torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
+        //torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
+        //torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
       }
     }
   }
@@ -480,9 +480,9 @@ void delta::forces::getContactForce(
 
     if(w>0.0)
     {
-      torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
-      torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
-      torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
+      //torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
+      //torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
+      //torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
     }
   }
 }
