@@ -746,10 +746,10 @@ void dem::mappings::CreateGrid::createCell(
          _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
          xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-         iREAL xcuts = 10; iREAL ycuts = 10;
+         iREAL xcuts = 10.0; iREAL ycuts = 10.0;
          iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
-         iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(double)(margin*2.0);
-         std::cout << "minParDiameter:" << (double)minParticleDiameter << std::endl;
+         iREAL minParticleDiameter = (double)((double)_hopperWidth/(double)xcuts)-(double)((double)margin*(double)2.0);
+         std::cout << "minimum Particle Diameter:" << (double)minParticleDiameter << " margin: " << margin << " xcuts:" << xcuts << " _hopperWidth: " << _hopperWidth << std::endl;
 
          iREAL position[3];
          position[0] = (centreAsArray[0] - _hopperWidth/2) + margin;
@@ -773,7 +773,7 @@ void dem::mappings::CreateGrid::createCell(
            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
 
            delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
-
+           //printf("diameter: %f\n", radius);
            xCoordinatesArray.push_back(xCoordinates);
            yCoordinatesArray.push_back(yCoordinates);
            zCoordinatesArray.push_back(zCoordinates);

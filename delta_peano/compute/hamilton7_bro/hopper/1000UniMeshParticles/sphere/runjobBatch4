@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
 #SBATCH --output={OUTPUT_FILE}
-#SBATCH -t 03:00:00
+#SBATCH -t 00:10:00
 #SBATCH --exclusive
 
 module purge

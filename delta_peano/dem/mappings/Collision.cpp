@@ -176,22 +176,15 @@ void dem::mappings::Collision::addCollision(
 	if(sphere)
 	{
 		delta::collision::filterNewContacts(newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
-
-		#ifdef ompParticle
-			#pragma omp critical
-		#endif
 		{
 			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
 			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
 		}
 	} else {	//filter multiple contacts for same area of mesh
-		//delta::collision::filterNewContacts(newContactPoints);
-		#ifdef ompParticle
-			#pragma omp critical
-		#endif
+		delta::collision::filterNewContacts(newContactPoints);
 		{
-			//delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
-			//delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 		}
 	}
 
@@ -203,9 +196,6 @@ void dem::mappings::Collision::addCollision(
 	 * C. we always want to ensure that normal of particle point away from obstacle
 	 * D. we don't care about normal of obstacle.
 	 */
-	#ifdef ompParticle
-		#pragma omp critical
-	#endif
 	dataSetA->_contactPoints.insert( dataSetA->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
 
 	for (std::vector<delta::collision::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
@@ -216,14 +206,8 @@ void dem::mappings::Collision::addCollision(
 		p->normal[2] = -1.0 * p->normal[2];
 	}
 
-	#ifdef ompParticle
-		#pragma omp critical
-	#endif
 	dataSetB->_contactPoints.insert( dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
 
-	#ifdef ompParticle
-		#pragma omp critical
-	#endif
 	_state.incNumberOfContactPoints(newContactPoints.size());
 }
 
@@ -557,6 +541,9 @@ void dem::mappings::Collision::touchVertexFirstTime(
 
 			if (!newContactPoints.empty())
 			{
+        #ifdef ompParticle
+          #pragma omp critical
+        #endif
 				addCollision(newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
 			}
 			#ifdef ompParticle
@@ -821,8 +808,12 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			}
 
 			if (!newContactPoints.empty())
+			{
+        #ifdef ompParticle
+          #pragma omp critical
+        #endif
 				addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j), dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
-
+			}
 			//printf("DifferentVertexContact:%d\n", newContactPoints.size());
 			//printf("VertexANoParticles:%d VertexBNoParticles:%d\n", vertexA.getNumberOfRealAndVirtualParticles(), vertexB.getNumberOfRealAndVirtualParticles());
 			//printf("VertexA:%d VertexB:%d\n", vertexA.getParticle(i).getGlobalParticleNumber(), vertexB.getParticle(j).getGlobalParticleNumber());

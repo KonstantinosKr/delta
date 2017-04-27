@@ -15,25 +15,25 @@ JOB_SCRIPT6=runjobBatch12
 JOB_SCRIPT7=runjobBatch16
 JOB_SCRIPT8=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7X3-hopper1000UniMesh-regularSphere-mesh10-TBB1
-exp1o=/ddn/data/rfmw74/h7X3-hopper1000UniMesh-regularSpheres-mesh10-TBB1
-exp2o=/ddn/data/rfmw74/h7X3-hopper1000UniMesh-regularSpheres-mesh10-TBB3_50_1000hopper
-exp3o=/ddn/data/rfmw74/h7X3-hopper1000UniMesh-regularSpheres-mesh10-TBB4_50_1000hopper
-exp4o=/ddn/data/rfmw74/h7X3-hopper1000UniMesh-regularSpheresTBB6_50_1000hopper
-exp5o=/ddn/data/rfmw74/h7X3-hopper1000UniMesh-regularSpheresTBB8_50_1000hopper
-exp6o=/ddn/data/rfmw74/h7X3-hopper1000UniMesh-regularSpheresTBB12_50_1000hopper
-exp7o=/ddn/data/rfmw74/h7X3-hopper1000UniMesh-regularSpheresTBB16_50_1000hopper
-exp8o=/ddn/data/rfmw74/h7X3-hopper1000UniMesh-regularSpheresTBB24_50_1000hopper
+exp0o=/ddn/data/rfmw74/h7X3-hopperUniMesh1k-regular-sphere-mesh10-TBB1
+exp1o=/ddn/data/rfmw74/h7X3-hopperUniMesh1k-regular-spheres-mesh10-TBB2
+exp2o=/ddn/data/rfmw74/h7X3-hopperUniMesh1k-regular-spheres-mesh10-TBB3
+exp3o=/ddn/data/rfmw74/h7X3-hopperUniMesh1k-regular-spheres-mesh10-TBB4
+exp4o=/ddn/data/rfmw74/h7X3-hopperUniMesh1k-regular-spheres-mesh10-TBB6
+exp5o=/ddn/data/rfmw74/h7X3-hopperUniMesh1k-regular-spheres-mesh10-TBB8
+exp6o=/ddn/data/rfmw74/h7X3-hopperUniMesh1k-regular-spheres-mesh10-TBB12
+exp7o=/ddn/data/rfmw74/h7X3-hopperUniMesh1k-regular-spheres-mesh10-TBB16
+exp8o=/ddn/data/rfmw74/h7X3-hopperUniMesh1k-regular-spheres-mesh10-TBB24
 
-exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 1000 regular-grid 0.00003 never 10 1 sphere 50 1"
-exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 1000 regular-grid 0.00003 never 10 1 sphere 50 2"
-exp2="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 1000 regular-grid 0.00003 never 10 1 sphere 50 3"
-exp3="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 1000 regular-grid 0.00003 never 10 1 sphere 50 4"
-exp4="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 1000 regular-grid 0.00003 never 10 1 sphere 50 6"
-exp5="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 1000 regular-grid 0.00003 never 10 1 sphere 50 8"
-exp6="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 1000 regular-grid 0.00003 never 10 1 sphere 50 12"
-exp7="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 1000 regular-grid 0.00003 never 10 1 sphere 50 16"
-exp8="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 1000 regular-grid 0.00003 never 10 1 sphere 50 24"
+exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 sphere 10 1"
+exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 sphere 10 2"
+exp2="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 sphere 10 3"
+exp3="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 sphere 10 4"
+exp4="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 sphere 10 6"
+exp5="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 sphere 10 8"
+exp6="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 sphere 10 12"
+exp7="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 sphere 10 16"
+exp8="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 sphere 10 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
