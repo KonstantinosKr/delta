@@ -18,6 +18,6 @@ module load gcc/4.9.1
 setenv OMP_NUM_THREADS 2
 setenv OMP_NESTED true
 setenv OMP_PLACE threads
-setenv OMP_PROC_BIND spread, close
+setenv OMP_PROC_BIND close
 
 srun {RUN}
