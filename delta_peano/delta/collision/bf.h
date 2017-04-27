@@ -61,7 +61,9 @@ namespace delta {
      *
      * @param xPA Output parameter. x coordinate on triangle A.
      */
+    #if defined(ompParticle) || defined(ompTriangle)
     #pragma omp declare simd
+    #endif
     void bf(
       double   xCoordinatesOfTriangleA[3],
       double   yCoordinatesOfTriangleA[3],

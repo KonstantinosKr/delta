@@ -83,8 +83,10 @@ namespace delta {
       bool      frictionB,
       int 	    particleB);
 
-    #pragma omp declare simd
-    #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
+    #if defined(ompParticle) || defined(ompTriangle)
+      #pragma omp declare simd
+      #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
+    #endif
     extern void penalty(
        double   xCoordinatesOfTriangleA[3],
        double   yCoordinatesOfTriangleA[3],

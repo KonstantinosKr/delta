@@ -176,7 +176,9 @@ int NoDivTriTriIsect(double V0[3],double V1[3],double V2[3],
   return 0;
 }
 
+#ifdef defined(ompParticle) || defined(ompTriangle)
 #pragma omp declare simd
+#endif
 void delta::collision::bf(double   xxCoordinatesOfPointsOfGeometryA[3],
                           double   yyCoordinatesOfPointsOfGeometryA[3],
                           double   zzCoordinatesOfPointsOfGeometryA[3],

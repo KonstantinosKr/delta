@@ -32,7 +32,9 @@ delta::collision::contactpoint::contactpoint(const contactpoint& copy) {
   slave = copy.slave;
 }
 
+#if defined(ompParticle) || defined(ompTriangle)
 #pragma omp declare simd notinbranch
+#endif
 delta::collision::contactpoint::contactpoint(
   const double&  xPA,
   const double&  yPA,
@@ -74,7 +76,9 @@ delta::collision::contactpoint::contactpoint(
   slave = slaveID;
 }
 
+#if defined(ompParticle) || defined(ompTriangle)
 #pragma omp declare simd notinbranch
+#endif
 double delta::collision::contactpoint::getDistance() const {
   return std::sqrt(((Q[0]-P[0])*(Q[0]-P[0]))+((Q[1]-P[1])*(Q[1]-P[1]))+((Q[2]-P[2])*(Q[2]-P[2])));
 }
