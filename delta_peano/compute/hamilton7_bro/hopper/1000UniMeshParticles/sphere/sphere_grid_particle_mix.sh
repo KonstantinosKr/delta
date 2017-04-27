@@ -5,12 +5,9 @@
 # Is invoked with the following arguments
 # $1 path to the output file
 
-JOB_SCRIPT0=runjobBatch24omp2
-JOB_SCRIPT1=runjobBatch24omp2
-JOB_SCRIPT2=runjobBatch24omp2
-JOB_SCRIPT3=runjobBatch24omp2
-JOB_SCRIPT4=runjobBatch24omp2
-JOB_SCRIPT5=runjobBatch24omp2
+JOB_SCRIPT0=runjobBatch24tbb16omp2
+JOB_SCRIPT1=runjobBatch24tbb16omp2
+JOB_SCRIPT2=runjobBatch24tbb16omp2
 
 exp0o=/ddn/data/rfmw74/h7X21hopperUniMesh1k-regular-sphere-mesh10-tbb16omp2
 exp1o=/ddn/data/rfmw74/h7X22hopperUniMesh1k-adaptive-sphere-mesh10-tbb16omp2
