@@ -41,21 +41,34 @@ void printManual()
           << "  random-velocities-with-aligned-cubes" << std::endl
           << "  random-velocities-with-cubes" << std::endl
           << "  random-velocities" << std::endl
+
+          << "  sla"<< std::endl
+          << "  nuclearArray" << std::endl
           << "  two-particles-crash" << std::endl
+
           << "  hopperUniformSphere" << std::endl
           << "  hopperNonUniformSphere" << std::endl
           << "  hopperUniformMesh" << std::endl
           << "  hopperNonUniformMesh" << std::endl
+
+          << "  hopperUniformSphere" << std::endl
+          << "  hopperUniformSphere50k" << std::endl
+          << "  hopperNonUniformSphere50k" << std::endl
+
+          << "  hopperUniformMesh" << std::endl
+          << "  hopperNonUniformMesh" << std::endl
+          << "  hopperUniformMesh1k" << std::endl
+          << "  hopperUniformMesh50k" << std::endl
+
 				  << "  freefall" << std::endl
+
 				  << "  frictionStaticSphere" << std::endl
 				  << "  frictionSlideSphere" << std::endl
           << "  frictionRollSphere" << std::endl
           << "  frictionStaticMesh" << std::endl
           << "  frictionSlideMesh" << std::endl
           << "  frictionRollMesh" << std::endl
-				  << "  sla"<< std::endl
-				  << "  nuclearArray2d" << std::endl
-				  << "  nuclearArray3d" << std::endl
+
           << "Grid types" << std::endl
           << "==========" << std::endl
           << "  no-grid" << std::endl
@@ -208,6 +221,15 @@ int main(int argc, char** argv)
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithGranulates,
                                             dem::mappings::CreateGrid::randomLinear,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+  } else if (scenario=="sla") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
+  }
+  else if (scenario=="nuclearArray") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
   }
   else if (scenario=="two-particles-crash") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash,
@@ -219,18 +241,13 @@ int main(int argc, char** argv)
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.5, 0.02, 0.02, gridType, meshMultiplier);
   }
-  else if (scenario=="hopperUniformSphere1200") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere1200,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.5, 0.02, 0.4, gridType, meshMultiplier);
-  }
-  else if (scenario=="hopperNonUniformSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere,
+  else if (scenario=="hopperUniformSphere50k") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere50k,
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.5, 0.005, 0.015, gridType, meshMultiplier);
   }
-  else if (scenario=="hopperNonUniformSphere1000") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere1000,
+  else if (scenario=="hopperNonUniformSphere50k") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere50k,
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.5, 0.005, 0.015, gridType, meshMultiplier);
   }
@@ -249,8 +266,8 @@ int main(int argc, char** argv)
                                               dem::mappings::CreateGrid::noVScheme,
                                               0.5, 0.0001, 0.015, gridType, meshMultiplier);
   }
-  else if (scenario=="hopperUniformMesh10k") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformMesh10k,
+  else if (scenario=="hopperUniformMesh50k") {
+      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformMesh50k,
                                               dem::mappings::CreateGrid::noVScheme,
                                               0.5, 0.0001, 0.015, gridType, meshMultiplier);
   }
@@ -298,16 +315,6 @@ int main(int argc, char** argv)
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollMesh,
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.5, 0.5, 0.5, gridType, meshMultiplier);
-  }
-  else if (scenario=="sla") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
-  }
-  else if (scenario=="nuclearArray") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
   }
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;

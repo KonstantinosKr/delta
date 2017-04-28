@@ -381,7 +381,7 @@ void dem::mappings::CreateGrid::createCell(
 				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
 				return;
-		} else if(_scenario == hopperUniformSphere1200)
+		} else if(_scenario == hopperUniformSphere50k)
     {
         /* uniform hopper experiment;
          * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom */
@@ -395,7 +395,7 @@ void dem::mappings::CreateGrid::createCell(
         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-        iREAL xcuts = 200; iREAL ycuts = 1;
+        iREAL xcuts = 10; iREAL ycuts = 500;
         iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
         iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
 
@@ -427,7 +427,7 @@ void dem::mappings::CreateGrid::createCell(
 
         return;
     }
-		else if(_scenario == hopperNonUniformSphere)
+		else if(_scenario == hopperNonUniformSphere50k)
 		{
 				/*hopper experiment; particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom*/
 				double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.10;
@@ -439,7 +439,7 @@ void dem::mappings::CreateGrid::createCell(
 				_numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
 				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-				iREAL xcuts = 10.0; iREAL ycuts = 1.0;
+				iREAL xcuts = 10.0; iREAL ycuts = 500.0;
 				iREAL minArraylengthX = (double)_hopperWidth - _epsilon * 6;
 				iREAL minArraylengthY = (double)_hopperHeight - _epsilon * 6;
 
@@ -505,85 +505,6 @@ void dem::mappings::CreateGrid::createCell(
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;_numberOfParticles++; _numberOfObstacles++;
 				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 				return;
-		} else if(_scenario == hopperNonUniformSphere1000)
-    {
-        /*hopper experiment; particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom*/
-        double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.10;
-
-        delta::primitives::hopper::generateHopper( centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
-        vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-                                 _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
-
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-
-        iREAL xcuts = 100.0; iREAL ycuts = 100.0;
-        iREAL minArraylengthX = (double)_hopperWidth - _epsilon * 6;
-        iREAL minArraylengthY = (double)_hopperHeight - _epsilon * 6;
-
-        iREAL subcellx = ((double)minArraylengthX/(double)xcuts) - _epsilon*4;
-        //iREAL subcelly = ((double)minArraylengthY/(double)ycuts) - _epsilon*4;
-
-        iREAL margin = ((double)minArraylengthX/(double)xcuts)/2.0;
-        printf("maxDiameter:%f\n", subcellx);
-
-        iREAL position[] = {centreAsArray[0] - (minArraylengthX/2 - margin), centreAsArray[1] + minArraylengthY/2, centreAsArray[2] - (minArraylengthX/2 - margin)};
-
-        std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
-
-        int N = tmp.size();
-        double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
-        //double massPerParticle = totalMass/(double)N;
-        //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
-        double reMassTotal = 0;
-        std::vector<double> rad;
-        for(int i=0; i<N; i++)
-        {
-          _minParticleDiam = subcellx/2;
-          _maxParticleDiam = subcellx;
-          double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
-          rad.push_back(particleDiameter/2);
-          reMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-        }
-
-        //get total mass
-        //printf("TOTAL REMASS:%f\n", reMassTotal);
-
-        double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-
-        reMassTotal=0;
-        for(auto i:rad)
-        {
-          i *= rescale;
-          reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-        }
-        //printf("RESCALE:%f\n", rescale);
-        //printf("TOTAL REREMASS:%f\n", reMassTotal);
-
-        int idx = 0;
-        for(auto i:tmp)
-        {
-          position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-
-          //delta::primitives::cubes::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-          vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                               rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-          _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-          xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          idx++;
-        }
-
-        /*flooring creation*/
-        centreAsArray[1] = 0.3;
-        double height = 0.05; double width = 0.35;
-        delta::primitives::cubes::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-        vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
-                                 _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
-
-        _numberOfTriangles += xCoordinates.size()/DIMENSIONS;_numberOfParticles++; _numberOfObstacles++;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-        return;
     } else if(_scenario == hopperUniformMesh)
     {
         /*uniform hopper experiment;  particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom*/
@@ -900,7 +821,7 @@ void dem::mappings::CreateGrid::createCell(
          _numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++; _numberOfObstacles++;
          xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
          return;
-     }if(_scenario == hopperUniformMesh10k)
+     }if(_scenario == hopperUniformMesh50k)
      {
          /*uniform hopper experiment;  particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom*/
          //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-adaptive-grid 0.0000005 every-batch 10 1 sphere 50 | tee log400.log
@@ -912,7 +833,7 @@ void dem::mappings::CreateGrid::createCell(
          _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
          xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-         iREAL xcuts = 100; iREAL ycuts = 1;
+         iREAL xcuts = 10; iREAL ycuts = 500;
          iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
          iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
          printf("minParDiameter:%.10f\n", minParticleDiameter);
@@ -1170,12 +1091,22 @@ void dem::mappings::CreateGrid::createCell(
       }
 	}
 
-	if(_scenario == sla                 || _scenario == TwoParticlesCrash ||
-    _scenario == hopperUniformSphere  || _scenario == hopperNonUniformSphere || _scenario == hopperNonUniformSphere1000 ||
-    _scenario == hopperUniformMesh    || _scenario == hopperNonUniformMesh   || _scenario == hopperUniformSphere1200 ||
-    _scenario == hopperUniformMesh1k  || _scenario == hopperUniformMesh10k ||
-    _scenario == frictionStaticSphere || _scenario == frictionSlideSphere    || _scenario == frictionRollSphere ||
-    _scenario == frictionStaticMesh   || _scenario == frictionSlideMesh      || _scenario == frictionRollMesh)
+	if(_scenario == sla                       ||
+     _scenario == nuclearArray              ||
+	   _scenario == TwoParticlesCrash         ||
+     _scenario == hopperUniformSphere       ||
+     _scenario == hopperUniformSphere50k    ||
+     _scenario == hopperNonUniformSphere50k ||
+     _scenario == hopperUniformMesh         ||
+     _scenario == hopperNonUniformMesh      ||
+     _scenario == hopperUniformMesh1k       ||
+     _scenario == hopperUniformMesh50k      ||
+     _scenario == frictionStaticSphere      ||
+     _scenario == frictionSlideSphere       ||
+     _scenario == frictionRollSphere        ||
+     _scenario == frictionStaticMesh        ||
+     _scenario == frictionSlideMesh         ||
+     _scenario == frictionRollMesh)
   {
     return;
   }
