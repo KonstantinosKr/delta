@@ -13,7 +13,7 @@ JOB_SCRIPT3=runjobBatch1
 exp0o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-bf-mesh10-TBB1
 exp1o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-penalty-mesh10-TBB1
 exp2o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-bf-mesh20-TBB1
-exp3o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-penalty-TBB1
+exp3o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-penalty-mesh20-TBB1
 
 exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 bf 10 1"
 exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 penalty 10 1"
