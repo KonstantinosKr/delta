@@ -45,6 +45,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 
   newParticle._persistentRecords._diameter	= delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates)*1.2;
 
+  //printf("DIAGONAL:%f\n", newParticle._persistentRecords._diameter);
   hMin = delta::primitives::properties::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 
   delta::primitives::properties::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);

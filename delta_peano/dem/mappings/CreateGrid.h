@@ -54,7 +54,9 @@ class dem::mappings::CreateGrid {
       TwoParticlesCrash,
 
       hopperUniformSphere,
+      hopperUniformSphere1200,
       hopperNonUniformSphere,
+      hopperNonUniformSphere1000,
 
       hopperUniformMesh,
       hopperNonUniformMesh,
@@ -72,8 +74,7 @@ class dem::mappings::CreateGrid {
       frictionRollMesh,
 
       sla,
-      nuclearArray2d,
-      nuclearArray3d
+      nuclearArray
     };
 
     enum VScheme {

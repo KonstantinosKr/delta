@@ -213,14 +213,24 @@ int main(int argc, char** argv)
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash,
                                             dem::mappings::CreateGrid::noVScheme,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
-  }
+  }//hopper diagonal is 0.39
   else if (scenario=="hopperUniformSphere") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere,
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.5, 0.02, 0.02, gridType, meshMultiplier);
   }
+  else if (scenario=="hopperUniformSphere1200") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere1200,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            0.5, 0.02, 0.4, gridType, meshMultiplier);
+  }
   else if (scenario=="hopperNonUniformSphere") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            0.5, 0.005, 0.015, gridType, meshMultiplier);
+  }
+  else if (scenario=="hopperNonUniformSphere1000") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere1000,
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.5, 0.005, 0.015, gridType, meshMultiplier);
   }
@@ -294,13 +304,8 @@ int main(int argc, char** argv)
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.15, 0.15, 0.15, gridType, meshMultiplier);
   }
-  else if (scenario=="nuclearArray2d") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray2d,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
-  }
-  else if (scenario=="nuclearArray3d") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray3d,
+  else if (scenario=="nuclearArray") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray,
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.15, 0.15, 0.15, gridType, meshMultiplier);
   }

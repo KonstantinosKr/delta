@@ -48,7 +48,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
 {
   double timeStepSize = _state.getTimeStepSize();
 
-  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
