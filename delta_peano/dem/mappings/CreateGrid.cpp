@@ -1033,7 +1033,7 @@ void dem::mappings::CreateGrid::createCell(
 
         //////////////////////////////////////////////////////////////////////////////////////////
 
-        iREAL xcuts = 10.0; iREAL ycuts = 2.0;
+        iREAL xcuts = 10.0; iREAL ycuts = 10.0;
         iREAL minArraylengthX = (double)_hopperWidth - _epsilon * 6;
         iREAL minArraylengthY = (double)_hopperHeight - _epsilon * 6;
 
