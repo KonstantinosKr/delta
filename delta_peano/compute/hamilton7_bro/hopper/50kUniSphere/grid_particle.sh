@@ -12,19 +12,19 @@ JOB_SCRIPT3=runjobBatch24
 JOB_SCRIPT4=runjobBatch24
 JOB_SCRIPT5=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7X21hopperUniMesh50k-regular-sphere-tbb24
-exp1o=/ddn/data/rfmw74/h7X22hopperUniMesh50k-adaptive-sphere-tbb24
-exp2o=/ddn/data/rfmw74/h7X23hopperUniMesh50k-reluctant-sphere-tbb24
-exp3o=/ddn/data/rfmw74/h7X24hopperUniMesh50k-regular-sphere-particle24
-exp4o=/ddn/data/rfmw74/h7X25hopperUniMesh50k-adaptive-sphere-particle24
-exp5o=/ddn/data/rfmw74/h7X26hopperUniMesh50k-reluctant-sphere-particle24
+exp0o=/ddn/data/rfmw74/h7X21hopperUniSphere50k-regular-sphere-tbb24
+exp1o=/ddn/data/rfmw74/h7X22hopperUniSphere50k-adaptive-sphere-tbb24
+exp2o=/ddn/data/rfmw74/h7X23hopperUniSphere50k-reluctant-sphere-tbb24
+exp3o=/ddn/data/rfmw74/h7X24hopperUniSphere50k-regular-sphere-particle24
+exp4o=/ddn/data/rfmw74/h7X25hopperUniSphere50k-adaptive-sphere-particle24
+exp5o=/ddn/data/rfmw74/h7X26hopperUniSphere50k-reluctant-sphere-particle24
 
-exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh50k 10 regular-grid 0.000001 never 10 1 sphere 10 24"
-exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh50k 10 adaptive-grid 0.000001 never 10 1 sphere 10 24"
-exp2="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh50k 10 reluctant-adaptive-grid 0.000001 never 10 1 sphere 10 24"
-exp3="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniformMesh50k 10 regular-grid 0.000001 never 10 1 sphere 10"
-exp4="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniformMesh50k 10 adaptive-grid 0.000001 never 10 1 sphere 10"
-exp5="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniformMesh50k 10 reluctant-adaptive-grid 0.000001 never 10 1 sphere 10"
+exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformSphere50k 10 regular-grid 0.000001 never 10 1 sphere 10 24"
+exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformSphere50k 10 adaptive-grid 0.000001 never 10 1 sphere 10 24"
+exp2="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformSphere50k 10 reluctant-adaptive-grid 0.000001 never 10 1 sphere 10 24"
+exp3="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniformSphere50k 10 regular-grid 0.000001 never 10 1 sphere 10"
+exp4="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniformSphere50k 10 adaptive-grid 0.000001 never 10 1 sphere 10"
+exp5="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniformSphere50k 10 reluctant-adaptive-grid 0.000001 never 10 1 sphere 10"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

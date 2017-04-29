@@ -15,15 +15,15 @@ JOB_SCRIPT6=runjobBatch12
 JOB_SCRIPT7=runjobBatch16
 JOB_SCRIPT8=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7X3-hopperUniMesh50k-adaptive-spheres-TBB1
-exp1o=/ddn/data/rfmw74/h7X3-hopperUniMesh50k-adaptive-spheres-TBB2
-exp2o=/ddn/data/rfmw74/h7X3-hopperUniMesh50k-adaptive-spheres-TBB3
-exp3o=/ddn/data/rfmw74/h7X3-hopperUniMesh50k-adaptive-spheres-TBB4
-exp4o=/ddn/data/rfmw74/h7X3-hopperUniMesh50k-adaptive-spheres-TBB6
-exp5o=/ddn/data/rfmw74/h7X3-hopperUniMesh50k-adaptive-spheres-TBB8
-exp6o=/ddn/data/rfmw74/h7X3-hopperUniMesh50k-adaptive-spheres-TBB12
-exp7o=/ddn/data/rfmw74/h7X3-hopperUniMesh50k-adaptive-spheres-TBB16
-exp8o=/ddn/data/rfmw74/h7X3-hopperUniMesh50k-adaptive-spheres-TBB24
+exp0o=/ddn/data/rfmw74/h7X3-hopperUniSphere50k-adaptive-spheres-TBB1
+exp1o=/ddn/data/rfmw74/h7X3-hopperUniSphere50k-adaptive-spheres-TBB2
+exp2o=/ddn/data/rfmw74/h7X3-hopperUniSphere50k-adaptive-spheres-TBB3
+exp3o=/ddn/data/rfmw74/h7X3-hopperUniSphere50k-adaptive-spheres-TBB4
+exp4o=/ddn/data/rfmw74/h7X3-hopperUniSphere50k-adaptive-spheres-TBB6
+exp5o=/ddn/data/rfmw74/h7X3-hopperUniSphere50k-adaptive-spheres-TBB8
+exp6o=/ddn/data/rfmw74/h7X3-hopperUniSphere50k-adaptive-spheres-TBB12
+exp7o=/ddn/data/rfmw74/h7X3-hopperUniSphere50k-adaptive-spheres-TBB16
+exp8o=/ddn/data/rfmw74/h7X3-hopperUniSphere50k-adaptive-spheres-TBB24
 
 exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformSphere50k 10 adaptive-grid 0.00003 never 10 1 sphere 10 1"
 exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformSphere50k 10 adaptive-grid 0.00003 never 10 1 sphere 10 2"
