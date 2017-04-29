@@ -56,14 +56,15 @@ class dem::mappings::CreateGrid {
       nuclearArray,
       TwoParticlesCrash,
 
-      hopperUniformSphere,
-      hopperUniformSphere50k,
-      hopperNonUniformSphere50k,
+      hopperUniform,
+      hopperUniform1k,
+      hopperUniform10k,
+      hopperUniform50k,
 
-      hopperUniformMesh,
-      hopperNonUniformMesh,
-      hopperUniformMesh1k,
-      hopperUniformMesh50k,
+      hopperNonUniform,
+      hopperNonUniform1k,
+      hopperNonUniform10k,
+      hopperNonUniform50k,
 
       freefall,
 

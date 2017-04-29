@@ -12,19 +12,19 @@ JOB_SCRIPT3=runjobBatch2
 JOB_SCRIPT4=runjobBatch2
 JOB_SCRIPT5=runjobBatch2
 
-exp0o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-bf-mesh10-TBB2
-exp1o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-penalty-mesh10-TBB2
-exp2o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-bf-mesh20-TBB2
-exp3o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-penalty-mesh20-TBB2
-exp4o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-bf-mesh40-TBB2
-exp5o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-adaptive-penalty-mesh40-TBB2
+exp0o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-bf-mesh10-TBB2
+exp1o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-penalty-mesh10-TBB2
+exp2o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-bf-mesh20-TBB2
+exp3o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-penalty-mesh20-TBB2
+exp4o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-bf-mesh40-TBB2
+exp5o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-penalty-mesh40-TBB2
 
-exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 bf 10 2"
-exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 penalty 10 2"
-exp2="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 bf 20 2"
-exp3="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 penalty 20 2"
-exp4="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 bf 40 2"
-exp5="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh1k 1000 adaptive-grid 0.00003 never 10 1 penalty 40 2"
+exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 1 bf 10 2"
+exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 1 penalty 10 2"
+exp2="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 1 bf 20 2"
+exp3="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 1 penalty 20 2"
+exp4="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 1 bf 40 2"
+exp5="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 1 penalty 40 2"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

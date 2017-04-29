@@ -236,38 +236,43 @@ int main(int argc, char** argv)
                                             dem::mappings::CreateGrid::noVScheme,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }//hopper diagonal is 0.39
-  else if (scenario=="hopperUniformSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere,
+  else if (scenario=="hopperUniform") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform,
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.5, 0.02, 0.02, gridType, meshMultiplier);
   }
-  else if (scenario=="hopperUniformSphere50k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformSphere50k,
+  else if (scenario=="hopperUniform1k") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform1k,
                                             dem::mappings::CreateGrid::noVScheme,
                                             0.5, 0.005, 0.015, gridType, meshMultiplier);
   }
-  else if (scenario=="hopperNonUniformSphere50k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformSphere50k,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.5, 0.005, 0.015, gridType, meshMultiplier);
-  }
-  else if (scenario=="hopperUniformMesh") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformMesh,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.5, 0.02, 0.02, gridType, meshMultiplier);
-  }
-  else if (scenario=="hopperNonUniformMesh") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniformMesh,
-                                            dem::mappings::CreateGrid::noVScheme,
-                                            0.5, 0.005, 0.015, gridType, meshMultiplier);
-  }
-  else if (scenario=="hopperUniformMesh1k") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformMesh1k,
+  else if (scenario=="hopperUniform10k") {
+      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform10k,
                                               dem::mappings::CreateGrid::noVScheme,
                                               0.5, 0.0001, 0.015, gridType, meshMultiplier);
   }
-  else if (scenario=="hopperUniformMesh50k") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniformMesh50k,
+  else if (scenario=="hopperUniform50k") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform50k,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            0.5, 0.0001, 0.015, gridType, meshMultiplier);
+  }
+  else if (scenario=="hopperNonUniform") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            0.5, 0.005, 0.015, gridType, meshMultiplier);
+  }
+  else if (scenario=="hopperNonUniform1k") {
+      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform1k,
+                                              dem::mappings::CreateGrid::noVScheme,
+                                              0.5, 0.0001, 0.015, gridType, meshMultiplier);
+  }
+  else if (scenario=="hopperNonUniform10k") {
+      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform10k,
+                                              dem::mappings::CreateGrid::noVScheme,
+                                              0.5, 0.0001, 0.015, gridType, meshMultiplier);
+  }
+  else if (scenario=="hopperNonUniform50k") {
+      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform50k,
                                               dem::mappings::CreateGrid::noVScheme,
                                               0.5, 0.0001, 0.015, gridType, meshMultiplier);
   }
