@@ -355,37 +355,30 @@ void dem::mappings::CreateGrid::createCell(
 				iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
 				printf("minParDiameter:%.10f\n", minParticleDiameter);
         iREAL position[] = {(centreAsArray[0] - _hopperWidth/2) + margin, centreAsArray[1] + _hopperHeight/2, (centreAsArray[2] - _hopperWidth/2) + margin};
-				/////////////////ARRAY
+        std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
+        int N = tmp.size();
+
+        double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+        double massPerParticle = totalMass/(double)N; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+        double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
+        /////////////////ARRAY
 
 
 				//////////////////////SPHERE//////////////////////////////////////////////////////////////////////////////////////
-
         if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
         {
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
-          int N = tmp.size();
-          double mass = 0.05/(double)N; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
-          double radius = std::pow((3.0*mass)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
           for(auto i:tmp)
           {
             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
             //delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
             vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                                     radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+                                                 radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
             _numberOfParticles++;_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
             xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
           }
         }else
         {
           //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
-
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
-          int N = tmp.size();
-          double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
-          double massPerParticle = totalMass/(double)N;
-          double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
           std::vector<std::vector<double>>  xCoordinatesArray;
           std::vector<std::vector<double>>  yCoordinatesArray;
           std::vector<std::vector<double>>  zCoordinatesArray;
@@ -459,7 +452,6 @@ void dem::mappings::CreateGrid::createCell(
 
 				_numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++; _numberOfObstacles++;
 				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-
 				return;
 		} else if(_scenario == hopperUniform1k)
     {
@@ -476,26 +468,24 @@ void dem::mappings::CreateGrid::createCell(
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
         //////////////////////////////////////////////////////////////////////////////////////////
-
-
         iREAL xcuts = 10; iREAL ycuts = 10;
         iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
         iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
 
         iREAL position[] = {(centreAsArray[0] - _hopperWidth/2) + margin, centreAsArray[1] + _hopperHeight/2, (centreAsArray[2] - _hopperWidth/2) + margin};
+        std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
+        int N = tmp.size();
 
+        double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+
+        double massPerParticle = totalMass/(double)N; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+        double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
         //////////////////////////////////////////////////////////////////////////////////////////
-
 
 
         ////////SPHERE///////////////////////////////////////////////////////////////////////
         if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
         {
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
-          int N = tmp.size();
-          double mass = 0.05/(double)N; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
-          double radius = std::pow((3.0*mass)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
           for(auto i:tmp)
           {
             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
@@ -506,15 +496,7 @@ void dem::mappings::CreateGrid::createCell(
           }
         }else
         {
-
-        ////MESH/////////////////////////////////////////////////////////////////////////////
-
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
-          int N = tmp.size();
-          double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
-          double massPerParticle = totalMass/(double)N;
-          double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
+          ////MESH/////////////////////////////////////////////////////////////////////////////
           std::vector<std::vector<double>>  xCoordinatesArray;
           std::vector<std::vector<double>>  yCoordinatesArray;
           std::vector<std::vector<double>>  zCoordinatesArray;
@@ -607,26 +589,25 @@ void dem::mappings::CreateGrid::createCell(
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
         //////////////////////////////////////////////////////////////////////////////////////////
-
-
         iREAL xcuts = 10; iREAL ycuts = 100;
         iREAL margin = ((double)_hopperWidth/(double)xcuts)/2.0;
         iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
 
         iREAL position[] = {(centreAsArray[0] - _hopperWidth/2) + margin, centreAsArray[1] + _hopperHeight/2, (centreAsArray[2] - _hopperWidth/2) + margin};
 
-        //////////////////////////////////////////////////////////////////////////////////////////
+        std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
+        int N = tmp.size();
 
+        double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+
+        double massPerParticle = totalMass/(double)N; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+        double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
+        //////////////////////////////////////////////////////////////////////////////////////////
 
 
         ////////SPHERE///////////////////////////////////////////////////////////////////////
         if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
         {
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
-          int N = tmp.size();
-          double mass = 0.05/(double)N; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
-          double radius = std::pow((3.0*mass)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
           for(auto i:tmp)
           {
             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
@@ -637,14 +618,7 @@ void dem::mappings::CreateGrid::createCell(
           }
         }else
         {
-
-        ////MESH/////////////////////////////////////////////////////////////////////////////
-
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
-          int N = tmp.size();
-          double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
-          double massPerParticle = totalMass/(double)N;
-          double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
+          ////MESH/////////////////////////////////////////////////////////////////////////////
 
           std::vector<std::vector<double>>  xCoordinatesArray;
           std::vector<std::vector<double>>  yCoordinatesArray;
@@ -746,17 +720,18 @@ void dem::mappings::CreateGrid::createCell(
 
         iREAL position[] = {(centreAsArray[0] - _hopperWidth/2) + margin, centreAsArray[1] + _hopperHeight/2, (centreAsArray[2] - _hopperWidth/2) + margin};
 
+        std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
+        int N = tmp.size();
+
+        double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+
+        double massPerParticle = totalMass/(double)N; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+        double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
         //////////////////////////////////////////////////////////////////////////////////////////
-
-
 
         ////////SPHERE///////////////////////////////////////////////////////////////////////
         if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
         {
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
-          int N = tmp.size();
-          double mass = 0.05/(double)N; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
-          double radius = std::pow((3.0*mass)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
           for(auto i:tmp)
           {
@@ -769,13 +744,6 @@ void dem::mappings::CreateGrid::createCell(
         }else
         {
           ////MESH/////////////////////////////////////////////////////////////////////////////
-
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, _hopperWidth, xcuts, _hopperWidth, ycuts);
-          int N = tmp.size();
-          double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
-          double massPerParticle = totalMass/(double)N;
-          double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
           std::vector<std::vector<double>>  xCoordinatesArray;
           std::vector<std::vector<double>>  yCoordinatesArray;
           std::vector<std::vector<double>>  zCoordinatesArray;
@@ -866,7 +834,6 @@ void dem::mappings::CreateGrid::createCell(
 				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
 				//////////////////////////////////////////////////////////////////////////////////////////
-
         iREAL xcuts = 10.0; iREAL ycuts = 1.0;
         iREAL minArraylengthX = (double)_hopperWidth - _epsilon * 6;
         iREAL minArraylengthY = (double)_hopperHeight - _epsilon * 6;
@@ -878,16 +845,14 @@ void dem::mappings::CreateGrid::createCell(
         printf("maxDiameter:%f\n", subcellx);
 
         iREAL position[] = {centreAsArray[0] - (minArraylengthX/2 - margin), centreAsArray[1] + minArraylengthY/2, centreAsArray[2] - (minArraylengthX/2 - margin)};
-
+        std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
+        int N = tmp.size();
+        double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
         //////////////////////////////////////////////////////////////////////////////////////////
 
+        //////SPHERE//////////////////////////////////////////////////////////////////////
         if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
         {
-          //////SPHERE//////////////////////////////////////////////////////////////////////
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
-
-          int N = tmp.size();
-          double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
           //double massPerParticle = totalMass/(double)N;
           //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
@@ -930,11 +895,6 @@ void dem::mappings::CreateGrid::createCell(
 
 				}	else {
 				  //////MESH/////////////////////////////////////////////////////////////////////////
-
-				  std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
-
-          int N = tmp.size();
-          double totalMass = 0.05; //0.05 delta::collision::MaterialType::WOOD
           double massPerParticle = totalMass/(double)N;
           double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
@@ -1032,7 +992,6 @@ void dem::mappings::CreateGrid::createCell(
         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
         //////////////////////////////////////////////////////////////////////////////////////////
-
         iREAL xcuts = 10.0; iREAL ycuts = 10.0;
         iREAL minArraylengthX = (double)_hopperWidth - _epsilon * 6;
         iREAL minArraylengthY = (double)_hopperHeight - _epsilon * 6;
@@ -1044,16 +1003,14 @@ void dem::mappings::CreateGrid::createCell(
         printf("maxDiameter:%f\n", subcellx);
 
         iREAL position[] = {centreAsArray[0] - (minArraylengthX/2 - margin), centreAsArray[1] + minArraylengthY/2, centreAsArray[2] - (minArraylengthX/2 - margin)};
-
+        std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
+        int N = tmp.size();
+        double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
         //////////////////////////////////////////////////////////////////////////////////////////
 
+        //////SPHERE//////////////////////////////////////////////////////////////////////
         if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
         {
-          //////SPHERE//////////////////////////////////////////////////////////////////////
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
-
-          int N = tmp.size();
-          double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
           //double massPerParticle = totalMass/(double)N;
           //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
@@ -1097,10 +1054,6 @@ void dem::mappings::CreateGrid::createCell(
         } else {
           //////MESH/////////////////////////////////////////////////////////////////////////
 
-          std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
-
-          int N = tmp.size();
-          double totalMass = 0.05; //0.05 delta::collision::MaterialType::WOOD
           double massPerParticle = totalMass/(double)N;
           double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
@@ -1198,7 +1151,6 @@ void dem::mappings::CreateGrid::createCell(
          xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
          //////////////////////////////////////////////////////////////////////////////////////////
-
          iREAL xcuts = 10.0; iREAL ycuts = 100.0;
          iREAL minArraylengthX = (double)_hopperWidth - _epsilon * 6;
          iREAL minArraylengthY = (double)_hopperHeight - _epsilon * 6;
@@ -1210,16 +1162,14 @@ void dem::mappings::CreateGrid::createCell(
          printf("maxDiameter:%f\n", subcellx);
 
          iREAL position[] = {centreAsArray[0] - (minArraylengthX/2 - margin), centreAsArray[1] + minArraylengthY/2, centreAsArray[2] - (minArraylengthX/2 - margin)};
-
+         std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
+         int N = tmp.size();
+         double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
          //////////////////////////////////////////////////////////////////////////////////////////
 
+         //////SPHERE//////////////////////////////////////////////////////////////////////
          if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
          {
-           //////SPHERE//////////////////////////////////////////////////////////////////////
-           std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
-
-           int N = tmp.size();
-           double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
            //double massPerParticle = totalMass/(double)N;
            //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
@@ -1263,10 +1213,6 @@ void dem::mappings::CreateGrid::createCell(
          } else {
            //////MESH/////////////////////////////////////////////////////////////////////////
 
-           std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
-
-           int N = tmp.size();
-           double totalMass = 0.05; //0.05 delta::collision::MaterialType::WOOD
            double massPerParticle = totalMass/(double)N;
            double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
@@ -1376,16 +1322,14 @@ void dem::mappings::CreateGrid::createCell(
          printf("maxDiameter:%f\n", subcellx);
 
          iREAL position[] = {centreAsArray[0] - (minArraylengthX/2 - margin), centreAsArray[1] + minArraylengthY/2, centreAsArray[2] - (minArraylengthX/2 - margin)};
-
+         std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
+         int N = tmp.size();
+         double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
          //////////////////////////////////////////////////////////////////////////////////////////
 
+         //////SPHERE//////////////////////////////////////////////////////////////////////
          if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
          {
-           //////SPHERE//////////////////////////////////////////////////////////////////////
-           std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
-
-           int N = tmp.size();
-           double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
            //double massPerParticle = totalMass/(double)N;
            //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
@@ -1429,10 +1373,6 @@ void dem::mappings::CreateGrid::createCell(
          } else {
            //////MESH/////////////////////////////////////////////////////////////////////////
 
-           std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array3d(position, minArraylengthX, xcuts, minArraylengthX, ycuts);
-
-           int N = tmp.size();
-           double totalMass = 0.05; //0.05 delta::collision::MaterialType::WOOD
            double massPerParticle = totalMass/(double)N;
            double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
