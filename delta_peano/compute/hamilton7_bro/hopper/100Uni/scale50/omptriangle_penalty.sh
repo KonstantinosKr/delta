@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE8_50_100hopper
 exp6o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE16_50_100hopper
 exp7o=/ddn/data/rfmw74/h7ScaleregularpenaltyOMPTRIANGLE24_50_100hopper
 
-exp0="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
-exp1="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
-exp2="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
-exp3="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
-exp4="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
-exp5="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
-exp6="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
-exp7="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
+exp0="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
+exp1="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
+exp2="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
+exp3="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
+exp4="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
+exp5="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
+exp6="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
+exp7="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true penalty 50"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

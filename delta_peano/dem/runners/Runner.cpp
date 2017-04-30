@@ -6,6 +6,7 @@
 #include "peano/utils/UserInterface.h"
 #include "peano/datatraversal/autotuning/Oracle.h"
 #include "peano/datatraversal/autotuning/OracleForOnePhaseDummy.h"
+#include "sharedmemoryoracles/OracleForOnePhaseWithShrinkingGrainSize.h"
 
 #include "tarch/Assertions.h"
 
@@ -19,6 +20,7 @@
 #include "dem/mappings/MoveParticles.h"
 #include "delta/sys/sys.h"
 
+
 tarch::logging::Log dem::runners::Runner::_log( "dem::runners::Runner" );
 
 dem::runners::Runner::Runner() {
@@ -28,7 +30,7 @@ dem::runners::Runner::~Runner() {
 }
 
 int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads,
-								              double stepSize, double realSnapshot)
+								              double stepSize, double realSnapshot, bool useAutotuning)
 {
   peano::geometry::Hexahedron geometry(tarch::la::Vector<DIMENSIONS,double>(1.0), tarch::la::Vector<DIMENSIONS,double>(0.0));
   dem::repositories::Repository* repository = dem::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(geometry,
@@ -36,8 +38,44 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
                                                 tarch::la::Vector<DIMENSIONS,double>(0.0)); // computationalDomainOffset
   
   #ifdef SharedMemoryParallelisation
-	  tarch::multicore::Core::getInstance().configure(tbbThreads);
-	  peano::datatraversal::autotuning::Oracle::getInstance().setOracle(new peano::datatraversal::autotuning::OracleForOnePhaseDummy(true, false));
+    tarch::multicore::Core::getInstance().configure(tbbThreads);
+
+    std::string sharedMemoryPropertiesFileName = "shared-memory-"
+        + std::to_string( DIMENSIONS ) + "d-"
+        + std::to_string( numberOfTimeSteps ) + "-time-steps-"
+        + std::to_string( tbbThreads ) + "-threads-"
+        + std::to_string( stepSize ) + "-dt-"
+        + std::to_string( realSnapshot );
+
+    switch (gridType) {
+      case dem::mappings::CreateGrid::NoGrid:
+        sharedMemoryPropertiesFileName += "-no-grid";
+        break;
+      case dem::mappings::CreateGrid::RegularGrid:
+        sharedMemoryPropertiesFileName += "-regular-grid";
+        break;
+      case dem::mappings::CreateGrid::AdaptiveGrid:
+        sharedMemoryPropertiesFileName += "-adaptive-grid";
+        break;
+      case dem::mappings::CreateGrid::ReluctantAdaptiveGrid:
+        sharedMemoryPropertiesFileName += "-reluctant-grid";
+        break;
+    }
+
+    sharedMemoryPropertiesFileName += ".properties";
+
+    if (useAutotuning) {
+      peano::datatraversal::autotuning::Oracle::getInstance().setOracle(
+       new sharedmemoryoracles::OracleForOnePhaseWithShrinkingGrainSize(true,false)
+      );
+
+      peano::datatraversal::autotuning::Oracle::getInstance().plotStatistics( sharedMemoryPropertiesFileName );
+    }
+    else {
+      peano::datatraversal::autotuning::Oracle::getInstance().setOracle(
+        new peano::datatraversal::autotuning::OracleForOnePhaseDummy(true, false)
+      );
+    }
   #endif
 
   int result = 0;
@@ -138,6 +176,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
       << ", t=" << repository.getState().getTime()
       << ", dt=" << repository.getState().getTimeStepSize());
+      //<< ", h_max=" << repository.getState().getMaximumMeshWidth()
+      //<< ", h_min=" << repository.getState().getMinimumMeshWidth());
 
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {

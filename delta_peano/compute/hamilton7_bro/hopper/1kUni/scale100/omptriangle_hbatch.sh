@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE12_100_1000hopp
 exp7o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE16_100_1000hopper
 exp8o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE24_100_1000hopper
 
-exp0="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
-exp1="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
-exp2="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
-exp3="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
-exp4="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
-exp5="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
-exp6="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
-exp7="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
-exp8="./dem-3d-release-omp-triangle 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
+exp0="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
+exp1="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
+exp2="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
+exp3="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
+exp4="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
+exp5="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
+exp6="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
+exp7="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
+exp8="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 100"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

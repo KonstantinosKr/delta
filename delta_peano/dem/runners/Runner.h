@@ -62,7 +62,7 @@ class dem::runners::Runner {
     /**
      * Run
      */
-    int run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads, double initialTimeStepSize, double realSnapshot);
+    int run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads, double initialTimeStepSize, double realSnapshot, bool useAutotuning);
 };
 
 #endif

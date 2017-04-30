@@ -11,9 +11,9 @@ exp1o=/scratch/rfmw74/regularGridcmp20
 exp2o=/scratch/rfmw74/adaptiveGridcmp20
 exp3o=/scratch/rfmw74/reluctantGridcmp20
 
-exp1="./dem-3d-release-vec 0.3 0.003 0.3 freefall 5000 regular-grid 0.0001 never 10 true bf 20"
-exp2="./dem-3d-release-vec 0.3 0.003 0.3 freefall 5000 adaptive-grid 0.0001 never 10 true bf 20"
-exp3="./dem-3d-release-vec 0.3 0.003 0.3 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 true bf 20"
+exp1="./dem-3d-release-vec 0.1 0.001 0.1 freefall 5000 regular-grid 0.0001 never 10 true bf 20"
+exp2="./dem-3d-release-vec 0.1 0.001 0.1 freefall 5000 adaptive-grid 0.0001 never 10 true bf 20"
+exp3="./dem-3d-release-vec 0.1 0.001 0.1 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 true bf 20"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT} > ${JOB_SCRIPT}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT}_tmp > ${JOB_SCRIPT}_tmp1

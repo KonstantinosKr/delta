@@ -9,7 +9,7 @@ JOB_SCRIPT5=runjobBatch8
 
 exp5o=/ddn/data/rfmw74/h7reluctantPenaltySTATS
 
-exp5="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 50000 reluctant-adaptive-grid 0.00001 never 10 true penaltyStat 50 8"
+exp5="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 50000 reluctant-adaptive-grid 0.00001 never 10 true penaltyStat 50 8"
 
 
 sed "s,{OUTPUT_FILE},$exp5o,g" ${JOB_SCRIPT5} > ${JOB_SCRIPT5}_tmp

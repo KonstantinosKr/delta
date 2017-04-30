@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB12_200
 exp7o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB16_200
 exp8o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-triangle-pairsTBB24_200
 
-exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 1"
-exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 2"
-exp2="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 3"
-exp3="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 4"
-exp4="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 6"
-exp5="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 8"
-exp6="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 12"
-exp7="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 16"
-exp8="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 24"
+exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 1"
+exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 2"
+exp2="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 3"
+exp3="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 4"
+exp4="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 6"
+exp5="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 8"
+exp6="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 12"
+exp7="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 16"
+exp8="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-triangle-pairs 200 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
