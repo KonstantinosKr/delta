@@ -535,7 +535,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				}
         case CollisionModel::none:
         {
-          return;
+          break;
         }
 			}
 
@@ -803,7 +803,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				}
 				case CollisionModel::none:
 				{
-				  return;
+				  break;
 				}
 			}
 
