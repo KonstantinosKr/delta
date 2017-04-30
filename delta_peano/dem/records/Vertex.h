@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   23/02/2017 16:40
+    * @date   30/04/2017 02:49
     */
    class dem::records::Vertex { 
       
@@ -419,966 +419,969 @@ namespace dem {
             
             
          };
-         
-      private: 
-         PersistentRecords _persistentRecords;
-         int _adjacentCellsHeightOfPreviousIteration;
-         int _numberOfAdjacentRefinedCells;
-         
+         private: 
+            PersistentRecords _persistentRecords;
+            int _adjacentCellsHeightOfPreviousIteration;
+            int _numberOfAdjacentRefinedCells;
+            
+         public:
+            /**
+             * Generated
+             */
+            Vertex();
+            
+            /**
+             * Generated
+             */
+            Vertex(const PersistentRecords& persistentRecords);
+            
+            /**
+             * Generated
+             */
+            Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+            
+            /**
+             * Generated
+             */
+            Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+            
+            /**
+             * Generated
+             */
+            virtual ~Vertex();
+            
+            
+            inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._particles;
+            }
+            
+            
+            
+            inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._particles = particles;
+            }
+            
+            
+            
+            inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._particlesOnCoarserLevels;
+            }
+            
+            
+            
+            inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+            }
+            
+            
+            
+            inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._vetoCoarsening;
+            }
+            
+            
+            
+            inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._vetoCoarsening = vetoCoarsening;
+            }
+            
+            
+            
+            inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._isHangingNode;
+            }
+            
+            
+            
+            inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._isHangingNode = isHangingNode;
+            }
+            
+            
+            
+            inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._refinementControl;
+            }
+            
+            
+            
+            inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._refinementControl = refinementControl;
+            }
+            
+            
+            
+            inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._adjacentCellsHeight;
+            }
+            
+            
+            
+            inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+            }
+            
+            
+            
+            inline int getAdjacentCellsHeightOfPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _adjacentCellsHeightOfPreviousIteration;
+            }
+            
+            
+            
+            inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+            }
+            
+            
+            
+            inline int getNumberOfAdjacentRefinedCells() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _numberOfAdjacentRefinedCells;
+            }
+            
+            
+            
+            inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+            }
+            
+            
+            
+            inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._insideOutsideDomain;
+            }
+            
+            
+            
+            inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._insideOutsideDomain = insideOutsideDomain;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._x;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._x = (x);
+            }
+            
+            
+            
+            inline double getX(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               assertion(elementIndex>=0);
+               assertion(elementIndex<DIMENSIONS);
+               return _persistentRecords._x[elementIndex];
+               
+            }
+            
+            
+            
+            inline void setX(int elementIndex, const double& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               assertion(elementIndex>=0);
+               assertion(elementIndex<DIMENSIONS);
+               _persistentRecords._x[elementIndex]= x;
+               
+            }
+            
+            
+            
+            inline int getLevel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._level;
+            }
+            
+            
+            
+            inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._level = level;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._adjacentRanks;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._adjacentRanks = (adjacentRanks);
+            }
+            
+            
+            
+            inline int getAdjacentRanks(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               assertion(elementIndex>=0);
+               assertion(elementIndex<TWO_POWER_D);
+               return _persistentRecords._adjacentRanks[elementIndex];
+               
+            }
+            
+            
+            
+            inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               assertion(elementIndex>=0);
+               assertion(elementIndex<TWO_POWER_D);
+               _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
+               
+            }
+            
+            
+            
+            inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._adjacentSubtreeForksIntoOtherRank;
+            }
+            
+            
+            
+            inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
+            }
+            
+            
+            
+            inline bool getParentRegularPersistentSubgrid() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._parentRegularPersistentSubgrid;
+            }
+            
+            
+            
+            inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
+            }
+            
+            
+            
+            inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
+            }
+            
+            
+            
+            inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
+            }
+            
+            
+            /**
+             * Generated
+             */
+            static std::string toString(const InsideOutsideDomain& param);
+            
+            /**
+             * Generated
+             */
+            static std::string getInsideOutsideDomainMapping();
+            
+            /**
+             * Generated
+             */
+            static std::string toString(const RefinementControl& param);
+            
+            /**
+             * Generated
+             */
+            static std::string getRefinementControlMapping();
+            
+            /**
+             * Generated
+             */
+            std::string toString() const;
+            
+            /**
+             * Generated
+             */
+            void toString(std::ostream& out) const;
+            
+            
+            PersistentRecords getPersistentRecords() const;
+            /**
+             * Generated
+             */
+            VertexPacked convert() const;
+            
+            
+         #ifdef Parallel
+            protected:
+               static tarch::logging::Log _log;
+               
+               int _senderDestinationRank;
+               
+            public:
+               
+               /**
+                * Global that represents the mpi datatype.
+                * There are two variants: Datatype identifies only those attributes marked with
+                * parallelise. FullDatatype instead identifies the whole record with all fields.
+                */
+               static MPI_Datatype Datatype;
+               static MPI_Datatype FullDatatype;
+               
+               /**
+                * Initializes the data type for the mpi operations. Has to be called
+                * before the very first send or receive operation is called.
+                */
+               static void initDatatype();
+               
+               static void shutdownDatatype();
+               
+               /**
+                * @param communicateSleep -1 Data exchange through blocking mpi
+                * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                */
+               void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+               
+               void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+               
+               static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+               
+               int getSenderRank() const;
+               #endif
+      
+   };
+   
+   #ifndef DaStGenPackedPadding
+     #define DaStGenPackedPadding 1      // 32 bit version
+     // #define DaStGenPackedPadding 2   // 64 bit version
+   #endif
+   
+   
+   #ifdef PackedRecords
+      #pragma pack (push, DaStGenPackedPadding)
+   #endif
+   
+   /**
+    * @author This class is generated by DaStGen
+    * 		   DataStructureGenerator (DaStGen)
+    * 		   2007-2009 Wolfgang Eckhardt
+    * 		   2012      Tobias Weinzierl
+    *
+    * 		   build date: 09-02-2014 14:40
+    *
+    * @date   30/04/2017 02:49
+    */
+   class dem::records::VertexPacked { 
+      
       public:
-         /**
-          * Generated
-          */
-         Vertex();
          
-         /**
-          * Generated
-          */
-         Vertex(const PersistentRecords& persistentRecords);
-         
-         /**
-          * Generated
-          */
-         Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-         
-         /**
-          * Generated
-          */
-         Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-         
-         /**
-          * Generated
-          */
-         virtual ~Vertex();
-         
-         
-         inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._particles;
-         }
-         
-         
-         
-         inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._particles = particles;
-         }
-         
-         
-         
-         inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._particlesOnCoarserLevels;
-         }
-         
-         
-         
-         inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-         }
-         
-         
-         
-         inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._vetoCoarsening;
-         }
-         
-         
-         
-         inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._vetoCoarsening = vetoCoarsening;
-         }
-         
-         
-         
-         inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._isHangingNode;
-         }
-         
-         
-         
-         inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._isHangingNode = isHangingNode;
-         }
-         
-         
-         
-         inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._refinementControl;
-         }
-         
-         
-         
-         inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._refinementControl = refinementControl;
-         }
-         
-         
-         
-         inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._adjacentCellsHeight;
-         }
-         
-         
-         
-         inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-         }
-         
-         
-         
-         inline int getAdjacentCellsHeightOfPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _adjacentCellsHeightOfPreviousIteration;
-         }
-         
-         
-         
-         inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-         }
-         
-         
-         
-         inline int getNumberOfAdjacentRefinedCells() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _numberOfAdjacentRefinedCells;
-         }
-         
-         
-         
-         inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-         }
-         
-         
-         
-         inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._insideOutsideDomain;
-         }
-         
-         
-         
-         inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._insideOutsideDomain = insideOutsideDomain;
-         }
-         
-         
-         
-         /**
-          * Generated and optimized
-          * 
-          * If you realise a for loop using exclusively arrays (vectors) and compile 
-          * with -DUseManualAlignment you may add 
-          * \code
-          #pragma vector aligned
-          #pragma simd
-          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-          * 
-          * The alignment is tied to the unpacked records, i.e. for packed class
-          * variants the machine's natural alignment is switched off to recude the  
-          * memory footprint. Do not use any SSE/AVX operations or 
-          * vectorisation on the result for the packed variants, as the data is misaligned. 
-          * If you rely on vectorisation, convert the underlying record 
-          * into the unpacked version first. 
-          * 
-          * @see convert()
-          */
-         inline tarch::la::Vector<DIMENSIONS,double> getX() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._x;
-         }
-         
-         
-         
-         /**
-          * Generated and optimized
-          * 
-          * If you realise a for loop using exclusively arrays (vectors) and compile 
-          * with -DUseManualAlignment you may add 
-          * \code
-          #pragma vector aligned
-          #pragma simd
-          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-          * 
-          * The alignment is tied to the unpacked records, i.e. for packed class
-          * variants the machine's natural alignment is switched off to recude the  
-          * memory footprint. Do not use any SSE/AVX operations or 
-          * vectorisation on the result for the packed variants, as the data is misaligned. 
-          * If you rely on vectorisation, convert the underlying record 
-          * into the unpacked version first. 
-          * 
-          * @see convert()
-          */
-         inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._x = (x);
-         }
-         
-         
-         
-         inline double getX(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            assertion(elementIndex>=0);
-            assertion(elementIndex<DIMENSIONS);
-            return _persistentRecords._x[elementIndex];
+         typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
+         
+         typedef dem::records::Vertex::RefinementControl RefinementControl;
+         
+         struct PersistentRecords {
+            int _particles;
+            int _particlesOnCoarserLevels;
+            bool _vetoCoarsening;
+            int _adjacentCellsHeight;
+            tarch::la::Vector<DIMENSIONS,double> _x;
+            int _level;
+            tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
             
-         }
-         
-         
-         
-         inline void setX(int elementIndex, const double& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            assertion(elementIndex>=0);
-            assertion(elementIndex<DIMENSIONS);
-            _persistentRecords._x[elementIndex]= x;
-            
-         }
-         
-         
-         
-         inline int getLevel() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._level;
-         }
-         
-         
-         
-         inline void setLevel(const int& level) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._level = level;
-         }
-         
-         
-         
-         /**
-          * Generated and optimized
-          * 
-          * If you realise a for loop using exclusively arrays (vectors) and compile 
-          * with -DUseManualAlignment you may add 
-          * \code
-          #pragma vector aligned
-          #pragma simd
-          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-          * 
-          * The alignment is tied to the unpacked records, i.e. for packed class
-          * variants the machine's natural alignment is switched off to recude the  
-          * memory footprint. Do not use any SSE/AVX operations or 
-          * vectorisation on the result for the packed variants, as the data is misaligned. 
-          * If you rely on vectorisation, convert the underlying record 
-          * into the unpacked version first. 
-          * 
-          * @see convert()
-          */
-         inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._adjacentRanks;
-         }
-         
-         
-         
-         /**
-          * Generated and optimized
-          * 
-          * If you realise a for loop using exclusively arrays (vectors) and compile 
-          * with -DUseManualAlignment you may add 
-          * \code
-          #pragma vector aligned
-          #pragma simd
-          \endcode to this for loop to enforce your compiler to use SSE/AVX.
-          * 
-          * The alignment is tied to the unpacked records, i.e. for packed class
-          * variants the machine's natural alignment is switched off to recude the  
-          * memory footprint. Do not use any SSE/AVX operations or 
-          * vectorisation on the result for the packed variants, as the data is misaligned. 
-          * If you rely on vectorisation, convert the underlying record 
-          * into the unpacked version first. 
-          * 
-          * @see convert()
-          */
-         inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._adjacentRanks = (adjacentRanks);
-         }
-         
-         
-         
-         inline int getAdjacentRanks(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            assertion(elementIndex>=0);
-            assertion(elementIndex<TWO_POWER_D);
-            return _persistentRecords._adjacentRanks[elementIndex];
-            
-         }
-         
-         
-         
-         inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            assertion(elementIndex>=0);
-            assertion(elementIndex<TWO_POWER_D);
-            _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
-            
-         }
-         
-         
-         
-         inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._adjacentSubtreeForksIntoOtherRank;
-         }
-         
-         
-         
-         inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
-         }
-         
-         
-         
-         inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._parentRegularPersistentSubgrid;
-         }
-         
-         
-         
-         inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-         }
-         
-         
-         
-         inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
-         }
-         
-         
-         
-         inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-            _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-         }
-         
-         
-         /**
-          * Generated
-          */
-         static std::string toString(const InsideOutsideDomain& param);
-         
-         /**
-          * Generated
-          */
-         static std::string getInsideOutsideDomainMapping();
-         
-         /**
-          * Generated
-          */
-         static std::string toString(const RefinementControl& param);
-         
-         /**
-          * Generated
-          */
-         static std::string getRefinementControlMapping();
-         
-         /**
-          * Generated
-          */
-         std::string toString() const;
-         
-         /**
-          * Generated
-          */
-         void toString(std::ostream& out) const;
-         
-         
-         PersistentRecords getPersistentRecords() const;
-         /**
-          * Generated
-          */
-         VertexPacked convert() const;
-         
-         
-      #ifdef Parallel
-         protected:
-            static tarch::logging::Log _log;
-            
-            int _senderDestinationRank;
-            
-         public:
+            /** mapping of records:
+            || Member 	|| startbit 	|| length
+             |  isHangingNode	| startbit 0	| #bits 1
+             |  refinementControl	| startbit 1	| #bits 3
+             |  insideOutsideDomain	| startbit 4	| #bits 2
+             |  adjacentSubtreeForksIntoOtherRank	| startbit 6	| #bits 1
+             |  parentRegularPersistentSubgrid	| startbit 7	| #bits 1
+             |  parentRegularPersistentSubgridInPreviousIteration	| startbit 8	| #bits 1
+             */
+            short int _packedRecords0;
             
             /**
-             * Global that represents the mpi datatype.
-             * There are two variants: Datatype identifies only those attributes marked with
-             * parallelise. FullDatatype instead identifies the whole record with all fields.
+             * Generated
              */
-            static MPI_Datatype Datatype;
-            static MPI_Datatype FullDatatype;
+            PersistentRecords();
             
             /**
-             * Initializes the data type for the mpi operations. Has to be called
-             * before the very first send or receive operation is called.
+             * Generated
              */
-            static void initDatatype();
+            PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
             
-            static void shutdownDatatype();
             
-            /**
-             * @param communicateSleep -1 Data exchange through blocking mpi
-             * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-             * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-             */
-            void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-            
-            void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-            
-            static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-            
-            int getSenderRank() const;
-            
-      #endif
-         
-      };
-      
-      #ifndef DaStGenPackedPadding
-        #define DaStGenPackedPadding 1      // 32 bit version
-        // #define DaStGenPackedPadding 2   // 64 bit version
-      #endif
-      
-      
-      #ifdef PackedRecords
-         #pragma pack (push, DaStGenPackedPadding)
-      #endif
-      
-      /**
-       * @author This class is generated by DaStGen
-       * 		   DataStructureGenerator (DaStGen)
-       * 		   2007-2009 Wolfgang Eckhardt
-       * 		   2012      Tobias Weinzierl
-       *
-       * 		   build date: 09-02-2014 14:40
-       *
-       * @date   23/02/2017 16:40
-       */
-      class dem::records::VertexPacked { 
-         
-         public:
-            
-            typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
-            
-            typedef dem::records::Vertex::RefinementControl RefinementControl;
-            
-            struct PersistentRecords {
-               int _particles;
-               int _particlesOnCoarserLevels;
-               bool _vetoCoarsening;
-               int _adjacentCellsHeight;
-               tarch::la::Vector<DIMENSIONS,double> _x;
-               int _level;
-               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
-               bool _parentRegularPersistentSubgrid;
-               bool _parentRegularPersistentSubgridInPreviousIteration;
-               
-               /** mapping of records:
-               || Member 	|| startbit 	|| length
-                |  isHangingNode	| startbit 0	| #bits 1
-                |  refinementControl	| startbit 1	| #bits 3
-                |  insideOutsideDomain	| startbit 4	| #bits 2
-                |  adjacentSubtreeForksIntoOtherRank	| startbit 6	| #bits 1
-                */
-               short int _packedRecords0;
-               
-               /**
-                * Generated
-                */
-               PersistentRecords();
-               
-               /**
-                * Generated
-                */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-               
-               
-               inline int getParticles() const 
+            inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _particles;
-               }
-               
-               
-               
-               inline void setParticles(const int& particles) 
+               return _particles;
+            }
+            
+            
+            
+            inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _particles = particles;
-               }
-               
-               
-               
-               inline int getParticlesOnCoarserLevels() const 
+               _particles = particles;
+            }
+            
+            
+            
+            inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _particlesOnCoarserLevels;
-               }
-               
-               
-               
-               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+               return _particlesOnCoarserLevels;
+            }
+            
+            
+            
+            inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
-               }
-               
-               
-               
-               inline bool getVetoCoarsening() const 
+               _particlesOnCoarserLevels = particlesOnCoarserLevels;
+            }
+            
+            
+            
+            inline bool getVetoCoarsening() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _vetoCoarsening;
-               }
-               
-               
-               
-               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+               return _vetoCoarsening;
+            }
+            
+            
+            
+            inline void setVetoCoarsening(const bool& vetoCoarsening) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _vetoCoarsening = vetoCoarsening;
-               }
-               
-               
-               
-               inline bool getIsHangingNode() const 
+               _vetoCoarsening = vetoCoarsening;
+            }
+            
+            
+            
+            inline bool getIsHangingNode() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  short int mask = 1 << (0);
+               short int mask = 1 << (0);
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    return (tmp != 0);
-               }
-               
-               
-               
-               inline void setIsHangingNode(const bool& isHangingNode) 
+            }
+            
+            
+            
+            inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  short int mask = 1 << (0);
+               short int mask = 1 << (0);
    _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-               }
-               
-               
-               
-               inline RefinementControl getRefinementControl() const 
+            }
+            
+            
+            
+            inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  short int mask =  (1 << (3)) - 1;
+               short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (1));
    assertion(( tmp >= 0 &&  tmp <= 7));
    return (RefinementControl) tmp;
-               }
-               
-               
-               
-               inline void setRefinementControl(const RefinementControl& refinementControl) 
+            }
+            
+            
+            
+            inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  assertion((refinementControl >= 0 && refinementControl <= 7));
+               assertion((refinementControl >= 0 && refinementControl <= 7));
    short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
    _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
-               }
-               
-               
-               
-               inline int getAdjacentCellsHeight() const 
+            }
+            
+            
+            
+            inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _adjacentCellsHeight;
-               }
-               
-               
-               
-               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+               return _adjacentCellsHeight;
+            }
+            
+            
+            
+            inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _adjacentCellsHeight = adjacentCellsHeight;
-               }
-               
-               
-               
-               inline InsideOutsideDomain getInsideOutsideDomain() const 
+               _adjacentCellsHeight = adjacentCellsHeight;
+            }
+            
+            
+            
+            inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  short int mask =  (1 << (2)) - 1;
+               short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (4));
    assertion(( tmp >= 0 &&  tmp <= 2));
    return (InsideOutsideDomain) tmp;
-               }
-               
-               
-               
-               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+            }
+            
+            
+            
+            inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+               assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
    short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
    _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-               }
-               
-               
-               
-               /**
-                * Generated and optimized
-                * 
-                * If you realise a for loop using exclusively arrays (vectors) and compile 
-                * with -DUseManualAlignment you may add 
-                * \code
-                #pragma vector aligned
-                #pragma simd
-                \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                * 
-                * The alignment is tied to the unpacked records, i.e. for packed class
-                * variants the machine's natural alignment is switched off to recude the  
-                * memory footprint. Do not use any SSE/AVX operations or 
-                * vectorisation on the result for the packed variants, as the data is misaligned. 
-                * If you rely on vectorisation, convert the underlying record 
-                * into the unpacked version first. 
-                * 
-                * @see convert()
-                */
-               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline tarch::la::Vector<DIMENSIONS,double> getX() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _x;
-               }
-               
-               
-               
-               /**
-                * Generated and optimized
-                * 
-                * If you realise a for loop using exclusively arrays (vectors) and compile 
-                * with -DUseManualAlignment you may add 
-                * \code
-                #pragma vector aligned
-                #pragma simd
-                \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                * 
-                * The alignment is tied to the unpacked records, i.e. for packed class
-                * variants the machine's natural alignment is switched off to recude the  
-                * memory footprint. Do not use any SSE/AVX operations or 
-                * vectorisation on the result for the packed variants, as the data is misaligned. 
-                * If you rely on vectorisation, convert the underlying record 
-                * into the unpacked version first. 
-                * 
-                * @see convert()
-                */
-               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+               return _x;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _x = (x);
-               }
-               
-               
-               
-               inline int getLevel() const 
+               _x = (x);
+            }
+            
+            
+            
+            inline int getLevel() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _level;
-               }
-               
-               
-               
-               inline void setLevel(const int& level) 
+               return _level;
+            }
+            
+            
+            
+            inline void setLevel(const int& level) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _level = level;
-               }
-               
-               
-               
-               /**
-                * Generated and optimized
-                * 
-                * If you realise a for loop using exclusively arrays (vectors) and compile 
-                * with -DUseManualAlignment you may add 
-                * \code
-                #pragma vector aligned
-                #pragma simd
-                \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                * 
-                * The alignment is tied to the unpacked records, i.e. for packed class
-                * variants the machine's natural alignment is switched off to recude the  
-                * memory footprint. Do not use any SSE/AVX operations or 
-                * vectorisation on the result for the packed variants, as the data is misaligned. 
-                * If you rely on vectorisation, convert the underlying record 
-                * into the unpacked version first. 
-                * 
-                * @see convert()
-                */
-               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+               _level = level;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _adjacentRanks;
-               }
-               
-               
-               
-               /**
-                * Generated and optimized
-                * 
-                * If you realise a for loop using exclusively arrays (vectors) and compile 
-                * with -DUseManualAlignment you may add 
-                * \code
-                #pragma vector aligned
-                #pragma simd
-                \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                * 
-                * The alignment is tied to the unpacked records, i.e. for packed class
-                * variants the machine's natural alignment is switched off to recude the  
-                * memory footprint. Do not use any SSE/AVX operations or 
-                * vectorisation on the result for the packed variants, as the data is misaligned. 
-                * If you rely on vectorisation, convert the underlying record 
-                * into the unpacked version first. 
-                * 
-                * @see convert()
-                */
-               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+               return _adjacentRanks;
+            }
+            
+            
+            
+            /**
+             * Generated and optimized
+             * 
+             * If you realise a for loop using exclusively arrays (vectors) and compile 
+             * with -DUseManualAlignment you may add 
+             * \code
+             #pragma vector aligned
+             #pragma simd
+             \endcode to this for loop to enforce your compiler to use SSE/AVX.
+             * 
+             * The alignment is tied to the unpacked records, i.e. for packed class
+             * variants the machine's natural alignment is switched off to recude the  
+             * memory footprint. Do not use any SSE/AVX operations or 
+             * vectorisation on the result for the packed variants, as the data is misaligned. 
+             * If you rely on vectorisation, convert the underlying record 
+             * into the unpacked version first. 
+             * 
+             * @see convert()
+             */
+            inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _adjacentRanks = (adjacentRanks);
-               }
-               
-               
-               
-               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+               _adjacentRanks = (adjacentRanks);
+            }
+            
+            
+            
+            inline bool getAdjacentSubtreeForksIntoOtherRank() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  short int mask = 1 << (6);
+               short int mask = 1 << (6);
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    return (tmp != 0);
-               }
-               
-               
-               
-               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                  short int mask = 1 << (6);
-   _packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-               }
-               
-               
-               
-               inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                  return _parentRegularPersistentSubgrid;
-               }
-               
-               
-               
-               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                  _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-               }
-               
-               
-               
-               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                  return _parentRegularPersistentSubgridInPreviousIteration;
-               }
-               
-               
-               
-               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                  _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-               }
-               
-               
-               
-            };
+            }
             
+            
+            
+            inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               short int mask = 1 << (6);
+   _packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+            }
+            
+            
+            
+            inline bool getParentRegularPersistentSubgrid() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               short int mask = 1 << (7);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+            }
+            
+            
+            
+            inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               short int mask = 1 << (7);
+   _packedRecords0 = static_cast<short int>( parentRegularPersistentSubgrid ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+            }
+            
+            
+            
+            inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               short int mask = 1 << (8);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+            }
+            
+            
+            
+            inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               short int mask = 1 << (8);
+   _packedRecords0 = static_cast<short int>( parentRegularPersistentSubgridInPreviousIteration ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+            }
+            
+            
+            
+         };
          private: 
             PersistentRecords _persistentRecords;
             int _adjacentCellsHeightOfPreviousIteration;
@@ -1828,7 +1831,9 @@ namespace dem {
  __attribute__((always_inline))
  #endif 
  {
-               return _persistentRecords._parentRegularPersistentSubgrid;
+               short int mask = 1 << (7);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
             }
             
             
@@ -1838,7 +1843,8 @@ namespace dem {
  __attribute__((always_inline))
  #endif 
  {
-               _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
+               short int mask = 1 << (7);
+   _persistentRecords._packedRecords0 = static_cast<short int>( parentRegularPersistentSubgrid ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
             }
             
             
@@ -1848,7 +1854,9 @@ namespace dem {
  __attribute__((always_inline))
  #endif 
  {
-               return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
+               short int mask = 1 << (8);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
             }
             
             
@@ -1858,7 +1866,8 @@ namespace dem {
  __attribute__((always_inline))
  #endif 
  {
-               _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
+               short int mask = 1 << (8);
+   _persistentRecords._packedRecords0 = static_cast<short int>( parentRegularPersistentSubgridInPreviousIteration ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
             }
             
             
@@ -1936,329 +1945,326 @@ namespace dem {
                static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                
                int getSenderRank() const;
-               
-         #endif
+               #endif
+      
+   };
+   
+   #ifdef PackedRecords
+   #pragma pack (pop)
+   #endif
+   
+   
+   #elif defined(PersistentRegularSubtrees) && defined(Asserts) && !defined(Parallel)
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::Vertex { 
+         
+         public:
             
-         };
-         
-         #ifdef PackedRecords
-         #pragma pack (pop)
-         #endif
-         
-         
-         
-      #elif defined(PersistentRegularSubtrees) && defined(Asserts) && !defined(Parallel)
-         /**
-          * @author This class is generated by DaStGen
-          * 		   DataStructureGenerator (DaStGen)
-          * 		   2007-2009 Wolfgang Eckhardt
-          * 		   2012      Tobias Weinzierl
-          *
-          * 		   build date: 09-02-2014 14:40
-          *
-          * @date   23/02/2017 16:40
-          */
-         class dem::records::Vertex { 
+            typedef dem::records::VertexPacked Packed;
             
-            public:
+            enum InsideOutsideDomain {
+               Inside = 0, Boundary = 1, Outside = 2
+            };
+            
+            enum RefinementControl {
+               Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5
+            };
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               bool _isHangingNode;
+               RefinementControl _refinementControl;
+               int _adjacentCellsHeight;
+               InsideOutsideDomain _insideOutsideDomain;
+               #ifdef UseManualAlignment
+               tarch::la::Vector<DIMENSIONS,double> _x __attribute__((aligned(VectorisationAlignment)));
+               #else
+               tarch::la::Vector<DIMENSIONS,double> _x;
+               #endif
+               int _level;
+               bool _parentRegularPersistentSubgrid;
+               bool _parentRegularPersistentSubgridInPreviousIteration;
+               /**
+                * Generated
+                */
+               PersistentRecords();
                
-               typedef dem::records::VertexPacked Packed;
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
-               enum InsideOutsideDomain {
-                  Inside = 0, Boundary = 1, Outside = 2
-               };
                
-               enum RefinementControl {
-                  Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5
-               };
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
                
-               struct PersistentRecords {
-                  int _particles;
-                  int _particlesOnCoarserLevels;
-                  bool _vetoCoarsening;
-                  bool _isHangingNode;
-                  RefinementControl _refinementControl;
-                  int _adjacentCellsHeight;
-                  InsideOutsideDomain _insideOutsideDomain;
-                  #ifdef UseManualAlignment
-                  tarch::la::Vector<DIMENSIONS,double> _x __attribute__((aligned(VectorisationAlignment)));
-                  #else
-                  tarch::la::Vector<DIMENSIONS,double> _x;
-                  #endif
-                  int _level;
-                  bool _parentRegularPersistentSubgrid;
-                  bool _parentRegularPersistentSubgridInPreviousIteration;
-                  /**
-                   * Generated
-                   */
-                  PersistentRecords();
-                  
-                  /**
-                   * Generated
-                   */
-                  PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                  
-                  
-                  inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _particles;
-                  }
-                  
-                  
-                  
-                  inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _particles = particles;
-                  }
-                  
-                  
-                  
-                  inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _particlesOnCoarserLevels;
-                  }
-                  
-                  
-                  
-                  inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                  }
-                  
-                  
-                  
-                  inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _vetoCoarsening;
-                  }
-                  
-                  
-                  
-                  inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _vetoCoarsening = vetoCoarsening;
-                  }
-                  
-                  
-                  
-                  inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _isHangingNode;
-                  }
-                  
-                  
-                  
-                  inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _isHangingNode = isHangingNode;
-                  }
-                  
-                  
-                  
-                  inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _refinementControl;
-                  }
-                  
-                  
-                  
-                  inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _refinementControl = refinementControl;
-                  }
-                  
-                  
-                  
-                  inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _adjacentCellsHeight;
-                  }
-                  
-                  
-                  
-                  inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _adjacentCellsHeight = adjacentCellsHeight;
-                  }
-                  
-                  
-                  
-                  inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _insideOutsideDomain;
-                  }
-                  
-                  
-                  
-                  inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _insideOutsideDomain = insideOutsideDomain;
-                  }
-                  
-                  
-                  
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline tarch::la::Vector<DIMENSIONS,double> getX() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _x;
-                  }
-                  
-                  
-                  
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _x = (x);
-                  }
-                  
-                  
-                  
-                  inline int getLevel() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _level;
-                  }
-                  
-                  
-                  
-                  inline void setLevel(const int& level) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _level = level;
-                  }
-                  
-                  
-                  
-                  inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _parentRegularPersistentSubgrid;
-                  }
-                  
-                  
-                  
-                  inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                  }
-                  
-                  
-                  
-                  inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _parentRegularPersistentSubgridInPreviousIteration;
-                  }
-                  
-                  
-                  
-                  inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                  }
-                  
-                  
-                  
-               };
                
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _x = (x);
+               }
+               
+               
+               
+               inline int getLevel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _level = level;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               
+            };
             private: 
                PersistentRecords _persistentRecords;
                int _adjacentCellsHeightOfPreviousIteration;
@@ -2688,9078 +2694,9081 @@ namespace dem {
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
                   int getSenderRank() const;
-                  
-            #endif
+                  #endif
+         
+      };
+      
+      #ifndef DaStGenPackedPadding
+        #define DaStGenPackedPadding 1      // 32 bit version
+        // #define DaStGenPackedPadding 2   // 64 bit version
+      #endif
+      
+      
+      #ifdef PackedRecords
+         #pragma pack (push, DaStGenPackedPadding)
+      #endif
+      
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::VertexPacked { 
+         
+         public:
+            
+            typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
+            
+            typedef dem::records::Vertex::RefinementControl RefinementControl;
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               int _adjacentCellsHeight;
+               tarch::la::Vector<DIMENSIONS,double> _x;
+               int _level;
+               
+               /** mapping of records:
+               || Member 	|| startbit 	|| length
+                |  isHangingNode	| startbit 0	| #bits 1
+                |  refinementControl	| startbit 1	| #bits 3
+                |  insideOutsideDomain	| startbit 4	| #bits 2
+                |  parentRegularPersistentSubgrid	| startbit 6	| #bits 1
+                |  parentRegularPersistentSubgridInPreviousIteration	| startbit 7	| #bits 1
+                */
+               short int _packedRecords0;
+               
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (1));
+   assertion(( tmp >= 0 &&  tmp <= 5));
+   return (RefinementControl) tmp;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refinementControl >= 0 && refinementControl <= 5));
+   short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (4));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (InsideOutsideDomain) tmp;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _x = (x);
+               }
+               
+               
+               
+               inline int getLevel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _level = level;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   _packedRecords0 = static_cast<short int>( parentRegularPersistentSubgrid ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (7);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (7);
+   _packedRecords0 = static_cast<short int>( parentRegularPersistentSubgridInPreviousIteration ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
                
             };
-            
-            #ifndef DaStGenPackedPadding
-              #define DaStGenPackedPadding 1      // 32 bit version
-              // #define DaStGenPackedPadding 2   // 64 bit version
-            #endif
-            
-            
-            #ifdef PackedRecords
-               #pragma pack (push, DaStGenPackedPadding)
-            #endif
-            
-            /**
-             * @author This class is generated by DaStGen
-             * 		   DataStructureGenerator (DaStGen)
-             * 		   2007-2009 Wolfgang Eckhardt
-             * 		   2012      Tobias Weinzierl
-             *
-             * 		   build date: 09-02-2014 14:40
-             *
-             * @date   23/02/2017 16:40
-             */
-            class dem::records::VertexPacked { 
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
                
-               public:
-                  
-                  typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
-                  
-                  typedef dem::records::Vertex::RefinementControl RefinementControl;
-                  
-                  struct PersistentRecords {
-                     int _particles;
-                     int _particlesOnCoarserLevels;
-                     bool _vetoCoarsening;
-                     int _adjacentCellsHeight;
-                     tarch::la::Vector<DIMENSIONS,double> _x;
-                     int _level;
-                     bool _parentRegularPersistentSubgrid;
-                     bool _parentRegularPersistentSubgridInPreviousIteration;
-                     
-                     /** mapping of records:
-                     || Member 	|| startbit 	|| length
-                      |  isHangingNode	| startbit 0	| #bits 1
-                      |  refinementControl	| startbit 1	| #bits 3
-                      |  insideOutsideDomain	| startbit 4	| #bits 2
-                      */
-                     short int _packedRecords0;
-                     
-                     /**
-                      * Generated
-                      */
-                     PersistentRecords();
-                     
-                     /**
-                      * Generated
-                      */
-                     PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                     
-                     
-                     inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _particles;
-                     }
-                     
-                     
-                     
-                     inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _particles = particles;
-                     }
-                     
-                     
-                     
-                     inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _particlesOnCoarserLevels;
-                     }
-                     
-                     
-                     
-                     inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                     }
-                     
-                     
-                     
-                     inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _vetoCoarsening;
-                     }
-                     
-                     
-                     
-                     inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _vetoCoarsening = vetoCoarsening;
-                     }
-                     
-                     
-                     
-                     inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask = 1 << (0);
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   return (tmp != 0);
-                     }
-                     
-                     
-                     
-                     inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask = 1 << (0);
-   _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                     }
-                     
-                     
-                     
-                     inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 5));
-   return (RefinementControl) tmp;
-                     }
-                     
-                     
-                     
-                     inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion((refinementControl >= 0 && refinementControl <= 5));
-   short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
-   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                     }
-                     
-                     
-                     
-                     inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _adjacentCellsHeight;
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _adjacentCellsHeight = adjacentCellsHeight;
-                     }
-                     
-                     
-                     
-                     inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (4));
-   assertion(( tmp >= 0 &&  tmp <= 2));
-   return (InsideOutsideDomain) tmp;
-                     }
-                     
-                     
-                     
-                     inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
-   short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
-   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline tarch::la::Vector<DIMENSIONS,double> getX() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _x;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _x = (x);
-                     }
-                     
-                     
-                     
-                     inline int getLevel() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _level;
-                     }
-                     
-                     
-                     
-                     inline void setLevel(const int& level) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _level = level;
-                     }
-                     
-                     
-                     
-                     inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _parentRegularPersistentSubgrid;
-                     }
-                     
-                     
-                     
-                     inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                     }
-                     
-                     
-                     
-                     inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _parentRegularPersistentSubgridInPreviousIteration;
-                     }
-                     
-                     
-                     
-                     inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                     }
-                     
-                     
-                     
-                  };
-                  
-               private: 
-                  PersistentRecords _persistentRecords;
-                  int _adjacentCellsHeightOfPreviousIteration;
-                  int _numberOfAdjacentRefinedCells;
-                  
-               public:
-                  /**
-                   * Generated
-                   */
-                  VertexPacked();
-                  
-                  /**
-                   * Generated
-                   */
-                  VertexPacked(const PersistentRecords& persistentRecords);
-                  
-                  /**
-                   * Generated
-                   */
-                  VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                  
-                  /**
-                   * Generated
-                   */
-                  VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                  
-                  /**
-                   * Generated
-                   */
-                  virtual ~VertexPacked();
-                  
-                  
-                  inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._particles;
-                  }
-                  
-                  
-                  
-                  inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._particles = particles;
-                  }
-                  
-                  
-                  
-                  inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._particlesOnCoarserLevels;
-                  }
-                  
-                  
-                  
-                  inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                  }
-                  
-                  
-                  
-                  inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._vetoCoarsening;
-                  }
-                  
-                  
-                  
-                  inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._vetoCoarsening = vetoCoarsening;
-                  }
-                  
-                  
-                  
-                  inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     short int mask = 1 << (0);
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   return (tmp != 0);
-                  }
-                  
-                  
-                  
-                  inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     short int mask = 1 << (0);
-   _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                  }
-                  
-                  
-                  
-                  inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 5));
-   return (RefinementControl) tmp;
-                  }
-                  
-                  
-                  
-                  inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion((refinementControl >= 0 && refinementControl <= 5));
-   short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                  }
-                  
-                  
-                  
-                  inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._adjacentCellsHeight;
-                  }
-                  
-                  
-                  
-                  inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                  }
-                  
-                  
-                  
-                  inline int getAdjacentCellsHeightOfPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _adjacentCellsHeightOfPreviousIteration;
-                  }
-                  
-                  
-                  
-                  inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                  }
-                  
-                  
-                  
-                  inline int getNumberOfAdjacentRefinedCells() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _numberOfAdjacentRefinedCells;
-                  }
-                  
-                  
-                  
-                  inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                  }
-                  
-                  
-                  
-                  inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (4));
-   assertion(( tmp >= 0 &&  tmp <= 2));
-   return (InsideOutsideDomain) tmp;
-                  }
-                  
-                  
-                  
-                  inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
-   short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                  }
-                  
-                  
-                  
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline tarch::la::Vector<DIMENSIONS,double> getX() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._x;
-                  }
-                  
-                  
-                  
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._x = (x);
-                  }
-                  
-                  
-                  
-                  inline double getX(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<DIMENSIONS);
-                     return _persistentRecords._x[elementIndex];
-                     
-                  }
-                  
-                  
-                  
-                  inline void setX(int elementIndex, const double& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<DIMENSIONS);
-                     _persistentRecords._x[elementIndex]= x;
-                     
-                  }
-                  
-                  
-                  
-                  inline int getLevel() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._level;
-                  }
-                  
-                  
-                  
-                  inline void setLevel(const int& level) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._level = level;
-                  }
-                  
-                  
-                  
-                  inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._parentRegularPersistentSubgrid;
-                  }
-                  
-                  
-                  
-                  inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                  }
-                  
-                  
-                  
-                  inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
-                  }
-                  
-                  
-                  
-                  inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                  }
-                  
-                  
-                  /**
-                   * Generated
-                   */
-                  static std::string toString(const InsideOutsideDomain& param);
-                  
-                  /**
-                   * Generated
-                   */
-                  static std::string getInsideOutsideDomainMapping();
-                  
-                  /**
-                   * Generated
-                   */
-                  static std::string toString(const RefinementControl& param);
-                  
-                  /**
-                   * Generated
-                   */
-                  static std::string getRefinementControlMapping();
-                  
-                  /**
-                   * Generated
-                   */
-                  std::string toString() const;
-                  
-                  /**
-                   * Generated
-                   */
-                  void toString(std::ostream& out) const;
-                  
-                  
-                  PersistentRecords getPersistentRecords() const;
-                  /**
-                   * Generated
-                   */
-                  Vertex convert() const;
-                  
-                  
-               #ifdef Parallel
-                  protected:
-                     static tarch::logging::Log _log;
-                     
-                     int _senderDestinationRank;
-                     
-                  public:
-                     
-                     /**
-                      * Global that represents the mpi datatype.
-                      * There are two variants: Datatype identifies only those attributes marked with
-                      * parallelise. FullDatatype instead identifies the whole record with all fields.
-                      */
-                     static MPI_Datatype Datatype;
-                     static MPI_Datatype FullDatatype;
-                     
-                     /**
-                      * Initializes the data type for the mpi operations. Has to be called
-                      * before the very first send or receive operation is called.
-                      */
-                     static void initDatatype();
-                     
-                     static void shutdownDatatype();
-                     
-                     /**
-                      * @param communicateSleep -1 Data exchange through blocking mpi
-                      * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                      * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                      */
-                     void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                     
-                     void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                     
-                     static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                     
-                     int getSenderRank() const;
-                     
-               #endif
-                  
-               };
-               
-               #ifdef PackedRecords
-               #pragma pack (pop)
-               #endif
-               
-               
-               
-            
-         #elif defined(Parallel) && !defined(PersistentRegularSubtrees) && defined(Asserts)
-            /**
-             * @author This class is generated by DaStGen
-             * 		   DataStructureGenerator (DaStGen)
-             * 		   2007-2009 Wolfgang Eckhardt
-             * 		   2012      Tobias Weinzierl
-             *
-             * 		   build date: 09-02-2014 14:40
-             *
-             * @date   23/02/2017 16:40
-             */
-            class dem::records::Vertex { 
-               
-               public:
-                  
-                  typedef dem::records::VertexPacked Packed;
-                  
-                  enum InsideOutsideDomain {
-                     Inside = 0, Boundary = 1, Outside = 2
-                  };
-                  
-                  enum RefinementControl {
-                     Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5, RefineDueToJoinThoughWorkerIsAlreadyErasing = 6, EnforceRefinementTriggered = 7
-                  };
-                  
-                  struct PersistentRecords {
-                     int _particles;
-                     int _particlesOnCoarserLevels;
-                     bool _vetoCoarsening;
-                     bool _isHangingNode;
-                     RefinementControl _refinementControl;
-                     int _adjacentCellsHeight;
-                     InsideOutsideDomain _insideOutsideDomain;
-                     #ifdef UseManualAlignment
-                     tarch::la::Vector<DIMENSIONS,double> _x __attribute__((aligned(VectorisationAlignment)));
-                     #else
-                     tarch::la::Vector<DIMENSIONS,double> _x;
-                     #endif
-                     int _level;
-                     #ifdef UseManualAlignment
-                     tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks __attribute__((aligned(VectorisationAlignment)));
-                     #else
-                     tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
-                     #endif
-                     bool _adjacentSubtreeForksIntoOtherRank;
-                     /**
-                      * Generated
-                      */
-                     PersistentRecords();
-                     
-                     /**
-                      * Generated
-                      */
-                     PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                     
-                     
-                     inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _particles;
-                     }
-                     
-                     
-                     
-                     inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _particles = particles;
-                     }
-                     
-                     
-                     
-                     inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _particlesOnCoarserLevels;
-                     }
-                     
-                     
-                     
-                     inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                     }
-                     
-                     
-                     
-                     inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _vetoCoarsening;
-                     }
-                     
-                     
-                     
-                     inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _vetoCoarsening = vetoCoarsening;
-                     }
-                     
-                     
-                     
-                     inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _isHangingNode;
-                     }
-                     
-                     
-                     
-                     inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _isHangingNode = isHangingNode;
-                     }
-                     
-                     
-                     
-                     inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _refinementControl;
-                     }
-                     
-                     
-                     
-                     inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _refinementControl = refinementControl;
-                     }
-                     
-                     
-                     
-                     inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _adjacentCellsHeight;
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _adjacentCellsHeight = adjacentCellsHeight;
-                     }
-                     
-                     
-                     
-                     inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _insideOutsideDomain;
-                     }
-                     
-                     
-                     
-                     inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _insideOutsideDomain = insideOutsideDomain;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline tarch::la::Vector<DIMENSIONS,double> getX() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _x;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _x = (x);
-                     }
-                     
-                     
-                     
-                     inline int getLevel() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _level;
-                     }
-                     
-                     
-                     
-                     inline void setLevel(const int& level) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _level = level;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _adjacentRanks;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _adjacentRanks = (adjacentRanks);
-                     }
-                     
-                     
-                     
-                     inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _adjacentSubtreeForksIntoOtherRank;
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
-                     }
-                     
-                     
-                     
-                  };
-                  
-               private: 
-                  PersistentRecords _persistentRecords;
-                  int _adjacentCellsHeightOfPreviousIteration;
-                  int _numberOfAdjacentRefinedCells;
-                  
-               public:
-                  /**
-                   * Generated
-                   */
-                  Vertex();
-                  
-                  /**
-                   * Generated
-                   */
-                  Vertex(const PersistentRecords& persistentRecords);
-                  
-                  /**
-                   * Generated
-                   */
-                  Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                  
-                  /**
-                   * Generated
-                   */
-                  Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                  
-                  /**
-                   * Generated
-                   */
-                  virtual ~Vertex();
-                  
-                  
-                  inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._particles;
-                  }
-                  
-                  
-                  
-                  inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._particles = particles;
-                  }
-                  
-                  
-                  
-                  inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._particlesOnCoarserLevels;
-                  }
-                  
-                  
-                  
-                  inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                  }
-                  
-                  
-                  
-                  inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._vetoCoarsening;
-                  }
-                  
-                  
-                  
-                  inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._vetoCoarsening = vetoCoarsening;
-                  }
-                  
-                  
-                  
-                  inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._isHangingNode;
-                  }
-                  
-                  
-                  
-                  inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._isHangingNode = isHangingNode;
-                  }
-                  
-                  
-                  
-                  inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._refinementControl;
-                  }
-                  
-                  
-                  
-                  inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._refinementControl = refinementControl;
-                  }
-                  
-                  
-                  
-                  inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._adjacentCellsHeight;
-                  }
-                  
-                  
-                  
-                  inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                  }
-                  
-                  
-                  
-                  inline int getAdjacentCellsHeightOfPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _adjacentCellsHeightOfPreviousIteration;
-                  }
-                  
-                  
-                  
-                  inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                  }
-                  
-                  
-                  
-                  inline int getNumberOfAdjacentRefinedCells() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _numberOfAdjacentRefinedCells;
-                  }
-                  
-                  
-                  
-                  inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                  }
-                  
-                  
-                  
-                  inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._insideOutsideDomain;
-                  }
-                  
-                  
-                  
-                  inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._insideOutsideDomain = insideOutsideDomain;
-                  }
-                  
-                  
-                  
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline tarch::la::Vector<DIMENSIONS,double> getX() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._x;
-                  }
-                  
-                  
-                  
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._x = (x);
-                  }
-                  
-                  
-                  
-                  inline double getX(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<DIMENSIONS);
-                     return _persistentRecords._x[elementIndex];
-                     
-                  }
-                  
-                  
-                  
-                  inline void setX(int elementIndex, const double& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<DIMENSIONS);
-                     _persistentRecords._x[elementIndex]= x;
-                     
-                  }
-                  
-                  
-                  
-                  inline int getLevel() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._level;
-                  }
-                  
-                  
-                  
-                  inline void setLevel(const int& level) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._level = level;
-                  }
-                  
-                  
-                  
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._adjacentRanks;
-                  }
-                  
-                  
-                  
-                  /**
-                   * Generated and optimized
-                   * 
-                   * If you realise a for loop using exclusively arrays (vectors) and compile 
-                   * with -DUseManualAlignment you may add 
-                   * \code
-                   #pragma vector aligned
-                   #pragma simd
-                   \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                   * 
-                   * The alignment is tied to the unpacked records, i.e. for packed class
-                   * variants the machine's natural alignment is switched off to recude the  
-                   * memory footprint. Do not use any SSE/AVX operations or 
-                   * vectorisation on the result for the packed variants, as the data is misaligned. 
-                   * If you rely on vectorisation, convert the underlying record 
-                   * into the unpacked version first. 
-                   * 
-                   * @see convert()
-                   */
-                  inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._adjacentRanks = (adjacentRanks);
-                  }
-                  
-                  
-                  
-                  inline int getAdjacentRanks(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<TWO_POWER_D);
-                     return _persistentRecords._adjacentRanks[elementIndex];
-                     
-                  }
-                  
-                  
-                  
-                  inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     assertion(elementIndex>=0);
-                     assertion(elementIndex<TWO_POWER_D);
-                     _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
-                     
-                  }
-                  
-                  
-                  
-                  inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     return _persistentRecords._adjacentSubtreeForksIntoOtherRank;
-                  }
-                  
-                  
-                  
-                  inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                     _persistentRecords._adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
-                  }
-                  
-                  
-                  /**
-                   * Generated
-                   */
-                  static std::string toString(const InsideOutsideDomain& param);
-                  
-                  /**
-                   * Generated
-                   */
-                  static std::string getInsideOutsideDomainMapping();
-                  
-                  /**
-                   * Generated
-                   */
-                  static std::string toString(const RefinementControl& param);
-                  
-                  /**
-                   * Generated
-                   */
-                  static std::string getRefinementControlMapping();
-                  
-                  /**
-                   * Generated
-                   */
-                  std::string toString() const;
-                  
-                  /**
-                   * Generated
-                   */
-                  void toString(std::ostream& out) const;
-                  
-                  
-                  PersistentRecords getPersistentRecords() const;
-                  /**
-                   * Generated
-                   */
-                  VertexPacked convert() const;
-                  
-                  
-               #ifdef Parallel
-                  protected:
-                     static tarch::logging::Log _log;
-                     
-                     int _senderDestinationRank;
-                     
-                  public:
-                     
-                     /**
-                      * Global that represents the mpi datatype.
-                      * There are two variants: Datatype identifies only those attributes marked with
-                      * parallelise. FullDatatype instead identifies the whole record with all fields.
-                      */
-                     static MPI_Datatype Datatype;
-                     static MPI_Datatype FullDatatype;
-                     
-                     /**
-                      * Initializes the data type for the mpi operations. Has to be called
-                      * before the very first send or receive operation is called.
-                      */
-                     static void initDatatype();
-                     
-                     static void shutdownDatatype();
-                     
-                     /**
-                      * @param communicateSleep -1 Data exchange through blocking mpi
-                      * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                      * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                      */
-                     void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                     
-                     void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                     
-                     static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                     
-                     int getSenderRank() const;
-                     
-               #endif
-                  
-               };
-               
-               #ifndef DaStGenPackedPadding
-                 #define DaStGenPackedPadding 1      // 32 bit version
-                 // #define DaStGenPackedPadding 2   // 64 bit version
-               #endif
-               
-               
-               #ifdef PackedRecords
-                  #pragma pack (push, DaStGenPackedPadding)
-               #endif
+            public:
+               /**
+                * Generated
+                */
+               VertexPacked();
                
                /**
-                * @author This class is generated by DaStGen
-                * 		   DataStructureGenerator (DaStGen)
-                * 		   2007-2009 Wolfgang Eckhardt
-                * 		   2012      Tobias Weinzierl
-                *
-                * 		   build date: 09-02-2014 14:40
-                *
-                * @date   23/02/2017 16:40
+                * Generated
                 */
-               class dem::records::VertexPacked { 
-                  
-                  public:
-                     
-                     typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
-                     
-                     typedef dem::records::Vertex::RefinementControl RefinementControl;
-                     
-                     struct PersistentRecords {
-                        int _particles;
-                        int _particlesOnCoarserLevels;
-                        bool _vetoCoarsening;
-                        int _adjacentCellsHeight;
-                        tarch::la::Vector<DIMENSIONS,double> _x;
-                        int _level;
-                        tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
-                        
-                        /** mapping of records:
-                        || Member 	|| startbit 	|| length
-                         |  isHangingNode	| startbit 0	| #bits 1
-                         |  refinementControl	| startbit 1	| #bits 3
-                         |  insideOutsideDomain	| startbit 4	| #bits 2
-                         |  adjacentSubtreeForksIntoOtherRank	| startbit 6	| #bits 1
-                         */
-                        short int _packedRecords0;
-                        
-                        /**
-                         * Generated
-                         */
-                        PersistentRecords();
-                        
-                        /**
-                         * Generated
-                         */
-                        PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                        
-                        
-                        inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _particles;
-                        }
-                        
-                        
-                        
-                        inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _particles = particles;
-                        }
-                        
-                        
-                        
-                        inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _particlesOnCoarserLevels;
-                        }
-                        
-                        
-                        
-                        inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                        }
-                        
-                        
-                        
-                        inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _vetoCoarsening;
-                        }
-                        
-                        
-                        
-                        inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _vetoCoarsening = vetoCoarsening;
-                        }
-                        
-                        
-                        
-                        inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask = 1 << (0);
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   return (tmp != 0);
-                        }
-                        
-                        
-                        
-                        inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask = 1 << (0);
-   _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                        }
-                        
-                        
-                        
-                        inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 7));
-   return (RefinementControl) tmp;
-                        }
-                        
-                        
-                        
-                        inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           assertion((refinementControl >= 0 && refinementControl <= 7));
-   short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
-   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                        }
-                        
-                        
-                        
-                        inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _adjacentCellsHeight;
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _adjacentCellsHeight = adjacentCellsHeight;
-                        }
-                        
-                        
-                        
-                        inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (4));
-   assertion(( tmp >= 0 &&  tmp <= 2));
-   return (InsideOutsideDomain) tmp;
-                        }
-                        
-                        
-                        
-                        inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
-   short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
-   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                        }
-                        
-                        
-                        
-                        /**
-                         * Generated and optimized
-                         * 
-                         * If you realise a for loop using exclusively arrays (vectors) and compile 
-                         * with -DUseManualAlignment you may add 
-                         * \code
-                         #pragma vector aligned
-                         #pragma simd
-                         \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                         * 
-                         * The alignment is tied to the unpacked records, i.e. for packed class
-                         * variants the machine's natural alignment is switched off to recude the  
-                         * memory footprint. Do not use any SSE/AVX operations or 
-                         * vectorisation on the result for the packed variants, as the data is misaligned. 
-                         * If you rely on vectorisation, convert the underlying record 
-                         * into the unpacked version first. 
-                         * 
-                         * @see convert()
-                         */
-                        inline tarch::la::Vector<DIMENSIONS,double> getX() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _x;
-                        }
-                        
-                        
-                        
-                        /**
-                         * Generated and optimized
-                         * 
-                         * If you realise a for loop using exclusively arrays (vectors) and compile 
-                         * with -DUseManualAlignment you may add 
-                         * \code
-                         #pragma vector aligned
-                         #pragma simd
-                         \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                         * 
-                         * The alignment is tied to the unpacked records, i.e. for packed class
-                         * variants the machine's natural alignment is switched off to recude the  
-                         * memory footprint. Do not use any SSE/AVX operations or 
-                         * vectorisation on the result for the packed variants, as the data is misaligned. 
-                         * If you rely on vectorisation, convert the underlying record 
-                         * into the unpacked version first. 
-                         * 
-                         * @see convert()
-                         */
-                        inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _x = (x);
-                        }
-                        
-                        
-                        
-                        inline int getLevel() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _level;
-                        }
-                        
-                        
-                        
-                        inline void setLevel(const int& level) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _level = level;
-                        }
-                        
-                        
-                        
-                        /**
-                         * Generated and optimized
-                         * 
-                         * If you realise a for loop using exclusively arrays (vectors) and compile 
-                         * with -DUseManualAlignment you may add 
-                         * \code
-                         #pragma vector aligned
-                         #pragma simd
-                         \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                         * 
-                         * The alignment is tied to the unpacked records, i.e. for packed class
-                         * variants the machine's natural alignment is switched off to recude the  
-                         * memory footprint. Do not use any SSE/AVX operations or 
-                         * vectorisation on the result for the packed variants, as the data is misaligned. 
-                         * If you rely on vectorisation, convert the underlying record 
-                         * into the unpacked version first. 
-                         * 
-                         * @see convert()
-                         */
-                        inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _adjacentRanks;
-                        }
-                        
-                        
-                        
-                        /**
-                         * Generated and optimized
-                         * 
-                         * If you realise a for loop using exclusively arrays (vectors) and compile 
-                         * with -DUseManualAlignment you may add 
-                         * \code
-                         #pragma vector aligned
-                         #pragma simd
-                         \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                         * 
-                         * The alignment is tied to the unpacked records, i.e. for packed class
-                         * variants the machine's natural alignment is switched off to recude the  
-                         * memory footprint. Do not use any SSE/AVX operations or 
-                         * vectorisation on the result for the packed variants, as the data is misaligned. 
-                         * If you rely on vectorisation, convert the underlying record 
-                         * into the unpacked version first. 
-                         * 
-                         * @see convert()
-                         */
-                        inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _adjacentRanks = (adjacentRanks);
-                        }
-                        
-                        
-                        
-                        inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask = 1 << (6);
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   return (tmp != 0);
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask = 1 << (6);
-   _packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                        }
-                        
-                        
-                        
-                     };
-                     
-                  private: 
-                     PersistentRecords _persistentRecords;
-                     int _adjacentCellsHeightOfPreviousIteration;
-                     int _numberOfAdjacentRefinedCells;
-                     
-                  public:
-                     /**
-                      * Generated
-                      */
-                     VertexPacked();
-                     
-                     /**
-                      * Generated
-                      */
-                     VertexPacked(const PersistentRecords& persistentRecords);
-                     
-                     /**
-                      * Generated
-                      */
-                     VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                     
-                     /**
-                      * Generated
-                      */
-                     VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                     
-                     /**
-                      * Generated
-                      */
-                     virtual ~VertexPacked();
-                     
-                     
-                     inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._particles;
-                     }
-                     
-                     
-                     
-                     inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._particles = particles;
-                     }
-                     
-                     
-                     
-                     inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._particlesOnCoarserLevels;
-                     }
-                     
-                     
-                     
-                     inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                     }
-                     
-                     
-                     
-                     inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._vetoCoarsening;
-                     }
-                     
-                     
-                     
-                     inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._vetoCoarsening = vetoCoarsening;
-                     }
-                     
-                     
-                     
-                     inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask = 1 << (0);
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   return (tmp != 0);
-                     }
-                     
-                     
-                     
-                     inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask = 1 << (0);
-   _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                     }
-                     
-                     
-                     
-                     inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 7));
-   return (RefinementControl) tmp;
-                     }
-                     
-                     
-                     
-                     inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion((refinementControl >= 0 && refinementControl <= 7));
-   short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                     }
-                     
-                     
-                     
-                     inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._adjacentCellsHeight;
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                     }
-                     
-                     
-                     
-                     inline int getAdjacentCellsHeightOfPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _adjacentCellsHeightOfPreviousIteration;
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                     }
-                     
-                     
-                     
-                     inline int getNumberOfAdjacentRefinedCells() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _numberOfAdjacentRefinedCells;
-                     }
-                     
-                     
-                     
-                     inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                     }
-                     
-                     
-                     
-                     inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (4));
-   assertion(( tmp >= 0 &&  tmp <= 2));
-   return (InsideOutsideDomain) tmp;
-                     }
-                     
-                     
-                     
-                     inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
-   short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline tarch::la::Vector<DIMENSIONS,double> getX() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._x;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._x = (x);
-                     }
-                     
-                     
-                     
-                     inline double getX(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion(elementIndex>=0);
-                        assertion(elementIndex<DIMENSIONS);
-                        return _persistentRecords._x[elementIndex];
-                        
-                     }
-                     
-                     
-                     
-                     inline void setX(int elementIndex, const double& x) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion(elementIndex>=0);
-                        assertion(elementIndex<DIMENSIONS);
-                        _persistentRecords._x[elementIndex]= x;
-                        
-                     }
-                     
-                     
-                     
-                     inline int getLevel() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._level;
-                     }
-                     
-                     
-                     
-                     inline void setLevel(const int& level) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._level = level;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._adjacentRanks;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._adjacentRanks = (adjacentRanks);
-                     }
-                     
-                     
-                     
-                     inline int getAdjacentRanks(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion(elementIndex>=0);
-                        assertion(elementIndex<TWO_POWER_D);
-                        return _persistentRecords._adjacentRanks[elementIndex];
-                        
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion(elementIndex>=0);
-                        assertion(elementIndex<TWO_POWER_D);
-                        _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
-                        
-                     }
-                     
-                     
-                     
-                     inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask = 1 << (6);
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   return (tmp != 0);
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        short int mask = 1 << (6);
-   _persistentRecords._packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                     }
-                     
-                     
-                     /**
-                      * Generated
-                      */
-                     static std::string toString(const InsideOutsideDomain& param);
-                     
-                     /**
-                      * Generated
-                      */
-                     static std::string getInsideOutsideDomainMapping();
-                     
-                     /**
-                      * Generated
-                      */
-                     static std::string toString(const RefinementControl& param);
-                     
-                     /**
-                      * Generated
-                      */
-                     static std::string getRefinementControlMapping();
-                     
-                     /**
-                      * Generated
-                      */
-                     std::string toString() const;
-                     
-                     /**
-                      * Generated
-                      */
-                     void toString(std::ostream& out) const;
-                     
-                     
-                     PersistentRecords getPersistentRecords() const;
-                     /**
-                      * Generated
-                      */
-                     Vertex convert() const;
-                     
-                     
-                  #ifdef Parallel
-                     protected:
-                        static tarch::logging::Log _log;
-                        
-                        int _senderDestinationRank;
-                        
-                     public:
-                        
-                        /**
-                         * Global that represents the mpi datatype.
-                         * There are two variants: Datatype identifies only those attributes marked with
-                         * parallelise. FullDatatype instead identifies the whole record with all fields.
-                         */
-                        static MPI_Datatype Datatype;
-                        static MPI_Datatype FullDatatype;
-                        
-                        /**
-                         * Initializes the data type for the mpi operations. Has to be called
-                         * before the very first send or receive operation is called.
-                         */
-                        static void initDatatype();
-                        
-                        static void shutdownDatatype();
-                        
-                        /**
-                         * @param communicateSleep -1 Data exchange through blocking mpi
-                         * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                         * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                         */
-                        void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                        
-                        void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                        
-                        static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                        
-                        int getSenderRank() const;
-                        
-                  #endif
-                     
-                  };
-                  
-                  #ifdef PackedRecords
-                  #pragma pack (pop)
-                  #endif
-                  
-                  
-                  
+               VertexPacked(const PersistentRecords& persistentRecords);
                
-            #elif defined(Parallel) && defined(PersistentRegularSubtrees) && !defined(Asserts)
                /**
-                * @author This class is generated by DaStGen
-                * 		   DataStructureGenerator (DaStGen)
-                * 		   2007-2009 Wolfgang Eckhardt
-                * 		   2012      Tobias Weinzierl
-                *
-                * 		   build date: 09-02-2014 14:40
-                *
-                * @date   23/02/2017 16:40
+                * Generated
                 */
-               class dem::records::Vertex { 
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               virtual ~VertexPacked();
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (1));
+   assertion(( tmp >= 0 &&  tmp <= 5));
+   return (RefinementControl) tmp;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refinementControl >= 0 && refinementControl <= 5));
+   short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (4));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (InsideOutsideDomain) tmp;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._x = (x);
+               }
+               
+               
+               
+               inline double getX(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  return _persistentRecords._x[elementIndex];
                   
-                  public:
-                     
-                     typedef dem::records::VertexPacked Packed;
-                     
-                     enum InsideOutsideDomain {
-                        Inside = 0, Boundary = 1, Outside = 2
-                     };
-                     
-                     enum RefinementControl {
-                        Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5, RefineDueToJoinThoughWorkerIsAlreadyErasing = 6, EnforceRefinementTriggered = 7
-                     };
-                     
-                     struct PersistentRecords {
-                        int _particles;
-                        int _particlesOnCoarserLevels;
-                        bool _vetoCoarsening;
-                        bool _isHangingNode;
-                        RefinementControl _refinementControl;
-                        int _adjacentCellsHeight;
-                        InsideOutsideDomain _insideOutsideDomain;
-                        #ifdef UseManualAlignment
-                        tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks __attribute__((aligned(VectorisationAlignment)));
-                        #else
-                        tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
-                        #endif
-                        bool _adjacentSubtreeForksIntoOtherRank;
-                        bool _parentRegularPersistentSubgrid;
-                        bool _parentRegularPersistentSubgridInPreviousIteration;
-                        /**
-                         * Generated
-                         */
-                        PersistentRecords();
-                        
-                        /**
-                         * Generated
-                         */
-                        PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                        
-                        
-                        inline int getParticles() const 
+               }
+               
+               
+               
+               inline void setX(int elementIndex, const double& x) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _particles;
-                        }
-                        
-                        
-                        
-                        inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _particles = particles;
-                        }
-                        
-                        
-                        
-                        inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _particlesOnCoarserLevels;
-                        }
-                        
-                        
-                        
-                        inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                        }
-                        
-                        
-                        
-                        inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _vetoCoarsening;
-                        }
-                        
-                        
-                        
-                        inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _vetoCoarsening = vetoCoarsening;
-                        }
-                        
-                        
-                        
-                        inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _isHangingNode;
-                        }
-                        
-                        
-                        
-                        inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _isHangingNode = isHangingNode;
-                        }
-                        
-                        
-                        
-                        inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _refinementControl;
-                        }
-                        
-                        
-                        
-                        inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _refinementControl = refinementControl;
-                        }
-                        
-                        
-                        
-                        inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _adjacentCellsHeight;
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _adjacentCellsHeight = adjacentCellsHeight;
-                        }
-                        
-                        
-                        
-                        inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _insideOutsideDomain;
-                        }
-                        
-                        
-                        
-                        inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _insideOutsideDomain = insideOutsideDomain;
-                        }
-                        
-                        
-                        
-                        /**
-                         * Generated and optimized
-                         * 
-                         * If you realise a for loop using exclusively arrays (vectors) and compile 
-                         * with -DUseManualAlignment you may add 
-                         * \code
-                         #pragma vector aligned
-                         #pragma simd
-                         \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                         * 
-                         * The alignment is tied to the unpacked records, i.e. for packed class
-                         * variants the machine's natural alignment is switched off to recude the  
-                         * memory footprint. Do not use any SSE/AVX operations or 
-                         * vectorisation on the result for the packed variants, as the data is misaligned. 
-                         * If you rely on vectorisation, convert the underlying record 
-                         * into the unpacked version first. 
-                         * 
-                         * @see convert()
-                         */
-                        inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _adjacentRanks;
-                        }
-                        
-                        
-                        
-                        /**
-                         * Generated and optimized
-                         * 
-                         * If you realise a for loop using exclusively arrays (vectors) and compile 
-                         * with -DUseManualAlignment you may add 
-                         * \code
-                         #pragma vector aligned
-                         #pragma simd
-                         \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                         * 
-                         * The alignment is tied to the unpacked records, i.e. for packed class
-                         * variants the machine's natural alignment is switched off to recude the  
-                         * memory footprint. Do not use any SSE/AVX operations or 
-                         * vectorisation on the result for the packed variants, as the data is misaligned. 
-                         * If you rely on vectorisation, convert the underlying record 
-                         * into the unpacked version first. 
-                         * 
-                         * @see convert()
-                         */
-                        inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _adjacentRanks = (adjacentRanks);
-                        }
-                        
-                        
-                        
-                        inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _adjacentSubtreeForksIntoOtherRank;
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
-                        }
-                        
-                        
-                        
-                        inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _parentRegularPersistentSubgrid;
-                        }
-                        
-                        
-                        
-                        inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                        }
-                        
-                        
-                        
-                        inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _parentRegularPersistentSubgridInPreviousIteration;
-                        }
-                        
-                        
-                        
-                        inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                        }
-                        
-                        
-                        
-                     };
-                     
-                  private: 
-                     PersistentRecords _persistentRecords;
-                     int _adjacentCellsHeightOfPreviousIteration;
-                     int _numberOfAdjacentRefinedCells;
-                     
-                  public:
-                     /**
-                      * Generated
-                      */
-                     Vertex();
-                     
-                     /**
-                      * Generated
-                      */
-                     Vertex(const PersistentRecords& persistentRecords);
-                     
-                     /**
-                      * Generated
-                      */
-                     Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                     
-                     /**
-                      * Generated
-                      */
-                     Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                     
-                     /**
-                      * Generated
-                      */
-                     virtual ~Vertex();
-                     
-                     
-                     inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._particles;
-                     }
-                     
-                     
-                     
-                     inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._particles = particles;
-                     }
-                     
-                     
-                     
-                     inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._particlesOnCoarserLevels;
-                     }
-                     
-                     
-                     
-                     inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                     }
-                     
-                     
-                     
-                     inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._vetoCoarsening;
-                     }
-                     
-                     
-                     
-                     inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._vetoCoarsening = vetoCoarsening;
-                     }
-                     
-                     
-                     
-                     inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._isHangingNode;
-                     }
-                     
-                     
-                     
-                     inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._isHangingNode = isHangingNode;
-                     }
-                     
-                     
-                     
-                     inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._refinementControl;
-                     }
-                     
-                     
-                     
-                     inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._refinementControl = refinementControl;
-                     }
-                     
-                     
-                     
-                     inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._adjacentCellsHeight;
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                     }
-                     
-                     
-                     
-                     inline int getAdjacentCellsHeightOfPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _adjacentCellsHeightOfPreviousIteration;
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                     }
-                     
-                     
-                     
-                     inline int getNumberOfAdjacentRefinedCells() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _numberOfAdjacentRefinedCells;
-                     }
-                     
-                     
-                     
-                     inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                     }
-                     
-                     
-                     
-                     inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._insideOutsideDomain;
-                     }
-                     
-                     
-                     
-                     inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._insideOutsideDomain = insideOutsideDomain;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._adjacentRanks;
-                     }
-                     
-                     
-                     
-                     /**
-                      * Generated and optimized
-                      * 
-                      * If you realise a for loop using exclusively arrays (vectors) and compile 
-                      * with -DUseManualAlignment you may add 
-                      * \code
-                      #pragma vector aligned
-                      #pragma simd
-                      \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                      * 
-                      * The alignment is tied to the unpacked records, i.e. for packed class
-                      * variants the machine's natural alignment is switched off to recude the  
-                      * memory footprint. Do not use any SSE/AVX operations or 
-                      * vectorisation on the result for the packed variants, as the data is misaligned. 
-                      * If you rely on vectorisation, convert the underlying record 
-                      * into the unpacked version first. 
-                      * 
-                      * @see convert()
-                      */
-                     inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._adjacentRanks = (adjacentRanks);
-                     }
-                     
-                     
-                     
-                     inline int getAdjacentRanks(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion(elementIndex>=0);
-                        assertion(elementIndex<TWO_POWER_D);
-                        return _persistentRecords._adjacentRanks[elementIndex];
-                        
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        assertion(elementIndex>=0);
-                        assertion(elementIndex<TWO_POWER_D);
-                        _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
-                        
-                     }
-                     
-                     
-                     
-                     inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._adjacentSubtreeForksIntoOtherRank;
-                     }
-                     
-                     
-                     
-                     inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
-                     }
-                     
-                     
-                     
-                     inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._parentRegularPersistentSubgrid;
-                     }
-                     
-                     
-                     
-                     inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                     }
-                     
-                     
-                     
-                     inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
-                     }
-                     
-                     
-                     
-                     inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                        _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                     }
-                     
-                     
-                     /**
-                      * Generated
-                      */
-                     static std::string toString(const InsideOutsideDomain& param);
-                     
-                     /**
-                      * Generated
-                      */
-                     static std::string getInsideOutsideDomainMapping();
-                     
-                     /**
-                      * Generated
-                      */
-                     static std::string toString(const RefinementControl& param);
-                     
-                     /**
-                      * Generated
-                      */
-                     static std::string getRefinementControlMapping();
-                     
-                     /**
-                      * Generated
-                      */
-                     std::string toString() const;
-                     
-                     /**
-                      * Generated
-                      */
-                     void toString(std::ostream& out) const;
-                     
-                     
-                     PersistentRecords getPersistentRecords() const;
-                     /**
-                      * Generated
-                      */
-                     VertexPacked convert() const;
-                     
-                     
-                  #ifdef Parallel
-                     protected:
-                        static tarch::logging::Log _log;
-                        
-                        int _senderDestinationRank;
-                        
-                     public:
-                        
-                        /**
-                         * Global that represents the mpi datatype.
-                         * There are two variants: Datatype identifies only those attributes marked with
-                         * parallelise. FullDatatype instead identifies the whole record with all fields.
-                         */
-                        static MPI_Datatype Datatype;
-                        static MPI_Datatype FullDatatype;
-                        
-                        /**
-                         * Initializes the data type for the mpi operations. Has to be called
-                         * before the very first send or receive operation is called.
-                         */
-                        static void initDatatype();
-                        
-                        static void shutdownDatatype();
-                        
-                        /**
-                         * @param communicateSleep -1 Data exchange through blocking mpi
-                         * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                         * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                         */
-                        void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                        
-                        void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                        
-                        static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                        
-                        int getSenderRank() const;
-                        
-                  #endif
-                     
-                  };
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  _persistentRecords._x[elementIndex]= x;
                   
-                  #ifndef DaStGenPackedPadding
-                    #define DaStGenPackedPadding 1      // 32 bit version
-                    // #define DaStGenPackedPadding 2   // 64 bit version
-                  #endif
+               }
+               
+               
+               
+               inline int getLevel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._level = level;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   _persistentRecords._packedRecords0 = static_cast<short int>( parentRegularPersistentSubgrid ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (7);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (7);
+   _persistentRecords._packedRecords0 = static_cast<short int>( parentRegularPersistentSubgridInPreviousIteration ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               Vertex convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
                   
+                  int _senderDestinationRank;
                   
-                  #ifdef PackedRecords
-                     #pragma pack (push, DaStGenPackedPadding)
-                  #endif
+               public:
                   
                   /**
-                   * @author This class is generated by DaStGen
-                   * 		   DataStructureGenerator (DaStGen)
-                   * 		   2007-2009 Wolfgang Eckhardt
-                   * 		   2012      Tobias Weinzierl
-                   *
-                   * 		   build date: 09-02-2014 14:40
-                   *
-                   * @date   23/02/2017 16:40
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
                    */
-                  class dem::records::VertexPacked { 
-                     
-                     public:
-                        
-                        typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
-                        
-                        typedef dem::records::Vertex::RefinementControl RefinementControl;
-                        
-                        struct PersistentRecords {
-                           int _particles;
-                           int _particlesOnCoarserLevels;
-                           bool _vetoCoarsening;
-                           int _adjacentCellsHeight;
-                           tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
-                           bool _parentRegularPersistentSubgrid;
-                           bool _parentRegularPersistentSubgridInPreviousIteration;
-                           
-                           /** mapping of records:
-                           || Member 	|| startbit 	|| length
-                            |  isHangingNode	| startbit 0	| #bits 1
-                            |  refinementControl	| startbit 1	| #bits 3
-                            |  insideOutsideDomain	| startbit 4	| #bits 2
-                            |  adjacentSubtreeForksIntoOtherRank	| startbit 6	| #bits 1
-                            */
-                           short int _packedRecords0;
-                           
-                           /**
-                            * Generated
-                            */
-                           PersistentRecords();
-                           
-                           /**
-                            * Generated
-                            */
-                           PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                           
-                           
-                           inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _particles;
-                           }
-                           
-                           
-                           
-                           inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _particles = particles;
-                           }
-                           
-                           
-                           
-                           inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _particlesOnCoarserLevels;
-                           }
-                           
-                           
-                           
-                           inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                           }
-                           
-                           
-                           
-                           inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _vetoCoarsening;
-                           }
-                           
-                           
-                           
-                           inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _vetoCoarsening = vetoCoarsening;
-                           }
-                           
-                           
-                           
-                           inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask = 1 << (0);
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   return (tmp != 0);
-                           }
-                           
-                           
-                           
-                           inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask = 1 << (0);
-   _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                           }
-                           
-                           
-                           
-                           inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 7));
-   return (RefinementControl) tmp;
-                           }
-                           
-                           
-                           
-                           inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion((refinementControl >= 0 && refinementControl <= 7));
-   short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
-   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                           }
-                           
-                           
-                           
-                           inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _adjacentCellsHeight;
-                           }
-                           
-                           
-                           
-                           inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _adjacentCellsHeight = adjacentCellsHeight;
-                           }
-                           
-                           
-                           
-                           inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (4));
-   assertion(( tmp >= 0 &&  tmp <= 2));
-   return (InsideOutsideDomain) tmp;
-                           }
-                           
-                           
-                           
-                           inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
-   short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
-   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                           }
-                           
-                           
-                           
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _adjacentRanks;
-                           }
-                           
-                           
-                           
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _adjacentRanks = (adjacentRanks);
-                           }
-                           
-                           
-                           
-                           inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask = 1 << (6);
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   return (tmp != 0);
-                           }
-                           
-                           
-                           
-                           inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask = 1 << (6);
-   _packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                           }
-                           
-                           
-                           
-                           inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _parentRegularPersistentSubgrid;
-                           }
-                           
-                           
-                           
-                           inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                           }
-                           
-                           
-                           
-                           inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _parentRegularPersistentSubgridInPreviousIteration;
-                           }
-                           
-                           
-                           
-                           inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                           }
-                           
-                           
-                           
-                        };
-                        
-                     private: 
-                        PersistentRecords _persistentRecords;
-                        int _adjacentCellsHeightOfPreviousIteration;
-                        int _numberOfAdjacentRefinedCells;
-                        
-                     public:
-                        /**
-                         * Generated
-                         */
-                        VertexPacked();
-                        
-                        /**
-                         * Generated
-                         */
-                        VertexPacked(const PersistentRecords& persistentRecords);
-                        
-                        /**
-                         * Generated
-                         */
-                        VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                        
-                        /**
-                         * Generated
-                         */
-                        VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                        
-                        /**
-                         * Generated
-                         */
-                        virtual ~VertexPacked();
-                        
-                        
-                        inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _persistentRecords._particles;
-                        }
-                        
-                        
-                        
-                        inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _persistentRecords._particles = particles;
-                        }
-                        
-                        
-                        
-                        inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _persistentRecords._particlesOnCoarserLevels;
-                        }
-                        
-                        
-                        
-                        inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                        }
-                        
-                        
-                        
-                        inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _persistentRecords._vetoCoarsening;
-                        }
-                        
-                        
-                        
-                        inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _persistentRecords._vetoCoarsening = vetoCoarsening;
-                        }
-                        
-                        
-                        
-                        inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask = 1 << (0);
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   return (tmp != 0);
-                        }
-                        
-                        
-                        
-                        inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask = 1 << (0);
-   _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                        }
-                        
-                        
-                        
-                        inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 7));
-   return (RefinementControl) tmp;
-                        }
-                        
-                        
-                        
-                        inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           assertion((refinementControl >= 0 && refinementControl <= 7));
-   short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                        }
-                        
-                        
-                        
-                        inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _persistentRecords._adjacentCellsHeight;
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                        }
-                        
-                        
-                        
-                        inline int getAdjacentCellsHeightOfPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _adjacentCellsHeightOfPreviousIteration;
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                        }
-                        
-                        
-                        
-                        inline int getNumberOfAdjacentRefinedCells() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _numberOfAdjacentRefinedCells;
-                        }
-                        
-                        
-                        
-                        inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                        }
-                        
-                        
-                        
-                        inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (4));
-   assertion(( tmp >= 0 &&  tmp <= 2));
-   return (InsideOutsideDomain) tmp;
-                        }
-                        
-                        
-                        
-                        inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
-   short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                        }
-                        
-                        
-                        
-                        /**
-                         * Generated and optimized
-                         * 
-                         * If you realise a for loop using exclusively arrays (vectors) and compile 
-                         * with -DUseManualAlignment you may add 
-                         * \code
-                         #pragma vector aligned
-                         #pragma simd
-                         \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                         * 
-                         * The alignment is tied to the unpacked records, i.e. for packed class
-                         * variants the machine's natural alignment is switched off to recude the  
-                         * memory footprint. Do not use any SSE/AVX operations or 
-                         * vectorisation on the result for the packed variants, as the data is misaligned. 
-                         * If you rely on vectorisation, convert the underlying record 
-                         * into the unpacked version first. 
-                         * 
-                         * @see convert()
-                         */
-                        inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _persistentRecords._adjacentRanks;
-                        }
-                        
-                        
-                        
-                        /**
-                         * Generated and optimized
-                         * 
-                         * If you realise a for loop using exclusively arrays (vectors) and compile 
-                         * with -DUseManualAlignment you may add 
-                         * \code
-                         #pragma vector aligned
-                         #pragma simd
-                         \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                         * 
-                         * The alignment is tied to the unpacked records, i.e. for packed class
-                         * variants the machine's natural alignment is switched off to recude the  
-                         * memory footprint. Do not use any SSE/AVX operations or 
-                         * vectorisation on the result for the packed variants, as the data is misaligned. 
-                         * If you rely on vectorisation, convert the underlying record 
-                         * into the unpacked version first. 
-                         * 
-                         * @see convert()
-                         */
-                        inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _persistentRecords._adjacentRanks = (adjacentRanks);
-                        }
-                        
-                        
-                        
-                        inline int getAdjacentRanks(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           assertion(elementIndex>=0);
-                           assertion(elementIndex<TWO_POWER_D);
-                           return _persistentRecords._adjacentRanks[elementIndex];
-                           
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           assertion(elementIndex>=0);
-                           assertion(elementIndex<TWO_POWER_D);
-                           _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
-                           
-                        }
-                        
-                        
-                        
-                        inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask = 1 << (6);
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   return (tmp != 0);
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           short int mask = 1 << (6);
-   _persistentRecords._packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                        }
-                        
-                        
-                        
-                        inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _persistentRecords._parentRegularPersistentSubgrid;
-                        }
-                        
-                        
-                        
-                        inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                        }
-                        
-                        
-                        
-                        inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
-                        }
-                        
-                        
-                        
-                        inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                           _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                        }
-                        
-                        
-                        /**
-                         * Generated
-                         */
-                        static std::string toString(const InsideOutsideDomain& param);
-                        
-                        /**
-                         * Generated
-                         */
-                        static std::string getInsideOutsideDomainMapping();
-                        
-                        /**
-                         * Generated
-                         */
-                        static std::string toString(const RefinementControl& param);
-                        
-                        /**
-                         * Generated
-                         */
-                        static std::string getRefinementControlMapping();
-                        
-                        /**
-                         * Generated
-                         */
-                        std::string toString() const;
-                        
-                        /**
-                         * Generated
-                         */
-                        void toString(std::ostream& out) const;
-                        
-                        
-                        PersistentRecords getPersistentRecords() const;
-                        /**
-                         * Generated
-                         */
-                        Vertex convert() const;
-                        
-                        
-                     #ifdef Parallel
-                        protected:
-                           static tarch::logging::Log _log;
-                           
-                           int _senderDestinationRank;
-                           
-                        public:
-                           
-                           /**
-                            * Global that represents the mpi datatype.
-                            * There are two variants: Datatype identifies only those attributes marked with
-                            * parallelise. FullDatatype instead identifies the whole record with all fields.
-                            */
-                           static MPI_Datatype Datatype;
-                           static MPI_Datatype FullDatatype;
-                           
-                           /**
-                            * Initializes the data type for the mpi operations. Has to be called
-                            * before the very first send or receive operation is called.
-                            */
-                           static void initDatatype();
-                           
-                           static void shutdownDatatype();
-                           
-                           /**
-                            * @param communicateSleep -1 Data exchange through blocking mpi
-                            * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                            * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                            */
-                           void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                           
-                           void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                           
-                           static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                           
-                           int getSenderRank() const;
-                           
-                     #endif
-                        
-                     };
-                     
-                     #ifdef PackedRecords
-                     #pragma pack (pop)
-                     #endif
-                     
-                     
-                     
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
                   
-               #elif defined(PersistentRegularSubtrees) && !defined(Parallel) && !defined(Asserts)
                   /**
-                   * @author This class is generated by DaStGen
-                   * 		   DataStructureGenerator (DaStGen)
-                   * 		   2007-2009 Wolfgang Eckhardt
-                   * 		   2012      Tobias Weinzierl
-                   *
-                   * 		   build date: 09-02-2014 14:40
-                   *
-                   * @date   23/02/2017 16:40
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
                    */
-                  class dem::records::Vertex { 
-                     
-                     public:
-                        
-                        typedef dem::records::VertexPacked Packed;
-                        
-                        enum InsideOutsideDomain {
-                           Inside = 0, Boundary = 1, Outside = 2
-                        };
-                        
-                        enum RefinementControl {
-                           Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5
-                        };
-                        
-                        struct PersistentRecords {
-                           int _particles;
-                           int _particlesOnCoarserLevels;
-                           bool _vetoCoarsening;
-                           bool _isHangingNode;
-                           RefinementControl _refinementControl;
-                           int _adjacentCellsHeight;
-                           InsideOutsideDomain _insideOutsideDomain;
-                           bool _parentRegularPersistentSubgrid;
-                           bool _parentRegularPersistentSubgridInPreviousIteration;
-                           /**
-                            * Generated
-                            */
-                           PersistentRecords();
-                           
-                           /**
-                            * Generated
-                            */
-                           PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                           
-                           
-                           inline int getParticles() const 
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifdef PackedRecords
+      #pragma pack (pop)
+      #endif
+      
+      
+      
+   #elif defined(Parallel) && !defined(PersistentRegularSubtrees) && defined(Asserts)
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::Vertex { 
+         
+         public:
+            
+            typedef dem::records::VertexPacked Packed;
+            
+            enum InsideOutsideDomain {
+               Inside = 0, Boundary = 1, Outside = 2
+            };
+            
+            enum RefinementControl {
+               Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5, RefineDueToJoinThoughWorkerIsAlreadyErasing = 6, EnforceRefinementTriggered = 7
+            };
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               bool _isHangingNode;
+               RefinementControl _refinementControl;
+               int _adjacentCellsHeight;
+               InsideOutsideDomain _insideOutsideDomain;
+               #ifdef UseManualAlignment
+               tarch::la::Vector<DIMENSIONS,double> _x __attribute__((aligned(VectorisationAlignment)));
+               #else
+               tarch::la::Vector<DIMENSIONS,double> _x;
+               #endif
+               int _level;
+               #ifdef UseManualAlignment
+               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks __attribute__((aligned(VectorisationAlignment)));
+               #else
+               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
+               #endif
+               bool _adjacentSubtreeForksIntoOtherRank;
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               
+               inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _particles;
-                           }
-                           
-                           
-                           
-                           inline void setParticles(const int& particles) 
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _particles = particles;
-                           }
-                           
-                           
-                           
-                           inline int getParticlesOnCoarserLevels() const 
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _particlesOnCoarserLevels;
-                           }
-                           
-                           
-                           
-                           inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                           }
-                           
-                           
-                           
-                           inline bool getVetoCoarsening() const 
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _vetoCoarsening;
-                           }
-                           
-                           
-                           
-                           inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _vetoCoarsening = vetoCoarsening;
-                           }
-                           
-                           
-                           
-                           inline bool getIsHangingNode() const 
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _isHangingNode;
-                           }
-                           
-                           
-                           
-                           inline void setIsHangingNode(const bool& isHangingNode) 
+                  return _isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _isHangingNode = isHangingNode;
-                           }
-                           
-                           
-                           
-                           inline RefinementControl getRefinementControl() const 
+                  _isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _refinementControl;
-                           }
-                           
-                           
-                           
-                           inline void setRefinementControl(const RefinementControl& refinementControl) 
+                  return _refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _refinementControl = refinementControl;
-                           }
-                           
-                           
-                           
-                           inline int getAdjacentCellsHeight() const 
+                  _refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _adjacentCellsHeight;
-                           }
-                           
-                           
-                           
-                           inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _adjacentCellsHeight = adjacentCellsHeight;
-                           }
-                           
-                           
-                           
-                           inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _insideOutsideDomain;
-                           }
-                           
-                           
-                           
-                           inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+                  return _insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _insideOutsideDomain = insideOutsideDomain;
-                           }
-                           
-                           
-                           
-                           inline bool getParentRegularPersistentSubgrid() const 
+                  _insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _parentRegularPersistentSubgrid;
-                           }
-                           
-                           
-                           
-                           inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
+                  return _x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                           }
-                           
-                           
-                           
-                           inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
+                  _x = (x);
+               }
+               
+               
+               
+               inline int getLevel() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              return _parentRegularPersistentSubgridInPreviousIteration;
-                           }
-                           
-                           
-                           
-                           inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+                  return _level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                              _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                           }
-                           
-                           
-                           
-                        };
-                        
-                     private: 
-                        PersistentRecords _persistentRecords;
-                        int _adjacentCellsHeightOfPreviousIteration;
-                        int _numberOfAdjacentRefinedCells;
-                        
-                     public:
-                        /**
-                         * Generated
-                         */
-                        Vertex();
-                        
-                        /**
-                         * Generated
-                         */
-                        Vertex(const PersistentRecords& persistentRecords);
-                        
-                        /**
-                         * Generated
-                         */
-                        Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                        
-                        /**
-                         * Generated
-                         */
-                        Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                        
-                        /**
-                         * Generated
-                         */
-                        virtual ~Vertex();
-                        
-                        
-                        inline int getParticles() const 
+                  _level = level;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _persistentRecords._particles;
-                        }
-                        
-                        
-                        
-                        inline void setParticles(const int& particles) 
+                  return _adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _persistentRecords._particles = particles;
-                        }
-                        
-                        
-                        
-                        inline int getParticlesOnCoarserLevels() const 
+                  _adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _persistentRecords._particlesOnCoarserLevels;
-                        }
-                        
-                        
-                        
-                        inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  return _adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                        }
-                        
-                        
-                        
-                        inline bool getVetoCoarsening() const 
+                  _adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               Vertex();
+               
+               /**
+                * Generated
+                */
+               Vertex(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               /**
+                * Generated
+                */
+               virtual ~Vertex();
+               
+               
+               inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _persistentRecords._vetoCoarsening;
-                        }
-                        
-                        
-                        
-                        inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _persistentRecords._vetoCoarsening = vetoCoarsening;
-                        }
-                        
-                        
-                        
-                        inline bool getIsHangingNode() const 
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _persistentRecords._isHangingNode;
-                        }
-                        
-                        
-                        
-                        inline void setIsHangingNode(const bool& isHangingNode) 
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _persistentRecords._isHangingNode = isHangingNode;
-                        }
-                        
-                        
-                        
-                        inline RefinementControl getRefinementControl() const 
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _persistentRecords._refinementControl;
-                        }
-                        
-                        
-                        
-                        inline void setRefinementControl(const RefinementControl& refinementControl) 
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _persistentRecords._refinementControl = refinementControl;
-                        }
-                        
-                        
-                        
-                        inline int getAdjacentCellsHeight() const 
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _persistentRecords._adjacentCellsHeight;
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _persistentRecords._isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                        }
-                        
-                        
-                        
-                        inline int getAdjacentCellsHeightOfPreviousIteration() const 
+                  _persistentRecords._isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _adjacentCellsHeightOfPreviousIteration;
-                        }
-                        
-                        
-                        
-                        inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+                  return _persistentRecords._refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                        }
-                        
-                        
-                        
-                        inline int getNumberOfAdjacentRefinedCells() const 
+                  _persistentRecords._refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _numberOfAdjacentRefinedCells;
-                        }
-                        
-                        
-                        
-                        inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                        }
-                        
-                        
-                        
-                        inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _persistentRecords._insideOutsideDomain;
-                        }
-                        
-                        
-                        
-                        inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _persistentRecords._insideOutsideDomain = insideOutsideDomain;
-                        }
-                        
-                        
-                        
-                        inline bool getParentRegularPersistentSubgrid() const 
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _persistentRecords._parentRegularPersistentSubgrid;
-                        }
-                        
-                        
-                        
-                        inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                        }
-                        
-                        
-                        
-                        inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
-                        }
-                        
-                        
-                        
-                        inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+                  return _persistentRecords._insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                           _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                        }
-                        
-                        
-                        /**
-                         * Generated
-                         */
-                        static std::string toString(const InsideOutsideDomain& param);
-                        
-                        /**
-                         * Generated
-                         */
-                        static std::string getInsideOutsideDomainMapping();
-                        
-                        /**
-                         * Generated
-                         */
-                        static std::string toString(const RefinementControl& param);
-                        
-                        /**
-                         * Generated
-                         */
-                        static std::string getRefinementControlMapping();
-                        
-                        /**
-                         * Generated
-                         */
-                        std::string toString() const;
-                        
-                        /**
-                         * Generated
-                         */
-                        void toString(std::ostream& out) const;
-                        
-                        
-                        PersistentRecords getPersistentRecords() const;
-                        /**
-                         * Generated
-                         */
-                        VertexPacked convert() const;
-                        
-                        
-                     #ifdef Parallel
-                        protected:
-                           static tarch::logging::Log _log;
-                           
-                           int _senderDestinationRank;
-                           
-                        public:
-                           
-                           /**
-                            * Global that represents the mpi datatype.
-                            * There are two variants: Datatype identifies only those attributes marked with
-                            * parallelise. FullDatatype instead identifies the whole record with all fields.
-                            */
-                           static MPI_Datatype Datatype;
-                           static MPI_Datatype FullDatatype;
-                           
-                           /**
-                            * Initializes the data type for the mpi operations. Has to be called
-                            * before the very first send or receive operation is called.
-                            */
-                           static void initDatatype();
-                           
-                           static void shutdownDatatype();
-                           
-                           /**
-                            * @param communicateSleep -1 Data exchange through blocking mpi
-                            * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                            * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                            */
-                           void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                           
-                           void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                           
-                           static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                           
-                           int getSenderRank() const;
-                           
-                     #endif
-                        
-                     };
-                     
-                     #ifndef DaStGenPackedPadding
-                       #define DaStGenPackedPadding 1      // 32 bit version
-                       // #define DaStGenPackedPadding 2   // 64 bit version
-                     #endif
-                     
-                     
-                     #ifdef PackedRecords
-                        #pragma pack (push, DaStGenPackedPadding)
-                     #endif
-                     
-                     /**
-                      * @author This class is generated by DaStGen
-                      * 		   DataStructureGenerator (DaStGen)
-                      * 		   2007-2009 Wolfgang Eckhardt
-                      * 		   2012      Tobias Weinzierl
-                      *
-                      * 		   build date: 09-02-2014 14:40
-                      *
-                      * @date   23/02/2017 16:40
-                      */
-                     class dem::records::VertexPacked { 
-                        
-                        public:
-                           
-                           typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
-                           
-                           typedef dem::records::Vertex::RefinementControl RefinementControl;
-                           
-                           struct PersistentRecords {
-                              int _particles;
-                              int _particlesOnCoarserLevels;
-                              bool _vetoCoarsening;
-                              int _adjacentCellsHeight;
-                              bool _parentRegularPersistentSubgrid;
-                              bool _parentRegularPersistentSubgridInPreviousIteration;
-                              
-                              /** mapping of records:
-                              || Member 	|| startbit 	|| length
-                               |  isHangingNode	| startbit 0	| #bits 1
-                               |  refinementControl	| startbit 1	| #bits 3
-                               |  insideOutsideDomain	| startbit 4	| #bits 2
-                               */
-                              short int _packedRecords0;
-                              
-                              /**
-                               * Generated
-                               */
-                              PersistentRecords();
-                              
-                              /**
-                               * Generated
-                               */
-                              PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                              
-                              
-                              inline int getParticles() const 
+                  _persistentRecords._insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _particles;
-                              }
-                              
-                              
-                              
-                              inline void setParticles(const int& particles) 
+                  return _persistentRecords._x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _particles = particles;
-                              }
-                              
-                              
-                              
-                              inline int getParticlesOnCoarserLevels() const 
+                  _persistentRecords._x = (x);
+               }
+               
+               
+               
+               inline double getX(int elementIndex) const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _particlesOnCoarserLevels;
-                              }
-                              
-                              
-                              
-                              inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  return _persistentRecords._x[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setX(int elementIndex, const double& x) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                              }
-                              
-                              
-                              
-                              inline bool getVetoCoarsening() const 
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  _persistentRecords._x[elementIndex]= x;
+                  
+               }
+               
+               
+               
+               inline int getLevel() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _vetoCoarsening;
-                              }
-                              
-                              
-                              
-                              inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _persistentRecords._level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _vetoCoarsening = vetoCoarsening;
-                              }
-                              
-                              
-                              
-                              inline bool getIsHangingNode() const 
+                  _persistentRecords._level = level;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 short int mask = 1 << (0);
+                  return _persistentRecords._adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline int getAdjacentRanks(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  return _persistentRecords._adjacentRanks[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
+                  
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               VertexPacked convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifndef DaStGenPackedPadding
+        #define DaStGenPackedPadding 1      // 32 bit version
+        // #define DaStGenPackedPadding 2   // 64 bit version
+      #endif
+      
+      
+      #ifdef PackedRecords
+         #pragma pack (push, DaStGenPackedPadding)
+      #endif
+      
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::VertexPacked { 
+         
+         public:
+            
+            typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
+            
+            typedef dem::records::Vertex::RefinementControl RefinementControl;
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               int _adjacentCellsHeight;
+               tarch::la::Vector<DIMENSIONS,double> _x;
+               int _level;
+               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
+               
+               /** mapping of records:
+               || Member 	|| startbit 	|| length
+                |  isHangingNode	| startbit 0	| #bits 1
+                |  refinementControl	| startbit 1	| #bits 3
+                |  insideOutsideDomain	| startbit 4	| #bits 2
+                |  adjacentSubtreeForksIntoOtherRank	| startbit 6	| #bits 1
+                */
+               short int _packedRecords0;
+               
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    return (tmp != 0);
-                              }
-                              
-                              
-                              
-                              inline void setIsHangingNode(const bool& isHangingNode) 
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 short int mask = 1 << (0);
+                  short int mask = 1 << (0);
    _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                              }
-                              
-                              
-                              
-                              inline RefinementControl getRefinementControl() const 
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 5));
-   return (RefinementControl) tmp;
-                              }
-                              
-                              
-                              
-                              inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 assertion((refinementControl >= 0 && refinementControl <= 5));
-   short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
-   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                              }
-                              
-                              
-                              
-                              inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _adjacentCellsHeight;
-                              }
-                              
-                              
-                              
-                              inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _adjacentCellsHeight = adjacentCellsHeight;
-                              }
-                              
-                              
-                              
-                              inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (4));
-   assertion(( tmp >= 0 &&  tmp <= 2));
-   return (InsideOutsideDomain) tmp;
-                              }
-                              
-                              
-                              
-                              inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
-   short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
-   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                              }
-                              
-                              
-                              
-                              inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _parentRegularPersistentSubgrid;
-                              }
-                              
-                              
-                              
-                              inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                              }
-                              
-                              
-                              
-                              inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _parentRegularPersistentSubgridInPreviousIteration;
-                              }
-                              
-                              
-                              
-                              inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                              }
-                              
-                              
-                              
-                           };
-                           
-                        private: 
-                           PersistentRecords _persistentRecords;
-                           int _adjacentCellsHeightOfPreviousIteration;
-                           int _numberOfAdjacentRefinedCells;
-                           
-                        public:
-                           /**
-                            * Generated
-                            */
-                           VertexPacked();
-                           
-                           /**
-                            * Generated
-                            */
-                           VertexPacked(const PersistentRecords& persistentRecords);
-                           
-                           /**
-                            * Generated
-                            */
-                           VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                           
-                           /**
-                            * Generated
-                            */
-                           VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
-                           
-                           /**
-                            * Generated
-                            */
-                           virtual ~VertexPacked();
-                           
-                           
-                           inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._particles;
-                           }
-                           
-                           
-                           
-                           inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._particles = particles;
-                           }
-                           
-                           
-                           
-                           inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._particlesOnCoarserLevels;
-                           }
-                           
-                           
-                           
-                           inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                           }
-                           
-                           
-                           
-                           inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._vetoCoarsening;
-                           }
-                           
-                           
-                           
-                           inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._vetoCoarsening = vetoCoarsening;
-                           }
-                           
-                           
-                           
-                           inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask = 1 << (0);
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   return (tmp != 0);
-                           }
-                           
-                           
-                           
-                           inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask = 1 << (0);
-   _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                           }
-                           
-                           
-                           
-                           inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 5));
-   return (RefinementControl) tmp;
-                           }
-                           
-                           
-                           
-                           inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion((refinementControl >= 0 && refinementControl <= 5));
-   short int mask =  (1 << (3)) - 1;
-   mask = static_cast<short int>(mask << (1));
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                           }
-                           
-                           
-                           
-                           inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._adjacentCellsHeight;
-                           }
-                           
-                           
-                           
-                           inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                           }
-                           
-                           
-                           
-                           inline int getAdjacentCellsHeightOfPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _adjacentCellsHeightOfPreviousIteration;
-                           }
-                           
-                           
-                           
-                           inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                           }
-                           
-                           
-                           
-                           inline int getNumberOfAdjacentRefinedCells() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _numberOfAdjacentRefinedCells;
-                           }
-                           
-                           
-                           
-                           inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                           }
-                           
-                           
-                           
-                           inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
-   tmp = static_cast<short int>(tmp >> (4));
-   assertion(( tmp >= 0 &&  tmp <= 2));
-   return (InsideOutsideDomain) tmp;
-                           }
-                           
-                           
-                           
-                           inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
-   short int mask =  (1 << (2)) - 1;
-   mask = static_cast<short int>(mask << (4));
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
-   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                           }
-                           
-                           
-                           
-                           inline bool getParentRegularPersistentSubgrid() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._parentRegularPersistentSubgrid;
-                           }
-                           
-                           
-                           
-                           inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
-                           }
-                           
-                           
-                           
-                           inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
-                           }
-                           
-                           
-                           
-                           inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
-                           }
-                           
-                           
-                           /**
-                            * Generated
-                            */
-                           static std::string toString(const InsideOutsideDomain& param);
-                           
-                           /**
-                            * Generated
-                            */
-                           static std::string getInsideOutsideDomainMapping();
-                           
-                           /**
-                            * Generated
-                            */
-                           static std::string toString(const RefinementControl& param);
-                           
-                           /**
-                            * Generated
-                            */
-                           static std::string getRefinementControlMapping();
-                           
-                           /**
-                            * Generated
-                            */
-                           std::string toString() const;
-                           
-                           /**
-                            * Generated
-                            */
-                           void toString(std::ostream& out) const;
-                           
-                           
-                           PersistentRecords getPersistentRecords() const;
-                           /**
-                            * Generated
-                            */
-                           Vertex convert() const;
-                           
-                           
-                        #ifdef Parallel
-                           protected:
-                              static tarch::logging::Log _log;
-                              
-                              int _senderDestinationRank;
-                              
-                           public:
-                              
-                              /**
-                               * Global that represents the mpi datatype.
-                               * There are two variants: Datatype identifies only those attributes marked with
-                               * parallelise. FullDatatype instead identifies the whole record with all fields.
-                               */
-                              static MPI_Datatype Datatype;
-                              static MPI_Datatype FullDatatype;
-                              
-                              /**
-                               * Initializes the data type for the mpi operations. Has to be called
-                               * before the very first send or receive operation is called.
-                               */
-                              static void initDatatype();
-                              
-                              static void shutdownDatatype();
-                              
-                              /**
-                               * @param communicateSleep -1 Data exchange through blocking mpi
-                               * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                               * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                               */
-                              void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                              
-                              void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                              
-                              static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                              
-                              int getSenderRank() const;
-                              
-                        #endif
-                           
-                        };
-                        
-                        #ifdef PackedRecords
-                        #pragma pack (pop)
-                        #endif
-                        
-                        
-                        
-                     
-                  #elif defined(Parallel) && !defined(PersistentRegularSubtrees) && !defined(Asserts)
-                     /**
-                      * @author This class is generated by DaStGen
-                      * 		   DataStructureGenerator (DaStGen)
-                      * 		   2007-2009 Wolfgang Eckhardt
-                      * 		   2012      Tobias Weinzierl
-                      *
-                      * 		   build date: 09-02-2014 14:40
-                      *
-                      * @date   23/02/2017 16:40
-                      */
-                     class dem::records::Vertex { 
-                        
-                        public:
-                           
-                           typedef dem::records::VertexPacked Packed;
-                           
-                           enum InsideOutsideDomain {
-                              Inside = 0, Boundary = 1, Outside = 2
-                           };
-                           
-                           enum RefinementControl {
-                              Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5, RefineDueToJoinThoughWorkerIsAlreadyErasing = 6, EnforceRefinementTriggered = 7
-                           };
-                           
-                           struct PersistentRecords {
-                              int _particles;
-                              int _particlesOnCoarserLevels;
-                              bool _vetoCoarsening;
-                              bool _isHangingNode;
-                              RefinementControl _refinementControl;
-                              int _adjacentCellsHeight;
-                              InsideOutsideDomain _insideOutsideDomain;
-                              #ifdef UseManualAlignment
-                              tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks __attribute__((aligned(VectorisationAlignment)));
-                              #else
-                              tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
-                              #endif
-                              bool _adjacentSubtreeForksIntoOtherRank;
-                              /**
-                               * Generated
-                               */
-                              PersistentRecords();
-                              
-                              /**
-                               * Generated
-                               */
-                              PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                              
-                              
-                              inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _particles;
-                              }
-                              
-                              
-                              
-                              inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _particles = particles;
-                              }
-                              
-                              
-                              
-                              inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _particlesOnCoarserLevels;
-                              }
-                              
-                              
-                              
-                              inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                              }
-                              
-                              
-                              
-                              inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _vetoCoarsening;
-                              }
-                              
-                              
-                              
-                              inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _vetoCoarsening = vetoCoarsening;
-                              }
-                              
-                              
-                              
-                              inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _isHangingNode;
-                              }
-                              
-                              
-                              
-                              inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _isHangingNode = isHangingNode;
-                              }
-                              
-                              
-                              
-                              inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _refinementControl;
-                              }
-                              
-                              
-                              
-                              inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _refinementControl = refinementControl;
-                              }
-                              
-                              
-                              
-                              inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _adjacentCellsHeight;
-                              }
-                              
-                              
-                              
-                              inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _adjacentCellsHeight = adjacentCellsHeight;
-                              }
-                              
-                              
-                              
-                              inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _insideOutsideDomain;
-                              }
-                              
-                              
-                              
-                              inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _insideOutsideDomain = insideOutsideDomain;
-                              }
-                              
-                              
-                              
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _adjacentRanks;
-                              }
-                              
-                              
-                              
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _adjacentRanks = (adjacentRanks);
-                              }
-                              
-                              
-                              
-                              inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 return _adjacentSubtreeForksIntoOtherRank;
-                              }
-                              
-                              
-                              
-                              inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                 _adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
-                              }
-                              
-                              
-                              
-                           };
-                           
-                        private: 
-                           PersistentRecords _persistentRecords;
-                           int _adjacentCellsHeightOfPreviousIteration;
-                           int _numberOfAdjacentRefinedCells;
-                           
-                        public:
-                           /**
-                            * Generated
-                            */
-                           Vertex();
-                           
-                           /**
-                            * Generated
-                            */
-                           Vertex(const PersistentRecords& persistentRecords);
-                           
-                           /**
-                            * Generated
-                            */
-                           Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                           
-                           /**
-                            * Generated
-                            */
-                           Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                           
-                           /**
-                            * Generated
-                            */
-                           virtual ~Vertex();
-                           
-                           
-                           inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._particles;
-                           }
-                           
-                           
-                           
-                           inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._particles = particles;
-                           }
-                           
-                           
-                           
-                           inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._particlesOnCoarserLevels;
-                           }
-                           
-                           
-                           
-                           inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                           }
-                           
-                           
-                           
-                           inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._vetoCoarsening;
-                           }
-                           
-                           
-                           
-                           inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._vetoCoarsening = vetoCoarsening;
-                           }
-                           
-                           
-                           
-                           inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._isHangingNode;
-                           }
-                           
-                           
-                           
-                           inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._isHangingNode = isHangingNode;
-                           }
-                           
-                           
-                           
-                           inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._refinementControl;
-                           }
-                           
-                           
-                           
-                           inline void setRefinementControl(const RefinementControl& refinementControl) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._refinementControl = refinementControl;
-                           }
-                           
-                           
-                           
-                           inline int getAdjacentCellsHeight() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._adjacentCellsHeight;
-                           }
-                           
-                           
-                           
-                           inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                           }
-                           
-                           
-                           
-                           inline int getAdjacentCellsHeightOfPreviousIteration() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _adjacentCellsHeightOfPreviousIteration;
-                           }
-                           
-                           
-                           
-                           inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                           }
-                           
-                           
-                           
-                           inline int getNumberOfAdjacentRefinedCells() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _numberOfAdjacentRefinedCells;
-                           }
-                           
-                           
-                           
-                           inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                           }
-                           
-                           
-                           
-                           inline InsideOutsideDomain getInsideOutsideDomain() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._insideOutsideDomain;
-                           }
-                           
-                           
-                           
-                           inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._insideOutsideDomain = insideOutsideDomain;
-                           }
-                           
-                           
-                           
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._adjacentRanks;
-                           }
-                           
-                           
-                           
-                           /**
-                            * Generated and optimized
-                            * 
-                            * If you realise a for loop using exclusively arrays (vectors) and compile 
-                            * with -DUseManualAlignment you may add 
-                            * \code
-                            #pragma vector aligned
-                            #pragma simd
-                            \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                            * 
-                            * The alignment is tied to the unpacked records, i.e. for packed class
-                            * variants the machine's natural alignment is switched off to recude the  
-                            * memory footprint. Do not use any SSE/AVX operations or 
-                            * vectorisation on the result for the packed variants, as the data is misaligned. 
-                            * If you rely on vectorisation, convert the underlying record 
-                            * into the unpacked version first. 
-                            * 
-                            * @see convert()
-                            */
-                           inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._adjacentRanks = (adjacentRanks);
-                           }
-                           
-                           
-                           
-                           inline int getAdjacentRanks(int elementIndex) const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion(elementIndex>=0);
-                              assertion(elementIndex<TWO_POWER_D);
-                              return _persistentRecords._adjacentRanks[elementIndex];
-                              
-                           }
-                           
-                           
-                           
-                           inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              assertion(elementIndex>=0);
-                              assertion(elementIndex<TWO_POWER_D);
-                              _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
-                              
-                           }
-                           
-                           
-                           
-                           inline bool getAdjacentSubtreeForksIntoOtherRank() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              return _persistentRecords._adjacentSubtreeForksIntoOtherRank;
-                           }
-                           
-                           
-                           
-                           inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                              _persistentRecords._adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
-                           }
-                           
-                           
-                           /**
-                            * Generated
-                            */
-                           static std::string toString(const InsideOutsideDomain& param);
-                           
-                           /**
-                            * Generated
-                            */
-                           static std::string getInsideOutsideDomainMapping();
-                           
-                           /**
-                            * Generated
-                            */
-                           static std::string toString(const RefinementControl& param);
-                           
-                           /**
-                            * Generated
-                            */
-                           static std::string getRefinementControlMapping();
-                           
-                           /**
-                            * Generated
-                            */
-                           std::string toString() const;
-                           
-                           /**
-                            * Generated
-                            */
-                           void toString(std::ostream& out) const;
-                           
-                           
-                           PersistentRecords getPersistentRecords() const;
-                           /**
-                            * Generated
-                            */
-                           VertexPacked convert() const;
-                           
-                           
-                        #ifdef Parallel
-                           protected:
-                              static tarch::logging::Log _log;
-                              
-                              int _senderDestinationRank;
-                              
-                           public:
-                              
-                              /**
-                               * Global that represents the mpi datatype.
-                               * There are two variants: Datatype identifies only those attributes marked with
-                               * parallelise. FullDatatype instead identifies the whole record with all fields.
-                               */
-                              static MPI_Datatype Datatype;
-                              static MPI_Datatype FullDatatype;
-                              
-                              /**
-                               * Initializes the data type for the mpi operations. Has to be called
-                               * before the very first send or receive operation is called.
-                               */
-                              static void initDatatype();
-                              
-                              static void shutdownDatatype();
-                              
-                              /**
-                               * @param communicateSleep -1 Data exchange through blocking mpi
-                               * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                               * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                               */
-                              void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                              
-                              void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                              
-                              static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                              
-                              int getSenderRank() const;
-                              
-                        #endif
-                           
-                        };
-                        
-                        #ifndef DaStGenPackedPadding
-                          #define DaStGenPackedPadding 1      // 32 bit version
-                          // #define DaStGenPackedPadding 2   // 64 bit version
-                        #endif
-                        
-                        
-                        #ifdef PackedRecords
-                           #pragma pack (push, DaStGenPackedPadding)
-                        #endif
-                        
-                        /**
-                         * @author This class is generated by DaStGen
-                         * 		   DataStructureGenerator (DaStGen)
-                         * 		   2007-2009 Wolfgang Eckhardt
-                         * 		   2012      Tobias Weinzierl
-                         *
-                         * 		   build date: 09-02-2014 14:40
-                         *
-                         * @date   23/02/2017 16:40
-                         */
-                        class dem::records::VertexPacked { 
-                           
-                           public:
-                              
-                              typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
-                              
-                              typedef dem::records::Vertex::RefinementControl RefinementControl;
-                              
-                              struct PersistentRecords {
-                                 int _particles;
-                                 int _particlesOnCoarserLevels;
-                                 bool _vetoCoarsening;
-                                 int _adjacentCellsHeight;
-                                 tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
-                                 
-                                 /** mapping of records:
-                                 || Member 	|| startbit 	|| length
-                                  |  isHangingNode	| startbit 0	| #bits 1
-                                  |  refinementControl	| startbit 1	| #bits 3
-                                  |  insideOutsideDomain	| startbit 4	| #bits 2
-                                  |  adjacentSubtreeForksIntoOtherRank	| startbit 6	| #bits 1
-                                  */
-                                 short int _packedRecords0;
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 PersistentRecords();
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                                 
-                                 
-                                 inline int getParticles() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                    return _particles;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setParticles(const int& particles) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                    _particles = particles;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getParticlesOnCoarserLevels() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                    return _particlesOnCoarserLevels;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                    _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                                 }
-                                 
-                                 
-                                 
-                                 inline bool getVetoCoarsening() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                    return _vetoCoarsening;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setVetoCoarsening(const bool& vetoCoarsening) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                    _vetoCoarsening = vetoCoarsening;
-                                 }
-                                 
-                                 
-                                 
-                                 inline bool getIsHangingNode() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                    short int mask = 1 << (0);
-   short int tmp = static_cast<short int>(_packedRecords0 & mask);
-   return (tmp != 0);
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setIsHangingNode(const bool& isHangingNode) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                    short int mask = 1 << (0);
-   _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                                 }
-                                 
-                                 
-                                 
-                                 inline RefinementControl getRefinementControl() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-                                    short int mask =  (1 << (3)) - 1;
+                  short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (1));
    assertion(( tmp >= 0 &&  tmp <= 7));
    return (RefinementControl) tmp;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setRefinementControl(const RefinementControl& refinementControl) 
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    assertion((refinementControl >= 0 && refinementControl <= 7));
+                  assertion((refinementControl >= 0 && refinementControl <= 7));
    short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
    _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getAdjacentCellsHeight() const 
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _adjacentCellsHeight;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _adjacentCellsHeight = adjacentCellsHeight;
-                                 }
-                                 
-                                 
-                                 
-                                 inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    short int mask =  (1 << (2)) - 1;
+                  short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (4));
    assertion(( tmp >= 0 &&  tmp <= 2));
    return (InsideOutsideDomain) tmp;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
    short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
    _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                                 }
-                                 
-                                 
-                                 
-                                 /**
-                                  * Generated and optimized
-                                  * 
-                                  * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                  * with -DUseManualAlignment you may add 
-                                  * \code
-                                  #pragma vector aligned
-                                  #pragma simd
-                                  \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                  * 
-                                  * The alignment is tied to the unpacked records, i.e. for packed class
-                                  * variants the machine's natural alignment is switched off to recude the  
-                                  * memory footprint. Do not use any SSE/AVX operations or 
-                                  * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                  * If you rely on vectorisation, convert the underlying record 
-                                  * into the unpacked version first. 
-                                  * 
-                                  * @see convert()
-                                  */
-                                 inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _adjacentRanks;
-                                 }
-                                 
-                                 
-                                 
-                                 /**
-                                  * Generated and optimized
-                                  * 
-                                  * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                  * with -DUseManualAlignment you may add 
-                                  * \code
-                                  #pragma vector aligned
-                                  #pragma simd
-                                  \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                  * 
-                                  * The alignment is tied to the unpacked records, i.e. for packed class
-                                  * variants the machine's natural alignment is switched off to recude the  
-                                  * memory footprint. Do not use any SSE/AVX operations or 
-                                  * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                  * If you rely on vectorisation, convert the underlying record 
-                                  * into the unpacked version first. 
-                                  * 
-                                  * @see convert()
-                                  */
-                                 inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+                  return _x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _adjacentRanks = (adjacentRanks);
-                                 }
-                                 
-                                 
-                                 
-                                 inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+                  _x = (x);
+               }
+               
+               
+               
+               inline int getLevel() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    short int mask = 1 << (6);
+                  return _level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _level = level;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    return (tmp != 0);
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    short int mask = 1 << (6);
+                  short int mask = 1 << (6);
    _packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                                 }
-                                 
-                                 
-                                 
-                              };
-                              
-                           private: 
-                              PersistentRecords _persistentRecords;
-                              int _adjacentCellsHeightOfPreviousIteration;
-                              int _numberOfAdjacentRefinedCells;
-                              
-                           public:
-                              /**
-                               * Generated
-                               */
-                              VertexPacked();
-                              
-                              /**
-                               * Generated
-                               */
-                              VertexPacked(const PersistentRecords& persistentRecords);
-                              
-                              /**
-                               * Generated
-                               */
-                              VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                              
-                              /**
-                               * Generated
-                               */
-                              VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
-                              
-                              /**
-                               * Generated
-                               */
-                              virtual ~VertexPacked();
-                              
-                              
-                              inline int getParticles() const 
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               VertexPacked();
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               /**
+                * Generated
+                */
+               virtual ~VertexPacked();
+               
+               
+               inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._particles;
-                              }
-                              
-                              
-                              
-                              inline void setParticles(const int& particles) 
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._particles = particles;
-                              }
-                              
-                              
-                              
-                              inline int getParticlesOnCoarserLevels() const 
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._particlesOnCoarserLevels;
-                              }
-                              
-                              
-                              
-                              inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                              }
-                              
-                              
-                              
-                              inline bool getVetoCoarsening() const 
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._vetoCoarsening;
-                              }
-                              
-                              
-                              
-                              inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._vetoCoarsening = vetoCoarsening;
-                              }
-                              
-                              
-                              
-                              inline bool getIsHangingNode() const 
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 short int mask = 1 << (0);
+                  short int mask = 1 << (0);
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    return (tmp != 0);
-                              }
-                              
-                              
-                              
-                              inline void setIsHangingNode(const bool& isHangingNode) 
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 short int mask = 1 << (0);
+                  short int mask = 1 << (0);
    _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                              }
-                              
-                              
-                              
-                              inline RefinementControl getRefinementControl() const 
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 short int mask =  (1 << (3)) - 1;
+                  short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (1));
    assertion(( tmp >= 0 &&  tmp <= 7));
    return (RefinementControl) tmp;
-                              }
-                              
-                              
-                              
-                              inline void setRefinementControl(const RefinementControl& refinementControl) 
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 assertion((refinementControl >= 0 && refinementControl <= 7));
+                  assertion((refinementControl >= 0 && refinementControl <= 7));
    short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                              }
-                              
-                              
-                              
-                              inline int getAdjacentCellsHeight() const 
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._adjacentCellsHeight;
-                              }
-                              
-                              
-                              
-                              inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                              }
-                              
-                              
-                              
-                              inline int getAdjacentCellsHeightOfPreviousIteration() const 
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _adjacentCellsHeightOfPreviousIteration;
-                              }
-                              
-                              
-                              
-                              inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                              }
-                              
-                              
-                              
-                              inline int getNumberOfAdjacentRefinedCells() const 
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _numberOfAdjacentRefinedCells;
-                              }
-                              
-                              
-                              
-                              inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                              }
-                              
-                              
-                              
-                              inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 short int mask =  (1 << (2)) - 1;
+                  short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (4));
    assertion(( tmp >= 0 &&  tmp <= 2));
    return (InsideOutsideDomain) tmp;
-                              }
-                              
-                              
-                              
-                              inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
    short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                              }
-                              
-                              
-                              
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._adjacentRanks;
-                              }
-                              
-                              
-                              
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+                  return _persistentRecords._x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._adjacentRanks = (adjacentRanks);
-                              }
-                              
-                              
-                              
-                              inline int getAdjacentRanks(int elementIndex) const 
+                  _persistentRecords._x = (x);
+               }
+               
+               
+               
+               inline double getX(int elementIndex) const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 assertion(elementIndex>=0);
-                                 assertion(elementIndex<TWO_POWER_D);
-                                 return _persistentRecords._adjacentRanks[elementIndex];
-                                 
-                              }
-                              
-                              
-                              
-                              inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  return _persistentRecords._x[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setX(int elementIndex, const double& x) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 assertion(elementIndex>=0);
-                                 assertion(elementIndex<TWO_POWER_D);
-                                 _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
-                                 
-                              }
-                              
-                              
-                              
-                              inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  _persistentRecords._x[elementIndex]= x;
+                  
+               }
+               
+               
+               
+               inline int getLevel() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 short int mask = 1 << (6);
+                  return _persistentRecords._level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._level = level;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline int getAdjacentRanks(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  return _persistentRecords._adjacentRanks[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
+                  
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    return (tmp != 0);
-                              }
-                              
-                              
-                              
-                              inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 short int mask = 1 << (6);
+                  short int mask = 1 << (6);
    _persistentRecords._packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                              }
-                              
-                              
-                              /**
-                               * Generated
-                               */
-                              static std::string toString(const InsideOutsideDomain& param);
-                              
-                              /**
-                               * Generated
-                               */
-                              static std::string getInsideOutsideDomainMapping();
-                              
-                              /**
-                               * Generated
-                               */
-                              static std::string toString(const RefinementControl& param);
-                              
-                              /**
-                               * Generated
-                               */
-                              static std::string getRefinementControlMapping();
-                              
-                              /**
-                               * Generated
-                               */
-                              std::string toString() const;
-                              
-                              /**
-                               * Generated
-                               */
-                              void toString(std::ostream& out) const;
-                              
-                              
-                              PersistentRecords getPersistentRecords() const;
-                              /**
-                               * Generated
-                               */
-                              Vertex convert() const;
-                              
-                              
-                           #ifdef Parallel
-                              protected:
-                                 static tarch::logging::Log _log;
-                                 
-                                 int _senderDestinationRank;
-                                 
-                              public:
-                                 
-                                 /**
-                                  * Global that represents the mpi datatype.
-                                  * There are two variants: Datatype identifies only those attributes marked with
-                                  * parallelise. FullDatatype instead identifies the whole record with all fields.
-                                  */
-                                 static MPI_Datatype Datatype;
-                                 static MPI_Datatype FullDatatype;
-                                 
-                                 /**
-                                  * Initializes the data type for the mpi operations. Has to be called
-                                  * before the very first send or receive operation is called.
-                                  */
-                                 static void initDatatype();
-                                 
-                                 static void shutdownDatatype();
-                                 
-                                 /**
-                                  * @param communicateSleep -1 Data exchange through blocking mpi
-                                  * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                                  * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                                  */
-                                 void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                 
-                                 void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                 
-                                 static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                                 
-                                 int getSenderRank() const;
-                                 
-                           #endif
-                              
-                           };
-                           
-                           #ifdef PackedRecords
-                           #pragma pack (pop)
-                           #endif
-                           
-                           
-                           
-                        
-                     #elif !defined(PersistentRegularSubtrees) && defined(Asserts) && !defined(Parallel)
-                        /**
-                         * @author This class is generated by DaStGen
-                         * 		   DataStructureGenerator (DaStGen)
-                         * 		   2007-2009 Wolfgang Eckhardt
-                         * 		   2012      Tobias Weinzierl
-                         *
-                         * 		   build date: 09-02-2014 14:40
-                         *
-                         * @date   23/02/2017 16:40
-                         */
-                        class dem::records::Vertex { 
-                           
-                           public:
-                              
-                              typedef dem::records::VertexPacked Packed;
-                              
-                              enum InsideOutsideDomain {
-                                 Inside = 0, Boundary = 1, Outside = 2
-                              };
-                              
-                              enum RefinementControl {
-                                 Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5
-                              };
-                              
-                              struct PersistentRecords {
-                                 int _particles;
-                                 int _particlesOnCoarserLevels;
-                                 bool _vetoCoarsening;
-                                 bool _isHangingNode;
-                                 RefinementControl _refinementControl;
-                                 int _adjacentCellsHeight;
-                                 InsideOutsideDomain _insideOutsideDomain;
-                                 #ifdef UseManualAlignment
-                                 tarch::la::Vector<DIMENSIONS,double> _x __attribute__((aligned(VectorisationAlignment)));
-                                 #else
-                                 tarch::la::Vector<DIMENSIONS,double> _x;
-                                 #endif
-                                 int _level;
-                                 /**
-                                  * Generated
-                                  */
-                                 PersistentRecords();
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
-                                 
-                                 
-                                 inline int getParticles() const 
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               Vertex convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifdef PackedRecords
+      #pragma pack (pop)
+      #endif
+      
+      
+      
+   #elif defined(Parallel) && defined(PersistentRegularSubtrees) && !defined(Asserts)
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::Vertex { 
+         
+         public:
+            
+            typedef dem::records::VertexPacked Packed;
+            
+            enum InsideOutsideDomain {
+               Inside = 0, Boundary = 1, Outside = 2
+            };
+            
+            enum RefinementControl {
+               Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5, RefineDueToJoinThoughWorkerIsAlreadyErasing = 6, EnforceRefinementTriggered = 7
+            };
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               bool _isHangingNode;
+               RefinementControl _refinementControl;
+               int _adjacentCellsHeight;
+               InsideOutsideDomain _insideOutsideDomain;
+               #ifdef UseManualAlignment
+               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks __attribute__((aligned(VectorisationAlignment)));
+               #else
+               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
+               #endif
+               bool _adjacentSubtreeForksIntoOtherRank;
+               bool _parentRegularPersistentSubgrid;
+               bool _parentRegularPersistentSubgridInPreviousIteration;
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               
+               inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _particles;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setParticles(const int& particles) 
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _particles = particles;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getParticlesOnCoarserLevels() const 
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _particlesOnCoarserLevels;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                                 }
-                                 
-                                 
-                                 
-                                 inline bool getVetoCoarsening() const 
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _vetoCoarsening;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _vetoCoarsening = vetoCoarsening;
-                                 }
-                                 
-                                 
-                                 
-                                 inline bool getIsHangingNode() const 
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _isHangingNode;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setIsHangingNode(const bool& isHangingNode) 
+                  return _isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _isHangingNode = isHangingNode;
-                                 }
-                                 
-                                 
-                                 
-                                 inline RefinementControl getRefinementControl() const 
+                  _isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _refinementControl;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setRefinementControl(const RefinementControl& refinementControl) 
+                  return _refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _refinementControl = refinementControl;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getAdjacentCellsHeight() const 
+                  _refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _adjacentCellsHeight;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _adjacentCellsHeight = adjacentCellsHeight;
-                                 }
-                                 
-                                 
-                                 
-                                 inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _insideOutsideDomain;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+                  return _insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _insideOutsideDomain = insideOutsideDomain;
-                                 }
-                                 
-                                 
-                                 
-                                 /**
-                                  * Generated and optimized
-                                  * 
-                                  * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                  * with -DUseManualAlignment you may add 
-                                  * \code
-                                  #pragma vector aligned
-                                  #pragma simd
-                                  \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                  * 
-                                  * The alignment is tied to the unpacked records, i.e. for packed class
-                                  * variants the machine's natural alignment is switched off to recude the  
-                                  * memory footprint. Do not use any SSE/AVX operations or 
-                                  * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                  * If you rely on vectorisation, convert the underlying record 
-                                  * into the unpacked version first. 
-                                  * 
-                                  * @see convert()
-                                  */
-                                 inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+                  _insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _x;
-                                 }
-                                 
-                                 
-                                 
-                                 /**
-                                  * Generated and optimized
-                                  * 
-                                  * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                  * with -DUseManualAlignment you may add 
-                                  * \code
-                                  #pragma vector aligned
-                                  #pragma simd
-                                  \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                  * 
-                                  * The alignment is tied to the unpacked records, i.e. for packed class
-                                  * variants the machine's natural alignment is switched off to recude the  
-                                  * memory footprint. Do not use any SSE/AVX operations or 
-                                  * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                  * If you rely on vectorisation, convert the underlying record 
-                                  * into the unpacked version first. 
-                                  * 
-                                  * @see convert()
-                                  */
-                                 inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+                  return _adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _x = (x);
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getLevel() const 
+                  _adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _level;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setLevel(const int& level) 
+                  return _adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _level = level;
-                                 }
-                                 
-                                 
-                                 
-                              };
-                              
-                           private: 
-                              PersistentRecords _persistentRecords;
-                              int _adjacentCellsHeightOfPreviousIteration;
-                              int _numberOfAdjacentRefinedCells;
-                              
-                           public:
-                              /**
-                               * Generated
-                               */
-                              Vertex();
-                              
-                              /**
-                               * Generated
-                               */
-                              Vertex(const PersistentRecords& persistentRecords);
-                              
-                              /**
-                               * Generated
-                               */
-                              Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
-                              
-                              /**
-                               * Generated
-                               */
-                              Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
-                              
-                              /**
-                               * Generated
-                               */
-                              virtual ~Vertex();
-                              
-                              
-                              inline int getParticles() const 
+                  _adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._particles;
-                              }
-                              
-                              
-                              
-                              inline void setParticles(const int& particles) 
+                  return _parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._particles = particles;
-                              }
-                              
-                              
-                              
-                              inline int getParticlesOnCoarserLevels() const 
+                  _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._particlesOnCoarserLevels;
-                              }
-                              
-                              
-                              
-                              inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  return _parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                              }
-                              
-                              
-                              
-                              inline bool getVetoCoarsening() const 
+                  _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               Vertex();
+               
+               /**
+                * Generated
+                */
+               Vertex(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               virtual ~Vertex();
+               
+               
+               inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._vetoCoarsening;
-                              }
-                              
-                              
-                              
-                              inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._vetoCoarsening = vetoCoarsening;
-                              }
-                              
-                              
-                              
-                              inline bool getIsHangingNode() const 
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._isHangingNode;
-                              }
-                              
-                              
-                              
-                              inline void setIsHangingNode(const bool& isHangingNode) 
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._isHangingNode = isHangingNode;
-                              }
-                              
-                              
-                              
-                              inline RefinementControl getRefinementControl() const 
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._refinementControl;
-                              }
-                              
-                              
-                              
-                              inline void setRefinementControl(const RefinementControl& refinementControl) 
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._refinementControl = refinementControl;
-                              }
-                              
-                              
-                              
-                              inline int getAdjacentCellsHeight() const 
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._adjacentCellsHeight;
-                              }
-                              
-                              
-                              
-                              inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _persistentRecords._isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                              }
-                              
-                              
-                              
-                              inline int getAdjacentCellsHeightOfPreviousIteration() const 
+                  _persistentRecords._isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _adjacentCellsHeightOfPreviousIteration;
-                              }
-                              
-                              
-                              
-                              inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+                  return _persistentRecords._refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                              }
-                              
-                              
-                              
-                              inline int getNumberOfAdjacentRefinedCells() const 
+                  _persistentRecords._refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _numberOfAdjacentRefinedCells;
-                              }
-                              
-                              
-                              
-                              inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                              }
-                              
-                              
-                              
-                              inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._insideOutsideDomain;
-                              }
-                              
-                              
-                              
-                              inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._insideOutsideDomain = insideOutsideDomain;
-                              }
-                              
-                              
-                              
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._x;
-                              }
-                              
-                              
-                              
-                              /**
-                               * Generated and optimized
-                               * 
-                               * If you realise a for loop using exclusively arrays (vectors) and compile 
-                               * with -DUseManualAlignment you may add 
-                               * \code
-                               #pragma vector aligned
-                               #pragma simd
-                               \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                               * 
-                               * The alignment is tied to the unpacked records, i.e. for packed class
-                               * variants the machine's natural alignment is switched off to recude the  
-                               * memory footprint. Do not use any SSE/AVX operations or 
-                               * vectorisation on the result for the packed variants, as the data is misaligned. 
-                               * If you rely on vectorisation, convert the underlying record 
-                               * into the unpacked version first. 
-                               * 
-                               * @see convert()
-                               */
-                              inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._x = (x);
-                              }
-                              
-                              
-                              
-                              inline double getX(int elementIndex) const 
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 assertion(elementIndex>=0);
-                                 assertion(elementIndex<DIMENSIONS);
-                                 return _persistentRecords._x[elementIndex];
-                                 
-                              }
-                              
-                              
-                              
-                              inline void setX(int elementIndex, const double& x) 
+                  return _persistentRecords._insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 assertion(elementIndex>=0);
-                                 assertion(elementIndex<DIMENSIONS);
-                                 _persistentRecords._x[elementIndex]= x;
-                                 
-                              }
-                              
-                              
-                              
-                              inline int getLevel() const 
+                  _persistentRecords._insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 return _persistentRecords._level;
-                              }
-                              
-                              
-                              
-                              inline void setLevel(const int& level) 
+                  return _persistentRecords._adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                 _persistentRecords._level = level;
-                              }
-                              
-                              
-                              /**
-                               * Generated
-                               */
-                              static std::string toString(const InsideOutsideDomain& param);
-                              
-                              /**
-                               * Generated
-                               */
-                              static std::string getInsideOutsideDomainMapping();
-                              
-                              /**
-                               * Generated
-                               */
-                              static std::string toString(const RefinementControl& param);
-                              
-                              /**
-                               * Generated
-                               */
-                              static std::string getRefinementControlMapping();
-                              
-                              /**
-                               * Generated
-                               */
-                              std::string toString() const;
-                              
-                              /**
-                               * Generated
-                               */
-                              void toString(std::ostream& out) const;
-                              
-                              
-                              PersistentRecords getPersistentRecords() const;
-                              /**
-                               * Generated
-                               */
-                              VertexPacked convert() const;
-                              
-                              
-                           #ifdef Parallel
-                              protected:
-                                 static tarch::logging::Log _log;
-                                 
-                                 int _senderDestinationRank;
-                                 
-                              public:
-                                 
-                                 /**
-                                  * Global that represents the mpi datatype.
-                                  * There are two variants: Datatype identifies only those attributes marked with
-                                  * parallelise. FullDatatype instead identifies the whole record with all fields.
-                                  */
-                                 static MPI_Datatype Datatype;
-                                 static MPI_Datatype FullDatatype;
-                                 
-                                 /**
-                                  * Initializes the data type for the mpi operations. Has to be called
-                                  * before the very first send or receive operation is called.
-                                  */
-                                 static void initDatatype();
-                                 
-                                 static void shutdownDatatype();
-                                 
-                                 /**
-                                  * @param communicateSleep -1 Data exchange through blocking mpi
-                                  * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                                  * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                                  */
-                                 void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                 
-                                 void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                 
-                                 static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                                 
-                                 int getSenderRank() const;
-                                 
-                           #endif
-                              
-                           };
-                           
-                           #ifndef DaStGenPackedPadding
-                             #define DaStGenPackedPadding 1      // 32 bit version
-                             // #define DaStGenPackedPadding 2   // 64 bit version
-                           #endif
-                           
-                           
-                           #ifdef PackedRecords
-                              #pragma pack (push, DaStGenPackedPadding)
-                           #endif
-                           
-                           /**
-                            * @author This class is generated by DaStGen
-                            * 		   DataStructureGenerator (DaStGen)
-                            * 		   2007-2009 Wolfgang Eckhardt
-                            * 		   2012      Tobias Weinzierl
-                            *
-                            * 		   build date: 09-02-2014 14:40
-                            *
-                            * @date   23/02/2017 16:40
-                            */
-                           class dem::records::VertexPacked { 
-                              
-                              public:
-                                 
-                                 typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
-                                 
-                                 typedef dem::records::Vertex::RefinementControl RefinementControl;
-                                 
-                                 struct PersistentRecords {
-                                    int _particles;
-                                    int _particlesOnCoarserLevels;
-                                    bool _vetoCoarsening;
-                                    int _adjacentCellsHeight;
-                                    tarch::la::Vector<DIMENSIONS,double> _x;
-                                    int _level;
-                                    
-                                    /** mapping of records:
-                                    || Member 	|| startbit 	|| length
-                                     |  isHangingNode	| startbit 0	| #bits 1
-                                     |  refinementControl	| startbit 1	| #bits 3
-                                     |  insideOutsideDomain	| startbit 4	| #bits 2
-                                     */
-                                    short int _packedRecords0;
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    PersistentRecords();
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
-                                    
-                                    
-                                    inline int getParticles() const 
+                  _persistentRecords._adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline int getAdjacentRanks(int elementIndex) const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _particles;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setParticles(const int& particles) 
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  return _persistentRecords._adjacentRanks[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _particles = particles;
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getParticlesOnCoarserLevels() const 
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
+                  
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _particlesOnCoarserLevels;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  return _persistentRecords._adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                                    }
-                                    
-                                    
-                                    
-                                    inline bool getVetoCoarsening() const 
+                  _persistentRecords._adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _vetoCoarsening;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _persistentRecords._parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _vetoCoarsening = vetoCoarsening;
-                                    }
-                                    
-                                    
-                                    
-                                    inline bool getIsHangingNode() const 
+                  _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       short int mask = 1 << (0);
+                  return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               VertexPacked convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifndef DaStGenPackedPadding
+        #define DaStGenPackedPadding 1      // 32 bit version
+        // #define DaStGenPackedPadding 2   // 64 bit version
+      #endif
+      
+      
+      #ifdef PackedRecords
+         #pragma pack (push, DaStGenPackedPadding)
+      #endif
+      
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::VertexPacked { 
+         
+         public:
+            
+            typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
+            
+            typedef dem::records::Vertex::RefinementControl RefinementControl;
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               int _adjacentCellsHeight;
+               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
+               
+               /** mapping of records:
+               || Member 	|| startbit 	|| length
+                |  isHangingNode	| startbit 0	| #bits 1
+                |  refinementControl	| startbit 1	| #bits 3
+                |  insideOutsideDomain	| startbit 4	| #bits 2
+                |  adjacentSubtreeForksIntoOtherRank	| startbit 6	| #bits 1
+                |  parentRegularPersistentSubgrid	| startbit 7	| #bits 1
+                |  parentRegularPersistentSubgridInPreviousIteration	| startbit 8	| #bits 1
+                */
+               short int _packedRecords0;
+               
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    return (tmp != 0);
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setIsHangingNode(const bool& isHangingNode) 
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       short int mask = 1 << (0);
+                  short int mask = 1 << (0);
    _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                                    }
-                                    
-                                    
-                                    
-                                    inline RefinementControl getRefinementControl() const 
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       short int mask =  (1 << (3)) - 1;
+                  short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 5));
+   assertion(( tmp >= 0 &&  tmp <= 7));
    return (RefinementControl) tmp;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setRefinementControl(const RefinementControl& refinementControl) 
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       assertion((refinementControl >= 0 && refinementControl <= 5));
+                  assertion((refinementControl >= 0 && refinementControl <= 7));
    short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
    _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getAdjacentCellsHeight() const 
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _adjacentCellsHeight;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _adjacentCellsHeight = adjacentCellsHeight;
-                                    }
-                                    
-                                    
-                                    
-                                    inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       short int mask =  (1 << (2)) - 1;
+                  short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (4));
    assertion(( tmp >= 0 &&  tmp <= 2));
    return (InsideOutsideDomain) tmp;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
    short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
    _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                                    }
-                                    
-                                    
-                                    
-                                    /**
-                                     * Generated and optimized
-                                     * 
-                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                     * with -DUseManualAlignment you may add 
-                                     * \code
-                                     #pragma vector aligned
-                                     #pragma simd
-                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                     * 
-                                     * The alignment is tied to the unpacked records, i.e. for packed class
-                                     * variants the machine's natural alignment is switched off to recude the  
-                                     * memory footprint. Do not use any SSE/AVX operations or 
-                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                     * If you rely on vectorisation, convert the underlying record 
-                                     * into the unpacked version first. 
-                                     * 
-                                     * @see convert()
-                                     */
-                                    inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _x;
-                                    }
-                                    
-                                    
-                                    
-                                    /**
-                                     * Generated and optimized
-                                     * 
-                                     * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                     * with -DUseManualAlignment you may add 
-                                     * \code
-                                     #pragma vector aligned
-                                     #pragma simd
-                                     \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                     * 
-                                     * The alignment is tied to the unpacked records, i.e. for packed class
-                                     * variants the machine's natural alignment is switched off to recude the  
-                                     * memory footprint. Do not use any SSE/AVX operations or 
-                                     * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                     * If you rely on vectorisation, convert the underlying record 
-                                     * into the unpacked version first. 
-                                     * 
-                                     * @see convert()
-                                     */
-                                    inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+                  return _adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _x = (x);
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getLevel() const 
+                  _adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _level;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setLevel(const int& level) 
+                  short int mask = 1 << (6);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _level = level;
-                                    }
-                                    
-                                    
-                                    
-                                 };
-                                 
-                              private: 
-                                 PersistentRecords _persistentRecords;
-                                 int _adjacentCellsHeightOfPreviousIteration;
-                                 int _numberOfAdjacentRefinedCells;
-                                 
-                              public:
-                                 /**
-                                  * Generated
-                                  */
-                                 VertexPacked();
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 VertexPacked(const PersistentRecords& persistentRecords);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 virtual ~VertexPacked();
-                                 
-                                 
-                                 inline int getParticles() const 
+                  short int mask = 1 << (6);
+   _packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._particles;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setParticles(const int& particles) 
+                  short int mask = 1 << (7);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._particles = particles;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getParticlesOnCoarserLevels() const 
+                  short int mask = 1 << (7);
+   _packedRecords0 = static_cast<short int>( parentRegularPersistentSubgrid ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._particlesOnCoarserLevels;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  short int mask = 1 << (8);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                                 }
-                                 
-                                 
-                                 
-                                 inline bool getVetoCoarsening() const 
+                  short int mask = 1 << (8);
+   _packedRecords0 = static_cast<short int>( parentRegularPersistentSubgridInPreviousIteration ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               VertexPacked();
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               virtual ~VertexPacked();
+               
+               
+               inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._vetoCoarsening;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._vetoCoarsening = vetoCoarsening;
-                                 }
-                                 
-                                 
-                                 
-                                 inline bool getIsHangingNode() const 
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    short int mask = 1 << (0);
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    return (tmp != 0);
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setIsHangingNode(const bool& isHangingNode) 
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    short int mask = 1 << (0);
+                  short int mask = 1 << (0);
    _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                                 }
-                                 
-                                 
-                                 
-                                 inline RefinementControl getRefinementControl() const 
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    short int mask =  (1 << (3)) - 1;
+                  short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (1));
-   assertion(( tmp >= 0 &&  tmp <= 5));
+   assertion(( tmp >= 0 &&  tmp <= 7));
    return (RefinementControl) tmp;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setRefinementControl(const RefinementControl& refinementControl) 
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    assertion((refinementControl >= 0 && refinementControl <= 5));
+                  assertion((refinementControl >= 0 && refinementControl <= 7));
    short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getAdjacentCellsHeight() const 
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._adjacentCellsHeight;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getAdjacentCellsHeightOfPreviousIteration() const 
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _adjacentCellsHeightOfPreviousIteration;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getNumberOfAdjacentRefinedCells() const 
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _numberOfAdjacentRefinedCells;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                                 }
-                                 
-                                 
-                                 
-                                 inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    short int mask =  (1 << (2)) - 1;
+                  short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (4));
    assertion(( tmp >= 0 &&  tmp <= 2));
    return (InsideOutsideDomain) tmp;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
    short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                                 }
-                                 
-                                 
-                                 
-                                 /**
-                                  * Generated and optimized
-                                  * 
-                                  * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                  * with -DUseManualAlignment you may add 
-                                  * \code
-                                  #pragma vector aligned
-                                  #pragma simd
-                                  \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                  * 
-                                  * The alignment is tied to the unpacked records, i.e. for packed class
-                                  * variants the machine's natural alignment is switched off to recude the  
-                                  * memory footprint. Do not use any SSE/AVX operations or 
-                                  * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                  * If you rely on vectorisation, convert the underlying record 
-                                  * into the unpacked version first. 
-                                  * 
-                                  * @see convert()
-                                  */
-                                 inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._x;
-                                 }
-                                 
-                                 
-                                 
-                                 /**
-                                  * Generated and optimized
-                                  * 
-                                  * If you realise a for loop using exclusively arrays (vectors) and compile 
-                                  * with -DUseManualAlignment you may add 
-                                  * \code
-                                  #pragma vector aligned
-                                  #pragma simd
-                                  \endcode to this for loop to enforce your compiler to use SSE/AVX.
-                                  * 
-                                  * The alignment is tied to the unpacked records, i.e. for packed class
-                                  * variants the machine's natural alignment is switched off to recude the  
-                                  * memory footprint. Do not use any SSE/AVX operations or 
-                                  * vectorisation on the result for the packed variants, as the data is misaligned. 
-                                  * If you rely on vectorisation, convert the underlying record 
-                                  * into the unpacked version first. 
-                                  * 
-                                  * @see convert()
-                                  */
-                                 inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+                  return _persistentRecords._adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._x = (x);
-                                 }
-                                 
-                                 
-                                 
-                                 inline double getX(int elementIndex) const 
+                  _persistentRecords._adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline int getAdjacentRanks(int elementIndex) const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    assertion(elementIndex>=0);
-                                    assertion(elementIndex<DIMENSIONS);
-                                    return _persistentRecords._x[elementIndex];
-                                    
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setX(int elementIndex, const double& x) 
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  return _persistentRecords._adjacentRanks[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    assertion(elementIndex>=0);
-                                    assertion(elementIndex<DIMENSIONS);
-                                    _persistentRecords._x[elementIndex]= x;
-                                    
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getLevel() const 
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
+                  
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._level;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setLevel(const int& level) 
+                  short int mask = 1 << (6);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._level = level;
-                                 }
-                                 
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 static std::string toString(const InsideOutsideDomain& param);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 static std::string getInsideOutsideDomainMapping();
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 static std::string toString(const RefinementControl& param);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 static std::string getRefinementControlMapping();
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 std::string toString() const;
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 void toString(std::ostream& out) const;
-                                 
-                                 
-                                 PersistentRecords getPersistentRecords() const;
-                                 /**
-                                  * Generated
-                                  */
-                                 Vertex convert() const;
-                                 
-                                 
-                              #ifdef Parallel
-                                 protected:
-                                    static tarch::logging::Log _log;
-                                    
-                                    int _senderDestinationRank;
-                                    
-                                 public:
-                                    
-                                    /**
-                                     * Global that represents the mpi datatype.
-                                     * There are two variants: Datatype identifies only those attributes marked with
-                                     * parallelise. FullDatatype instead identifies the whole record with all fields.
-                                     */
-                                    static MPI_Datatype Datatype;
-                                    static MPI_Datatype FullDatatype;
-                                    
-                                    /**
-                                     * Initializes the data type for the mpi operations. Has to be called
-                                     * before the very first send or receive operation is called.
-                                     */
-                                    static void initDatatype();
-                                    
-                                    static void shutdownDatatype();
-                                    
-                                    /**
-                                     * @param communicateSleep -1 Data exchange through blocking mpi
-                                     * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                                     * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                                     */
-                                    void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                    
-                                    void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                    
-                                    static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                                    
-                                    int getSenderRank() const;
-                                    
-                              #endif
-                                 
-                              };
-                              
-                              #ifdef PackedRecords
-                              #pragma pack (pop)
-                              #endif
-                              
-                              
-                              
-                           
-                        #elif !defined(PersistentRegularSubtrees) && !defined(Parallel) && !defined(Asserts)
-                           /**
-                            * @author This class is generated by DaStGen
-                            * 		   DataStructureGenerator (DaStGen)
-                            * 		   2007-2009 Wolfgang Eckhardt
-                            * 		   2012      Tobias Weinzierl
-                            *
-                            * 		   build date: 09-02-2014 14:40
-                            *
-                            * @date   23/02/2017 16:40
-                            */
-                           class dem::records::Vertex { 
-                              
-                              public:
-                                 
-                                 typedef dem::records::VertexPacked Packed;
-                                 
-                                 enum InsideOutsideDomain {
-                                    Inside = 0, Boundary = 1, Outside = 2
-                                 };
-                                 
-                                 enum RefinementControl {
-                                    Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5
-                                 };
-                                 
-                                 struct PersistentRecords {
-                                    int _particles;
-                                    int _particlesOnCoarserLevels;
-                                    bool _vetoCoarsening;
-                                    bool _isHangingNode;
-                                    RefinementControl _refinementControl;
-                                    int _adjacentCellsHeight;
-                                    InsideOutsideDomain _insideOutsideDomain;
-                                    /**
-                                     * Generated
-                                     */
-                                    PersistentRecords();
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
-                                    
-                                    
-                                    inline int getParticles() const 
+                  short int mask = 1 << (6);
+   _persistentRecords._packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _particles;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setParticles(const int& particles) 
+                  short int mask = 1 << (7);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _particles = particles;
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getParticlesOnCoarserLevels() const 
+                  short int mask = 1 << (7);
+   _persistentRecords._packedRecords0 = static_cast<short int>( parentRegularPersistentSubgrid ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _particlesOnCoarserLevels;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  short int mask = 1 << (8);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                                    }
-                                    
-                                    
-                                    
-                                    inline bool getVetoCoarsening() const 
+                  short int mask = 1 << (8);
+   _persistentRecords._packedRecords0 = static_cast<short int>( parentRegularPersistentSubgridInPreviousIteration ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               Vertex convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifdef PackedRecords
+      #pragma pack (pop)
+      #endif
+      
+      
+      
+   #elif defined(PersistentRegularSubtrees) && !defined(Parallel) && !defined(Asserts)
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::Vertex { 
+         
+         public:
+            
+            typedef dem::records::VertexPacked Packed;
+            
+            enum InsideOutsideDomain {
+               Inside = 0, Boundary = 1, Outside = 2
+            };
+            
+            enum RefinementControl {
+               Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5
+            };
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               bool _isHangingNode;
+               RefinementControl _refinementControl;
+               int _adjacentCellsHeight;
+               InsideOutsideDomain _insideOutsideDomain;
+               bool _parentRegularPersistentSubgrid;
+               bool _parentRegularPersistentSubgridInPreviousIteration;
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               
+               inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _vetoCoarsening;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _vetoCoarsening = vetoCoarsening;
-                                    }
-                                    
-                                    
-                                    
-                                    inline bool getIsHangingNode() const 
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _isHangingNode;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setIsHangingNode(const bool& isHangingNode) 
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _isHangingNode = isHangingNode;
-                                    }
-                                    
-                                    
-                                    
-                                    inline RefinementControl getRefinementControl() const 
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _refinementControl;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setRefinementControl(const RefinementControl& refinementControl) 
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _refinementControl = refinementControl;
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getAdjacentCellsHeight() const 
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _adjacentCellsHeight;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _adjacentCellsHeight = adjacentCellsHeight;
-                                    }
-                                    
-                                    
-                                    
-                                    inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _insideOutsideDomain;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+                  return _refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _insideOutsideDomain = insideOutsideDomain;
-                                    }
-                                    
-                                    
-                                    
-                                 };
-                                 
-                              private: 
-                                 PersistentRecords _persistentRecords;
-                                 int _adjacentCellsHeightOfPreviousIteration;
-                                 int _numberOfAdjacentRefinedCells;
-                                 
-                              public:
-                                 /**
-                                  * Generated
-                                  */
-                                 Vertex();
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 Vertex(const PersistentRecords& persistentRecords);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 virtual ~Vertex();
-                                 
-                                 
-                                 inline int getParticles() const 
+                  _refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._particles;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setParticles(const int& particles) 
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._particles = particles;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getParticlesOnCoarserLevels() const 
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._particlesOnCoarserLevels;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  return _insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                                 }
-                                 
-                                 
-                                 
-                                 inline bool getVetoCoarsening() const 
+                  _insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._vetoCoarsening;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._vetoCoarsening = vetoCoarsening;
-                                 }
-                                 
-                                 
-                                 
-                                 inline bool getIsHangingNode() const 
+                  _parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._isHangingNode;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setIsHangingNode(const bool& isHangingNode) 
+                  return _parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._isHangingNode = isHangingNode;
-                                 }
-                                 
-                                 
-                                 
-                                 inline RefinementControl getRefinementControl() const 
+                  _parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               Vertex();
+               
+               /**
+                * Generated
+                */
+               Vertex(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               virtual ~Vertex();
+               
+               
+               inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._refinementControl;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setRefinementControl(const RefinementControl& refinementControl) 
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._refinementControl = refinementControl;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getAdjacentCellsHeight() const 
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._adjacentCellsHeight;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getAdjacentCellsHeightOfPreviousIteration() const 
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _adjacentCellsHeightOfPreviousIteration;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                                 }
-                                 
-                                 
-                                 
-                                 inline int getNumberOfAdjacentRefinedCells() const 
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _numberOfAdjacentRefinedCells;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+                  return _persistentRecords._isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                                 }
-                                 
-                                 
-                                 
-                                 inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _persistentRecords._isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    return _persistentRecords._insideOutsideDomain;
-                                 }
-                                 
-                                 
-                                 
-                                 inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+                  return _persistentRecords._refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                    _persistentRecords._insideOutsideDomain = insideOutsideDomain;
-                                 }
-                                 
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 static std::string toString(const InsideOutsideDomain& param);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 static std::string getInsideOutsideDomainMapping();
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 static std::string toString(const RefinementControl& param);
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 static std::string getRefinementControlMapping();
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 std::string toString() const;
-                                 
-                                 /**
-                                  * Generated
-                                  */
-                                 void toString(std::ostream& out) const;
-                                 
-                                 
-                                 PersistentRecords getPersistentRecords() const;
-                                 /**
-                                  * Generated
-                                  */
-                                 VertexPacked convert() const;
-                                 
-                                 
-                              #ifdef Parallel
-                                 protected:
-                                    static tarch::logging::Log _log;
-                                    
-                                    int _senderDestinationRank;
-                                    
-                                 public:
-                                    
-                                    /**
-                                     * Global that represents the mpi datatype.
-                                     * There are two variants: Datatype identifies only those attributes marked with
-                                     * parallelise. FullDatatype instead identifies the whole record with all fields.
-                                     */
-                                    static MPI_Datatype Datatype;
-                                    static MPI_Datatype FullDatatype;
-                                    
-                                    /**
-                                     * Initializes the data type for the mpi operations. Has to be called
-                                     * before the very first send or receive operation is called.
-                                     */
-                                    static void initDatatype();
-                                    
-                                    static void shutdownDatatype();
-                                    
-                                    /**
-                                     * @param communicateSleep -1 Data exchange through blocking mpi
-                                     * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                                     * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                                     */
-                                    void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                    
-                                    void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                    
-                                    static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                                    
-                                    int getSenderRank() const;
-                                    
-                              #endif
-                                 
-                              };
-                              
-                              #ifndef DaStGenPackedPadding
-                                #define DaStGenPackedPadding 1      // 32 bit version
-                                // #define DaStGenPackedPadding 2   // 64 bit version
-                              #endif
-                              
-                              
-                              #ifdef PackedRecords
-                                 #pragma pack (push, DaStGenPackedPadding)
-                              #endif
-                              
-                              /**
-                               * @author This class is generated by DaStGen
-                               * 		   DataStructureGenerator (DaStGen)
-                               * 		   2007-2009 Wolfgang Eckhardt
-                               * 		   2012      Tobias Weinzierl
-                               *
-                               * 		   build date: 09-02-2014 14:40
-                               *
-                               * @date   23/02/2017 16:40
-                               */
-                              class dem::records::VertexPacked { 
-                                 
-                                 public:
-                                    
-                                    typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
-                                    
-                                    typedef dem::records::Vertex::RefinementControl RefinementControl;
-                                    
-                                    struct PersistentRecords {
-                                       int _particles;
-                                       int _particlesOnCoarserLevels;
-                                       bool _vetoCoarsening;
-                                       int _adjacentCellsHeight;
-                                       
-                                       /** mapping of records:
-                                       || Member 	|| startbit 	|| length
-                                        |  isHangingNode	| startbit 0	| #bits 1
-                                        |  refinementControl	| startbit 1	| #bits 3
-                                        |  insideOutsideDomain	| startbit 4	| #bits 2
-                                        */
-                                       short int _packedRecords0;
-                                       
-                                       /**
-                                        * Generated
-                                        */
-                                       PersistentRecords();
-                                       
-                                       /**
-                                        * Generated
-                                        */
-                                       PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
-                                       
-                                       
-                                       inline int getParticles() const 
+                  _persistentRecords._refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          return _particles;
-                                       }
-                                       
-                                       
-                                       
-                                       inline void setParticles(const int& particles) 
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          _particles = particles;
-                                       }
-                                       
-                                       
-                                       
-                                       inline int getParticlesOnCoarserLevels() const 
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          return _particlesOnCoarserLevels;
-                                       }
-                                       
-                                       
-                                       
-                                       inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          _particlesOnCoarserLevels = particlesOnCoarserLevels;
-                                       }
-                                       
-                                       
-                                       
-                                       inline bool getVetoCoarsening() const 
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          return _vetoCoarsening;
-                                       }
-                                       
-                                       
-                                       
-                                       inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          _vetoCoarsening = vetoCoarsening;
-                                       }
-                                       
-                                       
-                                       
-                                       inline bool getIsHangingNode() const 
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          short int mask = 1 << (0);
+                  return _persistentRecords._insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._parentRegularPersistentSubgrid = parentRegularPersistentSubgrid;
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._parentRegularPersistentSubgridInPreviousIteration = parentRegularPersistentSubgridInPreviousIteration;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               VertexPacked convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifndef DaStGenPackedPadding
+        #define DaStGenPackedPadding 1      // 32 bit version
+        // #define DaStGenPackedPadding 2   // 64 bit version
+      #endif
+      
+      
+      #ifdef PackedRecords
+         #pragma pack (push, DaStGenPackedPadding)
+      #endif
+      
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::VertexPacked { 
+         
+         public:
+            
+            typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
+            
+            typedef dem::records::Vertex::RefinementControl RefinementControl;
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               int _adjacentCellsHeight;
+               
+               /** mapping of records:
+               || Member 	|| startbit 	|| length
+                |  isHangingNode	| startbit 0	| #bits 1
+                |  refinementControl	| startbit 1	| #bits 3
+                |  insideOutsideDomain	| startbit 4	| #bits 2
+                |  parentRegularPersistentSubgrid	| startbit 6	| #bits 1
+                |  parentRegularPersistentSubgridInPreviousIteration	| startbit 7	| #bits 1
+                */
+               short int _packedRecords0;
+               
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    return (tmp != 0);
-                                       }
-                                       
-                                       
-                                       
-                                       inline void setIsHangingNode(const bool& isHangingNode) 
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          short int mask = 1 << (0);
+                  short int mask = 1 << (0);
    _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
-                                       }
-                                       
-                                       
-                                       
-                                       inline RefinementControl getRefinementControl() const 
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          short int mask =  (1 << (3)) - 1;
+                  short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (1));
    assertion(( tmp >= 0 &&  tmp <= 5));
    return (RefinementControl) tmp;
-                                       }
-                                       
-                                       
-                                       
-                                       inline void setRefinementControl(const RefinementControl& refinementControl) 
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          assertion((refinementControl >= 0 && refinementControl <= 5));
+                  assertion((refinementControl >= 0 && refinementControl <= 5));
    short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
    _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                                       }
-                                       
-                                       
-                                       
-                                       inline int getAdjacentCellsHeight() const 
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          return _adjacentCellsHeight;
-                                       }
-                                       
-                                       
-                                       
-                                       inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          _adjacentCellsHeight = adjacentCellsHeight;
-                                       }
-                                       
-                                       
-                                       
-                                       inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          short int mask =  (1 << (2)) - 1;
+                  short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    short int tmp = static_cast<short int>(_packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (4));
    assertion(( tmp >= 0 &&  tmp <= 2));
    return (InsideOutsideDomain) tmp;
-                                       }
-                                       
-                                       
-                                       
-                                       inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                          assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
    short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
    _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                                       }
-                                       
-                                       
-                                       
-                                    };
-                                    
-                                 private: 
-                                    PersistentRecords _persistentRecords;
-                                    int _adjacentCellsHeightOfPreviousIteration;
-                                    int _numberOfAdjacentRefinedCells;
-                                    
-                                 public:
-                                    /**
-                                     * Generated
-                                     */
-                                    VertexPacked();
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    VertexPacked(const PersistentRecords& persistentRecords);
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain);
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    virtual ~VertexPacked();
-                                    
-                                    
-                                    inline int getParticles() const 
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _persistentRecords._particles;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setParticles(const int& particles) 
+                  short int mask = 1 << (6);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _persistentRecords._particles = particles;
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getParticlesOnCoarserLevels() const 
+                  short int mask = 1 << (6);
+   _packedRecords0 = static_cast<short int>( parentRegularPersistentSubgrid ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _persistentRecords._particlesOnCoarserLevels;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+                  short int mask = 1 << (7);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
-                                    }
-                                    
-                                    
-                                    
-                                    inline bool getVetoCoarsening() const 
+                  short int mask = 1 << (7);
+   _packedRecords0 = static_cast<short int>( parentRegularPersistentSubgridInPreviousIteration ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               VertexPacked();
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               
+               /**
+                * Generated
+                */
+               virtual ~VertexPacked();
+               
+               
+               inline int getParticles() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _persistentRecords._vetoCoarsening;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setVetoCoarsening(const bool& vetoCoarsening) 
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _persistentRecords._vetoCoarsening = vetoCoarsening;
-                                    }
-                                    
-                                    
-                                    
-                                    inline bool getIsHangingNode() const 
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       short int mask = 1 << (0);
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    return (tmp != 0);
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setIsHangingNode(const bool& isHangingNode) 
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       short int mask = 1 << (0);
+                  short int mask = 1 << (0);
    _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
-                                    }
-                                    
-                                    
-                                    
-                                    inline RefinementControl getRefinementControl() const 
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       short int mask =  (1 << (3)) - 1;
+                  short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (1));
    assertion(( tmp >= 0 &&  tmp <= 5));
    return (RefinementControl) tmp;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setRefinementControl(const RefinementControl& refinementControl) 
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       assertion((refinementControl >= 0 && refinementControl <= 5));
+                  assertion((refinementControl >= 0 && refinementControl <= 5));
    short int mask =  (1 << (3)) - 1;
    mask = static_cast<short int>(mask << (1));
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getAdjacentCellsHeight() const 
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _persistentRecords._adjacentCellsHeight;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getAdjacentCellsHeightOfPreviousIteration() const 
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _adjacentCellsHeightOfPreviousIteration;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
-                                    }
-                                    
-                                    
-                                    
-                                    inline int getNumberOfAdjacentRefinedCells() const 
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       return _numberOfAdjacentRefinedCells;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
-                                    }
-                                    
-                                    
-                                    
-                                    inline InsideOutsideDomain getInsideOutsideDomain() const 
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       short int mask =  (1 << (2)) - 1;
+                  short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
    tmp = static_cast<short int>(tmp >> (4));
    assertion(( tmp >= 0 &&  tmp <= 2));
    return (InsideOutsideDomain) tmp;
-                                    }
-                                    
-                                    
-                                    
-                                    inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                                       assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
    short int mask =  (1 << (2)) - 1;
    mask = static_cast<short int>(mask << (4));
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
    _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
-                                    }
-                                    
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    static std::string toString(const InsideOutsideDomain& param);
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    static std::string getInsideOutsideDomainMapping();
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    static std::string toString(const RefinementControl& param);
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    static std::string getRefinementControlMapping();
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    std::string toString() const;
-                                    
-                                    /**
-                                     * Generated
-                                     */
-                                    void toString(std::ostream& out) const;
-                                    
-                                    
-                                    PersistentRecords getPersistentRecords() const;
-                                    /**
-                                     * Generated
-                                     */
-                                    Vertex convert() const;
-                                    
-                                    
-                                 #ifdef Parallel
-                                    protected:
-                                       static tarch::logging::Log _log;
-                                       
-                                       int _senderDestinationRank;
-                                       
-                                    public:
-                                       
-                                       /**
-                                        * Global that represents the mpi datatype.
-                                        * There are two variants: Datatype identifies only those attributes marked with
-                                        * parallelise. FullDatatype instead identifies the whole record with all fields.
-                                        */
-                                       static MPI_Datatype Datatype;
-                                       static MPI_Datatype FullDatatype;
-                                       
-                                       /**
-                                        * Initializes the data type for the mpi operations. Has to be called
-                                        * before the very first send or receive operation is called.
-                                        */
-                                       static void initDatatype();
-                                       
-                                       static void shutdownDatatype();
-                                       
-                                       /**
-                                        * @param communicateSleep -1 Data exchange through blocking mpi
-                                        * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                                        * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                                        */
-                                       void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                       
-                                       void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-                                       
-                                       static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-                                       
-                                       int getSenderRank() const;
-                                       
-                                 #endif
-                                    
-                                 };
-                                 
-                                 #ifdef PackedRecords
-                                 #pragma pack (pop)
-                                 #endif
-                                 
-                                 
-                                 
-                              
-                           #endif
-                           
-                           #endif
-                           
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgrid() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgrid(const bool& parentRegularPersistentSubgrid) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   _persistentRecords._packedRecords0 = static_cast<short int>( parentRegularPersistentSubgrid ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline bool getParentRegularPersistentSubgridInPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (7);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setParentRegularPersistentSubgridInPreviousIteration(const bool& parentRegularPersistentSubgridInPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (7);
+   _persistentRecords._packedRecords0 = static_cast<short int>( parentRegularPersistentSubgridInPreviousIteration ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               Vertex convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifdef PackedRecords
+      #pragma pack (pop)
+      #endif
+      
+      
+      
+   #elif defined(Parallel) && !defined(PersistentRegularSubtrees) && !defined(Asserts)
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::Vertex { 
+         
+         public:
+            
+            typedef dem::records::VertexPacked Packed;
+            
+            enum InsideOutsideDomain {
+               Inside = 0, Boundary = 1, Outside = 2
+            };
+            
+            enum RefinementControl {
+               Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5, RefineDueToJoinThoughWorkerIsAlreadyErasing = 6, EnforceRefinementTriggered = 7
+            };
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               bool _isHangingNode;
+               RefinementControl _refinementControl;
+               int _adjacentCellsHeight;
+               InsideOutsideDomain _insideOutsideDomain;
+               #ifdef UseManualAlignment
+               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks __attribute__((aligned(VectorisationAlignment)));
+               #else
+               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
+               #endif
+               bool _adjacentSubtreeForksIntoOtherRank;
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               Vertex();
+               
+               /**
+                * Generated
+                */
+               Vertex(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               /**
+                * Generated
+                */
+               virtual ~Vertex();
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline int getAdjacentRanks(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  return _persistentRecords._adjacentRanks[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
+                  
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentSubtreeForksIntoOtherRank = adjacentSubtreeForksIntoOtherRank;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               VertexPacked convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifndef DaStGenPackedPadding
+        #define DaStGenPackedPadding 1      // 32 bit version
+        // #define DaStGenPackedPadding 2   // 64 bit version
+      #endif
+      
+      
+      #ifdef PackedRecords
+         #pragma pack (push, DaStGenPackedPadding)
+      #endif
+      
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::VertexPacked { 
+         
+         public:
+            
+            typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
+            
+            typedef dem::records::Vertex::RefinementControl RefinementControl;
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               int _adjacentCellsHeight;
+               tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
+               
+               /** mapping of records:
+               || Member 	|| startbit 	|| length
+                |  isHangingNode	| startbit 0	| #bits 1
+                |  refinementControl	| startbit 1	| #bits 3
+                |  insideOutsideDomain	| startbit 4	| #bits 2
+                |  adjacentSubtreeForksIntoOtherRank	| startbit 6	| #bits 1
+                */
+               short int _packedRecords0;
+               
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (1));
+   assertion(( tmp >= 0 &&  tmp <= 7));
+   return (RefinementControl) tmp;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refinementControl >= 0 && refinementControl <= 7));
+   short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (4));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (InsideOutsideDomain) tmp;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   _packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               VertexPacked();
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               
+               /**
+                * Generated
+                */
+               virtual ~VertexPacked();
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (1));
+   assertion(( tmp >= 0 &&  tmp <= 7));
+   return (RefinementControl) tmp;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refinementControl >= 0 && refinementControl <= 7));
+   short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (4));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (InsideOutsideDomain) tmp;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<TWO_POWER_D,int> getAdjacentRanks() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentRanks;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setAdjacentRanks(const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentRanks = (adjacentRanks);
+               }
+               
+               
+               
+               inline int getAdjacentRanks(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  return _persistentRecords._adjacentRanks[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setAdjacentRanks(int elementIndex, const int& adjacentRanks) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<TWO_POWER_D);
+                  _persistentRecords._adjacentRanks[elementIndex]= adjacentRanks;
+                  
+               }
+               
+               
+               
+               inline bool getAdjacentSubtreeForksIntoOtherRank() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setAdjacentSubtreeForksIntoOtherRank(const bool& adjacentSubtreeForksIntoOtherRank) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (6);
+   _persistentRecords._packedRecords0 = static_cast<short int>( adjacentSubtreeForksIntoOtherRank ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               Vertex convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifdef PackedRecords
+      #pragma pack (pop)
+      #endif
+      
+      
+      
+   #elif !defined(PersistentRegularSubtrees) && defined(Asserts) && !defined(Parallel)
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::Vertex { 
+         
+         public:
+            
+            typedef dem::records::VertexPacked Packed;
+            
+            enum InsideOutsideDomain {
+               Inside = 0, Boundary = 1, Outside = 2
+            };
+            
+            enum RefinementControl {
+               Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5
+            };
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               bool _isHangingNode;
+               RefinementControl _refinementControl;
+               int _adjacentCellsHeight;
+               InsideOutsideDomain _insideOutsideDomain;
+               #ifdef UseManualAlignment
+               tarch::la::Vector<DIMENSIONS,double> _x __attribute__((aligned(VectorisationAlignment)));
+               #else
+               tarch::la::Vector<DIMENSIONS,double> _x;
+               #endif
+               int _level;
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _x = (x);
+               }
+               
+               
+               
+               inline int getLevel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _level = level;
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               Vertex();
+               
+               /**
+                * Generated
+                */
+               Vertex(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               
+               /**
+                * Generated
+                */
+               virtual ~Vertex();
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._x = (x);
+               }
+               
+               
+               
+               inline double getX(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  return _persistentRecords._x[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setX(int elementIndex, const double& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  _persistentRecords._x[elementIndex]= x;
+                  
+               }
+               
+               
+               
+               inline int getLevel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._level = level;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               VertexPacked convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifndef DaStGenPackedPadding
+        #define DaStGenPackedPadding 1      // 32 bit version
+        // #define DaStGenPackedPadding 2   // 64 bit version
+      #endif
+      
+      
+      #ifdef PackedRecords
+         #pragma pack (push, DaStGenPackedPadding)
+      #endif
+      
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::VertexPacked { 
+         
+         public:
+            
+            typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
+            
+            typedef dem::records::Vertex::RefinementControl RefinementControl;
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               int _adjacentCellsHeight;
+               tarch::la::Vector<DIMENSIONS,double> _x;
+               int _level;
+               
+               /** mapping of records:
+               || Member 	|| startbit 	|| length
+                |  isHangingNode	| startbit 0	| #bits 1
+                |  refinementControl	| startbit 1	| #bits 3
+                |  insideOutsideDomain	| startbit 4	| #bits 2
+                */
+               short int _packedRecords0;
+               
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (1));
+   assertion(( tmp >= 0 &&  tmp <= 5));
+   return (RefinementControl) tmp;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refinementControl >= 0 && refinementControl <= 5));
+   short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (4));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (InsideOutsideDomain) tmp;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _x = (x);
+               }
+               
+               
+               
+               inline int getLevel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _level = level;
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               VertexPacked();
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               
+               /**
+                * Generated
+                */
+               virtual ~VertexPacked();
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (1));
+   assertion(( tmp >= 0 &&  tmp <= 5));
+   return (RefinementControl) tmp;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refinementControl >= 0 && refinementControl <= 5));
+   short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (4));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (InsideOutsideDomain) tmp;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline tarch::la::Vector<DIMENSIONS,double> getX() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._x;
+               }
+               
+               
+               
+               /**
+                * Generated and optimized
+                * 
+                * If you realise a for loop using exclusively arrays (vectors) and compile 
+                * with -DUseManualAlignment you may add 
+                * \code
+                #pragma vector aligned
+                #pragma simd
+                \endcode to this for loop to enforce your compiler to use SSE/AVX.
+                * 
+                * The alignment is tied to the unpacked records, i.e. for packed class
+                * variants the machine's natural alignment is switched off to recude the  
+                * memory footprint. Do not use any SSE/AVX operations or 
+                * vectorisation on the result for the packed variants, as the data is misaligned. 
+                * If you rely on vectorisation, convert the underlying record 
+                * into the unpacked version first. 
+                * 
+                * @see convert()
+                */
+               inline void setX(const tarch::la::Vector<DIMENSIONS,double>& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._x = (x);
+               }
+               
+               
+               
+               inline double getX(int elementIndex) const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  return _persistentRecords._x[elementIndex];
+                  
+               }
+               
+               
+               
+               inline void setX(int elementIndex, const double& x) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion(elementIndex>=0);
+                  assertion(elementIndex<DIMENSIONS);
+                  _persistentRecords._x[elementIndex]= x;
+                  
+               }
+               
+               
+               
+               inline int getLevel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._level;
+               }
+               
+               
+               
+               inline void setLevel(const int& level) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._level = level;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               Vertex convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifdef PackedRecords
+      #pragma pack (pop)
+      #endif
+      
+      
+      
+   #elif !defined(PersistentRegularSubtrees) && !defined(Parallel) && !defined(Asserts)
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::Vertex { 
+         
+         public:
+            
+            typedef dem::records::VertexPacked Packed;
+            
+            enum InsideOutsideDomain {
+               Inside = 0, Boundary = 1, Outside = 2
+            };
+            
+            enum RefinementControl {
+               Unrefined = 0, Refined = 1, RefinementTriggered = 2, Refining = 3, EraseTriggered = 4, Erasing = 5
+            };
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               bool _isHangingNode;
+               RefinementControl _refinementControl;
+               int _adjacentCellsHeight;
+               InsideOutsideDomain _insideOutsideDomain;
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               Vertex();
+               
+               /**
+                * Generated
+                */
+               Vertex(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
+               
+               /**
+                * Generated
+                */
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain);
+               
+               /**
+                * Generated
+                */
+               virtual ~Vertex();
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._isHangingNode;
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._isHangingNode = isHangingNode;
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._refinementControl;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._refinementControl = refinementControl;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._insideOutsideDomain;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._insideOutsideDomain = insideOutsideDomain;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               VertexPacked convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifndef DaStGenPackedPadding
+        #define DaStGenPackedPadding 1      // 32 bit version
+        // #define DaStGenPackedPadding 2   // 64 bit version
+      #endif
+      
+      
+      #ifdef PackedRecords
+         #pragma pack (push, DaStGenPackedPadding)
+      #endif
+      
+      /**
+       * @author This class is generated by DaStGen
+       * 		   DataStructureGenerator (DaStGen)
+       * 		   2007-2009 Wolfgang Eckhardt
+       * 		   2012      Tobias Weinzierl
+       *
+       * 		   build date: 09-02-2014 14:40
+       *
+       * @date   30/04/2017 02:49
+       */
+      class dem::records::VertexPacked { 
+         
+         public:
+            
+            typedef dem::records::Vertex::InsideOutsideDomain InsideOutsideDomain;
+            
+            typedef dem::records::Vertex::RefinementControl RefinementControl;
+            
+            struct PersistentRecords {
+               int _particles;
+               int _particlesOnCoarserLevels;
+               bool _vetoCoarsening;
+               int _adjacentCellsHeight;
+               
+               /** mapping of records:
+               || Member 	|| startbit 	|| length
+                |  isHangingNode	| startbit 0	| #bits 1
+                |  refinementControl	| startbit 1	| #bits 3
+                |  insideOutsideDomain	| startbit 4	| #bits 2
+                */
+               short int _packedRecords0;
+               
+               /**
+                * Generated
+                */
+               PersistentRecords();
+               
+               /**
+                * Generated
+                */
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   _packedRecords0 = static_cast<short int>( isHangingNode ? (_packedRecords0 | mask) : (_packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (1));
+   assertion(( tmp >= 0 &&  tmp <= 5));
+   return (RefinementControl) tmp;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refinementControl >= 0 && refinementControl <= 5));
+   short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refinementControl) << (1));
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (4));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (InsideOutsideDomain) tmp;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
+               }
+               
+               
+               
+            };
+            private: 
+               PersistentRecords _persistentRecords;
+               int _adjacentCellsHeightOfPreviousIteration;
+               int _numberOfAdjacentRefinedCells;
+               
+            public:
+               /**
+                * Generated
+                */
+               VertexPacked();
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const PersistentRecords& persistentRecords);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
+               
+               /**
+                * Generated
+                */
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const bool& vetoCoarsening, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain);
+               
+               /**
+                * Generated
+                */
+               virtual ~VertexPacked();
+               
+               
+               inline int getParticles() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particles;
+               }
+               
+               
+               
+               inline void setParticles(const int& particles) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particles = particles;
+               }
+               
+               
+               
+               inline int getParticlesOnCoarserLevels() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline void setParticlesOnCoarserLevels(const int& particlesOnCoarserLevels) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._particlesOnCoarserLevels = particlesOnCoarserLevels;
+               }
+               
+               
+               
+               inline bool getVetoCoarsening() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._vetoCoarsening;
+               }
+               
+               
+               
+               inline void setVetoCoarsening(const bool& vetoCoarsening) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._vetoCoarsening = vetoCoarsening;
+               }
+               
+               
+               
+               inline bool getIsHangingNode() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   return (tmp != 0);
+               }
+               
+               
+               
+               inline void setIsHangingNode(const bool& isHangingNode) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask = 1 << (0);
+   _persistentRecords._packedRecords0 = static_cast<short int>( isHangingNode ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
+               }
+               
+               
+               
+               inline RefinementControl getRefinementControl() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (1));
+   assertion(( tmp >= 0 &&  tmp <= 5));
+   return (RefinementControl) tmp;
+               }
+               
+               
+               
+               inline void setRefinementControl(const RefinementControl& refinementControl) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refinementControl >= 0 && refinementControl <= 5));
+   short int mask =  (1 << (3)) - 1;
+   mask = static_cast<short int>(mask << (1));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refinementControl) << (1));
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeight() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._adjacentCellsHeight;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeight(const int& adjacentCellsHeight) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._adjacentCellsHeight = adjacentCellsHeight;
+               }
+               
+               
+               
+               inline int getAdjacentCellsHeightOfPreviousIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline void setAdjacentCellsHeightOfPreviousIteration(const int& adjacentCellsHeightOfPreviousIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _adjacentCellsHeightOfPreviousIteration = adjacentCellsHeightOfPreviousIteration;
+               }
+               
+               
+               
+               inline int getNumberOfAdjacentRefinedCells() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline void setNumberOfAdjacentRefinedCells(const int& numberOfAdjacentRefinedCells) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _numberOfAdjacentRefinedCells = numberOfAdjacentRefinedCells;
+               }
+               
+               
+               
+               inline InsideOutsideDomain getInsideOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (4));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (InsideOutsideDomain) tmp;
+               }
+               
+               
+               
+               inline void setInsideOutsideDomain(const InsideOutsideDomain& insideOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((insideOutsideDomain >= 0 && insideOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (4));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(insideOutsideDomain) << (4));
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const InsideOutsideDomain& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getInsideOutsideDomainMapping();
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const RefinementControl& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getRefinementControlMapping();
+               
+               /**
+                * Generated
+                */
+               std::string toString() const;
+               
+               /**
+                * Generated
+                */
+               void toString(std::ostream& out) const;
+               
+               
+               PersistentRecords getPersistentRecords() const;
+               /**
+                * Generated
+                */
+               Vertex convert() const;
+               
+               
+            #ifdef Parallel
+               protected:
+                  static tarch::logging::Log _log;
+                  
+                  int _senderDestinationRank;
+                  
+               public:
+                  
+                  /**
+                   * Global that represents the mpi datatype.
+                   * There are two variants: Datatype identifies only those attributes marked with
+                   * parallelise. FullDatatype instead identifies the whole record with all fields.
+                   */
+                  static MPI_Datatype Datatype;
+                  static MPI_Datatype FullDatatype;
+                  
+                  /**
+                   * Initializes the data type for the mpi operations. Has to be called
+                   * before the very first send or receive operation is called.
+                   */
+                  static void initDatatype();
+                  
+                  static void shutdownDatatype();
+                  
+                  /**
+                   * @param communicateSleep -1 Data exchange through blocking mpi
+                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+                   */
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  
+                  static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+                  
+                  int getSenderRank() const;
+                  #endif
+         
+      };
+      
+      #ifdef PackedRecords
+      #pragma pack (pop)
+      #endif
+      
+      
+      
+   
+#endif
+
+#endif
+

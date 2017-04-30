@@ -17,8 +17,8 @@ tarch::logging::Log _log("");
 
 void printManual()
 {
-	std::cerr << "Delta - Peano | Grid-based Non-Spherical Particle Dynamics Simulator" << std::endl << std::endl
-				  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
+	std::cerr << "Delta - Peano | Grid-based Non-Spherical Particle Dynamics" << std::endl << std::endl
+				  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario iterations grid-type step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
           << std::endl
           << " grid_h_max          maximum mesh width of grid" << std::endl
           << " particle_diam_min   minimal diameter of particles" << std::endl
@@ -28,37 +28,31 @@ void printManual()
           << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
           << " step-size           floating point number" << std::endl
           << " plot                see plot variants below" << std::endl
-          << " gravity             floating point number" << std::endl
-          << " collision-model     choose from none, sphere, bf, penalty, penaltyStat, hybrid-on-triangle-pairs, hybrid-on-batches, hybridStat, gjk, add sphere- for sphere check" << std::endl
+          << " gravity             boolean true/false" << std::endl
+          << " collision-model     choose from none, sphere, bf, penalty, hybrid-on-triangle-pairs, hybrid-on-batches, gjk, add sphere- for sphere check" << std::endl
 				  << " max-step-size       adaptive max step" << std::endl
 				  << " mesh-per-particle   multiplier for mesh size and sphericity" << std::endl
 				  << " [core-count]        only required in TBB shared memory" << std::endl
           << std::endl << std::endl << std::endl << std::endl
           << "Scenarios" << std::endl
           << "=========" << std::endl
-          << "  black-hole-with-aligned-cubes" << std::endl
           << "  black-hole-with-cubes" << std::endl
-          << "  random-velocities-with-aligned-cubes" << std::endl
+          << "  black-hole-with-randomly-oriented-cubes" << std::endl
           << "  random-velocities-with-cubes" << std::endl
-          << "  random-velocities" << std::endl
+          << "  random-velocities-with-granulates" << std::endl
 
           << "  sla"<< std::endl
           << "  nuclearArray" << std::endl
           << "  two-particles-crash" << std::endl
 
-          << "  hopperUniformSphere" << std::endl
-          << "  hopperNonUniformSphere" << std::endl
-          << "  hopperUniformMesh" << std::endl
-          << "  hopperNonUniformMesh" << std::endl
+          << "  hopperUniform" << std::endl
+          << "  hopperUniform1k" << std::endl
+          << "  hopperUniform10k" << std::endl
+          << "  hopperUniform50k" << std::endl
 
-          << "  hopperUniformSphere" << std::endl
-          << "  hopperUniformSphere50k" << std::endl
-          << "  hopperNonUniformSphere50k" << std::endl
-
-          << "  hopperUniformMesh" << std::endl
-          << "  hopperNonUniformMesh" << std::endl
-          << "  hopperUniformMesh1k" << std::endl
-          << "  hopperUniformMesh50k" << std::endl
+          << "  hopperNonUniform1k" << std::endl
+          << "  hopperNonUniform10k" << std::endl
+          << "  hopperNonUniform50k" << std::endl
 
 				  << "  freefall" << std::endl
 
@@ -83,8 +77,8 @@ void printManual()
           << "  every-batch" << std::endl
 				  << "  every-checkpoint" << std::endl
 				  << "  range" << std::endl << std::endl
-          << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario time-steps grid-type time-step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
-				  << "eg: ./dem-3d-release-vec 0.5 0.5 0.5 hopper 10000 regular-grid 0.00001 every-batch 10 1 bf 50 2" << std::endl;
+          << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario iterations grid-type step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
+				  << "eg: ./dem-xxx 0.5 0.5 0.5 hopperUniform 10000 regular-grid 0.00001 every-batch 10 1 bf 50 2" << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -115,29 +109,29 @@ int main(int argc, char** argv)
   	  const int NumberOfArguments = 13;
   #endif
 
-  	std::cout << "noOfArguments: " <<  NumberOfArguments << "argc: " <<  argc << std::endl;
+  	std::cout << "required arguments: " <<  NumberOfArguments << "actual arguments: " <<  argc << std::endl;
 
   if(argc!=NumberOfArguments || (NumberOfArguments == NumberOfArguments+2 && argv[8] != "range"))
   {
     printManual();
     return -1;
   } else if (argc == NumberOfArguments) {
-	  std::cout << "gridHMAX:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
-				<< "scenario:" << (argv[4]) << ", numberOfTimeSteps:" << atof(argv[5]) << ", gridTypeIdentifier:" << (argv[6]) << std::endl
-				<< "iterations:" << atof(argv[7]) << ", plotIdentifier:" << (argv[8]) << ", realSnapshot:" << atof(argv[9]) << std::endl
-				<< "gravity:" << atof(argv[10]) << ", collisionModel:" << (argv[11])  << ", noTriangles:" << atof(argv[12]) << std::endl;
+	  std::cout << "gridHmax:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
+              << "scenario:" << (argv[4]) << ", iterations:" << atof(argv[5]) << ", grid:" << (argv[6]) << std::endl
+              << "stepSize:" << atof(argv[7]) << ", plot:" << (argv[8]) << ", realSnapshot:" << atoi(argv[9]) << std::endl
+              << "gravity:" << (argv[10]) << ", model:" << (argv[11])  << ", triangleNumber:" << atoi(argv[12]) << std::endl;
   }
 
   const double       gridHMax            = atof(argv[1]);
   const double       particleDiamMin     = atof(argv[2]);
   const double       particleDiamMax     = atof(argv[3]);
   const std::string  scenario            = argv[4];
-  const int          numberOfTimeSteps   = atoi(argv[5]);
+  const int          iterations          = atoi(argv[5]);
   const std::string  gridTypeIdentifier  = argv[6];
-  const double       iterations        	 = atof(argv[7]);
+  const double       stepSize         	 = atof(argv[7]);
   const std::string  plotIdentifier      = argv[8];
   const double		   realSnapshot		     = atof(argv[9]);
-  const double       gravity             = atof(argv[10]);
+  const bool         gravity             = (argv[10]);
   const std::string  collisionModel      = argv[11];
   const int			     meshMultiplier 	   = atof(argv[12]);
 
@@ -224,12 +218,12 @@ int main(int argc, char** argv)
   } else if (scenario=="sla") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla,
                                             dem::mappings::CreateGrid::noVScheme,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="nuclearArray") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray,
                                             dem::mappings::CreateGrid::noVScheme,
-                                            0.15, 0.15, 0.15, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="two-particles-crash") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash,
@@ -239,88 +233,90 @@ int main(int argc, char** argv)
   else if (scenario=="hopperUniform") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform,
                                             dem::mappings::CreateGrid::noVScheme,
-                                            0.5, 0.02, 0.02, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniform1k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform1k,
                                             dem::mappings::CreateGrid::noVScheme,
-                                            0.5, 0.005, 0.015, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniform10k") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform10k,
-                                              dem::mappings::CreateGrid::noVScheme,
-                                              0.5, 0.0001, 0.015, gridType, meshMultiplier);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform10k,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniform50k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform50k,
                                             dem::mappings::CreateGrid::noVScheme,
-                                            0.5, 0.0001, 0.015, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform,
                                             dem::mappings::CreateGrid::noVScheme,
-                                            0.5, 0.005, 0.015, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, 0.015, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform1k") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform1k,
-                                              dem::mappings::CreateGrid::noVScheme,
-                                              0.5, 0.0001, 0.015, gridType, meshMultiplier);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform1k,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform10k") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform10k,
-                                              dem::mappings::CreateGrid::noVScheme,
-                                              0.5, 0.0001, 0.015, gridType, meshMultiplier);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform10k,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform50k") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform50k,
-                                              dem::mappings::CreateGrid::noVScheme,
-                                              0.5, 0.0001, 0.015, gridType, meshMultiplier);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform50k,
+                                            dem::mappings::CreateGrid::noVScheme,
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="freefall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall,
                                             dem::mappings::CreateGrid::noVScheme,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
+  //////////////PHYSICS TESTS START/////////////////////////////////////
   else if (scenario=="frictionStaticSphere") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStaticSphere,
                                             dem::mappings::CreateGrid::crashY,
-                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlideSphere") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideSphere,
                                             dem::mappings::CreateGrid::slideX,
-                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlideRotateSphere") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideSphere,
                                             dem::mappings::CreateGrid::slideXRotation,
-                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionRollSphere") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollSphere,
-                                              dem::mappings::CreateGrid::slideXRotation,
-                                              0.5, 0.5, 0.5, gridType, meshMultiplier);
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollSphere,
+                                            dem::mappings::CreateGrid::slideXRotation,
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionStaticMesh") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStaticMesh,
                                             dem::mappings::CreateGrid::crashY,
-                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlideMesh") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideMesh,
                                             dem::mappings::CreateGrid::slideX,
-                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlideRotateMesh") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideMesh,
                                             dem::mappings::CreateGrid::slideXRotation,
-                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionRollMesh") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollMesh,
                                             dem::mappings::CreateGrid::noVScheme,
-                                            0.5, 0.5, 0.5, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
+  //////////////PHYSICS TESTS END/////////////////////////////////////
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;
     programExitCode = 2;
@@ -389,6 +385,7 @@ int main(int argc, char** argv)
   }
   else if (collisionModel=="gjk") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;
+    if(collisionModel=="sphere-hybridStat") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
   else if (collisionModel=="none") {
       dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
@@ -397,7 +394,7 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  dem::mappings::MoveParticles::gravity	= (gravity>0) ? 9.81 : 0.0;
+  dem::mappings::MoveParticles::gravity	= (gravity==true) ? 9.81 : 0.0;
   //delta::collision::material::initMaterial();
 
   // Configure the output
@@ -417,7 +414,7 @@ int main(int argc, char** argv)
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano", true ) );
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano::utils", false ) );
     dem::runners::Runner runner;
-    programExitCode = runner.run( numberOfTimeSteps, plot, gridType, numberOfCores, iterations, realSnapshot);
+    programExitCode = runner.run(iterations, plot, gridType, numberOfCores, stepSize, realSnapshot);
   }
   
   if (programExitCode==0)

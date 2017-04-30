@@ -464,11 +464,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::e
   
   std::ostringstream snapshotFileName;
   snapshotFileName << "grid"
-                   #ifdef Parallel
-                   << "-rank-" << tarch::parallel::Node::getInstance().getRank()
-                   #endif
-                   << "-" << _snapshotCounter
-                   << ".vtk";
+                   << "-" << _snapshotCounter;
   _vtkWriter->writeToFile( snapshotFileName.str() );
   
   _snapshotCounter++;                  

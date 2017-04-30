@@ -31,7 +31,7 @@ namespace dem {
  *
  * 		   build date: 09-02-2014 14:40
  *
- * @date   23/02/2017 16:40
+ * @date   30/04/2017 02:49
  */
 class dem::records::RepositoryState { 
    
@@ -119,263 +119,260 @@ class dem::records::RepositoryState {
          
          
       };
-      
-   private: 
-      PersistentRecords _persistentRecords;
-      
+      private: 
+         PersistentRecords _persistentRecords;
+         
+      public:
+         /**
+          * Generated
+          */
+         RepositoryState();
+         
+         /**
+          * Generated
+          */
+         RepositoryState(const PersistentRecords& persistentRecords);
+         
+         /**
+          * Generated
+          */
+         RepositoryState(const Action& action, const int& numberOfIterations, const bool& exchangeBoundaryVertices);
+         
+         /**
+          * Generated
+          */
+         virtual ~RepositoryState();
+         
+         
+         inline Action getAction() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._action;
+         }
+         
+         
+         
+         inline void setAction(const Action& action) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._action = action;
+         }
+         
+         
+         
+         inline int getNumberOfIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._numberOfIterations;
+         }
+         
+         
+         
+         inline void setNumberOfIterations(const int& numberOfIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._numberOfIterations = numberOfIterations;
+         }
+         
+         
+         
+         inline bool getExchangeBoundaryVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _persistentRecords._exchangeBoundaryVertices;
+         }
+         
+         
+         
+         inline void setExchangeBoundaryVertices(const bool& exchangeBoundaryVertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _persistentRecords._exchangeBoundaryVertices = exchangeBoundaryVertices;
+         }
+         
+         
+         /**
+          * Generated
+          */
+         static std::string toString(const Action& param);
+         
+         /**
+          * Generated
+          */
+         static std::string getActionMapping();
+         
+         /**
+          * Generated
+          */
+         std::string toString() const;
+         
+         /**
+          * Generated
+          */
+         void toString(std::ostream& out) const;
+         
+         
+         PersistentRecords getPersistentRecords() const;
+         /**
+          * Generated
+          */
+         RepositoryStatePacked convert() const;
+         
+         
+      #ifdef Parallel
+         protected:
+            static tarch::logging::Log _log;
+            
+            int _senderDestinationRank;
+            
+         public:
+            
+            /**
+             * Global that represents the mpi datatype.
+             * There are two variants: Datatype identifies only those attributes marked with
+             * parallelise. FullDatatype instead identifies the whole record with all fields.
+             */
+            static MPI_Datatype Datatype;
+            static MPI_Datatype FullDatatype;
+            
+            /**
+             * Initializes the data type for the mpi operations. Has to be called
+             * before the very first send or receive operation is called.
+             */
+            static void initDatatype();
+            
+            static void shutdownDatatype();
+            
+            /**
+             * @param communicateSleep -1 Data exchange through blocking mpi
+             * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
+             * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
+             */
+            void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+            
+            void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+            
+            static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
+            
+            int getSenderRank() const;
+            #endif
+   
+};
+
+#ifndef DaStGenPackedPadding
+  #define DaStGenPackedPadding 1      // 32 bit version
+  // #define DaStGenPackedPadding 2   // 64 bit version
+#endif
+
+
+#ifdef PackedRecords
+   #pragma pack (push, DaStGenPackedPadding)
+#endif
+
+/**
+ * @author This class is generated by DaStGen
+ * 		   DataStructureGenerator (DaStGen)
+ * 		   2007-2009 Wolfgang Eckhardt
+ * 		   2012      Tobias Weinzierl
+ *
+ * 		   build date: 09-02-2014 14:40
+ *
+ * @date   30/04/2017 02:49
+ */
+class dem::records::RepositoryStatePacked { 
+   
    public:
-      /**
-       * Generated
-       */
-      RepositoryState();
       
-      /**
-       * Generated
-       */
-      RepositoryState(const PersistentRecords& persistentRecords);
+      typedef dem::records::RepositoryState::Action Action;
       
-      /**
-       * Generated
-       */
-      RepositoryState(const Action& action, const int& numberOfIterations, const bool& exchangeBoundaryVertices);
-      
-      /**
-       * Generated
-       */
-      virtual ~RepositoryState();
-      
-      
-      inline Action getAction() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-         return _persistentRecords._action;
-      }
-      
-      
-      
-      inline void setAction(const Action& action) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-         _persistentRecords._action = action;
-      }
-      
-      
-      
-      inline int getNumberOfIterations() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-         return _persistentRecords._numberOfIterations;
-      }
-      
-      
-      
-      inline void setNumberOfIterations(const int& numberOfIterations) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-         _persistentRecords._numberOfIterations = numberOfIterations;
-      }
-      
-      
-      
-      inline bool getExchangeBoundaryVertices() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-         return _persistentRecords._exchangeBoundaryVertices;
-      }
-      
-      
-      
-      inline void setExchangeBoundaryVertices(const bool& exchangeBoundaryVertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-         _persistentRecords._exchangeBoundaryVertices = exchangeBoundaryVertices;
-      }
-      
-      
-      /**
-       * Generated
-       */
-      static std::string toString(const Action& param);
-      
-      /**
-       * Generated
-       */
-      static std::string getActionMapping();
-      
-      /**
-       * Generated
-       */
-      std::string toString() const;
-      
-      /**
-       * Generated
-       */
-      void toString(std::ostream& out) const;
-      
-      
-      PersistentRecords getPersistentRecords() const;
-      /**
-       * Generated
-       */
-      RepositoryStatePacked convert() const;
-      
-      
-   #ifdef Parallel
-      protected:
-         static tarch::logging::Log _log;
-         
-         int _senderDestinationRank;
-         
-      public:
+      struct PersistentRecords {
+         Action _action;
+         int _numberOfIterations;
+         bool _exchangeBoundaryVertices;
+         /**
+          * Generated
+          */
+         PersistentRecords();
          
          /**
-          * Global that represents the mpi datatype.
-          * There are two variants: Datatype identifies only those attributes marked with
-          * parallelise. FullDatatype instead identifies the whole record with all fields.
+          * Generated
           */
-         static MPI_Datatype Datatype;
-         static MPI_Datatype FullDatatype;
+         PersistentRecords(const Action& action, const int& numberOfIterations, const bool& exchangeBoundaryVertices);
          
-         /**
-          * Initializes the data type for the mpi operations. Has to be called
-          * before the very first send or receive operation is called.
-          */
-         static void initDatatype();
          
-         static void shutdownDatatype();
-         
-         /**
-          * @param communicateSleep -1 Data exchange through blocking mpi
-          * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-          * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-          */
-         void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-         
-         void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
-         
-         static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
-         
-         int getSenderRank() const;
-         
-   #endif
-      
-   };
-   
-   #ifndef DaStGenPackedPadding
-     #define DaStGenPackedPadding 1      // 32 bit version
-     // #define DaStGenPackedPadding 2   // 64 bit version
-   #endif
-   
-   
-   #ifdef PackedRecords
-      #pragma pack (push, DaStGenPackedPadding)
-   #endif
-   
-   /**
-    * @author This class is generated by DaStGen
-    * 		   DataStructureGenerator (DaStGen)
-    * 		   2007-2009 Wolfgang Eckhardt
-    * 		   2012      Tobias Weinzierl
-    *
-    * 		   build date: 09-02-2014 14:40
-    *
-    * @date   23/02/2017 16:40
-    */
-   class dem::records::RepositoryStatePacked { 
-      
-      public:
-         
-         typedef dem::records::RepositoryState::Action Action;
-         
-         struct PersistentRecords {
-            Action _action;
-            int _numberOfIterations;
-            bool _exchangeBoundaryVertices;
-            /**
-             * Generated
-             */
-            PersistentRecords();
-            
-            /**
-             * Generated
-             */
-            PersistentRecords(const Action& action, const int& numberOfIterations, const bool& exchangeBoundaryVertices);
-            
-            
-            inline Action getAction() const 
+         inline Action getAction() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               return _action;
-            }
-            
-            
-            
-            inline void setAction(const Action& action) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-               _action = action;
-            }
-            
-            
-            
-            inline int getNumberOfIterations() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-               return _numberOfIterations;
-            }
-            
-            
-            
-            inline void setNumberOfIterations(const int& numberOfIterations) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-               _numberOfIterations = numberOfIterations;
-            }
-            
-            
-            
-            inline bool getExchangeBoundaryVertices() const 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-               return _exchangeBoundaryVertices;
-            }
-            
-            
-            
-            inline void setExchangeBoundaryVertices(const bool& exchangeBoundaryVertices) 
- #ifdef UseManualInlining
- __attribute__((always_inline))
- #endif 
- {
-               _exchangeBoundaryVertices = exchangeBoundaryVertices;
-            }
-            
-            
-            
-         };
+            return _action;
+         }
          
+         
+         
+         inline void setAction(const Action& action) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _action = action;
+         }
+         
+         
+         
+         inline int getNumberOfIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _numberOfIterations;
+         }
+         
+         
+         
+         inline void setNumberOfIterations(const int& numberOfIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _numberOfIterations = numberOfIterations;
+         }
+         
+         
+         
+         inline bool getExchangeBoundaryVertices() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            return _exchangeBoundaryVertices;
+         }
+         
+         
+         
+         inline void setExchangeBoundaryVertices(const bool& exchangeBoundaryVertices) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+            _exchangeBoundaryVertices = exchangeBoundaryVertices;
+         }
+         
+         
+         
+      };
       private: 
          PersistentRecords _persistentRecords;
          
@@ -524,15 +521,14 @@ class dem::records::RepositoryState {
             static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
             
             int getSenderRank() const;
-            
-      #endif
-         
-      };
-      
-      #ifdef PackedRecords
-      #pragma pack (pop)
-      #endif
-      
-      
-      #endif
-      
+            #endif
+   
+};
+
+#ifdef PackedRecords
+#pragma pack (pop)
+#endif
+
+
+#endif
+

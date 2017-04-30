@@ -28,9 +28,8 @@ dem::runners::Runner::~Runner() {
 }
 
 int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads,
-								              double timeStepSize, double realSnapshot)
+								              double stepSize, double realSnapshot)
 {
-
   peano::geometry::Hexahedron geometry(tarch::la::Vector<DIMENSIONS,double>(1.0), tarch::la::Vector<DIMENSIONS,double>(0.0));
   dem::repositories::Repository* repository = dem::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(geometry,
                                                 tarch::la::Vector<DIMENSIONS,double>(1.0),  // domainSize
@@ -38,19 +37,17 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
   
   #ifdef SharedMemoryParallelisation
 	  tarch::multicore::Core::getInstance().configure(tbbThreads);
-
-	  peano::datatraversal::autotuning::Oracle::getInstance().setOracle(
-		 new peano::datatraversal::autotuning::OracleForOnePhaseDummy(true, false));
+	  peano::datatraversal::autotuning::Oracle::getInstance().setOracle(new peano::datatraversal::autotuning::OracleForOnePhaseDummy(true, false));
   #endif
 
   int result = 0;
   if (tarch::parallel::Node::getInstance().isGlobalMaster())
   {
-    result = runAsMaster( *repository, numberOfTimeSteps, plot, gridType, timeStepSize, realSnapshot);
+    result = runAsMaster( *repository, numberOfTimeSteps, plot, gridType, stepSize, realSnapshot);
   }
   #ifdef Parallel
   else {
-    result = runAsWorker( *repository );
+    result = runAsWorker(*repository);
   }
   #endif
   
@@ -60,7 +57,7 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
 }
 
 int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository, int iterations, Plot plot, dem::mappings::CreateGrid::GridType gridType,
-										                  double initialTimeStepSize, double realSnapshot)
+										                  double initialStepSize, double realSnapshot)
 {
   peano::utils::UserInterface::writeHeader();
 
@@ -72,13 +69,30 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   logInfo( "runAsMaster(...)", "start time stepping" );
 
   repository.getState().clearAccumulatedData();
-  repository.getState().setInitialTimeStepSize(initialTimeStepSize);
+  repository.getState().setInitialTimeStepSize(initialStepSize);
 
   double elapsed = 0.0;
   double timestamp = 0.0;
 
   int minRange = 4000;
   int maxRange = 8000;
+
+
+  dem::mappings::Collision::CollisionModel model = dem::mappings::Collision::_collisionModel;
+  dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
+  if (gridType==mappings::CreateGrid::AdaptiveGrid)
+  {
+    repository.switchToTimeStepOnDynamicGrid();
+  }
+  else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
+  {
+    repository.switchToTimeStepOnReluctantDynamicGrid();
+  } else {
+    repository.switchToTimeStep();
+  }
+  repository.iterate();
+
+  dem::mappings::Collision::_collisionModel = model;
 
   for (int i=0; i<iterations; i++)
   {
@@ -138,7 +152,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     elapsed = repository.getState().getTime() - timestamp;
 
-    repository.getState().finishedTimeStep(initialTimeStepSize);
+    repository.getState().finishedTimeStep(initialStepSize);
 
     repository.getState().clearAccumulatedData();
     repository.iterate();

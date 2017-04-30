@@ -102,7 +102,7 @@ void dem::mappings::MoveParticles::reassignParticles(
 
         tarch::la::Vector<DIMENSIONS,int> correctVertex;
         for (int d=0; d<DIMENSIONS; d++)
-        {
+        {//correct vertex in cell
           correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
         }
 

@@ -15,7 +15,6 @@ peano::CommunicationSpecification   dem::mappings::Plot::communicationSpecificat
 peano::MappingSpecification   dem::mappings::Plot::touchVertexLastTimeSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
-
 peano::MappingSpecification   dem::mappings::Plot::touchVertexFirstTimeSpecification() { 
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
@@ -277,8 +276,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
                    #ifdef Parallel
                    << "-rank-" << tarch::parallel::Node::getInstance().getRank()
                    #endif
-                   << "-" << _snapshotCounter
-                   << ".vtk";
+                   << "-" << _snapshotCounter;
   _writer->writeToFile( snapshotFileName.str() );
 
   _snapshotCounter++;

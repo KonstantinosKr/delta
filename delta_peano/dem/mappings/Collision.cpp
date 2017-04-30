@@ -535,7 +535,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				}
         case CollisionModel::none:
         {
-          break;
+          return;
         }
 			}
 
@@ -803,7 +803,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 				}
 				case CollisionModel::none:
 				{
-				  break;
+				  return;
 				}
 			}
 
@@ -836,6 +836,16 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+
+	if(
+	fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
+  fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
+  fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() == 0 &&
+  fineGridVertices[fineGridVerticesEnumerator(3)].getNumberOfParticles() == 0 &&
+  fineGridVertices[fineGridVerticesEnumerator(4)].getNumberOfParticles() == 0 &&
+  fineGridVertices[fineGridVerticesEnumerator(5)].getNumberOfParticles() == 0 &&
+  fineGridVertices[fineGridVerticesEnumerator(6)].getNumberOfParticles() == 0 &&
+  fineGridVertices[fineGridVerticesEnumerator(7)].getNumberOfParticles() == 0)return;
 
 	//phase A
 	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(1)]);
