@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7regularbfTBB8_200
 exp6o=/ddn/data/rfmw74/h7regularbfTBB16_200
 exp7o=/ddn/data/rfmw74/h7regularbfTBB24_200
 
-exp0="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 1 bf 200 1"
-exp1="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 1 bf 200 2"
-exp2="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 1 bf 200 3"
-exp3="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 1 bf 200 4"
-exp4="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 1 bf 200 6"
-exp5="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 1 bf 200 8"
-exp6="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 1 bf 200 16"
-exp7="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 1 bf 200 24"
+exp0="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 true bf 200 1"
+exp1="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 true bf 200 2"
+exp2="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 true bf 200 3"
+exp3="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 true bf 200 4"
+exp4="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 true bf 200 6"
+exp5="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 true bf 200 8"
+exp6="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 true bf 200 16"
+exp7="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 regular-grid 0.0001 never 10 true bf 200 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

@@ -19,12 +19,12 @@ exp3o=/ddn/data/rfmw74/h7X24hopperUni50k-regular-sphere-particle24
 exp4o=/ddn/data/rfmw74/h7X25hopperUni50k-adaptive-sphere-particle24
 exp5o=/ddn/data/rfmw74/h7X26hopperUni50k-reluctant-sphere-particle24
 
-exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform50k 10 regular-grid 0.000001 never 10 1 sphere 10 24"
-exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform50k 10 adaptive-grid 0.000001 never 10 1 sphere 10 24"
-exp2="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform50k 10 reluctant-adaptive-grid 0.000001 never 10 1 sphere 10 24"
-exp3="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniform50k 10 regular-grid 0.000001 never 10 1 sphere 10"
-exp4="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniform50k 10 adaptive-grid 0.000001 never 10 1 sphere 10"
-exp5="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniform50k 10 reluctant-adaptive-grid 0.000001 never 10 1 sphere 10"
+exp0="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform50k 10 regular-grid 0.000001 never 10 true sphere 10 24"
+exp1="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform50k 10 adaptive-grid 0.000001 never 10 true sphere 10 24"
+exp2="./dem-3d-release-tbb 0.3 0.003 0.3 hopperUniform50k 10 reluctant-adaptive-grid 0.000001 never 10 true sphere 10 24"
+exp3="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniform50k 10 regular-grid 0.000001 never 10 true sphere 10"
+exp4="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniform50k 10 adaptive-grid 0.000001 never 10 true sphere 10"
+exp5="./dem-3d-release-omp-particle 0.3 0.003 0.3 hopperUniform50k 10 reluctant-adaptive-grid 0.000001 never 10 true sphere 10"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

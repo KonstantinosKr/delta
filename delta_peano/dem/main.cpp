@@ -78,7 +78,7 @@ void printManual()
 				  << "  every-checkpoint" << std::endl
 				  << "  range" << std::endl << std::endl
           << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario iterations grid-type step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
-				  << "eg: ./dem-xxx 0.5 0.5 0.5 hopperUniform 10000 regular-grid 0.00001 every-batch 10 1 bf 50 2" << std::endl;
+				  << "eg: ./dem-xxx 0.5 0.5 0.5 hopperUniform 10000 regular-grid 0.00001 every-batch 10 true bf 50 2" << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -253,7 +253,7 @@ int main(int argc, char** argv)
   else if (scenario=="hopperNonUniform") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform,
                                             dem::mappings::CreateGrid::noVScheme,
-                                            gridHMax, particleDiamMin, 0.015, gridType, meshMultiplier);
+                                            gridHMax, particleDiamMin, gridHMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform1k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform1k,

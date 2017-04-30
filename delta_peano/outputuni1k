@@ -1,0 +1,8 @@
+ 1.49356e+09  15:14:09     [kkmbp.wlan.dur.ac.uk]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[vertex] the free tag 0
+ 1.49356e+09  15:14:09     [kkmbp.wlan.dur.ac.uk]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell] the free tag 1
+ 1.49356e+09  15:14:09     [kkmbp.wlan.dur.ac.uk]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell-marker] the free tag 2
+required arguments: 14actual arguments: 14
+gridHmax:1.000e-01, particleDiamMax:3.000e-03, particleDiamMin:1.000e-01
+scenario:hopperUniform10k, iterations:5.000e+00, grid:regular-grid
+stepSize:3.000e-05, plot:every-iteration, realSnapshot:10
+gravity:true, model:sphere, triangleNumber:10

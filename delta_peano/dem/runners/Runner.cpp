@@ -77,7 +77,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   int minRange = 4000;
   int maxRange = 8000;
 
-
+  /////////////////////PRE-STEP
   dem::mappings::Collision::CollisionModel model = dem::mappings::Collision::_collisionModel;
   dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
   if (gridType==mappings::CreateGrid::AdaptiveGrid)
@@ -93,6 +93,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   repository.iterate();
 
   dem::mappings::Collision::_collisionModel = model;
+  ///////////////////////////////////////////////////////////////////////////////////////////
 
   for (int i=0; i<iterations; i++)
   {

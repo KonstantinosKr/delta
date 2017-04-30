@@ -22,13 +22,13 @@ exp4o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE6_50_100hopper_
 exp5o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE8_50_100hopper_batch3
 exp6o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE16_50_100hopper_batch1
 
-exp0="./dem-3d-release-omp-triangle25 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 1 hybrid-on-batches 50"
-exp1="./dem-3d-release-omp-triangle20 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 1 hybrid-on-batches 50"
-exp2="./dem-3d-release-omp-triangle15 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 1 hybrid-on-batches 50"
-exp3="./dem-3d-release-omp-triangle10 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 1 hybrid-on-batches 50"
-exp4="./dem-3d-release-omp-triangle5 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 1 hybrid-on-batches 50"
-exp5="./dem-3d-release-omp-triangle3 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 1 hybrid-on-batches 50"
-exp6="./dem-3d-release-omp-triangle1 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 1 hybrid-on-batches 50"
+exp0="./dem-3d-release-omp-triangle25 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp1="./dem-3d-release-omp-triangle20 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp2="./dem-3d-release-omp-triangle15 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp3="./dem-3d-release-omp-triangle10 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp4="./dem-3d-release-omp-triangle5 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp5="./dem-3d-release-omp-triangle3 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp6="./dem-3d-release-omp-triangle1 0.3 0.003 0.3 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

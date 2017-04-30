@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsTBB8_20
 exp6o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsTBB16_20
 exp7o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsTBB24_20
 
-exp0="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-triangle-pairs 20 1"
-exp1="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-triangle-pairs 20 2"
-exp2="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-triangle-pairs 20 3"
-exp3="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-triangle-pairs 20 4"
-exp4="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-triangle-pairs 20 6"
-exp5="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-triangle-pairs 20 8"
-exp6="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-triangle-pairs 20 16"
-exp7="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 1 hybrid-on-triangle-pairs 20 24"
+exp0="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true hybrid-on-triangle-pairs 20 1"
+exp1="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true hybrid-on-triangle-pairs 20 2"
+exp2="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true hybrid-on-triangle-pairs 20 3"
+exp3="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true hybrid-on-triangle-pairs 20 4"
+exp4="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true hybrid-on-triangle-pairs 20 6"
+exp5="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true hybrid-on-triangle-pairs 20 8"
+exp6="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true hybrid-on-triangle-pairs 20 16"
+exp7="./dem-3d-release-tbb 0.3 0.003 0.3 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true hybrid-on-triangle-pairs 20 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
