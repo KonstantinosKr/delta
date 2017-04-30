@@ -159,12 +159,17 @@ int main(int argc, char** argv)
 
   if (gridTypeIdentifier=="no-grid") {
     gridType = dem::mappings::CreateGrid::NoGrid;
+    if(argc != NumberOfArguments)
+    {
+      printManual();
+      return -1;
+    }
   }
   else if (gridTypeIdentifier=="regular-grid") {
 	if(argc != NumberOfArguments)
 	{
 		printManual();
-	    return -1;
+	  return -1;
 	}
     gridType = dem::mappings::CreateGrid::RegularGrid;
   }
@@ -173,7 +178,7 @@ int main(int argc, char** argv)
     if(argc != NumberOfArguments)
     {
     	printManual();
-        return -1;
+      return -1;
     }
   }
   else if (gridTypeIdentifier=="reluctant-adaptive-grid") {
@@ -181,7 +186,7 @@ int main(int argc, char** argv)
     if(argc != NumberOfArguments)
     {
     	printManual();
-        return -1;
+      return -1;
     }
   }
   else if (gridTypeIdentifier == "range")

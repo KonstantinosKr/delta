@@ -120,6 +120,13 @@ class dem::mappings::CreateGrid {
 
     void setVScheme(dem::Vertex&  vertex, int particleNumber);
 
+    void dropParticles(
+      dem::Vertex&                                 fineGridVertex,
+      dem::Vertex * const                          coarseGridVertices,
+      const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
+      const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+    );
+
   public:
     /**
      * These flags are used to inform Peano about your operation. It tells the 
