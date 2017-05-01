@@ -213,6 +213,14 @@ dim3-icc-release-tbb: LFLAGS= $(LINK_TBB)
 dim3-icc-release-tbb: EXECUTABLE=dem-3d-release-tbb
 dim3-icc-release-tbb: header build
 
+dim3-icc-release-tbb-asserts: CC=icpc --std=c++11
+dim3-icc-release-tbb-asserts: DIM=-DDim3
+dim3-icc-release-tbb-asserts: SETTINGS=-DiREAL=double -DSharedTBB -DAsserts -DbyteAlignment=32 -DTrackGridStatistics
+dim3-icc-release-tbb-asserts: CFLAGS=-O3 -g -debug -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
+dim3-icc-release-tbb-asserts: LFLAGS= $(LINK_TBB)
+dim3-icc-release-tbb-asserts: EXECUTABLE=dem-3d-release-tbb
+dim3-icc-release-tbb-asserts: header build
+
 dim3-icc-release-tbb-stats: CC=icpc --std=c++11
 dim3-icc-release-tbb-stats: DIM=-DDim3
 dim3-icc-release-tbb-stats: SETTINGS=-DiREAL=double -DSharedTBB -DbyteAlignment=32 -DTrackGridStatistics $(DELTA_STATS)
