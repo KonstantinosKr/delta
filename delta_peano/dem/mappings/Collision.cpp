@@ -817,7 +817,11 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
         #ifdef ompParticle
           #pragma omp critical
         #endif
-				addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j), dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
+        {
+          tarch::multicore::Lock lock(_mySemaphore);
+          addCollision( newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j), dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
+          lock.free();
+        }
 			}
 			//printf("DifferentVertexContact:%d\n", newContactPoints.size());
 			//printf("VertexANoParticles:%d VertexBNoParticles:%d\n", vertexA.getNumberOfRealAndVirtualParticles(), vertexB.getNumberOfRealAndVirtualParticles());
