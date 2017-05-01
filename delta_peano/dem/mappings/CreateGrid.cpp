@@ -1745,31 +1745,13 @@ void dem::mappings::CreateGrid::createCell(
 					delta::primitives::granulates::generateParticle(centreAsArray, particleDiameter, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
 				}
 			}
-			/*else if(hopperUniformSphere1200)
-			{
-        double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5;
-
-	      double minx = centreAsArray[0]-_hopperWidth/2;
-	      double maxx = centreAsArray[0]+_hopperWidth/2;
-	      double miny = centreAsArray[1]-_hopperHeight/2;
-	      double maxy = centreAsArray[1]+fineGridVerticesEnumerator.getCellSize()(0)/3;
-	      double minz = centreAsArray[2]-_hopperWidth/2;
-	      double maxz = centreAsArray[2]+_hopperWidth/2;
-
-			  bool withinXrange = centreAsArray[0] > fineGridVerticesEnumerator.getCellSize()(0) && centreAsArray[0] < fineGridVerticesEnumerator.getCellSize()(0)*2;
-			  bool withinYrange = centreAsArray[1] > fineGridVerticesEnumerator.getCellSize()(0) && centreAsArray[1] < fineGridVerticesEnumerator.getCellSize()(0)*2;
-        bool withinZrange = centreAsArray[2] > fineGridVerticesEnumerator.getCellSize()(0) && centreAsArray[2] < fineGridVerticesEnumerator.getCellSize()(0)*2;
-
-	      if(withinXrange && withinYrange && withinZrange)
-	      {
-
-	      }
-        return;
-			}*/
 
 			int newParticleNumber = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 									                                     _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-
+			if(particleDiameter<_minParticleDiam)
+			  _minParticleDiam = particleDiameter;
+			if(particleDiameter>_maxParticleDiam)
+			  _maxParticleDiam = particleDiameter;
 			#ifdef STATSPARTICLE
 			  logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
 			#endif
@@ -1789,6 +1771,9 @@ void dem::mappings::CreateGrid::endIteration(
 
 	solverState.incNumberOfParticles(_numberOfParticles);
 	solverState.incNumberOfObstacles(_numberOfObstacles);
+
+	solverState.setMinimumMeshWidth(_minParticleDiam);
+  solverState.setMaximumMeshWidth(_maxParticleDiam);
 
 	logInfo( "endIteration(State)", "created "
 			<< _numberOfParticles << " particles with "

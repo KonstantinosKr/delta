@@ -104,6 +104,12 @@ class dem::State: public peano::grid::State< dem::records::State > {
 
     void informStatePenetration();
     bool getPenetrationStatus();
+
+    void setMinimumMeshWidth(double minwidth);
+    void setMaximumMeshWidth(double maxwidth);
+
+    double getMinimumMeshWidth() const;
+    double getMaximumMeshWidth() const;
 };
 
 

@@ -125,3 +125,19 @@ int dem::State::getNumberOfParticles() const {
 int dem::State::getNumberOfObstacles() const {
 	return _stateData.getNumberOfObstacles();
 }
+
+void dem::State::setMinimumMeshWidth(double minwidth) {
+  _stateData.setMinimumMeshWidth(minwidth);
+}
+
+void dem::State::setMaximumMeshWidth(double maxwidth) {
+  _stateData.setMaximumMeshWidth(maxwidth);
+}
+
+double dem::State::getMinimumMeshWidth() const {
+  return _stateData.getMinimumMeshWidth();
+}
+
+double dem::State::getMaximumMeshWidth() const {
+  return _stateData.getMaximumMeshWidth();
+}

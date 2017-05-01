@@ -8,8 +8,10 @@ class dem::records::State {
   parallelise persistent double  numberOfParticleComparisons;
   parallelise persistent double  timeStepSize;
   parallelise persistent double  currentTime;
-  parallelise persistent bool      twoParticlesAreClose;
-  parallelise persistent bool      penetrationOccured;
-  parallelise persistent int         numberOfParticles;
-  parallelise persistent int	       numberOfObstacles;
+  parallelise persistent bool    twoParticlesAreClose;
+  parallelise persistent bool    penetrationOccured;
+  parallelise persistent int     numberOfParticles;
+  parallelise persistent int	 numberOfObstacles;
+  parallelise persistent double	 minimumMeshWidth;
+  parallelise persistent double	 maximumMeshWidth;
 };

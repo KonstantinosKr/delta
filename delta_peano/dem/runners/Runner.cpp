@@ -116,7 +116,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   int maxRange = 8000;
 
   /////////////////////PRE-STEP
-  dem::mappings::Collision::CollisionModel model = dem::mappings::Collision::_collisionModel;
+  /*dem::mappings::Collision::CollisionModel model = dem::mappings::Collision::_collisionModel;
   dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
   if (gridType==mappings::CreateGrid::AdaptiveGrid)
   {
@@ -130,7 +130,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   }
   repository.iterate();
 
-  dem::mappings::Collision::_collisionModel = model;
+  dem::mappings::Collision::_collisionModel = model;*/
   ///////////////////////////////////////////////////////////////////////////////////////////
 
   for (int i=0; i<iterations; i++)
@@ -175,9 +175,9 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", cnpt=" << repository.getState().getNumberOfContactPoints()
       << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
       << ", t=" << repository.getState().getTime()
-      << ", dt=" << repository.getState().getTimeStepSize());
-      //<< ", h_max=" << repository.getState().getMaximumMeshWidth()
-      //<< ", h_min=" << repository.getState().getMinimumMeshWidth());
+      << ", dt=" << repository.getState().getTimeStepSize()
+      << ", h_min=" << repository.getState().getMinimumMeshWidth()
+      << ", h_max=" << repository.getState().getMaximumMeshWidth());
 
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {

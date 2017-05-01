@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   30/04/2017 02:49
+    * @date   01/05/2017 00:23
     */
    class dem::records::State { 
       
@@ -52,6 +52,8 @@ namespace dem {
             bool _penetrationOccured;
             int _numberOfParticles;
             int _numberOfObstacles;
+            double _minimumMeshWidth;
+            double _maximumMeshWidth;
             bool _hasRefined;
             bool _hasTriggeredRefinementForNextIteration;
             bool _hasErased;
@@ -67,7 +69,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             
             inline double getNumberOfContactPoints() const 
@@ -270,6 +272,46 @@ namespace dem {
             
             
             
+            inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _minimumMeshWidth;
+            }
+            
+            
+            
+            inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _minimumMeshWidth = minimumMeshWidth;
+            }
+            
+            
+            
+            inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _maximumMeshWidth;
+            }
+            
+            
+            
+            inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _maximumMeshWidth = maximumMeshWidth;
+            }
+            
+            
+            
             inline bool getHasRefined() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -428,7 +470,7 @@ namespace dem {
             /**
              * Generated
              */
-            State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             /**
              * Generated
@@ -632,6 +674,46 @@ namespace dem {
  #endif 
  {
                _persistentRecords._numberOfObstacles = numberOfObstacles;
+            }
+            
+            
+            
+            inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._minimumMeshWidth;
+            }
+            
+            
+            
+            inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._minimumMeshWidth = minimumMeshWidth;
+            }
+            
+            
+            
+            inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._maximumMeshWidth;
+            }
+            
+            
+            
+            inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._maximumMeshWidth = maximumMeshWidth;
             }
             
             
@@ -851,7 +933,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   30/04/2017 02:49
+    * @date   01/05/2017 00:23
     */
    class dem::records::StatePacked { 
       
@@ -868,6 +950,8 @@ namespace dem {
             bool _penetrationOccured;
             int _numberOfParticles;
             int _numberOfObstacles;
+            double _minimumMeshWidth;
+            double _maximumMeshWidth;
             bool _isTraversalInverted;
             
             /** mapping of records:
@@ -889,7 +973,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             
             inline double getNumberOfContactPoints() const 
@@ -1092,6 +1176,46 @@ namespace dem {
             
             
             
+            inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _minimumMeshWidth;
+            }
+            
+            
+            
+            inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _minimumMeshWidth = minimumMeshWidth;
+            }
+            
+            
+            
+            inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _maximumMeshWidth;
+            }
+            
+            
+            
+            inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _maximumMeshWidth = maximumMeshWidth;
+            }
+            
+            
+            
             inline bool getHasRefined() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1268,7 +1392,7 @@ namespace dem {
             /**
              * Generated
              */
-            StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             /**
              * Generated
@@ -1472,6 +1596,46 @@ namespace dem {
  #endif 
  {
                _persistentRecords._numberOfObstacles = numberOfObstacles;
+            }
+            
+            
+            
+            inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._minimumMeshWidth;
+            }
+            
+            
+            
+            inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._minimumMeshWidth = minimumMeshWidth;
+            }
+            
+            
+            
+            inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._maximumMeshWidth;
+            }
+            
+            
+            
+            inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._maximumMeshWidth = maximumMeshWidth;
             }
             
             
@@ -1705,7 +1869,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   30/04/2017 02:49
+       * @date   01/05/2017 00:23
        */
       class dem::records::State { 
          
@@ -1724,6 +1888,8 @@ namespace dem {
                bool _penetrationOccured;
                int _numberOfParticles;
                int _numberOfObstacles;
+               double _minimumMeshWidth;
+               double _maximumMeshWidth;
                #ifdef UseManualAlignment
                tarch::la::Vector<DIMENSIONS,double> _minMeshWidth __attribute__((aligned(VectorisationAlignment)));
                #else
@@ -1763,7 +1929,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -1962,6 +2128,46 @@ namespace dem {
  #endif 
  {
                   _numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -2520,7 +2726,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -2724,6 +2930,46 @@ namespace dem {
  #endif 
  {
                   _persistentRecords._numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -3391,7 +3637,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   30/04/2017 02:49
+       * @date   01/05/2017 00:23
        */
       class dem::records::StatePacked { 
          
@@ -3408,6 +3654,8 @@ namespace dem {
                bool _penetrationOccured;
                int _numberOfParticles;
                int _numberOfObstacles;
+               double _minimumMeshWidth;
+               double _maximumMeshWidth;
                tarch::la::Vector<DIMENSIONS,double> _minMeshWidth;
                tarch::la::Vector<DIMENSIONS,double> _maxMeshWidth;
                double _numberOfInnerVertices;
@@ -3445,7 +3693,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -3644,6 +3892,46 @@ namespace dem {
  #endif 
  {
                   _numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -4229,7 +4517,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -4433,6 +4721,46 @@ namespace dem {
  #endif 
  {
                   _persistentRecords._numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -5124,7 +5452,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   30/04/2017 02:49
+       * @date   01/05/2017 00:23
        */
       class dem::records::State { 
          
@@ -5143,6 +5471,8 @@ namespace dem {
                bool _penetrationOccured;
                int _numberOfParticles;
                int _numberOfObstacles;
+               double _minimumMeshWidth;
+               double _maximumMeshWidth;
                #ifdef UseManualAlignment
                tarch::la::Vector<DIMENSIONS,double> _minMeshWidth __attribute__((aligned(VectorisationAlignment)));
                #else
@@ -5179,7 +5509,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                
                inline double getNumberOfContactPoints() const 
@@ -5378,6 +5708,46 @@ namespace dem {
  #endif 
  {
                   _numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -5876,7 +6246,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                /**
                 * Generated
@@ -6080,6 +6450,46 @@ namespace dem {
  #endif 
  {
                   _persistentRecords._numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -6687,7 +7097,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   30/04/2017 02:49
+       * @date   01/05/2017 00:23
        */
       class dem::records::StatePacked { 
          
@@ -6704,6 +7114,8 @@ namespace dem {
                bool _penetrationOccured;
                int _numberOfParticles;
                int _numberOfObstacles;
+               double _minimumMeshWidth;
+               double _maximumMeshWidth;
                tarch::la::Vector<DIMENSIONS,double> _minMeshWidth;
                tarch::la::Vector<DIMENSIONS,double> _maxMeshWidth;
                double _numberOfInnerVertices;
@@ -6738,7 +7150,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                
                inline double getNumberOfContactPoints() const 
@@ -6937,6 +7349,46 @@ namespace dem {
  #endif 
  {
                   _numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -7453,7 +7905,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                /**
                 * Generated
@@ -7657,6 +8109,46 @@ namespace dem {
  #endif 
  {
                   _persistentRecords._numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -8279,7 +8771,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   30/04/2017 02:49
+       * @date   01/05/2017 00:23
        */
       class dem::records::State { 
          
@@ -8298,6 +8790,8 @@ namespace dem {
                bool _penetrationOccured;
                int _numberOfParticles;
                int _numberOfObstacles;
+               double _minimumMeshWidth;
+               double _maximumMeshWidth;
                bool _hasRefined;
                bool _hasTriggeredRefinementForNextIteration;
                bool _hasErased;
@@ -8316,7 +8810,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -8515,6 +9009,46 @@ namespace dem {
  #endif 
  {
                   _numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -8737,7 +9271,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -8941,6 +9475,46 @@ namespace dem {
  #endif 
  {
                   _persistentRecords._numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -9220,7 +9794,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   30/04/2017 02:49
+       * @date   01/05/2017 00:23
        */
       class dem::records::StatePacked { 
          
@@ -9237,6 +9811,8 @@ namespace dem {
                bool _penetrationOccured;
                int _numberOfParticles;
                int _numberOfObstacles;
+               double _minimumMeshWidth;
+               double _maximumMeshWidth;
                bool _isTraversalInverted;
                
                /** mapping of records:
@@ -9261,7 +9837,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -9460,6 +10036,46 @@ namespace dem {
  #endif 
  {
                   _numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maximumMeshWidth = maximumMeshWidth;
                }
                
                
@@ -9709,7 +10325,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -9913,6 +10529,46 @@ namespace dem {
  #endif 
  {
                   _persistentRecords._numberOfObstacles = numberOfObstacles;
+               }
+               
+               
+               
+               inline double getMinimumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._minimumMeshWidth;
+               }
+               
+               
+               
+               inline void setMinimumMeshWidth(const double& minimumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._minimumMeshWidth = minimumMeshWidth;
+               }
+               
+               
+               
+               inline double getMaximumMeshWidth() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maximumMeshWidth;
+               }
+               
+               
+               
+               inline void setMaximumMeshWidth(const double& maximumMeshWidth) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maximumMeshWidth = maximumMeshWidth;
                }
                
                
