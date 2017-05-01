@@ -9,9 +9,9 @@ JOB_SCRIPT0=runjobBatch24tbb12omp2
 JOB_SCRIPT1=runjobBatch24tbb12omp2
 JOB_SCRIPT2=runjobBatch24tbb12omp2
 
-exp0o=/ddn/data/rfmw74/h7X21hopperUni1k-regular-sphere-mesh10-tbb12omp2
-exp1o=/ddn/data/rfmw74/h7X22hopperUni1k-adaptive-sphere-mesh10-tbb12omp2
-exp2o=/ddn/data/rfmw74/h7X23hopperUni1k-reluctant-sphere-mesh10-tbb12omp2
+exp0o=/ddn/data/rfmw74/h7X21hopperUni1k-regular-sphere-mesh10-tbb12omp2-auto
+exp1o=/ddn/data/rfmw74/h7X22hopperUni1k-adaptive-sphere-mesh10-tbb12omp2-auto
+exp2o=/ddn/data/rfmw74/h7X23hopperUni1k-reluctant-sphere-mesh10-tbb12omp2-auto
 
 exp0="./dem-3d-release-tbb-omp-particle 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true sphere 10 12"
 exp1="./dem-3d-release-tbb-omp-particle 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true sphere 10 12"

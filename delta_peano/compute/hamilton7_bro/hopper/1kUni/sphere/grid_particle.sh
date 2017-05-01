@@ -12,12 +12,12 @@ JOB_SCRIPT3=runjobBatch24
 JOB_SCRIPT4=runjobBatch24
 JOB_SCRIPT5=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7X21hopperUni1k-regular-sphere-mesh10-tbb24
-exp1o=/ddn/data/rfmw74/h7X22hopperUni1k-adaptive-sphere-mesh10-tbb24
-exp2o=/ddn/data/rfmw74/h7X23hopperUni1k-reluctant-sphere-mesh10-tbb24
-exp3o=/ddn/data/rfmw74/h7X24hopperUni1k-regular-sphere-mesh10-particle24
-exp4o=/ddn/data/rfmw74/h7X25hopperUni1k-adaptive-sphere-mesh10-particle24
-exp5o=/ddn/data/rfmw74/h7X26hopperUni1k-reluctant-sphere-mesh10-particle24
+exp0o=/ddn/data/rfmw74/h7X21hopperUni1k-regular-sphere-mesh10-tbb24-auto
+exp1o=/ddn/data/rfmw74/h7X22hopperUni1k-adaptive-sphere-mesh10-tbb24-auto
+exp2o=/ddn/data/rfmw74/h7X23hopperUni1k-reluctant-sphere-mesh10-tbb24-auto
+exp3o=/ddn/data/rfmw74/h7X24hopperUni1k-regular-sphere-mesh10-particle24-auto
+exp4o=/ddn/data/rfmw74/h7X25hopperUni1k-adaptive-sphere-mesh10-particle24-auto
+exp5o=/ddn/data/rfmw74/h7X26hopperUni1k-reluctant-sphere-mesh10-particle24-auto
 
 exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true sphere 10 24"
 exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true sphere 10 24"
