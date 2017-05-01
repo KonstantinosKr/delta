@@ -379,7 +379,7 @@ void dem::mappings::CreateGrid::createCell(
 		{
 				/* uniform hopper experiment;
 				 * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom */
-				//./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-adaptive-grid 0.0000005 every-batch 10 true sphere 50 | tee log400.log
+				//./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-grid 0.0000005 every-batch 10 true sphere 50 | tee log400.log
 				double _hopperWidth = 0.20;	double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.10;
 
 				//HOPPER DIAGONAL:0.382926
@@ -499,7 +499,7 @@ void dem::mappings::CreateGrid::createCell(
     {
         /* uniform hopper experiment;
          * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom */
-        //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-adaptive-grid 0.0000005 every-batch 10 true sphere 50 | tee log400.log
+        //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-grid 0.0000005 every-batch 10 true sphere 50 | tee log400.log
         double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.10;
 
         delta::primitives::hopper::generateHopper(centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
@@ -620,7 +620,7 @@ void dem::mappings::CreateGrid::createCell(
     {
         /* uniform hopper experiment;
          * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom */
-        //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-adaptive-grid 0.0000005 every-batch 10 true sphere 50 | tee log400.log
+        //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-grid 0.0000005 every-batch 10 true sphere 50 | tee log400.log
         double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.10;
 
         delta::primitives::hopper::generateHopper(centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
@@ -743,7 +743,7 @@ void dem::mappings::CreateGrid::createCell(
     {
         /* uniform hopper experiment;
          * particle are placed above the hopper and flow through the hopper structure then are at rest at the bottom */
-        //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-adaptive-grid 0.0000005 every-batch 10 true sphere 50 | tee log400.log
+        //./dem-3d-release-vec 0.3 0.3 0.3 hopperUniformSphere 7000 reluctant-grid 0.0000005 every-batch 10 true sphere 50 | tee log400.log
         double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.10;
 
         delta::primitives::hopper::generateHopper(centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);

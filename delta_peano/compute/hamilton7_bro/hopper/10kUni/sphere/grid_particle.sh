@@ -21,10 +21,10 @@ exp5o=/ddn/data/rfmw74/h7X26hopperUni10k-reluctant-sphere-mesh10-particle
 
 exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 500 regular-grid 0.000008 never 10 true sphere 10 2"
 exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 500 adaptive-grid 0.000008 never 10 true sphere 10 2"
-exp2="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 500 reluctant-adaptive-grid 0.000008 never 10 true sphere 10 2"
+exp2="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 500 reluctant-grid 0.000008 never 10 true sphere 10 2"
 exp3="./dem-3d-release-omp-particle 0.1 0.001 0.1 hopperUniform10k 500 regular-grid 0.000008 never 10 true sphere 10"
 exp4="./dem-3d-release-omp-particle 0.1 0.001 0.1 hopperUniform10k 500 adaptive-grid 0.000008 never 10 true sphere 10"
-exp5="./dem-3d-release-omp-particle 0.1 0.001 0.1 hopperUniform10k 500 reluctant-adaptive-grid 0.000008 never 10 true sphere 10"
+exp5="./dem-3d-release-omp-particle 0.1 0.001 0.1 hopperUniform10k 500 reluctant-grid 0.000008 never 10 true sphere 10"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

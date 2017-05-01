@@ -16,14 +16,14 @@ exp5o=reluctantG2hybrid-on-batchesSIMDTriangleOMP-3THREADS
 exp6o=reluctant3hybrid-on-batchesSIMDTriangleOMP-3THREADS
 exp7o=reluctantG3hybrid-on-batchesSIMDTriangleOMP-3THREADS
 
-exp0="./dem-3d-release-vecTRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 hybrid-on-on-batches"
-exp1="./dem-3d-release-vecTRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-adaptive-grid 0.001 never 1 10 hybrid-on-batches"
-exp2="./dem-3d-release-vecTRIANGLE 0.05 0.05 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 hybrid-on-batches"
-exp3="./dem-3d-release-vecTRIANGLE 0.05 0.05 random-velocities 500 reluctant-adaptive-grid 0.001 never 1 10 hybrid-on-batches"
-exp4="./dem-3d-release-vecTRIANGLE 0.05 0.01 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 hybrid-on-batches"
-exp5="./dem-3d-release-vecTRIANGLE 0.05 0.01 random-velocities 500 reluctant-adaptive-grid 0.001 never 1 10 hybrid-on-batches"
-exp6="./dem-3d-release-vecTRIANGLE 0.05 0.001 random-velocities 500 reluctant-adaptive-grid 0.001 never 0 hybrid-on-batches"
-exp7="./dem-3d-release-vecTRIANGLE 0.05 0.001 random-velocities 500 reluctant-adaptive-grid 0.001 never 1 10 hybrid-on-batches"
+exp0="./dem-3d-release-vecTRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-grid 0.001 never 0 hybrid-on-on-batches"
+exp1="./dem-3d-release-vecTRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-grid 0.001 never 1 10 hybrid-on-batches"
+exp2="./dem-3d-release-vecTRIANGLE 0.05 0.05 random-velocities 500 reluctant-grid 0.001 never 0 hybrid-on-batches"
+exp3="./dem-3d-release-vecTRIANGLE 0.05 0.05 random-velocities 500 reluctant-grid 0.001 never 1 10 hybrid-on-batches"
+exp4="./dem-3d-release-vecTRIANGLE 0.05 0.01 random-velocities 500 reluctant-grid 0.001 never 0 hybrid-on-batches"
+exp5="./dem-3d-release-vecTRIANGLE 0.05 0.01 random-velocities 500 reluctant-grid 0.001 never 1 10 hybrid-on-batches"
+exp6="./dem-3d-release-vecTRIANGLE 0.05 0.001 random-velocities 500 reluctant-grid 0.001 never 0 hybrid-on-batches"
+exp7="./dem-3d-release-vecTRIANGLE 0.05 0.001 random-velocities 500 reluctant-grid 0.001 never 1 10 hybrid-on-batches"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT} > ${JOB_SCRIPT}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT}_tmp > ${JOB_SCRIPT}_tmp1

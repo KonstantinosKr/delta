@@ -21,13 +21,13 @@ exp4o=/scratch/rfmw74/reluctantbfOMPTRIANGLE6_2000
 exp5o=/scratch/rfmw74/reluctantbfOMPTRIANGLE8_2000
 exp6o=/scratch/rfmw74/reluctantbfOMPTRIANGLE16_2000
 
-exp0="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 true bf 2000 1"
-exp1="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 true bf 2000 2"
-exp2="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 true bf 2000 3"
-exp3="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 true bf 2000 4"
-exp4="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 true bf 2000 6"
-exp5="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 true bf 2000 8"
-exp6="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-adaptive-grid 0.0001 never 10 true bf 2000 16"
+exp0="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-grid 0.0001 never 10 true bf 2000 1"
+exp1="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-grid 0.0001 never 10 true bf 2000 2"
+exp2="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-grid 0.0001 never 10 true bf 2000 3"
+exp3="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-grid 0.0001 never 10 true bf 2000 4"
+exp4="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-grid 0.0001 never 10 true bf 2000 6"
+exp5="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-grid 0.0001 never 10 true bf 2000 8"
+exp6="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 5000 reluctant-grid 0.0001 never 10 true bf 2000 16"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

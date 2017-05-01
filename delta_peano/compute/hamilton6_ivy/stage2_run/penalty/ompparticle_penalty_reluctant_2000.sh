@@ -21,13 +21,13 @@ exp4o=/scratch/rfmw74/reluctantG4penaltyOMPPARTICLE6_2000
 exp5o=/scratch/rfmw74/reluctantG4penaltyOMPPARTICLE8_2000
 exp6o=/scratch/rfmw74/reluctantG4penaltyOMPPARTICLE16_2000
 
-exp0="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 9.81 penalty 0.1 2000"
-exp1="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 9.81 penalty 0.1 2000"
-exp2="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 9.81 penalty 0.1 2000"
-exp3="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 9.81 penalty 0.1 2000"
-exp4="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 9.81 penalty 0.1 2000"
-exp5="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 9.81 penalty 0.1 2000"
-exp6="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-adaptive-grid 0.0001 never 9.81 penalty 0.1 2000"
+exp0="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-grid 0.0001 never 9.81 penalty 0.1 2000"
+exp1="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-grid 0.0001 never 9.81 penalty 0.1 2000"
+exp2="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-grid 0.0001 never 9.81 penalty 0.1 2000"
+exp3="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-grid 0.0001 never 9.81 penalty 0.1 2000"
+exp4="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-grid 0.0001 never 9.81 penalty 0.1 2000"
+exp5="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-grid 0.0001 never 9.81 penalty 0.1 2000"
+exp6="./dem-3d-release-omp-particle 0.3 0.3 0.003 freefall 5000 reluctant-grid 0.0001 never 9.81 penalty 0.1 2000"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

@@ -24,14 +24,14 @@ exp5o=/ddn/data/rfmw74/h7reluctantSphereTBB8
 exp6o=/ddn/data/rfmw74/h7reluctantSphereTBB16
 exp7o=/ddn/data/rfmw74/h7reluctantSphereTBB24
 
-exp0="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true sphere 0.1 1"
-exp1="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true sphere 0.1 2"
-exp2="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true sphere 0.1 3"
-exp3="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true sphere 0.1 4"
-exp4="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true sphere 0.1 6"
-exp5="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true sphere 0.1 8"
-exp6="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true sphere 0.1 16"
-exp7="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-adaptive-grid 0.0001 never 10 true sphere 0.1 24"
+exp0="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true sphere 0.1 1"
+exp1="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true sphere 0.1 2"
+exp2="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true sphere 0.1 3"
+exp3="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true sphere 0.1 4"
+exp4="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true sphere 0.1 6"
+exp5="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true sphere 0.1 8"
+exp6="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true sphere 0.1 16"
+exp7="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true sphere 0.1 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
