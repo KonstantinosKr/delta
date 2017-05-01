@@ -88,6 +88,7 @@ class dem::mappings::Collision {
      */
     static std::map<int, std::vector<Collisions> >   _activeCollisions;
     static std::map<int, std::vector<Collisions> >   _collisionsOfNextTraversal;
+    static tarch::multicore::BooleanSemaphore        _mySemaphore;
 
     static CollisionModel                            _collisionModel;
 

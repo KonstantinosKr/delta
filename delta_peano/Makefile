@@ -113,7 +113,7 @@ dim3-gcc-release-tbb: CC=g++ --std=c++11
 dim3-gcc-release-tbb: DIM=-DDim3
 dim3-gcc-release-tbb: SETTINGS=-DiREAL=double -DSharedTBB -DbyteAlignment=32 -DTrackGridStatistics
 dim3-gcc-release-tbb: CFLAGS=-O3 -ftree-vectorizer-verbose=7 -fdump-tree-vect-details -fstrict-aliasing $(INCLUDE_TBB)
-dim3-gcc-release-tbb: LFLAGS= $(LINK_TBB)
+dim3-gcc-release-tbb: LFLAGS= $(LINK_TBB) $(LINK_OMP)
 dim3-gcc-release-tbb: EXECUTABLE=dem-3d-release-tbb
 dim3-gcc-release-tbb: header build
 
@@ -217,7 +217,7 @@ dim3-icc-release-tbb-asserts: CC=icpc --std=c++11
 dim3-icc-release-tbb-asserts: DIM=-DDim3
 dim3-icc-release-tbb-asserts: SETTINGS=-DiREAL=double -DSharedTBB -DAsserts -DbyteAlignment=32 -DTrackGridStatistics
 dim3-icc-release-tbb-asserts: CFLAGS=-O3 -g -debug -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
-dim3-icc-release-tbb-asserts: LFLAGS= $(LINK_TBB)
+dim3-icc-release-tbb-asserts: LFLAGS= $(LINK_TBB) $(LINK_OMP)
 dim3-icc-release-tbb-asserts: EXECUTABLE=dem-3d-release-tbb
 dim3-icc-release-tbb-asserts: header build
 

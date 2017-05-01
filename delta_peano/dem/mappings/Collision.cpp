@@ -46,6 +46,7 @@ std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mapping
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_collisionsOfNextTraversal;
 dem::mappings::Collision::CollisionModel                            dem::mappings::Collision::_collisionModel;
 bool																                                dem::mappings::Collision::_enableOverlapCheck;
+tarch::multicore::BooleanSemaphore                                  dem::mappings::Collision::_mySemaphore;
 
 void dem::mappings::Collision::beginIteration(
 		dem::State&  solverState
@@ -544,7 +545,11 @@ void dem::mappings::Collision::touchVertexFirstTime(
         #ifdef ompParticle
           #pragma omp critical
         #endif
-				addCollision(newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
+			  {
+			    tarch::multicore::Lock lock(_mySemaphore);
+			    addCollision(newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
+			    lock.free();
+			  }
 			}
 			#ifdef ompParticle
 				#pragma omp critical

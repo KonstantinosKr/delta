@@ -70,8 +70,7 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
       );
 
       peano::datatraversal::autotuning::Oracle::getInstance().plotStatistics( sharedMemoryPropertiesFileName );
-    }
-    else {
+    } else {
       peano::datatraversal::autotuning::Oracle::getInstance().setOracle(
         new peano::datatraversal::autotuning::OracleForOnePhaseDummy(true, false)
       );
