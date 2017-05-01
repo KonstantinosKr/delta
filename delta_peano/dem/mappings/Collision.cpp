@@ -74,6 +74,8 @@ void dem::mappings::Collision::endIteration(
 
 	solverState.merge(_state);
 
+	_activeCollisions.clear();
+
 	assertion( _activeCollisions.empty() );
 	assertion( _state.getNumberOfContactPoints()==0 || !_collisionsOfNextTraversal.empty() );
 
@@ -287,7 +289,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
                                       currentParticle.getMass(),
                                       torque, timeStepSize);
 		}
-		_activeCollisions.erase(currentParticle.getGlobalParticleId());
 	}
 
 	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
@@ -545,7 +546,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
         #ifdef ompParticle
           #pragma omp critical
         #endif
-			  {
+			  {//TODO deadlock two locks
 			    tarch::multicore::Lock lock(_mySemaphore);
 			    addCollision(newContactPoints, fineGridVertex.getParticle(i), fineGridVertex.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
 			    lock.free();
@@ -856,6 +857,7 @@ void dem::mappings::Collision::enterCell(
   fineGridVertices[fineGridVerticesEnumerator(6)].getNumberOfParticles() == 0 &&
   fineGridVertices[fineGridVerticesEnumerator(7)].getNumberOfParticles() == 0)return;
 
+	//TODO run in parallel these statements
 	//phase A
 	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(1)]);
 	dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(2)]);
