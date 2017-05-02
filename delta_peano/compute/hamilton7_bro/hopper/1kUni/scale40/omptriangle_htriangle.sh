@@ -11,8 +11,8 @@ JOB_SCRIPT2=runjobBatch3
 JOB_SCRIPT3=runjobBatch4
 JOB_SCRIPT4=runjobBatch6
 JOB_SCRIPT5=runjobBatch8
-JOB_SCRIPT6=runjobBatch16
-JOB_SCRIPT7=runjobBatch12
+JOB_SCRIPT6=runjobBatch12
+JOB_SCRIPT7=runjobBatch16
 JOB_SCRIPT8=runjobBatch24
 
 exp0o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE1_40_1000hopper
