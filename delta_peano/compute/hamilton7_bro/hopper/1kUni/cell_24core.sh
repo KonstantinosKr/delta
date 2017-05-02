@@ -14,23 +14,23 @@ JOB_SCRIPT5=runjobBatch24
 JOB_SCRIPT6=runjobBatch24
 JOB_SCRIPT7=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-hybrid-on-triangle-mesh10-TBB24
-exp1o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-hybrid-on-batches-mesh10-TBB24
-exp2o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-hybrid-on-triangle-mesh20-TBB24
-exp3o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-hybrid-on-batches-mesh20-TBB24
-exp4o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-hybrid-on-triangle-mesh40-TBB24
-exp5o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-hybrid-on-batches-mesh40-TBB24
-exp6o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-hybrid-on-triangle-mesh80-TBB24
-exp7o=/ddn/data/rfmw74/h7X4hopperUni1k-adaptive-hybrid-on-batches-mesh80-TBB24
+exp0o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-triangle-mesh10-TBB24
+exp1o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-batches-mesh10-TBB24
+exp2o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-triangle-mesh20-TBB24
+exp3o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-batches-mesh20-TBB24
+exp4o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-triangle-mesh40-TBB24
+exp5o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-batches-mesh40-TBB24
+exp6o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-triangle-mesh80-TBB24
+exp7o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-batches-mesh80-TBB24
 
-exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true hybrid-on-triangle-pairs 10 24"
-exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true hybrid-on-batches 10 24"
-exp2="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 24"
-exp3="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true hybrid-on-batches 20 24"
-exp4="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40 24"
-exp5="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true hybrid-on-batches 40 24"
-exp6="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true hybrid-on-triangle-pairs 80 24"
-exp7="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 adaptive-grid 0.00003 never 10 true hybrid-on-batches 80 24"
+exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 10 24"
+exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 10 24"
+exp2="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 24"
+exp3="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 20 24"
+exp4="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40 24"
+exp5="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 40 24"
+exp6="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 80 24"
+exp7="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 80 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
