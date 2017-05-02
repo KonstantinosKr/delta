@@ -12,19 +12,19 @@ JOB_SCRIPT3=runjobBatch1
 JOB_SCRIPT4=runjobBatch1
 JOB_SCRIPT5=runjobBatch1
 
-exp0o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-reluctant-bf-mesh10-TBB1
-exp1o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-reluctant-penalty-mesh10-TBB1
-exp2o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-reluctant-bf-mesh20-TBB1
-exp3o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-reluctant-penalty-mesh20-TBB1
-exp4o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-reluctant-bf-mesh40-TBB1
-exp5o=/ddn/data/rfmw74/h7X4hopperUniMesh1k-reluctant-penalty-mesh40-TBB1
+exp0o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-bf-mesh10-TBB1
+exp1o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-penalty-mesh10-TBB1
+exp2o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-bf-mesh20-TBB1
+exp3o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-penalty-mesh20-TBB1
+exp4o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-bf-mesh40-TBB1
+exp5o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-penalty-mesh40-TBB1
 
-exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh1k 1000 reluctant-grid 0.00003 never 10 true bf 10 1"
-exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh1k 1000 reluctant-grid 0.00003 never 10 true penalty 10 1"
-exp2="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh1k 1000 reluctant-grid 0.00003 never 10 true bf 20 1"
-exp3="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh1k 1000 reluctant-grid 0.00003 never 10 true penalty 20 1"
-exp4="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh1k 1000 reluctant-grid 0.00003 never 10 true bf 40 1"
-exp5="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniformMesh1k 1000 reluctant-grid 0.00003 never 10 true penalty 40 1"
+exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true bf 10 1"
+exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true penalty 10 1"
+exp2="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true bf 20 1"
+exp3="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true penalty 20 1"
+exp4="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true bf 40 1"
+exp5="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true penalty 40 1"
 
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
