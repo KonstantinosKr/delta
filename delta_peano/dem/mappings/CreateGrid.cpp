@@ -72,7 +72,8 @@ void dem::mappings::CreateGrid::beginIteration(
 ) {
 	logTraceInWith1Argument( "beginIteration(State)", solverState );
 
-	dem::ParticleHeap::getInstance().setName( "particle-heap" );
+  dem::ParticleHeap::getInstance().setName( "particle-heap" );
+  dem::DEMDoubleHeap::getInstance().setName( "geometry-heap" );
 
 	logInfo( "beginIteration()", "maxH=" << _maxH );
 
