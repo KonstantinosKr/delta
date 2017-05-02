@@ -1,10 +1,10 @@
 #!/bin/csh
-#SBATCH -p par7.q
+#SBATCH -p test.q
 #SBATCH  --mail-type=ALL
 #SBATCH  --mail-user konstantinos.krestenitis@durham.ac.uk
 #SBATCH -N 1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=24
 #SBATCH --output={OUTPUT_FILE}
 #SBATCH -t 00:15:00
 #SBATCH --exclusive
@@ -15,9 +15,6 @@ module load intelmpi/intel/5.0.1
 module unload gcc/4.9.1
 module load gcc/4.9.1
 
-setenv OMP_NUM_THREADS 2
-setenv OMP_NESTED true
-setenv OMP_PLACE threads
-setenv OMP_PROC_BIND close
+setenv OMP_NUM_THREADS 24
 
 srun {RUN}
