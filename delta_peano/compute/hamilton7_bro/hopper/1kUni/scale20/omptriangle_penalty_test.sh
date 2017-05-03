@@ -5,25 +5,25 @@
 # Is invoked with the following arguments
 # $1 path to the output file
 
-JOB_SCRIPT0=runjobBatch1test
-JOB_SCRIPT1=runjobBatch2test
-JOB_SCRIPT2=runjobBatch3test
-JOB_SCRIPT3=runjobBatch4test
-JOB_SCRIPT4=runjobBatch6test
-JOB_SCRIPT5=runjobBatch8test
-JOB_SCRIPT6=runjobBatch12test
-JOB_SCRIPT7=runjobBatch16test
-JOB_SCRIPT8=runjobBatch24test
+JOB_SCRIPT0=t1test
+JOB_SCRIPT1=t2test
+JOB_SCRIPT2=t3test
+JOB_SCRIPT3=t4test
+JOB_SCRIPT4=t6test
+JOB_SCRIPT5=t8test
+JOB_SCRIPT6=t12test
+JOB_SCRIPT7=t16test
+JOB_SCRIPT8=t24test
 
-exp0o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE1_20_1000hopper
-exp1o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE2_20_1000hopper
-exp2o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE3_20_1000hopper
-exp3o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE4_20_1000hopper
-exp4o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE6_20_1000hopper
-exp5o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE8_20_1000hopper
-exp6o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE12_20_1000hopper
-exp7o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE16_20_1000hopper
-exp7o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE24_20_1000hopper
+exp0o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE1_20_1000hopper
+exp1o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE2_20_1000hopper
+exp2o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE3_20_1000hopper
+exp3o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE4_20_1000hopper
+exp4o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE6_20_1000hopper
+exp5o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE8_20_1000hopper
+exp6o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE12_20_1000hopper
+exp7o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE16_20_1000hopper
+exp7o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE24_20_1000hopper
 
 exp0="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true penalty 20"
 exp1="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true penalty 20"
