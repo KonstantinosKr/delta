@@ -91,7 +91,7 @@ sbatch ${JOB_SCRIPT7}_tmp1
 rm ${JOB_SCRIPT7}_tmp
 rm ${JOB_SCRIPT7}_tmp1
 
-sed "s,{OUTPUT_FILE},$exp7o,g" ${JOB_SCRIPT8} > ${JOB_SCRIPT8}_tmp
+sed "s,{OUTPUT_FILE},$exp8o,g" ${JOB_SCRIPT8} > ${JOB_SCRIPT8}_tmp
 sed "s,{RUN},$exp8,g" ${JOB_SCRIPT8}_tmp > ${JOB_SCRIPT8}_tmp1
 sbatch ${JOB_SCRIPT8}_tmp1
 
