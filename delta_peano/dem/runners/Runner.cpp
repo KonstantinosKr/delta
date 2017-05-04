@@ -146,13 +146,13 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     if(plotThisTraversal)
     {
-      logInfo("runAsMaster(...)", "i=" << i
+      /*logInfo("runAsMaster(...)", "i=" << i
         << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
         << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
         << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
         << ", cnpt=" << repository.getState().getNumberOfContactPoints()
         << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
-        << ", t=" << repository.getState().getTime() << " | snap");
+        << ", t=" << repository.getState().getTime() << " | snap");*/
 
       //delta::sys::Sys::saveIteration(repository.getState().getTimeStepSize(), i, iterations);
 
@@ -167,17 +167,6 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
         repository.switchToTimeStepAndPlot();
       }
     } else {
-      logInfo("runAsMaster(...)", "i=" << i
-      << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-      << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
-      << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-      << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-      << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
-      << ", t=" << repository.getState().getTime()
-      << ", dt=" << repository.getState().getTimeStepSize()
-      << ", h_min=" << repository.getState().getMinimumMeshWidth()
-      << ", h_max=" << repository.getState().getMaximumMeshWidth());
-
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {
         repository.switchToTimeStepOnDynamicGrid();
@@ -189,6 +178,20 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
         repository.switchToTimeStep();
       }
     }
+    logInfo("runAsMaster(...)", "i=" << i
+      << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+      << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
+      << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
+      << ", cnpt=" << repository.getState().getNumberOfContactPoints()
+      << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
+      << ", t=" << repository.getState().getTime()
+      << ", dt=" << repository.getState().getTimeStepSize()
+      << ", h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
+      << ", h_max(prescribed)=" << repository.getState().getPrescribedMaximumMeshWidth()
+      << ", h_min(real)=" << repository.getState().getMinimumMeshWidth()
+      << ", h_max(real)=" << repository.getState().getMaximumMeshWidth()
+      << ", plot=" << plotThisTraversal
+    );
 
     elapsed = repository.getState().getTime() - timestamp;
 

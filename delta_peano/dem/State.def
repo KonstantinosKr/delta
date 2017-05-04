@@ -12,6 +12,6 @@ class dem::records::State {
   parallelise persistent bool    penetrationOccured;
   parallelise persistent int     numberOfParticles;
   parallelise persistent int	 numberOfObstacles;
-  parallelise persistent double	 minimumMeshWidth;
-  parallelise persistent double	 maximumMeshWidth;
+  parallelise persistent double	 prescribedMinimumMeshWidth;
+  parallelise persistent double	 prescribedMaximumMeshWidth;
 };

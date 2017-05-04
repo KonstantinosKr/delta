@@ -48,7 +48,7 @@ default: header
 dim3-gcc-asserts: CC=g++ -std=c++0x
 dim3-gcc-asserts: DIM=-DDim3
 dim3-gcc-asserts: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DAsserts -DTrackGridStatistics
-dim3-gcc-asserts: CFLAGS=-O0 -Wall -pedantic -pedantic-errors -debug
+dim3-gcc-asserts: CFLAGS=-O0 -Wall -pedantic -pedantic-errors
 dim3-gcc-asserts: LFLAGS=
 dim3-gcc-asserts: EXECUTABLE=dem-3d-asserts
 dim3-gcc-asserts: header build

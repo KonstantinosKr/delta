@@ -126,18 +126,22 @@ int dem::State::getNumberOfObstacles() const {
 	return _stateData.getNumberOfObstacles();
 }
 
-void dem::State::setMinimumMeshWidth(double minwidth) {
+void dem::State::setPrescribedMinimumMeshWidth(double minwidth) {
   _stateData.setMinimumMeshWidth(minwidth);
+  //  _stateData.setPrescribedMinimumMeshWidth(minwidth);
 }
 
-void dem::State::setMaximumMeshWidth(double maxwidth) {
+void dem::State::setPrescribedMaximumMeshWidth(double maxwidth) {
   _stateData.setMaximumMeshWidth(maxwidth);
+  //  _stateData.setPrescribedMinimumMeshWidth(minwidth);
 }
 
-double dem::State::getMinimumMeshWidth() const {
+double dem::State::getPrescribedMinimumMeshWidth() const {
   return _stateData.getMinimumMeshWidth();
+  //  return _stateData.getPrescribedMinimumMeshWidth();
 }
 
-double dem::State::getMaximumMeshWidth() const {
+double dem::State::getPrescribedMaximumMeshWidth() const {
   return _stateData.getMaximumMeshWidth();
+  //  return _stateData.getPrescribedMaximumMeshWidth();
 }

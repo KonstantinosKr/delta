@@ -1773,8 +1773,8 @@ void dem::mappings::CreateGrid::endIteration(
 	solverState.incNumberOfParticles(_numberOfParticles);
 	solverState.incNumberOfObstacles(_numberOfObstacles);
 
-	solverState.setMinimumMeshWidth(_minParticleDiam);
-  solverState.setMaximumMeshWidth(_maxParticleDiam);
+  solverState.setPrescribedMinimumMeshWidth(_minParticleDiam);
+  solverState.setPrescribedMaximumMeshWidth(_maxParticleDiam);
 
 	logInfo( "endIteration(State)", "created "
 			<< _numberOfParticles << " particles with "

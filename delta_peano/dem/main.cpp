@@ -18,7 +18,7 @@ tarch::logging::Log _log("");
 void printManual()
 {
 	std::cerr << "Delta - Peano | Grid-based Non-Spherical Particle Dynamics" << std::endl << std::endl
-				  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario iterations grid-type step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
+				  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario iterations grid-type step-size plot real-time-snapshot(sec) gravity(boolean) collision-model tri-per-particle [tbb-core-count]" << std::endl
           << std::endl
           << " grid_h_max          maximum mesh width of grid" << std::endl
           << " particle_diam_min   minimal diameter of particles" << std::endl
@@ -31,7 +31,7 @@ void printManual()
           << " gravity             boolean true/false" << std::endl
           << " collision-model     choose from none, sphere, bf, penalty, hybrid-on-triangle-pairs, hybrid-on-batches, gjk, add sphere- for sphere check" << std::endl
 				  << " max-step-size       adaptive max step" << std::endl
-				  << " mesh-per-particle   multiplier for mesh size and sphericity" << std::endl
+				  << " tri-per-particle    triangles used to represent one particle" << std::endl
 				  << " [core-count]        only required in TBB shared memory" << std::endl
           << std::endl << std::endl << std::endl << std::endl
           << "Scenarios" << std::endl
