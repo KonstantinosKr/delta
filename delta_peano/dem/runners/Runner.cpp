@@ -146,14 +146,6 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     if(plotThisTraversal)
     {
-      /*logInfo("runAsMaster(...)", "i=" << i
-        << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-        << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
-        << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-        << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-        << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
-        << ", t=" << repository.getState().getTime() << " | snap");*/
-
       //delta::sys::Sys::saveIteration(repository.getState().getTimeStepSize(), i, iterations);
 
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
@@ -185,7 +177,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", cnpt=" << repository.getState().getNumberOfContactPoints()
       << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
       << ", t=" << repository.getState().getTime()
-      << ", dt=" << repository.getState().getTimeStepSize()
+      << ", dt=" << repository.getState().getTimeStepSize() << std::endl
       << ", h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
       << ", h_max(prescribed)=" << repository.getState().getPrescribedMaximumMeshWidth()
       << ", h_min(real)=" << repository.getState().getMinimumMeshWidth()
