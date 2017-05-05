@@ -15,15 +15,15 @@ JOB_SCRIPT5=tbb1-omp24
 JOB_SCRIPT6=tbb24-omp1
 JOB_SCRIPT7=tbb24-omp1
 
-exp0o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_1_OMP_24_TRIANGLE_20_1000hopper
-exp1o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_1_OMP_24_TRIANGLE_20_1000hopper
-exp2o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_24_OMP_1_TRIANGLE_20_1000hopper
-exp3o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_24_OMP_1_TRIANGLE_20_1000hopper
+exp0o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_1_OMP_24_TRIANGLE_40_1000hopper
+exp1o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_1_OMP_24_TRIANGLE_40_1000hopper
+exp2o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_24_OMP_1_TRIANGLE_40_1000hopper
+exp3o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_24_OMP_1_TRIANGLE_40_1000hopper
 
-exp4o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_1_OMP_24_TRIANGLE1_20_1000hopper
-exp5o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_1_OMP_24_TRIANGLE2_20_1000hopper
-exp6o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_24_OMP_1_TRIANGLE3_20_1000hopper
-exp7o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_24_OMP_1_TRIANGLE4_20_1000hopper
+exp4o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_1_OMP_24_TRIANGLE1_40_1000hopper
+exp5o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_1_OMP_24_TRIANGLE2_40_1000hopper
+exp6o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_24_OMP_1_TRIANGLE3_40_1000hopper
+exp7o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_24_OMP_1_TRIANGLE4_40_1000hopper
 
 exp0="./dem-3d-release-tbb-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40 1"
 exp1="./dem-3d-release-tbb-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40 1"
