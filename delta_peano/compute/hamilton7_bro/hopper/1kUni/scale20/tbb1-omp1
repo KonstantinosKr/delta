@@ -1,5 +1,5 @@
 #!/bin/csh
-#SBATCH -p test.q
+#SBATCH -p par7.q
 #SBATCH  --mail-type=ALL
 #SBATCH  --mail-user konstantinos.krestenitis@durham.ac.uk
 #SBATCH -N 1
@@ -15,6 +15,8 @@ module load intelmpi/intel/5.0.1
 module unload gcc/4.9.1
 module load gcc/4.9.1
 
-setenv OMP_NUM_THREADS 24
+setenv OMP_NUM_THREADS 1
+setenv OMP_NESTED true
+setenv OMP_PROC_BIND close
 
 srun {RUN}

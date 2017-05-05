@@ -11,6 +11,7 @@ JOB_SCRIPT2=tbb6-omp4
 JOB_SCRIPT3=tbb6-omp8
 JOB_SCRIPT4=tbb12-omp2
 JOB_SCRIPT5=tbb12-omp4
+
 JOB_SCRIPT6=tbb2-omp12
 JOB_SCRIPT7=tbb2-omp24
 JOB_SCRIPT8=tbb6-omp4
@@ -18,19 +19,19 @@ JOB_SCRIPT9=tbb6-omp8
 JOB_SCRIPT10=tbb12-omp2
 JOB_SCRIPT11=tbb12-omp4
 
-exp0o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_2_OMP_12_TRIANGLE1_20_1000hopper
-exp1o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_2_OMP_24_TRIANGLE2_20_1000hopper
-exp2o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_6_OMP_4_TRIANGLE3_20_1000hopper
-exp3o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_6_OMP_8_RIANGLE4_20_1000hopper
-exp4o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_12_OMP_2_RIANGLE6_20_1000hopper
-exp5o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_12_OMP_4_RIANGLE8_20_1000hopper
+exp0o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_2_OMP_12_TRIANGLE_20_1000hopper
+exp1o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_2_OMP_24_TRIANGLE_20_1000hopper
+exp2o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_6_OMP_4_TRIANGLE_20_1000hopper
+exp3o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_6_OMP_8_TRIANGLE_20_1000hopper
+exp4o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_12_OMP_2_TRIANGLE_20_1000hopper
+exp5o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_12_OMP_4_TRIANGLE_20_1000hopper
 
-exp6o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_2_OMP_12_TRIANGLE1_20_1000hopper
-exp7o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_2_OMP_24_TRIANGLE2_20_1000hopper
+exp6o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_2_OMP_12_TRIANGLE_20_1000hopper
+exp7o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_2_OMP_24_TRIANGLE_20_1000hopper
 exp8o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_6_OMP_4_TRIANGLE3_20_1000hopper
-exp9o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_6_OMP_8_RIANGLE4_20_1000hopper
-exp10o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_12_OMP_2_RIANGLE6_20_1000hopper
-exp11o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_12_OMP_4_RIANGLE8_20_1000hopper
+exp9o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_6_OMP_8_TRIANGLE4_20_1000hopper
+exp10o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_12_OMP_2_TRIANGLE_20_1000hopper
+exp11o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_12_OMP_4_TRIANGLE_20_1000hopper
 
 exp0="./dem-3d-release-tbb-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 2"
 exp1="./dem-3d-release-tbb-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 2"
@@ -45,7 +46,6 @@ exp8="./dem-3d-release-tbb-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 regul
 exp9="./dem-3d-release-tbb-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-batches 20 6"
 exp10="./dem-3d-release-tbb-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-batches 20 12"
 exp11="./dem-3d-release-tbb-omp-triangle 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-batches 20 12"
-
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
