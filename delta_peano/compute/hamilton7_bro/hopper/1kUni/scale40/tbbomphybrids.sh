@@ -28,8 +28,8 @@ exp5o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB_12_OMP_4_TRIANGLE_40
 
 exp6o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_2_OMP_12_TRIANGLE_40_1000hopper
 exp7o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_2_OMP_24_TRIANGLE_40_1000hopper
-exp8o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_6_OMP_4_TRIANGLE3_40_1000hopper
-exp9o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_6_OMP_8_TRIANGLE4_40_1000hopper
+exp8o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_6_OMP_4_TRIANGLE_40_1000hopper
+exp9o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_6_OMP_8_TRIANGLE_40_1000hopper
 exp10o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_12_OMP_2_TRIANGLE_40_1000hopper
 exp11o=/ddn/data/rfmw74/h7regularhybrid-on-batchesTBB_12_OMP_4_TRIANGLE_40_1000hopper
 
