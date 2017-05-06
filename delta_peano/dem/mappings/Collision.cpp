@@ -314,232 +314,221 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				 (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
 				 continue;
 
-			if(_enableOverlapCheck)
-			  if(delta::collision::isSphereOverlayInContact(
-					fineGridVertex.getParticle(i).getCentre(0),
-					fineGridVertex.getParticle(i).getCentre(1),
-					fineGridVertex.getParticle(i).getCentre(2),
-					fineGridVertex.getParticle(i).getInfluenceRadius(),
+      if (_enableOverlapCheck)
+        if (delta::collision::isSphereOverlayInContact(
+            fineGridVertex.getParticle(i).getCentre(0),
+            fineGridVertex.getParticle(i).getCentre(1),
+            fineGridVertex.getParticle(i).getCentre(2),
+            fineGridVertex.getParticle(i).getInfluenceRadius(),
 
-					fineGridVertex.getParticle(j).getCentre(0),
-					fineGridVertex.getParticle(j).getCentre(1),
-					fineGridVertex.getParticle(j).getCentre(2),
-					fineGridVertex.getParticle(j).getInfluenceRadius())) continue;
+            fineGridVertex.getParticle(j).getCentre(0),
+            fineGridVertex.getParticle(j).getCentre(1),
+            fineGridVertex.getParticle(j).getCentre(2),
+            fineGridVertex.getParticle(j).getInfluenceRadius()))
+          continue;
 
-			std::vector<delta::collision::contactpoint> newContactPoints;
+      std::vector<delta::collision::contactpoint> newContactPoints;
 
-			switch (_collisionModel)
-			{
-				case CollisionModel::Sphere:
-				{
-					bool penetration = false;
-					if(fineGridVertex.getParticle(i).getIsObstacle() && !fineGridVertex.getParticle(j).getIsObstacle())
-					{
-						//printf("ENTERED fine grid sphere BA\n");
-						newContactPoints = delta::collision::sphereWithBarrierBA(
-							fineGridVertex.getParticle(j).getCentre(0),
-							fineGridVertex.getParticle(j).getCentre(1),
-							fineGridVertex.getParticle(j).getCentre(2),
-							fineGridVertex.getParticle(j).getDiameter(),
-							fineGridVertex.getParticle(j).getEpsilon(),
-							fineGridVertex.getParticle(j).getFriction(),
-							fineGridVertex.getParticle(j).getGlobalParticleId(),
+      switch (_collisionModel) 
+      {
+        case CollisionModel::Sphere: {
+          bool penetration = false;
+          if (fineGridVertex.getParticle(i).getIsObstacle()
+              && !fineGridVertex.getParticle(j).getIsObstacle()) {
+            //printf("ENTERED fine grid sphere BA\n");
+            newContactPoints = delta::collision::sphereWithBarrierBA(
+                fineGridVertex.getParticle(j).getCentre(0),
+                fineGridVertex.getParticle(j).getCentre(1),
+                fineGridVertex.getParticle(j).getCentre(2),
+                fineGridVertex.getParticle(j).getDiameter(),
+                fineGridVertex.getParticle(j).getEpsilon(),
+                fineGridVertex.getParticle(j).getFriction(),
+                fineGridVertex.getParticle(j).getGlobalParticleId(),
 
-							fineGridVertex.getXCoordinates(i),
-							fineGridVertex.getYCoordinates(i),
-							fineGridVertex.getZCoordinates(i),
-							fineGridVertex.getNumberOfTriangles(i),
-							fineGridVertex.getParticle(i).getEpsilon(),
-							fineGridVertex.getParticle(i).getFriction(),
-							fineGridVertex.getParticle(i).getGlobalParticleId(),
-							penetration);
+                fineGridVertex.getXCoordinates(i),
+                fineGridVertex.getYCoordinates(i),
+                fineGridVertex.getZCoordinates(i),
+                fineGridVertex.getNumberOfTriangles(i),
+                fineGridVertex.getParticle(i).getEpsilon(),
+                fineGridVertex.getParticle(i).getFriction(),
+                fineGridVertex.getParticle(i).getGlobalParticleId(), penetration);
 
-					} else if(!fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle())
-					{
-						//printf("ENTERED fine grid sphere AB\n");
-						newContactPoints = delta::collision::sphereWithBarrierAB(
-							fineGridVertex.getParticle(i).getCentre(0),
-							fineGridVertex.getParticle(i).getCentre(1),
-							fineGridVertex.getParticle(i).getCentre(2),
-							fineGridVertex.getParticle(i).getDiameter(),
-							fineGridVertex.getParticle(i).getEpsilon(),
-							fineGridVertex.getParticle(i).getFriction(),
-							fineGridVertex.getParticle(i).getGlobalParticleId(),
+          } else if (!fineGridVertex.getParticle(i).getIsObstacle()
+              && fineGridVertex.getParticle(j).getIsObstacle()) {
+            //printf("ENTERED fine grid sphere AB\n");
+            newContactPoints = delta::collision::sphereWithBarrierAB(
+                fineGridVertex.getParticle(i).getCentre(0),
+                fineGridVertex.getParticle(i).getCentre(1),
+                fineGridVertex.getParticle(i).getCentre(2),
+                fineGridVertex.getParticle(i).getDiameter(),
+                fineGridVertex.getParticle(i).getEpsilon(),
+                fineGridVertex.getParticle(i).getFriction(),
+                fineGridVertex.getParticle(i).getGlobalParticleId(),
 
-							fineGridVertex.getXCoordinates(j),
-							fineGridVertex.getYCoordinates(j),
-							fineGridVertex.getZCoordinates(j),
-							fineGridVertex.getNumberOfTriangles(j),
-							fineGridVertex.getParticle(j).getEpsilon(),
-							fineGridVertex.getParticle(j).getFriction(),
-							fineGridVertex.getParticle(j).getGlobalParticleId(),
-							penetration);
-					} else {
-						newContactPoints = delta::collision::sphere(
-							fineGridVertex.getParticle(i).getCentre(0),
-							fineGridVertex.getParticle(i).getCentre(1),
-							fineGridVertex.getParticle(i).getCentre(2),
-							fineGridVertex.getParticle(i).getDiameter(),
-							fineGridVertex.getParticle(i).getEpsilon(),
-							fineGridVertex.getParticle(i).getFriction(),
-							fineGridVertex.getParticle(i).getGlobalParticleId(),
+                fineGridVertex.getXCoordinates(j),
+                fineGridVertex.getYCoordinates(j),
+                fineGridVertex.getZCoordinates(j),
+                fineGridVertex.getNumberOfTriangles(j),
+                fineGridVertex.getParticle(j).getEpsilon(),
+                fineGridVertex.getParticle(j).getFriction(),
+                fineGridVertex.getParticle(j).getGlobalParticleId(), penetration);
+          } else {
+            newContactPoints = delta::collision::sphere(
+                fineGridVertex.getParticle(i).getCentre(0),
+                fineGridVertex.getParticle(i).getCentre(1),
+                fineGridVertex.getParticle(i).getCentre(2),
+                fineGridVertex.getParticle(i).getDiameter(),
+                fineGridVertex.getParticle(i).getEpsilon(),
+                fineGridVertex.getParticle(i).getFriction(),
+                fineGridVertex.getParticle(i).getGlobalParticleId(),
 
-							fineGridVertex.getParticle(j).getCentre(0),
-							fineGridVertex.getParticle(j).getCentre(1),
-							fineGridVertex.getParticle(j).getCentre(2),
-							fineGridVertex.getParticle(j).getDiameter(),
-							fineGridVertex.getParticle(j).getEpsilon(),
-							fineGridVertex.getParticle(j).getFriction(),
-							fineGridVertex.getParticle(j).getGlobalParticleId(),
-							penetration);
-					}
-					break;
-				}
-				case CollisionModel::BruteForce:
-				{
-					newContactPoints = delta::collision::bf(
-						fineGridVertex.getNumberOfTriangles(i),
-						fineGridVertex.getXCoordinates(i),
-						fineGridVertex.getYCoordinates(i),
-						fineGridVertex.getZCoordinates(i),
-						fineGridVertex.getParticle(i).getEpsilon(),
-						fineGridVertex.getParticle(i).getFriction(),
-						fineGridVertex.getParticle(i).getGlobalParticleId(),
+                fineGridVertex.getParticle(j).getCentre(0),
+                fineGridVertex.getParticle(j).getCentre(1),
+                fineGridVertex.getParticle(j).getCentre(2),
+                fineGridVertex.getParticle(j).getDiameter(),
+                fineGridVertex.getParticle(j).getEpsilon(),
+                fineGridVertex.getParticle(j).getFriction(),
+                fineGridVertex.getParticle(j).getGlobalParticleId(), penetration);
+          }
+          break;
+        }
+        case CollisionModel::BruteForce: {
+          newContactPoints = delta::collision::bf(
+              fineGridVertex.getNumberOfTriangles(i),
+              fineGridVertex.getXCoordinates(i),
+              fineGridVertex.getYCoordinates(i),
+              fineGridVertex.getZCoordinates(i),
+              fineGridVertex.getParticle(i).getEpsilon(),
+              fineGridVertex.getParticle(i).getFriction(),
+              fineGridVertex.getParticle(i).getGlobalParticleId(),
 
-						fineGridVertex.getNumberOfTriangles(j),
-						fineGridVertex.getXCoordinates(j),
-						fineGridVertex.getYCoordinates(j),
-						fineGridVertex.getZCoordinates(j),
-						fineGridVertex.getParticle(j).getEpsilon(),
-						fineGridVertex.getParticle(j).getFriction(),
-						fineGridVertex.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::Penalty:
-				{
-					newContactPoints = delta::collision::penalty(
-						fineGridVertex.getNumberOfTriangles(i),
-						fineGridVertex.getXCoordinates(i),
-						fineGridVertex.getYCoordinates(i),
-						fineGridVertex.getZCoordinates(i),
-						fineGridVertex.getParticle(i).getEpsilon(),
-						fineGridVertex.getParticle(i).getFriction(),
-						fineGridVertex.getParticle(i).getGlobalParticleId(),
+              fineGridVertex.getNumberOfTriangles(j),
+              fineGridVertex.getXCoordinates(j),
+              fineGridVertex.getYCoordinates(j),
+              fineGridVertex.getZCoordinates(j),
+              fineGridVertex.getParticle(j).getEpsilon(),
+              fineGridVertex.getParticle(j).getFriction(),
+              fineGridVertex.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::Penalty: {
+          newContactPoints = delta::collision::penalty(
+              fineGridVertex.getNumberOfTriangles(i),
+              fineGridVertex.getXCoordinates(i),
+              fineGridVertex.getYCoordinates(i),
+              fineGridVertex.getZCoordinates(i),
+              fineGridVertex.getParticle(i).getEpsilon(),
+              fineGridVertex.getParticle(i).getFriction(),
+              fineGridVertex.getParticle(i).getGlobalParticleId(),
 
-						fineGridVertex.getNumberOfTriangles(j),
-						fineGridVertex.getXCoordinates(j),
-						fineGridVertex.getYCoordinates(j),
-						fineGridVertex.getZCoordinates(j),
-						fineGridVertex.getParticle(j).getEpsilon(),
-						fineGridVertex.getParticle(j).getFriction(),
-						fineGridVertex.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::PenaltyStat:
-				{
-					newContactPoints = delta::collision::penaltyStat(
-						fineGridVertex.getNumberOfTriangles(i),
-						fineGridVertex.getXCoordinates(i),
-						fineGridVertex.getYCoordinates(i),
-						fineGridVertex.getZCoordinates(i),
-						fineGridVertex.getParticle(i).getEpsilon(),
-						fineGridVertex.getParticle(i).getFriction(),
-						fineGridVertex.getParticle(i).getGlobalParticleId(),
+              fineGridVertex.getNumberOfTriangles(j),
+              fineGridVertex.getXCoordinates(j),
+              fineGridVertex.getYCoordinates(j),
+              fineGridVertex.getZCoordinates(j),
+              fineGridVertex.getParticle(j).getEpsilon(),
+              fineGridVertex.getParticle(j).getFriction(),
+              fineGridVertex.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::PenaltyStat: {
+          newContactPoints = delta::collision::penaltyStat(
+              fineGridVertex.getNumberOfTriangles(i),
+              fineGridVertex.getXCoordinates(i),
+              fineGridVertex.getYCoordinates(i),
+              fineGridVertex.getZCoordinates(i),
+              fineGridVertex.getParticle(i).getEpsilon(),
+              fineGridVertex.getParticle(i).getFriction(),
+              fineGridVertex.getParticle(i).getGlobalParticleId(),
 
-						fineGridVertex.getNumberOfTriangles(j),
-						fineGridVertex.getXCoordinates(j),
-						fineGridVertex.getYCoordinates(j),
-						fineGridVertex.getZCoordinates(j),
-						fineGridVertex.getParticle(j).getEpsilon(),
-						fineGridVertex.getParticle(j).getFriction(),
-						fineGridVertex.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::HybridOnBatches:
-				{
-					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
-						fineGridVertex.getNumberOfTriangles(i),
-						fineGridVertex.getXCoordinates(i),
-						fineGridVertex.getYCoordinates(i),
-						fineGridVertex.getZCoordinates(i),
-						fineGridVertex.getParticle(i).getEpsilon(),
-						fineGridVertex.getParticle(i).getFriction(),
-						fineGridVertex.getParticle(i).getGlobalParticleId(),
+              fineGridVertex.getNumberOfTriangles(j),
+              fineGridVertex.getXCoordinates(j),
+              fineGridVertex.getYCoordinates(j),
+              fineGridVertex.getZCoordinates(j),
+              fineGridVertex.getParticle(j).getEpsilon(),
+              fineGridVertex.getParticle(j).getFriction(),
+              fineGridVertex.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::HybridOnBatches: {
+          newContactPoints = delta::collision::hybridWithPerBatchFallBack(
+              fineGridVertex.getNumberOfTriangles(i),
+              fineGridVertex.getXCoordinates(i),
+              fineGridVertex.getYCoordinates(i),
+              fineGridVertex.getZCoordinates(i),
+              fineGridVertex.getParticle(i).getEpsilon(),
+              fineGridVertex.getParticle(i).getFriction(),
+              fineGridVertex.getParticle(i).getGlobalParticleId(),
 
-						fineGridVertex.getNumberOfTriangles(j),
-						fineGridVertex.getXCoordinates(j),
-						fineGridVertex.getYCoordinates(j),
-						fineGridVertex.getZCoordinates(j),
-						fineGridVertex.getParticle(j).getEpsilon(),
-						fineGridVertex.getParticle(j).getFriction(),
-						fineGridVertex.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::HybridOnTrianglePairs:
-				{
-					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
-						fineGridVertex.getNumberOfTriangles(i),
-						fineGridVertex.getXCoordinates(i),
-						fineGridVertex.getYCoordinates(i),
-						fineGridVertex.getZCoordinates(i),
-						fineGridVertex.getParticle(i).getEpsilon(),
-						fineGridVertex.getParticle(i).getFriction(),
-						fineGridVertex.getParticle(i).getGlobalParticleId(),
+              fineGridVertex.getNumberOfTriangles(j),
+              fineGridVertex.getXCoordinates(j),
+              fineGridVertex.getYCoordinates(j),
+              fineGridVertex.getZCoordinates(j),
+              fineGridVertex.getParticle(j).getEpsilon(),
+              fineGridVertex.getParticle(j).getFriction(),
+              fineGridVertex.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::HybridOnTrianglePairs: {
+          newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
+              fineGridVertex.getNumberOfTriangles(i),
+              fineGridVertex.getXCoordinates(i),
+              fineGridVertex.getYCoordinates(i),
+              fineGridVertex.getZCoordinates(i),
+              fineGridVertex.getParticle(i).getEpsilon(),
+              fineGridVertex.getParticle(i).getFriction(),
+              fineGridVertex.getParticle(i).getGlobalParticleId(),
 
-						fineGridVertex.getNumberOfTriangles(j),
-						fineGridVertex.getXCoordinates(j),
-						fineGridVertex.getYCoordinates(j),
-						fineGridVertex.getZCoordinates(j),
-						fineGridVertex.getParticle(j).getEpsilon(),
-						fineGridVertex.getParticle(j).getFriction(),
-						fineGridVertex.getParticle(j).getGlobalParticleId());
-					break;
-				}
-        case CollisionModel::HybridStat:
-        {
+              fineGridVertex.getNumberOfTriangles(j),
+              fineGridVertex.getXCoordinates(j),
+              fineGridVertex.getYCoordinates(j),
+              fineGridVertex.getZCoordinates(j),
+              fineGridVertex.getParticle(j).getEpsilon(),
+              fineGridVertex.getParticle(j).getFriction(),
+              fineGridVertex.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::HybridStat: {
           newContactPoints = delta::collision::hybridStat(
-            fineGridVertex.getNumberOfTriangles(i),
-            fineGridVertex.getXCoordinates(i),
-            fineGridVertex.getYCoordinates(i),
-            fineGridVertex.getZCoordinates(i),
-            fineGridVertex.getParticle(i).getEpsilon(),
-            fineGridVertex.getParticle(i).getFriction(),
-            fineGridVertex.getParticle(i).getGlobalParticleId(),
+              fineGridVertex.getNumberOfTriangles(i),
+              fineGridVertex.getXCoordinates(i),
+              fineGridVertex.getYCoordinates(i),
+              fineGridVertex.getZCoordinates(i),
+              fineGridVertex.getParticle(i).getEpsilon(),
+              fineGridVertex.getParticle(i).getFriction(),
+              fineGridVertex.getParticle(i).getGlobalParticleId(),
 
-            fineGridVertex.getNumberOfTriangles(j),
-            fineGridVertex.getXCoordinates(j),
-            fineGridVertex.getYCoordinates(j),
-            fineGridVertex.getZCoordinates(j),
-            fineGridVertex.getParticle(j).getEpsilon(),
-            fineGridVertex.getParticle(j).getFriction(),
-            fineGridVertex.getParticle(j).getGlobalParticleId());
+              fineGridVertex.getNumberOfTriangles(j),
+              fineGridVertex.getXCoordinates(j),
+              fineGridVertex.getYCoordinates(j),
+              fineGridVertex.getZCoordinates(j),
+              fineGridVertex.getParticle(j).getEpsilon(),
+              fineGridVertex.getParticle(j).getFriction(),
+              fineGridVertex.getParticle(j).getGlobalParticleId());
           break;
         }
-				case CollisionModel::GJK:
-				{
-					newContactPoints = delta::collision::gjk(
-							fineGridVertex.getNumberOfTriangles(i),
-							fineGridVertex.getXCoordinates(i),
-							fineGridVertex.getYCoordinates(i),
-							fineGridVertex.getZCoordinates(i),
-							fineGridVertex.getNumberOfTriangles(j),
-							fineGridVertex.getParticle(i).getEpsilon(),
-							fineGridVertex.getParticle(i).getFriction(),
-							fineGridVertex.getParticle(i).getGlobalParticleId(),
+        case CollisionModel::GJK: {
+          newContactPoints = delta::collision::gjk(
+              fineGridVertex.getNumberOfTriangles(i),
+              fineGridVertex.getXCoordinates(i),
+              fineGridVertex.getYCoordinates(i),
+              fineGridVertex.getZCoordinates(i),
+              fineGridVertex.getNumberOfTriangles(j),
+              fineGridVertex.getParticle(i).getEpsilon(),
+              fineGridVertex.getParticle(i).getFriction(),
+              fineGridVertex.getParticle(i).getGlobalParticleId(),
 
-							fineGridVertex.getXCoordinates(j),
-							fineGridVertex.getYCoordinates(j),
-							fineGridVertex.getZCoordinates(j),
-							fineGridVertex.getParticle(j).getEpsilon(),
-							fineGridVertex.getParticle(j).getFriction(),
-							fineGridVertex.getParticle(j).getGlobalParticleId());
-					break;
-				}
-        case CollisionModel::none:
-        {
+              fineGridVertex.getXCoordinates(j),
+              fineGridVertex.getYCoordinates(j),
+              fineGridVertex.getZCoordinates(j),
+              fineGridVertex.getParticle(j).getEpsilon(),
+              fineGridVertex.getParticle(j).getFriction(),
+              fineGridVertex.getParticle(j).getGlobalParticleId());
           break;
         }
-			}
+        case CollisionModel::none: {
+          break;
+        }
+      }
 
 			if (!newContactPoints.empty())
 			{
@@ -597,220 +586,173 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			std::vector<delta::collision::contactpoint> newContactPoints;
 			switch (_collisionModel)
 			{
-				case CollisionModel::Sphere:
-				{
-					bool penetration = false;
-					if(vertexA.getParticle(i).getIsObstacle() && !vertexB.getParticle(j).getIsObstacle())
-					{
-						//printf("ENTERED neighbor grid sphere BA\n");
-						newContactPoints = delta::collision::sphereWithBarrierBA(
-							vertexB.getParticle(j).getCentre(0),
-							vertexB.getParticle(j).getCentre(1),
-							vertexB.getParticle(j).getCentre(2),
-							vertexB.getParticle(j).getDiameter(),
-							vertexB.getParticle(j).getEpsilon(),
-							vertexB.getParticle(j).getFriction(),
-							vertexB.getParticle(j).getGlobalParticleId(),
+        case CollisionModel::Sphere: {
+          bool penetration = false;
+          if (vertexA.getParticle(i).getIsObstacle()
+              && !vertexB.getParticle(j).getIsObstacle()) {
+            //printf("ENTERED neighbor grid sphere BA\n");
+            newContactPoints = delta::collision::sphereWithBarrierBA(
+                vertexB.getParticle(j).getCentre(0),
+                vertexB.getParticle(j).getCentre(1),
+                vertexB.getParticle(j).getCentre(2),
+                vertexB.getParticle(j).getDiameter(),
+                vertexB.getParticle(j).getEpsilon(),
+                vertexB.getParticle(j).getFriction(),
+                vertexB.getParticle(j).getGlobalParticleId(),
 
-							vertexA.getXCoordinates(i),
-							vertexA.getYCoordinates(i),
-							vertexA.getZCoordinates(i),
-							vertexA.getNumberOfTriangles(i),
-							vertexA.getParticle(i).getEpsilon(),
-							vertexA.getParticle(i).getFriction(),
-							vertexA.getParticle(i).getGlobalParticleId(),
-							penetration);
+                vertexA.getXCoordinates(i), vertexA.getYCoordinates(i),
+                vertexA.getZCoordinates(i), vertexA.getNumberOfTriangles(i),
+                vertexA.getParticle(i).getEpsilon(),
+                vertexA.getParticle(i).getFriction(),
+                vertexA.getParticle(i).getGlobalParticleId(), penetration);
 
-					} else if(!vertexA.getParticle(i).getIsObstacle() && vertexB.getParticle(j).getIsObstacle())
-					{
-						//printf("ENTERED neighbor grid sphere AB\n");
-						newContactPoints = delta::collision::sphereWithBarrierAB(
-							vertexA.getParticle(i).getCentre(0),
-							vertexA.getParticle(i).getCentre(1),
-							vertexA.getParticle(i).getCentre(2),
-							vertexA.getParticle(i).getDiameter(),
-							vertexA.getParticle(i).getEpsilon(),
-							vertexA.getParticle(i).getFriction(),
-							vertexA.getParticle(i).getGlobalParticleId(),
+          } else if (!vertexA.getParticle(i).getIsObstacle()
+              && vertexB.getParticle(j).getIsObstacle()) {
+            //printf("ENTERED neighbor grid sphere AB\n");
+            newContactPoints = delta::collision::sphereWithBarrierAB(
+                vertexA.getParticle(i).getCentre(0),
+                vertexA.getParticle(i).getCentre(1),
+                vertexA.getParticle(i).getCentre(2),
+                vertexA.getParticle(i).getDiameter(),
+                vertexA.getParticle(i).getEpsilon(),
+                vertexA.getParticle(i).getFriction(),
+                vertexA.getParticle(i).getGlobalParticleId(),
 
-							vertexB.getXCoordinates(j),
-							vertexB.getYCoordinates(j),
-							vertexB.getZCoordinates(j),
-							vertexB.getNumberOfTriangles(j),
-							vertexB.getParticle(j).getEpsilon(),
-							vertexB.getParticle(j).getFriction(),
-							vertexB.getParticle(j).getGlobalParticleId(),
-							penetration);
-					} else
-					{
-						newContactPoints = delta::collision::sphere(
-							vertexA.getParticle(i).getCentre(0),
-							vertexA.getParticle(i).getCentre(1),
-							vertexA.getParticle(i).getCentre(2),
-							vertexA.getParticle(i).getDiameter(),
-							vertexA.getParticle(i).getEpsilon(),
-							vertexA.getParticle(i).getFriction(),
-							vertexA.getParticle(i).getGlobalParticleId(),
+                vertexB.getXCoordinates(j), vertexB.getYCoordinates(j),
+                vertexB.getZCoordinates(j), vertexB.getNumberOfTriangles(j),
+                vertexB.getParticle(j).getEpsilon(),
+                vertexB.getParticle(j).getFriction(),
+                vertexB.getParticle(j).getGlobalParticleId(), penetration);
+          } else {
+            newContactPoints = delta::collision::sphere(
+                vertexA.getParticle(i).getCentre(0),
+                vertexA.getParticle(i).getCentre(1),
+                vertexA.getParticle(i).getCentre(2),
+                vertexA.getParticle(i).getDiameter(),
+                vertexA.getParticle(i).getEpsilon(),
+                vertexA.getParticle(i).getFriction(),
+                vertexA.getParticle(i).getGlobalParticleId(),
 
-							vertexB.getParticle(j).getCentre(0),
-							vertexB.getParticle(j).getCentre(1),
-							vertexB.getParticle(j).getCentre(2),
-							vertexB.getParticle(j).getDiameter(),
-							vertexB.getParticle(j).getEpsilon(),
-							vertexB.getParticle(j).getFriction(),
-							vertexB.getParticle(j).getGlobalParticleId(),
-							penetration);
-					}
-					if(penetration)
-					{
-						_state.informStatePenetration();
-					}
-					break;
-				}
-				case CollisionModel::BruteForce:
-				{
-					newContactPoints = delta::collision::bf(
-						vertexA.getNumberOfTriangles(i),
-						vertexA.getXCoordinates(i),
-						vertexA.getYCoordinates(i),
-						vertexA.getZCoordinates(i),
-						vertexA.getParticle(i).getEpsilon(),
-						vertexA.getParticle(i).getFriction(),
-						vertexA.getParticle(i).getGlobalParticleId(),
+                vertexB.getParticle(j).getCentre(0),
+                vertexB.getParticle(j).getCentre(1),
+                vertexB.getParticle(j).getCentre(2),
+                vertexB.getParticle(j).getDiameter(),
+                vertexB.getParticle(j).getEpsilon(),
+                vertexB.getParticle(j).getFriction(),
+                vertexB.getParticle(j).getGlobalParticleId(), penetration);
+          }
+          if (penetration) {
+            _state.informStatePenetration();
+          }
+          break;
+        }
+        case CollisionModel::BruteForce: {
+          newContactPoints = delta::collision::bf(vertexA.getNumberOfTriangles(i),
+              vertexA.getXCoordinates(i), vertexA.getYCoordinates(i),
+              vertexA.getZCoordinates(i), vertexA.getParticle(i).getEpsilon(),
+              vertexA.getParticle(i).getFriction(),
+              vertexA.getParticle(i).getGlobalParticleId(),
 
-						vertexB.getNumberOfTriangles(j),
-						vertexB.getXCoordinates(j),
-						vertexB.getYCoordinates(j),
-						vertexB.getZCoordinates(j),
-						vertexB.getParticle(j).getEpsilon(),
-						vertexB.getParticle(j).getFriction(),
-						vertexB.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::Penalty:
-				{
-					newContactPoints = delta::collision::penalty(
-						vertexA.getNumberOfTriangles(i),
-						vertexA.getXCoordinates(i),
-						vertexA.getYCoordinates(i),
-						vertexA.getZCoordinates(i),
-						vertexA.getParticle(i).getEpsilon(),
-						vertexA.getParticle(i).getFriction(),
-						vertexA.getParticle(i).getGlobalParticleId(),
+              vertexB.getNumberOfTriangles(j), vertexB.getXCoordinates(j),
+              vertexB.getYCoordinates(j), vertexB.getZCoordinates(j),
+              vertexB.getParticle(j).getEpsilon(),
+              vertexB.getParticle(j).getFriction(),
+              vertexB.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::Penalty: {
+          newContactPoints = delta::collision::penalty(
+              vertexA.getNumberOfTriangles(i), vertexA.getXCoordinates(i),
+              vertexA.getYCoordinates(i), vertexA.getZCoordinates(i),
+              vertexA.getParticle(i).getEpsilon(),
+              vertexA.getParticle(i).getFriction(),
+              vertexA.getParticle(i).getGlobalParticleId(),
 
-						vertexB.getNumberOfTriangles(j),
-						vertexB.getXCoordinates(j),
-						vertexB.getYCoordinates(j),
-						vertexB.getZCoordinates(j),
-						vertexB.getParticle(j).getEpsilon(),
-						vertexB.getParticle(j).getFriction(),
-						vertexB.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::PenaltyStat:
-				{
-					newContactPoints = delta::collision::penaltyStat(
-						vertexA.getNumberOfTriangles(i),
-						vertexA.getXCoordinates(i),
-						vertexA.getYCoordinates(i),
-						vertexA.getZCoordinates(i),
-						vertexA.getParticle(i).getEpsilon(),
-						vertexA.getParticle(i).getFriction(),
-						vertexA.getParticle(i).getGlobalParticleId(),
+              vertexB.getNumberOfTriangles(j), vertexB.getXCoordinates(j),
+              vertexB.getYCoordinates(j), vertexB.getZCoordinates(j),
+              vertexB.getParticle(j).getEpsilon(),
+              vertexB.getParticle(j).getFriction(),
+              vertexB.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::PenaltyStat: {
+          newContactPoints = delta::collision::penaltyStat(
+              vertexA.getNumberOfTriangles(i), vertexA.getXCoordinates(i),
+              vertexA.getYCoordinates(i), vertexA.getZCoordinates(i),
+              vertexA.getParticle(i).getEpsilon(),
+              vertexA.getParticle(i).getFriction(),
+              vertexA.getParticle(i).getGlobalParticleId(),
 
-						vertexB.getNumberOfTriangles(j),
-						vertexB.getXCoordinates(j),
-						vertexB.getYCoordinates(j),
-						vertexB.getZCoordinates(j),
-						vertexB.getParticle(j).getEpsilon(),
-						vertexB.getParticle(j).getFriction(),
-						vertexB.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::HybridOnBatches:
-				{
-					newContactPoints = delta::collision::hybridWithPerBatchFallBack(
-						vertexA.getNumberOfTriangles(i),
-						vertexA.getXCoordinates(i),
-						vertexA.getYCoordinates(i),
-						vertexA.getZCoordinates(i),
-						vertexA.getParticle(i).getEpsilon(),
-						vertexA.getParticle(i).getFriction(),
-						vertexA.getParticle(i).getGlobalParticleId(),
+              vertexB.getNumberOfTriangles(j), vertexB.getXCoordinates(j),
+              vertexB.getYCoordinates(j), vertexB.getZCoordinates(j),
+              vertexB.getParticle(j).getEpsilon(),
+              vertexB.getParticle(j).getFriction(),
+              vertexB.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::HybridOnBatches: {
+          newContactPoints = delta::collision::hybridWithPerBatchFallBack(
+              vertexA.getNumberOfTriangles(i), vertexA.getXCoordinates(i),
+              vertexA.getYCoordinates(i), vertexA.getZCoordinates(i),
+              vertexA.getParticle(i).getEpsilon(),
+              vertexA.getParticle(i).getFriction(),
+              vertexA.getParticle(i).getGlobalParticleId(),
 
-						vertexB.getNumberOfTriangles(j),
-						vertexB.getXCoordinates(j),
-						vertexB.getYCoordinates(j),
-						vertexB.getZCoordinates(j),
-						vertexB.getParticle(j).getEpsilon(),
-						vertexB.getParticle(j).getFriction(),
-						vertexB.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::HybridOnTrianglePairs:
-				{
-					newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
-						vertexA.getNumberOfTriangles(i),
-						vertexA.getXCoordinates(i),
-						vertexA.getYCoordinates(i),
-						vertexA.getZCoordinates(i),
-						vertexA.getParticle(i).getEpsilon(),
-						vertexA.getParticle(i).getFriction(),
-						vertexA.getParticle(i).getGlobalParticleId(),
+              vertexB.getNumberOfTriangles(j), vertexB.getXCoordinates(j),
+              vertexB.getYCoordinates(j), vertexB.getZCoordinates(j),
+              vertexB.getParticle(j).getEpsilon(),
+              vertexB.getParticle(j).getFriction(),
+              vertexB.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::HybridOnTrianglePairs: {
+          newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
+              vertexA.getNumberOfTriangles(i), vertexA.getXCoordinates(i),
+              vertexA.getYCoordinates(i), vertexA.getZCoordinates(i),
+              vertexA.getParticle(i).getEpsilon(),
+              vertexA.getParticle(i).getFriction(),
+              vertexA.getParticle(i).getGlobalParticleId(),
 
-						vertexB.getNumberOfTriangles(j),
-						vertexB.getXCoordinates(j),
-						vertexB.getYCoordinates(j),
-						vertexB.getZCoordinates(j),
-						vertexB.getParticle(j).getEpsilon(),
-						vertexB.getParticle(j).getFriction(),
-						vertexB.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::HybridStat:
-				{
-					newContactPoints = delta::collision::hybridStat(
-						vertexA.getNumberOfTriangles(i),
-						vertexA.getXCoordinates(i),
-						vertexA.getYCoordinates(i),
-						vertexA.getZCoordinates(i),
-						vertexA.getParticle(i).getEpsilon(),
-						vertexA.getParticle(i).getFriction(),
-						vertexA.getParticle(i).getGlobalParticleId(),
+              vertexB.getNumberOfTriangles(j), vertexB.getXCoordinates(j),
+              vertexB.getYCoordinates(j), vertexB.getZCoordinates(j),
+              vertexB.getParticle(j).getEpsilon(),
+              vertexB.getParticle(j).getFriction(),
+              vertexB.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::HybridStat: {
+          newContactPoints = delta::collision::hybridStat(
+              vertexA.getNumberOfTriangles(i), vertexA.getXCoordinates(i),
+              vertexA.getYCoordinates(i), vertexA.getZCoordinates(i),
+              vertexA.getParticle(i).getEpsilon(),
+              vertexA.getParticle(i).getFriction(),
+              vertexA.getParticle(i).getGlobalParticleId(),
 
-						vertexB.getNumberOfTriangles(j),
-						vertexB.getXCoordinates(j),
-						vertexB.getYCoordinates(j),
-						vertexB.getZCoordinates(j),
-						vertexB.getParticle(j).getEpsilon(),
-						vertexB.getParticle(j).getFriction(),
-						vertexB.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::GJK:
-				{
-					newContactPoints = delta::collision::gjk(
-						vertexA.getNumberOfTriangles(i),
-						vertexA.getXCoordinates(i),
-						vertexA.getYCoordinates(i),
-						vertexA.getZCoordinates(i),
-						vertexA.getParticle(i).getEpsilon(),
-						vertexA.getParticle(i).getFriction(),
-						vertexA.getParticle(i).getGlobalParticleId(),
+              vertexB.getNumberOfTriangles(j), vertexB.getXCoordinates(j),
+              vertexB.getYCoordinates(j), vertexB.getZCoordinates(j),
+              vertexB.getParticle(j).getEpsilon(),
+              vertexB.getParticle(j).getFriction(),
+              vertexB.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::GJK: {
+          newContactPoints = delta::collision::gjk(
+              vertexA.getNumberOfTriangles(i), vertexA.getXCoordinates(i),
+              vertexA.getYCoordinates(i), vertexA.getZCoordinates(i),
+              vertexA.getParticle(i).getEpsilon(),
+              vertexA.getParticle(i).getFriction(),
+              vertexA.getParticle(i).getGlobalParticleId(),
 
-						vertexB.getNumberOfTriangles(j),
-						vertexB.getXCoordinates(j),
-						vertexB.getYCoordinates(j),
-						vertexB.getZCoordinates(j),
-						vertexB.getParticle(j).getEpsilon(),
-						vertexB.getParticle(j).getFriction(),
-						vertexB.getParticle(j).getGlobalParticleId());
-					break;
-				}
-				case CollisionModel::none:
-				{
-				  break;
-				}
+              vertexB.getNumberOfTriangles(j), vertexB.getXCoordinates(j),
+              vertexB.getYCoordinates(j), vertexB.getZCoordinates(j),
+              vertexB.getParticle(j).getEpsilon(),
+              vertexB.getParticle(j).getFriction(),
+              vertexB.getParticle(j).getGlobalParticleId());
+          break;
+        }
+        case CollisionModel::none: {
+          break;
+        }
 			}
 
 			if (!newContactPoints.empty())

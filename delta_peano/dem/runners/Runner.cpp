@@ -175,15 +175,16 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
       << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
       << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-      << ", grid-v=" << repository.getState().getNumberOfInnerVertices()
+      << ", v=" << repository.getState().getNumberOfInnerVertices()
       << ", t=" << repository.getState().getTime()
-      << ", dt=" << repository.getState().getTimeStepSize() << std::endl
-      << ", h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
-      << ", h_max(prescribed)=" << repository.getState().getPrescribedMaximumMeshWidth()
-      << ", h_min(real)=" << repository.getState().getMinimumMeshWidth()
-      << ", h_max(real)=" << repository.getState().getMaximumMeshWidth()
-      << ", plot=" << plotThisTraversal
-    );
+      << ", dt=" << repository.getState().getTimeStepSize());
+    logInfo("runAsMaster(...)",
+        "plot=" << plotThisTraversal
+      <<", h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
+      <<", h_max(prescribed)=" << repository.getState().getPrescribedMaximumMeshWidth());
+    logInfo("runAsMaster(...)",
+           "h_min(real)=" << repository.getState().getMinimumMeshWidth()
+      << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
 
     elapsed = repository.getState().getTime() - timestamp;
 
