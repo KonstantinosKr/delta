@@ -222,62 +222,62 @@ int main(int argc, char** argv)
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   } else if (scenario=="sla") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="nuclearArray") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="two-particles-crash") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }//hopper diagonal is 0.39
   else if (scenario=="hopperUniform") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniform1k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform1k,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniform10k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform10k,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniform50k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform50k,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, gridHMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform1k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform1k,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform10k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform10k,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform50k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform50k,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="freefall") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   //////////////PHYSICS TESTS START/////////////////////////////////////
@@ -318,7 +318,7 @@ int main(int argc, char** argv)
   }
   else if (scenario=="frictionRollMesh") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollMesh,
-                                            dem::mappings::CreateGrid::noVScheme,
+                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   //////////////PHYSICS TESTS END/////////////////////////////////////

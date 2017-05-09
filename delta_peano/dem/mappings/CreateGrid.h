@@ -78,7 +78,8 @@ class dem::mappings::CreateGrid {
     };
 
     enum VScheme {
-      noVScheme,
+      none,
+      moveLeft,
       randomLinear,
       randomLinearAngular,
       crashY,
@@ -119,6 +120,10 @@ class dem::mappings::CreateGrid {
     int   _numberOfTriangles;
 
     void setVScheme(dem::Vertex&  vertex, int particleNumber);
+
+    void addParticleToState(std::vector<double>&  xCoordinates,
+                             std::vector<double>&  yCoordinates,
+                             std::vector<double>&  zCoordinates, bool isObstacle);
 
     void dropParticles(
       dem::Vertex&                                 fineGridVertex,

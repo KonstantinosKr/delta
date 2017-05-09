@@ -174,8 +174,17 @@ void dem::mappings::CreateGrid::setVScheme(dem::Vertex&  vertex, int particleNum
 {
   switch (_velocityScheme)
   {
-    case noVScheme:
+    case none:
       vertex.getParticle(particleNumber)._persistentRecords._velocity(0) = 0;
+      vertex.getParticle(particleNumber)._persistentRecords._velocity(1) = 0;
+      vertex.getParticle(particleNumber)._persistentRecords._velocity(2) = 0;
+
+      vertex.getParticle(particleNumber)._persistentRecords._angular(0) = 0;
+      vertex.getParticle(particleNumber)._persistentRecords._angular(1) = 0;
+      vertex.getParticle(particleNumber)._persistentRecords._angular(2) = 0;
+      break;
+    case moveLeft:
+      vertex.getParticle(particleNumber)._persistentRecords._velocity(0) = -1.0;
       vertex.getParticle(particleNumber)._persistentRecords._velocity(1) = 0;
       vertex.getParticle(particleNumber)._persistentRecords._velocity(2) = 0;
 
@@ -260,15 +269,17 @@ void dem::mappings::CreateGrid::createCell(
 				centreAsArray[1] = 0.5;
 				double floorHeight = 0.05;
         delta::primitives::cubes::generateHullCube(centreAsArray, 1, floorHeight, 1, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
+				int particleid = vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										             _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-				_numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++; _numberOfObstacles++;
-				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+				dem::mappings::CreateGrid::_velocityScheme = moveLeft;
+				dem::mappings::CreateGrid::setVScheme(vertex,  particleid);
+        dem::mappings::CreateGrid::_velocityScheme = none;
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
 				//measurements
 				double position[] = {0,0,0};
-				delta::primitives::graphite::generateBrickFB( position, 1, xCoordinates, yCoordinates, zCoordinates);
+				delta::primitives::graphite::generateBrickFB(position, 1, xCoordinates, yCoordinates, zCoordinates);
 				double width = delta::primitives::properties::computeXZWidth(xCoordinates, yCoordinates, zCoordinates);
 				double yw = delta::primitives::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
 				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -309,8 +320,7 @@ void dem::mappings::CreateGrid::createCell(
 						vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
 												             _epsilon, false, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-						_numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-						xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+						dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
 					}
 					counter++;
 					//if(counter > 600)
@@ -330,8 +340,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										             _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-				_numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++; _numberOfObstacles++;
-				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+				dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
 				//measurements
 				double position[3]; position[0] = position[1] = position[2] = 0;
@@ -372,8 +381,7 @@ void dem::mappings::CreateGrid::createCell(
 					vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
 											             _epsilon, false, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-					_numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-					xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+					dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
 				}
 				return;
 		} else if(_scenario == hopperUniform)
@@ -388,8 +396,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 																 _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-				_numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+				dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 				//////////////////ARRAY
@@ -416,8 +423,7 @@ void dem::mappings::CreateGrid::createCell(
             //delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
             vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                  radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++;_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+            dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
           }
         }else
         {
@@ -493,8 +499,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										             _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-				_numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++; _numberOfObstacles++;
-				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+				dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 				return;
 		} else if(_scenario == hopperUniform1k)
     {
@@ -507,8 +512,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         //////////////////////////////////////////////////////////////////////////////////////////
         iREAL xcuts = 10; iREAL ycuts = 10;
@@ -534,8 +538,7 @@ void dem::mappings::CreateGrid::createCell(
             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
             vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                                      radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++;_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+            dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
           }
         }else
         {
@@ -613,9 +616,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-        _numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++; _numberOfObstacles++;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
         return;
     } else if(_scenario == hopperUniform10k)
     {
@@ -628,8 +629,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         //////////////////////////////////////////////////////////////////////////////////////////
         iREAL xcuts = 10; iREAL ycuts = 100;
@@ -656,8 +656,7 @@ void dem::mappings::CreateGrid::createCell(
             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
             vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                                      radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++;_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+            dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
           }
         }else
         {
@@ -736,8 +735,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-        _numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++; _numberOfObstacles++;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         return;
     } else if(_scenario == hopperUniform50k)
@@ -751,8 +749,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -781,8 +778,7 @@ void dem::mappings::CreateGrid::createCell(
             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
             vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                                      radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++;_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+            dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
           }
         }else
         {
@@ -860,8 +856,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-        _numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++; _numberOfObstacles++;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         return;
     } else if(_scenario == hopperNonUniform)
@@ -873,8 +868,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 																 _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-				_numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+				dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
 				//////////////////////////////////////////////////////////////////////////////////////////
         iREAL xcuts = 10.0; iREAL ycuts = 1.0;
@@ -931,8 +925,7 @@ void dem::mappings::CreateGrid::createCell(
             //delta::primitives::cubes::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
             vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                  rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+            dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
             idx++;
           }
 
@@ -1019,8 +1012,7 @@ void dem::mappings::CreateGrid::createCell(
 				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										             _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-				_numberOfTriangles += xCoordinates.size()/DIMENSIONS;_numberOfParticles++; _numberOfObstacles++;
-				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+				dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 				return;
     } else if(_scenario == hopperNonUniform1k)
     {
@@ -1031,8 +1023,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         //////////////////////////////////////////////////////////////////////////////////////////
         iREAL xcuts = 10.0; iREAL ycuts = 10.0;
@@ -1089,8 +1080,7 @@ void dem::mappings::CreateGrid::createCell(
             //delta::primitives::cubes::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
             vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                  rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+            dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
             idx++;
           }
 
@@ -1178,8 +1168,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-        _numberOfTriangles += xCoordinates.size()/DIMENSIONS;_numberOfParticles++; _numberOfObstacles++;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
         return;
      } else if(_scenario == hopperNonUniform10k)
      {
@@ -1190,8 +1179,7 @@ void dem::mappings::CreateGrid::createCell(
          vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                   _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
          //////////////////////////////////////////////////////////////////////////////////////////
          iREAL xcuts = 10.0; iREAL ycuts = 100.0;
@@ -1248,8 +1236,7 @@ void dem::mappings::CreateGrid::createCell(
              //delta::primitives::cubes::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
              vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                   rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-             _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-             xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+             dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
              idx++;
            }
 
@@ -1337,8 +1324,7 @@ void dem::mappings::CreateGrid::createCell(
          vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                   _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-         _numberOfTriangles += xCoordinates.size()/DIMENSIONS;_numberOfParticles++; _numberOfObstacles++;
-         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
          return;
      }  else if(_scenario == hopperNonUniform50k)
      {
@@ -1349,8 +1335,7 @@ void dem::mappings::CreateGrid::createCell(
          vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                   _epsilon, true, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
 
-         _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
          //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1408,8 +1393,7 @@ void dem::mappings::CreateGrid::createCell(
              //delta::primitives::cubes::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
              vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                   rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-             _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-             xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+             dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
              idx++;
            }
 
@@ -1497,8 +1481,7 @@ void dem::mappings::CreateGrid::createCell(
          vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                   _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-         _numberOfTriangles += xCoordinates.size()/DIMENSIONS;_numberOfParticles++; _numberOfObstacles++;
-         xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
          return;
      } else if(_scenario == frictionStaticSphere)
      {
@@ -1507,8 +1490,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-				_numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-				xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         double radius = 0.01;
         double eps = radius*0.2;
@@ -1519,8 +1501,7 @@ void dem::mappings::CreateGrid::createCell(
         int newParticleNumber = vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                                  radius, eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         setVScheme(vertex, newParticleNumber);
 				return;
 			} else if(_scenario == frictionSlideSphere)
@@ -1530,8 +1511,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         double radius = 0.01;
         double eps = radius*0.2;
@@ -1542,8 +1522,7 @@ void dem::mappings::CreateGrid::createCell(
         int newParticleNumber = vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                                  radius, eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         setVScheme(vertex, newParticleNumber);
 				return;
 			} else if(_scenario == frictionRollSphere)
@@ -1553,8 +1532,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         double radius = 0.01;
         double eps = radius*0.2;
@@ -1565,8 +1543,7 @@ void dem::mappings::CreateGrid::createCell(
         int newParticleNumber = vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
                                                                  radius, eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         setVScheme(vertex, newParticleNumber);
         return;
       } else if(_scenario == frictionStaticMesh)
@@ -1576,8 +1553,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         double radius = 0.01;
         double eps = radius*0.2;
@@ -1591,9 +1567,7 @@ void dem::mappings::CreateGrid::createCell(
         //delta::primitives::granulates::loadParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates);
         int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
                                                      eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-
-        _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         setVScheme(vertex, newParticleNumber);
         return;
       } else if(_scenario == frictionSlideMesh)
@@ -1603,8 +1577,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         double radius = 0.01;
         double eps = radius*0.2;
@@ -1617,8 +1590,7 @@ void dem::mappings::CreateGrid::createCell(
         int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
                                                      eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         setVScheme(vertex, newParticleNumber);
         return;
       } else if(_scenario == frictionRollMesh)
@@ -1628,8 +1600,7 @@ void dem::mappings::CreateGrid::createCell(
         vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
                                  _epsilon, true, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfObstacles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, true);
 
         double radius = 0.01;
         double eps = radius*0.2;
@@ -1642,8 +1613,7 @@ void dem::mappings::CreateGrid::createCell(
         int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
                                                      eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
-        _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         setVScheme(vertex, newParticleNumber);
         return;
       } else if(_scenario == TwoParticlesCrash)
@@ -1654,8 +1624,7 @@ void dem::mappings::CreateGrid::createCell(
                                                      _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
         vertex.getParticle(newParticleNumber)._persistentRecords._velocity = -0.5;
-        _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
 
         centreAsArray[0] -= _maxParticleDiam*4;
         delta::primitives::granulates::generateParticle(centreAsArray, _maxParticleDiam, xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
@@ -1663,8 +1632,7 @@ void dem::mappings::CreateGrid::createCell(
                                                      _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
         vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = 0.5;
-        _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
-        xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         return;
       }
 	}
@@ -1756,13 +1724,22 @@ void dem::mappings::CreateGrid::createCell(
 			#ifdef STATSPARTICLE
 			  logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
 			#endif
-			_numberOfTriangles += xCoordinates.size()/DIMENSIONS; _numberOfParticles++;
+			dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
 
 			/*Set velocities for particle filling for scenario*/
 			setVScheme(vertex, newParticleNumber);
 		}
 	}
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
+}
+
+void dem::mappings::CreateGrid::addParticleToState(std::vector<double>&  xCoordinates,
+                                                   std::vector<double>&  yCoordinates,
+                                                   std::vector<double>&  zCoordinates, bool isObstacle)
+{
+  _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+  if(isObstacle) _numberOfObstacles++;
+  xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 }
 
 void dem::mappings::CreateGrid::endIteration(
