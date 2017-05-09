@@ -7,7 +7,7 @@
 
 module purge
 module load intel/xe_2015.2
-module load intelmpi/intel/5.0.1
+module load intelmpi/intel/5.0.3
 module unload gcc/4.9.1
 module load gcc/4.9.1
 module load sge

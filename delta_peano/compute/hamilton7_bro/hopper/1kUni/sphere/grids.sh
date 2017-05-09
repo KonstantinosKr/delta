@@ -139,10 +139,3 @@ sbatch ${JOB_SCRIPT11}_tmp1
 
 rm ${JOB_SCRIPT11}_tmp
 rm ${JOB_SCRIPT11}_tmp1
-
-sed "s,{OUTPUT_FILE},$exp12o,g" ${JOB_SCRIPT12} > ${JOB_SCRIPT12}_tmp
-sed "s,{RUN},$exp12,g" ${JOB_SCRIPT12}_tmp > ${JOB_SCRIPT12}_tmp1
-sbatch ${JOB_SCRIPT12}_tmp1
-
-rm ${JOB_SCRIPT12}_tmp
-rm ${JOB_SCRIPT12}_tmp1

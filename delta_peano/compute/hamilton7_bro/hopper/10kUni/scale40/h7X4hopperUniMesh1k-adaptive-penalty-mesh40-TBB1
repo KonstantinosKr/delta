@@ -1,4 +1,4 @@
-ModuleCmd_Load.c(213):ERROR:105: Unable to locate a modulefile for 'intelmpi/intel/5.0.1'
+ModuleCmd_Load.c(213):ERROR:105: Unable to locate a modulefile for 'intelmpi/intel/5.0.3'
  1.49343e+09  01:25:42     [cn7041.hpc.dur.ac.uk]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[vertex] the free tag 0
  1.49343e+09  01:25:42     [cn7041.hpc.dur.ac.uk]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell] the free tag 1
  1.49343e+09  01:25:42     [cn7041.hpc.dur.ac.uk]rank:0 info         tarch::parallel::Node<static>::reserveFreeTag()         assigned message JoinDataBufferPool[cell-marker] the free tag 2
