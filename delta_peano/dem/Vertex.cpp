@@ -144,9 +144,9 @@ int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,dou
 
   double inertia[9], inverse[9], mass, hMin;
 
-  std::vector<double>&  xCoordinates;
-  std::vector<double>&  yCoordinates;
-  std::vector<double>&  zCoordinates;
+  std::vector<double>  xCoordinates;
+  std::vector<double>  yCoordinates;
+  std::vector<double>  zCoordinates;
 
   iREAL volume = (4.0/3.0) * 3.14 * pow(radius,3);
   iREAL density;
