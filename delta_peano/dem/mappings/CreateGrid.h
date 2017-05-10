@@ -137,10 +137,23 @@ class dem::mappings::CreateGrid {
                     std::vector<std::vector<double>>  &zCoordinatesArray);
     void nonUnisphere(int  N, double totalMass, double subcellx, std::vector<double>  &rad);
 
-    void makeHopper(dem::Vertex&  vertex, double centreAsArray[3], double _hopperWidth, double _hopperHeight, double _hopperHatch,
+    void makeHopper(dem::Vertex&  vertex, double position[3], double _hopperWidth, double _hopperHeight, double _hopperHatch,
                     delta::collision::material::MaterialType material, bool friction, bool isObstacle);
-    void makeFloor(dem::Vertex&  vertex, double centreAsArray[3], double width, double height, double rx, double ry, double rz,
+    void makeFloor(dem::Vertex&  vertex, double position[3], double width, double height, double rx, double ry, double rz,
                     delta::collision::material::MaterialType material, bool friction, bool isObstacle);
+
+    int makeSphere(dem::Vertex&  vertex, double position[3], double radius, double eps,
+                    delta::collision::material::MaterialType material, bool friction, bool isObstacle);
+
+    int makeBox(dem::Vertex&  vertex, double position[3], double width, double height, double eps,
+                delta::collision::material::MaterialType material, bool friction, bool isObstacle);
+
+    int makeLoadedNonSpherical(dem::Vertex&  vertex, double position[3], double radius, double eps,
+                               delta::collision::material::MaterialType material, bool friction, bool isObstacle);
+
+    int makeNonSpherical(dem::Vertex&  vertex, double position[3], double radius, double eps,
+                        delta::collision::material::MaterialType material, bool friction, bool isObstacle);
+
     void makeParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double width, double totalMass);
 
     void dropParticles(
