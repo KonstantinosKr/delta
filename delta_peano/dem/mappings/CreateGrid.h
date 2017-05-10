@@ -68,13 +68,9 @@ class dem::mappings::CreateGrid {
 
       freefall,
 
-      frictionStaticSphere,
-      frictionSlideSphere,
-      frictionRollSphere,
-
-      frictionStaticMesh,
-      frictionSlideMesh,
-      frictionRollMesh
+      frictionStatic,
+      frictionSlide,
+      frictionRoll
     };
 
     enum VScheme {
@@ -139,18 +135,19 @@ class dem::mappings::CreateGrid {
                     std::vector<std::vector<double>>  &xCoordinatesArray,
                     std::vector<std::vector<double>>  &yCoordinatesArray,
                     std::vector<std::vector<double>>  &zCoordinatesArray);
+    void nonUnisphere(int  N, double totalMass, double subcellx, std::vector<double>  &rad);
 
-    void nonUnisphere(int  N,
-                      double totalMass,
-                      double subcellx,
-                      std::vector<double>  &rad);
+    void makeHopper(dem::Vertex&  vertex, double centreAsArray[3], double _hopperWidth, double _hopperHeight, double _hopperHatch,
+                    delta::collision::material::MaterialType material, bool friction, bool isObstacle);
+    void makeFloor(dem::Vertex&  vertex, double centreAsArray[3], double width, double height, double rx, double ry, double rz,
+                    delta::collision::material::MaterialType material, bool friction, bool isObstacle);
+    void makeParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double width, double totalMass);
 
     void dropParticles(
       dem::Vertex&                                 fineGridVertex,
       dem::Vertex * const                          coarseGridVertices,
       const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-      const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
-    );
+      const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex);
 
   public:
     /**

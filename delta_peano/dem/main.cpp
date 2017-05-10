@@ -56,12 +56,9 @@ void printManual()
 
 				  << "  freefall" << std::endl
 
-				  << "  frictionStaticSphere" << std::endl
-				  << "  frictionSlideSphere" << std::endl
-          << "  frictionRollSphere" << std::endl
-          << "  frictionStaticMesh" << std::endl
-          << "  frictionSlideMesh" << std::endl
-          << "  frictionRollMesh" << std::endl
+				  << "  frictionStatic" << std::endl
+				  << "  frictionSlide" << std::endl
+          << "  frictionRoll" << std::endl
 
           << "Grid types" << std::endl
           << "==========" << std::endl
@@ -281,44 +278,24 @@ int main(int argc, char** argv)
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   //////////////PHYSICS TESTS START/////////////////////////////////////
-  else if (scenario=="frictionStaticSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStaticSphere,
+  else if (scenario=="frictionStatic") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStatic,
                                             dem::mappings::CreateGrid::crashY,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="frictionSlideSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideSphere,
+  else if (scenario=="frictionSlide") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide,
                                             dem::mappings::CreateGrid::slideX,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="frictionSlideRotateSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideSphere,
+  else if (scenario=="frictionSlideRotate") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide,
                                             dem::mappings::CreateGrid::slideXRotation,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="frictionRollSphere") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollSphere,
+  else if (scenario=="frictionRoll") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRoll,
                                             dem::mappings::CreateGrid::slideXRotation,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
-  }
-  else if (scenario=="frictionStaticMesh") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStaticMesh,
-                                            dem::mappings::CreateGrid::crashY,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
-  }
-  else if (scenario=="frictionSlideMesh") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideMesh,
-                                            dem::mappings::CreateGrid::slideX,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
-  }
-  else if (scenario=="frictionSlideRotateMesh") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlideMesh,
-                                            dem::mappings::CreateGrid::slideXRotation,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
-  }
-  else if (scenario=="frictionRollMesh") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRollMesh,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   //////////////PHYSICS TESTS END/////////////////////////////////////
