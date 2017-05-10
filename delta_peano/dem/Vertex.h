@@ -94,10 +94,7 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
   		  double epsilon, bool isObstacle, delta::collision::material::MaterialType material, bool friction, int particleId
     );
 
-    int  createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIONS,double>&   center,
-    		  std::vector<double>&  xCoordinates,
-    		  std::vector<double>&  yCoordinates,
-    		  std::vector<double>&  zCoordinates,
+    int  createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,double>&   center,
     		  double radius, double epsilon, bool isObstacle, delta::collision::material::MaterialType material, bool friction, int particleId);
 
     int getNumberOfParticles() const;

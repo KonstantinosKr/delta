@@ -419,82 +419,30 @@ void dem::mappings::CreateGrid::createCell(
         {
           for(auto i:tmp)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
             //delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-            vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                 radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+            vertex.createNewParticleSphere({i[0], i[1], i[2]}, radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
             dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
           }
         }else
         {
           //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
-          std::vector<std::vector<double>>  xCoordinatesArray;
-          std::vector<std::vector<double>>  yCoordinatesArray;
-          std::vector<std::vector<double>>  zCoordinatesArray;
+          std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
 
-          double reMassTotal = 0;
-          double masssphere = 0;
-          for(auto i:tmp)
+          dem::mappings::CreateGrid::unimesh(tmp, radius, totalMass, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
+
+          for(unsigned i=0; i<tmp.size(); i++)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-
-            delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
-
-            xCoordinatesArray.push_back(xCoordinates);
-            yCoordinatesArray.push_back(yCoordinates);
-            zCoordinatesArray.push_back(zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
-            reMassTotal += mt;
-            masssphere += mt;
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-
-          double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-          //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
-
-          reMassTotal=0;
-          for(unsigned j=0; j<xCoordinatesArray.size(); j++)
-          {
-            xCoordinates = xCoordinatesArray[j];
-            yCoordinates = yCoordinatesArray[j];
-            zCoordinates = zCoordinatesArray[j];
-
-            std::array<double, 3> ar = tmp[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
-
-            reMassTotal += mt;
-            masssphere += ms;
-
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinatesArray[j] = xCoordinates;
-            yCoordinatesArray[j] = yCoordinates;
-            zCoordinatesArray[j] = zCoordinates;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-          //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
-
-          for(unsigned i=0; i<xCoordinatesArray.size(); i++)
-          {
-            std::array<double, 3> ar = tmp[i]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            vertex.createNewParticle(position, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
+            std::array<double, 3> ar = tmp[i];
+            vertex.createNewParticle({ar[0], ar[1], ar[2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
                                      _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++; _numberOfTriangles += xCoordinatesArray[i].size()/DIMENSIONS;
+            dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
           }
         }
 
 				///////////////////////**flooring creation*/ //floor DIAGONAL:0.344674///////////////////////////////////////////
 				centreAsArray[1] = 0.3;
         double height = 0.05; double width = 0.35;
+
         delta::primitives::cubes::generateHullCube(centreAsArray, width, height, width, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 				vertex.createNewParticle(centreAsArray, xCoordinates, yCoordinates, zCoordinates,
 										             _epsilon, true, delta::collision::material::MaterialType::GOLD, true, _numberOfParticles);
@@ -535,75 +483,21 @@ void dem::mappings::CreateGrid::createCell(
         {
           for(auto i:tmp)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-            vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                                     radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+            vertex.createNewParticleSphere({i[0], i[1], i[2]}, radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
             dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
           }
         }else
         {
           ////MESH/////////////////////////////////////////////////////////////////////////////
-          std::vector<std::vector<double>>  xCoordinatesArray;
-          std::vector<std::vector<double>>  yCoordinatesArray;
-          std::vector<std::vector<double>>  zCoordinatesArray;
+          std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
+          dem::mappings::CreateGrid::unimesh(tmp, radius, totalMass, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
 
-          double reMassTotal = 0;
-          double masssphere = 0;
-          for(auto i:tmp)
+          for(unsigned i=0; i<tmp.size(); i++)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-
-            delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
-
-            xCoordinatesArray.push_back(xCoordinates);
-            yCoordinatesArray.push_back(yCoordinates);
-            zCoordinatesArray.push_back(zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
-            reMassTotal += mt;
-            masssphere += mt;
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-
-          double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-          //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
-
-          reMassTotal=0;
-          for(unsigned j=0; j<xCoordinatesArray.size(); j++)
-          {
-            xCoordinates = xCoordinatesArray[j];
-            yCoordinates = yCoordinatesArray[j];
-            zCoordinates = zCoordinatesArray[j];
-
-            std::array<double, 3> ar = tmp[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
-
-            reMassTotal += mt;
-            masssphere += ms;
-
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinatesArray[j] = xCoordinates;
-            yCoordinatesArray[j] = yCoordinates;
-            zCoordinatesArray[j] = zCoordinates;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-          //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
-
-          for(unsigned i=0; i<xCoordinatesArray.size(); i++)
-          {
-            std::array<double, 3> ar = tmp[i]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            vertex.createNewParticle(position, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
+            std::array<double, 3> ar = tmp[i];
+            vertex.createNewParticle({ar[0], ar[1], ar[2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
                                      _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++; _numberOfTriangles += xCoordinatesArray[i].size()/DIMENSIONS;
+            dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
           }
 
         }
@@ -653,76 +547,23 @@ void dem::mappings::CreateGrid::createCell(
         {
           for(auto i:tmp)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-            vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                                     radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+            vertex.createNewParticleSphere({i[0], i[1], i[2]}, radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
             dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
           }
         }else
         {
           ////MESH/////////////////////////////////////////////////////////////////////////////
 
-          std::vector<std::vector<double>>  xCoordinatesArray;
-          std::vector<std::vector<double>>  yCoordinatesArray;
-          std::vector<std::vector<double>>  zCoordinatesArray;
+          std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
 
-          double reMassTotal = 0;
-          double masssphere = 0;
-          for(auto i:tmp)
+          dem::mappings::CreateGrid::unimesh(tmp, radius, totalMass, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
+
+          for(unsigned i=0; i<tmp.size(); i++)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-
-            delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
-
-            xCoordinatesArray.push_back(xCoordinates);
-            yCoordinatesArray.push_back(yCoordinates);
-            zCoordinatesArray.push_back(zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
-            reMassTotal += mt;
-            masssphere += mt;
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-
-          double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-          //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
-
-          reMassTotal=0;
-          for(unsigned j=0; j<xCoordinatesArray.size(); j++)
-          {
-            xCoordinates = xCoordinatesArray[j];
-            yCoordinates = yCoordinatesArray[j];
-            zCoordinates = zCoordinatesArray[j];
-
-            std::array<double, 3> ar = tmp[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
-
-            reMassTotal += mt;
-            masssphere += ms;
-
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinatesArray[j] = xCoordinates;
-            yCoordinatesArray[j] = yCoordinates;
-            zCoordinatesArray[j] = zCoordinates;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-          //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
-
-          for(unsigned i=0; i<xCoordinatesArray.size(); i++)
-          {
-            std::array<double, 3> ar = tmp[i]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            vertex.createNewParticle(position, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
+            std::array<double, 3> ar = tmp[i];
+            vertex.createNewParticle({ar[0], ar[1], ar[2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
                                      _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++; _numberOfTriangles += xCoordinatesArray[i].size()/DIMENSIONS;
+            dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
           }
 
         }
@@ -775,75 +616,22 @@ void dem::mappings::CreateGrid::createCell(
 
           for(auto i:tmp)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-            vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                                     radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+            vertex.createNewParticleSphere({i[0], i[1], i[2]}, radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
             dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
           }
         }else
         {
           ////MESH/////////////////////////////////////////////////////////////////////////////
-          std::vector<std::vector<double>>  xCoordinatesArray;
-          std::vector<std::vector<double>>  yCoordinatesArray;
-          std::vector<std::vector<double>>  zCoordinatesArray;
+          std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
 
-          double reMassTotal = 0;
-          double masssphere = 0;
-          for(auto i:tmp)
+          dem::mappings::CreateGrid::unimesh(tmp, radius, totalMass, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
+
+          for(unsigned i=0; i<tmp.size(); i++)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-
-            delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
-
-            xCoordinatesArray.push_back(xCoordinates);
-            yCoordinatesArray.push_back(yCoordinates);
-            zCoordinatesArray.push_back(zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
-            reMassTotal += mt;
-            masssphere += mt;
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-
-          double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-          //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
-
-          reMassTotal=0;
-          for(unsigned j=0; j<xCoordinatesArray.size(); j++)
-          {
-            xCoordinates = xCoordinatesArray[j];
-            yCoordinates = yCoordinatesArray[j];
-            zCoordinates = zCoordinatesArray[j];
-
-            std::array<double, 3> ar = tmp[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
-
-            reMassTotal += mt;
-            masssphere += ms;
-
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinatesArray[j] = xCoordinates;
-            yCoordinatesArray[j] = yCoordinates;
-            zCoordinatesArray[j] = zCoordinates;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-          //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
-
-          for(unsigned i=0; i<xCoordinatesArray.size(); i++)
-          {
-            std::array<double, 3> ar = tmp[i]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            vertex.createNewParticle(position, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
+            std::array<double, 3> ar = tmp[i];
+            vertex.createNewParticle({ar[0], ar[1], ar[2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
                                      _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++; _numberOfTriangles += xCoordinatesArray[i].size()/DIMENSIONS;
+            dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
           }
 
         }
@@ -876,7 +664,6 @@ void dem::mappings::CreateGrid::createCell(
         iREAL minArraylengthY = (double)_hopperHeight - _epsilon * 6;
 
         iREAL subcellx = ((double)minArraylengthX/(double)xcuts) - _epsilon*4;
-        //iREAL subcelly = ((double)minArraylengthY/(double)ycuts) - _epsilon*4;
 
         iREAL margin = ((double)minArraylengthX/(double)xcuts)/2.0;
         printf("maxDiameter:%f\n", subcellx);
@@ -890,41 +677,15 @@ void dem::mappings::CreateGrid::createCell(
         //////SPHERE//////////////////////////////////////////////////////////////////////
         if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
         {
-          //double massPerParticle = totalMass/(double)N;
-          //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
-          double reMassTotal = 0;
           std::vector<double> rad;
-          for(int i=0; i<N; i++)
-          {
-            _minParticleDiam = subcellx/2;
-            _maxParticleDiam = subcellx;
-            double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
-            rad.push_back(particleDiameter/2);
-            reMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-          }
-
-          //get total mass
-          //printf("TOTAL REMASS:%f\n", reMassTotal);
-
-          double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-
-          reMassTotal=0;
-          for(auto i:rad)
-          {
-            i *= rescale;
-            reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-          }
-          //printf("RESCALE:%f\n", rescale);
-          //printf("TOTAL REREMASS:%f\n", reMassTotal);
+          dem::mappings::CreateGrid::nonUnisphere(N, totalMass, subcellx, rad);
 
           int idx = 0;
           for(auto i:tmp)
           {
             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
             //delta::primitives::cubes::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-            vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                 rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+            vertex.createNewParticleSphere(position, rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
             dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
             idx++;
           }
@@ -934,72 +695,16 @@ void dem::mappings::CreateGrid::createCell(
           double massPerParticle = totalMass/(double)N;
           double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
-          std::vector<std::vector<double>>  xCoordinatesArray;
-          std::vector<std::vector<double>>  yCoordinatesArray;
-          std::vector<std::vector<double>>  zCoordinatesArray;
+          std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
 
-          double reMassTotal = 0;
-          double masssphere = 0;
-          for(auto i:tmp)
+          dem::mappings::CreateGrid::nonUnimesh(tmp, radius, totalMass, subcellx, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
+
+          for(unsigned i=0; i<tmp.size(); i++)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-            _minParticleDiam = subcellx/2;
-            _maxParticleDiam = subcellx;
-            double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
-
-            radius = particleDiameter/2;
-            delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
-
-            xCoordinatesArray.push_back(xCoordinates);
-            yCoordinatesArray.push_back(yCoordinates);
-            zCoordinatesArray.push_back(zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
-            reMassTotal += mt;
-            masssphere += mt;
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-
-          double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-          //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
-
-          reMassTotal=0;
-          for(unsigned j=0; j<xCoordinatesArray.size(); j++)
-          {
-            xCoordinates = xCoordinatesArray[j];
-            yCoordinates = yCoordinatesArray[j];
-            zCoordinates = zCoordinatesArray[j];
-
-            std::array<double, 3> ar = tmp[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
-
-            reMassTotal += mt;
-            masssphere += ms;
-
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinatesArray[j] = xCoordinates;
-            yCoordinatesArray[j] = yCoordinates;
-            zCoordinatesArray[j] = zCoordinates;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-
-          //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
-
-          for(unsigned i=0; i<xCoordinatesArray.size(); i++)
-          {
-            std::array<double, 3> ar = tmp[i]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            vertex.createNewParticle(position, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
+            std::array<double, 3> ar = tmp[i];
+            vertex.createNewParticle({ar[0], ar[1], ar[2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
                                      _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++; _numberOfTriangles += xCoordinatesArray[i].size()/DIMENSIONS;
+            dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
           }
 				}
 
@@ -1045,41 +750,13 @@ void dem::mappings::CreateGrid::createCell(
         //////SPHERE//////////////////////////////////////////////////////////////////////
         if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
         {
-          //double massPerParticle = totalMass/(double)N;
-          //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
-          double reMassTotal = 0;
           std::vector<double> rad;
-          for(int i=0; i<N; i++)
-          {
-            _minParticleDiam = subcellx/2;
-            _maxParticleDiam = subcellx;
-            double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
-            rad.push_back(particleDiameter/2);
-            reMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-          }
-
-          //get total mass
-          //printf("TOTAL REMASS:%f\n", reMassTotal);
-
-          double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-
-          reMassTotal=0;
-          for(auto i:rad)
-          {
-            i *= rescale;
-            reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-          }
-          //printf("RESCALE:%f\n", rescale);
-          //printf("TOTAL REREMASS:%f\n", reMassTotal);
+          dem::mappings::CreateGrid::nonUnisphere(N, totalMass, subcellx, rad);
 
           int idx = 0;
           for(auto i:tmp)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-            //delta::primitives::cubes::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-            vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                 rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+            vertex.createNewParticleSphere({i[0], i[1], i[2]}, rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
             dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
             idx++;
           }
@@ -1090,72 +767,16 @@ void dem::mappings::CreateGrid::createCell(
           double massPerParticle = totalMass/(double)N;
           double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
-          std::vector<std::vector<double>>  xCoordinatesArray;
-          std::vector<std::vector<double>>  yCoordinatesArray;
-          std::vector<std::vector<double>>  zCoordinatesArray;
+          std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
 
-          double reMassTotal = 0;
-          double masssphere = 0;
-          for(auto i:tmp)
+          dem::mappings::CreateGrid::nonUnimesh(tmp, radius, totalMass, subcellx, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
+
+          for(unsigned i=0; i<tmp.size(); i++)
           {
-            position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-            _minParticleDiam = subcellx/2;
-            _maxParticleDiam = subcellx;
-            double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
-
-            radius = particleDiameter/2;
-            delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
-
-            xCoordinatesArray.push_back(xCoordinates);
-            yCoordinatesArray.push_back(yCoordinates);
-            zCoordinatesArray.push_back(zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
-            reMassTotal += mt;
-            masssphere += mt;
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-
-          double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-          //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
-
-          reMassTotal=0;
-          for(unsigned j=0; j<xCoordinatesArray.size(); j++)
-          {
-            xCoordinates = xCoordinatesArray[j];
-            yCoordinates = yCoordinatesArray[j];
-            zCoordinates = zCoordinatesArray[j];
-
-            std::array<double, 3> ar = tmp[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
-
-            double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-            double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-            double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-            double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
-
-            reMassTotal += mt;
-            masssphere += ms;
-
-            //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-            xCoordinatesArray[j] = xCoordinates;
-            yCoordinatesArray[j] = yCoordinates;
-            zCoordinatesArray[j] = zCoordinates;
-            xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-          }
-
-          //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
-
-          for(unsigned i=0; i<xCoordinatesArray.size(); i++)
-          {
-            std::array<double, 3> ar = tmp[i]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-            vertex.createNewParticle(position, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
+            std::array<double, 3> ar = tmp[i];
+            vertex.createNewParticle({ar[0], ar[1], ar[2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
                                      _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-            _numberOfParticles++; _numberOfTriangles += xCoordinatesArray[i].size()/DIMENSIONS;
+            dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
           }
         }
 
@@ -1201,41 +822,13 @@ void dem::mappings::CreateGrid::createCell(
          //////SPHERE//////////////////////////////////////////////////////////////////////
          if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
          {
-           //double massPerParticle = totalMass/(double)N;
-           //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
-           double reMassTotal = 0;
            std::vector<double> rad;
-           for(int i=0; i<N; i++)
-           {
-             _minParticleDiam = subcellx/2;
-             _maxParticleDiam = subcellx;
-             double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
-             rad.push_back(particleDiameter/2);
-             reMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-           }
-
-           //get total mass
-           //printf("TOTAL REMASS:%f\n", reMassTotal);
-
-           double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-
-           reMassTotal=0;
-           for(auto i:rad)
-           {
-             i *= rescale;
-             reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-           }
-           //printf("RESCALE:%f\n", rescale);
-           //printf("TOTAL REREMASS:%f\n", reMassTotal);
+           dem::mappings::CreateGrid::nonUnisphere(N, totalMass, subcellx, rad);
 
            int idx = 0;
            for(auto i:tmp)
            {
-             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-             //delta::primitives::cubes::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-             vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                  rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+             vertex.createNewParticleSphere({i[0], i[1], i[2]}, rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
              dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
              idx++;
            }
@@ -1246,72 +839,15 @@ void dem::mappings::CreateGrid::createCell(
            double massPerParticle = totalMass/(double)N;
            double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
-           std::vector<std::vector<double>>  xCoordinatesArray;
-           std::vector<std::vector<double>>  yCoordinatesArray;
-           std::vector<std::vector<double>>  zCoordinatesArray;
+           std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
+           dem::mappings::CreateGrid::nonUnimesh(tmp, radius, totalMass, subcellx, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
 
-           double reMassTotal = 0;
-           double masssphere = 0;
-           for(auto i:tmp)
+           for(unsigned i=0; i<tmp.size(); i++)
            {
-             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-             _minParticleDiam = subcellx/2;
-             _maxParticleDiam = subcellx;
-             double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
-
-             radius = particleDiameter/2;
-             delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
-
-             xCoordinatesArray.push_back(xCoordinates);
-             yCoordinatesArray.push_back(yCoordinates);
-             zCoordinatesArray.push_back(zCoordinates);
-
-             double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-             double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-             double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-             double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
-             reMassTotal += mt;
-             masssphere += mt;
-             //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-             xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-           }
-
-           double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-           //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
-
-           reMassTotal=0;
-           for(unsigned j=0; j<xCoordinatesArray.size(); j++)
-           {
-             xCoordinates = xCoordinatesArray[j];
-             yCoordinates = yCoordinatesArray[j];
-             zCoordinates = zCoordinatesArray[j];
-
-             std::array<double, 3> ar = tmp[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-             delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
-
-             double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-             double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-             double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-             double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
-
-             reMassTotal += mt;
-             masssphere += ms;
-
-             //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-             xCoordinatesArray[j] = xCoordinates;
-             yCoordinatesArray[j] = yCoordinates;
-             zCoordinatesArray[j] = zCoordinates;
-             xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-           }
-
-           //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
-
-           for(unsigned i=0; i<xCoordinatesArray.size(); i++)
-           {
-             std::array<double, 3> ar = tmp[i]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-             vertex.createNewParticle(position, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
+             std::array<double, 3> ar = tmp[i];
+             vertex.createNewParticle({ar[0], ar[1], ar[2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
                                       _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-             _numberOfParticles++; _numberOfTriangles += xCoordinatesArray[i].size()/DIMENSIONS;
+             dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
            }
          }
 
@@ -1358,41 +894,13 @@ void dem::mappings::CreateGrid::createCell(
          //////SPHERE//////////////////////////////////////////////////////////////////////
          if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
          {
-           //double massPerParticle = totalMass/(double)N;
-           //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
-
-           double reMassTotal = 0;
            std::vector<double> rad;
-           for(int i=0; i<N; i++)
-           {
-             _minParticleDiam = subcellx/2;
-             _maxParticleDiam = subcellx;
-             double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
-             rad.push_back(particleDiameter/2);
-             reMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-           }
-
-           //get total mass
-           //printf("TOTAL REMASS:%f\n", reMassTotal);
-
-           double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-
-           reMassTotal=0;
-           for(auto i:rad)
-           {
-             i *= rescale;
-             reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
-           }
-           //printf("RESCALE:%f\n", rescale);
-           //printf("TOTAL REREMASS:%f\n", reMassTotal);
+           dem::mappings::CreateGrid::nonUnisphere(N, totalMass, subcellx, rad);
 
            int idx = 0;
            for(auto i:tmp)
            {
-             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-             //delta::primitives::cubes::generateCube(position, (rad[idx]*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-             vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                  rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+             vertex.createNewParticleSphere({i[0], i[1], i[2]}, rad[idx], rad[idx]*0.2, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
              dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
              idx++;
            }
@@ -1403,72 +911,16 @@ void dem::mappings::CreateGrid::createCell(
            double massPerParticle = totalMass/(double)N;
            double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
 
-           std::vector<std::vector<double>>  xCoordinatesArray;
-           std::vector<std::vector<double>>  yCoordinatesArray;
-           std::vector<std::vector<double>>  zCoordinatesArray;
+           std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
 
-           double reMassTotal = 0;
-           double masssphere = 0;
-           for(auto i:tmp)
+           dem::mappings::CreateGrid::nonUnimesh(tmp, radius, totalMass, subcellx, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
+
+           for(unsigned i=0; i<tmp.size(); i++)
            {
-             position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-             _minParticleDiam = subcellx/2;
-             _maxParticleDiam = subcellx;
-             double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
-
-             radius = particleDiameter/2;
-             delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
-
-             xCoordinatesArray.push_back(xCoordinates);
-             yCoordinatesArray.push_back(yCoordinates);
-             zCoordinatesArray.push_back(zCoordinates);
-
-             double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-             double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-             double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-             double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
-             reMassTotal += mt;
-             masssphere += mt;
-             //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-             xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-           }
-
-           double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
-           //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
-
-           reMassTotal=0;
-           for(unsigned j=0; j<xCoordinatesArray.size(); j++)
-           {
-             xCoordinates = xCoordinatesArray[j];
-             yCoordinates = yCoordinatesArray[j];
-             zCoordinates = zCoordinatesArray[j];
-
-             std::array<double, 3> ar = tmp[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-             delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
-
-             double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
-             double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
-             double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-             double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
-
-             reMassTotal += mt;
-             masssphere += ms;
-
-             //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-             xCoordinatesArray[j] = xCoordinates;
-             yCoordinatesArray[j] = yCoordinates;
-             zCoordinatesArray[j] = zCoordinates;
-             xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-           }
-
-           //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
-
-           for(unsigned i=0; i<xCoordinatesArray.size(); i++)
-           {
-             std::array<double, 3> ar = tmp[i]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-             vertex.createNewParticle(position, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
+             std::array<double, 3> ar = tmp[i];
+             vertex.createNewParticle({ar[0], ar[1], ar[2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
                                       _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
-             _numberOfParticles++; _numberOfTriangles += xCoordinatesArray[i].size()/DIMENSIONS;
+             dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
            }
          }
 
@@ -1498,8 +950,7 @@ void dem::mappings::CreateGrid::createCell(
         iREAL position[] = {centreAsArray[0], centreAsArray[1] + height, centreAsArray[2]};
 
         delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-        int newParticleNumber = vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                                 radius, eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+        int newParticleNumber = vertex.createNewParticleSphere(position, radius, eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         setVScheme(vertex, newParticleNumber);
@@ -1518,9 +969,8 @@ void dem::mappings::CreateGrid::createCell(
 
         iREAL position[] = {centreAsArray[0], centreAsArray[1] + height/2 + radius + eps*2, centreAsArray[2]};
 
-        delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-        int newParticleNumber = vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                                 radius, eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+        //delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+        int newParticleNumber = vertex.createNewParticleSphere(position, radius, eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         setVScheme(vertex, newParticleNumber);
@@ -1539,9 +989,8 @@ void dem::mappings::CreateGrid::createCell(
 
         iREAL position[] = {centreAsArray[0], centreAsArray[1] + height/2 + radius/2 + eps*2, centreAsArray[2]};
 
-        delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-        int newParticleNumber = vertex.createNewParticleSphereRadius(position, xCoordinates, yCoordinates, zCoordinates,
-                                                                 radius, eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+        //delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+        int newParticleNumber = vertex.createNewParticleSphere(position, radius, eps, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
 
         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
         setVScheme(vertex, newParticleNumber);
@@ -1740,6 +1189,169 @@ void dem::mappings::CreateGrid::addParticleToState(std::vector<double>&  xCoordi
   _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
   if(isObstacle) _numberOfObstacles++;
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+}
+
+void dem::mappings::CreateGrid::unimesh(std::vector<std::array<double, 3>>&  nPositions,
+                                        double  radius,
+                                        double totalMass,
+                                        std::vector<std::vector<double>>  &xCoordinatesArray,
+                                        std::vector<std::vector<double>>  &yCoordinatesArray,
+                                        std::vector<std::vector<double>>  &zCoordinatesArray)
+{
+
+  double reMassTotal = 0;
+  double masssphere = 0;
+  std::vector<double>  xCoordinates;
+  std::vector<double>  yCoordinates;
+  std::vector<double>  zCoordinates;
+
+  double position[3];
+  for(auto i:nPositions)
+  {
+    position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
+
+    delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+
+    xCoordinatesArray.push_back(xCoordinates);
+    yCoordinatesArray.push_back(yCoordinates);
+    zCoordinatesArray.push_back(zCoordinates);
+
+    double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
+    double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
+    double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
+    reMassTotal += mt;
+    masssphere += mt;
+    //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+    xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+  }
+
+  double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+  //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
+
+  reMassTotal=0;
+  for(unsigned j=0; j<xCoordinatesArray.size(); j++)
+  {
+    std::array<double, 3> ar = nPositions[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
+    delta::primitives::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+
+    double mt = delta::primitives::properties::computeMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], delta::collision::material::MaterialType::WOOD);
+    double vt = delta::primitives::properties::computeVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+    double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
+
+    reMassTotal += mt;
+    masssphere += ms;
+
+    //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+  }
+  //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
+}
+
+
+void dem::mappings::CreateGrid::nonUnimesh(std::vector<std::array<double, 3>>&  nPositions,
+                                        double  radius,
+                                        double totalMass,
+                                        double subcellx,
+                                        std::vector<std::vector<double>>  &xCoordinatesArray,
+                                        std::vector<std::vector<double>>  &yCoordinatesArray,
+                                        std::vector<std::vector<double>>  &zCoordinatesArray)
+{
+
+  double reMassTotal = 0;
+  double masssphere = 0;
+  std::vector<double>  xCoordinates;
+  std::vector<double>  yCoordinates;
+  std::vector<double>  zCoordinates;
+
+  iREAL position[3];
+  for(auto i:nPositions)
+  {
+    position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
+    _minParticleDiam = subcellx/2;
+    _maxParticleDiam = subcellx;
+    double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
+
+    radius = particleDiameter/2;
+    delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
+
+    xCoordinatesArray.push_back(xCoordinates);
+    yCoordinatesArray.push_back(yCoordinates);
+    zCoordinatesArray.push_back(zCoordinates);
+
+    double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
+    double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
+    double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
+    reMassTotal += mt;
+    masssphere += mt;
+    //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+    xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+  }
+
+  double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+  //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
+
+  reMassTotal=0;
+  for(unsigned j=0; j<xCoordinatesArray.size(); j++)
+  {
+    xCoordinates = xCoordinatesArray[j];
+    yCoordinates = yCoordinatesArray[j];
+    zCoordinates = zCoordinatesArray[j];
+
+    std::array<double, 3> ar = nPositions[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
+    delta::primitives::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
+
+    double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
+    double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
+    double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
+
+    reMassTotal += mt;
+    masssphere += ms;
+
+    //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+    xCoordinatesArray[j] = xCoordinates;
+    yCoordinatesArray[j] = yCoordinates;
+    zCoordinatesArray[j] = zCoordinates;
+    xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+  }
+  //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
+
+}
+
+void dem::mappings::CreateGrid::nonUnisphere(int  N,
+                                        double totalMass,
+                                        double subcellx,
+                                        std::vector<double>  &rad)
+{
+  //double massPerParticle = totalMass/(double)N;
+  //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
+
+  double reMassTotal = 0;
+
+  for(int i=0; i<N; i++)
+  {
+    _minParticleDiam = subcellx/2;
+    _maxParticleDiam = subcellx;
+    double particleDiameter = _minParticleDiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(_maxParticleDiam-_minParticleDiam)));
+    rad.push_back(particleDiameter/2);
+    reMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
+  }
+
+  //get total mass
+  //printf("TOTAL REMASS:%f\n", reMassTotal);
+
+  double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+
+  reMassTotal=0;
+  for(auto i:rad)
+  {
+    i *= rescale;
+    reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::MaterialDensity::WOOD); //volume * mass
+  }
+  //printf("RESCALE:%f\n", rescale);
+  //printf("TOTAL REREMASS:%f\n", reMassTotal);
 }
 
 void dem::mappings::CreateGrid::endIteration(

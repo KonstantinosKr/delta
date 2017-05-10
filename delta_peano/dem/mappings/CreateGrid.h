@@ -125,6 +125,26 @@ class dem::mappings::CreateGrid {
                              std::vector<double>&  yCoordinates,
                              std::vector<double>&  zCoordinates, bool isObstacle);
 
+    void unimesh(std::vector<std::array<double, 3>>&  nPositions,
+                double  radius,
+                double totalMass,
+                std::vector<std::vector<double>>  &xCoordinatesArray,
+                std::vector<std::vector<double>>  &yCoordinatesArray,
+                std::vector<std::vector<double>>  &zCoordinatesArray);
+
+    void nonUnimesh(std::vector<std::array<double, 3>>&  nPositions,
+                    double  radius,
+                    double totalMass,
+                    double subcellx,
+                    std::vector<std::vector<double>>  &xCoordinatesArray,
+                    std::vector<std::vector<double>>  &yCoordinatesArray,
+                    std::vector<std::vector<double>>  &zCoordinatesArray);
+
+    void nonUnisphere(int  N,
+                      double totalMass,
+                      double subcellx,
+                      std::vector<double>  &rad);
+
     void dropParticles(
       dem::Vertex&                                 fineGridVertex,
       dem::Vertex * const                          coarseGridVertices,

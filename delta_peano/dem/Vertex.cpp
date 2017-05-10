@@ -135,10 +135,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 }
 
 
-int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIONS,double>&   center,
-		  std::vector<double>&  xCoordinates,
-		  std::vector<double>&  yCoordinates,
-		  std::vector<double>&  zCoordinates,
+int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,double>&   center,
 		  double radius, double epsilon, bool isObstacle, delta::collision::material::MaterialType material, bool friction, int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
@@ -147,7 +144,10 @@ int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIO
 
   double inertia[9], inverse[9], mass, hMin;
 
-  hMin = delta::primitives::properties::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+  std::vector<double>&  xCoordinates;
+  std::vector<double>&  yCoordinates;
+  std::vector<double>&  zCoordinates;
+
   iREAL volume = (4.0/3.0) * 3.14 * pow(radius,3);
   iREAL density;
 
@@ -213,7 +213,7 @@ int  dem::Vertex::createNewParticleSphereRadius(const tarch::la::Vector<DIMENSIO
   newParticle._persistentRecords._diameter			    = radius*2;
   newParticle._persistentRecords._influenceRadius 	= (radius*2+epsilon) * 1.1;
   newParticle._persistentRecords._epsilon			      = epsilon;
-  newParticle._persistentRecords._hMin 				      = hMin;
+  newParticle._persistentRecords._hMin 				      = 0;
 
   newParticle._persistentRecords._numberOfTriangles = xCoordinates.size()/DIMENSIONS;
   newParticle._persistentRecords._isObstacle 		    = isObstacle;
