@@ -14,23 +14,23 @@ JOB_SCRIPT5=runjobBatch8
 JOB_SCRIPT6=runjobBatch16
 JOB_SCRIPT7=runjobBatch24
 
-exp0o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE1_2000_freefall
-exp1o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE2_2000_freefall
-exp2o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE3_2000_freefall
-exp3o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE4_2000_freefall
-exp4o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE6_2000_freefall
-exp5o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE8_2000_freefall
-exp6o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE16_2000_freefall
-exp7o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE24_2000_freefall
+exp0o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE1_2000_freefallWithGranulates
+exp1o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE2_2000_freefallWithGranulates
+exp2o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE3_2000_freefallWithGranulates
+exp3o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE4_2000_freefallWithGranulates
+exp4o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE6_2000_freefallWithGranulates
+exp5o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE8_2000_freefallWithGranulates
+exp6o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE16_2000_freefallWithGranulates
+exp7o=/ddn/data/rfmw74/h7reluctanthybrid-on-trianglesOMPTRIANGLE24_2000_freefallWithGranulates
 
-exp0="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
-exp1="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
-exp2="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
-exp3="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
-exp4="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
-exp5="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
-exp6="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
-exp7="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefall 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
+exp0="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
+exp1="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
+exp2="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
+exp3="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
+exp4="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
+exp5="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
+exp6="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
+exp7="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 2000"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

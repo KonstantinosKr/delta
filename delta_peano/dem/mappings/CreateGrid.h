@@ -47,10 +47,13 @@ namespace dem {
 class dem::mappings::CreateGrid {
   public:
     enum Scenario {
-      BlackHoleWithRandomOrientedCubes,
-      BlackHoleWithCubes,
-      RandomWithCubes,
-      RandomWithGranulates,
+      blackHoleWithRandomOrientedCubes,
+      blackHoleWithCubes,
+      blackHoleWithGranulates,
+
+      freefallWithRandomOrientedCubes,
+      freefallWithCubes,
+      freefallWithGranulates,
 
       sla,
       nuclearArray,
@@ -65,8 +68,6 @@ class dem::mappings::CreateGrid {
       hopperNonUniform1k,
       hopperNonUniform10k,
       hopperNonUniform50k,
-
-      freefall,
 
       frictionStatic,
       frictionSlide,
@@ -92,7 +93,7 @@ class dem::mappings::CreateGrid {
       ReluctantAdaptiveGrid
     };
 
-    static void setScenario(Scenario scenario, VScheme velocityScheme,
+    static void setScenario(Scenario scenario,
                             double maxH, double particleDiamMin, double particleDiamMax,
     						            GridType gridType, int noPointsPerGranulate);
 
@@ -115,7 +116,7 @@ class dem::mappings::CreateGrid {
     int   _numberOfObstacles;
     int   _numberOfTriangles;
 
-    void setVScheme(dem::Vertex&  vertex, int particleNumber);
+    void setVScheme(dem::Vertex&  vertex, int particleNumber, dem::mappings::CreateGrid::VScheme velocity);
 
     void addParticleToState(std::vector<double>&  xCoordinates,
                              std::vector<double>&  yCoordinates,

@@ -21,13 +21,13 @@ exp4o=/scratch/rfmw74/regularbfTBB6_20
 exp5o=/scratch/rfmw74/regularbfTBB8_20
 exp6o=/scratch/rfmw74/regularbfTBB16_20
 
-exp0="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 5000 regular-grid 0.0001 never 10 true bf 20 1"
-exp1="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 5000 regular-grid 0.0001 never 10 true bf 20 2"
-exp2="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 5000 regular-grid 0.0001 never 10 true bf 20 3"
-exp3="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 5000 regular-grid 0.0001 never 10 true bf 20 4"
-exp4="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 5000 regular-grid 0.0001 never 10 true bf 20 6"
-exp5="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 5000 regular-grid 0.0001 never 10 true bf 20 8"
-exp6="./dem-3d-release-tbb 0.1 0.001 0.1 freefall 5000 regular-grid 0.0001 never 10 true bf 20 16"
+exp0="./dem-3d-release-tbb 0.1 0.001 0.1 freefallWithGranulates 5000 regular-grid 0.0001 never 10 true bf 20 1"
+exp1="./dem-3d-release-tbb 0.1 0.001 0.1 freefallWithGranulates 5000 regular-grid 0.0001 never 10 true bf 20 2"
+exp2="./dem-3d-release-tbb 0.1 0.001 0.1 freefallWithGranulates 5000 regular-grid 0.0001 never 10 true bf 20 3"
+exp3="./dem-3d-release-tbb 0.1 0.001 0.1 freefallWithGranulates 5000 regular-grid 0.0001 never 10 true bf 20 4"
+exp4="./dem-3d-release-tbb 0.1 0.001 0.1 freefallWithGranulates 5000 regular-grid 0.0001 never 10 true bf 20 6"
+exp5="./dem-3d-release-tbb 0.1 0.001 0.1 freefallWithGranulates 5000 regular-grid 0.0001 never 10 true bf 20 8"
+exp6="./dem-3d-release-tbb 0.1 0.001 0.1 freefallWithGranulates 5000 regular-grid 0.0001 never 10 true bf 20 16"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

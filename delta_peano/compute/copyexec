@@ -1,24 +1,24 @@
 hamilton 7
 
 tbb
-cp ../dem-3d-release-tbb hamilton7_knl/freefall/shared/cell/bf/ 
-cp ../dem-3d-release-tbb hamilton7_knl/freefall/shared/cell/sphere/ 
+cp ../dem-3d-release-tbb hamilton7_knl/freefallWithGranulates/shared/cell/bf/ 
+cp ../dem-3d-release-tbb hamilton7_knl/freefallWithGranulates/shared/cell/sphere/ 
 
 mesh
-cp ../dem-3d-release-omp-triangle hamilton7_knl/freefall/shared/mesh/bf/ 
-cp ../dem-3d-release-omp-triangle hamilton7_knl/freefall/shared/mesh/hybrid-on-triangles/ 
-cp ../dem-3d-release-omp-triangle hamilton7_knl/freefall/shared/mesh/hybrid-on-batches/ 
+cp ../dem-3d-release-omp-triangle hamilton7_knl/freefallWithGranulates/shared/mesh/bf/ 
+cp ../dem-3d-release-omp-triangle hamilton7_knl/freefallWithGranulates/shared/mesh/hybrid-on-triangles/ 
+cp ../dem-3d-release-omp-triangle hamilton7_knl/freefallWithGranulates/shared/mesh/hybrid-on-batches/ 
 
 Particle
-cp ../dem-3d-release-omp-particle hamilton7_knl/freefall/shared/particle/bf/ 
-cp ../dem-3d-release-omp-particle hamilton7_knl/freefall/shared/particle/sphere/ 
+cp ../dem-3d-release-omp-particle hamilton7_knl/freefallWithGranulates/shared/particle/bf/ 
+cp ../dem-3d-release-omp-particle hamilton7_knl/freefallWithGranulates/shared/particle/sphere/ 
 
 vec
-cp ../dem-3d-release-vec hamilton7_knl/freefall/vec/ 
-cp ../dem-3d-release-vec hamilton7_knl/freefall/grid/ 
+cp ../dem-3d-release-vec hamilton7_knl/freefallWithGranulates/vec/ 
+cp ../dem-3d-release-vec hamilton7_knl/freefallWithGranulates/grid/ 
 
 novec
-cp ../dem-3d-release-novec hamilton7_knl/freefall/novec/ 
+cp ../dem-3d-release-novec hamilton7_knl/freefallWithGranulates/novec/ 
 
 
 ————
@@ -26,21 +26,21 @@ cp ../dem-3d-release-novec hamilton7_knl/freefall/novec/
 hamilton 6
 
 tbb
-cp ../dem-3d-release-tbb hamilton7_knl/freefall/shared/cell/bf/ 
-cp ../dem-3d-release-tbb hamilton7_knl/freefall/shared/cell/sphere/ 
+cp ../dem-3d-release-tbb hamilton7_knl/freefallWithGranulates/shared/cell/bf/ 
+cp ../dem-3d-release-tbb hamilton7_knl/freefallWithGranulates/shared/cell/sphere/ 
 
 mesh
-cp ../dem-3d-release-omp-triangle hamilton7_knl/freefall/shared/mesh/bf/ 
-cp ../dem-3d-release-omp-triangle hamilton7_knl/freefall/shared/mesh/hybrid-on-triangles/ 
-cp ../dem-3d-release-omp-triangle hamilton7_knl/freefall/shared/mesh/hybrid-on-batches/ 
+cp ../dem-3d-release-omp-triangle hamilton7_knl/freefallWithGranulates/shared/mesh/bf/ 
+cp ../dem-3d-release-omp-triangle hamilton7_knl/freefallWithGranulates/shared/mesh/hybrid-on-triangles/ 
+cp ../dem-3d-release-omp-triangle hamilton7_knl/freefallWithGranulates/shared/mesh/hybrid-on-batches/ 
 
 Particle
-cp ../dem-3d-release-omp-particle hamilton7_knl/freefall/shared/particle/bf/ 
-cp ../dem-3d-release-omp-particle hamilton7_knl/freefall/shared/particle/sphere/ 
+cp ../dem-3d-release-omp-particle hamilton7_knl/freefallWithGranulates/shared/particle/bf/ 
+cp ../dem-3d-release-omp-particle hamilton7_knl/freefallWithGranulates/shared/particle/sphere/ 
 
 vec
-cp ../dem-3d-release-vec hamilton7_knl/freefall/vec/ 
-cp ../dem-3d-release-vec hamilton7_knl/freefall/grid/ 
+cp ../dem-3d-release-vec hamilton7_knl/freefallWithGranulates/vec/ 
+cp ../dem-3d-release-vec hamilton7_knl/freefallWithGranulates/grid/ 
 
 novec
-cp ../dem-3d-release-novec hamilton7_knl/freefall/novec/ 
+cp ../dem-3d-release-novec hamilton7_knl/freefallWithGranulates/novec/ 

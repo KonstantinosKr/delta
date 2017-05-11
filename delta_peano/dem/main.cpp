@@ -36,14 +36,18 @@ void printManual()
           << std::endl << std::endl << std::endl << std::endl
           << "Scenarios" << std::endl
           << "=========" << std::endl
-          << "  black-hole-with-cubes" << std::endl
           << "  black-hole-with-randomly-oriented-cubes" << std::endl
-          << "  random-velocities-with-cubes" << std::endl
-          << "  random-velocities-with-granulates" << std::endl
+          << "  black-hole-with-cubes" << std::endl
+          << "  black-hole-with-granulates" << std::endl
+
+          << "  freefall-with-randomly-oriented-cubes" << std::endl
+          << "  freefall-with-cubes" << std::endl
+          << "  freefall-with-granulates" << std::endl
+
+          << "  two-particles-crash" << std::endl
 
           << "  sla"<< std::endl
           << "  nuclearArray" << std::endl
-          << "  two-particles-crash" << std::endl
 
           << "  hopperUniform" << std::endl
           << "  hopperUniform1k" << std::endl
@@ -53,8 +57,6 @@ void printManual()
           << "  hopperNonUniform1k" << std::endl
           << "  hopperNonUniform10k" << std::endl
           << "  hopperNonUniform50k" << std::endl
-
-				  << "  freefall" << std::endl
 
 				  << "  frictionStatic" << std::endl
 				  << "  frictionSlide" << std::endl
@@ -198,104 +200,89 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  if (scenario=="black-hole-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithCubes,
-                                            dem::mappings::CreateGrid::randomLinear,
+  if (scenario=="black-hole-with-randomly-oriented-cubes") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithRandomOrientedCubes,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="black-hole-with-randomly-oriented-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::BlackHoleWithRandomOrientedCubes,
-                                            dem::mappings::CreateGrid::randomLinearAngular,
+  else if (scenario=="black-hole-with-cubes") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithCubes,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="random-velocities-with-cubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithCubes,
-                                            dem::mappings::CreateGrid::randomLinearAngular,
+  else if (scenario=="black-hole-with-granulates") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithGranulates,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="random-velocities-with-granulates") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::RandomWithGranulates,
-                                            dem::mappings::CreateGrid::randomLinear,
+  else if (scenario=="freefall-with-randomly-oriented-cubes") {
+      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallWithRandomOrientedCubes,
+                                              gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+  }
+  else if (scenario=="freefall-with-cubes") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallWithCubes,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
-  } else if (scenario=="sla") {
+  }
+  else if (scenario=="freefall-with-granulates") {
+  dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallWithGranulates,
+                                          gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+  }
+  else if (scenario=="sla") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="nuclearArray") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="two-particles-crash") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }//hopper diagonal is 0.39
   else if (scenario=="hopperUniform") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniform1k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform1k,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniform10k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform10k,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperUniform50k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform50k,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, gridHMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform1k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform1k,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform10k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform10k,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform50k") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform50k,
-                                            dem::mappings::CreateGrid::none,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
-  }
-  else if (scenario=="freefall") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefall,
-                                            dem::mappings::CreateGrid::none,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   //////////////PHYSICS TESTS START/////////////////////////////////////
   else if (scenario=="frictionStatic") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStatic,
-                                            dem::mappings::CreateGrid::crashY,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlide") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide,
-                                            dem::mappings::CreateGrid::slideX,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionSlideRotate") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide,
-                                            dem::mappings::CreateGrid::slideXRotation,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="frictionRoll") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRoll,
-                                            dem::mappings::CreateGrid::slideXRotation,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   //////////////PHYSICS TESTS END/////////////////////////////////////
