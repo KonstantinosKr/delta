@@ -58,6 +58,9 @@ std::vector<std::array<double, 3>> delta::primitives::assembly::array3d(double p
 
 	double length = getxDiscritizationLength(xyzAxisLength, partsNo);
 
+  double resetx = position[0];
+	double resetz = position[2];
+
 	for(int i=0;i<partsNo;i++)
 	{
 		std::vector<std::array<double, 3>> tmp = delta::primitives::assembly::array2d(position, xyzAxisLength, partsNo);
@@ -65,9 +68,9 @@ std::vector<std::array<double, 3>> delta::primitives::assembly::array3d(double p
 		{
 			array.push_back(*j);
 		}
-		position[0] = length/2;
+		position[0] = resetx;
 		position[1] += length;
-		position[2] = length/2;
+		position[2] = resetz;
 		if(position[1] > 1.0)
 			break;
 	}

@@ -260,10 +260,8 @@ void dem::mappings::CreateGrid::createCell(
        *nuclear single layer array;
        * experiment of seismic shakes concept: drop all components in coarse grid then reassign vertex to refined grid
        */
-
       //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
       centreAsArray[1] = 0.5;
-
       iREAL position[] = {centreAsArray[0], centreAsArray[1], centreAsArray[2]};
       double floorHeight = 0.05;
       int particleid = makeFloor(vertex, position, 1, floorHeight, 0, 0, 0, delta::collision::material::MaterialType::GOLD, true, true);
@@ -273,24 +271,26 @@ void dem::mappings::CreateGrid::createCell(
       dem::mappings::CreateGrid::_velocityScheme = none;
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      position[0] = centreAsArray[0]; position[1] = centreAsArray[1]+(floorHeight/2); position[2] = centreAsArray[2];
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      position[0] = centreAsArray[0]; position[1] += (floorHeight/2); position[2] = centreAsArray[2];
       dem::mappings::CreateGrid::makeLoadNuclearGeometry(vertex, position);
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       return;
     } else if(_scenario == nuclearArray)
 		{
       /* nuclear single layer array;
        * experiment of seismic shakes:concept: drop all components in coarse grid then reassign vertex to refined grid */
-
       ////FLOOR/////////////////////////////////////////////////////////////////////////////////////////////////////
       centreAsArray[1] = 0.5;
-
       iREAL position[] = {centreAsArray[0], centreAsArray[1], centreAsArray[2]};
       double floorHeight = 0.05;
       int particleid = makeFloor(vertex, position, 1, floorHeight, 0, 0, 0, delta::collision::material::MaterialType::GOLD, true, true);
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      position[0] = centreAsArray[0]; position[1] = centreAsArray[1]+(floorHeight/2); position[2] = centreAsArray[2];
-      dem::mappings::CreateGrid::makeFullBrickFBGrid(vertex, position, 1, 10);
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      position[0] = centreAsArray[0]; position[1] += (floorHeight/2); position[2] = centreAsArray[2];
+      dem::mappings::CreateGrid::makeFullBrickFBGrid(vertex, position, 0.5, 10);
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       return;
 		} else if(_scenario == hopperUniform)
 		{
@@ -309,13 +309,13 @@ void dem::mappings::CreateGrid::createCell(
       //////////PARTICLE GRID///////////////////////////////////////////////////////////////////////////////////////
       iREAL xzcuts = 10; iREAL ycuts = 1;
       iREAL margin = ((double)_hopperWidth/(double)xzcuts)/2.0;
-      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
 
       //iREAL minParticleDiameter = ((double)_hopperWidth/(double)xzcuts)-(margin*2.0);
       //printf("minParDiameter:%.10f\n", minParticleDiameter);
 
       position[0] = (centreAsArray[0] - _hopperWidth/2) + margin; position[1] = centreAsArray[1] + _hopperHeight/2; position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
-      makeUniParticleGrid(vertex, position, xzcuts, ycuts, _hopperWidth, totalMass);
+      makeUniParticleGrid(vertex, position, xzcuts, ycuts, _hopperWidth, totalMass, delta::collision::material::MaterialType::WOOD);
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       return;
 		} else if(_scenario == hopperUniform1k)
@@ -338,10 +338,10 @@ void dem::mappings::CreateGrid::createCell(
       iREAL xzcuts = 10; iREAL ycuts = 10;
       iREAL margin = ((double)_hopperWidth/(double)xzcuts)/2.0;
       //iREAL minParticleDiameter = ((double)_hopperWidth/(double)xcuts)-(margin*2.0);
-      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
 
       position[0] = (centreAsArray[0] - _hopperWidth/2) + margin; position[1] = centreAsArray[1] + _hopperHeight/2; position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
-      makeUniParticleGrid(vertex, position, xzcuts, ycuts, _hopperWidth, totalMass);
+      makeUniParticleGrid(vertex, position, xzcuts, ycuts, _hopperWidth, totalMass, delta::collision::material::MaterialType::WOOD);
       //////////////////////////////////////////////////////////////////////////////////////////
       return;
     } else if(_scenario == hopperUniform10k)
@@ -366,10 +366,10 @@ void dem::mappings::CreateGrid::createCell(
       iREAL xzcuts = 10; iREAL ycuts = 100;
       iREAL margin = ((double)_hopperWidth/(double)xzcuts)/2.0;
       //iREAL minParticleDiameter = ((double)_hopperWidth/(double)xzcuts)-(margin*2.0);
-      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
 
       position[0] = (centreAsArray[0] - _hopperWidth/2) + margin; position[1] = centreAsArray[1] + _hopperHeight/2; position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
-      makeUniParticleGrid(vertex, position, xzcuts, ycuts, _hopperWidth, totalMass);
+      makeUniParticleGrid(vertex, position, xzcuts, ycuts, _hopperWidth, totalMass, delta::collision::material::MaterialType::WOOD);
       ////////////////////////////////////////////////////////////////////////////////////
       return;
     } else if(_scenario == hopperUniform50k)
@@ -389,10 +389,10 @@ void dem::mappings::CreateGrid::createCell(
       iREAL xzcuts = 10; iREAL ycuts = 500;
       iREAL margin = ((double)_hopperWidth/(double)xzcuts)/2.0;
       //iREAL minParticleDiameter = ((double)_hopperWidth/(double)xzcuts)-(margin*2.0);
-      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
 
       position[0] = (centreAsArray[0] - _hopperWidth/2) + margin; position[1] = centreAsArray[1] + _hopperHeight/2; position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
-      makeUniParticleGrid(vertex, position, xzcuts, ycuts, _hopperWidth, totalMass);
+      makeUniParticleGrid(vertex, position, xzcuts, ycuts, _hopperWidth, totalMass, delta::collision::material::MaterialType::WOOD);
       //////////////////////////////////////////////////////////////////////////////////////////
       return;
     } else if(_scenario == hopperNonUniform)
@@ -418,10 +418,10 @@ void dem::mappings::CreateGrid::createCell(
 
       iREAL margin = ((double)minArraylengthX/(double)xzcuts)/2.0;
       printf("maxDiameter:%f\n", subcellx);
-      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
 
       position[0] = (centreAsArray[0] - _hopperWidth/2) + margin; position[1] = centreAsArray[1] + _hopperHeight/2; position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
-      makeNonUniParticleGrid(vertex, position, xzcuts, ycuts, subcellx, _hopperWidth, totalMass);
+      makeNonUniParticleGrid(vertex, position, xzcuts, ycuts, subcellx, _hopperWidth, totalMass, delta::collision::material::MaterialType::WOOD);
       //////////////////////////////////////////////////////////////////////////////////////////
       return;
     } else if(_scenario == hopperNonUniform1k)
@@ -448,10 +448,10 @@ void dem::mappings::CreateGrid::createCell(
 
       iREAL margin = ((double)minArraylengthX/(double)xzcuts)/2.0;
       //printf("maxDiameter:%f\n", subcellx);
-      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+      double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
 
       position[0] = (centreAsArray[0] - _hopperWidth/2) + margin; position[1] = centreAsArray[1] + _hopperHeight/2; position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
-      makeNonUniParticleGrid(vertex, position, xzcuts, ycuts, subcellx, _hopperWidth, totalMass);
+      makeNonUniParticleGrid(vertex, position, xzcuts, ycuts, subcellx, _hopperWidth, totalMass, delta::collision::material::MaterialType::WOOD);
       //////////////////////////////////////////////////////////////////////////////////////////
       return;
      } else if(_scenario == hopperNonUniform10k)
@@ -477,10 +477,10 @@ void dem::mappings::CreateGrid::createCell(
 
        iREAL margin = ((double)minArraylengthX/(double)xzcuts)/2.0;
        printf("maxDiameter:%f\n", subcellx);
-       double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+       double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
 
        position[0] = (centreAsArray[0] - _hopperWidth/2) + margin; position[1] = centreAsArray[1] + _hopperHeight/2; position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
-       makeNonUniParticleGrid(vertex, position, xzcuts, ycuts, subcellx, _hopperWidth, totalMass);
+       makeNonUniParticleGrid(vertex, position, xzcuts, ycuts, subcellx, _hopperWidth, totalMass, delta::collision::material::MaterialType::WOOD);
        //////////////////////////////////////////////////////////////////////////////////////////
        return;
      }  else if(_scenario == hopperNonUniform50k)
@@ -507,10 +507,10 @@ void dem::mappings::CreateGrid::createCell(
 
        iREAL margin = ((double)minArraylengthX/(double)xzcuts)/2.0;
        printf("maxDiameter:%f\n", subcellx);
-       double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+       double totalMass = 0.05; //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
 
        position[0] = (centreAsArray[0] - _hopperWidth/2) + margin; position[1] = centreAsArray[1] + _hopperHeight/2; position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
-       makeNonUniParticleGrid(vertex, position, xzcuts, ycuts, subcellx, _hopperWidth, totalMass);
+       makeNonUniParticleGrid(vertex, position, xzcuts, ycuts, subcellx, _hopperWidth, totalMass, delta::collision::material::MaterialType::WOOD);
        //////////////////////////////////////////////////////////////////////////////////////////
        return;
      } else if(_scenario == frictionStatic)
@@ -690,7 +690,7 @@ void dem::mappings::CreateGrid::addParticleToState(std::vector<double>&  xCoordi
 
 void dem::mappings::CreateGrid::uniMesh(std::vector<std::array<double, 3>>&  nPositions,
                                         double  radius,
-                                        double totalMass,
+                                        double totalMass, delta::collision::material::MaterialType material,
                                         std::vector<std::vector<double>>  &xCoordinatesArray,
                                         std::vector<std::vector<double>>  &yCoordinatesArray,
                                         std::vector<std::vector<double>>  &zCoordinatesArray)
@@ -713,7 +713,7 @@ void dem::mappings::CreateGrid::uniMesh(std::vector<std::array<double, 3>>&  nPo
     yCoordinatesArray.push_back(yCoordinates);
     zCoordinatesArray.push_back(zCoordinates);
 
-    double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
+    double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, material);
     //double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
     //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
     //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
@@ -748,7 +748,7 @@ void dem::mappings::CreateGrid::uniMesh(std::vector<std::array<double, 3>>&  nPo
 
 void dem::mappings::CreateGrid::nonUniMesh(std::vector<std::array<double, 3>>&  nPositions,
                                         double  radius,
-                                        double totalMass,
+                                        double totalMass, delta::collision::material::MaterialType material,
                                         double subcellx,
                                         std::vector<std::vector<double>>  &xCoordinatesArray,
                                         std::vector<std::vector<double>>  &yCoordinatesArray,
@@ -776,7 +776,7 @@ void dem::mappings::CreateGrid::nonUniMesh(std::vector<std::array<double, 3>>&  
     yCoordinatesArray.push_back(yCoordinates);
     zCoordinatesArray.push_back(zCoordinates);
 
-    double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, delta::collision::material::MaterialType::WOOD);
+    double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, material);
     //double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
     //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
     //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
@@ -795,7 +795,7 @@ void dem::mappings::CreateGrid::nonUniMesh(std::vector<std::array<double, 3>>&  
     std::array<double, 3> ar = nPositions[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
     delta::primitives::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
 
-    double mt = delta::primitives::properties::computeMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], delta::collision::material::MaterialType::WOOD);
+    double mt = delta::primitives::properties::computeMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], material);
     double vt = delta::primitives::properties::computeVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
     double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
     double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
@@ -809,7 +809,7 @@ void dem::mappings::CreateGrid::nonUniMesh(std::vector<std::array<double, 3>>&  
 
 }
 
-void dem::mappings::CreateGrid::nonUniSphere(int  N, double totalMass, double subcellx, std::vector<double>  &rad)
+void dem::mappings::CreateGrid::nonUniSphere(int  N, double totalMass, double subcellx, std::vector<double>  &rad, delta::collision::material::MaterialType material)
 {
   //double massPerParticle = totalMass/(double)N.size();
   //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
@@ -864,7 +864,6 @@ int dem::mappings::CreateGrid::makeFloor(dem::Vertex&  vertex, double position[3
   delta::primitives::cubes::generateHullCube(position, width, height, width, rx, ry, rz, xCoordinates, yCoordinates, zCoordinates);
   int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
                            dem::mappings::CreateGrid::_epsilon, isObstacle, material, friction, _numberOfParticles);
-
   dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
   return newParticleNumber;
 }
@@ -902,7 +901,7 @@ int dem::mappings::CreateGrid::makeLoadedNonSpherical(dem::Vertex&  vertex, doub
 
   delta::primitives::granulates::loadParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates);
   int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
-                                               eps, isObstacle, material, friction, _numberOfParticles);
+                                                   eps, isObstacle, material, friction, _numberOfParticles);
   dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
   return newParticleNumber;
 }
@@ -917,17 +916,17 @@ int dem::mappings::CreateGrid::makeNonSpherical(dem::Vertex&  vertex, double pos
 
   delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
   int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
-                                               eps, isObstacle, material, friction, _numberOfParticles);
+                                                   eps, isObstacle, material, friction, _numberOfParticles);
   dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
   return newParticleNumber;
 }
 
-void dem::mappings::CreateGrid::makeUniParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double width, double totalMass)
+void dem::mappings::CreateGrid::makeUniParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double width, double totalMass, delta::collision::material::MaterialType material)
 {
   //////////////////ARRAY
   std::vector<std::array<double, 3>> N = delta::primitives::assembly::array3d(position, width, xzcuts, width, ycuts);
 
-  double massPerParticle = totalMass/(double)N.size(); //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+  double massPerParticle = totalMass/(double)N.size(); //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
   double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
   /////////////////ARRAY
 
@@ -941,30 +940,30 @@ void dem::mappings::CreateGrid::makeUniParticleGrid(dem::Vertex&  vertex, double
     for(auto i:N)
     {
       //delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-      vertex.createNewParticleSphere({i[0], i[1], i[2]}, radius, _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+      vertex.createNewParticleSphere({i[0], i[1], i[2]}, radius, _epsilon, false, material, true, _numberOfParticles);
       dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
     }
   }else
   {
     //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
     std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
-    dem::mappings::CreateGrid::uniMesh(N, radius, totalMass, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
+    dem::mappings::CreateGrid::uniMesh(N, radius, totalMass, material, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
 
     for(unsigned i=0; i<N.size(); i++)
     {
       vertex.createNewParticle({N[i][0], N[i][1], N[i][2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
-                               _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+                               _epsilon, false, material, true, _numberOfParticles);
       dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
     }
   }
 }
 
-void dem::mappings::CreateGrid::makeNonUniParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double subcellx, double width, double totalMass)
+void dem::mappings::CreateGrid::makeNonUniParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double subcellx, double width, double totalMass, delta::collision::material::MaterialType material)
 {
   //////////////////ARRAY
   std::vector<std::array<double, 3>> N = delta::primitives::assembly::array3d(position, width, xzcuts, width, ycuts);
 
-  double massPerParticle = totalMass/(double)N.size(); //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::MaterialType::WOOD//kg
+  double massPerParticle = totalMass/(double)N.size(); //0.5 delta::collision::MaterialType::GOLD, 0.05 delta::collision::material::MaterialType::WOOD//kg
   double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
   /////////////////ARRAY
 
@@ -976,12 +975,12 @@ void dem::mappings::CreateGrid::makeNonUniParticleGrid(dem::Vertex&  vertex, dou
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
   {
     std::vector<double>  rad;
-    dem::mappings::CreateGrid::nonUniSphere(N.size(), totalMass, subcellx, rad);
+    dem::mappings::CreateGrid::nonUniSphere(N.size(), totalMass, subcellx, rad, material);
 
     for(unsigned i=0; i<N.size(); i++)
     {
       //delta::primitives::cubes::generateCube(position, (radius*2)*0.9, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-      vertex.createNewParticleSphere({N[i][0], N[i][1], N[i][2]}, rad[i], _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+      vertex.createNewParticleSphere({N[i][0], N[i][1], N[i][2]}, rad[i], _epsilon, false, material, true, _numberOfParticles);
       dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
     }
   }else
@@ -989,12 +988,12 @@ void dem::mappings::CreateGrid::makeNonUniParticleGrid(dem::Vertex&  vertex, dou
     //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
     std::vector<std::vector<double>>  xCoordinatesArray, yCoordinatesArray, zCoordinatesArray;
 
-    dem::mappings::CreateGrid::nonUniMesh(N, radius, totalMass, subcellx, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
+    dem::mappings::CreateGrid::nonUniMesh(N, radius, totalMass, material, subcellx, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray);
 
     for(unsigned i=0; i<N.size(); i++)
     {
       vertex.createNewParticle({N[i][0], N[i][1], N[i][2]}, xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i],
-                               _epsilon, false, delta::collision::material::MaterialType::WOOD, true, _numberOfParticles);
+                               _epsilon, false, material, true, _numberOfParticles);
       dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray[i], yCoordinatesArray[i], zCoordinatesArray[i], false);
     }
   }
@@ -1024,15 +1023,17 @@ void dem::mappings::CreateGrid::makeFullBrickFBGrid(dem::Vertex&  vertex, double
   {//brick is bigger than grid
     double excess = width - xwCell;
     scalePercentage = ((width - excess)/width);
-    printf("SCALE DOWN: %f xw:%f boxWidth:%f excess:%f\n", scalePercentage, width, xwCell, excess);
-  }else
-  {
+    //printf("SCALE DOWN: %f xw:%f boxWidth:%f excess:%f\n", scalePercentage, width, xwCell, excess);
+  } else {
     double excess = xwCell - width;
     scalePercentage = 1+((xwCell - excess)/xwCell);
-    printf("SCALE UP: %f xw:%f boxWidth:%f excess:%f\n", scalePercentage, width, xwCell, excess);
+    //printf("SCALE UP: %f xw:%f boxWidth:%f excess:%f\n", scalePercentage, width, xwCell, excess);
   }
 
-  position[0] = halfxwCell; position[1] += (height/2)*scalePercentage; position[2] = halfxwCell;
+  width *= scalePercentage;
+  height *= scalePercentage;
+
+  position[0] = (position[0]-length/2)+halfxwCell; position[1] += (height/2); position[2] = (position[2]-length/2)+halfxwCell;
   std::vector<std::array<double, 3>> N = delta::primitives::assembly::array3d(position, length, elements);
 
   for(auto i:N)
@@ -1055,7 +1056,7 @@ void dem::mappings::CreateGrid::makeLoadNuclearGeometry(dem::Vertex&  vertex, do
   iREAL pos[] = {0,0,0};
   delta::primitives::graphite::generateBrickFB(pos, 1, xCoordinates, yCoordinates, zCoordinates);
   double width = delta::primitives::properties::computeXZWidth(xCoordinates, yCoordinates, zCoordinates);
-  double yw = delta::primitives::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
+  double height = delta::primitives::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
   //read nuclear graphite schematics
@@ -1076,7 +1077,7 @@ void dem::mappings::CreateGrid::makeLoadNuclearGeometry(dem::Vertex&  vertex, do
     printf("SCALE DOWN: %f xw:%f boxWidth:%f excess:%f\n", scaleDownPercentage, width, xwCell, excess);
   }
 
-  position[0] = halfxwCell; position[1] += ((yw/2)*scaleDownPercentage); position[2] = halfxwCell;
+  position[0] = halfxwCell; position[1] += ((height/2)*scaleDownPercentage); position[2] = halfxwCell;
   std::vector<std::array<double, 3>> N = delta::primitives::assembly::array2d(position, length, elements);
 
   for(unsigned i=0; i<N.size(); i++)
