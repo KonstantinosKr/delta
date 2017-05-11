@@ -168,7 +168,7 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
 
-void dem::mappings::CreateGrid::setVScheme(dem::Vertex&  vertex, int particleNumber, dem::mappings::CreateGrid::VScheme velocity)
+void dem::mappings::CreateGrid::setVScheme(dem::Vertex&  vertex, int particleNumber, VScheme velocity)
 {
   switch (velocity)
   {
@@ -264,7 +264,7 @@ void dem::mappings::CreateGrid::createCell(
       double floorHeight = 0.05;
       int particleid = makeFloor(vertex, position, 1, floorHeight, 0, 0, 0, delta::collision::material::MaterialType::GOLD, true, true);
 
-      dem::mappings::CreateGrid::setVScheme(vertex,  particleid, dem::mappings::CreateGrid::_velocityScheme = moveLeft);
+      dem::mappings::CreateGrid::setVScheme(vertex,  particleid, dem::mappings::CreateGrid::moveLeft);
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

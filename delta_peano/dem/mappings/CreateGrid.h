@@ -104,7 +104,6 @@ class dem::mappings::CreateGrid {
     static tarch::logging::Log  _log;
 
     static Scenario _scenario;
-    static VScheme  _velocityScheme;
     static double   _maxH;
     static double   _minParticleDiam;
     static double   _maxParticleDiam;
@@ -116,7 +115,7 @@ class dem::mappings::CreateGrid {
     int   _numberOfObstacles;
     int   _numberOfTriangles;
 
-    void setVScheme(dem::Vertex&  vertex, int particleNumber, dem::mappings::CreateGrid::VScheme velocity);
+    void setVScheme(dem::Vertex&  vertex, int particleNumber, VScheme velocity);
 
     void addParticleToState(std::vector<double>&  xCoordinates,
                              std::vector<double>&  yCoordinates,
