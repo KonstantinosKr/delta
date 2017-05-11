@@ -95,7 +95,6 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
-
 void dem::mappings::ReluctantlyAdoptGrid::createHangingVertex(
       dem::Vertex&     fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,

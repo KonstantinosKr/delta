@@ -241,9 +241,7 @@ void dem::mappings::CreateGrid::createCell(
 {
 	logTraceInWith4Arguments( "createCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-	/*
-	 * root cell enviroment creation (mainly for obstacles) or large scenario setups (nuclear SLA)
-	 */
+	if(_scenario == nonescenario) return;
 	if (coarseGridCell.isRoot())
 	{
 		dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];

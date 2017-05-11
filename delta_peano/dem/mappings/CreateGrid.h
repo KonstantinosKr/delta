@@ -47,6 +47,7 @@ namespace dem {
 class dem::mappings::CreateGrid {
   public:
     enum Scenario {
+      nonescenario,
       blackHoleWithRandomOrientedCubes,
       blackHoleWithCubes,
       blackHoleWithGranulates,

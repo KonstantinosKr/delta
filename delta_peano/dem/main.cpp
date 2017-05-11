@@ -36,6 +36,7 @@ void printManual()
           << std::endl << std::endl << std::endl << std::endl
           << "Scenarios" << std::endl
           << "=========" << std::endl
+          << "  none" << std::endl
           << "  black-hole-with-randomly-oriented-cubes" << std::endl
           << "  black-hole-with-cubes" << std::endl
           << "  black-hole-with-granulates" << std::endl
@@ -200,7 +201,10 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  if (scenario=="black-hole-with-randomly-oriented-cubes") {
+  if (scenario=="nonescenario") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nonescenario,
+                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+  } else if (scenario=="black-hole-with-randomly-oriented-cubes") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithRandomOrientedCubes,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
@@ -383,7 +387,7 @@ int main(int argc, char** argv)
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano", true ) );
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano::utils", false ) );
     dem::runners::Runner runner;
-    programExitCode = runner.run(iterations, plot, gridType, numberOfCores, stepSize, realSnapshot, false);
+    programExitCode = runner.run(iterations, plot, gridType, numberOfCores, stepSize, realSnapshot, true);
   }
   
   if (programExitCode==0)
