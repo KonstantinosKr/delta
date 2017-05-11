@@ -158,8 +158,8 @@ double delta::primitives::properties::computeXZWidth(std::vector<double>&  xCoor
 
 
 double delta::primitives::properties::computeXw(std::vector<double>&  xCoordinates,
-				std::vector<double>&  yCoordinates,
-				std::vector<double>&  zCoordinates)
+                                                std::vector<double>&  yCoordinates,
+                                                std::vector<double>&  zCoordinates)
 {
 
 	std::array<double, 3> min = delta::primitives::properties::minBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);

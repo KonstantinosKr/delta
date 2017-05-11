@@ -121,25 +121,26 @@ class dem::mappings::CreateGrid {
                              std::vector<double>&  yCoordinates,
                              std::vector<double>&  zCoordinates, bool isObstacle);
 
-    void unimesh(std::vector<std::array<double, 3>>&  nPositions,
+    void uniMesh(std::vector<std::array<double, 3>>&  nPositions,
                 double  radius,
                 double totalMass,
                 std::vector<std::vector<double>>  &xCoordinatesArray,
                 std::vector<std::vector<double>>  &yCoordinatesArray,
                 std::vector<std::vector<double>>  &zCoordinatesArray);
 
-    void nonUnimesh(std::vector<std::array<double, 3>>&  nPositions,
+    void nonUniMesh(std::vector<std::array<double, 3>>&  nPositions,
                     double  radius,
                     double totalMass,
                     double subcellx,
                     std::vector<std::vector<double>>  &xCoordinatesArray,
                     std::vector<std::vector<double>>  &yCoordinatesArray,
                     std::vector<std::vector<double>>  &zCoordinatesArray);
-    void nonUnisphere(int  N, double totalMass, double subcellx, std::vector<double>  &rad);
 
-    void makeHopper(dem::Vertex&  vertex, double position[3], double _hopperWidth, double _hopperHeight, double _hopperHatch,
+    void nonUniSphere(int  N, double totalMass, double subcellx, std::vector<double>  &rad);
+
+    int makeHopper(dem::Vertex&  vertex, double position[3], double _hopperWidth, double _hopperHeight, double _hopperHatch,
                     delta::collision::material::MaterialType material, bool friction, bool isObstacle);
-    void makeFloor(dem::Vertex&  vertex, double position[3], double width, double height, double rx, double ry, double rz,
+    int makeFloor(dem::Vertex&  vertex, double position[3], double width, double height, double rx, double ry, double rz,
                     delta::collision::material::MaterialType material, bool friction, bool isObstacle);
 
     int makeSphere(dem::Vertex&  vertex, double position[3], double radius, double eps,
@@ -154,7 +155,11 @@ class dem::mappings::CreateGrid {
     int makeNonSpherical(dem::Vertex&  vertex, double position[3], double radius, double eps,
                         delta::collision::material::MaterialType material, bool friction, bool isObstacle);
 
-    void makeParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double width, double totalMass);
+    void makeUniParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double width, double totalMass);
+    void makeNonUniParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double subcellx, double width, double totalMass);
+
+    void makeFullBrickFBGrid(dem::Vertex&  vertex, double position[3], double length, double elements);
+    void makeLoadNuclearGeometry(dem::Vertex&  vertex, double position[3]);
 
     void dropParticles(
       dem::Vertex&                                 fineGridVertex,
