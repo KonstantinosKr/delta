@@ -5,18 +5,18 @@
 # Is invoked with the following arguments
 # $1 path to the output file
 
-JOB_SCRIPT0=runjobBatch24
-JOB_SCRIPT1=runjobBatch24
-JOB_SCRIPT2=runjobBatch24
-JOB_SCRIPT3=runjobBatch24
-JOB_SCRIPT4=runjobBatch24
-JOB_SCRIPT5=runjobBatch24
-JOB_SCRIPT6=runjobBatch24
-JOB_SCRIPT7=runjobBatch24
-JOB_SCRIPT8=runjobBatch24tbb12omp2
-JOB_SCRIPT9=runjobBatch24tbb12omp2
-JOB_SCRIPT10=runjobBatch24tbb12omp2
-JOB_SCRIPT11=runjobBatch24tbb12omp2
+JOB_SCRIPT0=t24
+JOB_SCRIPT1=t24
+JOB_SCRIPT2=t24
+JOB_SCRIPT3=t24
+JOB_SCRIPT4=t24
+JOB_SCRIPT5=t24
+JOB_SCRIPT6=t24
+JOB_SCRIPT7=t24
+JOB_SCRIPT8=t24tbb12omp2
+JOB_SCRIPT9=t24tbb12omp2
+JOB_SCRIPT10=t24tbb12omp2
+JOB_SCRIPT11=t24tbb12omp2
 
 exp0o=/ddn/data/rfmw74/h7X21hopperUni1k-nogrid-sphere-tbb24
 exp1o=/ddn/data/rfmw74/h7X21hopperUni1k-regular-sphere-tbb24

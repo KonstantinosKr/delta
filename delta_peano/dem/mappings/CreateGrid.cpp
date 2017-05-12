@@ -348,7 +348,6 @@ void dem::mappings::CreateGrid::createCell(
       makeHopper(vertex, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, delta::collision::material::MaterialType::GOLD, false, true);
       //////////////////////////////////////////////////////////////////////////////////////////
 
-
       //////FLOOR///////////////////////////////////////////////////////////////////
       /**flooring creation*/
       iREAL position[] = {centreAsArray[0], 0.3, centreAsArray[2]};

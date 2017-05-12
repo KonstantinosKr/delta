@@ -5,25 +5,25 @@
 # Is invoked with the following arguments
 # $1 path to the output file
 
-JOB_SCRIPT0=runjobBatch1
-JOB_SCRIPT1=runjobBatch2
-JOB_SCRIPT2=runjobBatch3
-JOB_SCRIPT3=runjobBatch4
-JOB_SCRIPT4=runjobBatch6
-JOB_SCRIPT5=runjobBatch8
-JOB_SCRIPT6=runjobBatch12
-JOB_SCRIPT7=runjobBatch16
-JOB_SCRIPT8=runjobBatch24
+JOB_SCRIPT0=t1
+JOB_SCRIPT1=t2
+JOB_SCRIPT2=t3
+JOB_SCRIPT3=t4
+JOB_SCRIPT4=t6
+JOB_SCRIPT5=t8
+JOB_SCRIPT6=t12
+JOB_SCRIPT7=t16
+JOB_SCRIPT8=t24
 
-exp0o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-sphere-mesh10-TBB1
-exp1o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-mesh10-TBB2
-exp2o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-mesh10-TBB3
-exp3o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-mesh10-TBB4
-exp4o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-mesh10-TBB6
-exp5o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-mesh10-TBB8
-exp6o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-mesh10-TBB12
-exp7o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-mesh10-TBB16
-exp8o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-mesh10-TBB24
+exp0o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-TBB1
+exp1o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-TBB2
+exp2o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-TBB3
+exp3o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-TBB4
+exp4o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-TBB6
+exp5o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-TBB8
+exp6o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-TBB12
+exp7o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-TBB16
+exp8o=/ddn/data/rfmw74/h7X3-hopperUni1k-regular-spheres-TBB24
 
 exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true sphere 10 1"
 exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true sphere 10 2"
