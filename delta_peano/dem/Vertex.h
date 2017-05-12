@@ -48,6 +48,7 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
 
     friend class VertexOperations;
   public:
+    static tarch::multicore::BooleanSemaphore        _VertexSemaphore;
     /**
      * Default Constructor
      *

@@ -20,15 +20,33 @@ dem::Vertex::Vertex(const Base::PersistentVertex& argument):
   // @todo Insert your code here
 }
 
+tarch::multicore::BooleanSemaphore                                  dem::Vertex::_VertexSemaphore;
+
 void dem::Vertex::init() {
+#if defined(SharedMemoryParallelisation)
+  tarch::multicore::Lock lock(_VertexSemaphore);
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
   _vertexData.setVetoCoarsening(false);
+  lock.free();
+#else
+  _vertexData.setParticles( ParticleHeap::getInstance().createData() );
+  _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
+  _vertexData.setVetoCoarsening(false);
+#endif
+
 }
 
 void dem::Vertex::destroy() const {
-  ParticleHeap::getInstance().deleteData( _vertexData.getParticles() );
-  ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels() );
+#if defined(SharedMemoryParallelisation)
+  tarch::multicore::Lock lock(_VertexSemaphore);
+  ParticleHeap::getInstance().deleteData( _vertexData.getParticles(), true);
+  ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels(), true );
+  lock.free();
+#else
+  ParticleHeap::getInstance().deleteData( _vertexData.getParticles());
+  ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels());
+#endif
 }
 
 int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>&   center,
@@ -411,8 +429,7 @@ void dem::Vertex::restrictParticleResponsibilityData(const Vertex& fineGridVerte
 }
 
 void dem::Vertex::eraseIfParticleDistributionPermits() {
-  if (!_vertexData.getVetoCoarsening() &&
-    getRefinementControl()==Records::Refined)
+  if (!_vertexData.getVetoCoarsening() && getRefinementControl()==Records::Refined)
   {
     erase();
   }
