@@ -41,7 +41,7 @@ void dem::Vertex::destroy() const {
 #if defined(SharedMemoryParallelisation)
   tarch::multicore::Lock lock(_VertexSemaphore);
   ParticleHeap::getInstance().deleteData( _vertexData.getParticles(), true);
-  ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels(), true );
+  ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels(), true);
   lock.free();
 #else
   ParticleHeap::getInstance().deleteData( _vertexData.getParticles());

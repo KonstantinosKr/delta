@@ -5,14 +5,14 @@
 # Is invoked with the following arguments
 # $1 path to the output file
 
-JOB_SCRIPT0=runjobBatch3
-JOB_SCRIPT1=runjobBatch3
-JOB_SCRIPT2=runjobBatch3
-JOB_SCRIPT3=runjobBatch3
-JOB_SCRIPT4=runjobBatch3
-JOB_SCRIPT5=runjobBatch3
-JOB_SCRIPT6=runjobBatch3
-JOB_SCRIPT7=runjobBatch3
+JOB_SCRIPT0=t3
+JOB_SCRIPT1=t3
+JOB_SCRIPT2=t3
+JOB_SCRIPT3=t3
+JOB_SCRIPT4=t3
+JOB_SCRIPT5=t3
+JOB_SCRIPT6=t3
+JOB_SCRIPT7=t3
 
 exp0o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-triangle-mesh10-TBB3
 exp1o=/ddn/data/rfmw74/h7X4hopperUni1k-reluctant-hybrid-on-batches-mesh10-TBB3

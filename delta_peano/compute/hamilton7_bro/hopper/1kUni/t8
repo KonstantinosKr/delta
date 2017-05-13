@@ -1,0 +1,20 @@
+#!/bin/csh
+#SBATCH -p par7.q
+#SBATCH  --mail-type=ALL
+#SBATCH  --mail-user konstantinos.krestenitis@durham.ac.uk
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=8
+#SBATCH --output={OUTPUT_FILE}
+#SBATCH -t 02:00:00
+#SBATCH --exclusive
+
+module purge
+module load intel/xe_2015.2
+module load intelmpi/intel/5.0.3
+module unload gcc/4.9.1
+module load gcc/4.9.1
+
+setenv OMP_NUM_THREADS 8
+
+srun {RUN}
