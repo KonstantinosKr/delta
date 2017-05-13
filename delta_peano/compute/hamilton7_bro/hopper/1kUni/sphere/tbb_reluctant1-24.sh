@@ -15,15 +15,15 @@ JOB_SCRIPT6=t12
 JOB_SCRIPT7=t16
 JOB_SCRIPT8=t24
 
-exp0o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-sphere-mesh10-TBB1
-exp1o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-mesh10-TBB2
-exp2o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-mesh10-TBB3
-exp3o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-mesh10-TBB4
-exp4o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-mesh10-TBB6
-exp5o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-mesh10-TBB8
-exp6o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-mesh10-TBB12
-exp7o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-mesh10-TBB16
-exp8o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-mesh10-TBB24
+exp0o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB1
+exp1o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB2
+exp2o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB3
+exp3o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB4
+exp4o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB6
+exp5o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB8
+exp6o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB12
+exp7o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB16
+exp8o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB24
 
 exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 1"
 exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 2"
