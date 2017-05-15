@@ -275,7 +275,7 @@ int dem::Vertex::getNumberOfRealAndVirtualParticles() const {
   assertion1( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticles()), toString() );
   assertion1( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticlesOnCoarserLevels()), toString() );
 
-  const int result = static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size())
+  const int result = static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size());
                    + static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size());
 
   //printf("VIRTUAL:%d\n", static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size()));
