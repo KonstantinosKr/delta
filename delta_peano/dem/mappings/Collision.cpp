@@ -296,13 +296,13 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	dfor2(k)
 		fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)]);
 	enddforx
+
 	// contact detection within cell
 	#ifdef ompParticle
 		#pragma omp parallel for
 	#endif
 	for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
 	{ // No nead to loop over virtual particles here as well
-
 		//printf("Number in the grid master:%d\n", fineGridVertex.getNumberOfParticles());
 		for (int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{
@@ -787,7 +787,7 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-
+	return;
 	if(
 	fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
   fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
