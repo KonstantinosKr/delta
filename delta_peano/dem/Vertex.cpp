@@ -275,7 +275,7 @@ int dem::Vertex::getNumberOfRealAndVirtualParticles() const {
   assertion1( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticles()), toString() );
   assertion1( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticlesOnCoarserLevels()), toString() );
 
-  int result = static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size())
+  const int result = static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size())
                    + static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size());
 
   //printf("VIRTUAL:%d\n", static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size()));
@@ -316,14 +316,27 @@ const dem::records::Particle& dem::Vertex::getParticle( int particleNumber ) con
 }
 
 void dem::Vertex::appendParticle(const records::Particle& particle) {
-  return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
+#if defined(SharedMemoryParallelisation)
+  tarch::multicore::Lock lock(_VertexSemaphore);
+  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
+  lock.free();
+#else
+  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
+#endif
 }
 
 void dem::Vertex::releaseParticle(int particleNumber) {
+#if defined(SharedMemoryParallelisation)
+  tarch::multicore::Lock lock(_VertexSemaphore);
   assertion2( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticles()), particleNumber, toString() );
   assertion2( particleNumber>=0, particleNumber, toString() );
   assertion2( particleNumber<static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size()), particleNumber, toString() );
+
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticles() ).begin()+particleNumber );
+  lock.free();
+#else
+  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticles() ).begin()+particleNumber );
+#endif
 }
 
 double* dem::Vertex::getXCoordinates( int particleNumber ) {
