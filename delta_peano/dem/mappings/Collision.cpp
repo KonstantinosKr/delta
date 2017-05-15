@@ -291,13 +291,11 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		}
 	}
 
-	tarch::multicore::Lock lock(_mySemaphore);
 	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
 
 	dfor2(k)
 		fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)]);
 	enddforx
-	lock.free();
 	// contact detection within cell
 	#ifdef ompParticle
 		#pragma omp parallel for
