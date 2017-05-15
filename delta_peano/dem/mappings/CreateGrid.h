@@ -63,12 +63,12 @@ class dem::mappings::CreateGrid {
       hopperUniform,
       hopperUniform1k,
       hopperUniform10k,
-      hopperUniform50k,
+      hopperUniform100k,
 
       hopperNonUniform,
       hopperNonUniform1k,
       hopperNonUniform10k,
-      hopperNonUniform50k,
+      hopperNonUniform100k,
 
       frictionStatic,
       frictionSlide,
@@ -123,11 +123,9 @@ class dem::mappings::CreateGrid {
 
     static std::vector<double> _rad;
 
-    static double _subCellW;
-
     void setVScheme(dem::Vertex&  vertex, int particleNumber, VScheme velocity);
 
-    double makeCoarseEnviroment(dem::Vertex& vertex, double centreAsArray[3], std::vector<std::array<double, 3>>& N);
+    void makeCoarseEnviroment(dem::Vertex& vertex, double centreAsArray[3], std::vector<std::array<double, 3>>& N);
     void makeFullFineEnviroment(dem::Vertex& vertex, double centreAsArray[3]);
     void makeFineEnviromentWithGrid(dem::Vertex& vertex, double centreAsArray[3], std::vector<std::array<double, 3>> N);
 
@@ -178,8 +176,7 @@ class dem::mappings::CreateGrid {
     void makeLoadNuclearGeometry(dem::Vertex&  vertex, double position[3]);
 
 
-    void makeUniParticleInsituGrid(dem::Vertex&  vertex, double centreAsArray[3], double cellSize, delta::collision::material::MaterialType material);
-    void makeNonUniParticleInsituGrid(dem::Vertex&  vertex, double centreAsArray[3], double cellSize, delta::collision::material::MaterialType material);
+    void makeParticleInsituGrid(dem::Vertex&  vertex, double centreAsArray[3], double cellSize, delta::collision::material::MaterialType material);
 
     void dropParticles(
       dem::Vertex&                                 fineGridVertex,

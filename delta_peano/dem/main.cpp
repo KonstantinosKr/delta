@@ -252,8 +252,8 @@ int main(int argc, char** argv)
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform10k,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="hopperUniform50k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform50k,
+  else if (scenario=="hopperUniform100k") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform100k,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   else if (scenario=="hopperNonUniform") {
@@ -268,8 +268,8 @@ int main(int argc, char** argv)
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform10k,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="hopperNonUniform50k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform50k,
+  else if (scenario=="hopperNonUniform100k") {
+    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform100k,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
   //////////////PHYSICS TESTS START/////////////////////////////////////

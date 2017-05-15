@@ -177,10 +177,10 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", cnpt=" << repository.getState().getNumberOfContactPoints()
       << ", v=" << repository.getState().getNumberOfInnerVertices()
       << ", t=" << repository.getState().getTime()
-      << ", dt=" << repository.getState().getTimeStepSize());
+      << ", dt=" << repository.getState().getTimeStepSize()
+      << ", plot=" << plotThisTraversal);
     logInfo("runAsMaster(...)",
-        "plot=" << plotThisTraversal
-      <<", h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
+          "h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
       <<", h_max(prescribed)=" << repository.getState().getPrescribedMaximumMeshWidth());
     logInfo("runAsMaster(...)",
            "h_min(real)=" << repository.getState().getMinimumMeshWidth()
