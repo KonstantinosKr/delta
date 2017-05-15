@@ -116,20 +116,33 @@ class dem::mappings::CreateGrid {
     int   _numberOfObstacles;
     int   _numberOfTriangles;
 
+    static std::vector<std::array<double, 3>> _particleGrid;
+    static std::vector<std::vector<double>> _xCoordinatesArray;
+    static std::vector<std::vector<double>> _yCoordinatesArray;
+    static std::vector<std::vector<double>> _zCoordinatesArray;
+
+    static std::vector<double> _rad;
+
+    static double _subCellW;
+
     void setVScheme(dem::Vertex&  vertex, int particleNumber, VScheme velocity);
+
+    double makeCoarseEnviroment(dem::Vertex& vertex, double centreAsArray[3], std::vector<std::array<double, 3>>& N);
+    void makeFullFineEnviroment(dem::Vertex& vertex, double centreAsArray[3]);
+    void makeFineEnviromentWithGrid(dem::Vertex& vertex, double centreAsArray[3], std::vector<std::array<double, 3>> N);
 
     void addParticleToState(std::vector<double>&  xCoordinates,
                              std::vector<double>&  yCoordinates,
                              std::vector<double>&  zCoordinates, bool isObstacle);
 
-    void uniMesh(std::vector<std::array<double, 3>>&  nPositions,
+    void uniMeshGeometry(std::vector<std::array<double, 3>>&  nPositions,
                 double  radius,
                 double totalMass, delta::collision::material::MaterialType material,
                 std::vector<std::vector<double>>  &xCoordinatesArray,
                 std::vector<std::vector<double>>  &yCoordinatesArray,
                 std::vector<std::vector<double>>  &zCoordinatesArray);
 
-    void nonUniMesh(std::vector<std::array<double, 3>>&  nPositions,
+    void nonUniMeshGeometry(std::vector<std::array<double, 3>>&  nPositions,
                     double  radius,
                     double totalMass, delta::collision::material::MaterialType material,
                     double subcellx,
@@ -137,7 +150,7 @@ class dem::mappings::CreateGrid {
                     std::vector<std::vector<double>>  &yCoordinatesArray,
                     std::vector<std::vector<double>>  &zCoordinatesArray);
 
-    void nonUniSphere(int  N, double totalMass, double subcellx, std::vector<double>  &rad, delta::collision::material::MaterialType material);
+    void nonUniSphereRadius(int N, double totalMass, double subcellx, std::vector<double>  &rad, delta::collision::material::MaterialType material);
 
     int makeHopper(dem::Vertex&  vertex, double position[3], double _hopperWidth, double _hopperHeight, double _hopperHatch,
                     delta::collision::material::MaterialType material, bool friction, bool isObstacle);
@@ -156,11 +169,17 @@ class dem::mappings::CreateGrid {
     int makeNonSpherical(dem::Vertex&  vertex, double position[3], double radius, double eps,
                         delta::collision::material::MaterialType material, bool friction, bool isObstacle);
 
-    void makeUniParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double width, double totalMass, delta::collision::material::MaterialType material);
-    void makeNonUniParticleGrid(dem::Vertex&  vertex, double position[3], int xzcuts, int ycuts, double subcellx, double width, double totalMass, delta::collision::material::MaterialType material);
+    std::vector<std::array<double, 3>> getGridArrayList(double position[3], int xzcuts, int ycuts, double width);
+
+    void makeUniParticleGrid(dem::Vertex&  vertex, double totalMass, std::vector<std::array<double, 3>> N, delta::collision::material::MaterialType material);
+    void makeNonUniParticleGrid(dem::Vertex&  vertex, double totalMass, std::vector<std::array<double, 3>> N, double subcellx, delta::collision::material::MaterialType material);
 
     void makeFullBrickFBGrid(dem::Vertex&  vertex, double position[3], double length, double elements);
     void makeLoadNuclearGeometry(dem::Vertex&  vertex, double position[3]);
+
+
+    void makeUniParticleInsituGrid(dem::Vertex&  vertex, double centreAsArray[3], double cellSize, delta::collision::material::MaterialType material);
+    void makeNonUniParticleInsituGrid(dem::Vertex&  vertex, double centreAsArray[3], double cellSize, delta::collision::material::MaterialType material);
 
     void dropParticles(
       dem::Vertex&                                 fineGridVertex,

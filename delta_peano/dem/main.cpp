@@ -37,13 +37,13 @@ void printManual()
           << "Scenarios" << std::endl
           << "=========" << std::endl
           << "  none" << std::endl
-          << "  black-hole-with-randomly-oriented-cubes" << std::endl
-          << "  black-hole-with-cubes" << std::endl
-          << "  black-hole-with-granulates" << std::endl
+          << "  blackholeWithRandomlyOrientedCubes" << std::endl
+          << "  blackholeWithCubes" << std::endl
+          << "  blackholeWithGranulates" << std::endl
 
-          << "  freefall-with-randomly-oriented-cubes" << std::endl
-          << "  freefall-with-cubes" << std::endl
-          << "  freefall-with-granulates" << std::endl
+          << "  freefallWithRandomlyOrientedCubes" << std::endl
+          << "  freefallWithCubes" << std::endl
+          << "  freefallWiithGranulates" << std::endl
 
           << "  two-particles-crash" << std::endl
 
@@ -204,27 +204,27 @@ int main(int argc, char** argv)
   if (scenario=="nonescenario") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nonescenario,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
-  } else if (scenario=="black-hole-with-randomly-oriented-cubes") {
+  } else if (scenario=="blackholeWithRandomlyOrientedCubes") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithRandomOrientedCubes,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="black-hole-with-cubes") {
+  else if (scenario=="blackholeWithCubes") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithCubes,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="black-hole-with-granulates") {
+  else if (scenario=="blackholeWithGranulates") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithGranulates,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="freefall-with-randomly-oriented-cubes") {
+  else if (scenario=="freefallWithRandomlyOrientedCubes") {
       dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallWithRandomOrientedCubes,
                                               gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="freefall-with-cubes") {
+  else if (scenario=="freefallWithCubes") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallWithCubes,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
-  else if (scenario=="freefall-with-granulates") {
+  else if (scenario=="freefallWithGranulates") {
   dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallWithGranulates,
                                           gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
   }
@@ -387,7 +387,7 @@ int main(int argc, char** argv)
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano", true ) );
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano::utils", false ) );
     dem::runners::Runner runner;
-    programExitCode = runner.run(iterations, plot, gridType, numberOfCores, stepSize, realSnapshot, true);
+    programExitCode = runner.run(iterations, plot, gridType, numberOfCores, stepSize, realSnapshot, false);
   }
   
   if (programExitCode==0)
