@@ -53,7 +53,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 		  std::vector<double>&  xCoordinates,
 		  std::vector<double>&  yCoordinates,
 		  std::vector<double>&  zCoordinates,
-		  double epsilon, bool isObstacle, delta::collision::material::MaterialType material, bool friction, int particleId)
+		  double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
@@ -154,7 +154,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 
 
 int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,double>&   center,
-		  double radius, double epsilon, bool isObstacle, delta::collision::material::MaterialType material, bool friction, int particleId)
+		  double radius, double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
