@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_SYS_SYS_H_
-#define DELTA_SYS_SYS_H_
+#ifndef DELTA_CORE_SYS_H_
+#define DELTA_CORE_SYS_H_
 
 
 #include <time.h>
@@ -34,12 +34,12 @@
 
 
 namespace delta {
-	namespace sys {
+	namespace core {
 		class Sys;
 	}
 }
 
-class delta::sys::Sys{
+class delta::core::Sys{
 public:
 	void initCheckpoint(int iteration);
 	void closeCheckpoint();
@@ -63,6 +63,6 @@ private:
 
 
 
-#endif /* DELTA_SYS_SYS_H_ */
+#endif /* DELTA_CORE_SYS_H_ */
 
 

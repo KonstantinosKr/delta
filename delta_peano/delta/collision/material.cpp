@@ -7,8 +7,21 @@
 
 #include "material.h"
 
-void delta::collision::material::initMaterial()
+//std::map<delta::collision::material::MaterialType, delta::collision::material::MaterialDensity> delta::collision::material::materialToDensitymap;
+
+void delta::collision::material::materialInit()
 {
+  printf("init material\n");
+
+  delta::collision::material::materialToDensitymap.insert(std::pair<delta::collision::material::MaterialType, delta::collision::material::MaterialDensity>
+  (delta::collision::material::MaterialType::WOOD, delta::collision::material::MaterialDensity::WOOD));
+
+  delta::collision::material::materialToDensitymap.insert(std::pair<delta::collision::material::MaterialType, delta::collision::material::MaterialDensity>
+  (delta::collision::material::MaterialType::GRAPHITE, delta::collision::material::MaterialDensity::GRAPHITE));
+
+  delta::collision::material::materialToDensitymap.insert(std::pair<delta::collision::material::MaterialType, delta::collision::material::MaterialDensity>
+  (delta::collision::material::MaterialType::GOLD, delta::collision::material::MaterialDensity::GOLD));
+
 /*
   InterfaceTri woodwoodTri = {0.8, 400};
   InterfaceTri goldgoldTri = {0.8, 400};

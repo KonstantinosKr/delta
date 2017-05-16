@@ -5,8 +5,8 @@
  *      Author: konstantinos
  */
 
-#ifndef DELTA_SYS_WRITE_H_
-#define DELTA_SYS_WRITE_H_
+#ifndef DELTA_CORE_WRITE_H_
+#define DELTA_CORE_WRITE_H_
 
 class write {
 public:
@@ -14,4 +14,4 @@ public:
   virtual ~write();
 };
 
-#endif /* DELTA_SYS_WRITE_H_ */
+#endif /* DELTA_CORE_WRITE_H_ */

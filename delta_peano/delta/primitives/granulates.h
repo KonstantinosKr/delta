@@ -23,8 +23,9 @@
  */
 
 #include <vector>
+
+#include "../core/read.h"
 #include "delta/primitives/properties.h"
-#include "delta/sys/read.h"
 
 namespace delta {
   namespace primitives {

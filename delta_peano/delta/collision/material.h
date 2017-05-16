@@ -48,11 +48,11 @@ namespace delta {
 */
 //      static std::map<int, InterfaceSph> interfaceSphmap;
 //      static std::map<int, InterfaceTri> interfaceTrimap;
-      static std::map<int, int> densitymap;
+      static std::map<delta::collision::material::MaterialType, delta::collision::material::MaterialDensity> materialToDensitymap;
 
       int getInterfaceType(int materialA, int materialB);
 
-      void initMaterial();
+      void materialInit();
       int getCollisionInterface();
     }
   }

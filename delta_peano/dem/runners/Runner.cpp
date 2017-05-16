@@ -1,3 +1,4 @@
+#include <delta/core/sys.h>
 #include "dem/runners/Runner.h"
 
 #include "dem/repositories/Repository.h"
@@ -18,7 +19,6 @@
 #include "peano/geometry/Hexahedron.h" 
 
 #include "dem/mappings/MoveParticles.h"
-#include "delta/sys/sys.h"
 
 
 tarch::logging::Log dem::runners::Runner::_log( "dem::runners::Runner" );
@@ -97,6 +97,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 										                  double initialStepSize, double realSnapshot)
 {
   peano::utils::UserInterface::writeHeader();
+
+  delta::core::Delta::Delta();
 
   logInfo( "runAsMaster(...)", "create grid" );
   repository.switchToCreateGrid();

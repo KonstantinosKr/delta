@@ -19,7 +19,7 @@ void delta::primitives::graphite::generateBrickFB(
   std::vector<double>&  zCoordinates)
 {
 	char fileinput[100] = "input/bricksmall.vtk";
-	delta::sys::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+	delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	double centerOfGeometry[3];
 	delta::primitives::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
@@ -40,7 +40,7 @@ void delta::primitives::graphite::generateKeyXK(
   std::vector<double>&  zCoordinates)
 {
 	char fileinput[100] = "input/keysmall.vtk";
-	delta::sys::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+	delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	double centerOfGeometry[3];
 	delta::primitives::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
@@ -59,7 +59,7 @@ void delta::primitives::graphite::generateKeyYK(
   std::vector<double>&  zCoordinates)
 {
 	char fileinput[100] = "input/keysmall.vtk";
-	delta::sys::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+	delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	double centerOfGeometry[3];
 	delta::primitives::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);

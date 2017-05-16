@@ -1,11 +1,11 @@
 #include <vector>
 #include "delta/collision/contactpoint.h"
-#include "delta/sys/delta.h"
 #include "delta/collision/material.h"
 #include <cmath>
 #include <iostream>
 #include <iomanip>
 #include <limits>
+#include "../core/delta.h"
 
 #define NNMUL(A, B, C)\
 {\

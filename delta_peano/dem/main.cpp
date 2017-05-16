@@ -116,8 +116,7 @@ int main(int argc, char** argv)
     printManual();
     return -1;
   } else if (argc == NumberOfArguments) {
-	  std::cout << "gridHmax:" << std::setprecision(3) << atof(argv[1]) << ", particleDiamMax:" << atof(argv[2]) << ", particleDiamMin:" << atof(argv[3]) << std::endl
-              << "scenario:" << (argv[4]) << ", iterations:" << atof(argv[5]) << ", grid:" << (argv[6]) << std::endl
+	  std::cout << "scenario:" << (argv[4]) << ", iterations:" << atof(argv[5]) << ", grid:" << (argv[6]) << std::endl
               << "stepSize:" << atof(argv[7]) << ", plot:" << (argv[8]) << ", realSnapshot:" << atoi(argv[9]) << std::endl
               << "gravity:" << (argv[10]) << ", model:" << (argv[11])  << ", triangleNumber:" << atoi(argv[12]) << std::endl;
   }

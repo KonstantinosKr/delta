@@ -22,13 +22,13 @@
  SOFTWARE.
  */
 
-#include "delta.h"
-delta::sys::Delta::Delta()
+#include <delta/core/delta.h>
+delta::core::Delta::Delta()
 {
-	_test = 0;
+  delta::collision::material::materialInit();
 }
 
-delta::sys::Delta::~Delta()
+delta::core::Delta::~Delta()
 {
 
 }

@@ -64,7 +64,7 @@ dim3-gcc-release-novec: header build
 dim3-gcc-release-vec: CC=g++ --std=c++0x
 dim3-gcc-release-vec: DIM=-DDim3
 dim3-gcc-release-vec: SETTINGS=-DiREAL=double -DbyteAlignment=32 -DTrackGridStatistics
-dim3-gcc-release-vec: CFLAGS=-O2 -ftree-vectorize -ftree-vectorizer-verbose=3 -fstrict-aliasing
+dim3-gcc-release-vec: CFLAGS=-O3 -ftree-vectorize -ftree-vectorizer-verbose=3 -fstrict-aliasing
 dim3-gcc-release-vec: LFLAGS=
 dim3-gcc-release-vec: EXECUTABLE=dem-3d-release-vec
 dim3-gcc-release-vec: header build

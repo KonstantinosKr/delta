@@ -22,13 +22,13 @@
 #include <array>
 #include <vector>
 
+#include "../../delta/core/delta.h"
+#include "../../delta/core/read.h"
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"
 
 #include "delta/primitives/triangle.h"
-#include "delta/sys/read.h"
-#include "delta/sys/delta.h"
 #include "delta/collision/material.h"
 
 namespace dem {
@@ -172,11 +172,13 @@ class dem::mappings::CreateGrid {
     void makeNonUniParticleGrid(dem::Vertex&  vertex, double totalMass, std::vector<std::array<double, 3>> N, double subcellx, delta::collision::material::MaterialType material);
 
     void makeFullBrickFBGrid(double position[3], double length, double elements);
-    void makeBrickInsituGrid(dem::Vertex&  vertex, double centreAsArray[3], double cellSize, delta::collision::material::MaterialType material, double friction, double isObstacle);
     void makeLoadNuclearGeometry(double position[3]);
-    void makeBrickFBInsituGrid(dem::Vertex&  vertex, double centreAsArray[3], double cellSize, delta::collision::material::MaterialType material, double friction, double isObstacle);
 
     void makeParticleInsituGrid(dem::Vertex&  vertex, double centreAsArray[3], double cellSize, delta::collision::material::MaterialType material, double friction, double isObstacle);
+
+    void deployComponent(dem::Vertex&  vertex, std::string component, iREAL position[3],
+        std::vector<double>& xCoordinatesArray, std::vector<double>& yCoordinatesArray, std::vector<double>& zCoordinatesArray,
+        delta::collision::material::MaterialType material, double radius, bool friction, bool isObstacle);
 
     void dropParticles(
       dem::Vertex&                                 fineGridVertex,

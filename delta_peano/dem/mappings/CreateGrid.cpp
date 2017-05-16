@@ -324,7 +324,14 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
 
     position[0] = (centreAsArray[0] - _hopperWidth/2) + margin; position[1] = centreAsArray[1] + _hopperHeight/2; position[2] = (centreAsArray[2] - _hopperWidth/2) + margin;
     _particleGrid = getGridArrayList(position, xzcuts, ycuts, _hopperWidth);
-    for(unsigned i=0;i<_particleGrid.size();i++)_componentGrid.push_back("noSpherical");
+
+    if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
+        dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none)
+    {
+      for(unsigned i=0;i<_particleGrid.size();i++)_componentGrid.push_back("noSpherical");
+    } else {
+      for(unsigned i=0;i<_particleGrid.size();i++)_componentGrid.push_back("sphere");
+    }
 
     double massPerParticle = totalMass/(double)_particleGrid.size();
     double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
@@ -345,7 +352,6 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       dem::mappings::CreateGrid::nonUniSphereRadius(totalMass, subcellx, _rad, material);
       dem::mappings::CreateGrid::nonUniMeshGeometry(radius, totalMass, material, subcellx, _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray);
     }
-
     return;
   }
 
@@ -437,9 +443,7 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex, double c
 {
   // We need these temporary guys if we use an aligned vector from Peano.
   // Peano's aligned vector and the default std::vector are not compatible.
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  std::vector<double>  xCoordinates;  std::vector<double>  yCoordinates;  std::vector<double>  zCoordinates;
 
   double particleDiameter = _maxParticleDiam;
 
@@ -483,12 +487,10 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex, double c
     dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
     if(_scenario == blackHoleWithGranulates)
       dem::mappings::CreateGrid::setVScheme(vertex,  particleid, dem::mappings::CreateGrid::randomLinearAngular);
-  }else if(_scenario == sla)
+  }else if(_scenario == sla ||
+           _scenario == nuclearArray)
   {
-    makeBrickFBInsituGrid(vertex, centreAsArray, cellSize, material, friction, isObstacle);
-  }else if(_scenario == nuclearArray)
-  {
-    makeBrickInsituGrid(vertex, centreAsArray, cellSize, material, friction, isObstacle);
+    dem::mappings::CreateGrid::makeParticleInsituGrid(vertex, centreAsArray, cellSize, material, friction, isObstacle);
   }else if(_scenario == hopperUniform ||
      _scenario == hopperUniform1k ||
      _scenario == hopperUniform10k  ||
@@ -559,9 +561,7 @@ void dem::mappings::CreateGrid::createCell(
 		dfor(k,particlesInCellPerAxis)
 		{
       dem::Vertex&  vertex = fineGridVertices[fineGridVerticesEnumerator(0)];
-
 		  const tarch::la::Vector<DIMENSIONS,double> centre = fineGridVerticesEnumerator.getVertexPosition() + _maxParticleDiam * (k.convertScalar<double>()+0.5);
-
       double centreAsArray[] = {centre(0),centre(1),centre(2)};
 
       delta::collision::material::MaterialType material = delta::collision::material::MaterialType::WOOD;
@@ -580,18 +580,15 @@ void dem::mappings::CreateGrid::addParticleToState(std::vector<double>&  xCoordi
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 }
 
-void dem::mappings::CreateGrid::uniMeshGeometry( double  radius,
-                                        double totalMass, delta::collision::material::MaterialType material,
-                                        std::vector<std::vector<double>>  &xCoordinatesArray,
-                                        std::vector<std::vector<double>>  &yCoordinatesArray,
-                                        std::vector<std::vector<double>>  &zCoordinatesArray)
+void dem::mappings::CreateGrid::uniMeshGeometry(double  radius, double totalMass, delta::collision::material::MaterialType material,
+                                                std::vector<std::vector<double>>  &xCoordinatesArray,
+                                                std::vector<std::vector<double>>  &yCoordinatesArray,
+                                                std::vector<std::vector<double>>  &zCoordinatesArray)
 {
 
   double reMassTotal = 0;
   //double masssphere = 0;
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  std::vector<double>  xCoordinates;  std::vector<double>  yCoordinates;  std::vector<double>  zCoordinates;
 
   double position[3];
   for(auto i:_particleGrid)
@@ -667,8 +664,7 @@ void dem::mappings::CreateGrid::nonUniSphereRadius(double totalMass, double subc
   //printf("TOTAL REREMASS:%f\n", reMassTotal);
 }
 
-void dem::mappings::CreateGrid::nonUniMeshGeometry(double  radius,
-                                                    double totalMass, delta::collision::material::MaterialType material,
+void dem::mappings::CreateGrid::nonUniMeshGeometry(double  radius,  double totalMass, delta::collision::material::MaterialType material,
                                                     double subcellx,
                                                     std::vector<std::vector<double>>  &xCoordinatesArray,
                                                     std::vector<std::vector<double>>  &yCoordinatesArray,
@@ -680,9 +676,7 @@ void dem::mappings::CreateGrid::nonUniMeshGeometry(double  radius,
   iREAL position[3];
   for(auto i:_particleGrid)
   {
-    std::vector<double>  xCoordinates;
-    std::vector<double>  yCoordinates;
-    std::vector<double>  zCoordinates;
+    std::vector<double>  xCoordinates;  std::vector<double>  yCoordinates;  std::vector<double>  zCoordinates;
 
     position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
     iREAL mindiam = subcellx/2;
@@ -731,9 +725,7 @@ void dem::mappings::CreateGrid::nonUniMeshGeometry(double  radius,
 int dem::mappings::CreateGrid::makeHopper(dem::Vertex&  vertex, double position[3], double _hopperWidth, double _hopperHeight, double _hopperHatch,
                                            delta::collision::material::MaterialType material, bool friction, bool isObstacle)
 {
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  std::vector<double>  xCoordinates;  std::vector<double>  yCoordinates;  std::vector<double>  zCoordinates;
 
   delta::primitives::hopper::generateHopper(position, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
   int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
@@ -745,9 +737,7 @@ int dem::mappings::CreateGrid::makeHopper(dem::Vertex&  vertex, double position[
 int dem::mappings::CreateGrid::makeFloor(dem::Vertex&  vertex, double position[3], double width, double height, double rx, double ry, double rz,
                                           delta::collision::material::MaterialType material, bool friction, bool isObstacle)
 {
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  std::vector<double>  xCoordinates;  std::vector<double>  yCoordinates;  std::vector<double>  zCoordinates;
 
   delta::primitives::cubes::generateHullCube(position, width, height, width, rx, ry, rz, xCoordinates, yCoordinates, zCoordinates);
   int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
@@ -768,9 +758,7 @@ int dem::mappings::CreateGrid::makeSphere(dem::Vertex&  vertex, double position[
 int dem::mappings::CreateGrid::makeBox(dem::Vertex&  vertex, double position[3], double width, double height, double eps,
                                           delta::collision::material::MaterialType material, bool friction, bool isObstacle)
 {
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  std::vector<double>  xCoordinates;  std::vector<double>  yCoordinates;  std::vector<double>  zCoordinates;
 
   delta::primitives::cubes::generateHullCube(position, width, xCoordinates, yCoordinates, zCoordinates);
   int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
@@ -782,9 +770,7 @@ int dem::mappings::CreateGrid::makeBox(dem::Vertex&  vertex, double position[3],
 int dem::mappings::CreateGrid::makeLoadedNonSpherical(dem::Vertex&  vertex, double position[3], double radius, double eps,
                                                       delta::collision::material::MaterialType material, bool friction, bool isObstacle)
 {
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  std::vector<double>  xCoordinates;  std::vector<double>  yCoordinates;  std::vector<double>  zCoordinates;
 
   delta::primitives::granulates::loadParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates);
   int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates,
@@ -797,9 +783,7 @@ int dem::mappings::CreateGrid::makeLoadedNonSpherical(dem::Vertex&  vertex, doub
 int dem::mappings::CreateGrid::makeNonSpherical(dem::Vertex&  vertex, double position[3], double radius, double eps,
                                                 delta::collision::material::MaterialType material, bool friction, bool isObstacle)
 {
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  std::vector<double>  xCoordinates; std::vector<double>  yCoordinates; std::vector<double>  zCoordinates;
 
   delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, _noPointsPerParticle);
   int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles);
@@ -822,59 +806,42 @@ void dem::mappings::CreateGrid::makeParticleInsituGrid(dem::Vertex&  vertex, dou
   iREAL cellYUPBoundary = centreAsArray[1] + cellSize/2;
   iREAL cellYDWBoundary = centreAsArray[1] - cellSize/2;
 
-  //////////////////////SPHERE//////////////////////////////////////////////////////////////////////////////////////
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
-      dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none)
+  for(unsigned i=0; i<_particleGrid.size(); i++)
   {
-    for(unsigned i=0; i<_particleGrid.size(); i++)
+    if((_particleGrid[i][0] >= cellXLeftBoundary && _particleGrid[i][0] <= cellXRightBoundary) &&
+       (_particleGrid[i][1] >= cellYDWBoundary && _particleGrid[i][1] <= cellYUPBoundary) &&
+       (_particleGrid[i][2] >= cellZLeftBoundary && _particleGrid[i][2] <= cellZRightBoundary))
     {
-      if((_particleGrid[i][0] >= cellXLeftBoundary && _particleGrid[i][0] <= cellXRightBoundary) &&
-         (_particleGrid[i][1] >= cellYDWBoundary && _particleGrid[i][1] <= cellYUPBoundary) &&
-         (_particleGrid[i][2] >= cellZLeftBoundary && _particleGrid[i][2] <= cellZRightBoundary))
-      {
-        if(_componentGrid[i] == "noSpherical")
-        {
-          iREAL position[] = {_particleGrid[i][0], _particleGrid[i][1], _particleGrid[i][2]};
-          makeSphere(vertex, position, _rad[i], _rad[i]*0.1, material, friction, isObstacle);
-        }
-      }
+      iREAL position[] = {_particleGrid[i][0], _particleGrid[i][1], _particleGrid[i][2]};
+      deployComponent(vertex, _componentGrid[i], position, _xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], material, _rad[i], friction, isObstacle);
     }
-  } else {
-    //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
-    for(unsigned i=0; i<_particleGrid.size(); i++)
-    {
-      if((_particleGrid[i][0] >= cellXLeftBoundary && _particleGrid[i][0] <= cellXRightBoundary) &&
-         (_particleGrid[i][1] >= cellYDWBoundary && _particleGrid[i][1] <= cellYUPBoundary) &&
-         (_particleGrid[i][2] >= cellZLeftBoundary && _particleGrid[i][2] <= cellZRightBoundary))
-      {
-        if(_componentGrid[i] == "noSpherical")
-        {
-          vertex.createNewParticle({_particleGrid[i][0], _particleGrid[i][1], _particleGrid[i][2]}, _xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _rad[i]*0.1, friction, material, isObstacle, _numberOfParticles);
-          dem::mappings::CreateGrid::addParticleToState(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], isObstacle);
-        }
-        if(_componentGrid[i] == "FB")
-        {
-          std::vector<double>  xCoordinates;
-          std::vector<double>  yCoordinates;
-          std::vector<double>  zCoordinates;
+  }
+}
 
-          iREAL position[3];
-          position[0] = _particleGrid[i][0]; position[1] = _particleGrid[i][1]; position[2] = _particleGrid[i][2];
-          delta::primitives::graphite::generateBrickFB(position, _rad[i]*0.9, xCoordinates, yCoordinates, zCoordinates);
-          vertex.createNewParticle({_particleGrid[i][0], _particleGrid[i][1], _particleGrid[i][2]}, xCoordinates, yCoordinates, zCoordinates,
-                                   _epsilon, false, delta::collision::material::MaterialType::GOLD, false, _numberOfParticles);
-          dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, false);
-        }
-      }
-    }
+void dem::mappings::CreateGrid::deployComponent(dem::Vertex&  vertex, std::string component, iREAL position[3],
+    std::vector<double>& xCoordinatesArray, std::vector<double>& yCoordinatesArray, std::vector<double>& zCoordinatesArray,
+    delta::collision::material::MaterialType material, double radius, bool friction, bool isObstacle)
+{
+  if(component == "sphere")
+  {
+    makeSphere(vertex, position, radius, radius*0.1, material, friction, isObstacle);
+  } else  if(component == "noSpherical")
+  {
+    vertex.createNewParticle(position, xCoordinatesArray, yCoordinatesArray, zCoordinatesArray, radius*0.1, friction, material, isObstacle, _numberOfParticles);
+    dem::mappings::CreateGrid::addParticleToState(xCoordinatesArray, yCoordinatesArray, zCoordinatesArray, isObstacle);
+  } else if(component == "FB")
+  {
+    std::vector<double>  xCoordinates; std::vector<double>  yCoordinates; std::vector<double>  zCoordinates;
+
+    delta::primitives::graphite::generateBrickFB(position, radius*0.9, xCoordinates, yCoordinates, zCoordinates);
+    vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates, _epsilon, friction, material, isObstacle, _numberOfParticles);
+    dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
   }
 }
 
 void dem::mappings::CreateGrid::makeFullBrickFBGrid(double position[3], double length, double elements)
 {
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  std::vector<double>  xCoordinates;  std::vector<double>  yCoordinates;  std::vector<double>  zCoordinates;
 
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
@@ -906,14 +873,15 @@ void dem::mappings::CreateGrid::makeFullBrickFBGrid(double position[3], double l
 
   position[0] = (position[0]-length/2)+halfxwCell; position[1] += (height/2); position[2] = (position[2]-length/2)+halfxwCell;
   _particleGrid = delta::primitives::assembly::array3d(position, length, elements);
-  for(unsigned i=0; i<_particleGrid.size(); i++) _rad.push_back(scalePercentage);
+  for(unsigned i=0; i<_particleGrid.size(); i++) {
+    _rad.push_back(scalePercentage);
+    _componentGrid.push_back("FB");
+  }
 }
 
 void dem::mappings::CreateGrid::makeLoadNuclearGeometry(double position[3])
 {
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  std::vector<double> xCoordinates; std::vector<double> yCoordinates; std::vector<double> zCoordinates;
 
   //measurements
   iREAL pos[] = {0,0,0};
@@ -924,7 +892,7 @@ void dem::mappings::CreateGrid::makeLoadNuclearGeometry(double position[3])
 
   //read nuclear graphite schematics
   std::vector<std::vector<std::string>> componentGrid;
-  delta::sys::parseModelGridSchematics("input/nuclear_core", componentGrid, _componentGrid);
+  delta::core::parseModelGridSchematics("input/nuclear_core", componentGrid, _componentGrid);
 
   ///place components of 2d array structure
   int elements = 46;

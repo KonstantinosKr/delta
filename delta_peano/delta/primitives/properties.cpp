@@ -711,6 +711,7 @@ double delta::primitives::properties::computeMass(
     case delta::collision::material::MaterialType::GRAPHITE:
       rho = int(delta::collision::material::MaterialDensity::GRAPHITE);
   }
+  //rho = int(delta::collision::material::materialToDensitymap.find(material));
 
   for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {

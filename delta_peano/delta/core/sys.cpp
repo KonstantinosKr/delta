@@ -22,17 +22,17 @@
  SOFTWARE.
  */
 
-#include "sys.h"
+#include <delta/core/sys.h>
 
 
-int delta::sys::Sys::_noOfParticles;
-int delta::sys::Sys::_noOfObstacles;
-double delta::sys::Sys::_timeStepSize;
-int delta::sys::Sys::_currentIteration;
-int delta::sys::Sys::_totalIterations;
+int delta::core::Sys::_noOfParticles;
+int delta::core::Sys::_noOfObstacles;
+double delta::core::Sys::_timeStepSize;
+int delta::core::Sys::_currentIteration;
+int delta::core::Sys::_totalIterations;
 
-std::vector<int> delta::sys::Sys::_id;
-std::ofstream delta::sys::Sys::_checkpointFile;
+std::vector<int> delta::core::Sys::_id;
+std::ofstream delta::core::Sys::_checkpointFile;
 
 /*
  * ASCII CHECKPOINT FORMAT DELTA
@@ -40,20 +40,20 @@ std::ofstream delta::sys::Sys::_checkpointFile;
  *
  */
 
-void delta::sys::Sys::saveScenario(int particles, int obstacles)
+void delta::core::Sys::saveScenario(int particles, int obstacles)
 {
 	_noOfParticles = particles;
 	_noOfObstacles = obstacles;
 }
 
-void delta::sys::Sys::saveIteration(double timeStepSize, int currentIteration, int totalIterations)
+void delta::core::Sys::saveIteration(double timeStepSize, int currentIteration, int totalIterations)
 {
 	_timeStepSize = timeStepSize;
 	_currentIteration = currentIteration;
 	_totalIterations = totalIterations;
 }
 
-void delta::sys::Sys::initCheckpoint(int iteration){
+void delta::core::Sys::initCheckpoint(int iteration){
 	//std::string filename = "checkpoint_"+std::to_string(iteration)+".delta";
 	std::string filename = "checkpoint_.delta";
 
@@ -65,11 +65,11 @@ void delta::sys::Sys::initCheckpoint(int iteration){
 					   _timeStepSize<<":" << _currentIteration << ":" << _totalIterations<<"\n";
 }
 
-void delta::sys::Sys::closeCheckpoint(){
+void delta::core::Sys::closeCheckpoint(){
 	_checkpointFile.close();
 }
 
-void delta::sys::Sys::saveParticleProperties(int id, double positionSpatial[3], double positionReferential[3], double linear[3], double angular[3],
+void delta::core::Sys::saveParticleProperties(int id, double positionSpatial[3], double positionReferential[3], double linear[3], double angular[3],
 								   double inertia[9], double orientation[9], double mass)
 {
 	_checkpointFile << "@:"<< ":" << id <<":"<<
@@ -86,7 +86,7 @@ void delta::sys::Sys::saveParticleProperties(int id, double positionSpatial[3], 
 					   mass << "\n";
 }
 
-void delta::sys::Sys::saveParticleGeometry(int id, std::vector<double> xCoordinatesSpatial, std::vector<double> yCoordinatesSpatial, std::vector<double> zCoordinatesSpatial,
+void delta::core::Sys::saveParticleGeometry(int id, std::vector<double> xCoordinatesSpatial, std::vector<double> yCoordinatesSpatial, std::vector<double> zCoordinatesSpatial,
 						  std::vector<double> xCoordinatesRef, std::vector<double> yCoordinatesRef, std::vector<double> zCoordinatesRef)
 {
 

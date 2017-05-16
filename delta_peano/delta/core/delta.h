@@ -22,21 +22,22 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_SYS_DELTA_H_
-#define DELTA_SYS_DELTA_H_
+#ifndef DELTA_CORE_DELTA_H_
+#define DELTA_CORE_DELTA_H_
 
 #include <map>
+#include "delta/collision/material.h"
 
 namespace delta {
-	namespace sys {
+	namespace core {
 		class Delta;
 	}
 }
 
-class delta::sys::Delta
+class delta::core::Delta
 {
 	private:
-		int _test;
+		//int _test;
 
 	public:
 		enum materialName{
@@ -51,4 +52,4 @@ class delta::sys::Delta
 };
 
 
-#endif /* DELTA_SYS_DELTA_H_ */
+#endif /* DELTA_CORE_DELTA_H_ */

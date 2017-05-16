@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include "write.h"
+#include <delta/core/write.h>
 
 write::write() {
   // TODO Auto-generated constructor stub

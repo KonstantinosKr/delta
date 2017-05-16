@@ -32,7 +32,9 @@ namespace {
 }
 
 void delta::collision::cleanPenaltyStatistics() {
-  #pragma simd
+  #if defined(__INTEL_COMPILER)
+    #pragma simd
+  #endif
   for(int i=0; i<MaxNumberOfNewtonIterations+1; i++) {
     numberOfNewtonIterations[i] = 0;
   }
@@ -81,16 +83,18 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
     __attribute__ ((aligned(byteAlignment))) double	shortestDistance = (epsilonA+epsilonB);
     contactpoint *nearestContactPoint = nullptr;
 
-    #pragma forceinline recursive
-    #pragma simd
+    #if defined(__INTEL_COMPILER)
+      #pragma forceinline recursive
+      #pragma simd
+    #endif
     for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-      __attribute__ ((aligned(byteAlignment))) double xPA;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double yPA;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double zPA;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double xPB;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double yPB;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double zPB;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) double xPA;
+      __attribute__ ((aligned(byteAlignment))) double yPA;
+      __attribute__ ((aligned(byteAlignment))) double zPA;
+      __attribute__ ((aligned(byteAlignment))) double xPB;
+      __attribute__ ((aligned(byteAlignment))) double yPB;
+      __attribute__ ((aligned(byteAlignment))) double zPB;
 
       __attribute__ ((aligned(byteAlignment))) int numberOfNewtonIterationsRequired  = 0;
 
@@ -121,10 +125,8 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
       result.push_back(*nearestContactPoint);
     }
   }
-
   return result;
 }
-
 
 std::vector<delta::collision::contactpoint> delta::collision::penalty(
   int       numberOfTrianglesOfGeometryA,
@@ -165,8 +167,10 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
     __attribute__ ((aligned(byteAlignment))) bool failed = 0;
     __attribute__ ((aligned(byteAlignment))) double xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
 
-    #pragma forceinline recursive
-    #pragma simd
+    #if defined(__INTEL_COMPILER)
+      #pragma forceinline recursive
+      #pragma simd
+    #endif
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
       penalty(xCoordinatesOfPointsOfGeometryA+(iA),
@@ -234,8 +238,12 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
  * @param xPA z coordinate of Point Q on triangle B that define closest distance between triangle B-A
  *
  */
-#pragma omp declare simd
-#pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
+#if defined(__INTEL_COMPILER)
+  #if defined(ompParticle) || defined(ompTriangle)
+  #pragma omp declare simd
+  #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
+  #endif
+#endif
 extern void delta::collision::penalty(
   double   xCoordinatesOfTriangleA[3],
   double   yCoordinatesOfTriangleA[3],

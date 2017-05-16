@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include "read.h"
+#include <delta/core/read.h>
 #include "math.h"
 #include <stdlib.h>
 
@@ -31,7 +31,7 @@ std::vector<std::string> splitString(std::string input, std::string delimiter)
 }
 
 
-void delta::sys::parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid, std::vector<std::string> &componentSeq)
+void delta::core::parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid, std::vector<std::string> &componentSeq)
 {
 	std::string line;
 	//46 * 46
@@ -58,7 +58,7 @@ void delta::sys::parseModelGridSchematics(std::string inputfile, std::vector<std
 	else std::cout << "Unable to open file";
 }
 
-void delta::sys::readVTKGeometry(char* fileinput,
+void delta::core::readVTKGeometry(char* fileinput,
 							  std::vector<double>&  xCoordinates,
 							  std::vector<double>&  yCoordinates,
 							  std::vector<double>&  zCoordinates)

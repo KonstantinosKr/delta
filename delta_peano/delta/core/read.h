@@ -5,8 +5,8 @@
  *      Author: konstantinos
  */
 
-#ifndef DELTA_SYS_READ_H_
-#define DELTA_SYS_READ_H_
+#ifndef DELTA_CORE_READ_H_
+#define DELTA_CORE_READ_H_
 
 #include <string>
 #include <iostream>
@@ -17,7 +17,7 @@
 
 
 namespace delta {
-	namespace sys {
+	namespace core {
 		void parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid, std::vector<std::string> &componentSeq);
 		void readVTKGeometry(char* fileinput,
 						   std::vector<double>&  xCoordinates,
@@ -26,4 +26,4 @@ namespace delta {
 	}
 }
 
-#endif /* DELTA_SYS_READ_H_ */
+#endif /* DELTA_CORE_READ_H_ */
