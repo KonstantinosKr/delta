@@ -176,7 +176,7 @@ void dem::mappings::dropParticles(
       int i=0;
       while (i<coarseGridVertexAtSamePosition.getNumberOfParticles())
       {
-        if (coarseGridVertexAtSamePosition.getParticle(i)._persistentRecords._diameter<coarseGridVerticesEnumerator.getCellSize()(0))
+        if (coarseGridVertexAtSamePosition.getParticle(i).getDiameter()<coarseGridVerticesEnumerator.getCellSize()(0))
         {
           logDebug( "dropParticle()",
           "dropped particle " << coarseGridVertexAtSamePosition.getParticle(i).toString() <<

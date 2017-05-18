@@ -787,7 +787,7 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-	return;
+
 	if(
 	fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
   fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&

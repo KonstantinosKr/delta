@@ -328,9 +328,11 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
         dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none)
     {
-      for(unsigned i=0;i<_particleGrid.size();i++)_componentGrid.push_back("noSpherical");
+      for(unsigned i=0;i<_particleGrid.size();i++)
+        _componentGrid.push_back("sphere");
     } else {
-      for(unsigned i=0;i<_particleGrid.size();i++)_componentGrid.push_back("sphere");
+      for(unsigned i=0;i<_particleGrid.size();i++)
+        _componentGrid.push_back("noSpherical");
     }
 
     double massPerParticle = totalMass/(double)_particleGrid.size();
@@ -488,17 +490,15 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex, double c
     if(_scenario == blackHoleWithGranulates)
       dem::mappings::CreateGrid::setVScheme(vertex,  particleid, dem::mappings::CreateGrid::randomLinearAngular);
   }else if(_scenario == sla ||
-           _scenario == nuclearArray)
-  {
-    dem::mappings::CreateGrid::makeParticleInsituGrid(vertex, centreAsArray, cellSize, material, friction, isObstacle);
-  }else if(_scenario == hopperUniform ||
-     _scenario == hopperUniform1k ||
-     _scenario == hopperUniform10k  ||
-     _scenario == hopperUniform100k ||
-     _scenario == hopperNonUniform ||
-     _scenario == hopperNonUniform1k ||
-     _scenario == hopperNonUniform10k  ||
-     _scenario == hopperNonUniform100k)
+           _scenario == nuclearArray ||
+           _scenario == hopperUniform ||
+           _scenario == hopperUniform1k ||
+           _scenario == hopperUniform10k  ||
+           _scenario == hopperUniform100k ||
+           _scenario == hopperNonUniform ||
+           _scenario == hopperNonUniform1k ||
+           _scenario == hopperNonUniform10k  ||
+           _scenario == hopperNonUniform100k)
   {
     dem::mappings::CreateGrid::makeParticleInsituGrid(vertex, centreAsArray, cellSize, material, friction, isObstacle);
   }
