@@ -13,17 +13,18 @@
 peano::CommunicationSpecification   dem::mappings::MoveParticles::communicationSpecification() {
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
+
+/**
+ * Move
+ */
+peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexFirstTimeSpecification() {
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+}
 /**
  * Reflect
  */
 peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexLastTimeSpecification() {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
-}
-/**
- * Move
- */
-peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexFirstTimeSpecification() { 
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 /**
  * Reassign
@@ -31,6 +32,9 @@ peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexFirstTime
 peano::MappingSpecification   dem::mappings::MoveParticles::enterCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
+
+
+
 peano::MappingSpecification   dem::mappings::MoveParticles::leaveCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }

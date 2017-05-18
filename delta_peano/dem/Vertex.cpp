@@ -317,9 +317,9 @@ const dem::records::Particle& dem::Vertex::getParticle( int particleNumber ) con
 
 void dem::Vertex::appendParticle(const records::Particle& particle) {
   #if defined(SharedMemoryParallelisation)
-    tarch::multicore::Lock lock(_VertexSemaphore);
+    //tarch::multicore::Lock lock(_VertexSemaphore);
     ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
-    lock.free();
+    //lock.free();
   #else
     ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
   #endif
@@ -327,13 +327,13 @@ void dem::Vertex::appendParticle(const records::Particle& particle) {
 
 void dem::Vertex::releaseParticle(int particleNumber) {
   #if defined(SharedMemoryParallelisation)
-    tarch::multicore::Lock lock(_VertexSemaphore);
+    //tarch::multicore::Lock lock(_VertexSemaphore);
     assertion2( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticles()), particleNumber, toString() );
     assertion2( particleNumber>=0, particleNumber, toString() );
     assertion2( particleNumber<static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size()), particleNumber, toString() );
 
     ParticleHeap::getInstance().getData( _vertexData.getParticles() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticles() ).begin()+particleNumber );
-    lock.free();
+    //lock.free();
   #else
     ParticleHeap::getInstance().getData( _vertexData.getParticles() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticles() ).begin()+particleNumber );
   #endif

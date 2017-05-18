@@ -293,7 +293,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       xzcuts = 30; ycuts = 12;
     } else if(_scenario == hopperUniform100k)
     {
-      xzcuts = 100.0; ycuts = 10;
+      xzcuts = 41.0; ycuts = 60;
     }
 
 
@@ -305,10 +305,10 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       xzcuts = 10.0; ycuts = 10.0;
     } else if(_scenario == hopperNonUniform10k)
     {
-      xzcuts = 10.0; ycuts = 100.0;
+      xzcuts = 30.0; ycuts = 12.0;
     }  else if(_scenario == hopperNonUniform100k)
     {
-      xzcuts = 10.0; ycuts = 500.0;
+      xzcuts = 41.0; ycuts = 60.0;
     }
 
     double totalMass = 0.05;

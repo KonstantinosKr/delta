@@ -21,13 +21,15 @@ peano::MappingSpecification   dem::mappings::Collision::touchVertexFirstTimeSpec
 	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
+peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification() {
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+}
+
 peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification() {
 	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
-peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification() {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
-}
+
 
 peano::MappingSpecification   dem::mappings::Collision::leaveCellSpecification() {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
