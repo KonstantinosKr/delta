@@ -12,23 +12,22 @@ peano::CommunicationSpecification   dem::mappings::ReluctantlyAdoptGrid::communi
 }
 
 /**
+ * @see AdoptGrid::dropParticles() for an explanation.
+ */
+peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTimeSpecification() {
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
+}
+
+/**
  * @see AdoptGrid::restrictCoarseningVetoToCoarseGrid() for an explanation.
  */
 peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTimeSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-/**
- * @see AdoptGrid::dropParticles() for an explanation.
- */
-peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTimeSpecification() { 
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
-}
-
 peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::enterCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
-
 peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::leaveCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
@@ -58,7 +57,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   {
     for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
     {
-      if (fineGridVertex.getParticle(i)._persistentRecords._diameter<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+      if (fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
       {
         logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
         fineGridVertex.refine();
@@ -143,6 +142,7 @@ void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   fineGridVertex.init();
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }

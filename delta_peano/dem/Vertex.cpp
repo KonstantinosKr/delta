@@ -24,11 +24,12 @@ tarch::multicore::BooleanSemaphore                                  dem::Vertex:
 
 void dem::Vertex::init() {
 #if defined(SharedMemoryParallelisation)
-  tarch::multicore::Lock lock(_VertexSemaphore);
+  //tarch::multicore::Lock lock(_VertexSemaphore);
+  //printf("ENTERED\n");
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
   _vertexData.setVetoCoarsening(false);
-  lock.free();
+  //lock.free();
 #else
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
@@ -39,10 +40,10 @@ void dem::Vertex::init() {
 
 void dem::Vertex::destroy() const {
 #if defined(SharedMemoryParallelisation)
-  tarch::multicore::Lock lock(_VertexSemaphore);
+  //tarch::multicore::Lock lock(_VertexSemaphore);
   ParticleHeap::getInstance().deleteData( _vertexData.getParticles(), true);
   ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels(), true);
-  lock.free();
+  //lock.free();
 #else
   ParticleHeap::getInstance().deleteData( _vertexData.getParticles());
   ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels());
@@ -450,9 +451,9 @@ void dem::Vertex::eraseIfParticleDistributionPermits() {
 
 void dem::Vertex::clearInheritedCoarseGridParticles() {
 #if defined(SharedMemoryParallelisation)
-  tarch::multicore::Lock lock(_VertexSemaphore);
+  //tarch::multicore::Lock lock(_VertexSemaphore);
   ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).clear();
-  lock.free();
+  //lock.free();
 #else
   ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).clear();
 #endif
@@ -477,9 +478,9 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
       if(!found)
       {
         #if defined(SharedMemoryParallelisation)
-          tarch::multicore::Lock lock(_VertexSemaphore);
+          //tarch::multicore::Lock lock(_VertexSemaphore);
           ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
-          lock.free();
+          //lock.free();
         #else
           ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
         #endif
@@ -491,12 +492,12 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
       ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).end());*/
 
       #if defined(SharedMemoryParallelisation)
-        tarch::multicore::Lock lock(_VertexSemaphore);
+        //tarch::multicore::Lock lock(_VertexSemaphore);
           //inherit real particles from coarse level
           ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
           ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
           ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
-        lock.free();
+        //lock.free();
       #else
           //inherit real particles from coarse level
           ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(

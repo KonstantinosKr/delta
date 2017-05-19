@@ -9,6 +9,14 @@ peano::CommunicationSpecification   dem::mappings::AdoptGrid::communicationSpeci
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
 
+
+/**
+ * Just invokes refine if necessary. It also deletes the accumulated attributes.
+ */
+peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification() { 
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
+}
+
 /**
  * Restrict data to coarser grid
  */
@@ -16,12 +24,7 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexLastTimeSpeci
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-/**
- * Just invokes refine if necessary. It also deletes the accumulated attributes.
- */
-peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification() { 
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
-}
+
 
 peano::MappingSpecification   dem::mappings::AdoptGrid::enterCellSpecification() {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
@@ -55,10 +58,9 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
     {
       logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
-    }else
-    {
+    } else {
       /*Does not hold as it might happen that we lift particles temporarily through hanging nodes
-      assertion2(fineGridVertex.getParticle(i)._persistentRecords._diameter>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());*/
+      assertion2(fineGridVertex.getParticle(i).getDiameter>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());*/
     }
   }
 
@@ -103,6 +105,8 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
+tarch::multicore::BooleanSemaphore                                  dem::mappings::AdoptGrid::_VertexSemaphore;
+
 void dem::mappings::AdoptGrid::createHangingVertex(
       dem::Vertex&     fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,
@@ -114,7 +118,9 @@ void dem::mappings::AdoptGrid::createHangingVertex(
 ) {
   logTraceInWith6Arguments( "createHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  //tarch::multicore::Lock lock(_VertexSemaphore);
   fineGridVertex.init();
+  //lock.free()
 
   logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
 }
@@ -154,7 +160,9 @@ void dem::mappings::AdoptGrid::destroyHangingVertex(
   logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+  //tarch::multicore::Lock lock(_VertexSemaphore);
   fineGridVertex.destroy();
+  //lock.free();
 
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
@@ -205,7 +213,9 @@ void dem::mappings::AdoptGrid::createInnerVertex(
 ) {
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  //tarch::multicore::Lock lock(_VertexSemaphore);
   fineGridVertex.init();
+  //lock.free();
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
@@ -222,7 +232,9 @@ void dem::mappings::AdoptGrid::createBoundaryVertex(
 ) {
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  //tarch::multicore::Lock lock(_VertexSemaphore);
   fineGridVertex.init();
+  //lock.free();
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
@@ -240,7 +252,9 @@ void dem::mappings::AdoptGrid::destroyVertex(
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   assertion( fineGridVertex.getNumberOfParticles()==0 );
+  //tarch::multicore::Lock lock(_VertexSemaphore);
   fineGridVertex.destroy();
+  //lock.free();
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }

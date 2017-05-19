@@ -97,7 +97,6 @@ class dem::mappings::CreateGrid {
     static void setScenario(Scenario scenario,
                             double maxH, double particleDiamMin, double particleDiamMax,
     						            GridType gridType, int noPointsPerGranulate);
-
   private:
     /**
      * Logging device for the trace macros.
@@ -115,6 +114,7 @@ class dem::mappings::CreateGrid {
     int   _numberOfParticles;
     int   _numberOfObstacles;
     int   _numberOfTriangles;
+
 
     static std::vector<std::array<double, 3>> _particleGrid;
     static std::vector<std::string> _componentGrid;
@@ -204,7 +204,6 @@ class dem::mappings::CreateGrid {
     static peano::MappingSpecification   descendSpecification();
 
     static peano::CommunicationSpecification   communicationSpecification();
-
 
     static double 	_epsilon;
     /**

@@ -96,6 +96,7 @@ class dem::mappings::AdoptGrid {
 
     static peano::CommunicationSpecification   communicationSpecification();
 
+    static tarch::multicore::BooleanSemaphore        _VertexSemaphore;
 
     /**
      * Mapping constructor.
