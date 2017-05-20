@@ -108,7 +108,7 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
-tarch::multicore::BooleanSemaphore                                  dem::mappings::AdoptGrid::_VertexSemaphore;
+//tarch::multicore::BooleanSemaphore                                  dem::mappings::AdoptGrid::_VertexSemaphore;
 
 void dem::mappings::AdoptGrid::createHangingVertex(
       dem::Vertex&     fineGridVertex,
