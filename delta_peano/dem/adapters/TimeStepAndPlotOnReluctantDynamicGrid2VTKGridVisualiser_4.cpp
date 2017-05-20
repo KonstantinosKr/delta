@@ -14,37 +14,37 @@ int dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::_s
 
 
 
-peano::CommunicationSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::communicationSpecification() {
+peano::CommunicationSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::communicationSpecification() const {
   return peano::CommunicationSpecification::getPessimisticSpecification();
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::touchVertexFirstTimeSpecification(int level) const { 
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::enterCellSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::leaveCellSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::leaveCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::ascendSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::ascendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::descendSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::descendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 

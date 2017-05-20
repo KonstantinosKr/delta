@@ -1,64 +1,64 @@
 #include "dem/adapters/TimeStep.h"
 
 
-peano::CommunicationSpecification   dem::adapters::TimeStep::communicationSpecification() {
+peano::CommunicationSpecification   dem::adapters::TimeStep::communicationSpecification() const {
   return peano::CommunicationSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::communicationSpecification()
-   & dem::mappings::MoveParticles::communicationSpecification()
+    &  _map2Collision.communicationSpecification()
+    &  _map2MoveParticles.communicationSpecification()
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStep::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStep::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::touchVertexLastTimeSpecification()
-   & dem::mappings::MoveParticles::touchVertexLastTimeSpecification()
+    &  _map2Collision.touchVertexLastTimeSpecification(level)
+    &  _map2MoveParticles.touchVertexLastTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStep::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::adapters::TimeStep::touchVertexFirstTimeSpecification(int level) const { 
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::touchVertexFirstTimeSpecification()
-   & dem::mappings::MoveParticles::touchVertexFirstTimeSpecification()
+    &  _map2Collision.touchVertexFirstTimeSpecification(level)
+    &  _map2MoveParticles.touchVertexFirstTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStep::enterCellSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStep::enterCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::enterCellSpecification()
-   & dem::mappings::MoveParticles::enterCellSpecification()
+    &  _map2Collision.enterCellSpecification(level)
+    &  _map2MoveParticles.enterCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStep::leaveCellSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStep::leaveCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::leaveCellSpecification()
-   & dem::mappings::MoveParticles::leaveCellSpecification()
+    &  _map2Collision.leaveCellSpecification(level)
+    &  _map2MoveParticles.leaveCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStep::ascendSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStep::ascendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::ascendSpecification()
-   & dem::mappings::MoveParticles::ascendSpecification()
+    &  _map2Collision.ascendSpecification(level)
+    &  _map2MoveParticles.ascendSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStep::descendSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStep::descendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::descendSpecification()
-   & dem::mappings::MoveParticles::descendSpecification()
+    &  _map2Collision.descendSpecification(level)
+    &  _map2MoveParticles.descendSpecification(level)
 
   ;
 }

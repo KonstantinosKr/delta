@@ -5,41 +5,44 @@
 /**
  * @todo Please tailor the parameters to your mapping's properties.
  */
-peano::CommunicationSpecification   dem::mappings::AdoptGrid::communicationSpecification() {
-  return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
+peano::CommunicationSpecification   dem::mappings::AdoptGrid::communicationSpecification() const {
+  return peano::CommunicationSpecification(
+    peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,
+    peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,
+    false);
 }
 
 
 /**
  * Just invokes refine if necessary. It also deletes the accumulated attributes.
  */
-peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification() { 
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
+peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification(int level) const {
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 /**
  * Restrict data to coarser grid
  */
-peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
 
 
-peano::MappingSpecification   dem::mappings::AdoptGrid::enterCellSpecification() {
+peano::MappingSpecification   dem::mappings::AdoptGrid::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::AdoptGrid::leaveCellSpecification() {
+peano::MappingSpecification   dem::mappings::AdoptGrid::leaveCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::AdoptGrid::ascendSpecification() {
+peano::MappingSpecification   dem::mappings::AdoptGrid::ascendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::AdoptGrid::descendSpecification() {
+peano::MappingSpecification   dem::mappings::AdoptGrid::descendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-tarch::logging::Log                dem::mappings::AdoptGrid::_log( "dem::mappings::AdoptGrid" ); 
+tarch::logging::Log dem::mappings::AdoptGrid::_log( "dem::mappings::AdoptGrid" );
 
 void dem::mappings::AdoptGrid::touchVertexFirstTime(
   dem::Vertex&                                 fineGridVertex,

@@ -14,37 +14,37 @@ int dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::_snapshotCounter = 0;
 
 
 
-peano::CommunicationSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::communicationSpecification() {
+peano::CommunicationSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::communicationSpecification() const {
   return peano::CommunicationSpecification::getPessimisticSpecification();
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexFirstTimeSpecification(int level) const { 
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::enterCellSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::leaveCellSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::leaveCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::ascendSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::ascendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::descendSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::descendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 

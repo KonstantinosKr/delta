@@ -10,38 +10,38 @@
 
 #include "delta/dynamics/dynamics.h"
 
-peano::CommunicationSpecification   dem::mappings::MoveParticles::communicationSpecification() {
+peano::CommunicationSpecification   dem::mappings::MoveParticles::communicationSpecification() const {
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
 
 /**
  * Move
  */
-peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexFirstTimeSpecification() {
+peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexFirstTimeSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 /**
  * Reflect
  */
-peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 /**
  * Reassign
  */
-peano::MappingSpecification   dem::mappings::MoveParticles::enterCellSpecification() {
+peano::MappingSpecification   dem::mappings::MoveParticles::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 
 
-peano::MappingSpecification   dem::mappings::MoveParticles::leaveCellSpecification() {
+peano::MappingSpecification   dem::mappings::MoveParticles::leaveCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::MoveParticles::ascendSpecification() {
+peano::MappingSpecification   dem::mappings::MoveParticles::ascendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification() {
+peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 

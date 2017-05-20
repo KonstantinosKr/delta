@@ -6,7 +6,7 @@
    }
    
    
-   dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
    _numberOfContactPoints(numberOfContactPoints),
    _numberOfParticleReassignments(numberOfParticleReassignments),
    _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -17,8 +17,8 @@
    _penetrationOccured(penetrationOccured),
    _numberOfParticles(numberOfParticles),
    _numberOfObstacles(numberOfObstacles),
-   _minimumMeshWidth(minimumMeshWidth),
-   _maximumMeshWidth(maximumMeshWidth),
+   _prescribedMinimumMeshWidth(prescribedMinimumMeshWidth),
+   _prescribedMaximumMeshWidth(prescribedMaximumMeshWidth),
    _hasRefined(hasRefined),
    _hasTriggeredRefinementForNextIteration(hasTriggeredRefinementForNextIteration),
    _hasErased(hasErased),
@@ -35,13 +35,13 @@
    
    
    dem::records::State::State(const PersistentRecords& persistentRecords):
-   _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minimumMeshWidth, persistentRecords._maximumMeshWidth, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted) {
+   _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._prescribedMinimumMeshWidth, persistentRecords._prescribedMaximumMeshWidth, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted) {
       
    }
    
    
-   dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
-   _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, minimumMeshWidth, maximumMeshWidth, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
+   dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
       
    }
    
@@ -78,9 +78,9 @@
       out << ",";
       out << "numberOfObstacles:" << getNumberOfObstacles();
       out << ",";
-      out << "minimumMeshWidth:" << getMinimumMeshWidth();
+      out << "prescribedMinimumMeshWidth:" << getPrescribedMinimumMeshWidth();
       out << ",";
-      out << "maximumMeshWidth:" << getMaximumMeshWidth();
+      out << "prescribedMaximumMeshWidth:" << getPrescribedMaximumMeshWidth();
       out << ",";
       out << "hasRefined:" << getHasRefined();
       out << ",";
@@ -115,8 +115,8 @@
          getPenetrationOccured(),
          getNumberOfParticles(),
          getNumberOfObstacles(),
-         getMinimumMeshWidth(),
-         getMaximumMeshWidth(),
+         getPrescribedMinimumMeshWidth(),
+         getPrescribedMaximumMeshWidth(),
          getHasRefined(),
          getHasTriggeredRefinementForNextIteration(),
          getHasErased(),
@@ -154,8 +154,8 @@
                , MPI_CXX_BOOL		 //penetrationOccured
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
-               , MPI_DOUBLE		 //minimumMeshWidth
-               , MPI_DOUBLE		 //maximumMeshWidth
+               , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+               , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                , MPI_CXX_BOOL		 //hasRefined
                , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
                , MPI_CXX_BOOL		 //hasErased
@@ -180,8 +180,8 @@
                , 1		 //penetrationOccured
                , 1		 //numberOfParticles
                , 1		 //numberOfObstacles
-               , 1		 //minimumMeshWidth
-               , 1		 //maximumMeshWidth
+               , 1		 //prescribedMinimumMeshWidth
+               , 1		 //prescribedMaximumMeshWidth
                , 1		 //hasRefined
                , 1		 //hasTriggeredRefinementForNextIteration
                , 1		 //hasErased
@@ -253,14 +253,14 @@
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
             #endif
             #ifdef MPI2
-            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
             #else
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
             #endif
             #ifdef MPI2
-            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
             #else
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
             #endif
             #ifdef MPI2
             MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[12] );
@@ -349,8 +349,8 @@
                , MPI_CXX_BOOL		 //penetrationOccured
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
-               , MPI_DOUBLE		 //minimumMeshWidth
-               , MPI_DOUBLE		 //maximumMeshWidth
+               , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+               , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                , MPI_CXX_BOOL		 //hasRefined
                , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
                , MPI_CXX_BOOL		 //hasErased
@@ -375,8 +375,8 @@
                , 1		 //penetrationOccured
                , 1		 //numberOfParticles
                , 1		 //numberOfObstacles
-               , 1		 //minimumMeshWidth
-               , 1		 //maximumMeshWidth
+               , 1		 //prescribedMinimumMeshWidth
+               , 1		 //prescribedMaximumMeshWidth
                , 1		 //hasRefined
                , 1		 //hasTriggeredRefinementForNextIteration
                , 1		 //hasErased
@@ -448,14 +448,14 @@
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
             #endif
             #ifdef MPI2
-            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
             #else
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
             #endif
             #ifdef MPI2
-            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
             #else
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
             #endif
             #ifdef MPI2
             MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[12] );
@@ -774,7 +774,7 @@
    }
    
    
-   dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
    _numberOfContactPoints(numberOfContactPoints),
    _numberOfParticleReassignments(numberOfParticleReassignments),
    _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -785,8 +785,8 @@
    _penetrationOccured(penetrationOccured),
    _numberOfParticles(numberOfParticles),
    _numberOfObstacles(numberOfObstacles),
-   _minimumMeshWidth(minimumMeshWidth),
-   _maximumMeshWidth(maximumMeshWidth),
+   _prescribedMinimumMeshWidth(prescribedMinimumMeshWidth),
+   _prescribedMaximumMeshWidth(prescribedMaximumMeshWidth),
    _isTraversalInverted(isTraversalInverted) {
       setHasRefined(hasRefined);
       setHasTriggeredRefinementForNextIteration(hasTriggeredRefinementForNextIteration);
@@ -815,7 +815,7 @@
    
    
    dem::records::StatePacked::StatePacked(const PersistentRecords& persistentRecords):
-   _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minimumMeshWidth, persistentRecords._maximumMeshWidth, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted) {
+   _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._prescribedMinimumMeshWidth, persistentRecords._prescribedMaximumMeshWidth, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted) {
       if ((6 >= (8 * sizeof(short int)))) {
          std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
          std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -826,8 +826,8 @@
    }
    
    
-   dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
-   _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, minimumMeshWidth, maximumMeshWidth, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
+   dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
       if ((6 >= (8 * sizeof(short int)))) {
          std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
          std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -870,9 +870,9 @@
       out << ",";
       out << "numberOfObstacles:" << getNumberOfObstacles();
       out << ",";
-      out << "minimumMeshWidth:" << getMinimumMeshWidth();
+      out << "prescribedMinimumMeshWidth:" << getPrescribedMinimumMeshWidth();
       out << ",";
-      out << "maximumMeshWidth:" << getMaximumMeshWidth();
+      out << "prescribedMaximumMeshWidth:" << getPrescribedMaximumMeshWidth();
       out << ",";
       out << "hasRefined:" << getHasRefined();
       out << ",";
@@ -907,8 +907,8 @@
          getPenetrationOccured(),
          getNumberOfParticles(),
          getNumberOfObstacles(),
-         getMinimumMeshWidth(),
-         getMaximumMeshWidth(),
+         getPrescribedMinimumMeshWidth(),
+         getPrescribedMaximumMeshWidth(),
          getHasRefined(),
          getHasTriggeredRefinementForNextIteration(),
          getHasErased(),
@@ -946,8 +946,8 @@
                , MPI_CXX_BOOL		 //penetrationOccured
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
-               , MPI_DOUBLE		 //minimumMeshWidth
-               , MPI_DOUBLE		 //maximumMeshWidth
+               , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+               , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                , MPI_CXX_BOOL		 //isTraversalInverted
                , MPI_SHORT		 //_packedRecords0
                #ifndef MPI2
@@ -967,8 +967,8 @@
                , 1		 //penetrationOccured
                , 1		 //numberOfParticles
                , 1		 //numberOfObstacles
-               , 1		 //minimumMeshWidth
-               , 1		 //maximumMeshWidth
+               , 1		 //prescribedMinimumMeshWidth
+               , 1		 //prescribedMaximumMeshWidth
                , 1		 //isTraversalInverted
                , 1		 //_packedRecords0
                #ifndef MPI2
@@ -1035,14 +1035,14 @@
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
             #endif
             #ifdef MPI2
-            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
             #else
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
             #endif
             #ifdef MPI2
-            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
             #else
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
             #endif
             #ifdef MPI2
             MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[12] );
@@ -1106,8 +1106,8 @@
                , MPI_CXX_BOOL		 //penetrationOccured
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
-               , MPI_DOUBLE		 //minimumMeshWidth
-               , MPI_DOUBLE		 //maximumMeshWidth
+               , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+               , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                , MPI_CXX_BOOL		 //isTraversalInverted
                , MPI_SHORT		 //_packedRecords0
                #ifndef MPI2
@@ -1127,8 +1127,8 @@
                , 1		 //penetrationOccured
                , 1		 //numberOfParticles
                , 1		 //numberOfObstacles
-               , 1		 //minimumMeshWidth
-               , 1		 //maximumMeshWidth
+               , 1		 //prescribedMinimumMeshWidth
+               , 1		 //prescribedMaximumMeshWidth
                , 1		 //isTraversalInverted
                , 1		 //_packedRecords0
                #ifndef MPI2
@@ -1195,14 +1195,14 @@
             MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
             #endif
             #ifdef MPI2
-            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
             #else
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
             #endif
             #ifdef MPI2
-            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+            MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
             #else
-            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+            MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
             #endif
             #ifdef MPI2
             MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[12] );
@@ -1491,7 +1491,7 @@
       }
       
       
-      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -1502,8 +1502,8 @@
       _penetrationOccured(penetrationOccured),
       _numberOfParticles(numberOfParticles),
       _numberOfObstacles(numberOfObstacles),
-      _minimumMeshWidth(minimumMeshWidth),
-      _maximumMeshWidth(maximumMeshWidth),
+      _prescribedMinimumMeshWidth(prescribedMinimumMeshWidth),
+      _prescribedMaximumMeshWidth(prescribedMaximumMeshWidth),
       _minMeshWidth(minMeshWidth),
       _maxMeshWidth(maxMeshWidth),
       _numberOfInnerVertices(numberOfInnerVertices),
@@ -1536,13 +1536,13 @@
       
       
       dem::records::State::State(const PersistentRecords& persistentRecords):
-      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minimumMeshWidth, persistentRecords._maximumMeshWidth, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted, persistentRecords._reduceStateAndCell, persistentRecords._couldNotEraseDueToDecompositionFlag, persistentRecords._subWorkerIsInvolvedInJoinOrFork) {
+      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._prescribedMinimumMeshWidth, persistentRecords._prescribedMaximumMeshWidth, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted, persistentRecords._reduceStateAndCell, persistentRecords._couldNotEraseDueToDecompositionFlag, persistentRecords._subWorkerIsInvolvedInJoinOrFork) {
          
       }
       
       
-      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
-      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, minimumMeshWidth, maximumMeshWidth, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
+      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
          
       }
       
@@ -1579,9 +1579,9 @@
          out << ",";
          out << "numberOfObstacles:" << getNumberOfObstacles();
          out << ",";
-         out << "minimumMeshWidth:" << getMinimumMeshWidth();
+         out << "prescribedMinimumMeshWidth:" << getPrescribedMinimumMeshWidth();
          out << ",";
-         out << "maximumMeshWidth:" << getMaximumMeshWidth();
+         out << "prescribedMaximumMeshWidth:" << getPrescribedMaximumMeshWidth();
          out << ",";
          out << "minMeshWidth:[";
    for (int i = 0; i < DIMENSIONS-1; i++) {
@@ -1656,8 +1656,8 @@
             getPenetrationOccured(),
             getNumberOfParticles(),
             getNumberOfObstacles(),
-            getMinimumMeshWidth(),
-            getMaximumMeshWidth(),
+            getPrescribedMinimumMeshWidth(),
+            getPrescribedMaximumMeshWidth(),
             getMinMeshWidth(),
             getMaxMeshWidth(),
             getNumberOfInnerVertices(),
@@ -1711,8 +1711,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_DOUBLE		 //minMeshWidth
                   , MPI_DOUBLE		 //maxMeshWidth
                   , MPI_DOUBLE		 //numberOfInnerVertices
@@ -1753,8 +1753,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , DIMENSIONS		 //minMeshWidth
                   , DIMENSIONS		 //maxMeshWidth
                   , 1		 //numberOfInnerVertices
@@ -1842,14 +1842,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[12] );
@@ -2018,8 +2018,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_DOUBLE		 //minMeshWidth
                   , MPI_DOUBLE		 //maxMeshWidth
                   , MPI_DOUBLE		 //numberOfInnerVertices
@@ -2060,8 +2060,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , DIMENSIONS		 //minMeshWidth
                   , DIMENSIONS		 //maxMeshWidth
                   , 1		 //numberOfInnerVertices
@@ -2149,14 +2149,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[12] );
@@ -2555,7 +2555,7 @@
       }
       
       
-      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -2566,8 +2566,8 @@
       _penetrationOccured(penetrationOccured),
       _numberOfParticles(numberOfParticles),
       _numberOfObstacles(numberOfObstacles),
-      _minimumMeshWidth(minimumMeshWidth),
-      _maximumMeshWidth(maximumMeshWidth),
+      _prescribedMinimumMeshWidth(prescribedMinimumMeshWidth),
+      _prescribedMaximumMeshWidth(prescribedMaximumMeshWidth),
       _minMeshWidth(minMeshWidth),
       _maxMeshWidth(maxMeshWidth),
       _numberOfInnerVertices(numberOfInnerVertices),
@@ -2612,7 +2612,7 @@
       
       
       dem::records::StatePacked::StatePacked(const PersistentRecords& persistentRecords):
-      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minimumMeshWidth, persistentRecords._maximumMeshWidth, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted, persistentRecords.getReduceStateAndCell(), persistentRecords.getCouldNotEraseDueToDecompositionFlag(), persistentRecords.getSubWorkerIsInvolvedInJoinOrFork()) {
+      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._prescribedMinimumMeshWidth, persistentRecords._prescribedMaximumMeshWidth, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted, persistentRecords.getReduceStateAndCell(), persistentRecords.getCouldNotEraseDueToDecompositionFlag(), persistentRecords.getSubWorkerIsInvolvedInJoinOrFork()) {
          if ((9 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
             std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -2623,8 +2623,8 @@
       }
       
       
-      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
-      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, minimumMeshWidth, maximumMeshWidth, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
+      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
          if ((9 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
             std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -2667,9 +2667,9 @@
          out << ",";
          out << "numberOfObstacles:" << getNumberOfObstacles();
          out << ",";
-         out << "minimumMeshWidth:" << getMinimumMeshWidth();
+         out << "prescribedMinimumMeshWidth:" << getPrescribedMinimumMeshWidth();
          out << ",";
-         out << "maximumMeshWidth:" << getMaximumMeshWidth();
+         out << "prescribedMaximumMeshWidth:" << getPrescribedMaximumMeshWidth();
          out << ",";
          out << "minMeshWidth:[";
    for (int i = 0; i < DIMENSIONS-1; i++) {
@@ -2744,8 +2744,8 @@
             getPenetrationOccured(),
             getNumberOfParticles(),
             getNumberOfObstacles(),
-            getMinimumMeshWidth(),
-            getMaximumMeshWidth(),
+            getPrescribedMinimumMeshWidth(),
+            getPrescribedMaximumMeshWidth(),
             getMinMeshWidth(),
             getMaxMeshWidth(),
             getNumberOfInnerVertices(),
@@ -2799,8 +2799,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_DOUBLE		 //minMeshWidth
                   , MPI_DOUBLE		 //maxMeshWidth
                   , MPI_DOUBLE		 //numberOfInnerVertices
@@ -2833,8 +2833,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , DIMENSIONS		 //minMeshWidth
                   , DIMENSIONS		 //maxMeshWidth
                   , 1		 //numberOfInnerVertices
@@ -2914,14 +2914,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[12] );
@@ -3050,8 +3050,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_DOUBLE		 //minMeshWidth
                   , MPI_DOUBLE		 //maxMeshWidth
                   , MPI_DOUBLE		 //numberOfInnerVertices
@@ -3084,8 +3084,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , DIMENSIONS		 //minMeshWidth
                   , DIMENSIONS		 //maxMeshWidth
                   , 1		 //numberOfInnerVertices
@@ -3165,14 +3165,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[12] );
@@ -3527,7 +3527,7 @@
       }
       
       
-      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -3538,8 +3538,8 @@
       _penetrationOccured(penetrationOccured),
       _numberOfParticles(numberOfParticles),
       _numberOfObstacles(numberOfObstacles),
-      _minimumMeshWidth(minimumMeshWidth),
-      _maximumMeshWidth(maximumMeshWidth),
+      _prescribedMinimumMeshWidth(prescribedMinimumMeshWidth),
+      _prescribedMaximumMeshWidth(prescribedMaximumMeshWidth),
       _minMeshWidth(minMeshWidth),
       _maxMeshWidth(maxMeshWidth),
       _numberOfInnerVertices(numberOfInnerVertices),
@@ -3569,13 +3569,13 @@
       
       
       dem::records::State::State(const PersistentRecords& persistentRecords):
-      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minimumMeshWidth, persistentRecords._maximumMeshWidth, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted) {
+      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._prescribedMinimumMeshWidth, persistentRecords._prescribedMaximumMeshWidth, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted) {
          
       }
       
       
-      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
-      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, minimumMeshWidth, maximumMeshWidth, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
+      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
          
       }
       
@@ -3612,9 +3612,9 @@
          out << ",";
          out << "numberOfObstacles:" << getNumberOfObstacles();
          out << ",";
-         out << "minimumMeshWidth:" << getMinimumMeshWidth();
+         out << "prescribedMinimumMeshWidth:" << getPrescribedMinimumMeshWidth();
          out << ",";
-         out << "maximumMeshWidth:" << getMaximumMeshWidth();
+         out << "prescribedMaximumMeshWidth:" << getPrescribedMaximumMeshWidth();
          out << ",";
          out << "minMeshWidth:[";
    for (int i = 0; i < DIMENSIONS-1; i++) {
@@ -3683,8 +3683,8 @@
             getPenetrationOccured(),
             getNumberOfParticles(),
             getNumberOfObstacles(),
-            getMinimumMeshWidth(),
-            getMaximumMeshWidth(),
+            getPrescribedMinimumMeshWidth(),
+            getPrescribedMaximumMeshWidth(),
             getMinMeshWidth(),
             getMaxMeshWidth(),
             getNumberOfInnerVertices(),
@@ -3735,8 +3735,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_DOUBLE		 //minMeshWidth
                   , MPI_DOUBLE		 //maxMeshWidth
                   , MPI_DOUBLE		 //numberOfInnerVertices
@@ -3774,8 +3774,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , DIMENSIONS		 //minMeshWidth
                   , DIMENSIONS		 //maxMeshWidth
                   , 1		 //numberOfInnerVertices
@@ -3860,14 +3860,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[12] );
@@ -4021,8 +4021,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_DOUBLE		 //minMeshWidth
                   , MPI_DOUBLE		 //maxMeshWidth
                   , MPI_DOUBLE		 //numberOfInnerVertices
@@ -4060,8 +4060,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , DIMENSIONS		 //minMeshWidth
                   , DIMENSIONS		 //maxMeshWidth
                   , 1		 //numberOfInnerVertices
@@ -4146,14 +4146,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minMeshWidth[0]))), 		&disp[12] );
@@ -4537,7 +4537,7 @@
       }
       
       
-      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -4548,8 +4548,8 @@
       _penetrationOccured(penetrationOccured),
       _numberOfParticles(numberOfParticles),
       _numberOfObstacles(numberOfObstacles),
-      _minimumMeshWidth(minimumMeshWidth),
-      _maximumMeshWidth(maximumMeshWidth),
+      _prescribedMinimumMeshWidth(prescribedMinimumMeshWidth),
+      _prescribedMaximumMeshWidth(prescribedMaximumMeshWidth),
       _minMeshWidth(minMeshWidth),
       _maxMeshWidth(maxMeshWidth),
       _numberOfInnerVertices(numberOfInnerVertices),
@@ -4591,7 +4591,7 @@
       
       
       dem::records::StatePacked::StatePacked(const PersistentRecords& persistentRecords):
-      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minimumMeshWidth, persistentRecords._maximumMeshWidth, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted) {
+      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._prescribedMinimumMeshWidth, persistentRecords._prescribedMaximumMeshWidth, persistentRecords._minMeshWidth, persistentRecords._maxMeshWidth, persistentRecords._numberOfInnerVertices, persistentRecords._numberOfBoundaryVertices, persistentRecords._numberOfOuterVertices, persistentRecords._numberOfInnerCells, persistentRecords._numberOfOuterCells, persistentRecords._numberOfInnerLeafVertices, persistentRecords._numberOfBoundaryLeafVertices, persistentRecords._numberOfOuterLeafVertices, persistentRecords._numberOfInnerLeafCells, persistentRecords._numberOfOuterLeafCells, persistentRecords._maxLevel, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted) {
          if ((6 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
             std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -4602,8 +4602,8 @@
       }
       
       
-      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
-      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, minimumMeshWidth, maximumMeshWidth, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
+      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
          if ((6 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
             std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -4646,9 +4646,9 @@
          out << ",";
          out << "numberOfObstacles:" << getNumberOfObstacles();
          out << ",";
-         out << "minimumMeshWidth:" << getMinimumMeshWidth();
+         out << "prescribedMinimumMeshWidth:" << getPrescribedMinimumMeshWidth();
          out << ",";
-         out << "maximumMeshWidth:" << getMaximumMeshWidth();
+         out << "prescribedMaximumMeshWidth:" << getPrescribedMaximumMeshWidth();
          out << ",";
          out << "minMeshWidth:[";
    for (int i = 0; i < DIMENSIONS-1; i++) {
@@ -4717,8 +4717,8 @@
             getPenetrationOccured(),
             getNumberOfParticles(),
             getNumberOfObstacles(),
-            getMinimumMeshWidth(),
-            getMaximumMeshWidth(),
+            getPrescribedMinimumMeshWidth(),
+            getPrescribedMaximumMeshWidth(),
             getMinMeshWidth(),
             getMaxMeshWidth(),
             getNumberOfInnerVertices(),
@@ -4769,8 +4769,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_DOUBLE		 //minMeshWidth
                   , MPI_DOUBLE		 //maxMeshWidth
                   , MPI_DOUBLE		 //numberOfInnerVertices
@@ -4803,8 +4803,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , DIMENSIONS		 //minMeshWidth
                   , DIMENSIONS		 //maxMeshWidth
                   , 1		 //numberOfInnerVertices
@@ -4884,14 +4884,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[12] );
@@ -5020,8 +5020,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_DOUBLE		 //minMeshWidth
                   , MPI_DOUBLE		 //maxMeshWidth
                   , MPI_DOUBLE		 //numberOfInnerVertices
@@ -5054,8 +5054,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , DIMENSIONS		 //minMeshWidth
                   , DIMENSIONS		 //maxMeshWidth
                   , 1		 //numberOfInnerVertices
@@ -5135,14 +5135,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minMeshWidth[0]))), 		&disp[12] );
@@ -5497,7 +5497,7 @@
       }
       
       
-      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -5508,8 +5508,8 @@
       _penetrationOccured(penetrationOccured),
       _numberOfParticles(numberOfParticles),
       _numberOfObstacles(numberOfObstacles),
-      _minimumMeshWidth(minimumMeshWidth),
-      _maximumMeshWidth(maximumMeshWidth),
+      _prescribedMinimumMeshWidth(prescribedMinimumMeshWidth),
+      _prescribedMaximumMeshWidth(prescribedMaximumMeshWidth),
       _hasRefined(hasRefined),
       _hasTriggeredRefinementForNextIteration(hasTriggeredRefinementForNextIteration),
       _hasErased(hasErased),
@@ -5529,13 +5529,13 @@
       
       
       dem::records::State::State(const PersistentRecords& persistentRecords):
-      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minimumMeshWidth, persistentRecords._maximumMeshWidth, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted, persistentRecords._reduceStateAndCell, persistentRecords._couldNotEraseDueToDecompositionFlag, persistentRecords._subWorkerIsInvolvedInJoinOrFork) {
+      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._prescribedMinimumMeshWidth, persistentRecords._prescribedMaximumMeshWidth, persistentRecords._hasRefined, persistentRecords._hasTriggeredRefinementForNextIteration, persistentRecords._hasErased, persistentRecords._hasTriggeredEraseForNextIteration, persistentRecords._hasChangedVertexOrCellState, persistentRecords._hasModifiedGridInPreviousIteration, persistentRecords._isTraversalInverted, persistentRecords._reduceStateAndCell, persistentRecords._couldNotEraseDueToDecompositionFlag, persistentRecords._subWorkerIsInvolvedInJoinOrFork) {
          
       }
       
       
-      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
-      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, minimumMeshWidth, maximumMeshWidth, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
+      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
          
       }
       
@@ -5572,9 +5572,9 @@
          out << ",";
          out << "numberOfObstacles:" << getNumberOfObstacles();
          out << ",";
-         out << "minimumMeshWidth:" << getMinimumMeshWidth();
+         out << "prescribedMinimumMeshWidth:" << getPrescribedMinimumMeshWidth();
          out << ",";
-         out << "maximumMeshWidth:" << getMaximumMeshWidth();
+         out << "prescribedMaximumMeshWidth:" << getPrescribedMaximumMeshWidth();
          out << ",";
          out << "hasRefined:" << getHasRefined();
          out << ",";
@@ -5615,8 +5615,8 @@
             getPenetrationOccured(),
             getNumberOfParticles(),
             getNumberOfObstacles(),
-            getMinimumMeshWidth(),
-            getMaximumMeshWidth(),
+            getPrescribedMinimumMeshWidth(),
+            getPrescribedMaximumMeshWidth(),
             getHasRefined(),
             getHasTriggeredRefinementForNextIteration(),
             getHasErased(),
@@ -5657,8 +5657,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_CXX_BOOL		 //hasRefined
                   , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
                   , MPI_CXX_BOOL		 //hasErased
@@ -5686,8 +5686,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , 1		 //hasRefined
                   , 1		 //hasTriggeredRefinementForNextIteration
                   , 1		 //hasErased
@@ -5762,14 +5762,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[12] );
@@ -5873,8 +5873,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_CXX_BOOL		 //hasRefined
                   , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
                   , MPI_CXX_BOOL		 //hasErased
@@ -5902,8 +5902,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , 1		 //hasRefined
                   , 1		 //hasTriggeredRefinementForNextIteration
                   , 1		 //hasErased
@@ -5978,14 +5978,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyState[0]._persistentRecords._hasRefined))), 		&disp[12] );
@@ -6319,7 +6319,7 @@
       }
       
       
-      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -6330,8 +6330,8 @@
       _penetrationOccured(penetrationOccured),
       _numberOfParticles(numberOfParticles),
       _numberOfObstacles(numberOfObstacles),
-      _minimumMeshWidth(minimumMeshWidth),
-      _maximumMeshWidth(maximumMeshWidth),
+      _prescribedMinimumMeshWidth(prescribedMinimumMeshWidth),
+      _prescribedMaximumMeshWidth(prescribedMaximumMeshWidth),
       _isTraversalInverted(isTraversalInverted) {
          setHasRefined(hasRefined);
          setHasTriggeredRefinementForNextIteration(hasTriggeredRefinementForNextIteration);
@@ -6363,7 +6363,7 @@
       
       
       dem::records::StatePacked::StatePacked(const PersistentRecords& persistentRecords):
-      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._minimumMeshWidth, persistentRecords._maximumMeshWidth, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted, persistentRecords.getReduceStateAndCell(), persistentRecords.getCouldNotEraseDueToDecompositionFlag(), persistentRecords.getSubWorkerIsInvolvedInJoinOrFork()) {
+      _persistentRecords(persistentRecords._numberOfContactPoints, persistentRecords._numberOfParticleReassignments, persistentRecords._numberOfTriangleComparisons, persistentRecords._numberOfParticleComparisons, persistentRecords._timeStepSize, persistentRecords._currentTime, persistentRecords._twoParticlesAreClose, persistentRecords._penetrationOccured, persistentRecords._numberOfParticles, persistentRecords._numberOfObstacles, persistentRecords._prescribedMinimumMeshWidth, persistentRecords._prescribedMaximumMeshWidth, persistentRecords.getHasRefined(), persistentRecords.getHasTriggeredRefinementForNextIteration(), persistentRecords.getHasErased(), persistentRecords.getHasTriggeredEraseForNextIteration(), persistentRecords.getHasChangedVertexOrCellState(), persistentRecords.getHasModifiedGridInPreviousIteration(), persistentRecords._isTraversalInverted, persistentRecords.getReduceStateAndCell(), persistentRecords.getCouldNotEraseDueToDecompositionFlag(), persistentRecords.getSubWorkerIsInvolvedInJoinOrFork()) {
          if ((9 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
             std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -6374,8 +6374,8 @@
       }
       
       
-      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& minimumMeshWidth, const double& maximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
-      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, minimumMeshWidth, maximumMeshWidth, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
+      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const double& currentTime, const bool& twoParticlesAreClose, const bool& penetrationOccured, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, currentTime, twoParticlesAreClose, penetrationOccured, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
          if ((9 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
             std::cerr << "  Packed-Type: short int hint-size no-of-bits;  " << std::endl << std::endl;
@@ -6418,9 +6418,9 @@
          out << ",";
          out << "numberOfObstacles:" << getNumberOfObstacles();
          out << ",";
-         out << "minimumMeshWidth:" << getMinimumMeshWidth();
+         out << "prescribedMinimumMeshWidth:" << getPrescribedMinimumMeshWidth();
          out << ",";
-         out << "maximumMeshWidth:" << getMaximumMeshWidth();
+         out << "prescribedMaximumMeshWidth:" << getPrescribedMaximumMeshWidth();
          out << ",";
          out << "hasRefined:" << getHasRefined();
          out << ",";
@@ -6461,8 +6461,8 @@
             getPenetrationOccured(),
             getNumberOfParticles(),
             getNumberOfObstacles(),
-            getMinimumMeshWidth(),
-            getMaximumMeshWidth(),
+            getPrescribedMinimumMeshWidth(),
+            getPrescribedMaximumMeshWidth(),
             getHasRefined(),
             getHasTriggeredRefinementForNextIteration(),
             getHasErased(),
@@ -6503,8 +6503,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_CXX_BOOL		 //isTraversalInverted
                   , MPI_SHORT		 //_packedRecords0
                   #ifndef MPI2
@@ -6524,8 +6524,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , 1		 //isTraversalInverted
                   , 1		 //_packedRecords0
                   #ifndef MPI2
@@ -6592,14 +6592,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[12] );
@@ -6663,8 +6663,8 @@
                   , MPI_CXX_BOOL		 //penetrationOccured
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //minimumMeshWidth
-                  , MPI_DOUBLE		 //maximumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
+                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
                   , MPI_CXX_BOOL		 //isTraversalInverted
                   , MPI_SHORT		 //_packedRecords0
                   #ifndef MPI2
@@ -6684,8 +6684,8 @@
                   , 1		 //penetrationOccured
                   , 1		 //numberOfParticles
                   , 1		 //numberOfObstacles
-                  , 1		 //minimumMeshWidth
-                  , 1		 //maximumMeshWidth
+                  , 1		 //prescribedMinimumMeshWidth
+                  , 1		 //prescribedMaximumMeshWidth
                   , 1		 //isTraversalInverted
                   , 1		 //_packedRecords0
                   #ifndef MPI2
@@ -6752,14 +6752,14 @@
                MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._numberOfObstacles))), 		&disp[9] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._minimumMeshWidth))), 		&disp[10] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMinimumMeshWidth))), 		&disp[10] );
                #endif
                #ifdef MPI2
-               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #else
-               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._maximumMeshWidth))), 		&disp[11] );
+               MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._prescribedMaximumMeshWidth))), 		&disp[11] );
                #endif
                #ifdef MPI2
                MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyStatePacked[0]._persistentRecords._isTraversalInverted))), 		&disp[12] );

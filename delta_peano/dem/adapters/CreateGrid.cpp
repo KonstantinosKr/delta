@@ -1,57 +1,57 @@
 #include "dem/adapters/CreateGrid.h"
 
 
-peano::CommunicationSpecification   dem::adapters::CreateGrid::communicationSpecification() {
+peano::CommunicationSpecification   dem::adapters::CreateGrid::communicationSpecification() const {
   return peano::CommunicationSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::communicationSpecification()
+    &  _map2CreateGrid.communicationSpecification()
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGrid::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGrid::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::touchVertexLastTimeSpecification()
+    &  _map2CreateGrid.touchVertexLastTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGrid::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::adapters::CreateGrid::touchVertexFirstTimeSpecification(int level) const { 
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::touchVertexFirstTimeSpecification()
+    &  _map2CreateGrid.touchVertexFirstTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGrid::enterCellSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGrid::enterCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::enterCellSpecification()
+    &  _map2CreateGrid.enterCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGrid::leaveCellSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGrid::leaveCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::leaveCellSpecification()
+    &  _map2CreateGrid.leaveCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGrid::ascendSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGrid::ascendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::ascendSpecification()
+    &  _map2CreateGrid.ascendSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGrid::descendSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGrid::descendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::descendSpecification()
+    &  _map2CreateGrid.descendSpecification(level)
 
   ;
 }

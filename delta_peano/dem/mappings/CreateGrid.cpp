@@ -21,25 +21,28 @@
 /**
  * @todo Please tailor the parameters to your mapping's properties.
  */
-peano::CommunicationSpecification   dem::mappings::CreateGrid::communicationSpecification() {
-	return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
+peano::CommunicationSpecification   dem::mappings::CreateGrid::communicationSpecification() const {
+	return peano::CommunicationSpecification(
+	    peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,
+	    peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
-peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexLastTimeSpecification() {
+
+peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexLastTimeSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
-peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexFirstTimeSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
-peano::MappingSpecification   dem::mappings::CreateGrid::enterCellSpecification() {
+peano::MappingSpecification   dem::mappings::CreateGrid::enterCellSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::CreateGrid::leaveCellSpecification() {
+peano::MappingSpecification   dem::mappings::CreateGrid::leaveCellSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::CreateGrid::ascendSpecification() {
+peano::MappingSpecification   dem::mappings::CreateGrid::ascendSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification() {
+peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 

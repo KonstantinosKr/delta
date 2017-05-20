@@ -13,33 +13,33 @@
 
 #include "delta/dynamics/dynamics.h"
 
-peano::CommunicationSpecification   dem::mappings::Collision::communicationSpecification() {
+peano::CommunicationSpecification   dem::mappings::Collision::communicationSpecification() const {
 	return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
 
-peano::MappingSpecification   dem::mappings::Collision::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::mappings::Collision::touchVertexFirstTimeSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
-peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
-peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification() {
+peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
 
-peano::MappingSpecification   dem::mappings::Collision::leaveCellSpecification() {
+peano::MappingSpecification   dem::mappings::Collision::leaveCellSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
-peano::MappingSpecification   dem::mappings::Collision::ascendSpecification() {
+peano::MappingSpecification   dem::mappings::Collision::ascendSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-peano::MappingSpecification   dem::mappings::Collision::descendSpecification() {
+peano::MappingSpecification   dem::mappings::Collision::descendSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 

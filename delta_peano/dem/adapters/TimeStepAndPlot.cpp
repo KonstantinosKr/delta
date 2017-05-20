@@ -1,78 +1,78 @@
 #include "dem/adapters/TimeStepAndPlot.h"
 
 
-peano::CommunicationSpecification   dem::adapters::TimeStepAndPlot::communicationSpecification() {
+peano::CommunicationSpecification   dem::adapters::TimeStepAndPlot::communicationSpecification() const {
   return peano::CommunicationSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::communicationSpecification()
-   & dem::mappings::MoveParticles::communicationSpecification()
-   & dem::mappings::Plot::communicationSpecification()
-   & dem::adapters::TimeStepAndPlot2VTKGridVisualiser_3::communicationSpecification()
+    &  _map2Collision.communicationSpecification()
+    &  _map2MoveParticles.communicationSpecification()
+    &  _map2Plot.communicationSpecification()
+    &  _map2TimeStepAndPlot2VTKGridVisualiser_3.communicationSpecification()
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlot::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlot::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::touchVertexLastTimeSpecification()
-   & dem::mappings::MoveParticles::touchVertexLastTimeSpecification()
-   & dem::mappings::Plot::touchVertexLastTimeSpecification()
-   & dem::adapters::TimeStepAndPlot2VTKGridVisualiser_3::touchVertexLastTimeSpecification()
+    &  _map2Collision.touchVertexLastTimeSpecification(level)
+    &  _map2MoveParticles.touchVertexLastTimeSpecification(level)
+    &  _map2Plot.touchVertexLastTimeSpecification(level)
+    &  _map2TimeStepAndPlot2VTKGridVisualiser_3.touchVertexLastTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlot::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::adapters::TimeStepAndPlot::touchVertexFirstTimeSpecification(int level) const { 
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::touchVertexFirstTimeSpecification()
-   & dem::mappings::MoveParticles::touchVertexFirstTimeSpecification()
-   & dem::mappings::Plot::touchVertexFirstTimeSpecification()
-   & dem::adapters::TimeStepAndPlot2VTKGridVisualiser_3::touchVertexFirstTimeSpecification()
+    &  _map2Collision.touchVertexFirstTimeSpecification(level)
+    &  _map2MoveParticles.touchVertexFirstTimeSpecification(level)
+    &  _map2Plot.touchVertexFirstTimeSpecification(level)
+    &  _map2TimeStepAndPlot2VTKGridVisualiser_3.touchVertexFirstTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlot::enterCellSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlot::enterCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::enterCellSpecification()
-   & dem::mappings::MoveParticles::enterCellSpecification()
-   & dem::mappings::Plot::enterCellSpecification()
-   & dem::adapters::TimeStepAndPlot2VTKGridVisualiser_3::enterCellSpecification()
+    &  _map2Collision.enterCellSpecification(level)
+    &  _map2MoveParticles.enterCellSpecification(level)
+    &  _map2Plot.enterCellSpecification(level)
+    &  _map2TimeStepAndPlot2VTKGridVisualiser_3.enterCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlot::leaveCellSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlot::leaveCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::leaveCellSpecification()
-   & dem::mappings::MoveParticles::leaveCellSpecification()
-   & dem::mappings::Plot::leaveCellSpecification()
-   & dem::adapters::TimeStepAndPlot2VTKGridVisualiser_3::leaveCellSpecification()
+    &  _map2Collision.leaveCellSpecification(level)
+    &  _map2MoveParticles.leaveCellSpecification(level)
+    &  _map2Plot.leaveCellSpecification(level)
+    &  _map2TimeStepAndPlot2VTKGridVisualiser_3.leaveCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlot::ascendSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlot::ascendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::ascendSpecification()
-   & dem::mappings::MoveParticles::ascendSpecification()
-   & dem::mappings::Plot::ascendSpecification()
-   & dem::adapters::TimeStepAndPlot2VTKGridVisualiser_3::ascendSpecification()
+    &  _map2Collision.ascendSpecification(level)
+    &  _map2MoveParticles.ascendSpecification(level)
+    &  _map2Plot.ascendSpecification(level)
+    &  _map2TimeStepAndPlot2VTKGridVisualiser_3.ascendSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlot::descendSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlot::descendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::descendSpecification()
-   & dem::mappings::MoveParticles::descendSpecification()
-   & dem::mappings::Plot::descendSpecification()
-   & dem::adapters::TimeStepAndPlot2VTKGridVisualiser_3::descendSpecification()
+    &  _map2Collision.descendSpecification(level)
+    &  _map2MoveParticles.descendSpecification(level)
+    &  _map2Plot.descendSpecification(level)
+    &  _map2TimeStepAndPlot2VTKGridVisualiser_3.descendSpecification(level)
 
   ;
 }

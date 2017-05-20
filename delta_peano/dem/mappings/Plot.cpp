@@ -5,29 +5,29 @@
 /**
  * @todo Please tailor the parameters to your mapping's properties.
  */
-peano::CommunicationSpecification   dem::mappings::Plot::communicationSpecification() {
+peano::CommunicationSpecification   dem::mappings::Plot::communicationSpecification() const {
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
 
 /**
  * This is the only routine that we actually use.
  */
-peano::MappingSpecification   dem::mappings::Plot::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::mappings::Plot::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
-peano::MappingSpecification   dem::mappings::Plot::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::mappings::Plot::touchVertexFirstTimeSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
-peano::MappingSpecification   dem::mappings::Plot::enterCellSpecification() {
+peano::MappingSpecification   dem::mappings::Plot::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::Plot::leaveCellSpecification() {
+peano::MappingSpecification   dem::mappings::Plot::leaveCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::Plot::ascendSpecification() {
+peano::MappingSpecification   dem::mappings::Plot::ascendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
-peano::MappingSpecification   dem::mappings::Plot::descendSpecification() {
+peano::MappingSpecification   dem::mappings::Plot::descendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 

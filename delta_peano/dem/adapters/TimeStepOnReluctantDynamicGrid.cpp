@@ -1,71 +1,71 @@
 #include "dem/adapters/TimeStepOnReluctantDynamicGrid.h"
 
 
-peano::CommunicationSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::communicationSpecification() {
+peano::CommunicationSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::communicationSpecification() const {
   return peano::CommunicationSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::communicationSpecification()
-   & dem::mappings::MoveParticles::communicationSpecification()
-   & dem::mappings::ReluctantlyAdoptGrid::communicationSpecification()
+    &  _map2Collision.communicationSpecification()
+    &  _map2MoveParticles.communicationSpecification()
+    &  _map2ReluctantlyAdoptGrid.communicationSpecification()
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::touchVertexLastTimeSpecification()
-   & dem::mappings::MoveParticles::touchVertexLastTimeSpecification()
-   & dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTimeSpecification()
+    &  _map2Collision.touchVertexLastTimeSpecification(level)
+    &  _map2MoveParticles.touchVertexLastTimeSpecification(level)
+    &  _map2ReluctantlyAdoptGrid.touchVertexLastTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::touchVertexFirstTimeSpecification(int level) const { 
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::touchVertexFirstTimeSpecification()
-   & dem::mappings::MoveParticles::touchVertexFirstTimeSpecification()
-   & dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTimeSpecification()
+    &  _map2Collision.touchVertexFirstTimeSpecification(level)
+    &  _map2MoveParticles.touchVertexFirstTimeSpecification(level)
+    &  _map2ReluctantlyAdoptGrid.touchVertexFirstTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::enterCellSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::enterCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::enterCellSpecification()
-   & dem::mappings::MoveParticles::enterCellSpecification()
-   & dem::mappings::ReluctantlyAdoptGrid::enterCellSpecification()
+    &  _map2Collision.enterCellSpecification(level)
+    &  _map2MoveParticles.enterCellSpecification(level)
+    &  _map2ReluctantlyAdoptGrid.enterCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::leaveCellSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::leaveCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::leaveCellSpecification()
-   & dem::mappings::MoveParticles::leaveCellSpecification()
-   & dem::mappings::ReluctantlyAdoptGrid::leaveCellSpecification()
+    &  _map2Collision.leaveCellSpecification(level)
+    &  _map2MoveParticles.leaveCellSpecification(level)
+    &  _map2ReluctantlyAdoptGrid.leaveCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::ascendSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::ascendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::ascendSpecification()
-   & dem::mappings::MoveParticles::ascendSpecification()
-   & dem::mappings::ReluctantlyAdoptGrid::ascendSpecification()
+    &  _map2Collision.ascendSpecification(level)
+    &  _map2MoveParticles.ascendSpecification(level)
+    &  _map2ReluctantlyAdoptGrid.ascendSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::descendSpecification() {
+peano::MappingSpecification   dem::adapters::TimeStepOnReluctantDynamicGrid::descendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::Collision::descendSpecification()
-   & dem::mappings::MoveParticles::descendSpecification()
-   & dem::mappings::ReluctantlyAdoptGrid::descendSpecification()
+    &  _map2Collision.descendSpecification(level)
+    &  _map2MoveParticles.descendSpecification(level)
+    &  _map2ReluctantlyAdoptGrid.descendSpecification(level)
 
   ;
 }

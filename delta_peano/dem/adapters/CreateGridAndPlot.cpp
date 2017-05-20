@@ -1,71 +1,71 @@
 #include "dem/adapters/CreateGridAndPlot.h"
 
 
-peano::CommunicationSpecification   dem::adapters::CreateGridAndPlot::communicationSpecification() {
+peano::CommunicationSpecification   dem::adapters::CreateGridAndPlot::communicationSpecification() const {
   return peano::CommunicationSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::communicationSpecification()
-   & dem::mappings::Plot::communicationSpecification()
-   & dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::communicationSpecification()
+    &  _map2CreateGrid.communicationSpecification()
+    &  _map2Plot.communicationSpecification()
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.communicationSpecification()
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot::touchVertexLastTimeSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::touchVertexLastTimeSpecification()
-   & dem::mappings::Plot::touchVertexLastTimeSpecification()
-   & dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexLastTimeSpecification()
+    &  _map2CreateGrid.touchVertexLastTimeSpecification(level)
+    &  _map2Plot.touchVertexLastTimeSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.touchVertexLastTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot::touchVertexFirstTimeSpecification() { 
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot::touchVertexFirstTimeSpecification(int level) const { 
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::touchVertexFirstTimeSpecification()
-   & dem::mappings::Plot::touchVertexFirstTimeSpecification()
-   & dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::touchVertexFirstTimeSpecification()
+    &  _map2CreateGrid.touchVertexFirstTimeSpecification(level)
+    &  _map2Plot.touchVertexFirstTimeSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.touchVertexFirstTimeSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot::enterCellSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot::enterCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::enterCellSpecification()
-   & dem::mappings::Plot::enterCellSpecification()
-   & dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::enterCellSpecification()
+    &  _map2CreateGrid.enterCellSpecification(level)
+    &  _map2Plot.enterCellSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.enterCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot::leaveCellSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot::leaveCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::leaveCellSpecification()
-   & dem::mappings::Plot::leaveCellSpecification()
-   & dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::leaveCellSpecification()
+    &  _map2CreateGrid.leaveCellSpecification(level)
+    &  _map2Plot.leaveCellSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.leaveCellSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot::ascendSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot::ascendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::ascendSpecification()
-   & dem::mappings::Plot::ascendSpecification()
-   & dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::ascendSpecification()
+    &  _map2CreateGrid.ascendSpecification(level)
+    &  _map2Plot.ascendSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.ascendSpecification(level)
 
   ;
 }
 
 
-peano::MappingSpecification   dem::adapters::CreateGridAndPlot::descendSpecification() {
+peano::MappingSpecification   dem::adapters::CreateGridAndPlot::descendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
-   & dem::mappings::CreateGrid::descendSpecification()
-   & dem::mappings::Plot::descendSpecification()
-   & dem::adapters::CreateGridAndPlot2VTKGridVisualiser_2::descendSpecification()
+    &  _map2CreateGrid.descendSpecification(level)
+    &  _map2Plot.descendSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.descendSpecification(level)
 
   ;
 }
