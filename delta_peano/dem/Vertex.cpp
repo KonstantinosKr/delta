@@ -8,12 +8,10 @@ dem::Vertex::Vertex():
   _vertexData.setParticles( -1 );
 }
 
-
 dem::Vertex::Vertex(const Base::DoNotCallStandardConstructor& value):
   Base(value) { 
   // Please do not insert anything here
 }
-
 
 dem::Vertex::Vertex(const Base::PersistentVertex& argument):
   Base(argument) {
@@ -24,18 +22,31 @@ tarch::multicore::BooleanSemaphore                                  dem::Vertex:
 
 void dem::Vertex::init() {
 #if defined(SharedMemoryParallelisation)
-  //tarch::multicore::Lock lock(_VertexSemaphore);
-  //printf("ENTERED\n");
-  _vertexData.setParticles( ParticleHeap::getInstance().createData() );
-  _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
+  int returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseOnlyRecycledEntries);
+
+  if (returnedHeapIndex<0) {
+    //  tarch::logging::Log _log("boxmg::Vertex");
+    //  logError( "init()", "recycling entries failed. Try to create new entry on heap though this might not be thread-safe and lead to inconsistent data");
+    returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
+  }
+  _vertexData.setParticles(returnedHeapIndex);
+
+  returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseOnlyRecycledEntries);
+
+  if (returnedHeapIndex<0) {
+  //  tarch::logging::Log _log("boxmg::Vertex");
+  //  logError( "init()", "recycling entries failed. Try to create new entry on heap though this might not be thread-safe and lead to inconsistent data");
+    returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
+  }
+
+  _vertexData.setParticlesOnCoarserLevels(returnedHeapIndex);
+
   _vertexData.setVetoCoarsening(false);
-  //lock.free();
 #else
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
   _vertexData.setVetoCoarsening(false);
 #endif
-
 }
 
 void dem::Vertex::destroy() const {

@@ -76,6 +76,8 @@ class dem::mappings::AdoptGrid {
      * Logging device for the trace macros.
      */
     static tarch::logging::Log  _log;
+
+    static tarch::multicore::BooleanSemaphore        _AdoptSemaphore;
   public:
   /**
    * These flags are used to inform Peano about your operation. It tells the

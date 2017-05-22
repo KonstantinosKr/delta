@@ -27,8 +27,6 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexLastTimeSpeci
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-
-
 peano::MappingSpecification   dem::mappings::AdoptGrid::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
@@ -62,8 +60,8 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
       logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
     } else {
-      /*Does not hold as it might happen that we lift particles temporarily through hanging nodes
-      assertion2(fineGridVertex.getParticle(i).getDiameter>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());*/
+      //Does not hold as it might happen that we lift particles temporarily through hanging nodes
+      //assertion2(fineGridVertex.getParticle(i).getDiameter>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());
     }
   }
 
@@ -108,7 +106,7 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
-//tarch::multicore::BooleanSemaphore                                  dem::mappings::AdoptGrid::_VertexSemaphore;
+tarch::multicore::BooleanSemaphore                                  dem::mappings::AdoptGrid::_AdoptSemaphore;
 
 void dem::mappings::AdoptGrid::createHangingVertex(
       dem::Vertex&     fineGridVertex,
@@ -121,9 +119,7 @@ void dem::mappings::AdoptGrid::createHangingVertex(
 ) {
   logTraceInWith6Arguments( "createHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  //tarch::multicore::Lock lock(_VertexSemaphore);
   fineGridVertex.init();
-  //lock.free()
 
   logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
 }
@@ -162,10 +158,11 @@ void dem::mappings::AdoptGrid::destroyHangingVertex(
 ) {
   logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  tarch::multicore::Lock lock(_AdoptSemaphore);
   liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
-  //tarch::multicore::Lock lock(_VertexSemaphore);
+  lock.free();
+
   fineGridVertex.destroy();
-  //lock.free();
 
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
@@ -216,10 +213,10 @@ void dem::mappings::AdoptGrid::createInnerVertex(
 ) {
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  //tarch::multicore::Lock lock(_VertexSemaphore);
   fineGridVertex.init();
-  //lock.free();
+  tarch::multicore::Lock lock(_AdoptSemaphore);
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  lock.free();
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
@@ -235,10 +232,11 @@ void dem::mappings::AdoptGrid::createBoundaryVertex(
 ) {
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  //tarch::multicore::Lock lock(_VertexSemaphore);
+
   fineGridVertex.init();
-  //lock.free();
+  tarch::multicore::Lock lock(_AdoptSemaphore);
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  lock.free();
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
@@ -255,9 +253,7 @@ void dem::mappings::AdoptGrid::destroyVertex(
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   assertion( fineGridVertex.getNumberOfParticles()==0 );
-  //tarch::multicore::Lock lock(_VertexSemaphore);
   fineGridVertex.destroy();
-  //lock.free();
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }

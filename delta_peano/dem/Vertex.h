@@ -8,7 +8,6 @@
 #ifndef _DEM_VERTEX_H_ 
 #define _DEM_VERTEX_H_
 
-
 #include "dem/records/Vertex.h"
 #include "dem/records/Particle.h"
 
@@ -47,8 +46,9 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
     typedef class peano::grid::Vertex< dem::records::Vertex >  Base;
 
     friend class VertexOperations;
-  public:
     static tarch::multicore::BooleanSemaphore        _VertexSemaphore;
+  public:
+
     /**
      * Default Constructor
      *

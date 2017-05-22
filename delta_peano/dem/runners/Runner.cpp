@@ -66,14 +66,12 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
 
     if (useAutotuning) {
       peano::datatraversal::autotuning::Oracle::getInstance().setOracle(
-       new sharedmemoryoracles::OracleForOnePhaseWithShrinkingGrainSize(true,false)
-      );
+       new sharedmemoryoracles::OracleForOnePhaseWithShrinkingGrainSize(true,false));
 
-      peano::datatraversal::autotuning::Oracle::getInstance().plotStatistics( sharedMemoryPropertiesFileName );
+      peano::datatraversal::autotuning::Oracle::getInstance().loadStatistics(sharedMemoryPropertiesFileName);
     } else {
       peano::datatraversal::autotuning::Oracle::getInstance().setOracle(
-        new peano::datatraversal::autotuning::OracleForOnePhaseDummy(true, false)
-      );
+        new peano::datatraversal::autotuning::OracleForOnePhaseDummy(true, false));
     }
   #endif
 
@@ -88,6 +86,11 @@ int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::C
   }
   #endif
   
+
+  #ifdef SharedMemoryParallelisation
+    peano::datatraversal::autotuning::Oracle::getInstance().plotStatistics(sharedMemoryPropertiesFileName);
+  #endif
+
   delete repository;
   
   return result;
@@ -195,7 +198,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     repository.getState().clearAccumulatedData();
     repository.iterate();
   }
- 
+
   repository.logIterationStatistics(false);
   repository.terminate();
 
