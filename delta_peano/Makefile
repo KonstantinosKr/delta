@@ -36,7 +36,7 @@ GCCDEBUG=-O3 -Wall -Werror -Wconversions -Wno-long-long -Wno-conversion -g -DDeb
 
 ##############################################################################################
 
-ICCRUN=-fast -Wall -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -opt-streaming-stores always -xHOST
+ICCRUN=-fast -Wall -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -qopt-streaming-stores always -xHOST
 ICCDEBUG=-O3 -Wall -Werror -Wconversions -g -DDebug -DAsserts -pedantic -pedantic-errors 
 
 ##############################################################################################
