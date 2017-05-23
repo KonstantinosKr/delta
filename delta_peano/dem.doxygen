@@ -45,15 +45,16 @@ export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/l
 export PATH=/opt/intel/bin/:$PATH
 
 Hamilton
-module load gcc/4.9.1
 module load intel/xe_2015.2
-module load intel_mpi/5.0.1
+module load intelmpi/intel/2017.2
+intelmpi/intel/2017.2 
 setenv CC Intel
 module load gcc/4.9.1
+setenv TBB_INC "-I/opt/intel/tbb/include/"
 setenv TBB_SHLIB '-L/gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.4 -ltbb'
-make
-module unload gcc/4.9.1
-module load gcc/4.9.1
+setenv TBB_SHLIB "-L/gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1/ -ltbb"
+setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7/ -ltbb"
+
 
 phi1 - sandy
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/intel64/gcc4.4/

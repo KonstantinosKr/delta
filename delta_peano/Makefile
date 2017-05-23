@@ -207,7 +207,7 @@ dim3-icc-release-omp-particle: header build
 
 dim3-icc-release-tbb: CC=icpc --std=c++11
 dim3-icc-release-tbb: DIM=-DDim3
-dim3-icc-release-tbb: SETTINGS=-DiREAL=double -DSharedTBB -DbyteAlignment=32 -DTrackGridStatistics
+dim3-icc-release-tbb: SETTINGS=-DiREAL=double -DSharedTBB -DAsserts -DbyteAlignment=32 -DTrackGridStatistics
 dim3-icc-release-tbb: CFLAGS=-fast -g -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHost $(INCLUDE_TBB)
 dim3-icc-release-tbb: LFLAGS= $(LINK_TBB)
 dim3-icc-release-tbb: EXECUTABLE=dem-3d-release-tbb
