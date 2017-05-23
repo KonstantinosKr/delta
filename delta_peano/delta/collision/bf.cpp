@@ -181,7 +181,9 @@ int NoDivTriTriIsect(
   return 0;
 }
 
+#if defined(__INTEL_COMPILER)
 #pragma omp declare simd
+#endif
 void delta::collision::bf(double   xxCoordinatesOfPointsOfGeometryA[3],
                           double   yyCoordinatesOfPointsOfGeometryA[3],
                           double   zzCoordinatesOfPointsOfGeometryA[3],
