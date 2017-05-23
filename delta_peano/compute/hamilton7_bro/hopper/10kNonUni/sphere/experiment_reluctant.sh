@@ -7,7 +7,7 @@
 
 JOB_SCRIPT8=t24
 
-exp8o=/ddn/data/rfmw74/experiment-hopperUni10k-regular-spheres
+exp8o=/ddn/data/rfmw74/experiment-hopperNonUni10k-regular-spheres
 
 exp8="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 10000 regular-grid 0.000003 every-batch 10 true sphere 10 24"
 
