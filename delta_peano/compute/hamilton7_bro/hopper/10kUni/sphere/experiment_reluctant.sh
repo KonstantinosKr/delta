@@ -9,7 +9,7 @@ JOB_SCRIPT8=t24
 
 exp8o=/ddn/data/rfmw74/experiment-hopperUni10k-regular-spheres
 
-exp8="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 10000 regular-grid 0.000003 every-batch 10 true sphere 10 24"
+exp8="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 100000 regular-grid 0.000003 every-batch 10 true sphere 10 24"
 
 sed "s,{OUTPUT_FILE},$exp8o,g" ${JOB_SCRIPT8} > ${JOB_SCRIPT8}_tmp
 sed "s,{RUN},$exp8,g" ${JOB_SCRIPT8}_tmp > ${JOB_SCRIPT8}_tmp1
