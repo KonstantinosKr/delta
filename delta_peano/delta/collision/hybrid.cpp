@@ -29,8 +29,8 @@
 void delta::collision::cleanHybridStatistics() {
   numberOfPenaltyFails = 0;
   numberOfBatchFails = 0;
-  int batchSize = 0;
-  double batchError = 0;
+  //int batchSize = 0;
+  //double batchError = 0;
 }
 
 int delta::collision::getPenaltyFails() {
@@ -90,6 +90,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
       #pragma simd
+    #else
+      #pragma omp simd
     #endif
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
@@ -110,6 +112,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
 
     #if defined(__INTEL_COMPILER)
       #pragma simd
+    #else
+      #pragma omp simd
     #endif
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
@@ -186,6 +190,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
       #pragma simd
+    #else
+      #pragma omp simd
     #endif
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
@@ -203,6 +209,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     bool fail = false; int counter=0;
     #if defined(__INTEL_COMPILER)
       #pragma simd reduction(+:counter)
+    #else 
+      #pragma omp simd
     #endif
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
@@ -224,8 +232,12 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     // minDistance and then run the interior loop over iB again with bf().
     if (fail)
     {
-      #pragma forceinline recursive
-      #pragma simd
+      #if defined(__INTEL_COMPILER)
+        #pragma forceinline recursive
+        #pragma simd
+      #else
+        #pragma omp simd
+      #endif
       for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
       {
         bf(xCoordinatesOfPointsOfGeometryA+(iA),
@@ -314,6 +326,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridStat(
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
       #pragma simd
+    #else
+      #pragma omp simd
     #endif
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
@@ -363,6 +377,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridStat(
       #if defined(__INTEL_COMPILER)
         #pragma forceinline recursive
         #pragma simd
+      #else
+	#pragma omp simd
       #endif
       for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
       {

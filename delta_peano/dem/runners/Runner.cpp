@@ -101,7 +101,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 {
   peano::utils::UserInterface::writeHeader();
 
-  delta::core::Delta::Delta();
+  delta::core::Delta();
 
   logInfo( "runAsMaster(...)", "create grid" );
   repository.switchToCreateGrid();

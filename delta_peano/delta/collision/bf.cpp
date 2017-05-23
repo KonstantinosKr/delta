@@ -63,15 +63,17 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
   #ifdef ompTriangle
 	  #pragma omp parallel for simd schedule(static) shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
   #endif
-  for(unsigned iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
+  for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   {
     __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
 
     #if defined(__INTEL_COMPILER)
     #pragma simd
+    #else 
+    #pragma omp simd
     #endif
-    for(unsigned iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
+    for(int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
     {
       __attribute__ ((aligned(byteAlignment))) double xPA=0.0;// __attribute__ ((aligned(byteAlignment))) ;
       __attribute__ ((aligned(byteAlignment))) double yPA=0.0;// __attribute__ ((aligned(byteAlignment)));
@@ -122,12 +124,13 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
               dest[1]=v1[2]*v2[0]-v1[0]*v2[2]; \
               dest[2]=v1[0]*v2[1]-v1[1]*v2[0];}
 
-int NoDivTriTriIsect(double V0[3],double V1[3],double V2[3],
-		double U0[3],double U1[3],double U2[3])
+int NoDivTriTriIsect(
+	double V0[3],double V1[3],double V2[3],
+	double U0[3],double U1[3],double U2[3])
 {
-	double E1[3],E2[3];
-	double N1[3],N2[3],d1,d2;
-	double du0,du1,du2,dv0,dv1,dv2;
+  double E1[3],E2[3];
+  double N1[3],N2[3],d1,d2;
+  double du0,du1,du2,dv0,dv1,dv2;
   double D[3];
   double isect1[2], isect2[2];
   double du0du1,du0du2,dv0dv1,dv0dv2;
