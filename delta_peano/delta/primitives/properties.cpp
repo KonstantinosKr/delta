@@ -602,7 +602,7 @@ void delta::primitives::properties::computeInertia(
   euler[3] = euler[4] = euler[5] =
   euler[6] = euler[7] = euler[8] = 0.0;
 
-  int rho;
+  int rho = 0;
   switch(material)
   {
     case delta::collision::material::MaterialType::WOOD:
@@ -692,14 +692,14 @@ double delta::primitives::properties::computeMass(
     std::vector<double>&  zCoordinates,
     delta::collision::material::MaterialType material)
 {
-  iREAL me, a[3], b[3], c[3], J;
+  iREAL me=0, a[3], b[3], c[3], J;
 
   iREAL zero[3];
   zero[0] = 0;
   zero[1] = 0;
   zero[2] = 0;
 
-  int rho;
+  int rho=0;
   switch(material)
   {
     case delta::collision::material::MaterialType::WOOD:
@@ -739,7 +739,7 @@ double delta::primitives::properties::computeVolume(
     std::vector<double>&  yCoordinates,
     std::vector<double>&  zCoordinates)
 {
-  iREAL vol, a[3], b[3], c[3], J;
+  iREAL vol=0, a[3], b[3], c[3], J;
 
   iREAL zero[3];
   zero[0] = 0;

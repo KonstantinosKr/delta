@@ -34,6 +34,8 @@ namespace {
 void delta::collision::cleanPenaltyStatistics() {
   #if defined(__INTEL_COMPILER)
     #pragma simd
+  #else
+    #pragma omp simd
   #endif
   for(int i=0; i<MaxNumberOfNewtonIterations+1; i++) {
     numberOfNewtonIterations[i] = 0;
@@ -86,6 +88,8 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
       #pragma simd
+    #else
+      #pragma omp simd
     #endif
     for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
@@ -170,6 +174,8 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
       #pragma simd
+    #else
+      #pragma omp simd
     #endif
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
@@ -316,7 +322,6 @@ extern void delta::collision::penalty(
    x[3] = 0.33;
 
   //Newton loop
-  //#pragma simd
   for(int i=0;i<4 ;i++)
   {
    //Declare loop variables;
