@@ -18,7 +18,7 @@ peano::CommunicationSpecification   dem::mappings::Collision::communicationSpeci
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexFirstTimeSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification(int level) const {
@@ -226,7 +226,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
 ) {
 	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-
+	
 	double timeStepSize = _state.getTimeStepSize();
 
 	for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++) //No need to loop over virtual particles here
@@ -789,7 +789,7 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-
+	
 	if(
 	fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
   fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&

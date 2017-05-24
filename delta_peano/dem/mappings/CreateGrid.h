@@ -104,6 +104,7 @@ class dem::mappings::CreateGrid {
      */
     static tarch::logging::Log  _log;
 
+    static tarch::multicore::BooleanSemaphore        _CreateSemaphore;
     static Scenario _scenario;
     static double   _maxH;
     static double   _minParticleDiam;

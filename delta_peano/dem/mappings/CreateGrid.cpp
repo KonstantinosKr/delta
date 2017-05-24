@@ -122,6 +122,7 @@ void dem::mappings::CreateGrid::dropParticles(
     }
   }
 }
+tarch::multicore::BooleanSemaphore                                  dem::mappings::CreateGrid::_CreateSemaphore;
 
 void dem::mappings::CreateGrid::createInnerVertex(
 		dem::Vertex&                                  fineGridVertex,
@@ -140,7 +141,6 @@ void dem::mappings::CreateGrid::createInnerVertex(
 	}
 
 	fineGridVertex.init();
-
   if(_gridType == dem::mappings::CreateGrid::RegularGrid)
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
