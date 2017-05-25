@@ -15,7 +15,7 @@ peano::CommunicationSpecification   dem::mappings::ReluctantlyAdoptGrid::communi
  * @see AdoptGrid::dropParticles() for an explanation.
  */
 peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 /**
@@ -39,6 +39,7 @@ peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::descendSpecif
 }
 
 tarch::logging::Log                dem::mappings::ReluctantlyAdoptGrid::_log( "dem::mappings::ReluctantlyAdoptGrid" ); 
+tarch::multicore::BooleanSemaphore                                  dem::mappings::ReluctantlyAdoptGrid::_ReluctantSemaphore;
 
 void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   dem::Vertex&                                 fineGridVertex,
@@ -50,8 +51,6 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-
-  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   if (fineGridVertex.getNumberOfParticles()>1)
   {
@@ -88,7 +87,6 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   fineGridVertex.eraseIfParticleDistributionPermits();
-
   restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
@@ -122,7 +120,10 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyHangingVertex(
 ) {
   logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  tarch::multicore::Lock lock(_ReluctantSemaphore);
   liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+  lock.free();
+
   fineGridVertex.destroy();
 
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
@@ -142,7 +143,9 @@ void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   fineGridVertex.init();
+  tarch::multicore::Lock lock(_ReluctantSemaphore);
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  lock.free();
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
@@ -160,7 +163,9 @@ void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   fineGridVertex.init();
+  tarch::multicore::Lock lock(_ReluctantSemaphore);
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  lock.free();
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }

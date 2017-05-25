@@ -64,9 +64,7 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
     }
   }
 
-  tarch::multicore::Lock lock(_AdoptSemaphore);
   fineGridVertex.clearGridRefinementAnalysisData();
-  lock.free();
 
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
@@ -101,11 +99,9 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  tarch::multicore::Lock lock(_AdoptSemaphore);
   fineGridVertex.eraseIfParticleDistributionPermits();
-
   restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
-  lock.free();
+
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
@@ -216,6 +212,7 @@ void dem::mappings::AdoptGrid::createInnerVertex(
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   fineGridVertex.init();
+
   tarch::multicore::Lock lock(_AdoptSemaphore);
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
   lock.free();

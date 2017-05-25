@@ -18,7 +18,7 @@ peano::CommunicationSpecification   dem::mappings::Collision::communicationSpeci
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexFirstTimeSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification(int level) const {
