@@ -11,7 +11,7 @@ INCLUDE_MPI=$(MPI_INC)
 
 LINK_TBB=$(TBB_SHLIB)
 LINK_OMP=$(OMP_SHLIB)
-LINK_OMP=
+LINK_OMP=-fopenmp
 LINK_MPI=
 
 ##############################################################################################

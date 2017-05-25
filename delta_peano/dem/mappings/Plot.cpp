@@ -375,6 +375,14 @@ void dem::mappings::Plot::touchVertexLastTime(
     _level->plotCell(particleCentre,coarseGridVerticesEnumerator.getLevel()+1);
     _faceVertexAssociation->plotCell(particleCentre,_vertexCounter);
 
+    std::vector<double> xCoordinatesWider, yCoordinatesWider, zCoordinatesWider;
+
+    fineGridVertex.getXCoordinates(i);
+
+    double center[3] = {particle.getCentre(0), particle.getCentre(1), particle.getCentre(2)};
+
+    //delta::primitives::properties::scaleXYZ(1, center, xCoordinatesWider, yCoordinatesWider, zCoordinatesWider);
+
     for (int j=0; j<particle.getNumberOfTriangles(); j++)
     {
       double* x = fineGridVertex.getXCoordinates(i);

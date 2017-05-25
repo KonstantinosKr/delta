@@ -813,4 +813,3 @@ double delta::primitives::properties::getRotationalEnergy(double angular[3], dou
 	iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
 	return rotation;
 }
-

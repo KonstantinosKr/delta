@@ -30,8 +30,8 @@ namespace dem {
 
   typedef peano::heap::PlainHeap< dem::records::Particle >      ParticleHeap;
 
-  //typedef peano::heap::PlainDoubleHeapAlignment32               DEMDoubleHeap;
-  typedef peano::heap::PlainDoubleHeap                          DEMDoubleHeap;
+  typedef peano::heap::PlainDoubleHeapAlignment32               DEMDoubleHeap;
+  //typedef peano::heap::PlainDoubleHeap                          DEMDoubleHeap;
 }
 
 
