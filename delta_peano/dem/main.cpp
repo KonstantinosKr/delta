@@ -109,7 +109,7 @@ int main(int argc, char** argv)
   	  const int NumberOfArguments = 13;
   #endif
 
-  	std::cout << "required arguments: " <<  NumberOfArguments << "actual arguments: " <<  argc << std::endl;
+  	std::cout << "required arguments: " <<  NumberOfArguments << ", actual arguments: " <<  argc << std::endl;
 
   if(argc!=NumberOfArguments || (NumberOfArguments == NumberOfArguments+2 && argv[8] != "range"))
   {

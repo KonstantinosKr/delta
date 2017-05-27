@@ -27,8 +27,6 @@ void dem::Vertex::init() {
   int returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseOnlyRecycledEntries);
 
   if (returnedHeapIndex<0) {
-      tarch::logging::Log _log("boxmg::Vertex");
-    //  logError( "init()", "recycling entries failed. Try to create new entry on heap though this might not be thread-safe and lead to inconsistent data");
     returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   }
   _vertexData.setParticles(returnedHeapIndex);
@@ -36,8 +34,6 @@ void dem::Vertex::init() {
   returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseOnlyRecycledEntries);
 
   if (returnedHeapIndex<0) {
-  //  tarch::logging::Log _log("boxmg::Vertex");
-  //  logError( "init()", "recycling entries failed. Try to create new entry on heap though this might not be thread-safe and lead to inconsistent data");
     returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   }
 
@@ -78,7 +74,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 
   newParticle._persistentRecords._diameter	= delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates)*1.2;
 
-  //printf("DIAGONAL:%f\n", newParticle._persistentRecords._diameter);
+  //printf("DIAGONAL:%f\n", newParticle.getDiameter());
   hMin = delta::primitives::properties::computeHMin(xCoordinates, yCoordinates, zCoordinates);
 
   delta::primitives::properties::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);

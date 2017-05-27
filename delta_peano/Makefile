@@ -262,7 +262,7 @@ dim3-icc-release-tbb-omp-triangle: header build
 
 dim3-icc-release-tbb-omp-particle: CC=icpc --std=c++11
 dim3-icc-release-tbb-omp-particle: DIM=-DDim3
-dim3-icc-release-tbb-omp-particle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)-DSharedTBB -DompParticle
+dim3-icc-release-tbb-omp-particle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompParticle
 dim3-icc-release-tbb-omp-particle: CFLAGS=$(ICCRUN) $(ICC_SHAREDMEMORY) $(INCLUDE_TBB)
 dim3-icc-release-tbb-omp-particle: LFLAGS=$(LINK_TBB) $(LINK_OMP)
 dim3-icc-release-tbb-omp-particle: EXECUTABLE=dem-3d-release-tbb-omp-particle
