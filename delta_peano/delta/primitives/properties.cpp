@@ -602,19 +602,7 @@ void delta::primitives::properties::computeInertia(
   euler[3] = euler[4] = euler[5] =
   euler[6] = euler[7] = euler[8] = 0.0;
 
-  int rho = 0;
-  switch(material)
-  {
-    case delta::collision::material::MaterialType::WOOD:
-      rho = int(delta::collision::material::MaterialDensity::WOOD);
-      break;
-    case delta::collision::material::MaterialType::GOLD:
-      rho = int(delta::collision::material::MaterialDensity::GOLD);
-      break;
-    case delta::collision::material::MaterialType::GRAPHITE:
-      rho = int(delta::collision::material::MaterialDensity::GRAPHITE);
-      break;
-  }
+  int rho = int(delta::collision::material::materialToDensitymap.find(material)->second);
 
   for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {
@@ -699,19 +687,7 @@ double delta::primitives::properties::computeMass(
   zero[1] = 0;
   zero[2] = 0;
 
-  int rho=0;
-  switch(material)
-  {
-    case delta::collision::material::MaterialType::WOOD:
-      rho = int(delta::collision::material::MaterialDensity::WOOD);
-      break;
-    case delta::collision::material::MaterialType::GOLD:
-      rho = int(delta::collision::material::MaterialDensity::GOLD);
-      break;
-    case delta::collision::material::MaterialType::GRAPHITE:
-      rho = int(delta::collision::material::MaterialDensity::GRAPHITE);
-  }
-  //rho = int(delta::collision::material::materialToDensitymap.find(material));
+  int rho= int(delta::collision::material::materialToDensitymap.find(material)->second);
 
   for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {

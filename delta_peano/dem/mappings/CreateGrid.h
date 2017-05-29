@@ -95,8 +95,10 @@ class dem::mappings::CreateGrid {
     };
 
     static void setScenario(Scenario scenario,
-                            double maxH, double particleDiamMin, double particleDiamMax,
+                            double maxH,
+                            double particleDiamMin, double particleDiamMax,
     						            GridType gridType, int noPointsPerGranulate);
+
     static double 	_epsilon;
   private:
     /**
@@ -117,14 +119,12 @@ class dem::mappings::CreateGrid {
     int   _numberOfObstacles;
     int   _numberOfTriangles;
 
-
     static std::vector<std::array<double, 3>> _particleGrid;
     static std::vector<std::string> _componentGrid;
 
     static std::vector<std::vector<double>> _xCoordinatesArray;
     static std::vector<std::vector<double>> _yCoordinatesArray;
     static std::vector<std::vector<double>> _zCoordinatesArray;
-
     static std::vector<double> _rad;
 
     void setVScheme(dem::Vertex&  vertex,
@@ -132,11 +132,13 @@ class dem::mappings::CreateGrid {
                     VScheme velocity);
 
     void makeCoarseEnviroment(dem::Vertex& vertex,
-                              double centreAsArray[3]);
+                              double centreAsArray[3], double eps, int noPointsPerParticle);
   
     void makeFineEnviroment(dem::Vertex& vertex,
                             double centreAsArray[3],
                             double cellSize,
+                            double eps,
+                            int noPointsPerParticle,
                             delta::collision::material::MaterialType material,
                             double friction,
                             double isObstacle);
@@ -145,40 +147,24 @@ class dem::mappings::CreateGrid {
                              std::vector<double>&  yCoordinates,
                              std::vector<double>&  zCoordinates, bool isObstacle);
 
-    void uniMeshGeometry(double  radius,
-                double totalMass, delta::collision::material::MaterialType material,
-                std::vector<std::vector<double>>  &xCoordinatesArray,
-                std::vector<std::vector<double>>  &yCoordinatesArray,
-                std::vector<std::vector<double>>  &zCoordinatesArray);
-
-    void nonUniMeshGeometry(double  radius,
-                    double totalMass, delta::collision::material::MaterialType material,
-                    double subcellx,
-                    std::vector<std::vector<double>>  &xCoordinatesArray,
-                    std::vector<std::vector<double>>  &yCoordinatesArray,
-                    std::vector<std::vector<double>>  &zCoordinatesArray);
-
-    void nonUniSphereRadius(double totalMass,
-                            double subcellx,
-                            std::vector<double>  &rad,
-                            delta::collision::material::MaterialType material);
-
     int makeHopper(dem::Vertex&  vertex,
                    double position[3],
                    double _hopperWidth,
                    double _hopperHeight,
                    double _hopperHatch,
+                   double eps,
                    delta::collision::material::MaterialType material,
                    bool friction,
                    bool isObstacle);
   
-    int makeFloor(dem::Vertex&  vertex,
+    int makeBox(dem::Vertex&  vertex,
                   double position[3],
                   double width,
                   double height,
                   double rx,
                   double ry,
                   double rz,
+                  double eps,
                   delta::collision::material::MaterialType material,
                   bool friction,
                   bool isObstacle);
@@ -190,15 +176,6 @@ class dem::mappings::CreateGrid {
                    delta::collision::material::MaterialType material,
                    bool friction,
                    bool isObstacle);
-
-    int makeBox(dem::Vertex&  vertex,
-                double position[3],
-                double width,
-                double height,
-                double eps,
-                delta::collision::material::MaterialType material,
-                bool friction,
-                bool isObstacle);
 
     int makeLoadedNonSpherical(dem::Vertex&  vertex,
                                double position[3],
@@ -212,48 +189,18 @@ class dem::mappings::CreateGrid {
                          double position[3],
                          double radius,
                          double eps,
+                         int noPointsPerParticle,
                          delta::collision::material::MaterialType material,
                          bool friction,
                          bool isObstacle);
 
-    std::vector<std::array<double, 3>> getGridArrayList(double position[3],
-                                                        int xzcuts,
-                                                        int ycuts,
-                                                        double width);
-
-    void makeUniParticleGrid(dem::Vertex&  vertex,
-                             double totalMass,
-                             std::vector<std::array<double, 3>> N,
-                             delta::collision::material::MaterialType material);
-  
-    void makeNonUniParticleGrid(dem::Vertex&  vertex,
-                                double totalMass,
-                                std::vector<std::array<double, 3>> N,
-                                double subcellx, delta::collision::material::MaterialType material);
-
-    void makeFullBrickFBGrid(double position[3],
-                             double length,
-                             double elements);
-  
-    void makeLoadNuclearGeometry(double position[3]);
-
-    void makeParticleInsituGrid(dem::Vertex&  vertex,
+    void deployParticleInsituSubGrid(dem::Vertex&  vertex,
                                 double centreAsArray[3],
                                 double cellSize,
+                                double epsilon,
                                 delta::collision::material::MaterialType material,
                                 double friction,
                                 double isObstacle);
-
-    void deployComponent(dem::Vertex&  vertex,
-                         std::string component,
-                         iREAL position[3],
-                         std::vector<double>& xCoordinatesArray,
-                         std::vector<double>& yCoordinatesArray,
-                         std::vector<double>& zCoordinatesArray,
-                         delta::collision::material::MaterialType material,
-                         double radius,
-                         bool friction,
-                         bool isObstacle);
 
     void dropParticles(
       dem::Vertex&                                 fineGridVertex,

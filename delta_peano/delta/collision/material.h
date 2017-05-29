@@ -34,7 +34,13 @@ namespace delta {
         GRAPHITEWOOD,
         GRAPHITEGOLD
       };
-/*
+
+      const static std::map<delta::collision::material::MaterialType, delta::collision::material::MaterialDensity> materialToDensitymap =
+      {{delta::collision::material::MaterialType::WOOD, delta::collision::material::MaterialDensity::WOOD},
+      {delta::collision::material::MaterialType::GRAPHITE, delta::collision::material::MaterialDensity::GRAPHITE},
+      {delta::collision::material::MaterialType::GOLD, delta::collision::material::MaterialDensity::GOLD}};
+
+      /*
       static struct InterfaceTri{
           double SFRICTION;
           double DAMPER;
@@ -48,7 +54,8 @@ namespace delta {
 */
 //      static std::map<int, InterfaceSph> interfaceSphmap;
 //      static std::map<int, InterfaceTri> interfaceTrimap;
-      static std::map<delta::collision::material::MaterialType, delta::collision::material::MaterialDensity> materialToDensitymap;
+
+
 
       int getInterfaceType(int materialA, int materialB);
 

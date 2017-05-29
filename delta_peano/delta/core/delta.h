@@ -40,12 +40,6 @@ class delta::core::Delta
 		//int _test;
 
 	public:
-		enum materialName{
-			GOLD,
-			WOOD,
-			GRAPHITE
-		};
-		static std::map<int, int> _materials;
 
     Delta();
     virtual ~Delta();

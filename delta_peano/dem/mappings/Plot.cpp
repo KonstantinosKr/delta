@@ -43,7 +43,7 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
   _vertexWriter = _writer->createVertexWriter();
   _cellWriter   = _writer->createCellWriter();
 
-  _type                  = _writer->createCellDataWriter( "type(particle-centre=0,triangle=1,collision-point=4,link=5,collision-distance=6,triangle-normal=7)", 1 );
+  _type                  = _writer->createCellDataWriter( "type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)", 1 );
   _level                 = _writer->createCellDataWriter( "level", 1 );
   _faceVertexAssociation = _writer->createCellDataWriter( "face-vertex-association", 1 );
 
@@ -213,7 +213,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_particleInfluence->plotVertex(contactPointVertexIndex,0);
 				_vertexColoring->plotVertex(contactPointVertexIndex,p.first);
 
-				_type->plotCell(contactPointIndex,2);
+				_type->plotCell(contactPointIndex,4); //contact point
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
@@ -230,7 +230,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_particleInfluence->plotVertex(contactPointVertexIndex,0);
 				_vertexColoring->plotVertex(contactPointVertexIndex,0);
 
-				_type->plotCell(contactPointIndex,4);
+				_type->plotCell(contactPointIndex,5);  //min distance P
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
@@ -247,7 +247,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 				_particleInfluence->plotVertex(contactPointVertexIndex,0);
 				_vertexColoring->plotVertex(contactPointVertexIndex,1);
 
-				_type->plotCell(contactPointIndex,4);
+				_type->plotCell(contactPointIndex,5); //min distance Q
 				_level->plotCell(contactPointIndex,-1);
 				_faceVertexAssociation->plotCell(contactPointIndex,-1);
 
@@ -368,12 +368,12 @@ void dem::mappings::Plot::touchVertexLastTime(
     _vertexColoring->plotVertex(particleVertexLink[1], particle.getGlobalParticleId());
 
     int lineFromParticleToHostVertex = _cellWriter->plotLine(particleVertexLink);
-    _type->plotCell(lineFromParticleToHostVertex,3);
+    _type->plotCell(lineFromParticleToHostVertex,1); //link
     _level->plotCell(lineFromParticleToHostVertex,coarseGridVerticesEnumerator.getLevel()+1);
     _faceVertexAssociation->plotCell(lineFromParticleToHostVertex,_vertexCounter);
 
     int particleCentre = _cellWriter->plotPoint(particleVertexLink[1]);
-    _type->plotCell(particleCentre,0);
+    _type->plotCell(particleCentre,0); //particle center
     _level->plotCell(particleCentre,coarseGridVerticesEnumerator.getLevel()+1);
     _faceVertexAssociation->plotCell(particleCentre,_vertexCounter);
 
@@ -392,8 +392,10 @@ void dem::mappings::Plot::touchVertexLastTime(
 
     double center[3] = {particle.getCentre(0), particle.getCentre(1), particle.getCentre(2)};
 
-    double resizePercentage = (particle.getDiameter()+particle.getEpsilon())/ particle.getDiameter();
-    delta::primitives::properties::scaleXYZ(resizePercentage, center, xCoordinatesWider, yCoordinatesWider, zCoordinatesWider);
+    //double resizePercentage = (particle.getDiameter()+particle.getEpsilon())/ particle.getDiameter();
+    //delta::primitives::properties::scaleXYZ(resizePercentage, center, xCoordinatesWider, yCoordinatesWider, zCoordinatesWider);
+
+    delta::primitives::properties::explode(xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, 5);
 
     for (int j=0; j<particle.getNumberOfTriangles(); j++)
     {
@@ -443,7 +445,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 
       int faceIndex = _cellWriter->plotTriangle(vertexIndex);
 
-      _type->plotCell(faceIndex,1);
+      _type->plotCell(faceIndex,3); //triangle
       _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
 
@@ -463,7 +465,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 
       int vertexPIndex = _vertexWriter->plotVertex(np);
       int dataPointIndex = _cellWriter->plotPoint(vertexPIndex);
-      _type->plotCell(dataPointIndex,5);
+      _type->plotCell(dataPointIndex,6); //mesh direction
       _level->plotCell(dataPointIndex,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(dataPointIndex,_vertexCounter);
 
@@ -543,7 +545,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 
       int faceIndex = _cellWriter->plotTriangle(vertexIndex);
 
-      _type->plotCell(faceIndex,1);
+      _type->plotCell(faceIndex,2); //triangle
       _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
 
@@ -563,7 +565,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 
       int vertexPIndex = _vertexWriter->plotVertex(np);
       int dataPointIndex = _cellWriter->plotPoint(vertexPIndex);
-      _type->plotCell(dataPointIndex,5);
+      _type->plotCell(dataPointIndex,6);//triangle face direction
       _level->plotCell(dataPointIndex,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(dataPointIndex,_vertexCounter);
 
