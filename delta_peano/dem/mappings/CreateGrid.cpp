@@ -283,37 +283,28 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     //make coarseEnviromentGridArray
     //////////PARTICLE GRID///////////////////////////////////////////////////////////////////////////////////////
     iREAL xzcuts = 0; iREAL ycuts = 0;
-    if(_scenario == hopperUniform)
+    if(_scenario == hopperUniform ||
+       _scenario == hopperNonUniform)
     {
       xzcuts = 10; ycuts = 1;
-    } else if(_scenario == hopperUniform1k)
+    }
+    else if(_scenario == hopperUniform1k ||
+            _scenario == hopperNonUniform1k)
     {
       xzcuts = 10; ycuts = 10;
-    } else if(_scenario == hopperUniform10k)
+    }
+    else if(_scenario == hopperUniform10k ||
+            _scenario == hopperNonUniform10k)
     {
       xzcuts = 30; ycuts = 12;
-    } else if(_scenario == hopperUniform100k)
+    }
+    else if(_scenario == hopperUniform100k ||
+            _scenario == hopperNonUniform100k)
     {
       xzcuts = 41.0; ycuts = 60;
     }
 
-
-    else if(_scenario == hopperNonUniform)
-    {
-      xzcuts = 10.0; ycuts = 1.0;
-    } else if(_scenario == hopperNonUniform1k)
-    {
-      xzcuts = 10.0; ycuts = 10.0;
-    } else if(_scenario == hopperNonUniform10k)
-    {
-      xzcuts = 30.0; ycuts = 12.0;
-    }  else if(_scenario == hopperNonUniform100k)
-    {
-      xzcuts = 41.0; ycuts = 60.0;
-    }
-
-    double totalMass = 0.05;//kg
-    material = delta::collision::material::MaterialType::WOOD;
+    double totalMass = 0.05; material = delta::collision::material::MaterialType::WOOD;
 
     iREAL minArraylengthX = (double)_hopperWidth - eps * 6;
     iREAL minArraylengthY = (double)_hopperHeight - eps * 6;
@@ -337,24 +328,27 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
         _componentGrid.push_back("noSpherical");
     }
 
-    double massPerParticle = totalMass/(double)_particleGrid.size();
-    double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
-
     if(_scenario == hopperUniform ||
        _scenario == hopperUniform1k ||
        _scenario == hopperUniform10k ||
        _scenario == hopperUniform100k)
     {
-      for(unsigned i=0; i<_particleGrid.size(); i++) _rad.push_back(radius);
-      delta::world::assembly::uniMeshGeometry(radius, totalMass, material, _noPointsPerParticle, _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray, _particleGrid);
+      if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
+        (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none))
+      delta::world::assembly::uniSphereRadius(totalMass, material, _rad, _particleGrid, _minParticleDiam, _maxParticleDiam);
+      else
+      delta::world::assembly::uniMeshGeometry(totalMass, material, _noPointsPerParticle, _rad, _particleGrid, _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray);
     }
     if(_scenario == hopperNonUniform ||
       _scenario == hopperNonUniform1k ||
       _scenario == hopperNonUniform10k ||
       _scenario == hopperNonUniform100k)
     {
-      delta::world::assembly::nonUniSphereRadius(totalMass, subcellx, _rad, material, _particleGrid, _minParticleDiam, _maxParticleDiam);
-      delta::world::assembly::nonUniMeshGeometry(radius, totalMass, material, subcellx, _noPointsPerParticle, _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray, _particleGrid, _minParticleDiam, _maxParticleDiam);
+      if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
+        (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none))
+      delta::world::assembly::nonUniSphereRadius(totalMass, material, subcellx, _rad, _particleGrid, _minParticleDiam, _maxParticleDiam);
+      else
+      delta::world::assembly::nonUniMeshGeometry(totalMass, material, subcellx, _noPointsPerParticle, _rad, _particleGrid, _minParticleDiam, _maxParticleDiam, _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray);
     }
     return;
   }
@@ -538,7 +532,7 @@ void dem::mappings::CreateGrid::createCell(
 			//logWarning( "createCell(...)", "particle size has been too small for coarsest prescribed grid. Reduce particle size to " << _minParticleDiam << "-" << fineGridVerticesEnumerator.getCellSize()(0) );
 		}
 
-    printf("cellsize:%f particlesInCellPerAxis:%i\n", fineGridVerticesEnumerator.getCellSize()(0), particlesInCellPerAxis);
+    //printf("cellsize:%f particlesInCellPerAxis:%i\n", fineGridVerticesEnumerator.getCellSize()(0), particlesInCellPerAxis);
 
 		dfor(k,particlesInCellPerAxis)
 		{

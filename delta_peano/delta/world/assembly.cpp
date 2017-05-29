@@ -106,11 +106,32 @@ std::vector<std::array<double, 3>> delta::world::assembly::getGridArrayList(doub
   return delta::world::assembly::array3d(position, width, xzcuts, width, ycuts);
 }
 
-void delta::world::assembly::uniMeshGeometry(double  radius, double totalMass, delta::collision::material::MaterialType material, int noPointsPerParticle,
+void delta::world::assembly::uniSphereRadius(double totalMass, delta::collision::material::MaterialType material, std::vector<double>  &rad,
+                                              std::vector<std::array<double, 3>> &particleGrid, double &minParticleDiam, double &maxParticleDiam)
+{
+  double massPerParticle = totalMass/(double)particleGrid.size();
+  double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+
+  minParticleDiam = radius;
+  maxParticleDiam = radius;
+
+  for(int i=0; i<particleGrid.size(); i++)
+  {
+    rad.push_back(radius);
+  }
+}
+
+void delta::world::assembly::uniMeshGeometry(double totalMass,
+                                                delta::collision::material::MaterialType material,
+                                                int noPointsPerParticle,
+                                                std::vector<double>  &rad,
+                                                std::vector<std::array<double, 3>> &particleGrid,
                                                 std::vector<std::vector<double>>  &xCoordinatesArray,
                                                 std::vector<std::vector<double>>  &yCoordinatesArray,
-                                                std::vector<std::vector<double>>  &zCoordinatesArray, std::vector<std::array<double, 3>> &particleGrid)
+                                                std::vector<std::vector<double>>  &zCoordinatesArray)
 {
+  double massPerParticle = totalMass/(double)particleGrid.size();
+  double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
   double reMassTotal = 0;
   //double masssphere = 0;
@@ -159,17 +180,23 @@ void delta::world::assembly::uniMeshGeometry(double  radius, double totalMass, d
   //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
 }
 
-#define RAND_MAX 0x7fffffff
-
-void delta::world::assembly::nonUniSphereRadius(double totalMass, double subcellx, std::vector<double>  &rad, delta::collision::material::MaterialType material, std::vector<std::array<double, 3>> &particleGrid, double &minParticleDiam, double &maxParticleDiam)
+void delta::world::assembly::nonUniSphereRadius(double totalMass,
+    delta::collision::material::MaterialType material,
+    double subcellx,
+    std::vector<double>  &rad,
+    std::vector<std::array<double, 3>> &particleGrid,
+    double &minParticleDiam, double &maxParticleDiam)
 {
-  //double massPerParticle = totalMass/(double)N.size();
-  //double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::MaterialDensity::WOOD)), (1.0/3.0));
+  double massPerParticle = totalMass/(double)particleGrid.size();
+  double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
   double reMassTotal = 0;
 
-  iREAL mindiam = subcellx/2;
-  iREAL maxdiam = subcellx;
+  iREAL mindiam = radius/2;
+  iREAL maxdiam = radius*2;
+
+  if(radius*2 > subcellx)
+    printf("ERROR:radius bigger than subcellx\n");
 
   for(int i=0; i<particleGrid.size(); i++)
   {
@@ -180,38 +207,49 @@ void delta::world::assembly::nonUniSphereRadius(double totalMass, double subcell
   }
 
   //get total mass
-  //printf("TOTAL REMASS:%f\n", reMassTotal);
+  printf("TOTAL REMASS:%f\n", reMassTotal);
 
   double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
 
   reMassTotal=0;
   for(auto i:rad)
   {
-    i *= rescale;
+    i = i* rescale;
 
     if(i*2<minParticleDiam)
       minParticleDiam = i*2;
     if(i*2>maxParticleDiam)
       maxParticleDiam = i*2;
-    //reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::materialToDensitymap.find(material)->second); //volume * mass
+
+    reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::materialToDensitymap.find(material)->second); //volume * mass
   }
-  //printf("RESCALE:%f\n", rescale);
-  //printf("TOTAL REREMASS:%f\n", reMassTotal);
+  printf("RESCALE:%f\n", rescale);
+  printf("TOTAL REREMASS:%f\n", reMassTotal);
+
 }
 
-void delta::world::assembly::nonUniMeshGeometry(double  radius,  double totalMass, delta::collision::material::MaterialType material,
-                                                    double subcellx, int noPointsPerParticle,
-                                                    std::vector<std::vector<double>>  &xCoordinatesArray,
-                                                    std::vector<std::vector<double>>  &yCoordinatesArray,
-                                                    std::vector<std::vector<double>>  &zCoordinatesArray, std::vector<std::array<double, 3>> &particleGrid, double &minParticleDiam, double &maxParticleDiam)
+void delta::world::assembly::nonUniMeshGeometry(double totalMass,
+                                                delta::collision::material::MaterialType material,
+                                                double subcellx, int noPointsPerParticle,
+                                                std::vector<double>  &rad,
+                                                std::vector<std::array<double, 3>> &particleGrid,
+                                                double &minParticleDiam, double &maxParticleDiam,
+                                                std::vector<std::vector<double>>  &xCoordinatesArray,
+                                                std::vector<std::vector<double>>  &yCoordinatesArray,
+                                                std::vector<std::vector<double>>  &zCoordinatesArray)
 {
+  double massPerParticle = totalMass/(double)particleGrid.size();
+  double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+
   double reMassTotal = 0;
   double masssphere = 0;
 
   iREAL position[3];
-  std::vector<double> rad;
-  iREAL mindiam = subcellx/2;
-  iREAL maxdiam = subcellx;
+  //std::vector<double> rad;
+  iREAL mindiam = radius*2/2;
+  iREAL maxdiam = radius*2;
+  if(radius*2 > subcellx)
+    printf("ERROR:radius bigger than subcellx\n");
 
   for(auto i:particleGrid)
   {
@@ -221,7 +259,7 @@ void delta::world::assembly::nonUniMeshGeometry(double  radius,  double totalMas
 
     double particleDiameter = mindiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(maxdiam-mindiam)));
 
-    rad.push_back(particleDiameter);
+    rad.push_back(particleDiameter/2);
     radius = particleDiameter/2;
 
     delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
@@ -249,6 +287,7 @@ void delta::world::assembly::nonUniMeshGeometry(double  radius,  double totalMas
     std::array<double, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
     delta::primitives::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
 
+    rad[j] = rad[j] * rescale;
     if(rad[j]<minParticleDiam)
       minParticleDiam = rad[j];
     if(rad[j]>maxParticleDiam)
@@ -267,7 +306,12 @@ void delta::world::assembly::nonUniMeshGeometry(double  radius,  double totalMas
   //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
 }
 
-void delta::world::assembly::makeLoadNuclearGeometry(double position[3], std::vector<std::array<double, 3>> &particleGrid, std::vector<std::string> &componentGrid, std::vector<double> &radius, double &minParticleDiam, double &maxParticleDiam)
+void delta::world::assembly::makeLoadNuclearGeometry(double position[3],
+                                                    std::vector<std::array<double, 3>> &particleGrid,
+                                                    std::vector<std::string> &componentGrid,
+                                                    std::vector<double> &radius,
+                                                    double &minParticleDiam,
+                                                    double &maxParticleDiam)
 {
   std::vector<double> xCoordinates, yCoordinates, zCoordinates;
 
@@ -301,7 +345,14 @@ void delta::world::assembly::makeLoadNuclearGeometry(double position[3], std::ve
   for(unsigned i=0;i<particleGrid.size();i++) radius.push_back(0);
 }
 
-void delta::world::assembly::makeFullBrickFBGrid(double position[3], double length, double elements, std::vector<std::array<double, 3>> &particleGrid, std::vector<std::string> &componentGrid, std::vector<double> &radius, double &minParticleDiam, double &maxParticleDiam)
+void delta::world::assembly::makeFullBrickFBGrid(double position[3],
+    double length,
+    double elements,
+    std::vector<std::array<double, 3>> &particleGrid,
+    std::vector<std::string> &componentGrid,
+    std::vector<double> &radius,
+    double &minParticleDiam,
+    double &maxParticleDiam)
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
 
