@@ -49,17 +49,21 @@ namespace delta {
   	                                                  std::vector<std::vector<double>>  &yCoordinatesArray,
   	                                                  std::vector<std::vector<double>>  &zCoordinatesArray, std::vector<std::array<double, 3>> &particleGrid);
 
-  	  void nonUniSphereRadius(double totalMass, double subcellx, std::vector<double>  &rad, delta::collision::material::MaterialType material, std::vector<std::array<double, 3>> &particleGrid);
+  	  void nonUniSphereRadius(double totalMass, double subcellx, std::vector<double>  &rad,
+  	      delta::collision::material::MaterialType material,
+  	      std::vector<std::array<double, 3>> &particleGrid,
+  	      double &minParticleDiam,
+  	      double &maxParticleDiam);
 
   	  void nonUniMeshGeometry(double  radius,  double totalMass, delta::collision::material::MaterialType material,
   	                                                      double subcellx, int noPointsPerParticle,
   	                                                      std::vector<std::vector<double>>  &xCoordinatesArray,
   	                                                      std::vector<std::vector<double>>  &yCoordinatesArray,
-  	                                                      std::vector<std::vector<double>>  &zCoordinatesArray, std::vector<std::array<double, 3>> &particleGrid);
+  	                                                      std::vector<std::vector<double>>  &zCoordinatesArray, std::vector<std::array<double, 3>> &particleGrid, double &minParticleDiam, double &maxParticleDiam);
 
-  	  void makeLoadNuclearGeometry(double position[3], std::vector<std::array<double, 3>> &particleGrid, std::vector<std::string> &componentGrid, std::vector<double> &radius);
+  	  void makeLoadNuclearGeometry(double position[3], std::vector<std::array<double, 3>> &particleGrid, std::vector<std::string> &componentGrid, std::vector<double> &radius, double &minParticleDiam, double &maxParticleDiam);
 
-  	  void makeFullBrickFBGrid(double position[3], double length, double elements, std::vector<std::array<double, 3>> &particleGrid, std::vector<std::string> &componentGrid, std::vector<double> &radius);
+  	  void makeFullBrickFBGrid(double position[3], double length, double elements, std::vector<std::array<double, 3>> &particleGrid, std::vector<std::string> &componentGrid, std::vector<double> &radius, double &minParticleDiam, double &maxParticleDiam);
     }
   }
  }

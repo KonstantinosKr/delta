@@ -249,10 +249,10 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     if(_scenario == sla)
     {
       /*nuclear single layer array; experiment of seismic shakes concept: drop all components in coarse grid then reassign vertex to refined grid*/
-      delta::world::assembly::makeLoadNuclearGeometry(centreAsArray, _particleGrid, _componentGrid, _rad);
+      delta::world::assembly::makeLoadNuclearGeometry(centreAsArray, _particleGrid, _componentGrid, _rad, _minParticleDiam, _maxParticleDiam);
     } else if(_scenario == nuclearArray)
     {
-      delta::world::assembly::makeFullBrickFBGrid(centreAsArray, 1, 10, _particleGrid, _componentGrid, _rad);
+      delta::world::assembly::makeFullBrickFBGrid(centreAsArray, 1, 10, _particleGrid, _componentGrid, _rad, _minParticleDiam, _maxParticleDiam);
     }
     return;
   }
@@ -353,8 +353,8 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       _scenario == hopperNonUniform10k ||
       _scenario == hopperNonUniform100k)
     {
-      delta::world::assembly::nonUniSphereRadius(totalMass, subcellx, _rad, material, _particleGrid);
-      delta::world::assembly::nonUniMeshGeometry(radius, totalMass, material, subcellx, _noPointsPerParticle, _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray, _particleGrid);
+      delta::world::assembly::nonUniSphereRadius(totalMass, subcellx, _rad, material, _particleGrid, _minParticleDiam, _maxParticleDiam);
+      delta::world::assembly::nonUniMeshGeometry(radius, totalMass, material, subcellx, _noPointsPerParticle, _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray, _particleGrid, _minParticleDiam, _maxParticleDiam);
     }
     return;
   }
@@ -492,11 +492,6 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex, double c
     dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, centreAsArray, cellSize, eps, material, friction, isObstacle);
   }
 
-  if(particleDiameter<_minParticleDiam)
-    _minParticleDiam = particleDiameter;
-  if(particleDiameter>_maxParticleDiam)
-    _maxParticleDiam = particleDiameter;
-
   #ifdef STATSPARTICLE
     logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
   #endif
@@ -541,13 +536,12 @@ void dem::mappings::CreateGrid::createCell(
 		if(particlesInCellPerAxis==0)
 		{
 			particlesInCellPerAxis = 1;
-			_maxParticleDiam = fineGridVerticesEnumerator.getCellSize()(0);
-			_minParticleDiam = std::min(_minParticleDiam, _maxParticleDiam);
-	    printf("cellsize:%f particlesInCellPerAxis:%i\n", fineGridVerticesEnumerator.getCellSize()(0), particlesInCellPerAxis);
-
-			logWarning( "createCell(...)", "particle size has been too small for coarsest prescribed grid. Reduce particle size to "
-			            << _minParticleDiam << "-" << fineGridVerticesEnumerator.getCellSize()(0) );
+			//_maxParticleDiam = fineGridVerticesEnumerator.getCellSize()(0);
+			//_minParticleDiam = std::min(_minParticleDiam, _maxParticleDiam);
+			//logWarning( "createCell(...)", "particle size has been too small for coarsest prescribed grid. Reduce particle size to " << _minParticleDiam << "-" << fineGridVerticesEnumerator.getCellSize()(0) );
 		}
+
+    printf("cellsize:%f particlesInCellPerAxis:%i\n", fineGridVerticesEnumerator.getCellSize()(0), particlesInCellPerAxis);
 
 		dfor(k,particlesInCellPerAxis)
 		{
