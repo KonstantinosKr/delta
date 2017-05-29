@@ -443,28 +443,25 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
   return;
 }
 
-void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex, double centreAsArray[3], double cellSize, double eps, int noPointsPerParticle, delta::collision::material::MaterialType material, double friction, double isObstacle)
+void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex, double centreAsArray[3], double cellSize, double eps, int noPointsPerParticle,
+    delta::collision::material::MaterialType material, double friction, double isObstacle, double &minParticleDiam, double &maxParticleDiam)
 {
-  // We need these temporary guys if we use an aligned vector from Peano.
-  // Peano's aligned vector and the default std::vector are not compatible.
-  std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-
-  double particleDiameter = _maxParticleDiam;
+  double particleDiameter = 0;
 
   if(_scenario == blackHoleWithRandomOrientedCubes ||
      _scenario == freefallWithRandomOrientedCubes)
   {
-    int particleid = makeBox(vertex, centreAsArray, particleDiameter, particleDiameter, static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
+    int particleid = makeBox(vertex, centreAsArray, maxParticleDiam, maxParticleDiam, static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
         static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
         static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
-        _epsilon, material, true, false);
+        eps, material, true, false);
     if(_scenario == blackHoleWithRandomOrientedCubes)
       dem::mappings::CreateGrid::setVScheme(vertex, particleid, dem::mappings::CreateGrid::randomLinearAngular);
   }
   else if(_scenario == blackHoleWithCubes ||
           _scenario == freefallWithCubes)
   {
-    particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
+    particleDiameter = (minParticleDiam + (maxParticleDiam-minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
     int particleid = makeBox(vertex, centreAsArray, particleDiameter, particleDiameter, 0, 1.0/8.0, 1.0/8.0, eps, material, friction, isObstacle);
     if(_scenario == blackHoleWithCubes)
       dem::mappings::CreateGrid::setVScheme(vertex, particleid, dem::mappings::CreateGrid::randomLinearAngular);
@@ -472,7 +469,7 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex, double c
   else if(_scenario == blackHoleWithGranulates ||
           _scenario == freefallWithGranulates)
   {
-    particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
+    particleDiameter = (minParticleDiam + (maxParticleDiam-minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
     int particleid = dem::mappings::CreateGrid::makeNonSpherical(vertex, centreAsArray, particleDiameter/2, eps, noPointsPerParticle, material, friction, isObstacle);
     if(_scenario == blackHoleWithGranulates)
       dem::mappings::CreateGrid::setVScheme(vertex, particleid, dem::mappings::CreateGrid::randomLinearAngular);
@@ -550,7 +547,7 @@ void dem::mappings::CreateGrid::createCell(
 
       auto material = delta::collision::material::MaterialType::WOOD;
       bool friction = true; bool obstacle = false;
-      makeFineEnviroment(vertex, centreAsArray, fineGridVerticesEnumerator.getCellSize()(0), _epsilon, _noPointsPerParticle, material, friction, obstacle);
+      makeFineEnviroment(vertex, centreAsArray, fineGridVerticesEnumerator.getCellSize()(0), _epsilon, _noPointsPerParticle, material, friction, obstacle, _minParticleDiam, _maxParticleDiam);
 		}
 	}
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
