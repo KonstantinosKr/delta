@@ -132,6 +132,14 @@ dim3-gcc-release-tbb: LFLAGS= $(LINK_TBB)
 dim3-gcc-release-tbb: EXECUTABLE=dem-3d-release-tbb
 dim3-gcc-release-tbb: header build
 
+dim3-gcc-release-tbb-stats: CC=g++ -std=c++0x
+dim3-gcc-release-tbb-stats: DIM=-DDim3
+dim3-gcc-release-tbb-stats: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(DELTA_STATS) -DSharedTBB
+dim3-gcc-release-tbb-stats: CFLAGS=$(GCCRUN) $(INCLUDE_TBB)
+dim3-gcc-release-tbb-stats: LFLAGS= $(LINK_TBB) 
+dim3-gcc-release-tbb-stats: EXECUTABLE=dem-3d-release-tbb
+dim3-gcc-release-tbb-stats: header build
+
 dim3-gcc-release-mpi-tbb: CC=mpic++ -std=c++0x
 dim3-gcc-release-mpi-tbb: DIM=-DDim3
 dim3-gcc-release-mpi-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB
