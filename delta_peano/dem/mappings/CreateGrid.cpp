@@ -141,7 +141,7 @@ void dem::mappings::CreateGrid::createInnerVertex(
 
 	fineGridVertex.init();
 
-  if(_gridType == dem::mappings::CreateGrid::RegularGrid)
+  //if(_gridType == dem::mappings::CreateGrid::RegularGrid)
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
@@ -165,7 +165,7 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 
 	fineGridVertex.init();
 
-  if(_gridType == dem::mappings::CreateGrid::RegularGrid)
+  //if(_gridType == dem::mappings::CreateGrid::RegularGrid)
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );

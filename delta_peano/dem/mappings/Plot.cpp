@@ -600,7 +600,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     {
     }*/
 
-    #ifdef PARTICLESTATS
+    #ifdef PARTICLESTATSFULL
     std::cout		 << "#####PARTICLE-DATA#####" << std::endl
     						 << "partiId=" << std::fixed << std::setprecision(10) << particle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << particle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << particle.getDiameter() << std::endl
 			  	  	   << "influRa=" << std::fixed << std::setprecision(10) << particle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << particle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << particle.getHMin() << std::endl
@@ -621,17 +621,21 @@ void dem::mappings::Plot::touchVertexLastTime(
 							   << "orie[3]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(3) <<", orie[4]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(4) << ", orie[5]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(5) << std::endl
 							   << "orie[6]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(6) <<", orie[7]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(7) << ", orie[8]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(8) << std::endl;
 
-    //#kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
-    //#rotational = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[8]*(angular[2]*angular[2]);
-
     iREAL linE = 0.5 * particle.getMass()*(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0))+(particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1))+(particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
     iREAL rotE = 0.5 * particle._persistentRecords._inertia(0)*(particle._persistentRecords._angular(0)*particle._persistentRecords._angular(0))+0.5*particle._persistentRecords._inertia(4)*(particle._persistentRecords._angular(1)*particle._persistentRecords._angular(1))+0.5*particle._persistentRecords._inertia(8)*(particle._persistentRecords._angular(2)*particle._persistentRecords._angular(2));
     std::cout    << "#####ENERGY-DATA#####" << std::endl
                  << "linE=" << std::fixed << std::setprecision(10) << linE
                  << ", rotE=" << std::fixed << std::setprecision(10) << rotE
                  << ", totE=" << std::fixed << std::setprecision(10) << linE+rotE << std::endl;
+    #elif defined(PARTICLESTATSMIN)
+    std::cout    << "#####PARTICLE-DATA#####" << std::endl
+                 << "partiId=" << std::fixed << std::setprecision(10) << particle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << particle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << particle.getDiameter() << std::endl
+                 << "influRa=" << std::fixed << std::setprecision(10) << particle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << particle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << particle.getHMin() << std::endl
+                 << "noOfTri=" << std::fixed << std::setprecision(10) << particle.getNumberOfTriangles() <<", isObsta=" << std::fixed << std::setprecision(10) << particle._persistentRecords.getIsObstacle() << ", materia=" << std::fixed << std::setprecision(10) << particle.getMaterial() << std::endl
+                 << "linearX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._velocity(0) <<", linearY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._velocity(1) << ", linearZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._velocity(2) << std::endl
+                 << "angulaX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._angular(0) <<", angulaY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._angular(1) << ", angulaZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._angular(2) << std::endl
+                 << "cOfMasX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centreOfMass(0) <<", cOfMasY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centreOfMass(1) << ", cOfMasZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centreOfMass(2) << std::endl);
     #endif
-
   }
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

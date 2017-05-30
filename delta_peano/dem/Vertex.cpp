@@ -36,11 +36,10 @@ void dem::Vertex::init() {
   if (returnedHeapIndex<0) {
     returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   }
+  lock.free();
 
   _vertexData.setParticlesOnCoarserLevels(returnedHeapIndex);
-
   _vertexData.setVetoCoarsening(false);
-  lock.free();
 #else
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
@@ -327,27 +326,16 @@ const dem::records::Particle& dem::Vertex::getParticle( int particleNumber ) con
 }
 
 void dem::Vertex::appendParticle(const records::Particle& particle) {
-  #if defined(SharedMemoryParallelisation)
-  //  tarch::multicore::Lock lock(_VertexSemaphore);
-    ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
-  //  lock.free();
-  #else
-    ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
-  #endif
+  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
+  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
 }
 
 void dem::Vertex::releaseParticle(int particleNumber) {
-  #if defined(SharedMemoryParallelisation)
-  //  tarch::multicore::Lock lock(_VertexSemaphore);
-    assertion2( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticles()), particleNumber, toString() );
-    assertion2( particleNumber>=0, particleNumber, toString() );
-    assertion2( particleNumber<static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size()), particleNumber, toString() );
+  assertion2( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticles()), particleNumber, toString() );
+  assertion2( particleNumber>=0, particleNumber, toString() );
+  assertion2( particleNumber<static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size()), particleNumber, toString() );
 
-    ParticleHeap::getInstance().getData( _vertexData.getParticles() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticles() ).begin()+particleNumber );
-  //  lock.free();
-  #else
-    ParticleHeap::getInstance().getData( _vertexData.getParticles() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticles() ).begin()+particleNumber );
-  #endif
+  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticles() ).begin()+particleNumber );
 }
 
 double* dem::Vertex::getXCoordinates( int particleNumber ) {
@@ -460,13 +448,7 @@ void dem::Vertex::eraseIfParticleDistributionPermits() {
 }
 
 void dem::Vertex::clearInheritedCoarseGridParticles() {
-#if defined(SharedMemoryParallelisation)
-  //tarch::multicore::Lock lock(_VertexSemaphore);
   ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).clear();
-  //lock.free();
-#else
-  ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).clear();
-#endif
 }
 
 void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
@@ -487,13 +469,7 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
       }
       if(!found)
       {
-        #if defined(SharedMemoryParallelisation)
-          //tarch::multicore::Lock lock(_VertexSemaphore);
           ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
-          //lock.free();
-        #else
-          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
-        #endif
       }
     }
 
@@ -501,18 +477,9 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
       ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
       ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).end());*/
 
-      #if defined(SharedMemoryParallelisation)
-        //tarch::multicore::Lock lock(_VertexSemaphore);
-          //inherit real particles from coarse level
-          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
-          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
-          ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
-        //lock.free();
-      #else
-          //inherit real particles from coarse level
-          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
-          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
-          ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
-      #endif
+      //inherit real particles from coarse level
+      ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
+      ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
+      ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
   }
 }

@@ -38,8 +38,8 @@ peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::descendSpecif
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-tarch::logging::Log                dem::mappings::ReluctantlyAdoptGrid::_log( "dem::mappings::ReluctantlyAdoptGrid" ); 
-tarch::multicore::BooleanSemaphore                                  dem::mappings::ReluctantlyAdoptGrid::_ReluctantSemaphore;
+tarch::logging::Log                   dem::mappings::ReluctantlyAdoptGrid::_log( "dem::mappings::ReluctantlyAdoptGrid" );
+tarch::multicore::BooleanSemaphore    dem::mappings::ReluctantlyAdoptGrid::_ReluctantSemaphore;
 
 void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   dem::Vertex&                                 fineGridVertex,
@@ -60,11 +60,9 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
       {
         logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
         fineGridVertex.refine();
-      }
-      else
-      {
-          /*Does not hold as it might happen that we lift particles temporarily through hanging nodes
-          assertion2(fineGridVertex.getParticle(i)._persistentRecords._diameter>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());*/
+      } else {
+          //Does not hold as it might happen that we lift particles temporarily through hanging nodes
+          //assertion2(fineGridVertex.getParticle(i).getDiameter()>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());
       }
     }
   }
@@ -204,7 +202,7 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
   double minDiameter       = std::numeric_limits<double>::max();
   int    numberOfParticles = 0;
 
-  dfor2(k)
+  dfor2(k) //get min diameter particle
     numberOfParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles();
     for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
     {
