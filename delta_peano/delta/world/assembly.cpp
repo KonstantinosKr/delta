@@ -116,10 +116,10 @@ void delta::world::assembly::uniSphereRadius(double totalMass,
   double massPerParticle = totalMass/(double)particleGrid.size();
   double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
-  if(radius<minParticleDiam)
-    minParticleDiam = radius;
-  if(radius>maxParticleDiam)
-    maxParticleDiam = radius;
+  if(radius*2<minParticleDiam)
+    minParticleDiam = radius*2;
+  if(radius*2>maxParticleDiam)
+    maxParticleDiam = radius*2;
 
   for(int i=0; i<particleGrid.size(); i++)
   {
@@ -165,6 +165,13 @@ void delta::world::assembly::uniMeshGeometry(double totalMass,
     //masssphere += mt;
     //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
     xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+
+    componentGrid.push_back("nonSpherical");
+    rad.push_back(radius);
+    if(radius*2<minParticleDiam)
+      minParticleDiam = radius*2;
+    if(radius*2>maxParticleDiam)
+      maxParticleDiam = radius*2;
   }
 
   double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
@@ -185,7 +192,6 @@ void delta::world::assembly::uniMeshGeometry(double totalMass,
     //masssphere += ms;
 
     //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-    componentGrid.push_back("nonSpherical");
   }
   //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
 }
@@ -288,6 +294,8 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
     //masssphere += mt;
     //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
     xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+
+    componentGrid.push_back("nonSpherical");
   }
 
   double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
@@ -300,12 +308,10 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
     delta::primitives::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
 
     rad[j] = rad[j] * rescale;
-    if(rad[j]<minParticleDiam)
-      minParticleDiam = rad[j];
-    if(rad[j]>maxParticleDiam)
-      maxParticleDiam = rad[j];
-
-    componentGrid.push_back("nonSpherical");
+    if(rad[j]*2<minParticleDiam)
+      minParticleDiam = rad[j]*2;
+    if(rad[j]*2>maxParticleDiam)
+      maxParticleDiam = rad[j]*2;
 
     //double mt = delta::primitives::properties::computeMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], material);
     //double vt = delta::primitives::properties::computeVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);

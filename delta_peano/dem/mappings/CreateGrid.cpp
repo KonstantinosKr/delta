@@ -326,10 +326,12 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
          dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none)
       {
-        delta::world::assembly::uniSphereRadius(totalMass, material, _rad, _particleGrid, _componentGrid,
+        delta::world::assembly::uniSphereRadius(totalMass, material,
+            _rad, _particleGrid, _componentGrid,
             _minParticleDiam, _maxParticleDiam);
       } else {
-        delta::world::assembly::uniMeshGeometry(totalMass, material, _noPointsPerParticle, _rad, _particleGrid, _componentGrid,
+        delta::world::assembly::uniMeshGeometry(totalMass, material, _noPointsPerParticle,
+            _rad, _particleGrid, _componentGrid,
             _minParticleDiam, _maxParticleDiam,
             _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray);
       }
@@ -342,10 +344,12 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
          dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none)
       {
-        delta::world::assembly::nonUniSphereRadius(totalMass, material, subcellx, _rad, _particleGrid, _componentGrid,
+        delta::world::assembly::nonUniSphereRadius(totalMass, material, subcellx,
+            _rad, _particleGrid, _componentGrid,
             _minParticleDiam, _maxParticleDiam);
       } else {
-        delta::world::assembly::nonUniMeshGeometry(totalMass, material, subcellx, _noPointsPerParticle, _rad, _particleGrid, _componentGrid,
+        delta::world::assembly::nonUniMeshGeometry(totalMass, material, subcellx, _noPointsPerParticle,
+            _rad, _particleGrid, _componentGrid,
             _minParticleDiam, _maxParticleDiam,
             _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray);
       }
@@ -673,7 +677,7 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(dem::Vertex&  vertex
       if(_componentGrid[i] == "sphere")
       {
         makeSphere(vertex, position, _rad[i], _rad[i]*eps, material, friction, isObstacle);
-      } else if(_componentGrid[i] == "noSpherical")
+      } else if(_componentGrid[i] == "nonSpherical")
       {
         vertex.createNewParticle(position, _xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _rad[i]*eps, friction, material, isObstacle, _numberOfParticles);
         dem::mappings::CreateGrid::addParticleToState(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], isObstacle);
