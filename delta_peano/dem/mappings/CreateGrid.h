@@ -141,7 +141,8 @@ class dem::mappings::CreateGrid {
                             int noPointsPerParticle,
                             delta::collision::material::MaterialType material,
                             double friction,
-                            double isObstacle, double &minParticleDiam, double &maxParticleDiam);
+                            double isObstacle,
+                            double &minParticleDiam, double &maxParticleDiam);
 
     void addParticleToState(std::vector<double>&  xCoordinates,
                              std::vector<double>&  yCoordinates,
