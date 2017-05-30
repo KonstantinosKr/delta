@@ -306,11 +306,10 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
 
     double totalMass = 0.05; material = delta::collision::material::MaterialType::WOOD;
 
-    iREAL minArraylengthX = (double)_hopperWidth - eps * 6;
-    iREAL minArraylengthY = (double)_hopperHeight - eps * 6;
+    iREAL minArraylengthXZ = (double)_hopperWidth - eps * 6;
 
-    iREAL subcellx = ((double)minArraylengthX/(double)xzcuts) - eps*4;
-    iREAL margin = ((double)minArraylengthX/(double)xzcuts)/2.0;
+    iREAL subcellx = ((double)minArraylengthXZ/(double)xzcuts) - eps*4;
+    iREAL margin = ((double)minArraylengthXZ/(double)xzcuts)/2.0;
 
     //iREAL minParticleDiameter = ((double)_hopperWidth/(double)xzcuts)-(margin*2.0);
     //printf("minParDiameter:%.10f\n", minParticleDiameter);
@@ -498,7 +497,6 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex,
   #endif
 }
 
-tarch::multicore::BooleanSemaphore  dem::mappings::CreateGrid::_CreateSemaphore;
 std::vector<std::vector<double>> dem::mappings::CreateGrid::_xCoordinatesArray;
 std::vector<std::vector<double>> dem::mappings::CreateGrid::_yCoordinatesArray;
 std::vector<std::vector<double>> dem::mappings::CreateGrid::_zCoordinatesArray;

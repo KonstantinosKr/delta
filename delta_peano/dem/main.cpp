@@ -115,10 +115,6 @@ int main(int argc, char** argv)
   {
     printManual();
     return -1;
-  } else if (argc == NumberOfArguments) {
-	  std::cout << "scenario:" << (argv[4]) << ", iterations:" << atof(argv[5]) << ", grid:" << (argv[6]) << std::endl
-              << "stepSize:" << atof(argv[7]) << ", plot:" << (argv[8]) << ", realSnapshot:" << atoi(argv[9]) << std::endl
-              << "gravity:" << (argv[10]) << ", model:" << (argv[11])  << ", triangleNumber:" << atoi(argv[12]) << std::endl;
   }
 
   const double       gridHMax            = atof(argv[1]);
@@ -165,11 +161,11 @@ int main(int argc, char** argv)
     }
   }
   else if (gridTypeIdentifier=="regular-grid") {
-	if(argc != NumberOfArguments)
-	{
-		printManual();
-	  return -1;
-	}
+    if(argc != NumberOfArguments)
+    {
+      printManual();
+      return -1;
+    }
     gridType = dem::mappings::CreateGrid::RegularGrid;
   }
   else if (gridTypeIdentifier=="adaptive-grid") {
@@ -238,7 +234,7 @@ int main(int argc, char** argv)
   else if (scenario=="two-particles-crash") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
-  }//hopper diagonal is 0.39
+  }
   else if (scenario=="hopperUniform") {
     dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform,
                                             gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
@@ -367,7 +363,10 @@ int main(int argc, char** argv)
   }
 
   dem::mappings::MoveParticles::gravity	= (gravity==true) ? 9.81 : 0.0;
-  //delta::collision::material::initMaterial();
+
+  logInfo( "run(...)", "scenario:" << (scenario)                                 << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)       << std::endl
+                    << "stepSize:" << (stepSize)                                 << ", plot:"     << (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)   << std::endl
+                    << "gravity:"  << (dem::mappings::MoveParticles::gravity)    << ", model:"    << (collisionModel)      << ", triangleNumber:"  << (meshMultiplier));
 
   // Configure the output
   tarch::logging::CommandLineLogger::getInstance().clearFilterList();
