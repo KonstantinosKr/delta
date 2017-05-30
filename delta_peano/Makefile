@@ -21,7 +21,8 @@ ICC_SHAREDMEMORY=-qopenmp -qopt-threads-per-core=1
 
 ##############################################################################################
 
-DELTA_STATS=-DPARTICLESTATS -DCONTACTSTATS
+#DELTA_STATS=-DPARTICLESTATSFULL -DCONTACTSTATS
+DELTA_STATS=-DPARTICLESTATSMIN
 DELTA_TUNE=-DDELTATUNE
 
 DELTAPHI_SETTINGS=-DiREAL=double -DbyteAlignment=64
