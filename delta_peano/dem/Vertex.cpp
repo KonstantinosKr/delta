@@ -36,10 +36,10 @@ void dem::Vertex::init() {
   if (returnedHeapIndex<0) {
     returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   }
-  lock.free();
 
   _vertexData.setParticlesOnCoarserLevels(returnedHeapIndex);
   _vertexData.setVetoCoarsening(false);
+  lock.free();
 #else
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
@@ -127,7 +127,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 
   newParticle._persistentRecords._mass            = mass;
   newParticle._persistentRecords._friction			  = friction;
-  newParticle._persistentRecords._influenceRadius = (newParticle._persistentRecords._diameter+epsilon) * 1.1;
+  newParticle._persistentRecords._influenceRadius = (newParticle.getDiameter()+epsilon) * 1.1;
   newParticle._persistentRecords._epsilon			    = epsilon;
   newParticle._persistentRecords._hMin 				    = hMin;
 
@@ -326,7 +326,6 @@ const dem::records::Particle& dem::Vertex::getParticle( int particleNumber ) con
 }
 
 void dem::Vertex::appendParticle(const records::Particle& particle) {
-  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back(particle);
 }
 

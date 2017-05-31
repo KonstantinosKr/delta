@@ -33,8 +33,6 @@ peano::MappingSpecification   dem::mappings::MoveParticles::enterCellSpecificati
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
-
-
 peano::MappingSpecification   dem::mappings::MoveParticles::leaveCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
@@ -100,9 +98,9 @@ void dem::mappings::MoveParticles::reassignParticles(
     int numberOfReassignments = 0;
     dfor2(k)
       int i=0;
-      while (i<fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles())
+      while (i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles())
       {
-        records::Particle&  particle = fineGridVertices[ fineGridVerticesEnumerator(k) ].getParticle(i);
+        records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
 
         tarch::la::Vector<DIMENSIONS,int> correctVertex;
         for (int d=0; d<DIMENSIONS; d++)
@@ -113,8 +111,9 @@ void dem::mappings::MoveParticles::reassignParticles(
         if (correctVertex!=k)
         {
           fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].appendParticle(particle);
+
           logDebug( "reassignParticles(...)", "reassign particle " << particle.toString() << " to " << fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].toString() );
-          fineGridVertices[ fineGridVerticesEnumerator(k) ].releaseParticle(i);
+          fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
           numberOfReassignments++;
         } else {
           i++;

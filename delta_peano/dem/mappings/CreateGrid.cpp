@@ -55,9 +55,15 @@ dem::mappings::CreateGrid::GridType  dem::mappings::CreateGrid::_gridType;
 double								               dem::mappings::CreateGrid::_epsilon;
 int 								                 dem::mappings::CreateGrid::_noPointsPerParticle;
 std::vector<std::array<double, 3>>   dem::mappings::CreateGrid::_particleGrid;
+std::vector<double>                  dem::mappings::CreateGrid::_rad;
+std::vector<std::vector<double>>     dem::mappings::CreateGrid::_xCoordinatesArray;
+std::vector<std::vector<double>>     dem::mappings::CreateGrid::_yCoordinatesArray;
+std::vector<std::vector<double>>     dem::mappings::CreateGrid::_zCoordinatesArray;
+std::vector<std::string>             dem::mappings::CreateGrid::_componentGrid;
 
 void dem::mappings::CreateGrid::setScenario(Scenario scenario,
-                                            double maxH, double particleDiamMin, double particleDiamMax,
+                                            double maxH,
+                                            double particleDiamMin, double particleDiamMax,
 											                      GridType gridType, int noPointsPerGranulate)
 {
 	_scenario        		  = scenario;
@@ -142,7 +148,7 @@ void dem::mappings::CreateGrid::createInnerVertex(
 	fineGridVertex.init();
 
   //if(_gridType == dem::mappings::CreateGrid::RegularGrid)
-  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
@@ -166,7 +172,7 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 	fineGridVertex.init();
 
   //if(_gridType == dem::mappings::CreateGrid::RegularGrid)
-  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
@@ -248,16 +254,13 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     dem::mappings::CreateGrid::setVScheme(vertex,  particleid, dem::mappings::CreateGrid::moveLeft);
     if(_scenario == sla)
     {
-      /*nuclear single layer array; experiment of seismic shakes concept: drop all components in coarse grid then reassign vertex to refined grid*/
+      //nuclear single layer array; experiment of seismic shakes concept: drop all components in coarse grid then reassign vertex to refined grid
       delta::world::assembly::makeLoadNuclearGeometry(centreAsArray, _particleGrid, _componentGrid, _rad, _minParticleDiam, _maxParticleDiam);
     } else if(_scenario == nuclearArray)
     {
       delta::world::assembly::makeFullBrickFBGrid(centreAsArray, 1, 10, _particleGrid, _componentGrid, _rad, _minParticleDiam, _maxParticleDiam);
     }
-    return;
-  }
-
-  if(_scenario == hopperUniform ||
+  } else if(_scenario == hopperUniform ||
       _scenario == hopperUniform1k ||
       _scenario == hopperUniform10k ||
       _scenario == hopperUniform100k ||
@@ -272,6 +275,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.05;
     //HOPPER DIAGONAL:0.382926
     makeHopper(vertex, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
+    printf("vertex Number---------------: %i\n", vertex.getNumberOfParticles());
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////FLOOR////////////////floor DIAGONAL:0.344674///////////////////////////////////////////
@@ -353,10 +357,8 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
             _xCoordinatesArray, _yCoordinatesArray, _zCoordinatesArray);
       }
     }
-    return;
   }
-
-  if(_scenario == frictionStatic)
+  else if(_scenario == frictionStatic)
    {
     delta::collision::material::MaterialType material = delta::collision::material::MaterialType::WOOD;
     double height = 0.05; double width = 0.35;
@@ -374,7 +376,6 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       newParticleNumber = dem::mappings::CreateGrid::makeBox(vertex, position, width, height, 0,0,0, eps, material, true, false);
     }
     setVScheme(vertex, newParticleNumber, dem::mappings::CreateGrid::crashY);
-    return;
   } else if(_scenario == frictionSlide)
   {
     delta::collision::material::MaterialType material = delta::collision::material::MaterialType::WOOD;
@@ -393,7 +394,6 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       newParticleNumber = dem::mappings::CreateGrid::makeLoadedNonSpherical(vertex, position, radius, eps, material, true, false);
     }
     setVScheme(vertex, newParticleNumber, dem::mappings::CreateGrid::slideX);
-    return;
   } else if(_scenario == frictionRoll)
   {
     delta::collision::material::MaterialType material = delta::collision::material::MaterialType::WOOD;
@@ -412,7 +412,6 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       newParticleNumber = dem::mappings::CreateGrid::makeBox(vertex, position, width, height, 0,0,0, eps, material, true, false);
     }
     setVScheme(vertex, newParticleNumber, dem::mappings::CreateGrid::slideXRotation);
-    return;
   } else if(_scenario == TwoParticlesCrash)
   {
     double radius = 0.05;
@@ -435,9 +434,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       newParticleNumber = dem::mappings::CreateGrid::makeNonSpherical(vertex, position, radius, eps, noPointsPerParticle, material, false, false);
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = 0.5;
     }
-    return;
   }
-  return;
 }
 
 void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex,
@@ -497,11 +494,7 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex,
   #endif
 }
 
-std::vector<std::vector<double>> dem::mappings::CreateGrid::_xCoordinatesArray;
-std::vector<std::vector<double>> dem::mappings::CreateGrid::_yCoordinatesArray;
-std::vector<std::vector<double>> dem::mappings::CreateGrid::_zCoordinatesArray;
-std::vector<double> dem::mappings::CreateGrid::_rad;
-std::vector<std::string> dem::mappings::CreateGrid::_componentGrid;
+
 
 void dem::mappings::CreateGrid::createCell(
 		dem::Cell&                                fineGridCell,
@@ -514,23 +507,21 @@ void dem::mappings::CreateGrid::createCell(
 {
 	logTraceInWith4Arguments( "createCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
+  dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];
+
 	if(_scenario == nonescenario) return;
 	if (coarseGridCell.isRoot())
 	{
-		dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];
-
 		double centreAsArray[] = {fineGridVerticesEnumerator.getCellCenter()(0),
                               fineGridVerticesEnumerator.getCellCenter()(1),
                               fineGridVerticesEnumerator.getCellCenter()(2)};
 
 		makeCoarseEnviroment(vertex, centreAsArray, _epsilon, _noPointsPerParticle);
 	}
-
 	if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(fineGridVertices, fineGridVerticesEnumerator,  Vertex::Records::Unrefined) &&
 	    !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices,  fineGridVerticesEnumerator))
 	{
 		int particlesInCellPerAxis = std::floor(fineGridVerticesEnumerator.getCellSize()(0) / _maxParticleDiam);
-    dem::Vertex&  vertex = fineGridVertices[fineGridVerticesEnumerator(0)];
 
 		if(particlesInCellPerAxis==0)
 		{

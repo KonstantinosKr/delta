@@ -17,7 +17,7 @@ peano::MappingSpecification   dem::mappings::Plot::touchVertexFirstTimeSpecifica
  * This is the only routine that we actually use.
  */
 peano::MappingSpecification   dem::mappings::Plot::touchVertexLastTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::Serial,true);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 peano::MappingSpecification   dem::mappings::Plot::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
@@ -628,7 +628,7 @@ void dem::mappings::Plot::touchVertexLastTime(
                  << ", totE=" << std::fixed << std::setprecision(10) << linE+rotE << std::endl;
     #elif defined(PARTICLESTATSMIN)
     std::cout    << "#####PARTICLE-DATA#####" << std::endl
-                 << "partiId=" << std::fixed << std::setprecision(10) << particle.j()  <<", mass=" << std::fixed << std::setprecision(10) << particle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << particle.getDiameter() << std::endl
+                 << "partiId=" << std::fixed << std::setprecision(10) << particle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << particle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << particle.getDiameter() << std::endl
                  << "influRa=" << std::fixed << std::setprecision(10) << particle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << particle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << particle.getHMin() << std::endl
                  << "noOfTri=" << std::fixed << std::setprecision(10) << particle.getNumberOfTriangles() <<", isObsta=" << std::fixed << std::setprecision(10) << particle._persistentRecords.getIsObstacle() << ", materia=" << std::fixed << std::setprecision(10) << particle.getMaterial() << std::endl
                  << "linearX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._velocity(0) <<", linearY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._velocity(1) << ", linearZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._velocity(2) << std::endl
