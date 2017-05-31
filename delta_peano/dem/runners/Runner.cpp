@@ -150,6 +150,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   for (int i=0; i<iterations; i++)
   {
     timestamp = repository.getState().getTime();
+    repository.getState().setTimeStep(i);
 
     bool plotThisTraversal = (plot == EveryIteration) ||  (plot == Track) ||
                              (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||

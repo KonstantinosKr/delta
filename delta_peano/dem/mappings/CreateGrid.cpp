@@ -275,7 +275,6 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.05;
     //HOPPER DIAGONAL:0.382926
     makeHopper(vertex, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
-    printf("vertex Number---------------: %i\n", vertex.getNumberOfParticles());
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////FLOOR////////////////floor DIAGONAL:0.344674///////////////////////////////////////////

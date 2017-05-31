@@ -47,7 +47,6 @@ export PATH=/opt/intel/bin/:$PATH
 Hamilton
 module load intel/xe_2015.2
 module load intelmpi/intel/2017.2
-intelmpi/intel/2017.2 
 setenv CC Intel
 module load gcc/4.9.1
 setenv TBB_INC "-I/opt/intel/tbb/include/"

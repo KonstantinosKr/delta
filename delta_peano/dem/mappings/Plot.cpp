@@ -60,6 +60,7 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
   _vertexCounter         = 0;
   _particleCounter       = 0;
   _collisionPointCounter = 0;
+  _iterationNumber       = solverState.getTimeStep();
 
  // _trackParticle = _trackID >= 0 ? true : false;
 
@@ -627,13 +628,18 @@ void dem::mappings::Plot::touchVertexLastTime(
                  << ", rotE=" << std::fixed << std::setprecision(10) << rotE
                  << ", totE=" << std::fixed << std::setprecision(10) << linE+rotE << std::endl;
     #elif defined(PARTICLESTATSMIN)
+    if(_iterationNumber == 0)
+    {
+      std::cout   << "#####PARTICLE-INIT-PROPERTIES-DATA#####" << std::endl
+                  << "partiId=" << std::fixed << std::setprecision(10) << particle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << particle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << particle.getDiameter() << std::endl
+                  << "influRa=" << std::fixed << std::setprecision(10) << particle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << particle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << particle.getHMin() << std::endl;
+    } else {
     std::cout    << "#####PARTICLE-DATA#####" << std::endl
-                 << "partiId=" << std::fixed << std::setprecision(10) << particle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << particle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << particle.getDiameter() << std::endl
-                 << "influRa=" << std::fixed << std::setprecision(10) << particle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << particle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << particle.getHMin() << std::endl
-                 << "noOfTri=" << std::fixed << std::setprecision(10) << particle.getNumberOfTriangles() <<", isObsta=" << std::fixed << std::setprecision(10) << particle._persistentRecords.getIsObstacle() << ", materia=" << std::fixed << std::setprecision(10) << particle.getMaterial() << std::endl
+                 << "particled="<< std::fixed << std::setprecision(10) << particle.getGlobalParticleId() << std::endl
                  << "linearX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._velocity(0) <<", linearY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._velocity(1) << ", linearZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._velocity(2) << std::endl
                  << "angulaX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._angular(0) <<", angulaY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._angular(1) << ", angulaZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._angular(2) << std::endl
                  << "cOfMasX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centreOfMass(0) <<", cOfMasY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centreOfMass(1) << ", cOfMasZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centreOfMass(2) << std::endl;
+    }
     #endif
   }
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );

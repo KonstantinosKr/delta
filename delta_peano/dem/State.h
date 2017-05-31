@@ -80,6 +80,7 @@ class dem::State: public peano::grid::State< dem::records::State > {
 
     void incNumberOfContactPoints(int delta);
     void decNumberOfContactPoints(int delta);
+
     void incNumberOfParticleReassignments(int delta);
     void incNumberOfTriangleComparisons(int delta);
     void incNumberOfParticleComparisons(int delta);
@@ -110,6 +111,9 @@ class dem::State: public peano::grid::State< dem::records::State > {
 
     double getPrescribedMinimumMeshWidth() const;
     double getPrescribedMaximumMeshWidth() const;
+
+    void setTimeStep(int delta);
+    int getTimeStep();
 };
 
 

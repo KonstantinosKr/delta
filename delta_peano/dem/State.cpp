@@ -110,6 +110,14 @@ void dem::State::finishedTimeStep(double initStep) {
   }
 }
 
+void dem::State::setTimeStep(int delta) {
+  _stateData.setTimeStep(delta);
+}
+
+int dem::State::getTimeStep() {
+  return _stateData.getTimeStep();
+}
+
 void dem::State::incNumberOfParticles(int delta) {
 	_stateData.setNumberOfParticles(_stateData.getNumberOfParticles()+delta);
 }

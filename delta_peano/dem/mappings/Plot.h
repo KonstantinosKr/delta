@@ -83,6 +83,7 @@ class dem::mappings::Plot {
 
     int _particleCounter;
     int _collisionPointCounter;
+    int _iterationNumber;
 
   public:
     //static int _trackID;
