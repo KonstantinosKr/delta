@@ -70,23 +70,20 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
                                           &particle._persistentRecords._referentialAngular(0),
                                           &particle._persistentRecords._orientation(0), timeStepSize);
 
-    //if(dem::mappings::Collision::_collisionModel != dem::mappings::Collision::CollisionModel::Sphere)
+    double* x = fineGridVertex.getXCoordinates(i);
+    double* y = fineGridVertex.getYCoordinates(i);
+    double* z = fineGridVertex.getZCoordinates(i);
+
+    double* refx = fineGridVertex.getXRefCoordinates(i);
+    double* refy = fineGridVertex.getYRefCoordinates(i);
+    double* refz = fineGridVertex.getZRefCoordinates(i);
+
+    for (int j=0; j<particle.getNumberOfTriangles()*DIMENSIONS; j++)
     {
-      double* x = fineGridVertex.getXCoordinates(i);
-      double* y = fineGridVertex.getYCoordinates(i);
-      double* z = fineGridVertex.getZCoordinates(i);
-
-      double* refx = fineGridVertex.getXRefCoordinates(i);
-      double* refy = fineGridVertex.getYRefCoordinates(i);
-      double* refz = fineGridVertex.getZRefCoordinates(i);
-
-      for (int j=0; j<particle.getNumberOfTriangles()*DIMENSIONS; j++)
-      {
-        delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
-                                        &particle._persistentRecords._orientation(0),
-                                        &particle._persistentRecords._centreOfMass(0),
-                                        &particle._persistentRecords._referentialCentreOfMass(0));
-      }
+      delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
+                                      &particle._persistentRecords._orientation(0),
+                                      &particle._persistentRecords._centreOfMass(0),
+                                      &particle._persistentRecords._referentialCentreOfMass(0));
     }
   }
 }
@@ -96,12 +93,11 @@ void dem::mappings::MoveParticles::reassignParticles(
   const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator
 ) {
     int numberOfReassignments = 0;
-    dfor2(k)
+    dfor2(k) //size 2, dimension 3
       int i=0;
       while (i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles())
       {
         records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
-
         tarch::la::Vector<DIMENSIONS,int> correctVertex;
         for (int d=0; d<DIMENSIONS; d++)
         {//correct vertex in cell

@@ -72,7 +72,6 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
-
 void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
   dem::Vertex&                                 fineGridVertex,
   const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
@@ -106,7 +105,6 @@ void dem::mappings::ReluctantlyAdoptGrid::createHangingVertex(
   logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
 }
 
-
 void dem::mappings::ReluctantlyAdoptGrid::destroyHangingVertex(
   const dem::Vertex&                            fineGridVertex,
   const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
@@ -127,8 +125,6 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyHangingVertex(
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
 
-
-
 void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
   dem::Vertex&                                 fineGridVertex,
   const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
@@ -147,7 +143,6 @@ void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
-
 
 void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
       dem::Vertex&               fineGridVertex,
@@ -168,7 +163,6 @@ void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
 
-
 void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
       const dem::Vertex&   fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
@@ -185,8 +179,6 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
-
-
 
 void dem::mappings::ReluctantlyAdoptGrid::enterCell(
   dem::Cell&                                 fineGridCell,

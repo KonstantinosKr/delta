@@ -54,9 +54,10 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
 
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {//if particle diameter is smaller than the (cell diameter/3)
+
     if (fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
     {
-      logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
+      //logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
     } else {
       //Does not hold as it might happen that we lift particles temporarily through hanging nodes

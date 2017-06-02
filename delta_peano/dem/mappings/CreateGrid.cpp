@@ -91,6 +91,9 @@ void dem::mappings::CreateGrid::beginIteration(
 	_numberOfTriangles = 0;
 	_numberOfObstacles = 0;
 
+  solverState.setPrescribedMinimumMeshWidth(_minParticleDiam);
+  solverState.setPrescribedMaximumMeshWidth(_maxParticleDiam);
+
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -147,9 +150,6 @@ void dem::mappings::CreateGrid::createInnerVertex(
 
 	fineGridVertex.init();
 
-  //if(_gridType == dem::mappings::CreateGrid::RegularGrid)
-  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
-
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
 
@@ -170,9 +170,6 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 	}
 
 	fineGridVertex.init();
-
-  //if(_gridType == dem::mappings::CreateGrid::RegularGrid)
-  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
@@ -274,13 +271,13 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     delta::collision::material::MaterialType material = delta::collision::material::MaterialType::GOLD;
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.05;
     //HOPPER DIAGONAL:0.382926
-    makeHopper(vertex, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
+    //makeHopper(vertex, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////FLOOR////////////////floor DIAGONAL:0.344674///////////////////////////////////////////
     iREAL position[] = {centreAsArray[0], 0.35, centreAsArray[2]};
     double height = 0.05; double width = 0.35;
-    makeBox(vertex, position, width, height, 0, 0, 0, eps, material, true, true);
+    //makeBox(vertex, position, width, height, 0, 0, 0, eps, material, true, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //make coarseEnviromentGridArray
@@ -460,8 +457,11 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex,
   else if(_scenario == blackHoleWithCubes ||
           _scenario == freefallWithCubes)
   {
+    printf("%i\n", _numberOfParticles);
     double particleDiameter = (minParticleDiam + (maxParticleDiam-minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
+    //int particleid = makeSphere(vertex, centreAsArray, particleDiameter/2, particleDiameter/2*eps, material, friction, isObstacle);
     int particleid = makeBox(vertex, centreAsArray, particleDiameter, particleDiameter, 0, 1.0/8.0, 1.0/8.0, eps, material, friction, isObstacle);
+
     if(_scenario == blackHoleWithCubes)
       dem::mappings::CreateGrid::setVScheme(vertex, particleid, dem::mappings::CreateGrid::randomLinearAngular);
   }
@@ -492,8 +492,6 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex,
     logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
   #endif
 }
-
-
 
 void dem::mappings::CreateGrid::createCell(
 		dem::Cell&                                fineGridCell,
@@ -689,9 +687,6 @@ void dem::mappings::CreateGrid::endIteration(
 
 	solverState.incNumberOfParticles(_numberOfParticles);
 	solverState.incNumberOfObstacles(_numberOfObstacles);
-
-  solverState.setPrescribedMinimumMeshWidth(_minParticleDiam);
-  solverState.setPrescribedMaximumMeshWidth(_maxParticleDiam);
 
 	logInfo( "endIteration(State)", "created "
 			<< _numberOfParticles << " particles with "
