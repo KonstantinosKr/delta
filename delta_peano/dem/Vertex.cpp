@@ -159,6 +159,11 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
     getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
   }
 
+
+  std::cout   << "#####PARTICLE-INIT-PROPERTIES-DATA#####" << std::endl
+              << "partiId=" << std::fixed << std::setprecision(10) << newParticle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << newParticle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << newParticle.getDiameter() << std::endl
+              << "influRa=" << std::fixed << std::setprecision(10) << newParticle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << newParticle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << newParticle.getHMin() << std::endl;
+
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 
@@ -269,6 +274,11 @@ int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,dou
     getYRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(yCoordinates[i]);
     getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
   }
+
+
+  std::cout   << "#####PARTICLE-INIT-PROPERTIES-DATA#####" << std::endl
+              << "partiId=" << std::fixed << std::setprecision(10) << newParticle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << newParticle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << newParticle.getDiameter() << std::endl
+              << "influRa=" << std::fixed << std::setprecision(10) << newParticle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << newParticle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << newParticle.getHMin() << std::endl;
 
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
