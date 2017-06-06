@@ -64,11 +64,13 @@ class dem::mappings::CreateGrid {
       hopperUniform1k,
       hopperUniform10k,
       hopperUniform100k,
+      hopperUniform500k,
 
       hopperNonUniform,
       hopperNonUniform1k,
       hopperNonUniform10k,
       hopperNonUniform100k,
+      hopperNonUniform500k,
 
       frictionStatic,
       frictionSlide,

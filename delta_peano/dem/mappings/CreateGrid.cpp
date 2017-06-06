@@ -261,10 +261,12 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       _scenario == hopperUniform1k ||
       _scenario == hopperUniform10k ||
       _scenario == hopperUniform100k ||
+      _scenario == hopperUniform500k ||
       _scenario == hopperNonUniform ||
       _scenario == hopperNonUniform1k ||
       _scenario == hopperNonUniform10k ||
-      _scenario == hopperNonUniform100k)
+      _scenario == hopperNonUniform100k ||
+      _scenario == hopperNonUniform500k)
   {
 
     ////////HOPPER////////////////////////////////////////////////////////////////////////////////////////////
@@ -303,6 +305,11 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     {
       xzcuts = 41.0; ycuts = 60;
     }
+    else if(_scenario == hopperUniform500k ||
+            _scenario == hopperNonUniform500k)
+    {
+      xzcuts = 100.0; ycuts = 50;
+    }
 
     double totalMass = 0.05; material = delta::collision::material::MaterialType::WOOD;
 
@@ -320,7 +327,8 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     if(_scenario == hopperUniform ||
        _scenario == hopperUniform1k ||
        _scenario == hopperUniform10k ||
-       _scenario == hopperUniform100k)
+       _scenario == hopperUniform100k ||
+       _scenario == hopperUniform500k)
     {
       if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
          dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none)
@@ -338,7 +346,8 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     else if(_scenario == hopperNonUniform ||
             _scenario == hopperNonUniform1k ||
             _scenario == hopperNonUniform10k ||
-            _scenario == hopperNonUniform100k)
+            _scenario == hopperNonUniform100k ||
+            _scenario == hopperNonUniform500k)
     {
       if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
          dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none)
@@ -457,7 +466,7 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex,
   else if(_scenario == blackHoleWithCubes ||
           _scenario == freefallWithCubes)
   {
-    printf("%i\n", _numberOfParticles);
+    //printf("%i\n", _numberOfParticles);
     double particleDiameter = (minParticleDiam + (maxParticleDiam-minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
     //int particleid = makeSphere(vertex, centreAsArray, particleDiameter/2, particleDiameter/2*eps, material, friction, isObstacle);
     int particleid = makeBox(vertex, centreAsArray, particleDiameter, particleDiameter, 0, 1.0/8.0, 1.0/8.0, eps, material, friction, isObstacle);
@@ -479,12 +488,14 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex,
            _scenario == hopperUniform1k ||
            _scenario == hopperUniform10k  ||
            _scenario == hopperUniform100k ||
+           _scenario == hopperUniform500k ||
            _scenario == hopperNonUniform ||
            _scenario == hopperNonUniform1k ||
            _scenario == hopperNonUniform10k  ||
-           _scenario == hopperNonUniform100k)
+           _scenario == hopperNonUniform100k ||
+           _scenario == hopperNonUniform500k)
   {
-    eps = 0.1;//percentage of radius is epsilon
+    eps = 0.2;//percentage of radius is epsilon
     dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, centreAsArray, cellSize, eps, material, friction, isObstacle);
   }
 
