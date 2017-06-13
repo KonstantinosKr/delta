@@ -93,11 +93,18 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
   		  std::vector<double>&  xCoordinates,
   		  std::vector<double>&  yCoordinates,
   		  std::vector<double>&  zCoordinates,
-  		  double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId
+  		  double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId
     );
 
+    int  dem::Vertex::createNewSubParticle(const tarch::la::Vector<DIMENSIONS,double>& center,
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates,
+          double centerOfMass[3], double inertia[9], double inverse[9], double mass, double hMin, double diameter,
+          double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId);
+
     int  createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,double>&  center,
-    		  double radius, double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId);
+    		  double radius, double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId);
 
     int getNumberOfParticles() const;
     int getNumberOfTriangles( int particleNumber ) const;

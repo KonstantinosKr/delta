@@ -27,6 +27,7 @@
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"
+#include "dem/mappings/AdoptGrid.h"
 
 #include "delta/primitives/triangle.h"
 #include "delta/collision/material.h"
@@ -74,7 +75,28 @@ class dem::mappings::CreateGrid {
 
       frictionStatic,
       frictionSlide,
-      frictionRoll
+      frictionRoll,
+
+      blackHole,
+      hopper,
+      freefall,
+
+      randomOriented,
+      cubes,
+      granulates,
+
+      uniform,
+      nonuniform,
+      n100,
+      n1k,
+      n10k,
+      n100k,
+      n500k,
+
+      friction,
+      sstatic,
+      slide,
+      roll
     };
 
     enum VScheme {
@@ -96,7 +118,7 @@ class dem::mappings::CreateGrid {
       ReluctantAdaptiveGrid
     };
 
-    static void setScenario(Scenario scenario,
+    static void setScenario(Scenario scenario[3],
                             double maxH,
                             double particleDiamMin, double particleDiamMax,
     						            GridType gridType, int noPointsPerGranulate);
@@ -108,7 +130,7 @@ class dem::mappings::CreateGrid {
      */
     static tarch::logging::Log  _log;
 
-    static Scenario _scenario;
+    static Scenario _scenario[4];
     static double   _maxH;
     static double   _minParticleDiam;
     static double   _maxParticleDiam;
@@ -119,6 +141,8 @@ class dem::mappings::CreateGrid {
     int   _numberOfParticles;
     int   _numberOfObstacles;
     int   _numberOfTriangles;
+
+    static double _centreAsArray[3];
 
     static std::vector<std::array<double, 3>> _particleGrid;
     static std::vector<std::string> _componentGrid;
@@ -136,6 +160,8 @@ class dem::mappings::CreateGrid {
                               double centreAsArray[3], double eps, int noPointsPerParticle);
   
     void makeFineEnviroment(dem::Vertex& vertex,
+        dem::Vertex * const                       coarseGridVertices,
+        const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
                             double centreAsArray[3],
                             double cellSize,
                             double eps,
@@ -144,6 +170,8 @@ class dem::mappings::CreateGrid {
                             double friction,
                             double isObstacle,
                             double &minParticleDiam, double &maxParticleDiam);
+
+    void breakdownParticle(dem::Vertex&  vertex, int particleId, int quadsect);
 
     void addParticleToState(std::vector<double>&  xCoordinates,
                              std::vector<double>&  yCoordinates,

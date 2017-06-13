@@ -40,6 +40,10 @@ void delta::primitives::surface::generateBoundBox(
 	double yw = maxPoint[1] - minPoint[1];
 	double zw = maxPoint[2] - minPoint[2];
 
+	//double xw = delta::primitives::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
+  //double yw = delta::primitives::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
+  //double zw = delta::primitives::properties::computeZw(xCoordinates, yCoordinates, zCoordinates);
+
 	generateXYZBox(center, xw, yw, zw, xCoordinates, yCoordinates, zCoordinates);
 }
 

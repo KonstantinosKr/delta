@@ -94,8 +94,7 @@ void dem::mappings::MoveParticles::reassignParticles(
 ) {
     int numberOfReassignments = 0;
     dfor2(k) //size 2, dimension 3
-      int i=0;
-      while (i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles())
+      for (int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
       {
         records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
         tarch::la::Vector<DIMENSIONS,int> correctVertex;
@@ -111,8 +110,6 @@ void dem::mappings::MoveParticles::reassignParticles(
           logDebug( "reassignParticles(...)", "reassign particle " << particle.toString() << " to " << fineGridVertices[ fineGridVerticesEnumerator(correctVertex) ].toString() );
           fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
           numberOfReassignments++;
-        } else {
-          i++;
         }
       }
 		enddforx

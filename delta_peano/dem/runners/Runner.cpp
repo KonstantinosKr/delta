@@ -135,13 +135,17 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   if (gridType==mappings::CreateGrid::AdaptiveGrid)
   {
     repository.switchToTimeStepOnDynamicGrid();
+    repository.switchToTimeStepOnDynamicGrid();
   }
   else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
   {
     repository.switchToTimeStepOnReluctantDynamicGrid();
+    repository.switchToTimeStepOnReluctantDynamicGrid();
   } else {
     repository.switchToTimeStep();
+    repository.switchToTimeStep();
   }
+  repository.iterate();
   repository.iterate();
 
   dem::mappings::Collision::_collisionModel = model;*/

@@ -36,89 +36,89 @@ namespace delta {
   namespace primitives {
     namespace properties {
 
-    void moveMeshFromPositionToOrigin(
-        double center[3],
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+      void moveMeshFromPositionToOrigin(
+          double center[3],
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-    void moveMeshFromOriginToPosition(
-        double center[3],
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+      void moveMeshFromOriginToPosition(
+          double center[3],
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-    void scaleXYZ(double scale,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+      void scaleXYZ(double scale,
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-    void scaleXYZ(double scale,
-        double position[3],
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+      void scaleXYZ(double scale,
+          double position[3],
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-    void rotateX(double alphaX,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+      void rotateX(double alphaX,
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-    void rotateY(double alphaY,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+      void rotateY(double alphaY,
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-    void rotateZ(double alphaZ,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+      void rotateZ(double alphaZ,
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-    double computeXYZWidth(std::vector<double>&  xCoordinates,
+      double computeXYZWidth(std::vector<double>&  xCoordinates,
+                std::vector<double>&  yCoordinates,
+                std::vector<double>&  zCoordinates);
+
+      double computeXZWidth(std::vector<double>&  xCoordinates,
+                std::vector<double>&  yCoordinates,
+                std::vector<double>&  zCoordinates);
+
+      double computeXw(std::vector<double>&  xCoordinates,
               std::vector<double>&  yCoordinates,
               std::vector<double>&  zCoordinates);
 
-    double computeXZWidth(std::vector<double>&  xCoordinates,
+      double computeYw(std::vector<double>&  xCoordinates,
               std::vector<double>&  yCoordinates,
               std::vector<double>&  zCoordinates);
 
-    double computeXw(std::vector<double>&  xCoordinates,
-            std::vector<double>&  yCoordinates,
-            std::vector<double>&  zCoordinates);
+      double computeZw(std::vector<double>&  xCoordinates,
+              std::vector<double>&  yCoordinates,
+              std::vector<double>&  zCoordinates);
 
-    double computeYw(std::vector<double>&  xCoordinates,
-            std::vector<double>&  yCoordinates,
-            std::vector<double>&  zCoordinates);
+      std::array<double, 3> minBoundaryVertex(std::vector<double>&  xCoordinates,
+                      std::vector<double>&  yCoordinates,
+                      std::vector<double>&  zCoordinates);
 
-    double computeZw(std::vector<double>&  xCoordinates,
-            std::vector<double>&  yCoordinates,
-            std::vector<double>&  zCoordinates);
+      std::array<double, 3> maxBoundaryVertex(std::vector<double>&  xCoordinates,
+                      std::vector<double>&  yCoordinates,
+                      std::vector<double>&  zCoordinates);
 
-    std::array<double, 3> minBoundaryVertex(std::vector<double>&  xCoordinates,
-                    std::vector<double>&  yCoordinates,
-                    std::vector<double>&  zCoordinates);
+      double computeDiagonal(std::vector<double>&  xCoordinates,
+                       std::vector<double>&  yCoordinates,
+                       std::vector<double>&  zCoordinates);
 
-    std::array<double, 3> maxBoundaryVertex(std::vector<double>&  xCoordinates,
-                    std::vector<double>&  yCoordinates,
-                    std::vector<double>&  zCoordinates);
+      double computeMaxXWidth(std::vector<double>&  xCoordinates);
+      double computeMaxYWidth(std::vector<double>&  yCoordinates);
+      double computeMaxZWidth(std::vector<double>&  zCoordinates);
 
-    double computeDiagonal(std::vector<double>&  xCoordinates,
-                     std::vector<double>&  yCoordinates,
-                     std::vector<double>&  zCoordinates);
+      double getMaxXAxis(std::vector<double>&  xCoordinates);
+      double getMaxYAxis(std::vector<double>&  yCoordinates);
+      double getMaxZAxis(std::vector<double>&  zCoordinates);
 
-    double computeMaxXWidth(std::vector<double>&  xCoordinates);
-    double computeMaxYWidth(std::vector<double>&  yCoordinates);
-    double computeMaxZWidth(std::vector<double>&  zCoordinates);
+      double getMinXAxis(std::vector<double>&  xCoordinates);
+      double getMinYAxis(std::vector<double>&  yCoordinates);
+      double getMinZAxis(std::vector<double>&  zCoordinates);
 
-    double getMaxXAxis(std::vector<double>&  xCoordinates);
-    double getMaxYAxis(std::vector<double>&  yCoordinates);
-    double getMaxZAxis(std::vector<double>&  zCoordinates);
-
-    double getMinXAxis(std::vector<double>&  xCoordinates);
-    double getMinYAxis(std::vector<double>&  yCoordinates);
-    double getMinZAxis(std::vector<double>&  zCoordinates);
-
-    double computeDistanceAB(std::array<double, 3> A, std::array<double, 3> B);
+      double computeDistanceAB(std::array<double, 3> A, std::array<double, 3> B);
 
       void centerOfMass(
         std::vector<double>&  xCoordinates,

@@ -196,107 +196,148 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
+  dem::mappings::CreateGrid::Scenario scenarioArray[4];
   if (scenario=="nonescenario") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nonescenario,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+
   } else if (scenario=="blackholeWithRandomlyOrientedCubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithRandomOrientedCubes,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithRandomOrientedCubes,
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="blackholeWithCubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithCubes,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithCubes;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="blackholeWithGranulates") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::blackHoleWithGranulates,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithGranulates;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="freefallWithRandomlyOrientedCubes") {
-      dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallWithRandomOrientedCubes,
-                                              gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::freefallWithRandomOrientedCubes;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="freefallWithCubes") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallWithCubes,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::freefallWithCubes;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="freefallWithGranulates") {
-  dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::freefallWithGranulates,
-                                          gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+  scenarioArray[0] = dem::mappings::CreateGrid::freefallWithGranulates;
+  scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+  scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="sla") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::sla,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::sla;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="nuclearArray") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::nuclearArray,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclearArray;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="two-particles-crash") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::TwoParticlesCrash,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::TwoParticlesCrash;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="hopperUniform") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n100;
   }
   else if (scenario=="hopperUniform1k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform1k,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform1k;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n1k;
   }
   else if (scenario=="hopperUniform10k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform10k,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform10k;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n10k;
   }
   else if (scenario=="hopperUniform100k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform100k,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform100k;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n100k;
   }
   else if (scenario=="hopperUniform500k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperUniform500k,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform500k;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n500k;
   }
   else if (scenario=="hopperNonUniform") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform,
-                                            gridHMax, particleDiamMin, gridHMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n100;
   }
   else if (scenario=="hopperNonUniform1k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform1k,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform1k;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n1k;
   }
   else if (scenario=="hopperNonUniform10k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform10k,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform10k;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n10k;
   }
   else if (scenario=="hopperNonUniform100k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform100k,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform100k;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n100k;
   }
   else if (scenario=="hopperNonUniform500k") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::hopperNonUniform500k,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform500k;
+    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[3] = dem::mappings::CreateGrid::n500k;
   }
   //////////////PHYSICS TESTS START/////////////////////////////////////
   else if (scenario=="frictionStatic") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionStatic,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::frictionStatic;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="frictionSlide") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::frictionSlide;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="frictionSlideRotate") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionSlide,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::frictionSlide;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="frictionRoll") {
-    dem::mappings::CreateGrid::setScenario(dem::mappings::CreateGrid::frictionRoll,
-                                            gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+    scenarioArray[0] = dem::mappings::CreateGrid::frictionRoll;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   //////////////PHYSICS TESTS END/////////////////////////////////////
   else {
     std::cerr << "not a valid scenario. Please run without arguments to see list of valid scenarios" << std::endl;
     programExitCode = 2;
   }
+
+  dem::mappings::CreateGrid::setScenario(scenarioArray,
+                                         gridHMax,
+                                         particleDiamMin, particleDiamMax,
+                                         gridType, meshMultiplier);
 
   dem::runners::Runner::Plot plot;
   int trackID = -1;

@@ -31,6 +31,8 @@
 
 #include "delta/hull/hull.h"
 #include "delta/hull/alg.h"
+#include "delta/primitives/surface.h"
+#include "delta/primitives/properties.h"
 
 namespace delta {
   namespace primitives {

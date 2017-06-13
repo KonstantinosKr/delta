@@ -55,7 +55,7 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {//if particle diameter is smaller than the (cell diameter/3)
 
-    if(fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && !fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+    if(fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
     {
       //logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
@@ -180,21 +180,17 @@ void dem::mappings::dropParticles(
 
     if (!coarseGridVertexAtSamePosition.isOutside())
     {
-      int i=0;
-      while (i<coarseGridVertexAtSamePosition.getNumberOfParticles())
+
+      for (int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
       {
-        if (coarseGridVertexAtSamePosition.getParticle(i).getDiameter()<coarseGridVerticesEnumerator.getCellSize()(0) && !coarseGridVertexAtSamePosition.getParticle(i).getIsObstacle())
+        if (coarseGridVertexAtSamePosition.getParticle(i).getDiameter()<coarseGridVerticesEnumerator.getCellSize()(0))
         {
           logDebug( "dropParticle()",
           "dropped particle " << coarseGridVertexAtSamePosition.getParticle(i).toString() <<
-          " from " << peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) <<
-          " into " << fineGridPositionOfVertex <<
-          ", i.e. from " << coarseGridVertexAtSamePosition.toString() <<
-          " into " << fineGridVertex.toString());
+          " from " << peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) << " into " << fineGridPositionOfVertex <<
+          ", i.e. from " << coarseGridVertexAtSamePosition.toString() << " into " << fineGridVertex.toString());
           fineGridVertex.appendParticle( coarseGridVertexAtSamePosition.getParticle(i) );
           coarseGridVertexAtSamePosition.releaseParticle(i);
-        } else {
-          i++;
         }
       }
     }

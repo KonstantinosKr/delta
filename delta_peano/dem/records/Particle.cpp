@@ -5,7 +5,7 @@ dem::records::Particle::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::Particle::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const bool& isObstacle, const int& numberOfTriangles, const int& material, const bool& friction):
+dem::records::Particle::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
 _vertices(vertices),
 _orientation(orientation),
 _inertia(inertia),
@@ -22,9 +22,10 @@ _epsilon(epsilon),
 _mass(mass),
 _hMin(hMin),
 _globalParticleId(globalParticleId),
-_isObstacle(isObstacle),
+_localParticleId(localParticleId),
 _numberOfTriangles(numberOfTriangles),
 _material(material),
+_isObstacle(isObstacle),
 _friction(friction) {
    
 }
@@ -35,13 +36,13 @@ dem::records::Particle::Particle() {
 
 
 dem::records::Particle::Particle(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._influenceRadius, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._isObstacle, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._friction) {
+_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._influenceRadius, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
    
 }
 
 
-dem::records::Particle::Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const bool& isObstacle, const int& numberOfTriangles, const int& material, const bool& friction):
-_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, influenceRadius, epsilon, mass, hMin, globalParticleId, isObstacle, numberOfTriangles, material, friction) {
+dem::records::Particle::Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, influenceRadius, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
    
 }
 
@@ -130,11 +131,13 @@ void dem::records::Particle::toString (std::ostream& out) const {
    out << ",";
    out << "globalParticleId:" << getGlobalParticleId();
    out << ",";
-   out << "isObstacle:" << getIsObstacle();
+   out << "localParticleId:" << getLocalParticleId();
    out << ",";
    out << "numberOfTriangles:" << getNumberOfTriangles();
    out << ",";
    out << "material:" << getMaterial();
+   out << ",";
+   out << "isObstacle:" << getIsObstacle();
    out << ",";
    out << "friction:" << getFriction();
    out <<  ")";
@@ -163,9 +166,10 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
       getMass(),
       getHMin(),
       getGlobalParticleId(),
-      getIsObstacle(),
+      getLocalParticleId(),
       getNumberOfTriangles(),
       getMaterial(),
+      getIsObstacle(),
       getFriction()
    );
 }
@@ -244,9 +248,9 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          Particle dummyParticle[2];
          
          #ifdef MPI2
-         const int Attributes = 20;
-         #else
          const int Attributes = 21;
+         #else
+         const int Attributes = 22;
          #endif
          MPI_Datatype subtypes[Attributes] = {
               MPI_DOUBLE		 //vertices
@@ -265,9 +269,10 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
             , MPI_DOUBLE		 //mass
             , MPI_DOUBLE		 //hMin
             , MPI_INT		 //globalParticleId
-            , MPI_CXX_BOOL		 //isObstacle
+            , MPI_INT		 //localParticleId
             , MPI_INT		 //numberOfTriangles
             , MPI_INT		 //material
+            , MPI_CXX_BOOL		 //isObstacle
             , MPI_CXX_BOOL		 //friction
             #ifndef MPI2
             , MPI_UB
@@ -292,9 +297,10 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
             , 1		 //mass
             , 1		 //hMin
             , 1		 //globalParticleId
-            , 1		 //isObstacle
+            , 1		 //localParticleId
             , 1		 //numberOfTriangles
             , 1		 //material
+            , 1		 //isObstacle
             , 1		 //friction
             #ifndef MPI2
             , 1
@@ -390,9 +396,9 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._globalParticleId))), 		&disp[15] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._isObstacle))), 		&disp[16] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._localParticleId))), 		&disp[16] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._isObstacle))), 		&disp[16] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._localParticleId))), 		&disp[16] );
          #endif
          #ifdef MPI2
          MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._numberOfTriangles))), 		&disp[17] );
@@ -405,9 +411,14 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._material))), 		&disp[18] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._friction))), 		&disp[19] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._isObstacle))), 		&disp[19] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._friction))), 		&disp[19] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._isObstacle))), 		&disp[19] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._friction))), 		&disp[20] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._friction))), 		&disp[20] );
          #endif
          #ifdef MPI2
          for (int i=1; i<Attributes; i++) {
@@ -425,9 +436,9 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
             assertion4(disp[i]<static_cast<int>(sizeof(Particle)), i, disp[i], Attributes, sizeof(Particle));
          }
          #ifndef MPI2
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[1]))), 		&disp[20] );
-         disp[20] -= base;
-         disp[20] += disp[0];
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[1]))), 		&disp[21] );
+         disp[21] -= base;
+         disp[21] += disp[0];
          #endif
          #ifdef MPI2
          MPI_Datatype tmpType; 
@@ -677,7 +688,7 @@ dem::records::ParticlePacked::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::ParticlePacked::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const bool& isObstacle, const int& numberOfTriangles, const int& material, const bool& friction):
+dem::records::ParticlePacked::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
 _vertices(vertices),
 _orientation(orientation),
 _inertia(inertia),
@@ -694,9 +705,10 @@ _epsilon(epsilon),
 _mass(mass),
 _hMin(hMin),
 _globalParticleId(globalParticleId),
-_isObstacle(isObstacle),
+_localParticleId(localParticleId),
 _numberOfTriangles(numberOfTriangles),
 _material(material),
+_isObstacle(isObstacle),
 _friction(friction) {
    
 }
@@ -707,13 +719,13 @@ dem::records::ParticlePacked::ParticlePacked() {
 
 
 dem::records::ParticlePacked::ParticlePacked(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._influenceRadius, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._isObstacle, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._friction) {
+_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._influenceRadius, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
    
 }
 
 
-dem::records::ParticlePacked::ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const bool& isObstacle, const int& numberOfTriangles, const int& material, const bool& friction):
-_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, influenceRadius, epsilon, mass, hMin, globalParticleId, isObstacle, numberOfTriangles, material, friction) {
+dem::records::ParticlePacked::ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, influenceRadius, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
    
 }
 
@@ -802,11 +814,13 @@ void dem::records::ParticlePacked::toString (std::ostream& out) const {
    out << ",";
    out << "globalParticleId:" << getGlobalParticleId();
    out << ",";
-   out << "isObstacle:" << getIsObstacle();
+   out << "localParticleId:" << getLocalParticleId();
    out << ",";
    out << "numberOfTriangles:" << getNumberOfTriangles();
    out << ",";
    out << "material:" << getMaterial();
+   out << ",";
+   out << "isObstacle:" << getIsObstacle();
    out << ",";
    out << "friction:" << getFriction();
    out <<  ")";
@@ -835,9 +849,10 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
       getMass(),
       getHMin(),
       getGlobalParticleId(),
-      getIsObstacle(),
+      getLocalParticleId(),
       getNumberOfTriangles(),
       getMaterial(),
+      getIsObstacle(),
       getFriction()
    );
 }
@@ -916,9 +931,9 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          ParticlePacked dummyParticlePacked[2];
          
          #ifdef MPI2
-         const int Attributes = 20;
-         #else
          const int Attributes = 21;
+         #else
+         const int Attributes = 22;
          #endif
          MPI_Datatype subtypes[Attributes] = {
               MPI_DOUBLE		 //vertices
@@ -937,9 +952,10 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
             , MPI_DOUBLE		 //mass
             , MPI_DOUBLE		 //hMin
             , MPI_INT		 //globalParticleId
-            , MPI_CXX_BOOL		 //isObstacle
+            , MPI_INT		 //localParticleId
             , MPI_INT		 //numberOfTriangles
             , MPI_INT		 //material
+            , MPI_CXX_BOOL		 //isObstacle
             , MPI_CXX_BOOL		 //friction
             #ifndef MPI2
             , MPI_UB
@@ -964,9 +980,10 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
             , 1		 //mass
             , 1		 //hMin
             , 1		 //globalParticleId
-            , 1		 //isObstacle
+            , 1		 //localParticleId
             , 1		 //numberOfTriangles
             , 1		 //material
+            , 1		 //isObstacle
             , 1		 //friction
             #ifndef MPI2
             , 1
@@ -1062,9 +1079,9 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._globalParticleId))), 		&disp[15] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._isObstacle))), 		&disp[16] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._localParticleId))), 		&disp[16] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._isObstacle))), 		&disp[16] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._localParticleId))), 		&disp[16] );
          #endif
          #ifdef MPI2
          MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._numberOfTriangles))), 		&disp[17] );
@@ -1077,9 +1094,14 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._material))), 		&disp[18] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._friction))), 		&disp[19] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._isObstacle))), 		&disp[19] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._friction))), 		&disp[19] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._isObstacle))), 		&disp[19] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._friction))), 		&disp[20] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._friction))), 		&disp[20] );
          #endif
          #ifdef MPI2
          for (int i=1; i<Attributes; i++) {
@@ -1097,9 +1119,9 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
             assertion4(disp[i]<static_cast<int>(sizeof(ParticlePacked)), i, disp[i], Attributes, sizeof(ParticlePacked));
          }
          #ifndef MPI2
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[1]))), 		&disp[20] );
-         disp[20] -= base;
-         disp[20] += disp[0];
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[1]))), 		&disp[21] );
+         disp[21] -= base;
+         disp[21] += disp[0];
          #endif
          #ifdef MPI2
          MPI_Datatype tmpType; 

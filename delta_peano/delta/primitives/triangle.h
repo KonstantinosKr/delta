@@ -27,6 +27,9 @@
 
 
 #include <vector>
+#include <array>
+#include <delta/primitives/properties.h>
+#include <delta/primitives/surface.h>
 
 namespace delta {
   namespace primitives {
@@ -44,6 +47,24 @@ namespace delta {
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates);
+
+      int meshQuadSect(int quadsectTimes,
+          std::vector<std::vector<double>>&  xCoordinates,
+          std::vector<std::vector<double>>&  yCoordinates,
+          std::vector<std::vector<double>>&  zCoordinates, std::vector<std::array<double, 3>>& centroid);
+
+      void quadsect(std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
+          std::vector<std::vector<double>>&  xCoordinatesVec,
+          std::vector<std::vector<double>>&  yCoordinatesVec,
+          std::vector<std::vector<double>>&  zCoordinatesVec, std::vector<std::array<double, 3>>& centroid);
+
+      void getTrianglesInBoundingBox(std::array<double, 3> minpoint, std::array<double, 3> maxpoint,
+          std::vector<double>&  xCoordinatesRoot,
+          std::vector<double>&  yCoordinatesRoot,
+          std::vector<double>&  zCoordinatesRoot,
+          std::vector<double>&  xCoordinatesBounded,
+          std::vector<double>&  yCoordinatesBounded,
+          std::vector<double>&  zCoordinatesBounded);
     }
   }
 }

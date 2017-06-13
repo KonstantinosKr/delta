@@ -32,8 +32,9 @@ class dem::records::Particle {
   persistent expose double mass;
   persistent expose double hMin;
   persistent expose int globalParticleId;
-  persistent expose bool isObstacle;
+  persistent expose int localParticleId;
   persistent expose int numberOfTriangles;
   persistent expose int material;
+  persistent expose bool isObstacle;
   persistent expose bool friction;
 };

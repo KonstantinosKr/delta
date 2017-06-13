@@ -34,12 +34,12 @@ getPlotSteps()
 getParticleCount()
 getListOfUniqueParticleIds()
 
-
 listParticleId, listMass, listDiameter, \
 listInfluenceRadius, listEpsilon, listthMin, listNoOfTriangles, \
 listIsObstacle, listMaterial, listLinear, listAngular, \
 listRefangular, listCentre, listCenterOfMass, \
 listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(0, getParticleCount(), 45000)
+
 #400 - iteration 4800
 '''
 IEx: -0.000011
