@@ -106,7 +106,7 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
-tarch::multicore::BooleanSemaphore                                  dem::mappings::AdoptGrid::_AdoptSemaphore;
+tarch::multicore::BooleanSemaphore  dem::mappings::AdoptGrid::_AdoptSemaphore;
 
 void dem::mappings::AdoptGrid::createHangingVertex(
       dem::Vertex&     fineGridVertex,
@@ -182,14 +182,16 @@ void dem::mappings::dropParticles(
     {
       for (int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
       {
-        if (coarseGridVertexAtSamePosition.getParticle(i).getDiameter()<coarseGridVerticesEnumerator.getCellSize()(0))
+        if (coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0))
         {
-          logDebug( "dropParticle()",
-          "dropped particle " << coarseGridVertexAtSamePosition.getParticle(i).toString() <<
-          " from " << peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) << " into " << fineGridPositionOfVertex <<
-          ", i.e. from " << coarseGridVertexAtSamePosition.toString() << " into " << fineGridVertex.toString());
           fineGridVertex.appendParticle( coarseGridVertexAtSamePosition.getParticle(i) );
           coarseGridVertexAtSamePosition.releaseParticle(i);
+
+          /*std::cout << "dropParticle(): GLOBALID: "
+                    << coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId() << " LOCALID: "
+                    << coarseGridVertexAtSamePosition.getParticle(i).getLocalParticleId() << " from "
+                    << peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) << " into "
+                    << fineGridPositionOfVertex << std::endl;*/
         }
       }
     }
@@ -208,7 +210,6 @@ void dem::mappings::AdoptGrid::createInnerVertex(
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   fineGridVertex.init();
-
   tarch::multicore::Lock lock(_AdoptSemaphore);
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
   lock.free();

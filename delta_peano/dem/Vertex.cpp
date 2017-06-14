@@ -166,7 +166,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 
-int  dem::Vertex::createNewSubParticle(const tarch::la::Vector<DIMENSIONS,double>& center,
+int dem::Vertex::createNewSubParticle(const tarch::la::Vector<DIMENSIONS,double>& center,
       std::vector<double>&  xCoordinates,
       std::vector<double>&  yCoordinates,
       std::vector<double>&  zCoordinates,
@@ -223,7 +223,7 @@ int  dem::Vertex::createNewSubParticle(const tarch::la::Vector<DIMENSIONS,double
 
   newParticle._persistentRecords._mass            = mass;
   newParticle._persistentRecords._friction        = friction;
-  newParticle._persistentRecords._influenceRadius = (newParticle.getDiameter()+epsilon) * 1.1;
+  newParticle._persistentRecords._influenceRadius = (diameter+epsilon) * 1.1;
   newParticle._persistentRecords._epsilon         = epsilon;
   newParticle._persistentRecords._hMin            = hMin;
 
@@ -376,22 +376,14 @@ int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,dou
 
 int dem::Vertex::getNumberOfParticles() const {
   assertion1( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticles()), toString() );
-
-  const int result = static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size());
-
-  return result;
+  return static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size());
 }
 
 int dem::Vertex::getNumberOfRealAndVirtualParticles() const {
   assertion1( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticles()), toString() );
   assertion1( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticlesOnCoarserLevels()), toString() );
-
-  const int result = static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size())
-                   + static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size());
-
-  //printf("VIRTUAL:%d\n", static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size()));
-
-  return result;
+  return static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size()) +
+         static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size());
 }
 
 dem::records::Particle& dem::Vertex::getParticle( int particleNumber ) {
@@ -403,8 +395,7 @@ dem::records::Particle& dem::Vertex::getParticle( int particleNumber ) {
     particleNumber -= static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size());
     assertion2( particleNumber<static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size()), particleNumber, toString() );
     return ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() )[particleNumber];
-  }
-  else {
+  } else {
     assertion2( particleNumber<static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size()), particleNumber, toString() );
     return ParticleHeap::getInstance().getData( _vertexData.getParticles() )[particleNumber];
   }
@@ -419,8 +410,7 @@ const dem::records::Particle& dem::Vertex::getParticle( int particleNumber ) con
     particleNumber -= static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size());
     assertion2( particleNumber<static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size()), particleNumber, toString() );
     return ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() )[particleNumber];
-  }
-  else {
+  } else {
     assertion2( particleNumber<static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size()), particleNumber, toString() );
     return ParticleHeap::getInstance().getData( _vertexData.getParticles() )[particleNumber];
   }

@@ -179,7 +179,7 @@ class dem::mappings::CreateGrid {
                              std::vector<double>&  yCoordinates,
                              std::vector<double>&  zCoordinates, bool isObstacle);
 
-    int makeHopper(dem::Vertex&  vertex, int quadsect,
+    int makeHopper(dem::Vertex&  vertex, int quadsect, int meshmultiplier,
                    double position[3],
                    double _hopperWidth,
                    double _hopperHeight,
@@ -189,7 +189,7 @@ class dem::mappings::CreateGrid {
                    bool friction,
                    bool isObstacle);
   
-    int makeBox(dem::Vertex&  vertex, int quadsect,
+    int makeBox(dem::Vertex&  vertex, int quadsect, int meshmultiplier,
                   double position[3],
                   double width,
                   double height,

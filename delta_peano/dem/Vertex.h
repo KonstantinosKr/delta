@@ -96,7 +96,7 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
   		  double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId
     );
 
-    int  dem::Vertex::createNewSubParticle(const tarch::la::Vector<DIMENSIONS,double>& center,
+    int createNewSubParticle(const tarch::la::Vector<DIMENSIONS,double>& center,
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates,
