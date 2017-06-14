@@ -53,11 +53,14 @@ void printManual()
           << "  hopperUniform" << std::endl
           << "  hopperUniform1k" << std::endl
           << "  hopperUniform10k" << std::endl
-          << "  hopperUniform50k" << std::endl
+          << "  hopperUniform100k" << std::endl
+          << "  hopperUniform500k" << std::endl
 
+          << "  hopperNonUniform" << std::endl
           << "  hopperNonUniform1k" << std::endl
           << "  hopperNonUniform10k" << std::endl
-          << "  hopperNonUniform50k" << std::endl
+          << "  hopperNonUniform100k" << std::endl
+          << "  hopperNonUniform500k" << std::endl
 
 				  << "  frictionStatic" << std::endl
 				  << "  frictionSlide" << std::endl

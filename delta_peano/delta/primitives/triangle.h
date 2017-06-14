@@ -53,7 +53,7 @@ namespace delta {
           std::vector<std::vector<double>>&  yCoordinates,
           std::vector<std::vector<double>>&  zCoordinates, std::vector<std::array<double, 3>>& centroid);
 
-      void quadsect(std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
+      int quadsect(int level, int index, std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
           std::vector<std::vector<double>>&  xCoordinatesVec,
           std::vector<std::vector<double>>&  yCoordinatesVec,
           std::vector<std::vector<double>>&  zCoordinatesVec, std::vector<std::array<double, 3>>& centroid);

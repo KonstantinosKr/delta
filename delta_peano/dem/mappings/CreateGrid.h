@@ -118,7 +118,7 @@ class dem::mappings::CreateGrid {
       ReluctantAdaptiveGrid
     };
 
-    static void setScenario(Scenario scenario[3],
+    static void setScenario(Scenario scenario[4],
                             double maxH,
                             double particleDiamMin, double particleDiamMax,
     						            GridType gridType, int noPointsPerGranulate);
@@ -160,8 +160,8 @@ class dem::mappings::CreateGrid {
                               double centreAsArray[3], double eps, int noPointsPerParticle);
   
     void makeFineEnviroment(dem::Vertex& vertex,
-        dem::Vertex * const                       coarseGridVertices,
-        const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
+                            dem::Vertex * const coarseGridVertices,
+                            const peano::grid::VertexEnumerator&  coarseGridVerticesEnumerator,
                             double centreAsArray[3],
                             double cellSize,
                             double eps,
@@ -171,13 +171,15 @@ class dem::mappings::CreateGrid {
                             double isObstacle,
                             double &minParticleDiam, double &maxParticleDiam);
 
-    void breakdownParticle(dem::Vertex&  vertex, int particleId, int quadsect);
+    int createParticleObject(int quadsect, dem::Vertex&  vertex, double position[3],
+                              double eps, delta::collision::material::MaterialType material, bool friction, bool isObstacle,
+                              std::vector<double> xCoordinates, std::vector<double> yCoordinates, std::vector<double> zCoordinates);
 
     void addParticleToState(std::vector<double>&  xCoordinates,
                              std::vector<double>&  yCoordinates,
                              std::vector<double>&  zCoordinates, bool isObstacle);
 
-    int makeHopper(dem::Vertex&  vertex,
+    int makeHopper(dem::Vertex&  vertex, int quadsect,
                    double position[3],
                    double _hopperWidth,
                    double _hopperHeight,
@@ -187,7 +189,7 @@ class dem::mappings::CreateGrid {
                    bool friction,
                    bool isObstacle);
   
-    int makeBox(dem::Vertex&  vertex,
+    int makeBox(dem::Vertex&  vertex, int quadsect,
                   double position[3],
                   double width,
                   double height,
