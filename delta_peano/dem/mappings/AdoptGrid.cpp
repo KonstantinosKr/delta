@@ -180,7 +180,6 @@ void dem::mappings::dropParticles(
 
     if (!coarseGridVertexAtSamePosition.isOutside())
     {
-
       for (int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
       {
         if (coarseGridVertexAtSamePosition.getParticle(i).getDiameter()<coarseGridVerticesEnumerator.getCellSize()(0))

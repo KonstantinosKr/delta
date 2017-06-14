@@ -42,18 +42,34 @@ namespace delta {
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates);
 
-      void meshDenseMultiplier(
-          int  multiplier,
+      void triSectTriangle(
+          double A[3],
+          double B[3],
+          double C[3],
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates);
 
-      int meshQuadSect(int quadsectTimes,
+      void fiveSectTriangle(
+          double A[3],
+          double B[3],
+          double C[3],
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
+
+      void meshDenser(
+          int multiplier,
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
+
+      int meshOctSect(int quadsectTimes,
           std::vector<std::vector<double>>&  xCoordinates,
           std::vector<std::vector<double>>&  yCoordinates,
           std::vector<std::vector<double>>&  zCoordinates, std::vector<std::array<double, 3>>& centroid);
 
-      int quadsect(int level, int index, std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
+      int octsect(int level, int index, std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
           std::vector<std::vector<double>>&  xCoordinatesVec,
           std::vector<std::vector<double>>&  yCoordinatesVec,
           std::vector<std::vector<double>>&  zCoordinatesVec, std::vector<std::array<double, 3>>& centroid);

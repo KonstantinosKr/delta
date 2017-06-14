@@ -101,6 +101,37 @@ void dem::mappings::CreateGrid::beginIteration(
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
+
+void dem::mappings::CreateGrid::dropParticles(
+  dem::Vertex&                                 fineGridVertex,
+  dem::Vertex * const                          coarseGridVertices,
+  const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
+  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+) {
+  assertion1( !fineGridVertex.isHangingNode(), fineGridVertex.toString() );
+
+  if (peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(fineGridPositionOfVertex))
+  {
+    Vertex& coarseGridVertexAtSamePosition = coarseGridVertices[coarseGridVerticesEnumerator( peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) )];
+
+    if (!coarseGridVertexAtSamePosition.isOutside())
+    {
+      for (int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
+      {
+        if (coarseGridVertexAtSamePosition.getParticle(i).getDiameter()<coarseGridVerticesEnumerator.getCellSize()(0))
+        {
+          logDebug( "dropParticle()",
+          "dropped particle " << coarseGridVertexAtSamePosition.getParticle(i).toString() <<
+          " from " << peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) << " into " << fineGridPositionOfVertex <<
+          ", i.e. from " << coarseGridVertexAtSamePosition.toString() << " into " << fineGridVertex.toString());
+          fineGridVertex.appendParticle( coarseGridVertexAtSamePosition.getParticle(i) );
+          coarseGridVertexAtSamePosition.releaseParticle(i);
+        }
+      }
+    }
+  }
+}
+
 void dem::mappings::CreateGrid::createInnerVertex(
 		dem::Vertex&                                  fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
@@ -118,6 +149,7 @@ void dem::mappings::CreateGrid::createInnerVertex(
 	}
 
 	fineGridVertex.init();
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
@@ -139,6 +171,7 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 	}
 
 	fineGridVertex.init();
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
@@ -231,13 +264,13 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     delta::collision::material::MaterialType material = delta::collision::material::MaterialType::GOLD;
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.05;
     //HOPPER DIAGONAL:0.382926
-    int particleId = makeHopper(vertex, 3, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
+    int particleId = makeHopper(vertex, 2, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////FLOOR////////////////floor DIAGONAL:0.344674///////////////////////////////////////////
     iREAL position[] = {centreAsArray[0], 0.35, centreAsArray[2]};
     double height = 0.05; double width = 0.35;
-    particleId = makeBox(vertex, 0, position, width, height, 0, 0, 0, eps, material, true, true);
+    particleId = makeBox(vertex, 1, position, width, height, 0, 0, 0, eps, material, true, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////PARTICLE GRID///////////////////////////////////////////////////////////////////////////////////////
@@ -457,6 +490,7 @@ void dem::mappings::CreateGrid::createCell(
 	if(_scenario[0] == nonescenario) return;
 	if (coarseGridCell.isRoot())
 	{
+	  printf("level:%i\n", fineGridVerticesEnumerator.getLevel());
 		_centreAsArray[0] = fineGridVerticesEnumerator.getCellCenter()(0);
     _centreAsArray[1] = fineGridVerticesEnumerator.getCellCenter()(1),
     _centreAsArray[2] = fineGridVerticesEnumerator.getCellCenter()(2);
@@ -483,7 +517,7 @@ void dem::mappings::CreateGrid::createCell(
 
       auto material = delta::collision::material::MaterialType::WOOD;
       bool friction = true; bool obstacle = false;
-      //makeFineEnviroment(vertex, coarseGridVertices, coarseGridVerticesEnumerator, centreAsArray, fineGridVerticesEnumerator.getCellSize()(0), _epsilon, _noPointsPerParticle, material, friction, obstacle, _minParticleDiam, _maxParticleDiam);
+      makeFineEnviroment(vertex, coarseGridVertices, coarseGridVerticesEnumerator, centreAsArray, fineGridVerticesEnumerator.getCellSize()(0), _epsilon, _noPointsPerParticle, material, friction, obstacle, _minParticleDiam, _maxParticleDiam);
 		}
 	}
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
@@ -510,7 +544,7 @@ int dem::mappings::CreateGrid::makeHopper(dem::Vertex&  vertex, int quadsect,
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
   delta::primitives::hopper::generateHopper(position, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
-  delta::primitives::triangle::meshDenseMultiplier(2, xCoordinates, yCoordinates, zCoordinates);
+  delta::primitives::triangle::meshDenser(2, xCoordinates, yCoordinates, zCoordinates);
 
   return createParticleObject(quadsect, vertex, position, eps, material, friction, isObstacle, xCoordinates, yCoordinates, zCoordinates);
 }
@@ -530,6 +564,7 @@ int dem::mappings::CreateGrid::makeBox(dem::Vertex&  vertex, int quadsect,
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
   delta::primitives::cubes::generateHullCube(position, width, height, width, rx, ry, rz, xCoordinates, yCoordinates, zCoordinates);
 
+  delta::primitives::triangle::meshDenser(2, xCoordinates, yCoordinates, zCoordinates);
   return createParticleObject(quadsect, vertex, position, eps, material, friction, isObstacle, xCoordinates, yCoordinates, zCoordinates);
 }
 
@@ -568,11 +603,10 @@ int dem::mappings::CreateGrid::createParticleObject(int quadsect, dem::Vertex&  
     }
     xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-    int numOfSubParticles = delta::primitives::triangle::meshQuadSect(quadsect, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+    int numOfSubParticles = delta::primitives::triangle::meshOctSect(quadsect, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
 
-    for(int i=numOfSubParticles; i>(quadsect-1)*4; i--)
+    for(int i=numOfSubParticles; i>(quadsect-1)*8; i--)
     {
-      printf("%i\n", i);
       for(int j=0; j<xCoordinatesVec[i].size(); j++)
       {
         xCoordinates.push_back(xCoordinatesVec[i][j]);
@@ -581,6 +615,7 @@ int dem::mappings::CreateGrid::createParticleObject(int quadsect, dem::Vertex&  
       }
 
       iREAL pos[] = {centroid[i][0], centroid[i][1], centroid[i][2]};
+      double diameter = delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
       newParticleNumber = vertex.createNewSubParticle(pos, xCoordinates, yCoordinates, zCoordinates, centerOfMass, inertia, inverse, mass, hMin, diameter, eps, friction, material, isObstacle, _numberOfParticles, i);
 
       _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
