@@ -5,13 +5,13 @@
 #include "delta/collision/gjk.h"
 #include "delta/collision/filter.h"
 #include "delta/forces/forces.h"
+#include "delta/dynamics/dynamics.h"
 
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
 
 #include "peano/utils/Loop.h"
 
-#include "delta/dynamics/dynamics.h"
 
 peano::CommunicationSpecification   dem::mappings::Collision::communicationSpecification() const {
 	return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
@@ -28,8 +28,6 @@ peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpeci
 peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
-
-
 
 peano::MappingSpecification   dem::mappings::Collision::leaveCellSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);

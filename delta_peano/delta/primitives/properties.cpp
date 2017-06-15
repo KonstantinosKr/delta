@@ -347,7 +347,7 @@ double delta::primitives::properties::getMinZAxis(std::vector<double>&  zCoordin
 	return min;
 }
 
-void delta::primitives::properties::centerOfGeometry(double 	centreOfGeometry[3],
+void delta::primitives::properties::centerOfGeometry(double centreOfGeometry[3],
 										  std::vector<double>&  xCoordinates,
 										  std::vector<double>&  yCoordinates,
 										  std::vector<double>&  zCoordinates)
@@ -360,14 +360,14 @@ void delta::primitives::properties::centerOfGeometry(double 	centreOfGeometry[3]
 
 	for(unsigned i=0;i<nVertices;i++)
 	{
-		centreOfGeometry[0] += xCoordinates[i];
-		centreOfGeometry[1] += yCoordinates[i];
-		centreOfGeometry[2] += zCoordinates[i];
+		centreOfGeometry[0] += (xCoordinates[i]);
+		centreOfGeometry[1] += (yCoordinates[i]);
+		centreOfGeometry[2] += (zCoordinates[i]);
 	}
 
-	centreOfGeometry[0] = centreOfGeometry[0]/(nVertices*3);
-	centreOfGeometry[1] = centreOfGeometry[1]/(nVertices*3);
-	centreOfGeometry[2] = centreOfGeometry[2]/(nVertices*3);
+	centreOfGeometry[0] = centreOfGeometry[0]/(nVertices);
+	centreOfGeometry[1] = centreOfGeometry[1]/(nVertices);
+	centreOfGeometry[2] = centreOfGeometry[2]/(nVertices);
 }
 
 void delta::primitives::properties::centerOfMass(

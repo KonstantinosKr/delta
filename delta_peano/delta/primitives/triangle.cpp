@@ -233,6 +233,7 @@ void delta::primitives::triangle::meshDenser(
 		std::vector<double>&  zCoordinates)
 {
 
+  if(multiplier < 1) return;
 	std::vector<double>  xNewCoordinates;
 	std::vector<double>  yNewCoordinates;
 	std::vector<double>  zNewCoordinates;
@@ -260,7 +261,7 @@ void delta::primitives::triangle::meshDenser(
 	xCoordinates = xNewCoordinates;
 	yCoordinates = yNewCoordinates;
 	zCoordinates = zNewCoordinates;
-	if(multiplier>1) meshDenser(multiplier-1, xCoordinates, yCoordinates, zCoordinates);
+	meshDenser(multiplier-1, xCoordinates, yCoordinates, zCoordinates);
 }
 
 int delta::primitives::triangle::meshOctSect(int quadsectTimes,

@@ -174,17 +174,17 @@ void dem::mappings::dropParticles(
 ) {
   assertion1( !fineGridVertex.isHangingNode(), fineGridVertex.toString() );
 
-  if (peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(fineGridPositionOfVertex))
+  if(peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(fineGridPositionOfVertex))
   {
     Vertex& coarseGridVertexAtSamePosition = coarseGridVertices[coarseGridVerticesEnumerator( peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) )];
 
-    if (!coarseGridVertexAtSamePosition.isOutside())
+    if(!coarseGridVertexAtSamePosition.isOutside())
     {
-      for (int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
+      for(int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
       {
-        if (coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0))
+        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0))
         {
-          fineGridVertex.appendParticle( coarseGridVertexAtSamePosition.getParticle(i) );
+          fineGridVertex.appendParticle(coarseGridVertexAtSamePosition.getParticle(i));
           coarseGridVertexAtSamePosition.releaseParticle(i);
 
           /*std::cout << "dropParticle(): GLOBALID: "

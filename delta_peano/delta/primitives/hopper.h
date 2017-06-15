@@ -62,6 +62,12 @@ namespace delta {
             std::vector<double>&  xCoordinates,
             std::vector<double>&  yCoordinates,
             std::vector<double>&  zCoordinates);
+
+        void generateHullHopper(
+          double  center[3],
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
     }
   }
 }

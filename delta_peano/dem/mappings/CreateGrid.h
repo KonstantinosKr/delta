@@ -234,11 +234,6 @@ class dem::mappings::CreateGrid {
                                 double friction,
                                 double isObstacle);
 
-    void dropParticles(
-      dem::Vertex&                                 fineGridVertex,
-      dem::Vertex * const                          coarseGridVertices,
-      const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-      const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex);
 
   public:
   /**

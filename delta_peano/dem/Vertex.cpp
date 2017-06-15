@@ -71,7 +71,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 
   double centerOfMass[3], inertia[9], inverse[9], mass, hMin;
 
-  newParticle._persistentRecords._diameter	= delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+  newParticle._persistentRecords._diameter	= delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates)*2;
 
   //printf("DIAGONAL:%f\n", newParticle.getDiameter());
   hMin = delta::primitives::properties::computeHMin(xCoordinates, yCoordinates, zCoordinates);
@@ -159,7 +159,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
     getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
   }
 
-    std::cout   << "#####PARTICLE-INIT-PROPERTIES-DATA#####" << std::endl
+    std::cout << "#####PARTICLE-INIT-PROPERTIES-DATA#####" << std::endl
               << "partiId=" << std::fixed << std::setprecision(10) << newParticle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << newParticle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << newParticle.getDiameter() << std::endl
               << "influRa=" << std::fixed << std::setprecision(10) << newParticle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << newParticle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << newParticle.getHMin() << std::endl;
 
@@ -391,7 +391,7 @@ dem::records::Particle& dem::Vertex::getParticle( int particleNumber ) {
   assertion2( ParticleHeap::getInstance().isValidIndex(_vertexData.getParticlesOnCoarserLevels()), particleNumber, toString() );
   assertion2( particleNumber>=0, particleNumber, toString() );
 
-  if (particleNumber>=static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size())) {
+  if (particleNumber >= static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size())) {
     particleNumber -= static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticles()).size());
     assertion2( particleNumber<static_cast<int>(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).size()), particleNumber, toString() );
     return ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() )[particleNumber];
@@ -541,7 +541,7 @@ void dem::Vertex::clearInheritedCoarseGridParticles() {
   ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).clear();
 }
 
-void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
+void dem::Vertex::inheritCoarseGridParticles(const Vertex&  vertex)
 {
   if (!vertex.isOutside() && vertex.getRefinementControl()==Vertex::Records::Refined && (getRefinementControl()!=Vertex::Records::Unrefined || getNumberOfParticles()>0))
   {
@@ -551,7 +551,7 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
       bool found = false;
       for(auto &particleLocal: ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()))//loop local grid vertex real and virtual particles
       {
-        if(particleCoarse.getGlobalParticleId()==particleLocal.getGlobalParticleId())
+        if(particleCoarse.getGlobalParticleId() == particleLocal.getGlobalParticleId() && particleCoarse.getLocalParticleId() == particleLocal.getLocalParticleId())
         {
           found = true;
           break;
@@ -559,17 +559,19 @@ void dem::Vertex::inheritCoarseGridParticles( const Vertex&  vertex )
       }
       if(!found)
       {
-          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
+        ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
       }
     }
 
-    /*ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
-      ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
-      ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).end());*/
+    /*
+    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
+    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
+    ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).end());
+    */
 
-      //inherit real particles from coarse level
-      ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
-      ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
-      ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
+    //inherit real particles from coarse level
+    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
+    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
+    ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).begin(), ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
   }
 }

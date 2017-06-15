@@ -54,10 +54,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
   {
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
-    if(particle.getIsObstacle())
-    {
-      continue;
-    }
+    if(particle.getIsObstacle()) {continue;}
 
     particle._persistentRecords._velocity(1) += timeStepSize*(gravity*-9.8);
 
@@ -168,8 +165,6 @@ void dem::mappings::MoveParticles::touchVertexFirstTime(
   const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-
-  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   moveAllParticlesAssociatedToVertex(fineGridVertex);
 

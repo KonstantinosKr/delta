@@ -1072,3 +1072,54 @@ void delta::primitives::hopper::generateHopper(
   delta::primitives::hopper::generateOuterHopper(center, width+0.005, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
 }
 
+void delta::primitives::hopper::generateHullHopper(
+  double  center[3],
+  std::vector<double>&  xCoordinates,
+  std::vector<double>&  yCoordinates,
+  std::vector<double>&  zCoordinates)
+{
+
+  unsigned int mul=1E8;
+
+  int pointsize = xCoordinates.size(); //number of points for point cloud
+
+  double v[100000][3];
+  for(int i = 0; i<xCoordinates.size(); i++) //create point cloud and do delaunay hull triangulation
+  {
+    v[i][0] = xCoordinates[i];
+    v[i][1] = yCoordinates[i];
+    v[i][2] = zCoordinates[i];
+  }
+
+  delta::hull::GEOMETRIC_EPSILON = 1e-10;
+  delta::hull::TRI* tr = NULL;
+  int pointlength = 0;
+  tr = delta::hull::hull((double *)v, pointsize, &pointlength);
+
+  xCoordinates.resize(pointlength*3);
+  yCoordinates.resize(pointlength*3);
+  zCoordinates.resize(pointlength*3);
+
+  int counter = 0;
+  for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)
+  {//iterate through triangles and assign value
+    xCoordinates[counter] = (t->ver [0][0]/(mul)) + center[0];
+    yCoordinates[counter] = (t->ver [0][1]/(mul)) + center[1];
+    zCoordinates[counter] = (t->ver [0][2]/(mul)) + center[2];
+
+    counter++;
+
+    xCoordinates[counter] = (t->ver [1][0]/(mul)) + center[0];
+    yCoordinates[counter] = (t->ver [1][1]/(mul)) + center[1];
+    zCoordinates[counter] = (t->ver [1][2]/(mul)) + center[2];
+
+    counter++;
+
+    xCoordinates[counter] = (t->ver [2][0]/(mul)) + center[0];
+    yCoordinates[counter] = (t->ver [2][1]/(mul)) + center[1];
+    zCoordinates[counter] = (t->ver [2][2]/(mul)) + center[2];
+
+    counter++;
+  }
+  free(tr);
+}

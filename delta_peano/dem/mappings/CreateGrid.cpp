@@ -28,7 +28,7 @@ peano::CommunicationSpecification   dem::mappings::CreateGrid::communicationSpec
 }
 
 peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexLastTimeSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexFirstTimeSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
@@ -231,13 +231,13 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     delta::collision::material::MaterialType material = delta::collision::material::MaterialType::GOLD;
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.05;
     //HOPPER DIAGONAL:0.382926
-    int particleId = makeHopper(vertex, 1, 2, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
+    int particleId = makeHopper(vertex, 0, 0, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////FLOOR////////////////floor DIAGONAL:0.344674///////////////////////////////////////////
     iREAL position[] = {centreAsArray[0], 0.35, centreAsArray[2]};
     double height = 0.05; double width = 0.35;
-    particleId = makeBox(vertex, 1, 1, position, width, height, 0, 0, 0, eps, material, true, true);
+    particleId = makeBox(vertex, 0, 0, position, width, height, 0, 0, 0, eps, material, true, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////PARTICLE GRID///////////////////////////////////////////////////////////////////////////////////////
@@ -412,9 +412,7 @@ void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex,
   else if(_scenario[0] == blackHoleWithCubes ||
           _scenario[0] == freefallWithCubes)
   {
-    //printf("%i\n", _numberOfParticles);
     double particleDiameter = (minParticleDiam + (maxParticleDiam-minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
-    //int particleid = makeSphere(vertex, centreAsArray, particleDiameter/2, particleDiameter/2*eps, material, friction, isObstacle);
     int particleid = makeBox(vertex, 1, 1, centreAsArray, particleDiameter, particleDiameter, 0, 1.0/8.0, 1.0/8.0, eps, material, friction, isObstacle);
 
     if(_scenario[0] == blackHoleWithCubes)
@@ -487,6 +485,7 @@ void dem::mappings::CreateGrid::createCell(
       makeFineEnviroment(vertex, coarseGridVertices, coarseGridVerticesEnumerator, centreAsArray, fineGridVerticesEnumerator.getCellSize()(0), _epsilon, _noPointsPerParticle, material, friction, obstacle, _minParticleDiam, _maxParticleDiam);
 		}
 	}
+
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
 
@@ -511,7 +510,7 @@ int dem::mappings::CreateGrid::makeHopper(dem::Vertex&  vertex, int quadsect, in
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
   delta::primitives::hopper::generateHopper(position, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
-  delta::primitives::triangle::meshDenser(2, xCoordinates, yCoordinates, zCoordinates);
+  delta::primitives::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
 
   return createParticleObject(quadsect, vertex, position, eps, material, friction, isObstacle, xCoordinates, yCoordinates, zCoordinates);
 }
@@ -581,7 +580,9 @@ int dem::mappings::CreateGrid::createParticleObject(int quadsect, dem::Vertex&  
         zCoordinates.push_back(zCoordinatesVec[i][j]);
       }
 
-      iREAL pos[] = {centroid[i][0], centroid[i][1], centroid[i][2]};
+      //iREAL pos[] = {centroid[i][0], centroid[i][1], centroid[i][2]};
+      iREAL pos[3];
+      //delta::primitives::properties::centerOfGeometry(pos, xCoordinates, yCoordinates, zCoordinates);
       double diameter = delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
       newParticleNumber = vertex.createNewSubParticle(pos, xCoordinates, yCoordinates, zCoordinates, centerOfMass, inertia, inverse, mass, hMin, diameter, eps, friction, material, isObstacle, _numberOfParticles, i);
 
@@ -976,6 +977,7 @@ void dem::mappings::CreateGrid::touchVertexFirstTime(
 ) {
 	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 	// @todo Insert your code here
+	dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
