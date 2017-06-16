@@ -16,7 +16,7 @@ LINK_MPI=
 
 ##############################################################################################
 
-GCC_SHAREDMEMORY=-fopenmp -qopt-threads-per-core=1 
+GCC_SHAREDMEMORY=-fopenmp  
 ICC_SHAREDMEMORY=-qopenmp -qopt-threads-per-core=1
 
 ##############################################################################################
