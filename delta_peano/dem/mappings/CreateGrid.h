@@ -132,6 +132,8 @@ class dem::mappings::CreateGrid {
 
     static Scenario _scenario[4];
     static double   _maxH;
+    static double   _minComputeDomain[3];
+    static double   _maxComputeDomain[3];
     static double   _minParticleDiam;
     static double   _maxParticleDiam;
     static int      _noPointsPerParticle;
