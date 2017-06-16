@@ -250,7 +250,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     iREAL position[] = {centreAsArray[0], centreAsArray[1], centreAsArray[2]};
     double floorHeight = 0.05;
 
-    int particleid = makeBox(vertex, 1, 1, position, 1, floorHeight, 0, 0, 0, eps, material, true, true);
+    int particleid = makeBox(vertex, 0, 0, position, 1, floorHeight, 0, 0, 0, eps, material, true, true);
     dem::mappings::CreateGrid::setVScheme(vertex,  particleid, dem::mappings::CreateGrid::moveLeft);
     if(_scenario[0] == sla)
     {
@@ -265,13 +265,13 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     delta::collision::material::MaterialType material = delta::collision::material::MaterialType::GOLD;
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.05;
     //HOPPER DIAGONAL:0.382926
-    int particleId = makeHopper(vertex, 1, 1, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
+    int particleId = makeHopper(vertex, 0, 0, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////FLOOR////////////////floor DIAGONAL:0.344674///////////////////////////////////////////
     iREAL position[] = {centreAsArray[0], 0.35, centreAsArray[2]};
     double height = 0.05; double width = 0.35;
-    particleId = makeBox(vertex, 1, 1, position, width, height, 0, 0, 0, eps, material, true, true);
+    particleId = makeBox(vertex, 0, 0, position, width, height, 0, 0, 0, eps, material, true, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////PARTICLE GRID///////////////////////////////////////////////////////////////////////////////////////
