@@ -298,6 +298,8 @@ clean:
 	rm -f $(OBJECTS)
 	rm -f files.mk
 	rm -f compiler-minutes.txt
+	find -L . -name "*.optrpt" | xargs rm 
+	find -L . -name "*.vect" | xargs rm 
 
 $(OBJECTS): %.o : %.cpp
 	$(CC) $(DIM) $(SETTINGS) $(CFLAGS) -I$(PROJECT_HOME) -c $< -o $@
