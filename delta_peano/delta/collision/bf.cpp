@@ -23,25 +23,22 @@
  */
 
 #include "bf.h"
-#include <complex>
-#include <limits>
-#include <iostream>
-#include "algo.h"
+
 
 std::vector<delta::collision::contactpoint> delta::collision::bf(
     int       numberOfTrianglesOfGeometryA,
-    double*   xCoordinatesOfPointsOfGeometryA,
-    double*   yCoordinatesOfPointsOfGeometryA,
-    double*   zCoordinatesOfPointsOfGeometryA,
-    double    epsilonA,
+    iREAL*   xCoordinatesOfPointsOfGeometryA,
+    iREAL*   yCoordinatesOfPointsOfGeometryA,
+    iREAL*   zCoordinatesOfPointsOfGeometryA,
+    iREAL    epsilonA,
     bool      frictionA,
     int 	    particleA,
 
     int       numberOfTrianglesOfGeometryB,
-    double*   xCoordinatesOfPointsOfGeometryB,
-    double*   yCoordinatesOfPointsOfGeometryB,
-    double*   zCoordinatesOfPointsOfGeometryB,
-    double    epsilonB,
+    iREAL*   xCoordinatesOfPointsOfGeometryB,
+    iREAL*   yCoordinatesOfPointsOfGeometryB,
+    iREAL*   zCoordinatesOfPointsOfGeometryB,
+    iREAL    epsilonB,
     bool      frictionB,
     int 	    particleB)
 {
@@ -65,7 +62,7 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
   #endif
   for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   {
-    __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) iREAL shortestDistance = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
 
     #if defined(__INTEL_COMPILER)
@@ -75,12 +72,12 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
     #endif
     for(int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
     {
-      __attribute__ ((aligned(byteAlignment))) double xPA=0.0;// __attribute__ ((aligned(byteAlignment))) ;
-      __attribute__ ((aligned(byteAlignment))) double yPA=0.0;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double zPA=0.0;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double xPB=0.0;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double yPB=0.0;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) double zPB=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) iREAL xPA=0.0;// __attribute__ ((aligned(byteAlignment))) ;
+      __attribute__ ((aligned(byteAlignment))) iREAL yPA=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) iREAL zPA=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) iREAL xPB=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) iREAL yPB=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) iREAL zPB=0.0;// __attribute__ ((aligned(byteAlignment)));
 
       bf(xCoordinatesOfPointsOfGeometryA+(iA),
         yCoordinatesOfPointsOfGeometryA+(iA),
@@ -95,7 +92,7 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
         yPB,
         zPB);
 
-      double di = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
+      iREAL di = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
       if(di<=shortestDistance)
       {
         nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
@@ -125,19 +122,19 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
               dest[2]=v1[0]*v2[1]-v1[1]*v2[0];}
 
 int NoDivTriTriIsect(
-	double V0[3],double V1[3],double V2[3],
-	double U0[3],double U1[3],double U2[3])
+	iREAL V0[3],iREAL V1[3],iREAL V2[3],
+	iREAL U0[3],iREAL U1[3],iREAL U2[3])
 {
-  double E1[3],E2[3];
-  double N1[3],N2[3],d1,d2;
-  double du0,du1,du2,dv0,dv1,dv2;
-  double D[3];
-  double isect1[2], isect2[2];
-  double du0du1,du0du2,dv0dv1,dv0dv2;
+  iREAL E1[3],E2[3];
+  iREAL N1[3],N2[3],d1,d2;
+  iREAL du0,du1,du2,dv0,dv1,dv2;
+  iREAL D[3];
+  iREAL isect1[2], isect2[2];
+  iREAL du0du1,du0du2,dv0dv1,dv0dv2;
   short index;
-  double vp0,vp1,vp2;
-  double up0,up1,up2;
-  double bb,cc,max;
+  iREAL vp0,vp1,vp2;
+  iREAL up0,up1,up2;
+  iREAL bb,cc,max;
 
   /* compute plane equation of triangle(V0,V1,V2) */
   SUB(V1,V0, E1);
@@ -184,18 +181,19 @@ int NoDivTriTriIsect(
 #if defined(__INTEL_COMPILER)
 //#pragma omp declare simd
 #endif
-void delta::collision::bf(double   xxCoordinatesOfPointsOfGeometryA[3],
-                          double   yyCoordinatesOfPointsOfGeometryA[3],
-                          double   zzCoordinatesOfPointsOfGeometryA[3],
-                          double   xxCoordinatesOfPointsOfGeometryB[3],
-                          double   yyCoordinatesOfPointsOfGeometryB[3],
-                          double   zzCoordinatesOfPointsOfGeometryB[3],
-                          double&  xPA,
-                          double&  yPA,
-                          double&  zPA,
-                          double&  xPB,
-                          double&  yPB,
-                          double&  zPB)
+void delta::collision::bf(
+    iREAL   xxCoordinatesOfPointsOfGeometryA[3],
+    iREAL   yyCoordinatesOfPointsOfGeometryA[3],
+    iREAL   zzCoordinatesOfPointsOfGeometryA[3],
+    iREAL   xxCoordinatesOfPointsOfGeometryB[3],
+    iREAL   yyCoordinatesOfPointsOfGeometryB[3],
+    iREAL   zzCoordinatesOfPointsOfGeometryB[3],
+    iREAL&  xPA,
+    iREAL&  yPA,
+    iREAL&  zPA,
+    iREAL&  xPB,
+    iREAL&  yPB,
+    iREAL&  zPB)
 {
 
 

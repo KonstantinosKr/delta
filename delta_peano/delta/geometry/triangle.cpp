@@ -22,18 +22,15 @@
  SOFTWARE.
  */
 
-#include <stdlib.h>
-#include <assert.h>
 #include <delta/geometry/triangle.h>
-#include <cmath>
 
 void delta::geometry::triangle::bisectTriangle(
-		double A[3],
-		double B[3],
-		double C[3],
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates)
+		iREAL A[3],
+		iREAL B[3],
+		iREAL C[3],
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates)
 {
 	////////////////////////////////
 	xCoordinates.push_back(A[0]);
@@ -63,14 +60,14 @@ void delta::geometry::triangle::bisectTriangle(
 }
 
 void delta::geometry::triangle::triSectTriangle(
-    double A[3],
-    double B[3],
-    double C[3],
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+    iREAL A[3],
+    iREAL B[3],
+    iREAL C[3],
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
-  double O[3];
+  iREAL O[3];
 
   O[0] = A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0;
   O[1] = A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0;
@@ -117,20 +114,20 @@ void delta::geometry::triangle::triSectTriangle(
 }
 
 void delta::geometry::triangle::fiveSectTriangle(
-    double A[3],
-    double B[3],
-    double C[3],
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+    iREAL A[3],
+    iREAL B[3],
+    iREAL C[3],
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
-  double O[3];
+  iREAL O[3];
 
   O[0] = A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0;
   O[1] = A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0;
   O[2] = A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0;
 
-  double AB[3], CB[3], AC[3];
+  iREAL AB[3], CB[3], AC[3];
 
   AB[0] = (B[0]+A[0])/2;
   AB[1] = (B[1]+A[1])/2;
@@ -227,19 +224,19 @@ void delta::geometry::triangle::fiveSectTriangle(
 
 void delta::geometry::triangle::meshDenser(
 		int multiplier,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates)
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates)
 {
 
   if(multiplier < 1) return;
-	std::vector<double>  xNewCoordinates;
-	std::vector<double>  yNewCoordinates;
-	std::vector<double>  zNewCoordinates;
+	std::vector<iREAL>  xNewCoordinates;
+	std::vector<iREAL>  yNewCoordinates;
+	std::vector<iREAL>  zNewCoordinates;
 
 	for(unsigned i=0;i<xCoordinates.size();i+=3)
 	{
-		double A[3], B[3], C[3];
+		iREAL A[3], B[3], C[3];
 		A[0] = xCoordinates[i];
 		A[1] = yCoordinates[i];
 		A[2] = zCoordinates[i];
@@ -263,19 +260,20 @@ void delta::geometry::triangle::meshDenser(
 	meshDenser(multiplier-1, xCoordinates, yCoordinates, zCoordinates);
 }
 
-int delta::geometry::triangle::meshOctSect(int quadsectTimes,
-    std::vector<std::vector<double>>&  xCoordinatesVec,
-    std::vector<std::vector<double>>&  yCoordinatesVec,
-    std::vector<std::vector<double>>&  zCoordinatesVec, std::vector<std::array<double, 3>>& centroid)
+int delta::geometry::triangle::meshOctSect(
+    int quadsectTimes,
+    std::vector<std::vector<iREAL>>&  xCoordinatesVec,
+    std::vector<std::vector<iREAL>>&  yCoordinatesVec,
+    std::vector<std::vector<iREAL>>&  zCoordinatesVec, std::vector<std::array<iREAL, 3>>& centroid)
 {
-  std::array<double, 3> minpoint = delta::geometry::properties::getMinBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
-  std::array<double, 3> maxpoint = delta::geometry::properties::getMaxBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
+  std::array<iREAL, 3> minpoint = delta::geometry::properties::getMinBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
+  std::array<iREAL, 3> maxpoint = delta::geometry::properties::getMaxBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
 
-  double xw = maxpoint[0]-minpoint[0]; double yw = maxpoint[1]-minpoint[1]; double zw = maxpoint[2]-minpoint[2];
-  std::array<double, 3> midpoint = {minpoint[0]+xw/2, minpoint[1]+yw/2, minpoint[2]+zw/2};
+  iREAL xw = maxpoint[0]-minpoint[0]; iREAL yw = maxpoint[1]-minpoint[1]; iREAL zw = maxpoint[2]-minpoint[2];
+  std::array<iREAL, 3> midpoint = {minpoint[0]+xw/2, minpoint[1]+yw/2, minpoint[2]+zw/2};
 
-  /*std::vector<double> xCoordinatesBox, yCoordinatesBox, zCoordinatesBox;
-  double centre[3] = {midpoint[0], midpoint[1], midpoint[2]};
+  /*std::vector<iREAL> xCoordinatesBox, yCoordinatesBox, zCoordinatesBox;
+  iREAL centre[3] = {midpoint[0], midpoint[1], midpoint[2]};
   delta::geometry::surface::generateBoundBox(centre, minpoint, maxpoint, xCoordinatesBox, yCoordinatesBox, zCoordinatesBox);
 
   for(int i=0; i<xCoordinatesBox.size(); i++)
@@ -290,10 +288,16 @@ int delta::geometry::triangle::meshOctSect(int quadsectTimes,
   return octSect(quadsectTimes, 0, minpoint, midpoint, maxpoint, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);;
 }
 
-int delta::geometry::triangle::octSect(int level, int index, std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
-    std::vector<std::vector<double>>&  xCoordinatesVec,
-    std::vector<std::vector<double>>&  yCoordinatesVec,
-    std::vector<std::vector<double>>&  zCoordinatesVec, std::vector<std::array<double, 3>>& centroid)
+int delta::geometry::triangle::octSect(
+    int level,
+    int index,
+    std::array<iREAL, 3> minpoint,
+    std::array<iREAL, 3> midpoint,
+    std::array<iREAL, 3> maxpoint,
+    std::vector<std::vector<iREAL>>&  xCoordinatesVec,
+    std::vector<std::vector<iREAL>>&  yCoordinatesVec,
+    std::vector<std::vector<iREAL>>&  zCoordinatesVec,
+    std::vector<std::array<iREAL, 3>>& centroid)
 {
 
   if(level < 1) return index;
@@ -322,37 +326,37 @@ int delta::geometry::triangle::octSect(int level, int index, std::array<double, 
   int indexDD = index;
   ////////////////////////////////////////////////////////////////////////////////
 
-  double xw = maxpoint[0]-minpoint[0];//source/parent width
-  double yw = maxpoint[1]-minpoint[1];
-  double zw = maxpoint[2]-minpoint[2];
+  iREAL xw = maxpoint[0]-minpoint[0];//source/parent width
+  iREAL yw = maxpoint[1]-minpoint[1];
+  iREAL zw = maxpoint[2]-minpoint[2];
 
   //////////////////No1 -A- BACK LEFT BOX////////////////////////////////////////
-  std::array<double, 3> minpointA = {minpoint[0], minpoint[1]+(yw/2), minpoint[2]};
-  std::array<double, 3> maxpointA = {midpoint[0], maxpoint[1], midpoint[2]};
+  std::array<iREAL, 3> minpointA = {minpoint[0], minpoint[1]+(yw/2), minpoint[2]};
+  std::array<iREAL, 3> maxpointA = {midpoint[0], maxpoint[1], midpoint[2]};
 
-  std::array<double, 3> minpointAA = {minpoint[0], minpoint[1], minpoint[2]};
-  std::array<double, 3> maxpointAA = {midpoint[0], maxpoint[1]-(yw/2), midpoint[2]};
+  std::array<iREAL, 3> minpointAA = {minpoint[0], minpoint[1], minpoint[2]};
+  std::array<iREAL, 3> maxpointAA = {midpoint[0], maxpoint[1]-(yw/2), midpoint[2]};
 
   //////////////////No2 -B- FRONT LEFT BOX////////////////////////////////////////
-  std::array<double, 3> minpointB = {minpoint[0], minpoint[1]+(yw/2), minpoint[2]+(zw/2)};
-  std::array<double, 3> maxpointB = {midpoint[0], midpoint[1]+(yw/2), midpoint[2]+(zw/2)};
+  std::array<iREAL, 3> minpointB = {minpoint[0], minpoint[1]+(yw/2), minpoint[2]+(zw/2)};
+  std::array<iREAL, 3> maxpointB = {midpoint[0], midpoint[1]+(yw/2), midpoint[2]+(zw/2)};
 
-  std::array<double, 3> minpointBB = {minpoint[0], minpoint[1], minpoint[2]+(zw/2)};
-  std::array<double, 3> maxpointBB = {midpoint[0], midpoint[1], midpoint[2]+(zw/2)};
+  std::array<iREAL, 3> minpointBB = {minpoint[0], minpoint[1], minpoint[2]+(zw/2)};
+  std::array<iREAL, 3> maxpointBB = {midpoint[0], midpoint[1], midpoint[2]+(zw/2)};
 
   //////////////////No3 -C- BACK RIGHT BOX////////////////////////////////////////
-  std::array<double, 3> minpointC = {minpoint[0]+(xw/2), minpoint[1]+(yw/2), minpoint[2]};
-  std::array<double, 3> maxpointC = {maxpoint[0], maxpoint[1], maxpoint[2]-(zw/2)};
+  std::array<iREAL, 3> minpointC = {minpoint[0]+(xw/2), minpoint[1]+(yw/2), minpoint[2]};
+  std::array<iREAL, 3> maxpointC = {maxpoint[0], maxpoint[1], maxpoint[2]-(zw/2)};
 
-  std::array<double, 3> minpointCC = {minpoint[0]+(xw/2), minpoint[1], minpoint[2]};
-  std::array<double, 3> maxpointCC = {maxpoint[0], maxpoint[1]-(yw/2), maxpoint[2]-(zw/2)};
+  std::array<iREAL, 3> minpointCC = {minpoint[0]+(xw/2), minpoint[1], minpoint[2]};
+  std::array<iREAL, 3> maxpointCC = {maxpoint[0], maxpoint[1]-(yw/2), maxpoint[2]-(zw/2)};
 
   /////////////////No4 -D- FRONT RIGHT BOX////////////////////////////////////////
-  std::array<double, 3> minpointD = {minpoint[0]+(xw/2), minpoint[1]+(yw/2), minpoint[2]+(zw/2)};
-  std::array<double, 3> maxpointD = maxpoint;
+  std::array<iREAL, 3> minpointD = {minpoint[0]+(xw/2), minpoint[1]+(yw/2), minpoint[2]+(zw/2)};
+  std::array<iREAL, 3> maxpointD = maxpoint;
 
-  std::array<double, 3> minpointDD = {minpoint[0]+(xw/2), minpoint[1], minpoint[2]+(zw/2)};
-  std::array<double, 3> maxpointDD = {maxpoint[0], maxpoint[1]-(yw/2), maxpoint[2]};
+  std::array<iREAL, 3> minpointDD = {minpoint[0]+(xw/2), minpoint[1], minpoint[2]+(zw/2)};
+  std::array<iREAL, 3> maxpointDD = {maxpoint[0], maxpoint[1]-(yw/2), maxpoint[2]};
 
   ////////////////////////////////////////////////////////////////////////////////
   getTrianglesInBoundingBox(minpointA, maxpointA,
@@ -422,7 +426,7 @@ int delta::geometry::triangle::octSect(int level, int index, std::array<double, 
 
   /////////////////////////////////////////////////////////////////////////////////////
 /*
-  double centreA[3], centreAA[3], centreB[3], centreBB[3], centreC[3], centreCC[3], centreD[3], centreDD[3];
+  iREAL centreA[3], centreAA[3], centreB[3], centreBB[3], centreC[3], centreCC[3], centreD[3], centreDD[3];
 
   centreA[0] = centroid[indexA][0];
   centreA[1] = centroid[indexA][1];
@@ -456,14 +460,14 @@ int delta::geometry::triangle::octSect(int level, int index, std::array<double, 
   centreDD[1] = centroid[indexDD][1];
   centreDD[2] = centroid[indexDD][2];
 
-  std::vector<double> xCoordinatesA, yCoordinatesA, zCoordinatesA;
-  std::vector<double> xCoordinatesAA, yCoordinatesAA, zCoordinatesAA;
-  std::vector<double> xCoordinatesB, yCoordinatesB, zCoordinatesB;
-  std::vector<double> xCoordinatesBB, yCoordinatesBB, zCoordinatesBB;
-  std::vector<double> xCoordinatesC, yCoordinatesC, zCoordinatesC;
-  std::vector<double> xCoordinatesCC, yCoordinatesCC, zCoordinatesCC;
-  std::vector<double> xCoordinatesD, yCoordinatesD, zCoordinatesD;
-  std::vector<double> xCoordinatesDD, yCoordinatesDD, zCoordinatesDD;
+  std::vector<iREAL> xCoordinatesA, yCoordinatesA, zCoordinatesA;
+  std::vector<iREAL> xCoordinatesAA, yCoordinatesAA, zCoordinatesAA;
+  std::vector<iREAL> xCoordinatesB, yCoordinatesB, zCoordinatesB;
+  std::vector<iREAL> xCoordinatesBB, yCoordinatesBB, zCoordinatesBB;
+  std::vector<iREAL> xCoordinatesC, yCoordinatesC, zCoordinatesC;
+  std::vector<iREAL> xCoordinatesCC, yCoordinatesCC, zCoordinatesCC;
+  std::vector<iREAL> xCoordinatesD, yCoordinatesD, zCoordinatesD;
+  std::vector<iREAL> xCoordinatesDD, yCoordinatesDD, zCoordinatesDD;
 
   delta::geometry::surface::generateBoundBox(centreA, minpointA, maxpointA, xCoordinatesA, yCoordinatesA, zCoordinatesA);
   delta::geometry::surface::generateBoundBox(centreAA, minpointAA, maxpointAA, xCoordinatesAA, yCoordinatesAA, zCoordinatesAA);
@@ -521,17 +525,19 @@ int delta::geometry::triangle::octSect(int level, int index, std::array<double, 
   return index;
 }
 
-void delta::geometry::triangle::getTrianglesInBoundingBox(std::array<double, 3> minpoint, std::array<double, 3> maxpoint,
-    std::vector<double>&  xCoordinatesRoot,
-    std::vector<double>&  yCoordinatesRoot,
-    std::vector<double>&  zCoordinatesRoot,
-    std::vector<double>&  xCoordinatesBounded,
-    std::vector<double>&  yCoordinatesBounded,
-    std::vector<double>&  zCoordinatesBounded)
+void delta::geometry::triangle::getTrianglesInBoundingBox(
+    std::array<iREAL, 3> minpoint,
+    std::array<iREAL, 3> maxpoint,
+    std::vector<iREAL>&  xCoordinatesRoot,
+    std::vector<iREAL>&  yCoordinatesRoot,
+    std::vector<iREAL>&  zCoordinatesRoot,
+    std::vector<iREAL>&  xCoordinatesBounded,
+    std::vector<iREAL>&  yCoordinatesBounded,
+    std::vector<iREAL>&  zCoordinatesBounded)
 {
   for(int i=0; i<xCoordinatesRoot.size(); i+=3)
   {
-    double A[3], B[3], C[3];
+    iREAL A[3], B[3], C[3];
 
     A[0] = xCoordinatesRoot[i];
     A[1] = yCoordinatesRoot[i];
@@ -545,7 +551,7 @@ void delta::geometry::triangle::getTrianglesInBoundingBox(std::array<double, 3> 
     C[1] = yCoordinatesRoot[i+2];
     C[2] = zCoordinatesRoot[i+2];
 
-    double x,y,z;
+    iREAL x,y,z;
 
     x = A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0;
     y = A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0;

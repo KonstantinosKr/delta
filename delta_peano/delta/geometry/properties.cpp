@@ -1,10 +1,10 @@
 #include "properties.h"
 
 void delta::geometry::properties::moveMeshFromPositionToOrigin(
-    double center[3],
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+    iREAL center[3],
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
 	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
@@ -15,10 +15,10 @@ void delta::geometry::properties::moveMeshFromPositionToOrigin(
 }
 
 void delta::geometry::properties::moveMeshFromOriginToPosition(
-    double center[3],
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+    iREAL center[3],
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
 	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
@@ -29,11 +29,11 @@ void delta::geometry::properties::moveMeshFromOriginToPosition(
 }
 
 void delta::geometry::properties::scaleXYZ(
-    double scale,
-    double position[3],
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates)
+    iREAL scale,
+    iREAL position[3],
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates)
 {
   delta::geometry::properties::moveMeshFromPositionToOrigin(position, xCoordinates, yCoordinates, zCoordinates);
 	for(unsigned i=0;i<xCoordinates.size();i++)
@@ -46,19 +46,19 @@ void delta::geometry::properties::scaleXYZ(
 }
 
 void delta::geometry::properties::rotateX(
-    double alphaX,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates)
+    iREAL alphaX,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates)
 {
-	const double pi = std::acos(-1);
+	const iREAL pi = std::acos(-1);
 	for (unsigned i=0;i<xCoordinates.size(); i++)
 	{
-		double x = xCoordinates[i];
-		double y = yCoordinates[i];
-		double z = zCoordinates[i];
+		iREAL x = xCoordinates[i];
+		iREAL y = yCoordinates[i];
+		iREAL z = zCoordinates[i];
 
-		double M[] = {
+		iREAL M[] = {
 		   1.0,                 0.0,                   0.0,
 		   0.0,  std::cos(2*pi*alphaX),  std::sin(2*pi*alphaX),
 		   0.0, -std::sin(2*pi*alphaX),  std::cos(2*pi*alphaX)
@@ -71,18 +71,18 @@ void delta::geometry::properties::rotateX(
 }
 
 void delta::geometry::properties::rotateY(
-    double alphaY,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates)
+    iREAL alphaY,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates)
 {
-	const double pi = std::acos(-1);
+	const iREAL pi = std::acos(-1);
 	for (unsigned i=0;i<xCoordinates.size(); i++) {
-		double x = xCoordinates[i];
-		double y = yCoordinates[i];
-		double z = zCoordinates[i];
+		iREAL x = xCoordinates[i];
+		iREAL y = yCoordinates[i];
+		iREAL z = zCoordinates[i];
 
-		double M[] = {
+		iREAL M[] = {
 		  std::cos(2*pi*alphaY),  0.0, std::sin(2*pi*alphaY),
 		  0.0,                    1.0,                   0.0,
 		 -std::sin(2*pi*alphaY),  0.0, std::cos(2*pi*alphaY)
@@ -95,18 +95,18 @@ void delta::geometry::properties::rotateY(
 }
 
 void delta::geometry::properties::rotateZ(
-    double alphaZ,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates)
+    iREAL alphaZ,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates)
 {
-	const double pi = std::acos(-1);
+	const iREAL pi = std::acos(-1);
 	for (unsigned i=0;i<xCoordinates.size(); i++) {
-		double x = xCoordinates[i];
-		double y = yCoordinates[i];
-		double z = zCoordinates[i];
+		iREAL x = xCoordinates[i];
+		iREAL y = yCoordinates[i];
+		iREAL z = zCoordinates[i];
 
-		double M[] = {
+		iREAL M[] = {
 		  std::cos(2*pi*alphaZ),  std::sin(2*pi*alphaZ),  0.0,
 		 -std::sin(2*pi*alphaZ),  std::cos(2*pi*alphaZ),  0.0,
 						   0.0,                   0.0,  1.0
@@ -118,81 +118,81 @@ void delta::geometry::properties::rotateZ(
 	}
 }
 
-double delta::geometry::properties::computeDistanceAB(
-    std::array<double, 3> A,
-    std::array<double, 3> B)
+iREAL delta::geometry::properties::computeDistanceAB(
+    std::array<iREAL, 3> A,
+    std::array<iREAL, 3> B)
 {
 	return std::sqrt(((B[0]-A[0])*(B[0]-A[0]))+((B[1]-A[1])*(B[1]-A[1]))+((B[2]-A[2])*(B[2]-A[2])));
 }
 
-double delta::geometry::properties::getXYZWidth(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+iREAL delta::geometry::properties::getXYZWidth(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
-	double xw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
-	double yw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
-	double zw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	iREAL xw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	iREAL yw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	iREAL zw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
 
-	double tmp = xw > yw ? xw : yw;
-	double width = tmp>zw ? tmp : zw;
+	iREAL tmp = xw > yw ? xw : yw;
+	iREAL width = tmp>zw ? tmp : zw;
 
 	return width;
 }
 
-double delta::geometry::properties::getXZWidth(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+iREAL delta::geometry::properties::getXZWidth(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
-	double xw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
-	double zw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
-	double width = xw>zw ? xw : zw;
+	iREAL xw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	iREAL zw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	iREAL width = xw>zw ? xw : zw;
 
 	return width;
 }
 
-double delta::geometry::properties::getXw(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+iREAL delta::geometry::properties::getXw(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
 
-	std::array<double, 3> min = delta::geometry::properties::getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
-	std::array<double, 3> max = delta::geometry::properties::getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<iREAL, 3> min = delta::geometry::properties::getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<iREAL, 3> max = delta::geometry::properties::getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
 
 	return std::abs(min[0] - max[0]);
 }
 
-double delta::geometry::properties::getYw(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+iREAL delta::geometry::properties::getYw(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
 
-	std::array<double, 3> min = delta::geometry::properties::getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
-	std::array<double, 3> max = delta::geometry::properties::getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<iREAL, 3> min = delta::geometry::properties::getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<iREAL, 3> max = delta::geometry::properties::getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
 
 	return std::abs(min[1] - max[1]);
 }
 
-double delta::geometry::properties::getZw(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+iREAL delta::geometry::properties::getZw(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
-	std::array<double, 3> min = delta::geometry::properties::getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
-	std::array<double, 3> max = delta::geometry::properties::getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<iREAL, 3> min = delta::geometry::properties::getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<iREAL, 3> max = delta::geometry::properties::getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
 
 	return std::abs(min[2] - max[2]);
 }
 
-std::array<double, 3> delta::geometry::properties::getMinBoundaryVertex(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+std::array<iREAL, 3> delta::geometry::properties::getMinBoundaryVertex(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
-	std::array<double, 3> vertex;
+	std::array<iREAL, 3> vertex;
 
 	vertex[0] = getMinXAxis(xCoordinates);
 	vertex[1] = getMinYAxis(yCoordinates);
@@ -201,12 +201,12 @@ std::array<double, 3> delta::geometry::properties::getMinBoundaryVertex(
 	return vertex;
 }
 
-std::array<double, 3> delta::geometry::properties::getMaxBoundaryVertex(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+std::array<iREAL, 3> delta::geometry::properties::getMaxBoundaryVertex(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
-	std::array<double, 3> vertex;
+	std::array<iREAL, 3> vertex;
 
 	vertex[0] = getMaxXAxis(xCoordinates);
 	vertex[1] = getMaxYAxis(yCoordinates);
@@ -215,12 +215,12 @@ std::array<double, 3> delta::geometry::properties::getMaxBoundaryVertex(
 	return vertex;
 }
 
-double delta::geometry::properties::computeDiagonal(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+iREAL delta::geometry::properties::computeDiagonal(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
-	std::array<double, 3> minPoint, maxPoint;
+	std::array<iREAL, 3> minPoint, maxPoint;
 
 	minPoint = getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
 	maxPoint = getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
@@ -228,10 +228,10 @@ double delta::geometry::properties::computeDiagonal(
 	return computeDistanceAB(minPoint,maxPoint);
 }
 
-double delta::geometry::properties::getMaxXAxis(
-    std::vector<double>&  xCoordinates)
+iREAL delta::geometry::properties::getMaxXAxis(
+    std::vector<iREAL>&  xCoordinates)
 {
-	double max = std::numeric_limits<double>::min();
+	iREAL max = std::numeric_limits<iREAL>::min();
 
 	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
@@ -240,10 +240,10 @@ double delta::geometry::properties::getMaxXAxis(
 	return max;
 }
 
-double delta::geometry::properties::getMaxYAxis(
-    std::vector<double>&  yCoordinates)
+iREAL delta::geometry::properties::getMaxYAxis(
+    std::vector<iREAL>&  yCoordinates)
 {
-	double max = std::numeric_limits<double>::min();
+	iREAL max = std::numeric_limits<iREAL>::min();
 
 	for(unsigned i=0;i<yCoordinates.size();i++)
 	{
@@ -252,10 +252,10 @@ double delta::geometry::properties::getMaxYAxis(
 	return max;
 }
 
-double delta::geometry::properties::getMaxZAxis(
-    std::vector<double>&  zCoordinates)
+iREAL delta::geometry::properties::getMaxZAxis(
+    std::vector<iREAL>&  zCoordinates)
 {
-	double max = std::numeric_limits<double>::min();
+	iREAL max = std::numeric_limits<iREAL>::min();
 
 	for(unsigned i=0;i<zCoordinates.size();i++)
 	{
@@ -264,10 +264,10 @@ double delta::geometry::properties::getMaxZAxis(
 	return max;
 }
 
-double delta::geometry::properties::getMinXAxis(
-    std::vector<double>&  xCoordinates)
+iREAL delta::geometry::properties::getMinXAxis(
+    std::vector<iREAL>&  xCoordinates)
 {
-	double min = std::numeric_limits<double>::max();
+	iREAL min = std::numeric_limits<iREAL>::max();
 
 	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
@@ -276,10 +276,10 @@ double delta::geometry::properties::getMinXAxis(
 	return min;
 }
 
-double delta::geometry::properties::getMinYAxis(
-    std::vector<double>&  yCoordinates)
+iREAL delta::geometry::properties::getMinYAxis(
+    std::vector<iREAL>&  yCoordinates)
 {
-	double min = std::numeric_limits<double>::max();
+	iREAL min = std::numeric_limits<iREAL>::max();
 
 	for(unsigned i=0;i<yCoordinates.size();i++)
 	{
@@ -288,10 +288,10 @@ double delta::geometry::properties::getMinYAxis(
 	return min;
 }
 
-double delta::geometry::properties::getMinZAxis(
-    std::vector<double>&  zCoordinates)
+iREAL delta::geometry::properties::getMinZAxis(
+    std::vector<iREAL>&  zCoordinates)
 {
-	double min = std::numeric_limits<double>::max();
+	iREAL min = std::numeric_limits<iREAL>::max();
 
 	for(unsigned i=0;i<zCoordinates.size();i++)
 	{
@@ -301,10 +301,10 @@ double delta::geometry::properties::getMinZAxis(
 }
 
 void delta::geometry::properties::centerOfGeometry(
-    double centreOfGeometry[3],
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+    iREAL centreOfGeometry[3],
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
 	centreOfGeometry[0] = 0.0;
 	centreOfGeometry[1] = 0.0;
@@ -325,15 +325,15 @@ void delta::geometry::properties::centerOfGeometry(
 }
 
 void delta::geometry::properties::centerOfMass(
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates,
-  double&               centreOfMassX,
-  double&               centreOfMassY,
-  double&               centreOfMassZ,
-  double&               refcentreOfMassX,
-  double&               refcentreOfMassY,
-  double&               refcentreOfMassZ
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates,
+  iREAL&               centreOfMassX,
+  iREAL&               centreOfMassY,
+  iREAL&               centreOfMassZ,
+  iREAL&               refcentreOfMassX,
+  iREAL&               refcentreOfMassY,
+  iREAL&               refcentreOfMassZ
 ) {
 
   centreOfMassX = 0.0;
@@ -359,13 +359,13 @@ void delta::geometry::properties::centerOfMass(
 }
 
 void delta::geometry::properties::explode(
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates,
-  double length
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates,
+  iREAL length
 ) {
 
-  std::vector<double> exCoordinates, eyCoordinates, ezCoordinates;
+  std::vector<iREAL> exCoordinates, eyCoordinates, ezCoordinates;
 
   for(unsigned i=0;i<xCoordinates.size();i+=3)
   {
@@ -419,13 +419,13 @@ void delta::geometry::properties::explode(
 }
 
 void delta::geometry::properties::exploded(
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates,
-  double length
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates,
+  iREAL length
 ) {
 
-  std::vector<double> exCoordinates, eyCoordinates, ezCoordinates;
+  std::vector<iREAL> exCoordinates, eyCoordinates, ezCoordinates;
 
   for(unsigned i=0;i<xCoordinates.size();i+=3)
   {
@@ -474,17 +474,17 @@ void delta::geometry::properties::exploded(
   }
 }
 
-double delta::geometry::properties::getHMin(
-  const std::vector<double>&  xCoordinates,
-  const std::vector<double>&  yCoordinates,
-  const std::vector<double>&  zCoordinates
+iREAL delta::geometry::properties::getHMin(
+  const std::vector<iREAL>&  xCoordinates,
+  const std::vector<iREAL>&  yCoordinates,
+  const std::vector<iREAL>&  zCoordinates
 )
 {
-  double min = 1E99;
+  iREAL min = 1E99;
 
   for(unsigned i=0; i<xCoordinates.size(); i+=3)
   {
-	double A[3], B[3], C[3];
+	iREAL A[3], B[3], C[3];
 	A[0] = xCoordinates[i];
 	A[1] = yCoordinates[i];
 	A[2] = zCoordinates[i];
@@ -497,9 +497,9 @@ double delta::geometry::properties::getHMin(
 	C[1] = yCoordinates[i+2];
 	C[2] = zCoordinates[i+2];
 
-	double AB = sqrt((A[0]-B[0])*(A[0]-B[0])+(A[1]-B[1])*(A[1]-B[1])+(A[2]-B[2])*(A[2]-B[2]));
-	double BC = sqrt((B[0]-C[0])*(B[0]-C[0])+(B[1]-C[1])*(B[1]-C[1])+(B[2]-C[2])*(B[2]-C[2]));
-	double CA = sqrt((C[0]-A[0])*(C[0]-A[0])+(C[1]-A[1])*(C[1]-A[1])+(C[2]-A[2])*(C[2]-A[2]));
+	iREAL AB = sqrt((A[0]-B[0])*(A[0]-B[0])+(A[1]-B[1])*(A[1]-B[1])+(A[2]-B[2])*(A[2]-B[2]));
+	iREAL BC = sqrt((B[0]-C[0])*(B[0]-C[0])+(B[1]-C[1])*(B[1]-C[1])+(B[2]-C[2])*(B[2]-C[2]));
+	iREAL CA = sqrt((C[0]-A[0])*(C[0]-A[0])+(C[1]-A[1])*(C[1]-A[1])+(C[2]-A[2])*(C[2]-A[2]));
 
 	if (std::min(std::min(AB, BC), CA) < min)
 	{
@@ -510,10 +510,10 @@ double delta::geometry::properties::getHMin(
   return min;
 }
 
-double delta::geometry::properties::simplex_J (
-    double *a, double *b, double *c, double *d)
+iREAL delta::geometry::properties::simplex_J (
+    iREAL *a, iREAL *b, iREAL *c, iREAL *d)
 {
-  double q [9], J;
+  iREAL q [9], J;
 
   q [0] = b [0] - a [0];
   q [1] = c [0] - a [0];
@@ -537,13 +537,13 @@ double delta::geometry::properties::simplex_J (
  * gets the inertia using simplex integration from solfec
  */
 void delta::geometry::properties::getInertia(
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates,
-		delta::collision::material::MaterialType material,
-		double& mass,
-		double center[3],
-		double inertia[9])
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates,
+		delta::geometry::material::MaterialType material,
+		iREAL& mass,
+		iREAL center[3],
+		iREAL inertia[9])
 {
   iREAL me, sx, sy, sz, euler[9], a[3], b[3], c[3], J;
 
@@ -557,7 +557,7 @@ void delta::geometry::properties::getInertia(
   euler[3] = euler[4] = euler[5] =
   euler[6] = euler[7] = euler[8] = 0.0;
 
-  int rho = int(delta::collision::material::materialToDensitymap.find(material)->second);
+  int rho = int(delta::geometry::material::materialToDensitymap.find(material)->second);
 
   for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {
@@ -614,7 +614,7 @@ void delta::geometry::properties::getInertia(
   euler[5] = euler[7];
 
   /* convert Euler tensor to the inertia tensor */
-  double trace = TRACE (euler);
+  iREAL trace = TRACE (euler);
   inertia[0] = trace - euler[0];
   inertia[4] = trace - euler[4];
   inertia[8] = trace - euler[8];
@@ -629,11 +629,11 @@ void delta::geometry::properties::getInertia(
 #endif
 }
 
-double delta::geometry::properties::getMass(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates,
-    delta::collision::material::MaterialType material)
+iREAL delta::geometry::properties::getMass(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates,
+    delta::geometry::material::MaterialType material)
 {
   iREAL me=0, a[3], b[3], c[3], J;
 
@@ -642,7 +642,7 @@ double delta::geometry::properties::getMass(
   zero[1] = 0;
   zero[2] = 0;
 
-  int rho= int(delta::collision::material::materialToDensitymap.find(material)->second);
+  int rho= int(delta::geometry::material::materialToDensitymap.find(material)->second);
 
   for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {
@@ -665,10 +665,10 @@ double delta::geometry::properties::getMass(
   return me;
 }
 
-double delta::geometry::properties::getVolume(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+iREAL delta::geometry::properties::getVolume(
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
   iREAL vol=0, a[3], b[3], c[3], J;
 
@@ -700,8 +700,8 @@ double delta::geometry::properties::getVolume(
 }
 
 void delta::geometry::properties::getInverseInertia(
-    double inertia[9],
-    double inverse[9],
+    iREAL inertia[9],
+    iREAL inverse[9],
     bool isObject)
 {
 	iREAL det;

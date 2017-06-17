@@ -23,8 +23,11 @@
  */
 
 #include <vector>
-
 #include "delta/collision/contactpoint.h"
+#include <complex>
+#include <limits>
+#include <iostream>
+#include "delta/core/algo.h"
 
 
 namespace delta {
@@ -35,18 +38,18 @@ namespace delta {
      */
     std::vector<contactpoint> bf(
       int       numberOfTrianglesOfGeometryA,
-      double*   xCoordinatesOfPointsOfGeometryA,
-      double*   yCoordinatesOfPointsOfGeometryA,
-      double*   zCoordinatesOfPointsOfGeometryA,
-      double    epsilonA,
+      iREAL*   xCoordinatesOfPointsOfGeometryA,
+      iREAL*   yCoordinatesOfPointsOfGeometryA,
+      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      iREAL    epsilonA,
       bool      frictionA,
       int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
-      double*   xCoordinatesOfPointsOfGeometryB,
-      double*   yCoordinatesOfPointsOfGeometryB,
-      double*   zCoordinatesOfPointsOfGeometryB,
-      double    epsilonB,
+      iREAL*   xCoordinatesOfPointsOfGeometryB,
+      iREAL*   yCoordinatesOfPointsOfGeometryB,
+      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      iREAL    epsilonB,
       bool      frictionB,
       int 	    particleB
     );
@@ -65,18 +68,18 @@ namespace delta {
     #pragma omp declare simd
     #endif
     void bf(
-      double   xCoordinatesOfTriangleA[3],
-      double   yCoordinatesOfTriangleA[3],
-      double   zCoordinatesOfTriangleA[3],
-      double   xCoordinatesOfTriangleB[3],
-      double   yCoordinatesOfTriangleB[3],
-      double   zCoordinatesOfTriangleB[3],
-      double&  xPA,
-      double&  yPA,
-      double&  zPA,
-      double&  xPB,
-      double&  yPB,
-      double&  zPB
+      iREAL   xCoordinatesOfTriangleA[3],
+      iREAL   yCoordinatesOfTriangleA[3],
+      iREAL   zCoordinatesOfTriangleA[3],
+      iREAL   xCoordinatesOfTriangleB[3],
+      iREAL   yCoordinatesOfTriangleB[3],
+      iREAL   zCoordinatesOfTriangleB[3],
+      iREAL&  xPA,
+      iREAL&  yPA,
+      iREAL&  zPA,
+      iREAL&  xPB,
+      iREAL&  yPB,
+      iREAL&  zPB
     );
   }
 }

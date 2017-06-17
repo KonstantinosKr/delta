@@ -22,27 +22,26 @@
 
 #include <vector>
 #include <limits>
-
+#include <float.h>
 #include "delta/collision/contactpoint.h"
-
-#include "algo.h"
+#include "delta/core/algo.h"
 
 namespace delta {
   namespace collision {
     std::vector<contactpoint> gjk(
      int       numberOfTrianglesOfGeometryA,
-     double*   xCoordinatesOfPointsOfGeometryA,
-     double*   yCoordinatesOfPointsOfGeometryA,
-     double*   zCoordinatesOfPointsOfGeometryA,
-	 double    epsilonA,
+     iREAL*   xCoordinatesOfPointsOfGeometryA,
+     iREAL*   yCoordinatesOfPointsOfGeometryA,
+     iREAL*   zCoordinatesOfPointsOfGeometryA,
+	 iREAL    epsilonA,
 	 bool       frictionA,
 	 int 	   particleA,
 
      int       numberOfTrianglesOfGeometryB,
-     double*   xCoordinatesOfPointsOfGeometryB,
-     double*   yCoordinatesOfPointsOfGeometryB,
-     double*   zCoordinatesOfPointsOfGeometryB,
-     double    epsilonB,
+     iREAL*   xCoordinatesOfPointsOfGeometryB,
+     iREAL*   yCoordinatesOfPointsOfGeometryB,
+     iREAL*   zCoordinatesOfPointsOfGeometryB,
+     iREAL    epsilonB,
 	 bool       frictionB,
 	 int 	    particleB
     );
@@ -50,6 +49,6 @@ namespace delta {
     /* (a,na) and (b,nb) are the two input tables of polyhedrons vertices;
      * 'p' and 'q' are the two outputed closest points, respectively in
      * polyhedron (a,na) and polyhedron (b,nb); the distance is returned */
-    double gjk (double *a, int na, double *b, int nb, double *p, double *q);
+    iREAL gjk (iREAL *a, int na, iREAL *b, int nb, iREAL *p, iREAL *q);
   }
 }

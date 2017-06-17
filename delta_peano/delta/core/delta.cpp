@@ -23,9 +23,10 @@
  */
 
 #include <delta/core/delta.h>
+
 delta::core::Delta::Delta()
 {
-  delta::collision::material::materialInit();
+  delta::geometry::material::materialInit();
 }
 
 delta::core::Delta::~Delta()

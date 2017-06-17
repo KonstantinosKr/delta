@@ -27,7 +27,7 @@
 #include "delta/collision/contactpoint.h"
 #include <limits>
 #include <float.h>
-#include "algo.h"
+#include "delta/core/algo.h"
 
 #define MaxNumberOfNewtonIterations 16
 
@@ -51,35 +51,35 @@ namespace delta {
      */
     std::vector<contactpoint> penaltyStat(
       int       numberOfTrianglesOfGeometryA,
-      double*   xCoordinatesOfPointsOfGeometryA,
-      double*   yCoordinatesOfPointsOfGeometryA,
-      double*   zCoordinatesOfPointsOfGeometryA,
-      double    epsilonA,
+      iREAL*   xCoordinatesOfPointsOfGeometryA,
+      iREAL*   yCoordinatesOfPointsOfGeometryA,
+      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      iREAL    epsilonA,
       bool      frictionA,
       int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
-      double*   xCoordinatesOfPointsOfGeometryB,
-      double*   yCoordinatesOfPointsOfGeometryB,
-      double*   zCoordinatesOfPointsOfGeometryB,
-      double    epsilonB,
+      iREAL*   xCoordinatesOfPointsOfGeometryB,
+      iREAL*   yCoordinatesOfPointsOfGeometryB,
+      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      iREAL    epsilonB,
       bool      frictionB,
       int 	    particleB);
 
     std::vector<contactpoint> penalty(
       int       numberOfTrianglesOfGeometryA,
-      double*   xCoordinatesOfPointsOfGeometryA,
-      double*   yCoordinatesOfPointsOfGeometryA,
-      double*   zCoordinatesOfPointsOfGeometryA,
-      double    epsilonA,
+      iREAL*   xCoordinatesOfPointsOfGeometryA,
+      iREAL*   yCoordinatesOfPointsOfGeometryA,
+      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      iREAL    epsilonA,
       bool      frictionA,
       int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
-      double*   xCoordinatesOfPointsOfGeometryB,
-      double*   yCoordinatesOfPointsOfGeometryB,
-      double*   zCoordinatesOfPointsOfGeometryB,
-      double    epsilonB,
+      iREAL*   xCoordinatesOfPointsOfGeometryB,
+      iREAL*   yCoordinatesOfPointsOfGeometryB,
+      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      iREAL    epsilonB,
       bool      frictionB,
       int 	    particleB);
 
@@ -88,19 +88,19 @@ namespace delta {
       #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
     #endif
     extern void penalty(
-       double   xCoordinatesOfTriangleA[3],
-       double   yCoordinatesOfTriangleA[3],
-       double   zCoordinatesOfTriangleA[3],
-       double   xCoordinatesOfTriangleB[3],
-       double   yCoordinatesOfTriangleB[3],
-       double   zCoordinatesOfTriangleB[3],
-       double&  xPA,
-       double&  yPA,
-       double&  zPA,
-       double&  xPB,
-       double&  yPB,
-       double&  zPB,
-       double MaxErrorOfPenaltyMethod,
+       iREAL   xCoordinatesOfTriangleA[3],
+       iREAL   yCoordinatesOfTriangleA[3],
+       iREAL   zCoordinatesOfTriangleA[3],
+       iREAL   xCoordinatesOfTriangleB[3],
+       iREAL   yCoordinatesOfTriangleB[3],
+       iREAL   zCoordinatesOfTriangleB[3],
+       iREAL&  xPA,
+       iREAL&  yPA,
+       iREAL&  zPA,
+       iREAL&  xPB,
+       iREAL&  yPB,
+       iREAL&  zPB,
+       iREAL MaxErrorOfPenaltyMethod,
        bool& failed);
 
     /**
@@ -109,19 +109,19 @@ namespace delta {
      * or the number of itertions exceeds maxNumberOfNewtonIterations.
      */
     void penalty(
-      double   xCoordinatesOfTriangleA[3],
-      double   yCoordinatesOfTriangleA[3],
-      double   zCoordinatesOfTriangleA[3],
-      double   xCoordinatesOfTriangleB[3],
-      double   yCoordinatesOfTriangleB[3],
-      double   zCoordinatesOfTriangleB[3],
-      double&  xPA,
-      double&  yPA,
-      double&  zPA,
-      double&  xPB,
-      double&  yPB,
-      double&  zPB,
-      double   maxError,
+      iREAL   xCoordinatesOfTriangleA[3],
+      iREAL   yCoordinatesOfTriangleA[3],
+      iREAL   zCoordinatesOfTriangleA[3],
+      iREAL   xCoordinatesOfTriangleB[3],
+      iREAL   yCoordinatesOfTriangleB[3],
+      iREAL   zCoordinatesOfTriangleB[3],
+      iREAL&  xPA,
+      iREAL&  yPA,
+      iREAL&  zPA,
+      iREAL&  xPB,
+      iREAL&  yPB,
+      iREAL&  zPB,
+      iREAL   maxError,
       int&     numberOfNewtonIterationsRequired);
   }
 }

@@ -22,15 +22,15 @@
 #include <array>
 #include <vector>
 
-#include "../../delta/core/delta.h"
-#include "../../delta/core/read.h"
+#include "delta/core/delta.h"
+#include "delta/core/read.h"
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"
 #include "dem/mappings/AdoptGrid.h"
 
 #include "delta/geometry/triangle.h"
-#include "delta/collision/material.h"
+#include "delta/geometry/material.h"
 
 namespace dem {
   namespace mappings {
@@ -118,12 +118,12 @@ class dem::mappings::CreateGrid {
       ReluctantAdaptiveGrid
     };
 
-    static void setScenario(Scenario scenario[4],
-                            double maxH,
-                            double particleDiamMin, double particleDiamMax,
-    						            GridType gridType, int noPointsPerGranulate);
+    static void setScenario(
+        Scenario scenario[4],
+        double maxH,
+        double particleDiamMin, double particleDiamMax,
+        GridType gridType, int noPointsPerGranulate);
 
-    static double 	_epsilon;
   private:
     /**
      * Logging device for the trace macros.
@@ -137,6 +137,7 @@ class dem::mappings::CreateGrid {
     static double   _minParticleDiam;
     static double   _maxParticleDiam;
     static int      _noPointsPerParticle;
+    static double   _epsilon;
 
     static GridType _gridType;
 
@@ -149,92 +150,114 @@ class dem::mappings::CreateGrid {
     static std::vector<std::array<double, 3>> _particleGrid;
     static std::vector<std::string> _componentGrid;
 
+    static std::vector<double> _rad;
     static std::vector<std::vector<double>> _xCoordinatesArray;
     static std::vector<std::vector<double>> _yCoordinatesArray;
     static std::vector<std::vector<double>> _zCoordinatesArray;
-    static std::vector<double> _rad;
 
-    void setVScheme(dem::Vertex&  vertex,
-                    int particleNumber,
-                    VScheme velocity);
+    void setVScheme(
+        dem::Vertex&  vertex,
+        int particleNumber,
+        VScheme velocity);
 
-    void makeCoarseEnviroment(dem::Vertex& vertex,
-                              double centreAsArray[3], double eps, int noPointsPerParticle);
+    void makeCoarseEnviroment(
+        dem::Vertex& vertex,
+        double centreAsArray[3],
+        double eps,
+        int noPointsPerParticle);
   
-    void makeFineEnviroment(dem::Vertex& vertex,
-                            dem::Vertex * const coarseGridVertices,
-                            const peano::grid::VertexEnumerator&  coarseGridVerticesEnumerator,
-                            double centreAsArray[3],
-                            double cellSize,
-                            double eps,
-                            int noPointsPerParticle,
-                            delta::collision::material::MaterialType material,
-                            double friction,
-                            double isObstacle,
-                            double &minParticleDiam, double &maxParticleDiam);
+    void makeFineEnviroment(
+        dem::Vertex& vertex,
+        dem::Vertex * const coarseGridVertices,
+        const peano::grid::VertexEnumerator&  coarseGridVerticesEnumerator,
+        double centreAsArray[3],
+        double cellSize,
+        double eps,
+        int noPointsPerParticle,
+        delta::geometry::material::MaterialType material,
+        double friction,
+        double isObstacle,
+        double &minParticleDiam, double &maxParticleDiam);
 
-    int createParticleObject(int quadsect, dem::Vertex&  vertex, double position[3],
-                              double eps, delta::collision::material::MaterialType material, bool friction, bool isObstacle,
-                              std::vector<double> xCoordinates, std::vector<double> yCoordinates, std::vector<double> zCoordinates);
+    int createParticleObject(
+        int quadsect, dem::Vertex& vertex,
+        double position[3],
+        double eps,
+        delta::geometry::material::MaterialType material,
+        bool friction,
+        bool isObstacle,
+        std::vector<double> xCoordinates,
+        std::vector<double> yCoordinates,
+        std::vector<double> zCoordinates);
 
-    void addParticleToState(std::vector<double>&  xCoordinates,
-                             std::vector<double>&  yCoordinates,
-                             std::vector<double>&  zCoordinates, bool isObstacle);
+    void addParticleToState(
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates,
+        bool isObstacle);
 
-    int makeHopper(dem::Vertex&  vertex, int quadsect, int meshmultiplier,
-                   double position[3],
-                   double _hopperWidth,
-                   double _hopperHeight,
-                   double _hopperHatch,
-                   double eps,
-                   delta::collision::material::MaterialType material,
-                   bool friction,
-                   bool isObstacle);
+    int makeHopper(
+        dem::Vertex&  vertex, int quadsect, int meshmultiplier,
+        double position[3],
+        double _hopperWidth,
+        double _hopperHeight,
+        double _hopperHatch,
+        double eps,
+        delta::geometry::material::MaterialType material,
+        bool friction,
+        bool isObstacle);
   
-    int makeBox(dem::Vertex&  vertex, int quadsect, int meshmultiplier,
-                  double position[3],
-                  double width,
-                  double height,
-                  double rx,
-                  double ry,
-                  double rz,
-                  double eps,
-                  delta::collision::material::MaterialType material,
-                  bool friction,
-                  bool isObstacle);
+    int makeBox(
+        dem::Vertex&  vertex,
+        int quadsect,
+        int meshmultiplier,
+        double position[3],
+        double width,
+        double height,
+        double rx,
+        double ry,
+        double rz,
+        double eps,
+        delta::geometry::material::MaterialType material,
+        bool friction,
+        bool isObstacle);
 
-    int makeSphere(dem::Vertex&  vertex,
-                   double position[3],
-                   double radius,
-                   double eps,
-                   delta::collision::material::MaterialType material,
-                   bool friction,
-                   bool isObstacle);
+    int makeSphere(
+        dem::Vertex&  vertex,
+        double position[3],
+        double radius,
+        double eps,
+        delta::geometry::material::MaterialType material,
+        bool friction,
+        bool isObstacle);
 
-    int makeLoadedNonSpherical(dem::Vertex&  vertex,
-                               double position[3],
-                               double radius,
-                               double eps,
-                               delta::collision::material::MaterialType material,
-                               bool friction,
-                               bool isObstacle);
+    int makeLoadedNonSpherical(
+        dem::Vertex&  vertex,
+        double position[3],
+        double radius,
+        double eps,
+        delta::geometry::material::MaterialType material,
+        bool friction,
+        bool isObstacle);
 
-    int makeNonSpherical(dem::Vertex&  vertex,
-                         double position[3],
-                         double radius,
-                         double eps,
-                         int noPointsPerParticle,
-                         delta::collision::material::MaterialType material,
-                         bool friction,
-                         bool isObstacle);
+    int makeNonSpherical(
+        dem::Vertex&  vertex,
+        double position[3],
+        double radius,
+        double eps,
+        int noPointsPerParticle,
+        delta::geometry::material::MaterialType material,
+        bool friction,
+        bool isObstacle);
 
-    void deployParticleInsituSubGrid(dem::Vertex&  vertex,
-                                double centreAsArray[3],
-                                double cellSize,
-                                double epsilon,
-                                delta::collision::material::MaterialType material,
-                                double friction,
-                                double isObstacle);
+    void deployParticleInsituSubGrid(
+        dem::Vertex&  vertex,
+        double centreAsArray[3],
+        double cellSize,
+        double epsilon,
+        delta::geometry::material::MaterialType material,
+        double friction,
+        double isObstacle);
 
 
   public:

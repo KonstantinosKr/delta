@@ -59,11 +59,17 @@ void dem::Vertex::destroy() const {
 #endif
 }
 
-int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>&   center,
-		  std::vector<double>&  xCoordinates,
-		  std::vector<double>&  yCoordinates,
-		  std::vector<double>&  zCoordinates,
-		  double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId)
+int dem::Vertex::createNewParticle(
+    const tarch::la::Vector<DIMENSIONS,double>&   center,
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates,
+    double epsilon,
+    bool friction,
+    delta::geometry::material::MaterialType material,
+    bool isObstacle,
+    int particleId,
+    int localparticleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
@@ -165,12 +171,23 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 
-int dem::Vertex::createNewSubParticle(const tarch::la::Vector<DIMENSIONS,double>& center,
-      std::vector<double>&  xCoordinates,
-      std::vector<double>&  yCoordinates,
-      std::vector<double>&  zCoordinates,
-      double centerOfMass[3], double inertia[9], double inverse[9], double mass, double hMin, double diameter,
-      double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId)
+int dem::Vertex::createNewSubParticle(
+    const tarch::la::Vector<DIMENSIONS,double>& center,
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates,
+    double centerOfMass[3],
+    double inertia[9],
+    double inverse[9],
+    double mass,
+    double hMin,
+    double diameter,
+    double epsilon,
+    bool friction,
+    delta::geometry::material::MaterialType material,
+    bool isObstacle,
+    int particleId,
+    int localparticleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
@@ -257,23 +274,25 @@ int dem::Vertex::createNewSubParticle(const tarch::la::Vector<DIMENSIONS,double>
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 
-
-int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,double>&   center,
-		  double radius, double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId)
+int dem::Vertex::createNewParticleSphere(
+    const tarch::la::Vector<DIMENSIONS,double>& center,
+		double radius,
+		double epsilon,
+		bool friction,
+		delta::geometry::material::MaterialType material,
+		bool isObstacle,
+		int particleId,
+		int localparticleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
-  double inertia[9], inverse[9], mass, hMin;
-
-  std::vector<double>  xCoordinates;
-  std::vector<double>  yCoordinates;
-  std::vector<double>  zCoordinates;
+  double inertia[9], inverse[9], mass;
 
   iREAL volume = (4.0/3.0) * 3.14 * pow(radius,3);
 
-  iREAL density = int(delta::collision::material::materialToDensitymap.find(material)->second);
+  iREAL density = int(delta::geometry::material::materialToDensitymap.find(material)->second);
   mass = volume * density;
 
   newParticle._persistentRecords._inertia(0) = 0.4 * mass * radius * radius;
@@ -327,11 +346,11 @@ int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,dou
   newParticle._persistentRecords._epsilon			      = epsilon;
   newParticle._persistentRecords._hMin 				      = 0;
 
-  newParticle._persistentRecords._numberOfTriangles = xCoordinates.size()/DIMENSIONS;
+  newParticle._persistentRecords._numberOfTriangles = 0;
   newParticle._persistentRecords._isObstacle 		    = isObstacle;
   newParticle._persistentRecords._material 			    = int(material);
   newParticle._persistentRecords._globalParticleId  = particleId;
-  newParticle._persistentRecords._localParticleId  = localparticleId;
+  newParticle._persistentRecords._localParticleId   = localparticleId;
 
   newParticle._persistentRecords._velocity          = tarch::la::Vector<DIMENSIONS,double>(0.0);
   newParticle._persistentRecords._angular		 	      = tarch::la::Vector<DIMENSIONS,double>(0.0);
@@ -343,17 +362,6 @@ int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,dou
   newParticle._persistentRecords._vertices(3) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(4) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(5) = DEMDoubleHeap::getInstance().createData();
-
-  for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
-  {
-    getXCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( xCoordinates[i] );
-    getYCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( yCoordinates[i] );
-    getZCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back( zCoordinates[i] );
-
-    getXRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(xCoordinates[i]);
-    getYRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(yCoordinates[i]);
-    getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
-  }
 
   std::cout   << "#####PARTICLE-INIT-PROPERTIES-DATA#####" << std::endl
               << "partiId=" << std::fixed << std::setprecision(10) << newParticle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << newParticle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << newParticle.getDiameter() << std::endl

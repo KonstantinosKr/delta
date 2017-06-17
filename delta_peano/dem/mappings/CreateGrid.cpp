@@ -168,7 +168,10 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
 
-void dem::mappings::CreateGrid::setVScheme(dem::Vertex&  vertex, int particleNumber, VScheme velocity)
+void dem::mappings::CreateGrid::setVScheme(
+    dem::Vertex&  vertex,
+    int particleNumber,
+    VScheme velocity)
 {
   switch (velocity)
   {
@@ -230,13 +233,17 @@ void dem::mappings::CreateGrid::setVScheme(dem::Vertex&  vertex, int particleNum
   }
 }
 
-void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double centreAsArray[3], double eps, int noPointsPerParticle)
+void dem::mappings::CreateGrid::makeCoarseEnviroment(
+    dem::Vertex& vertex,
+    double centreAsArray[3],
+    double eps,
+    int noPointsPerParticle)
 {
   if(_scenario[0] == sla ||
      _scenario[0] == nuclearArray)
   {
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
-    delta::collision::material::MaterialType material = delta::collision::material::MaterialType::GOLD;
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::GOLD;
     centreAsArray[1] = 0.5;
     iREAL position[] = {centreAsArray[0], centreAsArray[1], centreAsArray[2]};
     double floorHeight = 0.05;
@@ -253,7 +260,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
   } else if(_scenario[1] == hopper)
   {
     ////////HOPPER////////////////////////////////////////////////////////////////////////////////////////////
-    delta::collision::material::MaterialType material = delta::collision::material::MaterialType::GOLD;
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::GOLD;
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.05;
     //HOPPER DIAGONAL:0.382926
     int particleId = makeHopper(vertex, 0, 0, centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, eps, material, false, true);
@@ -288,7 +295,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
       xzcuts = 100.0; ycuts = 50;
     }
 
-    double totalMass = 0.05; material = delta::collision::material::MaterialType::WOOD;
+    double totalMass = 0.05; material = delta::geometry::material::MaterialType::WOOD;
 
     iREAL minArraylengthXZ = (double)_hopperWidth - eps * 6;
 
@@ -334,7 +341,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
   }
   else if(_scenario[0] == frictionStatic)
    {
-    delta::collision::material::MaterialType material = delta::collision::material::MaterialType::WOOD;
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
     double height = 0.05; double width = 0.35;
     makeBox(vertex, 1, 1, centreAsArray, width, height, 0,0,0, eps, material, true, true);
 
@@ -352,7 +359,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     setVScheme(vertex, newParticleNumber, dem::mappings::CreateGrid::crashY);
   } else if(_scenario[0] == frictionSlide)
   {
-    delta::collision::material::MaterialType material = delta::collision::material::MaterialType::WOOD;
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
     double height = 0.05; double width = 0.35;
     makeBox(vertex, 1, 1, centreAsArray, width, height, 0,0,0, eps, material, true, true);
 
@@ -370,7 +377,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
     setVScheme(vertex, newParticleNumber, dem::mappings::CreateGrid::slideX);
   } else if(_scenario[0] == frictionRoll)
   {
-    delta::collision::material::MaterialType material = delta::collision::material::MaterialType::WOOD;
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
     double height = 0.05; double width = 0.35;
     makeBox(vertex, 1, 1, centreAsArray, width, height, 0,0,0.1, eps, material, true, true);
 
@@ -389,7 +396,7 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
   } else if(_scenario[0] == TwoParticlesCrash)
   {
     double radius = 0.05;
-    delta::collision::material::MaterialType material = delta::collision::material::MaterialType::WOOD;
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
     if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere)
     {
       iREAL position[] = {centreAsArray[0], centreAsArray[1] + radius*2, centreAsArray[2]};
@@ -411,14 +418,15 @@ void dem::mappings::CreateGrid::makeCoarseEnviroment(dem::Vertex& vertex, double
   }
 }
 
-void dem::mappings::CreateGrid::makeFineEnviroment(dem::Vertex& vertex,
+void dem::mappings::CreateGrid::makeFineEnviroment(
+    dem::Vertex& vertex,
     dem::Vertex * const                       coarseGridVertices,
     const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
     double centreAsArray[3],
     double cellSize,
     double eps,
     int noPointsPerParticle,
-    delta::collision::material::MaterialType material,
+    delta::geometry::material::MaterialType material,
     double friction,
     double isObstacle,
     double &minParticleDiam,
@@ -513,7 +521,7 @@ void dem::mappings::CreateGrid::createCell(
 		  const auto centre = fineGridVerticesEnumerator.getVertexPosition() + _maxParticleDiam * (k.convertScalar<double>()+0.5);
       double centreAsArray[] = {centre(0),centre(1),centre(2)};
 
-      auto material = delta::collision::material::MaterialType::WOOD;
+      auto material = delta::geometry::material::MaterialType::WOOD;
       bool friction = true; bool obstacle = false;
       makeFineEnviroment(vertex, coarseGridVertices, coarseGridVerticesEnumerator, centreAsArray, fineGridVerticesEnumerator.getCellSize()(0), _epsilon, _noPointsPerParticle, material, friction, obstacle, _minParticleDiam, _maxParticleDiam);
 		}
@@ -522,50 +530,60 @@ void dem::mappings::CreateGrid::createCell(
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
 
-void dem::mappings::CreateGrid::addParticleToState(std::vector<double>&  xCoordinates,
-                                                   std::vector<double>&  yCoordinates,
-                                                   std::vector<double>&  zCoordinates, bool isObstacle)
+void dem::mappings::CreateGrid::addParticleToState(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates, bool isObstacle)
 {
   _numberOfParticles++; _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
   if(isObstacle) _numberOfObstacles++;
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 }
 
-int dem::mappings::CreateGrid::makeHopper(dem::Vertex&  vertex, int quadsect, int meshmultiplier,
-                                          double position[3],
-                                          double _hopperWidth,
-                                          double _hopperHeight,
-                                          double _hopperHatch,
-                                          double eps,
-                                          delta::collision::material::MaterialType material,
-                                          bool friction,
-                                          bool isObstacle)
+int dem::mappings::CreateGrid::makeHopper(
+    dem::Vertex&  vertex, int quadsect, int meshmultiplier,
+    double position[3],
+    double _hopperWidth,
+    double _hopperHeight,
+    double _hopperHatch,
+    double eps,
+    delta::geometry::material::MaterialType material,
+    bool friction,
+    bool isObstacle)
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
   delta::geometry::hopper::generateHopper(position, _hopperWidth, _hopperHeight, _hopperHatch, meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
   return createParticleObject(quadsect, vertex, position, eps, material, friction, isObstacle, xCoordinates, yCoordinates, zCoordinates);
 }
 
-int dem::mappings::CreateGrid::makeBox(dem::Vertex&  vertex, int quadsect, int meshmultiplier,
-                                          double position[3],
-                                          double width,
-                                          double height,
-                                          double rx,
-                                          double ry,
-                                          double rz,
-                                          double eps,
-                                          delta::collision::material::MaterialType material,
-                                          bool friction,
-                                          bool isObstacle)
+int dem::mappings::CreateGrid::makeBox(
+    dem::Vertex&  vertex, int quadsect, int meshmultiplier,
+    double position[3],
+    double width,
+    double height,
+    double rx,
+    double ry,
+    double rz,
+    double eps,
+    delta::geometry::material::MaterialType material,
+    bool friction,
+    bool isObstacle)
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
   delta::geometry::cubes::generateHullCube(position, width, height, width, rx, ry, rz, meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
   return createParticleObject(quadsect, vertex, position, eps, material, friction, isObstacle, xCoordinates, yCoordinates, zCoordinates);
 }
 
-int dem::mappings::CreateGrid::createParticleObject(int quadsect, dem::Vertex&  vertex, double position[3],
-    double eps, delta::collision::material::MaterialType material, bool friction, bool isObstacle,
-    std::vector<double> xCoordinates, std::vector<double> yCoordinates, std::vector<double> zCoordinates)
+int dem::mappings::CreateGrid::createParticleObject(
+    int quadsect,
+    dem::Vertex& vertex,
+    double position[3],
+    double eps,
+    delta::geometry::material::MaterialType material,
+    bool friction, bool isObstacle,
+    std::vector<double> xCoordinates,
+    std::vector<double> yCoordinates,
+    std::vector<double> zCoordinates)
 {
 
   int newParticleNumber = 0;
@@ -628,13 +646,14 @@ int dem::mappings::CreateGrid::createParticleObject(int quadsect, dem::Vertex&  
   return newParticleNumber;
 }
 
-int dem::mappings::CreateGrid::makeSphere(dem::Vertex&  vertex,
-                                          double position[3],
-                                          double radius,
-                                          double eps,
-                                          delta::collision::material::MaterialType material,
-                                          bool friction,
-                                          bool isObstacle)
+int dem::mappings::CreateGrid::makeSphere(
+    dem::Vertex&  vertex,
+    double position[3],
+    double radius,
+    double eps,
+    delta::geometry::material::MaterialType material,
+    bool friction,
+    bool isObstacle)
 {
   int particleid = vertex.createNewParticleSphere(position, radius, eps, friction, material, isObstacle, _numberOfParticles, 0);
   _numberOfParticles++;
@@ -642,13 +661,14 @@ int dem::mappings::CreateGrid::makeSphere(dem::Vertex&  vertex,
   return particleid;
 }
 
-int dem::mappings::CreateGrid::makeLoadedNonSpherical(dem::Vertex&  vertex,
-                                                      double position[3],
-                                                      double radius,
-                                                      double eps,
-                                                      delta::collision::material::MaterialType material,
-                                                      bool friction,
-                                                      bool isObstacle)
+int dem::mappings::CreateGrid::makeLoadedNonSpherical(
+    dem::Vertex&  vertex,
+    double position[3],
+    double radius,
+    double eps,
+    delta::geometry::material::MaterialType material,
+    bool friction,
+    bool isObstacle)
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
 
@@ -658,14 +678,15 @@ int dem::mappings::CreateGrid::makeLoadedNonSpherical(dem::Vertex&  vertex,
   return newParticleNumber;
 }
 
-int dem::mappings::CreateGrid::makeNonSpherical(dem::Vertex&  vertex,
-                                                double position[3],
-                                                double radius,
-                                                double eps,
-                                                int noPointsPerParticle,
-                                                delta::collision::material::MaterialType material,
-                                                bool friction,
-                                                bool isObstacle)
+int dem::mappings::CreateGrid::makeNonSpherical(
+    dem::Vertex&  vertex,
+    double position[3],
+    double radius,
+    double eps,
+    int noPointsPerParticle,
+    delta::geometry::material::MaterialType material,
+    bool friction,
+    bool isObstacle)
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
 
@@ -675,13 +696,14 @@ int dem::mappings::CreateGrid::makeNonSpherical(dem::Vertex&  vertex,
   return newParticleNumber;
 }
 
-void dem::mappings::CreateGrid::deployParticleInsituSubGrid(dem::Vertex&  vertex,
-                                                        double centreAsArray[3],
-                                                        double cellSize,
-                                                        double eps,
-                                                        delta::collision::material::MaterialType material,
-                                                        double friction,
-                                                        double isObstacle)
+void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
+    dem::Vertex&  vertex,
+    double centreAsArray[3],
+    double cellSize,
+    double eps,
+    delta::geometry::material::MaterialType material,
+    double friction,
+    double isObstacle)
 {
   iREAL cellXLeftBoundary = centreAsArray[0] - cellSize/2, cellZLeftBoundary = centreAsArray[2] - cellSize/2;
   iREAL cellXRightBoundary= centreAsArray[0] + cellSize/2, cellZRightBoundary = centreAsArray[2] + cellSize/2;

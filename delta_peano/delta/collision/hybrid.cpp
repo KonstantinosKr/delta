@@ -23,14 +23,12 @@
  */
 
 #include "hybrid.h"
-#include "penalty.h"
-#include "bf.h"
 
 void delta::collision::cleanHybridStatistics() {
   numberOfPenaltyFails = 0;
   numberOfBatchFails = 0;
   //int batchSize = 0;
-  //double batchError = 0;
+  //iREAL batchError = 0;
 }
 
 int delta::collision::getPenaltyFails() {
@@ -45,28 +43,28 @@ int delta::collision::getBatchSize() {
   return batchSize;
 }
 
-double delta::collision::getBatchError() {
+iREAL delta::collision::getBatchError() {
   return batchError;
 }
 
 std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTriangleFallBack(
   int       numberOfTrianglesOfGeometryA,
-  double*   xCoordinatesOfPointsOfGeometryA,
-  double*   yCoordinatesOfPointsOfGeometryA,
-  double*   zCoordinatesOfPointsOfGeometryA,
-  double    epsilonA,
+  iREAL*   xCoordinatesOfPointsOfGeometryA,
+  iREAL*   yCoordinatesOfPointsOfGeometryA,
+  iREAL*   zCoordinatesOfPointsOfGeometryA,
+  iREAL    epsilonA,
   bool      frictionA,
   int 		  particleA,
 
   int       numberOfTrianglesOfGeometryB,
-  double*   xCoordinatesOfPointsOfGeometryB,
-  double*   yCoordinatesOfPointsOfGeometryB,
-  double*   zCoordinatesOfPointsOfGeometryB,
-  double    epsilonB,
+  iREAL*   xCoordinatesOfPointsOfGeometryB,
+  iREAL*   yCoordinatesOfPointsOfGeometryB,
+  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  iREAL    epsilonB,
   bool      frictionB,
   int	      particleB)
 {
-  __attribute__ ((aligned(byteAlignment))) double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
+  __attribute__ ((aligned(byteAlignment))) iREAL MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
   std::vector<contactpoint> result;
 
   #if defined(__INTEL_COMPILER)
@@ -84,7 +82,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   #endif
   for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-    __attribute__ ((aligned(byteAlignment))) double xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
     __attribute__ ((aligned(byteAlignment))) bool failed[10000];
 
     #if defined(__INTEL_COMPILER)
@@ -107,7 +105,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
       dd[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
-    __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) iREAL shortestDistance = (epsilonA+epsilonB);
     contactpoint *nearestContactPoint = nullptr;
 
     #if defined(__INTEL_COMPILER)
@@ -148,18 +146,18 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
 
 std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatchFallBack(
   int       numberOfTrianglesOfGeometryA,
-  double*   xCoordinatesOfPointsOfGeometryA,
-  double*   yCoordinatesOfPointsOfGeometryA,
-  double*   zCoordinatesOfPointsOfGeometryA,
-  double    epsilonA,
+  iREAL*   xCoordinatesOfPointsOfGeometryA,
+  iREAL*   yCoordinatesOfPointsOfGeometryA,
+  iREAL*   zCoordinatesOfPointsOfGeometryA,
+  iREAL    epsilonA,
   bool      frictionA,
   int       particleA,
 
   int       numberOfTrianglesOfGeometryB,
-  double*   xCoordinatesOfPointsOfGeometryB,
-  double*   yCoordinatesOfPointsOfGeometryB,
-  double*   zCoordinatesOfPointsOfGeometryB,
-  double    epsilonB,
+  iREAL*   xCoordinatesOfPointsOfGeometryB,
+  iREAL*   yCoordinatesOfPointsOfGeometryB,
+  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  iREAL    epsilonB,
   bool      frictionB,
   int       particleB)
 {
@@ -180,11 +178,11 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
   #endif
   for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-    __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) iREAL shortestDistance = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
-    __attribute__ ((aligned(byteAlignment))) const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
+    __attribute__ ((aligned(byteAlignment))) const iREAL MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
 
-    __attribute__ ((aligned(byteAlignment))) double xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
     __attribute__ ((aligned(byteAlignment))) bool failed[10000] = {0};
 
     #if defined(__INTEL_COMPILER)
@@ -220,9 +218,9 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
       }
     }
 
-    double localbatchError = counter * MaxErrorOfPenaltyMethod;
+    iREAL localbatchError = counter * MaxErrorOfPenaltyMethod;
 
-    if(localbatchError > ((double)MaxErrorOfPenaltyMethod*(double)numberOfTrianglesOfGeometryB)/32)
+    if(localbatchError > ((iREAL)MaxErrorOfPenaltyMethod*(iREAL)numberOfTrianglesOfGeometryB)/32)
     {
       fail = true;
     }
@@ -276,18 +274,18 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
 
 std::vector<delta::collision::contactpoint> delta::collision::hybridStat(
   int       numberOfTrianglesOfGeometryA,
-  double*   xCoordinatesOfPointsOfGeometryA,
-  double*   yCoordinatesOfPointsOfGeometryA,
-  double*   zCoordinatesOfPointsOfGeometryA,
-  double    epsilonA,
+  iREAL*   xCoordinatesOfPointsOfGeometryA,
+  iREAL*   yCoordinatesOfPointsOfGeometryA,
+  iREAL*   zCoordinatesOfPointsOfGeometryA,
+  iREAL    epsilonA,
   bool      frictionA,
   int       particleA,
 
   int       numberOfTrianglesOfGeometryB,
-  double*   xCoordinatesOfPointsOfGeometryB,
-  double*   yCoordinatesOfPointsOfGeometryB,
-  double*   zCoordinatesOfPointsOfGeometryB,
-  double    epsilonB,
+  iREAL*   xCoordinatesOfPointsOfGeometryB,
+  iREAL*   yCoordinatesOfPointsOfGeometryB,
+  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  iREAL    epsilonB,
   bool      frictionB,
   int       particleB)
 {
@@ -308,11 +306,11 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridStat(
   #endif
   for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-    __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) iREAL shortestDistance = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
-    __attribute__ ((aligned(byteAlignment))) const double MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
+    __attribute__ ((aligned(byteAlignment))) const iREAL MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
 
-    __attribute__ ((aligned(byteAlignment))) double xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
     __attribute__ ((aligned(byteAlignment))) bool failed[10000];
 
     #ifdef ompTriangle
@@ -352,7 +350,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridStat(
       }
     }
 
-    double localbatchError = counter * MaxErrorOfPenaltyMethod;
+    iREAL localbatchError = counter * MaxErrorOfPenaltyMethod;
 
     #ifdef ompTriangle
       #pragma omp critical
@@ -360,7 +358,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridStat(
     {
     numberOfPenaltyFails += counter;
     }
-    if(localbatchError > ((double)MaxErrorOfPenaltyMethod*(double)numberOfTrianglesOfGeometryB)/32)
+    if(localbatchError > ((iREAL)MaxErrorOfPenaltyMethod*(iREAL)numberOfTrianglesOfGeometryB)/32)
     {
       fail = true;
       #ifdef ompTriangle

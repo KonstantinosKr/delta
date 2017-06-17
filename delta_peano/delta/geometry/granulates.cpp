@@ -1,20 +1,12 @@
-#include <cmath>
-#include <assert.h>
 #include <delta/geometry/granulates.h>
-#include <stdlib.h>
-
-
-#include "delta/hull/hull.h"
-#include "delta/hull/alg.h"
-
 
 void delta::geometry::granulates::generateParticle(
-  double  center[2],
-  double  h,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates
+  iREAL  center[2],
+  iREAL  h,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates
 ) {
-  const double pi = std::acos(-1);
+  const iREAL pi = std::acos(-1);
 
   const int numberOfTriangles = rand() % 9 + 3;
 
@@ -24,10 +16,10 @@ void delta::geometry::granulates::generateParticle(
   xCoordinates.resize(numberOfTriangles*2);
   yCoordinates.resize(numberOfTriangles*2);
 
-  const double MaxConvexity = 0.6;
+  const iREAL MaxConvexity = 0.6;
 
   for (int i=0; i<numberOfTriangles; i++) {
-    double localRadius = h/2.0 * (static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) * MaxConvexity + 1.0 - MaxConvexity);
+    iREAL localRadius = h/2.0 * (static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX) * MaxConvexity + 1.0 - MaxConvexity);
 
     xCoordinates[2*i] = center[0] + localRadius * std::cos(2.0*pi * (1.0/numberOfTriangles*i) );
     yCoordinates[2*i] = center[1] + localRadius * std::sin(2.0*pi * (1.0/numberOfTriangles*i) );
@@ -38,11 +30,11 @@ void delta::geometry::granulates::generateParticle(
 }
 
 void delta::geometry::granulates::loadParticle(
-  double  center[3],
-  double  h,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates
+  iREAL  center[3],
+  iREAL  h,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates
 ) {
   char fileinput[100] = "input/rock.vtk";
   delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
@@ -51,11 +43,11 @@ void delta::geometry::granulates::loadParticle(
 }
 
 void delta::geometry::granulates::generateParticle(
-  double  center[3],
-  double  h,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates,
+  iREAL  center[3],
+  iREAL  h,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates,
   int noPointsPerParticle)
 {
   assert(xCoordinates.empty());
@@ -64,22 +56,22 @@ void delta::geometry::granulates::generateParticle(
 	
   unsigned int mul=1E8;
 
-  double diameter = h; //diameter -> make it slightly smaller
+  iREAL diameter = h; //diameter -> make it slightly smaller
 
   int pointsize = noPointsPerParticle; //number of points for point cloud
 
-  double eps = 0.25; //0.25 eps is the roundness degree
+  iREAL eps = 0.25; //0.25 eps is the roundness degree
 
 //  srand48(time(NULL));
 
-  double v[100000][3];
+  iREAL v[100000][3];
   for(int i = 0; i<pointsize; i++) //create point cloud and do delaunay hull triangulation
   {
-    double rng1 = 0;
-    double rng2 = 360;
-    double phi = (rng2-rng1) * (drand48()) + rng1;
-    double theta = (rng2-rng1) * (drand48()) + rng1;
-    double myradius = (((drand48()*eps)+1.0-eps) * (diameter/2));
+    iREAL rng1 = 0;
+    iREAL rng2 = 360;
+    iREAL phi = (rng2-rng1) * (drand48()) + rng1;
+    iREAL theta = (rng2-rng1) * (drand48()) + rng1;
+    iREAL myradius = (((drand48()*eps)+1.0-eps) * (diameter/2));
 
     v[i][0] = (myradius*sin(phi) * cos(theta))*mul;
     v[i][1] = (myradius*sin(phi) * sin(theta))*mul;
@@ -89,7 +81,7 @@ void delta::geometry::granulates::generateParticle(
   delta::hull::GEOMETRIC_EPSILON = 1e-10;
   delta::hull::TRI* tr = NULL;
   int pointlength = 0;
-  tr = delta::hull::hull((double *)v, pointsize, &pointlength);
+  tr = delta::hull::hull((iREAL *)v, pointsize, &pointlength);
 
   /*
   assertion(tr!=NULL);

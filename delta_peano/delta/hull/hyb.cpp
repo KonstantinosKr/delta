@@ -116,7 +116,7 @@ static void twowayscan (BOX **Ib, BOX **Ie, BOX **Pb, BOX **Pe,
 }
 
 /* [Ib, lo_hi_inside) collects d-intervals containig [lo, hi) */
-static BOX** lo_hi_inside (BOX **Ib, BOX **Ie, double lo, double hi, int d)
+static BOX** lo_hi_inside (BOX **Ib, BOX **Ie, iREAL lo, iREAL hi, int d)
 {
   BOX **i, **j, *k;
 
@@ -137,7 +137,7 @@ static BOX** lo_hi_inside (BOX **Ib, BOX **Ie, double lo, double hi, int d)
 
 /* ternary tree height */
 inline static int height (int n)
-{ return (int) (1.0 + 0.5 * log ((double)n) / 1.0986122); /* log (n) / log (3) */ }
+{ return (int) (1.0 + 0.5 * log ((iREAL)n) / 1.0986122); /* log (n) / log (3) */ }
 
 /* median of three numbers (lower extents coords along 'd') */
 static BOX* median_of_three (BOX *a, BOX *b, BOX *c, int d)
@@ -166,7 +166,7 @@ static BOX* median (BOX **Pb, BOX **Pe, int d, int h)
 }
 
 /* [Pb, split) are in [-inf, mi); [split, Pe) are in [mi, +inf) */
-static BOX** split (BOX **Pb, BOX **Pe, double mi, int d)
+static BOX** split (BOX **Pb, BOX **Pe, iREAL mi, int d)
 {
   BOX **i, **j, *k;
 
@@ -186,7 +186,7 @@ static BOX** split (BOX **Pb, BOX **Pe, double mi, int d)
 }
 
 /* intervals [Ib, overlaps) overlap [lo, hi) */
-static BOX** overlaps (BOX **Ib, BOX **Ie, double lo, double hi, int d)
+static BOX** overlaps (BOX **Ib, BOX **Ie, iREAL lo, iREAL hi, int d)
 {
   BOX **i, **j, *k;
 
@@ -207,7 +207,7 @@ static BOX** overlaps (BOX **Ib, BOX **Ie, double lo, double hi, int d)
 
 /* streamed segment tree */
 static void stream (BOX **Ib, BOX **Ie, BOX **Pb, BOX **Pe,
-  double lo, double hi, int d, void *data, BOX_Overlap_Create create)
+  iREAL lo, iREAL hi, int d, void *data, BOX_Overlap_Create create)
 {
   if (Ib >= Ie || Pb >= Pe) return;
   else if (d == 0) onewayscan (Ib, Ie, Pb, Pe, d, data, create);
@@ -215,7 +215,7 @@ static void stream (BOX **Ib, BOX **Ie, BOX **Pb, BOX **Pe,
   else
   {
     BOX **Im, **Pm, *P;
-    double mi;
+    iREAL mi;
 
     Im = lo_hi_inside (Ib, Ie, lo, hi, d); /* [Ib, Im) collects intervals containig [lo, hi)
                                               [Im, Ie) enumerates the remaining intervals */
@@ -244,14 +244,14 @@ static void stream (BOX **Ib, BOX **Ie, BOX **Pb, BOX **Pe,
 
 /* streamed segment tree without twowayscan */
 static void stream_ext (BOX **Ib, BOX **Ie, BOX **Pb, BOX **Pe,
-  double lo, double hi, int d, void *data, BOX_Overlap_Create create)
+  iREAL lo, iREAL hi, int d, void *data, BOX_Overlap_Create create)
 {
   if (Ib >= Ie || Pb >= Pe) return;
   else if (d == 0 || (Ie-Ib) < CUTOFF || (Pe-Pb) < CUTOFF) onewayscan (Ib, Ie, Pb, Pe, d, data, create);
   else
   {
     BOX **Im, **Pm, *P;
-    double mi;
+    iREAL mi;
 
     Im = lo_hi_inside (Ib, Ie, lo, hi, d); /* [Ib, Im) collects intervals containig [lo, hi)
                                               [Im, Ie) enumerates the remaining intervals */

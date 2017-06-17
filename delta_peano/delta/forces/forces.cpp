@@ -12,12 +12,24 @@
 #define SFRICTIONWOOD 0.05
 #define SFRICTIONROLLING 0.005
 
-double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREAL vij[3],
-                              iREAL positionASpatial[3], iREAL positionBSpatial[3],
-                              iREAL positionAReferential[3], iREAL positionBReferential[3],
-                              iREAL massA, iREAL massB,
-                              iREAL rotationA[9], iREAL rotationB[9],
-                              iREAL inverseA[9], iREAL inverseB[9], iREAL f[3], iREAL &damp, iREAL &ma)
+iREAL delta::forces::spring(
+    iREAL normal[3],
+    iREAL conpnt[3],
+    iREAL depth,
+    iREAL vij[3],
+    iREAL positionASpatial[3],
+    iREAL positionBSpatial[3],
+    iREAL positionAReferential[3],
+    iREAL positionBReferential[3],
+    iREAL massA,
+    iREAL massB,
+    iREAL rotationA[9],
+    iREAL rotationB[9],
+    iREAL inverseA[9],
+    iREAL inverseB[9],
+    iREAL f[3],
+    iREAL &damp,
+    iREAL &ma)
 {
 	//RefConPoint = Rotation^T *(spatial contact point - spatial centre) + RefCentre;
 	iREAL refconptA[3], refconptB[3], conptSubPosition[3];
@@ -201,7 +213,11 @@ double delta::forces::spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREA
 	return force;
 }
 
-void delta::forces::friction(iREAL normal[3], iREAL vi[3], iREAL force, iREAL friction[3])
+void delta::forces::friction(
+    iREAL normal[3],
+    iREAL vi[3],
+    iREAL force,
+    iREAL friction[3])
 {
   iREAL vt[3];
 
@@ -214,7 +230,15 @@ void delta::forces::friction(iREAL normal[3], iREAL vi[3], iREAL force, iREAL fr
   friction[2] =  -vt[2]*FRICTION*force;
 }
 
-double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3], iREAL &damp, iREAL &ma)
+iREAL delta::forces::springSphere(
+    iREAL normal[3],
+    iREAL depth,
+    iREAL relativeVelocity[3],
+    iREAL massA,
+    iREAL massB,
+    iREAL f[3],
+    iREAL &damp,
+    iREAL &ma)
 {
   ma = 1.0/((1.0/massA) + (1.0/massB));
 
@@ -231,14 +255,20 @@ double delta::forces::springSphere(iREAL normal[3], iREAL depth, iREAL relativeV
   return force;
 }
 
-void delta::forces::frictionSphere(iREAL normal[3], iREAL vi[3], iREAL force, iREAL friction[3], int materialA, int materialB)
+void delta::forces::frictionSphere(
+    iREAL normal[3],
+    iREAL vi[3],
+    iREAL force,
+    iREAL friction[3],
+    int materialA,
+    int materialB)
 {
   iREAL vt[3];
   vt[0] = vi[0] - normal[0]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
   vt[1] = vi[1] - normal[1]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
   vt[2] = vi[2] - normal[2]*((vi[0]*normal[0]) + (vi[1]*normal[1]) + (vi[2]*normal[2]));
 
-  if(materialA == int(delta::collision::material::MaterialType::GOLD) || materialB == int(delta::collision::material::MaterialType::GOLD))
+  if(materialA == int(delta::geometry::material::MaterialType::GOLD) || materialB == int(delta::geometry::material::MaterialType::GOLD))
   {
 	  friction[0] =  -vt[0]*SFRICTIONGOLD*force;
 	  friction[1] =  -vt[1]*SFRICTIONGOLD*force;

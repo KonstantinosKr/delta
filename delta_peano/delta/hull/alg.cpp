@@ -23,10 +23,10 @@
 
 namespace delta {
   namespace hull {
-    double GEOMETRIC_EPSILON = 1E-6;
+    iREAL GEOMETRIC_EPSILON = 1E-6;
 
     /* lexicographical point comparison accounting for the GEOMETRIC_EPSILON */
-    int POINTS_COMPARE (double *a, double *b)
+    int POINTS_COMPARE (iREAL *a, iREAL *b)
     {
       if (LT (a[0], b[0])) return -1;
       else if (EQ (a[0], b[0]))

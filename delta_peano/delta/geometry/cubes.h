@@ -42,56 +42,56 @@ namespace delta {
        * @param center
        */
        void generateSquare(
-         double center[2],
-         double h,
-         double rotationAngle,
-         std::vector<double>&  xCoordinates,
-         std::vector<double>&  yCoordinates
+         iREAL center[2],
+         iREAL h,
+         iREAL rotationAngle,
+         std::vector<iREAL>&  xCoordinates,
+         std::vector<iREAL>&  yCoordinates
        );
 
        void generateCube(
-         double    center[3],
-         double    h,
-         double    alphaX,
-         double    alphaY,
-         double    alphaZ,
-         std::vector<double>&  xCoordinates,
-         std::vector<double>&  yCoordinates,
-         std::vector<double>&  zCoordinates
+         iREAL    center[3],
+         iREAL    h,
+         iREAL    alphaX,
+         iREAL    alphaY,
+         iREAL    alphaZ,
+         std::vector<iREAL>&  xCoordinates,
+         std::vector<iREAL>&  yCoordinates,
+         std::vector<iREAL>&  zCoordinates
        );
 
        void generateCube(
-         double center[3],
-         double x,
-         double y,
-         double z,
-         double alphaX,
-         double alphaY,
-         double alphaZ,
-         std::vector<double>&  xCoordinates,
-         std::vector<double>&  yCoordinates,
-         std::vector<double>&  zCoordinates
+         iREAL center[3],
+         iREAL x,
+         iREAL y,
+         iREAL z,
+         iREAL alphaX,
+         iREAL alphaY,
+         iREAL alphaZ,
+         std::vector<iREAL>&  xCoordinates,
+         std::vector<iREAL>&  yCoordinates,
+         std::vector<iREAL>&  zCoordinates
        );
 
        void generateHullCube(
-         double  center[3],
-         double  diagonal,
-         std::vector<double>&  xCoordinates,
-         std::vector<double>&  yCoordinates,
-         std::vector<double>&  zCoordinates);
+         iREAL  center[3],
+         iREAL  diagonal,
+         std::vector<iREAL>&  xCoordinates,
+         std::vector<iREAL>&  yCoordinates,
+         std::vector<iREAL>&  zCoordinates);
 
        void generateHullCube(
-             double  center[3],
-             double x,
-             double y,
-             double z,
-             double alphaX,
-             double alphaY,
-             double alphaZ,
+             iREAL  center[3],
+             iREAL x,
+             iREAL y,
+             iREAL z,
+             iREAL alphaX,
+             iREAL alphaY,
+             iREAL alphaZ,
              int    meshmultiplier,
-             std::vector<double>&  xCoordinates,
-             std::vector<double>&  yCoordinates,
-             std::vector<double>&  zCoordinates);
+             std::vector<iREAL>&  xCoordinates,
+             std::vector<iREAL>&  yCoordinates,
+             std::vector<iREAL>&  zCoordinates);
     }
   }
 }

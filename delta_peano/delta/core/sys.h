@@ -44,16 +44,16 @@ public:
 	void initCheckpoint(int iteration);
 	void closeCheckpoint();
 	void saveScenario(int particles, int obstacles);
-	void saveIteration(double timeStepSize, int currentIteration, int iteration);
+	void saveIteration(iREAL timeStepSize, int currentIteration, int iteration);
 
-	void saveParticleProperties(int id, double positionSpatial[3], double positionReferential[3], double linear[3], double angular[3],
-							    double inertia[9], double orientation[9], double mass);
-	void saveParticleGeometry(int id, std::vector<double> xCoordinatesSpatial, std::vector<double> yCoordinatesSpatial, std::vector<double> zCoordinatesSpatial,
-							  std::vector<double> xCoordinatesRef, std::vector<double> yCoordinatesRef, std::vector<double> zCoordinatesRef);
+	void saveParticleProperties(int id, iREAL positionSpatial[3], iREAL positionReferential[3], iREAL linear[3], iREAL angular[3],
+							    iREAL inertia[9], iREAL orientation[9], iREAL mass);
+	void saveParticleGeometry(int id, std::vector<iREAL> xCoordinatesSpatial, std::vector<iREAL> yCoordinatesSpatial, std::vector<iREAL> zCoordinatesSpatial,
+							  std::vector<iREAL> xCoordinatesRef, std::vector<iREAL> yCoordinatesRef, std::vector<iREAL> zCoordinatesRef);
 private:
 	static int _noOfParticles;
 	static int _noOfObstacles;
-	static double _timeStepSize;
+	static iREAL _timeStepSize;
 	static int _currentIteration;
 	static int	_totalIterations;
 

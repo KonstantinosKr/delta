@@ -31,7 +31,7 @@ typedef struct kdt KDT;
 
 struct kdt
 {
-  double p [3]; /* point or invalid for a leaf */
+  iREAL p [3]; /* point or invalid for a leaf */
 
   int d; /* splitting dimension or -1 for a leaf */
 
@@ -44,19 +44,19 @@ struct kdt
 
 /* create kd-tree for n points; epsilon separation is ensured
  * between the input points and the remaining points are filtered our */
-KDT* KDT_Create (int n, double *p, double epsilon);
+KDT* KDT_Create (int n, iREAL *p, iREAL epsilon);
 
 /* drop data down the kd-tree */
-void KDT_Drop (KDT *kd, double *extents, void *data);
+void KDT_Drop (KDT *kd, iREAL *extents, void *data);
 
 /* pick leaf containing point */
-KDT* KDT_Pick (KDT *kd, double *p);
+KDT* KDT_Pick (KDT *kd, iREAL *p);
 
 /* pick leaves overlapping the extents */
-void KDT_Pick_Extents (KDT *kd, double *extents, SET **leaves);
+void KDT_Pick_Extents (KDT *kd, iREAL *extents, SET **leaves);
 
 /* return nearest node in kd-tree within epsilon radius */
-KDT* KDT_Nearest (KDT *kd, double *p, double epsilon);
+KDT* KDT_Nearest (KDT *kd, iREAL *p, iREAL epsilon);
 
 /* return the number kd-tree nodes; note that kd->n indices
  * become valid for tree nodes only after KDT_Size was called */

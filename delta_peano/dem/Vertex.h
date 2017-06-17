@@ -17,7 +17,7 @@
 #include "peano/heap/DoubleHeap.h"
 
 #include "dem/mappings/Collision.h"
-#include "delta/collision/material.h"
+#include "delta/geometry/material.h"
 #include <iomanip>
 
 
@@ -89,22 +89,44 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      * @param particleId  Each particle has a unique id and we have to know to
      *                    which particle a triangle belongs to
      */
-    int createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& center,
+    int createNewParticle(
+        const tarch::la::Vector<DIMENSIONS,double>& center,
   		  std::vector<double>&  xCoordinates,
   		  std::vector<double>&  yCoordinates,
   		  std::vector<double>&  zCoordinates,
-  		  double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId
-    );
+  		  double epsilon, bool friction,
+  		  delta::geometry::material::MaterialType material,
+  		  bool isObstacle,
+  		  int particleId,
+  		  int localparticleId);
 
-    int createNewSubParticle(const tarch::la::Vector<DIMENSIONS,double>& center,
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates,
-          double centerOfMass[3], double inertia[9], double inverse[9], double mass, double hMin, double diameter,
-          double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId);
+    int createNewSubParticle(
+        const tarch::la::Vector<DIMENSIONS,double>& center,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates,
+        double centerOfMass[3],
+        double inertia[9],
+        double inverse[9],
+        double mass,
+        double hMin,
+        double diameter,
+        double epsilon,
+        bool friction,
+        delta::geometry::material::MaterialType material,
+        bool isObstacle,
+        int particleId,
+        int localparticleId);
 
-    int  createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,double>&  center,
-    		  double radius, double epsilon, bool friction, delta::collision::material::MaterialType material, bool isObstacle, int particleId, int localparticleId);
+    int createNewParticleSphere(
+        const tarch::la::Vector<DIMENSIONS,double>&  center,
+    		double radius,
+    		double epsilon,
+    		bool friction,
+    		delta::geometry::material::MaterialType material,
+    		bool isObstacle,
+    		int particleId,
+    		int localparticleId);
 
     int getNumberOfParticles() const;
     int getNumberOfTriangles( int particleNumber ) const;

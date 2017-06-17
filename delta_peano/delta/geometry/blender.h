@@ -26,16 +26,18 @@
 #define DELTA_geometry_BLENDER_H_
 
 #include <vector>
+#include <stdlib.h>
+#include <assert.h>
 
 namespace delta {
   namespace geometry {
     namespace blender {
       void generateBlender(
-        double  center[3],
-        double 	width,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates
+        iREAL  center[3],
+        iREAL 	width,
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates
       );
     }
   }

@@ -26,7 +26,7 @@
 #define DELTA_CORE_DELTA_H_
 
 #include <map>
-#include "delta/collision/material.h"
+#include "delta/geometry/material.h"
 
 namespace delta {
 	namespace core {

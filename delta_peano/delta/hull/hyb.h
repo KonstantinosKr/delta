@@ -35,7 +35,7 @@ typedef struct box BOX; /* axis aligned box */
 /* bounding box */
 struct box
 {
-  double extents [6]; /* min x, y, z, max x, y, z */
+  iREAL extents [6]; /* min x, y, z, max x, y, z */
 
   void *sgp; /* shape and geometric object pair */
 

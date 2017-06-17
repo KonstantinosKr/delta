@@ -34,11 +34,22 @@ namespace delta {
      * Run through all the contactPoints and remove all those that are closer
      * to each other than hMin.
      */
-    void filterOldContacts(std::vector<contactpoint>& dataStoredContactPoints, std::vector<contactpoint>& newContactPoints, double rA, double rB);
-    void filterNewContacts(std::vector<contactpoint>& newContactPoints, double rA, double rB);
+    void filterOldContacts(
+        std::vector<contactpoint>& dataStoredContactPoints,
+        std::vector<contactpoint>& newContactPoints,
+        iREAL rA,
+        iREAL rB);
+    void filterNewContacts(
+        std::vector<contactpoint>& newContactPoints,
+        iREAL rA,
+        iREAL rB);
 
-    void filterOldContacts(std::vector<contactpoint>& dataStoredContactPoints, std::vector<contactpoint>& newContactPoints, double hMin);
-    void filterNewContacts(std::vector<contactpoint>& newContactPoints);
+    void filterOldContacts(
+        std::vector<contactpoint>& dataStoredContactPoints,
+        std::vector<contactpoint>& newContactPoints,
+        iREAL hMin);
+    void filterNewContacts(
+        std::vector<contactpoint>& newContactPoints);
   }
 }
 

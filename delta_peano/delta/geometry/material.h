@@ -5,15 +5,14 @@
  *      Author: konstantinos
  */
 
-#ifndef DELTA_COLLISION_MATERIAL_H_
-#define DELTA_COLLISION_MATERIAL_H_
+#ifndef DELTA_GEOMETRY_MATERIAL_H_
+#define DELTA_GEOMETRY_MATERIAL_H_
 
 #include <map>
 
 namespace delta {
-  namespace collision {
+  namespace geometry {
     namespace material {
-
       enum class MaterialType: int{
          GOLD=1,
          GRAPHITE=2,
@@ -35,27 +34,25 @@ namespace delta {
         GRAPHITEGOLD
       };
 
-      const static std::map<delta::collision::material::MaterialType, delta::collision::material::MaterialDensity> materialToDensitymap =
-      {{delta::collision::material::MaterialType::WOOD, delta::collision::material::MaterialDensity::WOOD},
-      {delta::collision::material::MaterialType::GRAPHITE, delta::collision::material::MaterialDensity::GRAPHITE},
-      {delta::collision::material::MaterialType::GOLD, delta::collision::material::MaterialDensity::GOLD}};
+      const static std::map<delta::geometry::material::MaterialType, delta::geometry::material::MaterialDensity> materialToDensitymap =
+      {{delta::geometry::material::MaterialType::WOOD, delta::geometry::material::MaterialDensity::WOOD},
+      {delta::geometry::material::MaterialType::GRAPHITE, delta::geometry::material::MaterialDensity::GRAPHITE},
+      {delta::geometry::material::MaterialType::GOLD, delta::geometry::material::MaterialDensity::GOLD}};
 
       /*
       static struct InterfaceTri{
-          double SFRICTION;
-          double DAMPER;
+          iREAL SFRICTION;
+          iREAL DAMPER;
       }tri;
 
       static struct InterfaceSph{
-          double SFRICTION;
-          double ROLLFRICTION;
-          double DAMPER;
-      }sph;
-*/
+          iREAL SFRICTION;
+          iREAL ROLLFRICTION;
+          iREAL DAMPER;
+      }sph;*/
+
 //      static std::map<int, InterfaceSph> interfaceSphmap;
 //      static std::map<int, InterfaceTri> interfaceTrimap;
-
-
 
       int getInterfaceType(int materialA, int materialB);
 
@@ -65,4 +62,4 @@ namespace delta {
   }
 }
 
-#endif /* DELTA_COLLISION_MATERIAL_H_ */
+#endif /* DELTA_GEOMETRY_MATERIAL_H_ */

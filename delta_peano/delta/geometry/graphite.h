@@ -36,27 +36,27 @@ namespace delta {
   namespace geometry {
     namespace graphite {
       void generateBrickFB(
-       double    center[3],
-       double    h,
-       std::vector<double>&  xCoordinates,
-       std::vector<double>&  yCoordinates,
-       std::vector<double>&  zCoordinates
+       iREAL    center[3],
+       iREAL    h,
+       std::vector<iREAL>&  xCoordinates,
+       std::vector<iREAL>&  yCoordinates,
+       std::vector<iREAL>&  zCoordinates
       );
 
       void generateKeyXK(
-       double    center[3],
-       double    h,
-       std::vector<double>&  xCoordinates,
-       std::vector<double>&  yCoordinates,
-       std::vector<double>&  zCoordinates
+       iREAL    center[3],
+       iREAL    h,
+       std::vector<iREAL>&  xCoordinates,
+       std::vector<iREAL>&  yCoordinates,
+       std::vector<iREAL>&  zCoordinates
       );
 
       void generateKeyYK(
-       double    center[3],
-       double    h,
-       std::vector<double>&  xCoordinates,
-       std::vector<double>&  yCoordinates,
-       std::vector<double>&  zCoordinates
+       iREAL    center[3],
+       iREAL    h,
+       std::vector<iREAL>&  xCoordinates,
+       std::vector<iREAL>&  yCoordinates,
+       std::vector<iREAL>&  zCoordinates
       );
     }
   }

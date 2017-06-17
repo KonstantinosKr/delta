@@ -28,6 +28,9 @@
 
 #include <vector>
 #include <array>
+#include <stdlib.h>
+#include <assert.h>
+#include <cmath>
 #include <delta/geometry/surface.h>
 #include "properties.h"
 
@@ -35,52 +38,62 @@ namespace delta {
   namespace geometry {
     namespace triangle {
       void bisectTriangle(
-          double xT[3],
-          double yT[3],
-          double zT[3],
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          iREAL xT[3],
+          iREAL yT[3],
+          iREAL zT[3],
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
       void triSectTriangle(
-          double A[3],
-          double B[3],
-          double C[3],
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          iREAL A[3],
+          iREAL B[3],
+          iREAL C[3],
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
       void fiveSectTriangle(
-          double A[3],
-          double B[3],
-          double C[3],
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          iREAL A[3],
+          iREAL B[3],
+          iREAL C[3],
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
       void meshDenser(
           int multiplier,
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      int meshOctSect(int quadsectTimes,
-          std::vector<std::vector<double>>&  xCoordinates,
-          std::vector<std::vector<double>>&  yCoordinates,
-          std::vector<std::vector<double>>&  zCoordinates, std::vector<std::array<double, 3>>& centroid);
+      int meshOctSect(
+          int quadsectTimes,
+          std::vector<std::vector<iREAL>>&  xCoordinates,
+          std::vector<std::vector<iREAL>>&  yCoordinates,
+          std::vector<std::vector<iREAL>>&  zCoordinates,
+          std::vector<std::array<iREAL, 3>>& centroid);
 
-      int octSect(int level, int index, std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
-          std::vector<std::vector<double>>&  xCoordinatesVec,
-          std::vector<std::vector<double>>&  yCoordinatesVec,
-          std::vector<std::vector<double>>&  zCoordinatesVec, std::vector<std::array<double, 3>>& centroid);
+      int octSect(
+          int level,
+          int index,
+          std::array<iREAL, 3> minpoint,
+          std::array<iREAL, 3> midpoint,
+          std::array<iREAL, 3> maxpoint,
+          std::vector<std::vector<iREAL>>&  xCoordinatesVec,
+          std::vector<std::vector<iREAL>>&  yCoordinatesVec,
+          std::vector<std::vector<iREAL>>&  zCoordinatesVec,
+          std::vector<std::array<iREAL, 3>>& centroid);
 
-      void getTrianglesInBoundingBox(std::array<double, 3> minpoint, std::array<double, 3> maxpoint,
-          std::vector<double>&  xCoordinatesRoot,
-          std::vector<double>&  yCoordinatesRoot,
-          std::vector<double>&  zCoordinatesRoot,
-          std::vector<double>&  xCoordinatesBounded,
-          std::vector<double>&  yCoordinatesBounded,
-          std::vector<double>&  zCoordinatesBounded);
+      void getTrianglesInBoundingBox(
+          std::array<iREAL, 3> minpoint,
+          std::array<iREAL, 3> maxpoint,
+          std::vector<iREAL>&  xCoordinatesRoot,
+          std::vector<iREAL>&  yCoordinatesRoot,
+          std::vector<iREAL>&  zCoordinatesRoot,
+          std::vector<iREAL>&  xCoordinatesBounded,
+          std::vector<iREAL>&  yCoordinatesBounded,
+          std::vector<iREAL>&  zCoordinatesBounded);
     }
   }
 }

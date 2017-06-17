@@ -39,40 +39,40 @@ namespace delta {
   namespace geometry {
     namespace surface {
       void generateBoundBox(
-        double center[3],
-        std::array<double, 3> minPoint,
-        std::array<double, 3> maxPoint,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates
+        iREAL center[3],
+        std::array<iREAL, 3> minPoint,
+        std::array<iREAL, 3> maxPoint,
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates
       );
 
       void generateSurface(
-        double    center[3],
-        double 	width,
-        double	height,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates
+        iREAL    center[3],
+        iREAL 	width,
+        iREAL	height,
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates
       );
 
       void generateXYZBox(
-          double center[3],
-          double xw,
-          double yw,
-          double zw,
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates
+          iREAL center[3],
+          iREAL xw,
+          iREAL yw,
+          iREAL zw,
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates
       );
 
       void generateCuboid(
-        double    center[3],
-        double 	width,
-        double    height,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates
+        iREAL    center[3],
+        iREAL 	width,
+        iREAL    height,
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates
       );
     }
   }

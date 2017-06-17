@@ -23,9 +23,9 @@
 
 namespace delta {
   namespace hull {
-    double simplex_J (double *a, double *b, double *c, double *d)
+    iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d)
     {
-      double q [9], J;
+      iREAL q [9], J;
 
       q [0] = b [0] - a [0];
       q [1] = c [0] - a [0];

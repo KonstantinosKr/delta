@@ -24,33 +24,39 @@
 
 #include <vector>
 
-#include "../core/read.h"
-#include "properties.h"
+#include "delta/core/read.h"
+#include "delta/geometry/properties.h"
+#include <cmath>
+#include <assert.h>
+#include <stdlib.h>
+#include "delta/hull/hull.h"
+#include "delta/hull/alg.h"
+
 
 namespace delta {
   namespace geometry {
     namespace granulates {
       void generateParticle(
-        double    center[2],
-        double    h,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates
+        iREAL    center[2],
+        iREAL    h,
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates
       );
 
       void loadParticle(
-        double  center[3],
-        double  h,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates
+        iREAL  center[3],
+        iREAL  h,
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates
       );
 
       void generateParticle(
-        double    center[3],
-        double    h,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates,
+        iREAL    center[3],
+        iREAL    h,
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates,
         int noPointsPerParticle);
     }
   }

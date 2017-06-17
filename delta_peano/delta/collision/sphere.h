@@ -23,9 +23,13 @@
  */
 
 #include <vector>
+#include <complex>
+#include <limits>
+#include <iostream>
 
+#include "dem/mappings/Collision.h"
 #include "delta/collision/contactpoint.h"
-#include "algo.h"
+#include "delta/core/algo.h"
 #include "dem/mappings/Collision.h"
 
 
@@ -33,72 +37,72 @@ namespace delta {
   namespace collision {
 
     std::vector<contactpoint> sphere(
-      double   xCoordinatesOfPointsOfGeometryA,
-      double   yCoordinatesOfPointsOfGeometryA,
-      double   zCoordinatesOfPointsOfGeometryA,
-      double   diameterA,
-	  double   epsilonA,
+      iREAL   xCoordinatesOfPointsOfGeometryA,
+      iREAL   yCoordinatesOfPointsOfGeometryA,
+      iREAL   zCoordinatesOfPointsOfGeometryA,
+      iREAL   diameterA,
+	  iREAL   epsilonA,
 	  bool     frictionA,
 	  int 	   particleA,
 
-      double   xCoordinatesOfPointsOfGeometryB,
-      double   yCoordinatesOfPointsOfGeometryB,
-      double   zCoordinatesOfPointsOfGeometryB,
-      double   diameterB,
-      double   epsilonB,
+      iREAL   xCoordinatesOfPointsOfGeometryB,
+      iREAL   yCoordinatesOfPointsOfGeometryB,
+      iREAL   zCoordinatesOfPointsOfGeometryB,
+      iREAL   diameterB,
+      iREAL   epsilonB,
 	  bool     frictionB,
 	  int 	   particleB,
 	  bool&    penetration
     );
 
     std::vector<contactpoint> sphereWithBarrierAB(
-      double   xCoordinatesOfPointsOfGeometryA,
-      double   yCoordinatesOfPointsOfGeometryA,
-      double   zCoordinatesOfPointsOfGeometryA,
-      double   diameterA,
-	  double   epsilonA,
+      iREAL   xCoordinatesOfPointsOfGeometryA,
+      iREAL   yCoordinatesOfPointsOfGeometryA,
+      iREAL   zCoordinatesOfPointsOfGeometryA,
+      iREAL   diameterA,
+	  iREAL   epsilonA,
 	  bool     frictionA,
 	  int	   particleA,
 
-      double   *xCoordinatesOfPointsOfGeometryB,
-      double   *yCoordinatesOfPointsOfGeometryB,
-      double   *zCoordinatesOfPointsOfGeometryB,
+      iREAL   *xCoordinatesOfPointsOfGeometryB,
+      iREAL   *yCoordinatesOfPointsOfGeometryB,
+      iREAL   *zCoordinatesOfPointsOfGeometryB,
 	  int   	numberOfTrianglesOfGeometryB,
-      double   epsilonB,
+      iREAL   epsilonB,
 	  bool 	   frictionB,
 	  int 	   particleB,
 	  bool&    penetration
     );
 
     std::vector<contactpoint> sphereWithBarrierBA(
-          double   xCoordinatesOfPointsOfGeometryA,
-          double   yCoordinatesOfPointsOfGeometryA,
-          double   zCoordinatesOfPointsOfGeometryA,
-          double   diameterA,
-    	  double   epsilonA,
+          iREAL   xCoordinatesOfPointsOfGeometryA,
+          iREAL   yCoordinatesOfPointsOfGeometryA,
+          iREAL   zCoordinatesOfPointsOfGeometryA,
+          iREAL   diameterA,
+    	  iREAL   epsilonA,
 		  bool     frictionA,
 		  int 	   particleA,
 
-          double   *xCoordinatesOfPointsOfGeometryB,
-          double   *yCoordinatesOfPointsOfGeometryB,
-          double   *zCoordinatesOfPointsOfGeometryB,
+          iREAL   *xCoordinatesOfPointsOfGeometryB,
+          iREAL   *yCoordinatesOfPointsOfGeometryB,
+          iREAL   *zCoordinatesOfPointsOfGeometryB,
     	  int      numberOfTrianglesOfGeometryB,
-          double   epsilonB,
+          iREAL   epsilonB,
 		  bool     frictionB,
 		  int 	   particleB,
 		  bool&    penetration
         );
 
     bool isSphereOverlayInContact(
-      double   xCoordinatesOfPointsOfGeometryA,
-      double   yCoordinatesOfPointsOfGeometryA,
-      double   zCoordinatesOfPointsOfGeometryA,
-      double   radiusA,
+      iREAL   xCoordinatesOfPointsOfGeometryA,
+      iREAL   yCoordinatesOfPointsOfGeometryA,
+      iREAL   zCoordinatesOfPointsOfGeometryA,
+      iREAL   radiusA,
 
-      double   xCoordinatesOfPointsOfGeometryB,
-      double   yCoordinatesOfPointsOfGeometryB,
-      double   zCoordinatesOfPointsOfGeometryB,
-      double   radiusB
+      iREAL   xCoordinatesOfPointsOfGeometryB,
+      iREAL   yCoordinatesOfPointsOfGeometryB,
+      iREAL   zCoordinatesOfPointsOfGeometryB,
+      iREAL   radiusB
     );
   }
 }

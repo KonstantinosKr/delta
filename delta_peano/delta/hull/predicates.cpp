@@ -134,11 +134,11 @@ namespace delta {
 #define INEXACT                          /* Nothing */
 /* #define INEXACT volatile */
 
-#define REAL double                      /* float or double */
-#define REALPRINT doubleprint
-#define REALRAND doublerand
-#define NARROWRAND narrowdoublerand
-#define UNIFORMRAND uniformdoublerand
+#define REAL iREAL                      /* float or iREAL */
+#define REALPRINT iREALprint
+#define REALRAND iREALrand
+#define NARROWRAND narrowiREALrand
+#define UNIFORMRAND uniformiREALrand
 
 /* Which of the following two methods of finding the absolute values is      */
 /*   fastest is compiler-dependent.  A few compilers can inline and optimize */
@@ -395,19 +395,19 @@ static REAL isperrboundA, isperrboundB, isperrboundC;
 
 #ifdef OSTYPE_FREEBSD
 #    include <floatingpoint.h>
-#    define FPU_ROUND_DOUBLE  (fpsetprec(FP_PD))
+#    define FPU_ROUND_iREAL  (fpsetprec(FP_PD))
 #    define FPU_RESTORE       (fpsetprec(FP_PE))
 #elif OSTYPE_WIN32
 #      ifdef _MSC_VER
 #        include <float.h>
      static unsigned int fpu_init;
-#        define FPU_ROUND_DOUBLE (fpu_init = _controlfp (0, 0),\
+#        define FPU_ROUND_iREAL (fpu_init = _controlfp (0, 0),\
 			     _controlfp (_PC_53, MCW_PC))
 #        define FPU_RESTORE      (_controlfp (fpu_init, 0xfffff))
 #      elif __MINGW32__
 #        include <float.h>
      static unsigned int fpu_init;
-#        define FPU_ROUND_DOUBLE (fpu_init = _controlfp (0, 0),\
+#        define FPU_ROUND_iREAL (fpu_init = _controlfp (0, 0),\
 			      _controlfp (_PC_53, _MCW_PC))
 #        define FPU_RESTORE      (_controlfp (fpu_init, 0xfffff))
 #      else /* not _MSC_VER or __MINGW32__ */
@@ -418,31 +418,31 @@ static REAL isperrboundA, isperrboundB, isperrboundC;
 #  ifdef _FPU_EXTENDED
 #   if !defined(__alpha__) || !defined(__GLIBC__)
 #    if defined(__arm__)
-     static fpu_control_t fpu_round_double = _FPU_DEFAULT;
+     static fpu_control_t fpu_round_iREAL = _FPU_DEFAULT;
 #    else
-     static fpu_control_t fpu_round_double =
-       (_FPU_DEFAULT & ~ _FPU_EXTENDED)|_FPU_DOUBLE;
+     static fpu_control_t fpu_round_iREAL =
+       (_FPU_DEFAULT & ~ _FPU_EXTENDED)|_FPU_iREAL;
 #    endif
      static fpu_control_t fpu_init;
-#    define FPU_ROUND_DOUBLE  { _FPU_GETCW(fpu_init);\
-                                _FPU_SETCW(fpu_round_double); }
+#    define FPU_ROUND_iREAL  { _FPU_GETCW(fpu_init);\
+                                _FPU_SETCW(fpu_round_iREAL); }
 #    define FPU_RESTORE       {_FPU_SETCW(fpu_init);}
 #   else /* __alpha__ && __GLIBC__ */
-#    define FPU_ROUND_DOUBLE
+#    define FPU_ROUND_iREAL
 #    define FPU_RESTORE
 #   endif /* __alpha__ && __GLIBC__ */
 #  else /* not FPU_EXTENDED */
-#    define FPU_ROUND_DOUBLE
+#    define FPU_ROUND_iREAL
 #    define FPU_RESTORE
 #  endif /* not FPU_EXTENDED */
 #elif OSTYPE_OSX
-#        define FPU_ROUND_DOUBLE
+#        define FPU_ROUND_iREAL
 #        define FPU_RESTORE
 #else
 #        ifdef CPP_HAS_WARNING
-#          warning "Unknown CPU: assuming default double precision rounding"
+#          warning "Unknown CPU: assuming default iREAL precision rounding"
 #        endif /* CPP_HAS_WARNING */
-#        define FPU_ROUND_DOUBLE
+#        define FPU_ROUND_iREAL
 #        define FPU_RESTORE
 #endif
 
@@ -471,7 +471,7 @@ void exactinit()
   REAL check, lastcheck;
   int every_other;
 
-  FPU_ROUND_DOUBLE;
+  FPU_ROUND_iREAL;
 
   every_other = 1;
   half = 0.5;
@@ -778,16 +778,16 @@ static REAL orient2dadapt(REAL *pa, REAL *pb, REAL *pc, REAL detsum)
   return(D[Dlength - 1]);
 }
 
-double orient2d(
-  double *pa,
-  double *pb,
-  double *pc
+iREAL orient2d(
+  iREAL *pa,
+  iREAL *pb,
+  iREAL *pc
 ) {
   REAL detleft, detright, det;
   REAL detsum, errbound;
   REAL orient;
 
-  FPU_ROUND_DOUBLE;
+  FPU_ROUND_iREAL;
 
   detleft = (pa[0] - pc[0]) * (pb[1] - pc[1]);
   detright = (pa[1] - pc[1]) * (pb[0] - pc[0]);
@@ -1253,11 +1253,11 @@ static REAL orient3dadapt(REAL *pa, REAL *pb, REAL *pc, REAL *pd,
   return finnow[finlength - 1];
 }
 
-double orient3d(
-  double *pa,
-  double *pb,
-  double *pc,
-  double *pd
+iREAL orient3d(
+  iREAL *pa,
+  iREAL *pb,
+  iREAL *pc,
+  iREAL *pd
 ) {
   REAL adx, bdx, cdx, ady, bdy, cdy, adz, bdz, cdz;
   REAL bdxcdy, cdxbdy, cdxady, adxcdy, adxbdy, bdxady;
@@ -1265,7 +1265,7 @@ double orient3d(
   REAL permanent, errbound;
   REAL orient;
 
-  FPU_ROUND_DOUBLE;
+  FPU_ROUND_iREAL;
 
   adx = pa[0] - pd[0];
   bdx = pb[0] - pd[0];
@@ -1902,11 +1902,11 @@ static REAL incircleadapt(REAL *pa, REAL *pb, REAL *pc, REAL *pd,
   return finnow[finlength - 1];
 }
 
-double incircle(
-  double *pa,
-  double *pb,
-  double *pc,
-  double *pd
+iREAL incircle(
+  iREAL *pa,
+  iREAL *pb,
+  iREAL *pc,
+  iREAL *pd
 ) {
   REAL adx, bdx, cdx, ady, bdy, cdy;
   REAL bdxcdy, cdxbdy, cdxady, adxcdy, adxbdy, bdxady;
@@ -1915,7 +1915,7 @@ double incircle(
   REAL permanent, errbound;
   REAL inc;
 
-  FPU_ROUND_DOUBLE;
+  FPU_ROUND_iREAL;
   
   adx = pa[0] - pd[0];
   bdx = pb[0] - pd[0];
@@ -2448,7 +2448,7 @@ static REAL insphereadapt(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe,
   return insphereexact(pa, pb, pc, pd, pe);
 }
 
-double insphere (double * pa, double * pb, double * pc, double * pd, double * pe) {
+iREAL insphere (iREAL * pa, iREAL * pb, iREAL * pc, iREAL * pd, iREAL * pe) {
   REAL aex, bex, cex, dex;
   REAL aey, bey, cey, dey;
   REAL aez, bez, cez, dez;
@@ -2465,7 +2465,7 @@ double insphere (double * pa, double * pb, double * pc, double * pd, double * pe
   REAL permanent, errbound;
   REAL ins;
 
-  FPU_ROUND_DOUBLE;
+  FPU_ROUND_iREAL;
 
   aex = pa[0] - pe[0];
   bex = pb[0] - pe[0];

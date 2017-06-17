@@ -48,22 +48,22 @@ std::vector<int> delta::collision::getPenaltyStatistics() {
 
 std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
   int       numberOfTrianglesOfGeometryA,
-  double*   xCoordinatesOfPointsOfGeometryA,
-  double*   yCoordinatesOfPointsOfGeometryA,
-  double*   zCoordinatesOfPointsOfGeometryA,
-  double    epsilonA,
+  iREAL*   xCoordinatesOfPointsOfGeometryA,
+  iREAL*   yCoordinatesOfPointsOfGeometryA,
+  iREAL*   zCoordinatesOfPointsOfGeometryA,
+  iREAL    epsilonA,
   bool      frictionA,
   int 		  particleA,
 
   int       numberOfTrianglesOfGeometryB,
-  double*   xCoordinatesOfPointsOfGeometryB,
-  double*   yCoordinatesOfPointsOfGeometryB,
-  double*   zCoordinatesOfPointsOfGeometryB,
-  double    epsilonB,
+  iREAL*   xCoordinatesOfPointsOfGeometryB,
+  iREAL*   yCoordinatesOfPointsOfGeometryB,
+  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  iREAL    epsilonB,
   bool      frictionB,
   int 		  particleB)
 {
-  const double MaxError = (epsilonA+epsilonB) / 16.0;
+  const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
 
   std::vector<contactpoint> result;
 
@@ -82,7 +82,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
   #endif
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-    __attribute__ ((aligned(byteAlignment))) double	shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) iREAL	shortestDistance = (epsilonA+epsilonB);
     contactpoint *nearestContactPoint = nullptr;
 
     #if defined(__INTEL_COMPILER)
@@ -93,12 +93,12 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
     #endif
     for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-      __attribute__ ((aligned(byteAlignment))) double xPA;
-      __attribute__ ((aligned(byteAlignment))) double yPA;
-      __attribute__ ((aligned(byteAlignment))) double zPA;
-      __attribute__ ((aligned(byteAlignment))) double xPB;
-      __attribute__ ((aligned(byteAlignment))) double yPB;
-      __attribute__ ((aligned(byteAlignment))) double zPB;
+      __attribute__ ((aligned(byteAlignment))) iREAL xPA;
+      __attribute__ ((aligned(byteAlignment))) iREAL yPA;
+      __attribute__ ((aligned(byteAlignment))) iREAL zPA;
+      __attribute__ ((aligned(byteAlignment))) iREAL xPB;
+      __attribute__ ((aligned(byteAlignment))) iREAL yPB;
+      __attribute__ ((aligned(byteAlignment))) iREAL zPB;
 
       __attribute__ ((aligned(byteAlignment))) int numberOfNewtonIterationsRequired  = 0;
 
@@ -114,7 +114,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
 
       numberOfNewtonIterations[numberOfNewtonIterationsRequired]++;
 
-      double d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
+      iREAL d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
       if (d<=shortestDistance)
       {
         nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);;
@@ -134,22 +134,22 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
 
 std::vector<delta::collision::contactpoint> delta::collision::penalty(
   int       numberOfTrianglesOfGeometryA,
-  double*   xCoordinatesOfPointsOfGeometryA,
-  double*   yCoordinatesOfPointsOfGeometryA,
-  double*   zCoordinatesOfPointsOfGeometryA,
-  double    epsilonA,
+  iREAL*   xCoordinatesOfPointsOfGeometryA,
+  iREAL*   yCoordinatesOfPointsOfGeometryA,
+  iREAL*   zCoordinatesOfPointsOfGeometryA,
+  iREAL    epsilonA,
   bool      frictionA,
   int	  	  particleA,
 
   int       numberOfTrianglesOfGeometryB,
-  double*   xCoordinatesOfPointsOfGeometryB,
-  double*   yCoordinatesOfPointsOfGeometryB,
-  double*   zCoordinatesOfPointsOfGeometryB,
-  double    epsilonB,
+  iREAL*   xCoordinatesOfPointsOfGeometryB,
+  iREAL*   yCoordinatesOfPointsOfGeometryB,
+  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  iREAL    epsilonB,
   bool      frictionB,
   int		    particleB
 ) {
-  __attribute__ ((aligned(byteAlignment)))  const double MaxError = (epsilonA+epsilonB) / 16.0;
+  __attribute__ ((aligned(byteAlignment)))  const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
 
   std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
 
@@ -169,7 +169,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
     __attribute__ ((aligned(byteAlignment))) bool failed = 0;
-    __attribute__ ((aligned(byteAlignment))) double xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
@@ -191,7 +191,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
       dd[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
-    __attribute__ ((aligned(byteAlignment))) double shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) iREAL shortestDistance = (epsilonA+epsilonB);
     contactpoint *nearestContactPoint = nullptr;
 
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
@@ -251,19 +251,19 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   #endif
 #endif
 extern void delta::collision::penalty(
-  double   xCoordinatesOfTriangleA[3],
-  double   yCoordinatesOfTriangleA[3],
-  double   zCoordinatesOfTriangleA[3],
-  double   xCoordinatesOfTriangleB[3],
-  double   yCoordinatesOfTriangleB[3],
-  double   zCoordinatesOfTriangleB[3],
-  double&  xPA,
-  double&  yPA,
-  double&  zPA,
-  double&  xPB,
-  double&  yPB,
-  double&  zPB,
-  double MaxErrorOfPenaltyMethod,
+  iREAL   xCoordinatesOfTriangleA[3],
+  iREAL   yCoordinatesOfTriangleA[3],
+  iREAL   zCoordinatesOfTriangleA[3],
+  iREAL   xCoordinatesOfTriangleB[3],
+  iREAL   yCoordinatesOfTriangleB[3],
+  iREAL   zCoordinatesOfTriangleB[3],
+  iREAL&  xPA,
+  iREAL&  yPA,
+  iREAL&  zPA,
+  iREAL&  xPB,
+  iREAL&  yPB,
+  iREAL&  zPB,
+  iREAL MaxErrorOfPenaltyMethod,
   bool& failed)
 {
 
@@ -398,19 +398,19 @@ extern void delta::collision::penalty(
  
 //statistics
 void delta::collision::penalty(
-	  double   xCoordinatesOfTriangleA[3],
-	  double   yCoordinatesOfTriangleA[3],
-	  double   zCoordinatesOfTriangleA[3],
-	  double   xCoordinatesOfTriangleB[3],
-	  double   yCoordinatesOfTriangleB[3],
-	  double   zCoordinatesOfTriangleB[3],
-    double&  xPA,
-    double&  yPA,
-    double&  zPA,
-    double&  xPB,
-    double&  yPB,
-    double&  zPB,
-    double   maxError,
+	  iREAL   xCoordinatesOfTriangleA[3],
+	  iREAL   yCoordinatesOfTriangleA[3],
+	  iREAL   zCoordinatesOfTriangleA[3],
+	  iREAL   xCoordinatesOfTriangleB[3],
+	  iREAL   yCoordinatesOfTriangleB[3],
+	  iREAL   zCoordinatesOfTriangleB[3],
+    iREAL&  xPA,
+    iREAL&  yPA,
+    iREAL&  zPA,
+    iREAL&  xPB,
+    iREAL&  yPB,
+    iREAL&  zPB,
+    iREAL   maxError,
     int&     numberOfNewtonIterationsRequired)
  {
   __attribute__ ((aligned(byteAlignment))) iREAL BA[3];

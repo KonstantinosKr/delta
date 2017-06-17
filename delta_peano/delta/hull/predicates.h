@@ -3,14 +3,14 @@
 
 namespace delta {
   namespace hull {
-    /* initialize predicate constants and strict double precision FPU mode */
+    /* initialize predicate constants and strict iREAL precision FPU mode */
     void exactinit();
 
     /* predicates themeslves */
-    double orient2d (double * pa, double * pb, double * pc);
-    double orient3d (double * pa, double * pb, double * pc, double * pd);
-    double incircle (double * pa, double * pb, double * pc, double * pd);
-    double insphere (double * pa, double * pb, double * pc, double * pd, double * pe);
+    iREAL orient2d (iREAL * pa, iREAL * pb, iREAL * pc);
+    iREAL orient3d (iREAL * pa, iREAL * pb, iREAL * pc, iREAL * pd);
+    iREAL incircle (iREAL * pa, iREAL * pb, iREAL * pc, iREAL * pd);
+    iREAL insphere (iREAL * pa, iREAL * pb, iREAL * pc, iREAL * pd, iREAL * pe);
   }
 }
 

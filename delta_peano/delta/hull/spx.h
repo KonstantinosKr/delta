@@ -30,7 +30,7 @@ namespace delta {
  * self-explanatory
  */
 
-double simplex_J (double *a, double *b, double *c, double *d);
+iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
 
 #define simplex_1(J, a, b, c, d) ((J)/6.)
 

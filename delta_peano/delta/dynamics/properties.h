@@ -12,11 +12,19 @@
 namespace delta {
   namespace dynamics {
      namespace properties {
-       double getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass);
+       iREAL getKineticRotationalEnergy(
+           iREAL velocity[3],
+           iREAL angular[3],
+           iREAL inertia[9],
+           iREAL mass);
 
-       double getKineticEnergy(double velocity[3], double mass);
+       iREAL getKineticEnergy(
+           iREAL velocity[3],
+           iREAL mass);
 
-       double getRotationalEnergy(double angular[3], double inertia[9]);
+       iREAL getRotationalEnergy(
+           iREAL angular[3],
+           iREAL inertia[9]);
      }
   }
 }

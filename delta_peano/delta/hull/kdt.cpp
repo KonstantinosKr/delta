@@ -31,21 +31,21 @@
 namespace delta {
   namespace hull {
 
-static int compare0 (double **x, double **y)
+static int compare0 (iREAL **x, iREAL **y)
 {
   if (x [0][0] < y [0][0]) return -1;
   else if (x [0][0] > y [0][0]) return 1;
   else return 0;
 }
 
-static int compare1 (double **x, double **y)
+static int compare1 (iREAL **x, iREAL **y)
 {
   if (x [0][1] < y [0][1]) return -1;
   else if (x [0][1] > y [0][1]) return 1;
   else return 0;
 }
 
-static int compare2 (double **x, double **y)
+static int compare2 (iREAL **x, iREAL **y)
 {
   if (x [0][2] < y [0][2]) return -1;
   else if (x [0][2] > y [0][2]) return 1;
@@ -64,11 +64,11 @@ static void overlap (void *data, BOX *one, BOX *two)
 }
 
 /* filter out epsilon margin separated points */
-static int separate (int n, double **q, double epsilon)
+static int separate (int n, iREAL **q, iREAL epsilon)
 {
   if (epsilon <= 0.0) return n;
 
-  double epshalf = .5 * epsilon,
+  iREAL epshalf = .5 * epsilon,
 	 epsq = epsilon * epsilon,
 	 d [3], r;
   BOX *b, *g, **pb;
@@ -80,7 +80,7 @@ static int separate (int n, double **q, double epsilon)
 
   for (i = 0, g = b; i < n; i ++, g ++)
   {
-    double *e = g->extents,
+    iREAL *e = g->extents,
 	   *p = q [i];
     e [0] = p [0] - epshalf;
     e [1] = p [1] - epshalf;
@@ -100,13 +100,13 @@ static int separate (int n, double **q, double epsilon)
   {
     if (!g->mark)
     {
-      double *a =  (double*) g->sgp;
+      iREAL *a =  (iREAL*) g->sgp;
       q [m ++] = a;
 
       for (item = SET_First ((SET*)g->body); item; item = SET_Next (item))
       {
 	BOX *adj = (BOX *)(item->data);
-	double *b = (double*) adj->sgp;
+	iREAL *b = (iREAL*) adj->sgp;
 	SUB (a, b, d);
 	r = DOT (d, d);
 	if (r < epsq) adj->mark = (void*) 1; /* epsilon separation */
@@ -123,10 +123,10 @@ static int separate (int n, double **q, double epsilon)
 }
 
 /* split points along most elongated direction */
-static int split (int n, double **q, double *p, int *d)
+static int split (int n, iREAL **q, iREAL *p, int *d)
 {
-  double extents [6] = {q[0][0], q[0][1], q[0][2], q[0][0], q[0][1], q[0][2]};
-  double **x, **y;
+  iREAL extents [6] = {q[0][0], q[0][1], q[0][2], q[0][0], q[0][1], q[0][2]};
+  iREAL **x, **y;
   int i, j, k, t [2];
 
   for (x = q+1, y = q+n; x != y; x ++)
@@ -152,7 +152,7 @@ static int split (int n, double **q, double *p, int *d)
   i = 0;
 
 back:
-  qsort (q, n, sizeof (double*), qcmp [*d]);
+  qsort (q, n, sizeof (iREAL*), qcmp [*d]);
   /* find k such that q [l][d] > q [k][d] for l > k */
   for (k = 0, j = -1; k < n; k ++)
   {
@@ -188,7 +188,7 @@ back:
 }
 
 /* recursive create */
-static KDT* create (KDT *u, int n, double **q)
+static KDT* create (KDT *u, int n, iREAL **q)
 {
   KDT *kd;
   int k;
@@ -232,13 +232,13 @@ static void index_nodes (KDT *kd, int *n)
 
 /* create kd-tree for n points; epsilon separation is ensured
  * between the input points and the remaining points are filtered our */
-KDT* KDT_Create (int n, double *p, double epsilon)
+KDT* KDT_Create (int n, iREAL *p, iREAL epsilon)
 {
-  double **q;
+  iREAL **q;
   KDT *kd;
   int i;
 
-  q = (double**)(malloc (n * sizeof (double*)));
+  q = (iREAL**)(malloc (n * sizeof (iREAL*)));
   for (i = 0; i < n; i ++) q [i] = &p [3*i];
   n = separate (n, q, epsilon);
   kd = create (NULL, n, q);
@@ -248,7 +248,7 @@ KDT* KDT_Create (int n, double *p, double epsilon)
 }
 
 /* drop data down the kd-tree */
-void KDT_Drop (KDT *kd, double *extents, void *data)
+void KDT_Drop (KDT *kd, iREAL *extents, void *data)
 {
   if (kd->d < 0) /* leaf */
   {
@@ -266,7 +266,7 @@ void KDT_Drop (KDT *kd, double *extents, void *data)
 }
 
 /* pick leaf containing point */
-KDT* KDT_Pick (KDT *kd, double *p)
+KDT* KDT_Pick (KDT *kd, iREAL *p)
 {
   if (kd->d < 0) return kd; /* leaf */ 
   else if (p [kd->d] <= kd->p [kd->d]) return KDT_Pick (kd->l, p);
@@ -274,7 +274,7 @@ KDT* KDT_Pick (KDT *kd, double *p)
 }
 
 /* pick leaves overlapping the extents */
-void KDT_Pick_Extents (KDT *kd, double *extents, SET **leaves)
+void KDT_Pick_Extents (KDT *kd, iREAL *extents, SET **leaves)
 {
   if (kd->d < 0) /* leaf */
   {
@@ -290,9 +290,9 @@ void KDT_Pick_Extents (KDT *kd, double *extents, SET **leaves)
 }
 
 /* return nearest node in kd-tree within epsilon radius */
-KDT* KDT_Nearest (KDT *kd, double *p, double epsilon)
+KDT* KDT_Nearest (KDT *kd, iREAL *p, iREAL epsilon)
 {
-  double a [3], d, dmax;
+  iREAL a [3], d, dmax;
   KDT *c, *l, *r;
 
   dmax = DBL_MAX;

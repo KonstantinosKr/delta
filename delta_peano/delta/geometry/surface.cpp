@@ -27,32 +27,32 @@
 #include <delta/geometry/surface.h>
 
 void delta::geometry::surface::generateBoundBox(
-		double center[3],
-		std::array<double, 3> minPoint,
-		std::array<double, 3> maxPoint,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates
+		iREAL center[3],
+		std::array<iREAL, 3> minPoint,
+		std::array<iREAL, 3> maxPoint,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates
 )
 {
-	double xw = maxPoint[0] - minPoint[0];
-	double yw = maxPoint[1] - minPoint[1];
-	double zw = maxPoint[2] - minPoint[2];
+	iREAL xw = maxPoint[0] - minPoint[0];
+	iREAL yw = maxPoint[1] - minPoint[1];
+	iREAL zw = maxPoint[2] - minPoint[2];
 
-	//double xw = delta::geometry::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
-  //double yw = delta::geometry::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
-  //double zw = delta::geometry::properties::computeZw(xCoordinates, yCoordinates, zCoordinates);
+	//iREAL xw = delta::geometry::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
+  //iREAL yw = delta::geometry::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
+  //iREAL zw = delta::geometry::properties::computeZw(xCoordinates, yCoordinates, zCoordinates);
 
 	generateXYZBox(center, xw, yw, zw, xCoordinates, yCoordinates, zCoordinates);
 }
 
 void delta::geometry::surface::generateSurface(
-		double center[3],
-		double width,
-		double height,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates
+		iREAL center[3],
+		iREAL width,
+		iREAL height,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates
 )
 {
 	const int points = 36;
@@ -236,13 +236,13 @@ void delta::geometry::surface::generateSurface(
 }
 
 void delta::geometry::surface::generateXYZBox(
-		double center[3],
-		double xw,
-		double yw,
-		double zw,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates
+		iREAL center[3],
+		iREAL xw,
+		iREAL yw,
+		iREAL zw,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates
 )
 {
 	const int points = 36;
@@ -426,18 +426,18 @@ void delta::geometry::surface::generateXYZBox(
 }
 
 void delta::geometry::surface::generateCuboid(
-		double center[3],
-		double width,
-		double height,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates
+		iREAL center[3],
+		iREAL width,
+		iREAL height,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates
 )
 {
 
  unsigned int mul=1E8;
 
- double v[1500][3];
+ iREAL v[1500][3];
 
  //A
  v[0][0] = center[0]-width/2;
@@ -478,7 +478,7 @@ void delta::geometry::surface::generateCuboid(
 
  int pointsize = 8; //number of points for point cloud
  int pointlength = 0;
- tr = delta::hull::hull((double *)v, pointsize, &pointlength);
+ tr = delta::hull::hull((iREAL *)v, pointsize, &pointlength);
 
  const int numberOfTriangles = pointlength;
 

@@ -22,19 +22,17 @@
  SOFTWARE.
  */
 
-#include <stdlib.h>
-#include <assert.h>
 #include <delta/geometry/hopper.h>
 
 
 void delta::geometry::hopper::generateInnerHopper(
-		double  center[3],
-		double 	width,
-		double  height,
-		double 	hatch,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates
+		iREAL  center[3],
+		iREAL 	width,
+		iREAL  height,
+		iREAL 	hatch,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates
 )
 {
 	const int numberOfTriangles = 12;
@@ -44,7 +42,7 @@ void delta::geometry::hopper::generateInnerHopper(
 	zCoordinates.resize( numberOfTriangles*3 );
 
 	//FRONT HOPPER FACE
-	double A[3], B[3], C[3], D[3], E[3];
+	iREAL A[3], B[3], C[3], D[3], E[3];
 	//A->D - **UPPER LEFT FRONT POINT** ID: 0
 	//B->D - **LOWER LEFT FRONT POINT** ID: 1
 	A[0] = center[0] - width/2;
@@ -306,13 +304,13 @@ void delta::geometry::hopper::generateInnerHopper(
 }
 
 void delta::geometry::hopper::generateOuterHopper(
-    double  center[3],
-    double  width,
-    double  height,
-    double  hatch,
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
+    iREAL  center[3],
+    iREAL  width,
+    iREAL  height,
+    iREAL  hatch,
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
 {
 
   //UD - **UPPER LEFT FRONT POINT** ID: 0
@@ -325,13 +323,13 @@ void delta::geometry::hopper::generateOuterHopper(
   //LB - **LOWER RIGHT BACK POINT** ID:28
   //LC - **LOWER RIGHT FRONT POINT** ID:32
 
-  std::vector<double> iUxCoordinates;
-  std::vector<double> iUyCoordinates;
-  std::vector<double> iUzCoordinates;
+  std::vector<iREAL> iUxCoordinates;
+  std::vector<iREAL> iUyCoordinates;
+  std::vector<iREAL> iUzCoordinates;
 
-  std::vector<double> iLxCoordinates;
-  std::vector<double> iLyCoordinates;
-  std::vector<double> iLzCoordinates;
+  std::vector<iREAL> iLxCoordinates;
+  std::vector<iREAL> iLyCoordinates;
+  std::vector<iREAL> iLzCoordinates;
 
   for(unsigned i=0;i<xCoordinates.size(); i++)
   {
@@ -402,9 +400,9 @@ void delta::geometry::hopper::generateOuterHopper(
   //LB - **LOWER RIGHT BACK POINT** ID:28
   //LC - **LOWER RIGHT FRONT POINT** ID:32
 
-  std::vector<double> exCoordinates = xCoordinates;
-  std::vector<double> eyCoordinates = yCoordinates;
-  std::vector<double> ezCoordinates = zCoordinates;
+  std::vector<iREAL> exCoordinates = xCoordinates;
+  std::vector<iREAL> eyCoordinates = yCoordinates;
+  std::vector<iREAL> ezCoordinates = zCoordinates;
 
   //delta::geometry::hopper::scaleXYZ(1.2, exCoordinates, eyCoordinates, ezCoordinates);
   delta::geometry::hopper::generateInnerHopper(center, width, height, hatch, exCoordinates, eyCoordinates, ezCoordinates);
@@ -413,13 +411,13 @@ void delta::geometry::hopper::generateOuterHopper(
   yCoordinates.insert(yCoordinates.end(), eyCoordinates.begin(), eyCoordinates.end());
   zCoordinates.insert(zCoordinates.end(), ezCoordinates.begin(), ezCoordinates.end());
 
-  std::vector<double> eUxCoordinates;
-  std::vector<double> eUyCoordinates;
-  std::vector<double> eUzCoordinates;
+  std::vector<iREAL> eUxCoordinates;
+  std::vector<iREAL> eUyCoordinates;
+  std::vector<iREAL> eUzCoordinates;
 
-  std::vector<double> eLxCoordinates;
-  std::vector<double> eLyCoordinates;
-  std::vector<double> eLzCoordinates;
+  std::vector<iREAL> eLxCoordinates;
+  std::vector<iREAL> eLyCoordinates;
+  std::vector<iREAL> eLzCoordinates;
 
   for(unsigned i=0;i<xCoordinates.size(); i++)
   {
@@ -1057,14 +1055,14 @@ void delta::geometry::hopper::generateOuterHopper(
 }
 
 void delta::geometry::hopper::generateHopper(
-    double  center[3],
-    double  width,
-    double  height,
-    double  hatch,
+    iREAL  center[3],
+    iREAL  width,
+    iREAL  height,
+    iREAL  hatch,
     int     meshmultiplier,
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates
 )
 {
 

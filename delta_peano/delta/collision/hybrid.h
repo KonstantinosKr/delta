@@ -24,7 +24,8 @@
 
 
 #include <vector>
-
+#include "delta/collision/penalty.h"
+#include "delta/collision/bf.h"
 #include "delta/collision/contactpoint.h"
 
 
@@ -50,53 +51,53 @@ namespace delta {
      */
     std::vector<contactpoint> hybridWithPerTriangleFallBack(
       int       numberOfTrianglesOfGeometryA,
-      double*   xCoordinatesOfPointsOfGeometryA,
-      double*   yCoordinatesOfPointsOfGeometryA,
-      double*   zCoordinatesOfPointsOfGeometryA,
-      double    epsilonA,
+      iREAL*   xCoordinatesOfPointsOfGeometryA,
+      iREAL*   yCoordinatesOfPointsOfGeometryA,
+      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      iREAL    epsilonA,
       bool      frictionA,
       int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
-      double*   xCoordinatesOfPointsOfGeometryB,
-      double*   yCoordinatesOfPointsOfGeometryB,
-      double*   zCoordinatesOfPointsOfGeometryB,
-      double    epsilonB,
+      iREAL*   xCoordinatesOfPointsOfGeometryB,
+      iREAL*   yCoordinatesOfPointsOfGeometryB,
+      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      iREAL    epsilonB,
       bool      frictionB,
       int 	    particleB);
 
     std::vector<contactpoint> hybridWithPerBatchFallBack(
       int       numberOfTrianglesOfGeometryA,
-      double*   xCoordinatesOfPointsOfGeometryA,
-      double*   yCoordinatesOfPointsOfGeometryA,
-      double*   zCoordinatesOfPointsOfGeometryA,
-      double    epsilonA,
+      iREAL*   xCoordinatesOfPointsOfGeometryA,
+      iREAL*   yCoordinatesOfPointsOfGeometryA,
+      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      iREAL    epsilonA,
       bool      frictionA,
       int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
-      double*   xCoordinatesOfPointsOfGeometryB,
-      double*   yCoordinatesOfPointsOfGeometryB,
-      double*   zCoordinatesOfPointsOfGeometryB,
-      double    epsilonB,
+      iREAL*   xCoordinatesOfPointsOfGeometryB,
+      iREAL*   yCoordinatesOfPointsOfGeometryB,
+      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      iREAL    epsilonB,
       bool      frictionB,
       int 	    particleB);
 
 
     std::vector<contactpoint> hybridStat(
       int       numberOfTrianglesOfGeometryA,
-      double*   xCoordinatesOfPointsOfGeometryA,
-      double*   yCoordinatesOfPointsOfGeometryA,
-      double*   zCoordinatesOfPointsOfGeometryA,
-      double    epsilonA,
+      iREAL*   xCoordinatesOfPointsOfGeometryA,
+      iREAL*   yCoordinatesOfPointsOfGeometryA,
+      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      iREAL    epsilonA,
       bool      frictionA,
       int       particleA,
 
       int       numberOfTrianglesOfGeometryB,
-      double*   xCoordinatesOfPointsOfGeometryB,
-      double*   yCoordinatesOfPointsOfGeometryB,
-      double*   zCoordinatesOfPointsOfGeometryB,
-      double    epsilonB,
+      iREAL*   xCoordinatesOfPointsOfGeometryB,
+      iREAL*   yCoordinatesOfPointsOfGeometryB,
+      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      iREAL    epsilonB,
       bool      frictionB,
       int       particleB);
 
@@ -104,13 +105,13 @@ namespace delta {
     static int numberOfPenaltyFails;
     static int numberOfBatchFails;
     static int batchSize;
-    static double batchError;
+    static iREAL batchError;
 
     void cleanHybridStatistics();
     int getPenaltyFails();
     int getBatchFails();
     int getBatchSize();
-    double getBatchError();
+    iREAL getBatchError();
   }
 }
 

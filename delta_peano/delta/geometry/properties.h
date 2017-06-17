@@ -31,156 +31,156 @@
 #include <array>
 #include <stdio.h>
 #include "delta/hull/alg.h"
-#include "delta/collision/material.h"
+#include "delta/geometry/material.h"
 
 namespace delta {
   namespace geometry {
     namespace properties {
 
       void moveMeshFromPositionToOrigin(
-          double center[3],
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          iREAL center[3],
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
       void moveMeshFromOriginToPosition(
-          double center[3],
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          iREAL center[3],
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
       void scaleXYZ(
-          double scale,
-          double position[3],
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          iREAL scale,
+          iREAL position[3],
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
       void rotateX(
-          double alphaX,
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          iREAL alphaX,
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
       void rotateY(
-          double alphaY,
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          iREAL alphaY,
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
       void rotateZ(
-          double alphaZ,
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+          iREAL alphaZ,
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      double getXYZWidth(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+      iREAL getXYZWidth(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      double getXZWidth(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+      iREAL getXZWidth(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      double getXw(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+      iREAL getXw(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      double getYw(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+      iREAL getYw(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      double getZw(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+      iREAL getZw(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      std::array<double, 3> getMinBoundaryVertex(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+      std::array<iREAL, 3> getMinBoundaryVertex(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      std::array<double, 3> getMaxBoundaryVertex(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+      std::array<iREAL, 3> getMaxBoundaryVertex(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      double computeDiagonal(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+      iREAL computeDiagonal(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      double getMaxXAxis(std::vector<double>&  xCoordinates);
-      double getMaxYAxis(std::vector<double>&  yCoordinates);
-      double getMaxZAxis(std::vector<double>&  zCoordinates);
+      iREAL getMaxXAxis(std::vector<iREAL>&  xCoordinates);
+      iREAL getMaxYAxis(std::vector<iREAL>&  yCoordinates);
+      iREAL getMaxZAxis(std::vector<iREAL>&  zCoordinates);
 
-      double getMinXAxis(std::vector<double>&  xCoordinates);
-      double getMinYAxis(std::vector<double>&  yCoordinates);
-      double getMinZAxis(std::vector<double>&  zCoordinates);
+      iREAL getMinXAxis(std::vector<iREAL>&  xCoordinates);
+      iREAL getMinYAxis(std::vector<iREAL>&  yCoordinates);
+      iREAL getMinZAxis(std::vector<iREAL>&  zCoordinates);
 
-      double computeDistanceAB(std::array<double, 3> A, std::array<double, 3> B);
+      iREAL computeDistanceAB(std::array<iREAL, 3> A, std::array<iREAL, 3> B);
 
       void centerOfMass(
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates,
-        double&               centreOfMassX,
-        double&               centreOfMassY,
-        double&               centreOfMassZ,
-        double&               refcentreOfMassX,
-        double&               refcentreOfMassY,
-        double&               refcentreOfMassZ);
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates,
+        iREAL&               centreOfMassX,
+        iREAL&               centreOfMassY,
+        iREAL&               centreOfMassZ,
+        iREAL&               refcentreOfMassX,
+        iREAL&               refcentreOfMassY,
+        iREAL&               refcentreOfMassZ);
 
       void explode(
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates,
-        double length);
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates,
+        iREAL length);
 
       void exploded(
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates,
-        double length);
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates,
+        iREAL length);
 
       void centerOfGeometry(
-        double centreOfGeometry[3],
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates);
+        iREAL centreOfGeometry[3],
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates);
 
-      double getHMin(
-        const std::vector<double>&  xCoordinates,
-        const std::vector<double>&  yCoordinates,
-        const std::vector<double>&  zCoordinates);
+      iREAL getHMin(
+        const std::vector<iREAL>&  xCoordinates,
+        const std::vector<iREAL>&  yCoordinates,
+        const std::vector<iREAL>&  zCoordinates);
 
       void getInertia(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates,
-          delta::collision::material::MaterialType material,
-          double& mass,
-          double center[3],
-          double inertia[9]);
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates,
+          delta::geometry::material::MaterialType material,
+          iREAL& mass,
+          iREAL center[3],
+          iREAL inertia[9]);
 
-      double getMass(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates,
-          delta::collision::material::MaterialType material);
+      iREAL getMass(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates,
+          delta::geometry::material::MaterialType material);
 
-      double getVolume(
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
+      iREAL getVolume(
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
 
-      void getInverseInertia(double inertia[9], double inverse[9], bool isObject);
+      void getInverseInertia(iREAL inertia[9], iREAL inverse[9], bool isObject);
 
-      double simplex_J (double *a, double *b, double *c, double *d);
+      iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
 
       #define simplex_1(J, a, b, c, d) ((J)/6.)
 

@@ -27,7 +27,7 @@
 
 int delta::core::Sys::_noOfParticles;
 int delta::core::Sys::_noOfObstacles;
-double delta::core::Sys::_timeStepSize;
+iREAL delta::core::Sys::_timeStepSize;
 int delta::core::Sys::_currentIteration;
 int delta::core::Sys::_totalIterations;
 
@@ -46,7 +46,7 @@ void delta::core::Sys::saveScenario(int particles, int obstacles)
 	_noOfObstacles = obstacles;
 }
 
-void delta::core::Sys::saveIteration(double timeStepSize, int currentIteration, int totalIterations)
+void delta::core::Sys::saveIteration(iREAL timeStepSize, int currentIteration, int totalIterations)
 {
 	_timeStepSize = timeStepSize;
 	_currentIteration = currentIteration;
@@ -69,8 +69,8 @@ void delta::core::Sys::closeCheckpoint(){
 	_checkpointFile.close();
 }
 
-void delta::core::Sys::saveParticleProperties(int id, double positionSpatial[3], double positionReferential[3], double linear[3], double angular[3],
-								   double inertia[9], double orientation[9], double mass)
+void delta::core::Sys::saveParticleProperties(int id, iREAL positionSpatial[3], iREAL positionReferential[3], iREAL linear[3], iREAL angular[3],
+								   iREAL inertia[9], iREAL orientation[9], iREAL mass)
 {
 	_checkpointFile << "@:"<< ":" << id <<":"<<
 					   positionSpatial[0] << "," << positionSpatial[1] << "," << positionSpatial[2] << ":" <<
@@ -86,8 +86,8 @@ void delta::core::Sys::saveParticleProperties(int id, double positionSpatial[3],
 					   mass << "\n";
 }
 
-void delta::core::Sys::saveParticleGeometry(int id, std::vector<double> xCoordinatesSpatial, std::vector<double> yCoordinatesSpatial, std::vector<double> zCoordinatesSpatial,
-						  std::vector<double> xCoordinatesRef, std::vector<double> yCoordinatesRef, std::vector<double> zCoordinatesRef)
+void delta::core::Sys::saveParticleGeometry(int id, std::vector<iREAL> xCoordinatesSpatial, std::vector<iREAL> yCoordinatesSpatial, std::vector<iREAL> zCoordinatesSpatial,
+						  std::vector<iREAL> xCoordinatesRef, std::vector<iREAL> yCoordinatesRef, std::vector<iREAL> zCoordinatesRef)
 {
 
 	for(unsigned i=0;i<xCoordinatesSpatial.size();i++)

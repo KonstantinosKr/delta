@@ -49,13 +49,13 @@ enum
 };
 
 /* get status of intersection between triangle (a, b, c) and sphere (p, r) */
-int TSI_Status (double *a, double *b, double *c, double *p, double r);
+int TSI_Status (iREAL *a, iREAL *b, iREAL *c, iREAL *p, iREAL r);
 
 /* approximate intersection of triangle (a, b, c) and sphere (p, r) with second order triangular elements;
  * output vector 'cc' contains 'ncc' 2-dimensional points in the natural coordinates of the input triangle;
  * output triangulation 'tt' contains 'ntt' 6-vertex second order triangle vertex numbers, refering to 'cc';
  * output arrays are dynamically allocated; the status of the intersection is returned */
-int TSI_Approx (double *a, double *b, double *c, double *p, double r, double **cc, int *ncc, int **tt, int *ntt);
+int TSI_Approx (iREAL *a, iREAL *b, iREAL *c, iREAL *p, iREAL r, iREAL **cc, int *ncc, int **tt, int *ntt);
 
   }
 }

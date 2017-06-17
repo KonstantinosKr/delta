@@ -27,6 +27,9 @@
 
 #include <string>
 #include <cmath>
+#include <limits>
+#include <cmath>
+#include <sstream>
 
 namespace delta {
   namespace collision {
@@ -58,16 +61,16 @@ struct delta::collision::contactpoint {
    */
 
   contactpoint(
-    const double&  xPA,
-    const double&  yPA,
-    const double&  zPA,
-    const double&  epsilonA,
+    const iREAL&  xPA,
+    const iREAL&  yPA,
+    const iREAL&  zPA,
+    const iREAL&  epsilonA,
     const int masterID,
 
-    const double&  xQB,
-    const double&  yQB,
-    const double&  zQB,
-    const double&  epsilonB,
+    const iREAL&  xQB,
+    const iREAL&  yQB,
+    const iREAL&  zQB,
+    const iREAL&  epsilonB,
     const int slaveID,
     const bool&    type
   );
@@ -75,7 +78,7 @@ struct delta::collision::contactpoint {
   /**
    * Get distance from contact point to next triangle.
    */
-  double getDistance() const;
+  iREAL getDistance() const;
 
   std::string toString() const;
 };

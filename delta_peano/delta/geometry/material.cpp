@@ -7,9 +7,9 @@
 
 #include "material.h"
 
-//std::map<delta::collision::material::MaterialType, delta::collision::material::MaterialDensity> delta::collision::material::materialToDensitymap;
+//std::map<delta::geometry::material::MaterialType, delta::geometry::material::MaterialDensity> delta::geometry::material::materialToDensitymap;
 
-void delta::collision::material::materialInit()
+void delta::geometry::material::materialInit()
 {
   printf("init material\n");
 
@@ -64,7 +64,7 @@ void delta::collision::material::materialInit()
   printf("friction:%f \n", interface.SFRICTION);*/
 }
 
-int delta::collision::material::getInterfaceType(int materialA, int materialB)
+int delta::geometry::material::getInterfaceType(int materialA, int materialB)
 {
   return materialA*materialB;
 }

@@ -14,13 +14,13 @@ ISPC_TARGETS=avx2
 EXE=ttd
 
 # Floating point type
-REAL=double
+REAL=iREAL
 
 # Debug version
 DEBUG=no
 
-ifeq ($(REAL),double)
-  REAL=-DREAL=double
+ifeq ($(REAL),iREAL)
+  REAL=-DREAL=iREAL
 else
   REAL=-DREAL=float
 endif

@@ -30,40 +30,42 @@
 #include "delta/hull/hull.h"
 #include "delta/hull/alg.h"
 #include <cmath>
+#include <stdlib.h>
+#include <assert.h>
 
-#include "properties.h"
+#include "delta/geometry/properties.h"
 #include "delta/geometry/triangle.h"
 
 namespace delta {
   namespace geometry {
     namespace hopper{
       void generateInnerHopper(
-            double  center[3],
-            double  width,
-            double  height,
-            double  hatch,
-            std::vector<double>&  xCoordinates,
-            std::vector<double>&  yCoordinates,
-            std::vector<double>&  zCoordinates);
+            iREAL  center[3],
+            iREAL  width,
+            iREAL  height,
+            iREAL  hatch,
+            std::vector<iREAL>&  xCoordinates,
+            std::vector<iREAL>&  yCoordinates,
+            std::vector<iREAL>&  zCoordinates);
 
       void generateOuterHopper(
-            double  center[3],
-            double  width,
-            double  height,
-            double  hatch,
-            std::vector<double>&  xCoordinates,
-            std::vector<double>&  yCoordinates,
-            std::vector<double>&  zCoordinates);
+            iREAL  center[3],
+            iREAL  width,
+            iREAL  height,
+            iREAL  hatch,
+            std::vector<iREAL>&  xCoordinates,
+            std::vector<iREAL>&  yCoordinates,
+            std::vector<iREAL>&  zCoordinates);
 
         void generateHopper(
-            double  center[3],
-            double 	width,
-            double  height,
-            double 	hatch,
+            iREAL  center[3],
+            iREAL 	width,
+            iREAL  height,
+            iREAL 	hatch,
             int     meshmultiplier,
-            std::vector<double>&  xCoordinates,
-            std::vector<double>&  yCoordinates,
-            std::vector<double>&  zCoordinates);
+            std::vector<iREAL>&  xCoordinates,
+            std::vector<iREAL>&  yCoordinates,
+            std::vector<iREAL>&  zCoordinates);
     }
   }
 }

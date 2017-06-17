@@ -1,9 +1,5 @@
 #include "delta/collision/contactpoint.h"
 
-#include <limits>
-#include <cmath>
-#include <sstream>
-
 delta::collision::contactpoint::contactpoint(){}
 
 delta::collision::contactpoint::contactpoint(const contactpoint& copy) {
@@ -36,16 +32,16 @@ delta::collision::contactpoint::contactpoint(const contactpoint& copy) {
 #pragma omp declare simd notinbranch
 #endif
 delta::collision::contactpoint::contactpoint(
-  const double&  xPA,
-  const double&  yPA,
-  const double&  zPA,
-  const double&  epsilonA,
+  const iREAL&  xPA,
+  const iREAL&  yPA,
+  const iREAL&  zPA,
+  const iREAL&  epsilonA,
   const int masterID,
 
-  const double&  xQB,
-  const double&  yQB,
-  const double&  zQB,
-  const double&  epsilonB,
+  const iREAL&  xQB,
+  const iREAL&  yQB,
+  const iREAL&  zQB,
+  const iREAL&  epsilonB,
   const int slaveID,
   const bool&	 type
 ) {
@@ -79,7 +75,7 @@ delta::collision::contactpoint::contactpoint(
 #if defined(ompParticle) || defined(ompTriangle)
 #pragma omp declare simd notinbranch
 #endif
-double delta::collision::contactpoint::getDistance() const {
+iREAL delta::collision::contactpoint::getDistance() const {
   return std::sqrt(((Q[0]-P[0])*(Q[0]-P[0]))+((Q[1]-P[1])*(Q[1]-P[1]))+((Q[2]-P[2])*(Q[2]-P[2])));
 }
 

@@ -32,7 +32,7 @@ namespace delta {
      * note that in the returend table of triangles of size 'm' all vertices point
      * to the memory in 'v'; return NULL if hull creation failed from geometrical
      * reasons; throw memory exception when out of memory */
-    TRI* hull (double *v, int n, int *m);
+    TRI* hull (iREAL *v, int n, int *m);
   }
 }
 

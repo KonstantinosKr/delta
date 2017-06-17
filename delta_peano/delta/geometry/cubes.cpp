@@ -4,16 +4,16 @@
 #include <delta/geometry/cubes.h>
 
 void delta::geometry::cubes::generateSquare(
-  double center[2],
-  double h,
-  double rotationAngle,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates
+  iREAL center[2],
+  iREAL h,
+  iREAL rotationAngle,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates
 ) {
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
 
-  const double pi                = std::acos(-1);
+  const iREAL pi                = std::acos(-1);
   const int    numberOfTriangles = 4;
 
   xCoordinates.resize( 2*numberOfTriangles );
@@ -46,13 +46,13 @@ void delta::geometry::cubes::generateSquare(
 
 
 void delta::geometry::cubes::generateCube(
-  double center[3], double h,
-  double alphaX,
-  double alphaY,
-  double alphaZ,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates
+  iREAL center[3], iREAL h,
+  iREAL alphaX,
+  iREAL alphaY,
+  iREAL alphaZ,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates
 ) {
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
@@ -60,7 +60,7 @@ void delta::geometry::cubes::generateCube(
 
   const int numberOfTriangles = 12;
 
-  const double pi = std::acos(-1);
+  const iREAL pi = std::acos(-1);
 
   xCoordinates.resize( numberOfTriangles*3 );
   yCoordinates.resize( numberOfTriangles*3 );
@@ -213,11 +213,11 @@ void delta::geometry::cubes::generateCube(
 
 
   for (int i=0; i<36; i++) {
-    double x = xCoordinates[i];
-    double y = yCoordinates[i];
-    double z = zCoordinates[i];
+    iREAL x = xCoordinates[i];
+    iREAL y = yCoordinates[i];
+    iREAL z = zCoordinates[i];
 
-    double M[] = {
+    iREAL M[] = {
 	   1.0,                 0.0,                   0.0,
 	   0.0,  std::cos(2*pi*alphaX),  std::sin(2*pi*alphaX),
 	   0.0, -std::sin(2*pi*alphaX),  std::cos(2*pi*alphaX)
@@ -229,11 +229,11 @@ void delta::geometry::cubes::generateCube(
   }
 
   for (int i=0; i<36; i++) {
-    double x = xCoordinates[i];
-    double y = yCoordinates[i];
-    double z = zCoordinates[i];
+    iREAL x = xCoordinates[i];
+    iREAL y = yCoordinates[i];
+    iREAL z = zCoordinates[i];
 
-    double M[] = {
+    iREAL M[] = {
       std::cos(2*pi*alphaY),  0.0, std::sin(2*pi*alphaY),
       0.0,                    1.0,                   0.0,
      -std::sin(2*pi*alphaY),  0.0, std::cos(2*pi*alphaY)
@@ -245,11 +245,11 @@ void delta::geometry::cubes::generateCube(
   }
 
   for (int i=0; i<36; i++) {
-    double x = xCoordinates[i];
-    double y = yCoordinates[i];
-    double z = zCoordinates[i];
+    iREAL x = xCoordinates[i];
+    iREAL y = yCoordinates[i];
+    iREAL z = zCoordinates[i];
 
-    double M[] = {
+    iREAL M[] = {
       std::cos(2*pi*alphaZ),  std::sin(2*pi*alphaZ),  0.0,
      -std::sin(2*pi*alphaZ),  std::cos(2*pi*alphaZ),  0.0,
                        0.0,                   0.0,  1.0
@@ -270,16 +270,16 @@ void delta::geometry::cubes::generateCube(
 
 
 void delta::geometry::cubes::generateCube(
-  double center[3],
-  double x,
-  double y,
-  double z,
-  double alphaX,
-  double alphaY,
-  double alphaZ,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates
+  iREAL center[3],
+  iREAL x,
+  iREAL y,
+  iREAL z,
+  iREAL alphaX,
+  iREAL alphaY,
+  iREAL alphaZ,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates
 ) {
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
@@ -287,7 +287,7 @@ void delta::geometry::cubes::generateCube(
 
   const int numberOfTriangles = 12;
 
-  const double pi = std::acos(-1);
+  const iREAL pi = std::acos(-1);
 
   xCoordinates.resize( numberOfTriangles*3 );
   yCoordinates.resize( numberOfTriangles*3 );
@@ -440,11 +440,11 @@ void delta::geometry::cubes::generateCube(
 
 
   for (int i=0; i<36; i++) {
-    double xc = xCoordinates[i];
-    double yc = yCoordinates[i];
-    double zc = zCoordinates[i];
+    iREAL xc = xCoordinates[i];
+    iREAL yc = yCoordinates[i];
+    iREAL zc = zCoordinates[i];
 
-    double M[] = {
+    iREAL M[] = {
      1.0,                 0.0,                   0.0,
      0.0,  std::cos(2*pi*alphaX),  std::sin(2*pi*alphaX),
      0.0, -std::sin(2*pi*alphaX),  std::cos(2*pi*alphaX)
@@ -456,11 +456,11 @@ void delta::geometry::cubes::generateCube(
   }
 
   for (int i=0; i<36; i++) {
-    double xc = xCoordinates[i];
-    double yc = yCoordinates[i];
-    double zc = zCoordinates[i];
+    iREAL xc = xCoordinates[i];
+    iREAL yc = yCoordinates[i];
+    iREAL zc = zCoordinates[i];
 
-    double M[] = {
+    iREAL M[] = {
       std::cos(2*pi*alphaY),  0.0, std::sin(2*pi*alphaY),
       0.0,                    1.0,                   0.0,
      -std::sin(2*pi*alphaY),  0.0, std::cos(2*pi*alphaY)
@@ -472,11 +472,11 @@ void delta::geometry::cubes::generateCube(
   }
 
   for (int i=0; i<36; i++) {
-    double xc = xCoordinates[i];
-    double yc = yCoordinates[i];
-    double zc = zCoordinates[i];
+    iREAL xc = xCoordinates[i];
+    iREAL yc = yCoordinates[i];
+    iREAL zc = zCoordinates[i];
 
-    double M[] = {
+    iREAL M[] = {
       std::cos(2*pi*alphaZ),  std::sin(2*pi*alphaZ),  0.0,
      -std::sin(2*pi*alphaZ),  std::cos(2*pi*alphaZ),  0.0,
                        0.0,                   0.0,  1.0
@@ -496,11 +496,11 @@ void delta::geometry::cubes::generateCube(
 
 
 void delta::geometry::cubes::generateHullCube(
-  double  center[3],
-  double  diagonal,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates)
+  iREAL  center[3],
+  iREAL  diagonal,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates)
 {
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
@@ -510,9 +510,9 @@ void delta::geometry::cubes::generateHullCube(
 
   int pointsize = 8;
 
-  double v[100000][3];
+  iREAL v[100000][3];
 
-  double h = std::sqrt(1.0/12.0)*diagonal;
+  iREAL h = std::sqrt(1.0/12.0)*diagonal;
 
   //0
   v[0][0] = (- h) * mul;
@@ -558,7 +558,7 @@ void delta::geometry::cubes::generateHullCube(
   delta::hull::GEOMETRIC_EPSILON = 1e-10;
   delta::hull::TRI* tr = NULL;
   int pointlength = 0;
-  tr = delta::hull::hull((double *)v, pointsize, &pointlength);
+  tr = delta::hull::hull((iREAL *)v, pointsize, &pointlength);
 
   const int numberOfTriangles = pointlength;
 
@@ -589,17 +589,17 @@ void delta::geometry::cubes::generateHullCube(
 
 
 void delta::geometry::cubes::generateHullCube(
-        double  center[3],
-        double x,
-        double y,
-        double z,
-        double alphaX,
-        double alphaY,
-        double alphaZ,
+        iREAL  center[3],
+        iREAL x,
+        iREAL y,
+        iREAL z,
+        iREAL alphaX,
+        iREAL alphaY,
+        iREAL alphaZ,
         int    meshmultiplier,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates)
+        std::vector<iREAL>&  xCoordinates,
+        std::vector<iREAL>&  yCoordinates,
+        std::vector<iREAL>&  zCoordinates)
 {
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
@@ -609,7 +609,7 @@ void delta::geometry::cubes::generateHullCube(
 
   int pointsize = 8;
 
-  double v[100000][3];
+  iREAL v[100000][3];
 
   x = std::sqrt(1.0/12.0) * x;
   y = std::sqrt(1.0/12.0) * y;
@@ -659,7 +659,7 @@ void delta::geometry::cubes::generateHullCube(
   delta::hull::GEOMETRIC_EPSILON = 1e-10;
   delta::hull::TRI* tr = NULL;
   int pointlength = 0;
-  tr = delta::hull::hull((double *)v, pointsize, &pointlength);
+  tr = delta::hull::hull((iREAL *)v, pointsize, &pointlength);
 
   const int numberOfTriangles = pointlength;
 
@@ -687,14 +687,14 @@ void delta::geometry::cubes::generateHullCube(
   }
   free(tr);
 
-  const double pi = std::acos(-1);
+  const iREAL pi = std::acos(-1);
 
   for (unsigned i=0;i<xCoordinates.size(); i++) {
-    double xc = xCoordinates[i];
-    double yc = yCoordinates[i];
-    double zc = zCoordinates[i];
+    iREAL xc = xCoordinates[i];
+    iREAL yc = yCoordinates[i];
+    iREAL zc = zCoordinates[i];
 
-    double M[] = {
+    iREAL M[] = {
      1.0,                 0.0,                   0.0,
      0.0,  std::cos(2*pi*alphaX),  std::sin(2*pi*alphaX),
      0.0, -std::sin(2*pi*alphaX),  std::cos(2*pi*alphaX)
@@ -706,11 +706,11 @@ void delta::geometry::cubes::generateHullCube(
   }
 
   for (unsigned i=0;i<xCoordinates.size(); i++) {
-    double xc = xCoordinates[i];
-    double yc = yCoordinates[i];
-    double zc = zCoordinates[i];
+    iREAL xc = xCoordinates[i];
+    iREAL yc = yCoordinates[i];
+    iREAL zc = zCoordinates[i];
 
-    double M[] = {
+    iREAL M[] = {
       std::cos(2*pi*alphaY),  0.0, std::sin(2*pi*alphaY),
       0.0,                    1.0,                   0.0,
      -std::sin(2*pi*alphaY),  0.0, std::cos(2*pi*alphaY)
@@ -722,11 +722,11 @@ void delta::geometry::cubes::generateHullCube(
   }
 
   for (unsigned i=0;i<xCoordinates.size(); i++) {
-    double xc = xCoordinates[i];
-    double yc = yCoordinates[i];
-    double zc = zCoordinates[i];
+    iREAL xc = xCoordinates[i];
+    iREAL yc = yCoordinates[i];
+    iREAL zc = zCoordinates[i];
 
-    double M[] = {
+    iREAL M[] = {
       std::cos(2*pi*alphaZ),  std::sin(2*pi*alphaZ),  0.0,
      -std::sin(2*pi*alphaZ),  std::cos(2*pi*alphaZ),  0.0,
                        0.0,                   0.0,  1.0

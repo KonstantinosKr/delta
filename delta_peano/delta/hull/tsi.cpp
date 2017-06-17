@@ -50,17 +50,17 @@ namespace delta {
   ADDMUL (s, tmp, l, pnt)
 
 /* get status of intersection between triangle (a, b, c) and sphere (p, r) */
-int TSI_Status (double *a, double *b, double *c, double *p, double r)
+int TSI_Status (iREAL *a, iREAL *b, iREAL *c, iREAL *p, iREAL r)
 {
   /* macro internals */
-  double n [3], s [3], d [3], l [3];
-  double uv, lv, lu, tmp;
+  iREAL n [3], s [3], d [3], l [3];
+  iREAL uv, lv, lu, tmp;
 
   /* local variables */
-  double u, v, w, ba2, ac2, rsq, rsqeps;
-  double pa [3], pb [3], pc [3];
-  double ba [3], cb [3], ac [3];
-  double x [3], px [3];
+  iREAL u, v, w, ba2, ac2, rsq, rsqeps;
+  iREAL pa [3], pb [3], pc [3];
+  iREAL ba [3], cb [3], ac [3];
+  iREAL x [3], px [3];
   unsigned char abc = 0x00;
   
   SUB (p, a, pa);
@@ -172,7 +172,7 @@ int TSI_Status (double *a, double *b, double *c, double *p, double r)
   ADDMUL (A, lv, n, pnt1)
 
 #define ALLOC(NV, NT)\
-  (*cc) = (double*)(malloc (sizeof (double [2]) * (NV)));\
+  (*cc) = (iREAL*)(malloc (sizeof (iREAL [2]) * (NV)));\
   (*ncc) = NV;\
   (*tt) = (int*)(malloc (sizeof (int [6]) * (NT)));\
   (*ntt) = NT
@@ -470,19 +470,19 @@ int TSI_Status (double *a, double *b, double *c, double *p, double r)
   TRI (2, 2, 0, 9, 5, 6, 8)
 
 /* approximate intersection of triangle (a, b, c) and sphere (p, r) with second order triangular elements */
-int TSI_Approx (double *a, double *b, double *c, double *p, double r, double **cc, int *ncc, int **tt, int *ntt)
+int TSI_Approx (iREAL *a, iREAL *b, iREAL *c, iREAL *p, iREAL r, iREAL **cc, int *ncc, int **tt, int *ntt)
 {
   /* macro internals */
-  double i1 [3], i2 [3], i3 [3], i4 [3];
-  double uv, lv, lu, tmp, pp [3], rp;
-  double n [3], s [3], d [3], l [3];
-  double i5 [3], i6 [3];
+  iREAL i1 [3], i2 [3], i3 [3], i4 [3];
+  iREAL uv, lv, lu, tmp, pp [3], rp;
+  iREAL n [3], s [3], d [3], l [3];
+  iREAL i5 [3], i6 [3];
 
   /* local variables */
-  double u, v, w, ba2, ac2, rsq, rsqeps;
-  double pa [3], pb [3], pc [3];
-  double ba [3], cb [3], ac [3];
-  double x [3], px [3];
+  iREAL u, v, w, ba2, ac2, rsq, rsqeps;
+  iREAL pa [3], pb [3], pc [3];
+  iREAL ba [3], cb [3], ac [3];
+  iREAL x [3], px [3];
   unsigned char abc = 0x00;
 
   /* nullify output */

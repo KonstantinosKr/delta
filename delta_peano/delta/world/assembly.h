@@ -24,7 +24,7 @@
 
 #include <vector>
 #include <array>
-#include "delta/collision/material.h"
+#include "delta/geometry/material.h"
 #include "delta/geometry/properties.h"
 #include "delta/geometry/granulates.h"
 #include "delta/geometry/graphite.h"
@@ -34,70 +34,74 @@
 namespace delta {
   namespace world {
     namespace assembly {
-  	  double getxDiscritizationLength(double length, int number);
+  	  iREAL getDiscritization(iREAL length, int number);
 
-  	  std::vector<std::array<double, 3>> array1d(double position[3], double xAxisLength, int partsNo);
+  	  std::vector<std::array<iREAL, 3>> array1d(iREAL position[3], iREAL xAxisLength, int partsNo);
 
-  	  std::vector<std::array<double, 3>> array2d(double position[3], double xyAxisLength, int partsNo);
+  	  std::vector<std::array<iREAL, 3>> array2d(iREAL position[3], iREAL xyAxisLength, int partsNo);
 
-  	  std::vector<std::array<double, 3>> array3d(double position[3], double xyzAxisLength, int partsNo);
+  	  std::vector<std::array<iREAL, 3>> array3d(iREAL position[3], iREAL xyzAxisLength, int partsNo);
 
-  	  std::vector<std::array<double, 3>> array3d(double position[3], double xyzAxisLength, int partsXYZNo, double yAxisLength, int partsYNo);
+  	  std::vector<std::array<iREAL, 3>> array3d(iREAL position[3], iREAL xyzAxisLength, int partsXYZNo, iREAL yAxisLength, int partsYNo);
 
-  	  std::vector<std::array<double, 3>> getGridArrayList(double position[3], int xzcuts, int ycuts, double width);
+  	  std::vector<std::array<iREAL, 3>> getGridArrayList(iREAL position[3], int xzcuts, int ycuts, iREAL width);
 
-  	  void uniSphereRadius(double totalMass,
-  	                        delta::collision::material::MaterialType material,
-  	                        std::vector<double>  &rad,
-  	                        std::vector<std::array<double, 3>> &particleGrid,
-  	                        std::vector<std::string> &componentGrid,
-  	                        double &minParticleDiam, double &maxParticleDiam);
+  	  void uniSphereRadius(
+  	      iREAL totalMass,
+          delta::geometry::material::MaterialType material,
+          std::vector<iREAL>  &rad,
+          std::vector<std::array<iREAL, 3>> &particleGrid,
+          std::vector<std::string> &componentGrid,
+          iREAL &minParticleDiam, iREAL &maxParticleDiam);
 
-  	  void uniMeshGeometry(double totalMass,
-  	                        delta::collision::material::MaterialType material,
-  	                        int noPointsPerParticle,
-                            std::vector<double>  &rad,
-                            std::vector<std::array<double, 3>> &particleGrid,
-                            std::vector<std::string> &componentGrid,
-                            double &minParticleDiam, double &maxParticleDiam,
-                            std::vector<std::vector<double>>  &xCoordinatesArray,
-                            std::vector<std::vector<double>>  &yCoordinatesArray,
-                            std::vector<std::vector<double>>  &zCoordinatesArray);
+  	  void uniMeshGeometry(
+  	      iREAL totalMass,
+          delta::geometry::material::MaterialType material,
+          int noPointsPerParticle,
+          std::vector<iREAL>  &rad,
+          std::vector<std::array<iREAL, 3>> &particleGrid,
+          std::vector<std::string> &componentGrid,
+          iREAL &minParticleDiam, iREAL &maxParticleDiam,
+          std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+          std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+          std::vector<std::vector<iREAL>>  &zCoordinatesArray);
 
-  	  void nonUniSphereRadius(double totalMass,
-                              delta::collision::material::MaterialType material,
-                              double subcellx,
-                              std::vector<double>  &rad,
-                              std::vector<std::array<double, 3>> &particleGrid,
-                              std::vector<std::string> &componentGrid,
-                              double &minParticleDiam, double &maxParticleDiam);
+  	  void nonUniSphereRadius(
+  	      iREAL totalMass,
+          delta::geometry::material::MaterialType material,
+          iREAL subcellx,
+          std::vector<iREAL>  &rad,
+          std::vector<std::array<iREAL, 3>> &particleGrid,
+          std::vector<std::string> &componentGrid,
+          iREAL &minParticleDiam, iREAL &maxParticleDiam);
 
 
-  	  void nonUniMeshGeometry(double totalMass,
-  	                          delta::collision::material::MaterialType material,
-                              double subcellx,
-                              int noPointsPerParticle,
-                              std::vector<double>  &rad,
-                              std::vector<std::array<double, 3>> &particleGrid,
-                              std::vector<std::string> &componentGrid,
-                              double &minParticleDiam, double &maxParticleDiam,
-                              std::vector<std::vector<double>>  &xCoordinatesArray,
-                              std::vector<std::vector<double>>  &yCoordinatesArray,
-                              std::vector<std::vector<double>>  &zCoordinatesArray);
+  	  void nonUniMeshGeometry(
+  	      iREAL totalMass,
+          delta::geometry::material::MaterialType material,
+          iREAL subcellx,
+          int noPointsPerParticle,
+          std::vector<iREAL>  &rad,
+          std::vector<std::array<iREAL, 3>> &particleGrid,
+          std::vector<std::string> &componentGrid,
+          iREAL &minParticleDiam, iREAL &maxParticleDiam,
+          std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+          std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+          std::vector<std::vector<iREAL>>  &zCoordinatesArray);
 
-  	  void makeLoadNuclearGeometry(double position[3],
-  	      std::vector<std::array<double, 3>> &particleGrid,
+  	  void makeLoadNuclearGeometry(iREAL position[3],
+  	      std::vector<std::array<iREAL, 3>> &particleGrid,
   	      std::vector<std::string> &componentGrid,
-  	      std::vector<double> &radius,
-  	      double &minParticleDiam, double &maxParticleDiam);
+  	      std::vector<iREAL> &radius,
+  	      iREAL &minParticleDiam, iREAL &maxParticleDiam);
 
-  	  void makeFullBrickFBGrid(double position[3],
-  	      double length,
-  	      double elements,
-  	      std::vector<std::array<double, 3>> &particleGrid,
+  	  void makeFullBrickFBGrid(iREAL position[3],
+  	      iREAL length,
+  	      iREAL elements,
+  	      std::vector<std::array<iREAL, 3>> &particleGrid,
   	      std::vector<std::string> &componentGrid,
-  	      std::vector<double> &radius,
-  	      double &minParticleDiam, double &maxParticleDiam);
+  	      std::vector<iREAL> &radius,
+  	      iREAL &minParticleDiam, iREAL &maxParticleDiam);
     }
   }
- }
+}

@@ -46,9 +46,9 @@ static int ppcmp (struct pp *x, struct pp *y)
 }
 
 /* does triangle 'tri' have edge (v,w) ? */
-inline static int hasedge (TRI *tri, double *v, double *w)
+inline static int hasedge (TRI *tri, iREAL *v, iREAL *w)
 {
-  double **ver = tri->ver;
+  iREAL **ver = tri->ver;
   int i, j;
 
   for (i = j = 0; i < 3; i ++)
@@ -58,7 +58,7 @@ inline static int hasedge (TRI *tri, double *v, double *w)
 }
 
 /* return the next after 'tri' CCW triangle around 'v' */
-inline static TRI* nextaround (TRI *tri, double *v)
+inline static TRI* nextaround (TRI *tri, iREAL *v)
 {
   if (v == tri->ver [0]) return tri->adj [2];
   else if (v == tri->ver [1]) return tri->adj [0];
@@ -80,7 +80,7 @@ static void markadj (TRI *t, int flg)
 /* sort adjacency */
 void TRI_Sortadj (TRI *tri)
 {
-  double **ver = tri->ver,
+  iREAL **ver = tri->ver,
 	 *edg [3][2] = {{ver[0], ver[1]},
 	                {ver[1], ver[2]},
 			{ver[2], ver[0]}};
@@ -125,7 +125,7 @@ TRI* TRI_Copy (TRI *tri, int n)
   MAP *vm, *im; /* map of visited vertices; iterator 'im' */
   MEM mem; /* memory for map items */
   TRI *t, *s, *e, *o; /* triangle iterators 't' and 's', table end 'e' and output 'o' */
-  double *v;
+  iREAL *v;
   int i;
 
   MEM_Init (&mem, sizeof (MAP), n * 3);
@@ -146,8 +146,8 @@ TRI* TRI_Copy (TRI *tri, int n)
   }
 
   /* alloc output memory */
-  o = (TRI*)(malloc (sizeof (TRI)*n + sizeof (double [3]) * vcnt));
-  v = (double*)(o + n);
+  o = (TRI*)(malloc (sizeof (TRI)*n + sizeof (iREAL [3]) * vcnt));
+  v = (iREAL*)(o + n);
 
   /* map old vertices into new placeholders */
   for (i = 0, im = MAP_First (vm); im; im = MAP_Next (im), i ++) im->data = (v + i*3);
@@ -160,7 +160,7 @@ TRI* TRI_Copy (TRI *tri, int n)
     for (i = 0; i < 3; i ++)
     {
       if (t->adj [i]) s->adj [i] = o + (t->adj[i] - tri); /* map adjacency */
-      s->ver [i] = (double*)( MAP_Find (vm, t->ver [i], NULL)); /* map new vertex */
+      s->ver [i] = (iREAL*)( MAP_Find (vm, t->ver [i], NULL)); /* map new vertex */
     }
   }
 
@@ -175,7 +175,7 @@ TRI* TRI_Merge (TRI *one, int none, TRI *two, int ntwo, int *m)
   TRI *out, *t, *e, *q;
   KDT *kdtree, *kd;
   SET *ver, *item;
-  double *v, *w;
+  iREAL *v, *w;
   MEM setmem;
   int i, j;
 
@@ -193,22 +193,22 @@ TRI* TRI_Merge (TRI *one, int none, TRI *two, int ntwo, int *m)
   }
 
   i = SET_Size (ver);
-  v = (double*)(malloc (i * sizeof (double [3])));
+  v = (iREAL*)(malloc (i * sizeof (iREAL [3])));
   for (item = SET_First (ver), w = v; item; item = SET_Next (item), w += 3)
   {
-    double *p = (double *)(item->data);
+    iREAL *p = (iREAL *)(item->data);
     COPY (p, w);
   }
   kdtree = KDT_Create (i, v, GEOMETRIC_EPSILON);
   free (v);
   i = KDT_Size (kdtree);
-  out = (TRI*)(MEM_CALLOC (i * sizeof (double [3]) + (none+ntwo) * sizeof (TRI)));
-  v = (double*) (out + none + ntwo);
+  out = (TRI*)(MEM_CALLOC (i * sizeof (iREAL [3]) + (none+ntwo) * sizeof (TRI)));
+  v = (iREAL*) (out + none + ntwo);
 
   /* copy vertices */
   for (kd = KDT_First (kdtree); kd; kd = KDT_Next (kd))
   {
-    double *p = kd->p;
+    iREAL *p = kd->p;
     w = &v [3*kd->n];
     COPY (p, w);
   }
@@ -302,9 +302,9 @@ void TRI_Compadj (TRI *tri, int n)
  * adjacent to the point; no memory is allocated in this process;
  * return NULL and *m = 0 if no input triangle is near the input point;
  * NOTE => tri->flg will be modified for all input triangles */
-TRI* TRI_Topoadj (TRI *tri, int n, double *point, int *m)
+TRI* TRI_Topoadj (TRI *tri, int n, iREAL *point, int *m)
 {
-  double r = 10 * GEOMETRIC_EPSILON;
+  iREAL r = 10 * GEOMETRIC_EPSILON;
   TRI tmp, *t, *s, *end;
 
   *m = 0;
@@ -355,7 +355,7 @@ PFV* TRI_Polarise (TRI *tri, int n, int *m)
   MAP *vm, *im; /* map of visited vertices of (tri, n) (polar faces); iterator 'im' */
   MEM mem; /* memory for map items */
   TRI *t, *s, *e; /* triangle iterators 't' and 's', and table end 'e' */
-  double *v, *w, d, x;
+  iREAL *v, *w, d, x;
   int i, j;
 
   MEM_Init (&mem, sizeof (MAP), n * 3);
@@ -387,8 +387,8 @@ PFV* TRI_Polarise (TRI *tri, int n, int *m)
   }
 
   /* alloc output memory => PFVs and 'n' vertices */
-  pfv = (PFV*)(malloc (sizeof (PFV) * pfvcnt + sizeof (double [3]) * n));
-  w = (double*) (pfv + pfvcnt);
+  pfv = (PFV*)(malloc (sizeof (PFV) * pfvcnt + sizeof (iREAL [3]) * n));
+  w = (iREAL*) (pfv + pfvcnt);
 
   /* compute coordinates */
   for (t = tri; t < e; t ++)
@@ -410,7 +410,7 @@ PFV* TRI_Polarise (TRI *tri, int n, int *m)
   /* now go again and create polar face lists */ 
   for (i = 0, im = MAP_First (vm); im; im = MAP_Next (im), i ++)
   {
-    v = (double*)(im->key);
+    v = (iREAL*)(im->key);
     t = (TRI*)(im->data);
     pfv [i].coord = w + (t-tri)*3; /* map coord to the memory placed at the end of 'pfv' block */
     pfv [i].nl = v; /* common normal */
@@ -446,12 +446,12 @@ done:
 }
 
 /* copute vertices */
-double* TRI_Vertices (TRI *tri, int n, int *m)
+iREAL* TRI_Vertices (TRI *tri, int n, int *m)
 {
   int vcnt; /* number of vertices */
   MAP *vm, *im; /* map of visited vertices; iterator 'im' */
   MEM mem; /* memory for map items */
-  double *v, *w, *z;
+  iREAL *v, *w, *z;
   TRI *t, *e;
   int i;
 
@@ -473,12 +473,12 @@ double* TRI_Vertices (TRI *tri, int n, int *m)
   }
 
   /* alloc output memory */
-  v = (double*)(malloc (sizeof (double [3]) * vcnt));
+  v = (iREAL*)(malloc (sizeof (iREAL [3]) * vcnt));
 
   /* map old vertices into new placeholders */
   for (im = MAP_First (vm); im; im = MAP_Next (im), i ++)
   {
-    w = (double*) im->key; /* vertex source */
+    w = (iREAL*) im->key; /* vertex source */
     i = (int) (long) im->data; /* vertex index */
     z = v + i*3; /* vertex destination */
     COPY (w, z);
@@ -491,12 +491,12 @@ double* TRI_Vertices (TRI *tri, int n, int *m)
 }
 
 /* compute planes */
-double* TRI_Planes (TRI *tri, int n, int *m)
+iREAL* TRI_Planes (TRI *tri, int n, int *m)
 {
-  double *v, *w;
+  iREAL *v, *w;
   TRI *t, *e;
 
-  v = (double *)(malloc (sizeof (double [6]) * n));
+  v = (iREAL *)(malloc (sizeof (iREAL [6]) * n));
   e = tri + n;
   
   for (t = tri, w = v; t < e; t ++, w += 6)
@@ -510,9 +510,9 @@ double* TRI_Planes (TRI *tri, int n, int *m)
 }
 
 /* compute mass center and volume of triangulated solid */
-double TRI_Char (TRI *tri, int n, double *center)
+iREAL TRI_Char (TRI *tri, int n, iREAL *center)
 {
-  double zero [3] = {0, 0, 0},
+  iREAL zero [3] = {0, 0, 0},
 	 volume, sx, sy, sz,
 	 J, *a, *b, *c;
   TRI *t, *e;
@@ -556,7 +556,7 @@ double TRI_Char (TRI *tri, int n, double *center)
         ADD (center, zero, center);
       }
 
-      DIV (center, (double)n, center);
+      DIV (center, (iREAL)n, center);
     }
   }
 
@@ -567,12 +567,12 @@ double TRI_Char (TRI *tri, int n, double *center)
  * nodes store triangle-extents-dropped triangle sets */
 KDT* TRI_Kdtree (TRI *tri, int n)
 {
-  double *p, *q, *a, *b, *c;
-  double extents [6];
+  iREAL *p, *q, *a, *b, *c;
+  iREAL extents [6];
   TRI *t, *end;
   KDT *kd;
 
-  p = (double *)(malloc (n * sizeof (double [3])));
+  p = (iREAL *)(malloc (n * sizeof (iREAL [3])));
 
   for (t = tri, end = t + n, q = p; t < end; t ++, q += 3)
   {
@@ -598,9 +598,9 @@ KDT* TRI_Kdtree (TRI *tri, int n)
 }
 
 /* compute extents of a single triangle */
-void TRI_Extents (TRI *t, double *extents)
+void TRI_Extents (TRI *t, iREAL *extents)
 {
-  double *v;
+  iREAL *v;
   int i;
 
   v = t->ver [0];

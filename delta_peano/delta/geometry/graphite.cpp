@@ -12,15 +12,15 @@
 
 //Intact Poly Brick
 void delta::geometry::graphite::generateBrickFB(
-  double center[3], double h,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates)
+  iREAL center[3], iREAL h,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates)
 {
 	char fileinput[100] = "input/bricksmall.vtk";
 	delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
-	double centerOfGeometry[3];
+	iREAL centerOfGeometry[3];
 	delta::geometry::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 	delta::geometry::properties::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 
@@ -33,15 +33,15 @@ void delta::geometry::graphite::generateBrickFB(
 
 //Loose keys - orientation X-wise
 void delta::geometry::graphite::generateKeyXK(
-  double center[3], double h,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates)
+  iREAL center[3], iREAL h,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates)
 {
 	char fileinput[100] = "input/keysmall.vtk";
 	delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
-	double centerOfGeometry[3];
+	iREAL centerOfGeometry[3];
 	delta::geometry::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 	delta::geometry::properties::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 
@@ -52,15 +52,15 @@ void delta::geometry::graphite::generateKeyXK(
 
 //Loose keys - orientation Y-wise
 void delta::geometry::graphite::generateKeyYK(
-  double center[3], double h,
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates)
+  iREAL center[3], iREAL h,
+  std::vector<iREAL>&  xCoordinates,
+  std::vector<iREAL>&  yCoordinates,
+  std::vector<iREAL>&  zCoordinates)
 {
 	char fileinput[100] = "input/keysmall.vtk";
 	delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
-	double centerOfGeometry[3];
+	iREAL centerOfGeometry[3];
 	delta::geometry::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 	delta::geometry::properties::moveMeshFromPositionToOrigin(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
 

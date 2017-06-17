@@ -40,20 +40,20 @@ typedef struct face face;
 
 struct vertex
 {
-  double *v; /* input vertex */
+  iREAL *v; /* input vertex */
   vertex *n; /* next in a list */
 };
 
 struct edge
 {
-  double *v [2]; /* edge vertices in CCW order */
+  iREAL *v [2]; /* edge vertices in CCW order */
   face *f; /* a neighbouring face through this edge */
   edge *n; /* next edge in a list */
 };
 
 struct face
 {
-  double pla [4];
+  iREAL pla [4];
   vertex *v, *w; /* list of facial vertices 'v' and the furthest vertex 'w' */
   edge *e; /* list of edges (and implicitly, the list of neighbours */
   face *n; /* next face in a list */
@@ -62,9 +62,9 @@ struct face
 };
 
 /* robust orientation */
-static double orient (face *f, double *d)
+static iREAL orient (face *f, iREAL *d)
 {
-  double *a, *b, *c;
+  iREAL *a, *b, *c;
   edge *e1, *e2;
 
   e1 = f->e;
@@ -79,7 +79,7 @@ static double orient (face *f, double *d)
 /* set up facial plane */
 static int setplane (face *f)
 {
-  double ba [3], cb [3];
+  iREAL ba [3], cb [3];
   edge *e1, *e2;
 
   e1 = f->e; e2 = e1->n;
@@ -119,7 +119,7 @@ inline static edge* othere (face *f, face *g)
 }
 
 /* return vertex of f other than p and q */
-inline static double* otherv (face *f, double *p, double *q)
+inline static iREAL* otherv (face *f, iREAL *p, iREAL *q)
 {
   // Changed for C++0x
   // @todo Tell Tomek about
@@ -145,7 +145,7 @@ inline static double* otherv (face *f, double *p, double *q)
 }
 
 /* return edge starting at v */
-inline static edge* edge_0 (face *f, double *v)
+inline static edge* edge_0 (face *f, iREAL *v)
 {
   // Changed for C++0x
   // @todo Tell Tomek about
@@ -170,7 +170,7 @@ inline static edge* edge_0 (face *f, double *v)
 }
 
 /* return edge ending at v */
-inline static edge* edge_1 (face *f, double *v)
+inline static edge* edge_1 (face *f, iREAL *v)
 {
   // Changed for C++0x
   // @todo Tell Tomek about
@@ -197,8 +197,8 @@ inline static edge* edge_1 (face *f, double *v)
 static int mendface (face *f)
 {
   edge *e, *h, *x, *y, *z, *w, *o;
-  double u [3], v [3], d, l [2];
-  double *a, *b, *c;
+  iREAL u [3], v [3], d, l [2];
+  iREAL *a, *b, *c;
   face *g;
 
   for (e = f->e; e; e = e->n)
@@ -270,7 +270,7 @@ static int mendface (face *f)
 }
 
 /* compare vertices by first coordinate */
-static int vcmp (double **a, double **b)
+static int vcmp (iREAL **a, iREAL **b)
 {
   if ((*a) [0] < (*b) [0]) return -1;
   else if ((*a) [0] == (*b) [0]) return 0;
@@ -278,16 +278,16 @@ static int vcmp (double **a, double **b)
 }
 
 /* select vertices of an initial simplex and output the list of remaining vertices */
-static int simplex_vertices (double *v, int n, MEM *mv, double *sv [4], vertex **out)
+static int simplex_vertices (iREAL *v, int n, MEM *mv, iREAL *sv [4], vertex **out)
 {
-  double **pv, **pp, **pq, **pe, **pn;
-  double d, a[3], b[3], c[3], u[3];
+  iREAL **pv, **pp, **pq, **pe, **pn;
+  iREAL d, a[3], b[3], c[3], u[3];
   SET *points, *item;
   MEM setmem;
   vertex *x;
   int i, j;
 
-  pv = (double **)(MEM_CALLOC (sizeof (double*) * n));
+  pv = (iREAL **)(MEM_CALLOC (sizeof (iREAL*) * n));
   MEM_Init (&setmem, sizeof (SET), n);
   points = NULL;
   *out = NULL;
@@ -299,7 +299,7 @@ static int simplex_vertices (double *v, int n, MEM *mv, double *sv [4], vertex *
   }
 
   /* sort input points along the first coordinate */
-  qsort (pv, n, sizeof (double*), (int (*)(const void*, const void*))vcmp);
+  qsort (pv, n, sizeof (iREAL*), (int (*)(const void*, const void*))vcmp);
 
   d = 10 * GEOMETRIC_EPSILON; /* points are contained in [p - d, p + d] boxes */
 
@@ -324,7 +324,7 @@ static int simplex_vertices (double *v, int n, MEM *mv, double *sv [4], vertex *
 
   for (pp = pv, item = SET_First (points); item; pp ++, item = SET_Next (item)) /* for each filtered point */
   {
-    *pp = (double*)(item->data); /* overwrite 'pv' with filtered points */
+    *pp = (iREAL*)(item->data); /* overwrite 'pv' with filtered points */
   }
   pe = pp; /* mark the end */
 
@@ -380,7 +380,7 @@ static int simplex_vertices (double *v, int n, MEM *mv, double *sv [4], vertex *
   for (item = SET_First (points); item; item = SET_Next (item)) /* for each remaining point */
   {
     x = (vertex*) MEM_Alloc (mv);
-    x->v = (double*)(item->data);
+    x->v = (iREAL*)(item->data);
     x->n = *out;
     *out = x; /* put into the output list */
   }
@@ -391,7 +391,7 @@ static int simplex_vertices (double *v, int n, MEM *mv, double *sv [4], vertex *
 }
 
 /* create a simplex and return the corresponding face list */
-static face* simplex (MEM *me, MEM *mf, double *a, double *b, double *c, double *d)
+static face* simplex (MEM *me, MEM *mf, iREAL *a, iREAL *b, iREAL *c, iREAL *d)
 {
   edge *e [12] = 
   {
@@ -409,7 +409,7 @@ static face* simplex (MEM *me, MEM *mf, double *a, double *b, double *c, double 
     (edge*)(MEM_Alloc (me))
   }, *edg;
   
-  double *o [4] = {d, a, b, c}, *u;
+  iREAL *o [4] = {d, a, b, c}, *u;
 
   int i;
 
@@ -514,9 +514,9 @@ static face* simplex (MEM *me, MEM *mf, double *a, double *b, double *c, double 
 }
 
 /* mark faces visible from 'v'ertex */
-static void mark (face *f, double *v, face **g)
+static void mark (face *f, iREAL *v, face **g)
 {
-  double d = orient (f, v);
+  iREAL d = orient (f, v);
     
   if (!f->marked && d > 0.0)
   {
@@ -535,7 +535,7 @@ static void mark (face *f, double *v, face **g)
 }
 
 /* return next CCW face after f around vertx v */
-inline static face* nextaround (face *f, double *v)
+inline static face* nextaround (face *f, iREAL *v)
 {
   edge *e;
 
@@ -555,7 +555,7 @@ inline static edge* nextonridge (int m, edge *e, face **g)
 {
   if (g)
   {
-    double *v = e->v[1];
+    iREAL *v = e->v[1];
     face *f = e->f;
     int n;
 
@@ -608,11 +608,11 @@ static int testsimplex (face *h)
 }
 
 /* compute convex hull */
-TRI* hull (double *v, int n, int *m)
+TRI* hull (iREAL *v, int n, int *m)
 {
   face *f, *g, *h, *head, *cur, *tail;
   edge *e, *k, *i, *j, *ehead, *etail;
-  double d, dmax, *sv [4];
+  iREAL d, dmax, *sv [4];
   vertex *x, *y, *z, *l;
   MEM mv, me, mf;
   TRI *tri, *t;

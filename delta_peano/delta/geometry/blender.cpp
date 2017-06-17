@@ -22,16 +22,14 @@
  SOFTWARE.
  */
 
-#include <stdlib.h>
-#include <assert.h>
 #include <delta/geometry/blender.h>
 
 void delta::geometry::blender::generateBlender(
-		double    center[3],
-		double 	width,
-		std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates
+		iREAL    center[3],
+		iREAL 	width,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates
 )
 {
 	assert(xCoordinates.empty());
@@ -45,8 +43,8 @@ void delta::geometry::blender::generateBlender(
 	zCoordinates.resize( numberOfTriangles*3 );
 
 	//FRONT HOPPER FACE
-	double upperA[3], upperB[3], upperC[3], upperD[3];
-	double lowerA[3], lowerB[3], lowerC[3], lowerD[3];
+	iREAL upperA[3], upperB[3], upperC[3], upperD[3];
+	iREAL lowerA[3], lowerB[3], lowerC[3], lowerD[3];
 
 	upperA[0] = center[0] - width/20;
 	upperA[1] = center[1] + width;
@@ -247,8 +245,8 @@ void delta::geometry::blender::generateBlender(
 
 
 	//CREATE upper RIGHT hand rod
-	double leftA[3], leftB[3], leftC[3], leftD[3];
-	double rightA[3], rightB[3], rightC[3], rightD[3];
+	iREAL leftA[3], leftB[3], leftC[3], leftD[3];
+	iREAL rightA[3], rightB[3], rightC[3], rightD[3];
 
 	leftA[0] = center[0] + width/20;
 	leftA[1] = center[1] + width/20;

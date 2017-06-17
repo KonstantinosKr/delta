@@ -9,7 +9,7 @@
 #include "dem/mappings/CreateGrid.h"
 #include "dem/mappings/Collision.h"
 #include "dem/mappings/MoveParticles.h"
-#include "delta/collision/material.h"
+#include "delta/geometry/material.h"
 
 #include <iomanip>
 

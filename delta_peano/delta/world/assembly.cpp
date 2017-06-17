@@ -8,17 +8,22 @@
 #include "assembly.h"
 
 
-double delta::world::assembly::getxDiscritizationLength(double length, int number)
+iREAL delta::world::assembly::getDiscritization(
+    iREAL length,
+    int number)
 {
 	return length/number;
 }
 
-std::vector<std::array<double, 3>> delta::world::assembly::array1d(double position[3], double xAxisLength, int partsNo)
+std::vector<std::array<iREAL, 3>> delta::world::assembly::array1d(
+    iREAL position[3],
+    iREAL xAxisLength,
+    int partsNo)
 {
-	std::vector<std::array<double, 3>> array;
-	std::array<double, 3> point = {0.0, 0.0, 0.0};
+	std::vector<std::array<iREAL, 3>> array;
+	std::array<iREAL, 3> point = {0.0, 0.0, 0.0};
 
-	double length = getxDiscritizationLength(xAxisLength, partsNo);
+	iREAL length = getDiscritization(xAxisLength, partsNo);
 
 	point[0] = position[0];
 	point[1] = position[1];
@@ -33,16 +38,19 @@ std::vector<std::array<double, 3>> delta::world::assembly::array1d(double positi
 	return array;
 }
 
-std::vector<std::array<double, 3>> delta::world::assembly::array2d(double position[3], double xyAxisLength, int partsNo)
+std::vector<std::array<iREAL, 3>> delta::world::assembly::array2d(
+    iREAL position[3],
+    iREAL xyAxisLength,
+    int partsNo)
 {
-	std::vector<std::array<double, 3>> array;
+	std::vector<std::array<iREAL, 3>> array;
 
-	double length = getxDiscritizationLength(xyAxisLength, partsNo);
+	iREAL length = getDiscritization(xyAxisLength, partsNo);
 
 	for(int i=0;i<partsNo;i++)
 	{
-		std::vector<std::array<double, 3>> tmp = delta::world::assembly::array1d(position, xyAxisLength, partsNo);
-		for(std::vector<std::array<double, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
+		std::vector<std::array<iREAL, 3>> tmp = delta::world::assembly::array1d(position, xyAxisLength, partsNo);
+		for(std::vector<std::array<iREAL, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
 		{
 			array.push_back(*j);
 		}
@@ -52,19 +60,22 @@ std::vector<std::array<double, 3>> delta::world::assembly::array2d(double positi
 	return array;
 }
 
-std::vector<std::array<double, 3>> delta::world::assembly::array3d(double position[3], double xyzAxisLength, int partsNo)
+std::vector<std::array<iREAL, 3>> delta::world::assembly::array3d(
+    iREAL position[3],
+    iREAL xyzAxisLength,
+    int partsNo)
 {
-	std::vector<std::array<double, 3>> array;
+	std::vector<std::array<iREAL, 3>> array;
 
-	double length = getxDiscritizationLength(xyzAxisLength, partsNo);
+	iREAL length = getDiscritization(xyzAxisLength, partsNo);
 
-  double resetx = position[0];
-	double resetz = position[2];
+  iREAL resetx = position[0];
+	iREAL resetz = position[2];
 
 	for(int i=0;i<partsNo;i++)
 	{
-		std::vector<std::array<double, 3>> tmp = delta::world::assembly::array2d(position, xyzAxisLength, partsNo);
-		for(std::vector<std::array<double, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
+		std::vector<std::array<iREAL, 3>> tmp = delta::world::assembly::array2d(position, xyzAxisLength, partsNo);
+		for(std::vector<std::array<iREAL, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
 		{
 			array.push_back(*j);
 		}
@@ -78,16 +89,21 @@ std::vector<std::array<double, 3>> delta::world::assembly::array3d(double positi
 	return array;
 }
 
-std::vector<std::array<double, 3>> delta::world::assembly::array3d(double position[3], double xyzAxisLength, int partsXYZNo, double yAxisLength, int partsYNo)
+std::vector<std::array<iREAL, 3>> delta::world::assembly::array3d(
+    iREAL position[3],
+    iREAL xyzAxisLength,
+    int partsXYZNo,
+    iREAL yAxisLength,
+    int partsYNo)
 {
-	std::vector<std::array<double, 3>> array;
+	std::vector<std::array<iREAL, 3>> array;
 
-	double lengthY =  getxDiscritizationLength(yAxisLength, partsYNo);
+	iREAL lengthY =  getDiscritization(yAxisLength, partsYNo);
 
 	for(int i=0;i<partsYNo;i++)
 	{
-		std::vector<std::array<double, 3>> tmp = delta::world::assembly::array2d(position, xyzAxisLength, partsXYZNo);
-		for(std::vector<std::array<double, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
+		std::vector<std::array<iREAL, 3>> tmp = delta::world::assembly::array2d(position, xyzAxisLength, partsXYZNo);
+		for(std::vector<std::array<iREAL, 3>>::iterator j = tmp.begin(); j != tmp.end(); j++)
 		{
 			array.push_back(*j);
 		}
@@ -100,20 +116,25 @@ std::vector<std::array<double, 3>> delta::world::assembly::array3d(double positi
 	return array;
 }
 
-std::vector<std::array<double, 3>> delta::world::assembly::getGridArrayList(double position[3], int xzcuts, int ycuts, double width)
+std::vector<std::array<iREAL, 3>> delta::world::assembly::getGridArrayList(
+    iREAL position[3],
+    int xzcuts,
+    int ycuts,
+    iREAL width)
 {
   return delta::world::assembly::array3d(position, width, xzcuts, width, ycuts);
 }
 
-void delta::world::assembly::uniSphereRadius(double totalMass,
-    delta::collision::material::MaterialType material,
-    std::vector<double>  &rad,
-    std::vector<std::array<double, 3>> &particleGrid,
+void delta::world::assembly::uniSphereRadius(
+    iREAL totalMass,
+    delta::geometry::material::MaterialType material,
+    std::vector<iREAL>  &rad,
+    std::vector<std::array<iREAL, 3>> &particleGrid,
     std::vector<std::string> &componentGrid,
-    double &minParticleDiam, double &maxParticleDiam)
+    iREAL &minParticleDiam, iREAL &maxParticleDiam)
 {
-  double massPerParticle = totalMass/(double)particleGrid.size();
-  double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+  iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
+  iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
   if(radius*2<minParticleDiam)
     minParticleDiam = radius*2;
@@ -127,39 +148,40 @@ void delta::world::assembly::uniSphereRadius(double totalMass,
   }
 }
 
-void delta::world::assembly::uniMeshGeometry(double totalMass,
-                                                delta::collision::material::MaterialType material,
-                                                int noPointsPerParticle,
-                                                std::vector<double>  &rad,
-                                                std::vector<std::array<double, 3>> &particleGrid,
-                                                std::vector<std::string> &componentGrid,
-                                                double &minParticleDiam, double &maxParticleDiam,
-                                                std::vector<std::vector<double>>  &xCoordinatesArray,
-                                                std::vector<std::vector<double>>  &yCoordinatesArray,
-                                                std::vector<std::vector<double>>  &zCoordinatesArray)
+void delta::world::assembly::uniMeshGeometry(
+    iREAL totalMass,
+    delta::geometry::material::MaterialType material,
+    int noPointsPerParticle,
+    std::vector<iREAL>  &rad,
+    std::vector<std::array<iREAL, 3>> &particleGrid,
+    std::vector<std::string> &componentGrid,
+    iREAL &minParticleDiam, iREAL &maxParticleDiam,
+    std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &zCoordinatesArray)
 {
-  double massPerParticle = totalMass/(double)particleGrid.size();
-  double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+  iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
+  iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
-  double reMassTotal = 0;
-  //double masssphere = 0;
+  iREAL reMassTotal = 0;
+  //iREAL masssphere = 0;
 
-  double position[3];
+  iREAL position[3];
   for(auto i:particleGrid)
   {
     position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
 
-    std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
+    std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
     delta::geometry::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
 
     xCoordinatesArray.push_back(xCoordinates);
     yCoordinatesArray.push_back(yCoordinates);
     zCoordinatesArray.push_back(zCoordinates);
 
-    double mt = delta::geometry::properties::getMass(xCoordinates, yCoordinates, zCoordinates, material);
-    //double vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
-    //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-    //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
+    iREAL mt = delta::geometry::properties::getMass(xCoordinates, yCoordinates, zCoordinates, material);
+    //iREAL vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
+    //iREAL vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    //iREAL ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::geometry::material::MaterialDensity::WOOD);
     reMassTotal += mt;
     //masssphere += mt;
     //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
@@ -173,19 +195,19 @@ void delta::world::assembly::uniMeshGeometry(double totalMass,
       maxParticleDiam = radius*2;
   }
 
-  double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+  iREAL rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
   //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
 
   reMassTotal=0;
   for(unsigned j=0; j<xCoordinatesArray.size(); j++)
   {
-    std::array<double, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
+    std::array<iREAL, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
     delta::geometry::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
 
-    //double mt = delta::geometry::properties::getMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], delta::collision::material::MaterialType::WOOD);
-    //double vt = delta::geometry::properties::getVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
-    //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-    //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
+    //iREAL mt = delta::geometry::properties::getMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], delta::geometry::material::MaterialType::WOOD);
+    //iREAL vt = delta::geometry::properties::getVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+    //iREAL vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    //iREAL ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::geometry::material::MaterialDensity::WOOD);
 
     //reMassTotal += mt;
     //masssphere += ms;
@@ -195,18 +217,19 @@ void delta::world::assembly::uniMeshGeometry(double totalMass,
   //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
 }
 
-void delta::world::assembly::nonUniSphereRadius(double totalMass,
-    delta::collision::material::MaterialType material,
-    double subcellx,
-    std::vector<double>  &rad,
-    std::vector<std::array<double, 3>> &particleGrid,
+void delta::world::assembly::nonUniSphereRadius(
+    iREAL totalMass,
+    delta::geometry::material::MaterialType material,
+    iREAL subcellx,
+    std::vector<iREAL>  &rad,
+    std::vector<std::array<iREAL, 3>> &particleGrid,
     std::vector<std::string> &componentGrid,
-    double &minParticleDiam, double &maxParticleDiam)
+    iREAL &minParticleDiam, iREAL &maxParticleDiam)
 {
-  double massPerParticle = totalMass/(double)particleGrid.size();
-  double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+  iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
+  iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
-  double reMassTotal = 0;
+  iREAL reMassTotal = 0;
 
   iREAL mindiam = radius/2;
   iREAL maxdiam = radius*2;
@@ -216,16 +239,16 @@ void delta::world::assembly::nonUniSphereRadius(double totalMass,
 
   for(int i=0; i<particleGrid.size(); i++)
   {
-    double particleDiameter = mindiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(maxdiam-mindiam)));
+    iREAL particleDiameter = mindiam + static_cast <iREAL>(rand()) / (static_cast <iREAL> (RAND_MAX/(maxdiam-mindiam)));
     rad.push_back(particleDiameter/2);
 
-    reMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * int(delta::collision::material::materialToDensitymap.find(material)->second); //volume * mass
+    reMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * int(delta::geometry::material::materialToDensitymap.find(material)->second); //volume * mass
   }
 
   //get total mass
   //printf("TOTAL REMASS:%f\n", reMassTotal);
 
-  double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+  iREAL rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
 
   reMassTotal=0;
   for(auto i:rad)
@@ -238,31 +261,32 @@ void delta::world::assembly::nonUniSphereRadius(double totalMass,
     if(i*2>maxParticleDiam)
       maxParticleDiam = i*2;
 
-    reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::collision::material::materialToDensitymap.find(material)->second); //volume * mass
+    reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::geometry::material::materialToDensitymap.find(material)->second); //volume * mass
   }
   //printf("RESCALE:%f\n", rescale);
   //printf("TOTAL REREMASS:%f\n", reMassTotal);
 }
 
-void delta::world::assembly::nonUniMeshGeometry(double totalMass,
-                                                delta::collision::material::MaterialType material,
-                                                double subcellx, int noPointsPerParticle,
-                                                std::vector<double>  &rad,
-                                                std::vector<std::array<double, 3>> &particleGrid,
-                                                std::vector<std::string> &componentGrid,
-                                                double &minParticleDiam, double &maxParticleDiam,
-                                                std::vector<std::vector<double>>  &xCoordinatesArray,
-                                                std::vector<std::vector<double>>  &yCoordinatesArray,
-                                                std::vector<std::vector<double>>  &zCoordinatesArray)
+void delta::world::assembly::nonUniMeshGeometry(
+    iREAL totalMass,
+    delta::geometry::material::MaterialType material,
+    iREAL subcellx, int noPointsPerParticle,
+    std::vector<iREAL>  &rad,
+    std::vector<std::array<iREAL, 3>> &particleGrid,
+    std::vector<std::string> &componentGrid,
+    iREAL &minParticleDiam, iREAL &maxParticleDiam,
+    std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &zCoordinatesArray)
 {
-  double massPerParticle = totalMass/(double)particleGrid.size();
-  double radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::collision::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+  iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
+  iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
-  double reMassTotal = 0;
-  double masssphere = 0;
+  iREAL reMassTotal = 0;
+  iREAL masssphere = 0;
 
   iREAL position[3];
-  //std::vector<double> rad;
+  //std::vector<iREAL> rad;
   iREAL mindiam = radius*2/2;
   iREAL maxdiam = radius*2;
   if(radius*2 > subcellx)
@@ -270,11 +294,11 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
 
   for(auto i:particleGrid)
   {
-    std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
+    std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
 
     position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
 
-    double particleDiameter = mindiam + static_cast <double>(rand()) / (static_cast <double> (RAND_MAX/(maxdiam-mindiam)));
+    iREAL particleDiameter = mindiam + static_cast <iREAL>(rand()) / (static_cast <iREAL> (RAND_MAX/(maxdiam-mindiam)));
 
     rad.push_back(particleDiameter/2);
     radius = particleDiameter/2;
@@ -285,10 +309,10 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
     yCoordinatesArray.push_back(yCoordinates);
     zCoordinatesArray.push_back(zCoordinates);
 
-    double mt = delta::geometry::properties::getMass(xCoordinates, yCoordinates, zCoordinates, material);
-    //double vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
-    //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-    //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
+    iREAL mt = delta::geometry::properties::getMass(xCoordinates, yCoordinates, zCoordinates, material);
+    //iREAL vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
+    //iREAL vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    //iREAL ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::geometry::material::MaterialDensity::WOOD);
     reMassTotal += mt;
     //masssphere += mt;
     //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
@@ -297,13 +321,13 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
     componentGrid.push_back("nonSpherical");
   }
 
-  double rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+  iREAL rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
   //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
 
   //reMassTotal=0;
   for(unsigned j=0; j<xCoordinatesArray.size(); j++)
   {
-    std::array<double, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
+    std::array<iREAL, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
     delta::geometry::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
 
     rad[j] = rad[j] * rescale;
@@ -312,10 +336,10 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
     if(rad[j]*2>maxParticleDiam)
       maxParticleDiam = rad[j]*2;
 
-    //double mt = delta::geometry::properties::getMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], material);
-    //double vt = delta::geometry::properties::getVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
-    //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
-    //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
+    //iREAL mt = delta::geometry::properties::getMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], material);
+    //iREAL vt = delta::geometry::properties::getVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+    //iREAL vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    //iREAL ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::geometry::material::MaterialDensity::WOOD);
 
     //reMassTotal += mt;
     //masssphere += ms;
@@ -325,20 +349,21 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
   //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
 }
 
-void delta::world::assembly::makeLoadNuclearGeometry(double position[3],
-                                                    std::vector<std::array<double, 3>> &particleGrid,
-                                                    std::vector<std::string> &componentGrid,
-                                                    std::vector<double> &radius,
-                                                    double &minParticleDiam,
-                                                    double &maxParticleDiam)
+void delta::world::assembly::makeLoadNuclearGeometry(
+    iREAL position[3],
+    std::vector<std::array<iREAL, 3>> &particleGrid,
+    std::vector<std::string> &componentGrid,
+    std::vector<iREAL> &radius,
+    iREAL &minParticleDiam,
+    iREAL &maxParticleDiam)
 {
-  std::vector<double> xCoordinates, yCoordinates, zCoordinates;
+  std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
 
   //measurements
   iREAL pos[] = {0,0,0};
   delta::geometry::graphite::generateBrickFB(pos, 1, xCoordinates, yCoordinates, zCoordinates);
-  double width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
-  double height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
+  iREAL width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
+  iREAL height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
   //read nuclear graphite schematics
@@ -347,14 +372,14 @@ void delta::world::assembly::makeLoadNuclearGeometry(double position[3],
 
   ///place components of 2d array structure
   int elements = 46;
-  double length = 1;
-  double xwCell = delta::world::assembly::getxDiscritizationLength(length, elements);
-  double halfxwCell = xwCell/2;
+  iREAL length = 1;
+  iREAL xwCell = delta::world::assembly::getDiscritization(length, elements);
+  iREAL halfxwCell = xwCell/2;
 
-  double scaleDownPercentage = 0;
+  iREAL scaleDownPercentage = 0;
   if(xwCell < width)
   {//brick is bigger than grid
-    double excess = width - xwCell;
+    iREAL excess = width - xwCell;
     scaleDownPercentage = ((width - excess)/width);
     printf("SCALE DOWN: %f xw:%f boxWidth:%f excess:%f\n", scaleDownPercentage, width, xwCell, excess);
   }
@@ -364,38 +389,39 @@ void delta::world::assembly::makeLoadNuclearGeometry(double position[3],
   for(unsigned i=0;i<particleGrid.size();i++) radius.push_back(0);
 }
 
-void delta::world::assembly::makeFullBrickFBGrid(double position[3],
-    double length,
-    double elements,
-    std::vector<std::array<double, 3>> &particleGrid,
+void delta::world::assembly::makeFullBrickFBGrid(
+    iREAL position[3],
+    iREAL length,
+    iREAL elements,
+    std::vector<std::array<iREAL, 3>> &particleGrid,
     std::vector<std::string> &componentGrid,
-    std::vector<double> &radius,
-    double &minParticleDiam,
-    double &maxParticleDiam)
+    std::vector<iREAL> &radius,
+    iREAL &minParticleDiam,
+    iREAL &maxParticleDiam)
 {
-  std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
+  std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
 
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
-  double pos[3]; pos[0] = pos[1] = pos[2] = 0;
+  iREAL pos[3]; pos[0] = pos[1] = pos[2] = 0;
   delta::geometry::graphite::generateBrickFB(pos, 1, xCoordinates, yCoordinates, zCoordinates);
-  double width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
-  double height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
+  iREAL width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
+  iREAL height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ///place components of 2d array structure
-  double xwCell = delta::world::assembly::getxDiscritizationLength(length, elements);
-  double halfxwCell = xwCell/2;
+  iREAL xwCell = delta::world::assembly::getDiscritization(length, elements);
+  iREAL halfxwCell = xwCell/2;
 
-  double scalePercentage;
+  iREAL scalePercentage;
   if(xwCell < width)
   {//brick is bigger than grid
-    double excess = width - xwCell;
+    iREAL excess = width - xwCell;
     scalePercentage = ((width - excess)/width);
     //printf("SCALE DOWN: %f xw:%f boxWidth:%f excess:%f\n", scalePercentage, width, xwCell, excess);
   } else {
-    double excess = xwCell - width;
+    iREAL excess = xwCell - width;
     scalePercentage = 1+((xwCell - excess)/xwCell);
     //printf("SCALE UP: %f xw:%f boxWidth:%f excess:%f\n", scalePercentage, width, xwCell, excess);
   }

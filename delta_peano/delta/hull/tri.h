@@ -30,7 +30,7 @@ namespace delta {
 typedef struct triangle TRI; /* surface triangle */
 struct triangle
 {
-  double out [3], /* outward normal */
+  iREAL out [3], /* outward normal */
         *ver [3]; /* vertices (CCW) */
   TRI   *adj [3]; /* adjacent triangles (ordered: adj[0] <=> ver[0]-ver[1], ...) */
   int    flg;     /* flag(s) => used in external algorithms */
@@ -40,8 +40,8 @@ struct triangle
 typedef struct triangle_surface TRISURF; /* triangulized surface */
 struct triangle_surface
 {
-  double center [3]; /* mass center of the volume enclosed by the surface */
-  double volume; /* volume of the enclosed solid */
+  iREAL center [3]; /* mass center of the volume enclosed by the surface */
+  iREAL volume; /* volume of the enclosed solid */
   TRI *tri; /* triangles and related data as outputed by 'cvi' */
   int m; /* number of triangles as outputed by 'cvi' */
 };
@@ -49,7 +49,7 @@ struct triangle_surface
 typedef struct polar_face_vertex PFV; /* vertex of a polar face */
 struct polar_face_vertex
 {
-  double *coord, /* vertex coordinate => this is -pla[0-2]/pla[3] */
+  iREAL *coord, /* vertex coordinate => this is -pla[0-2]/pla[3] */
 	 *nl;    /* outward normal => points to 'ver' in TRI, hence not normalised */
   PFV    *n;     /* next CCW vertex in a circular list */
 };
@@ -77,7 +77,7 @@ void TRI_Compadj (TRI *tri, int n);
  * adjacent to the point; no memory is allocated in this process;
  * return NULL and *m = 0 if no input triangle is near the input point;
  * NOTE => tri->flg will be modified for all input triangles */
-TRI* TRI_Topoadj (TRI *tri, int n, double *point, int *m);
+TRI* TRI_Topoadj (TRI *tri, int n, iREAL *point, int *m);
 
 /* input => convex polyhedron containing zero (tri, n);
  * output => polar polyhedron defined by 'm' vertex lists;
@@ -86,23 +86,23 @@ TRI* TRI_Topoadj (TRI *tri, int n, double *point, int *m);
 PFV* TRI_Polarise (TRI *tri, int n, int *m);
 
 /* extract vertices of triangulation (tri, n)
- * into a table of size (double [3]) x m */
-double* TRI_Vertices (TRI *tri, int n, int *m);
+ * into a table of size (iREAL [3]) x m */
+iREAL* TRI_Vertices (TRI *tri, int n, int *m);
 
 /* extract planes of triangulation (tri, n)
- * into a table of size (double [6]) x m, where
+ * into a table of size (iREAL [6]) x m, where
  * each plane is represented by (normal, point) */
-double* TRI_Planes (TRI *tri, int n, int *m);
+iREAL* TRI_Planes (TRI *tri, int n, int *m);
 
 /* compute mass center and volume of triangulated solid */
-double TRI_Char (TRI *tri, int n, double *center);
+iREAL TRI_Char (TRI *tri, int n, iREAL *center);
 
 /* create triangulation based kd-tree;
  * nodes store triangle-extents-dropped triangle sets */
 KDT* TRI_Kdtree (TRI *tri, int n);
 
 /* compute extents of a single triangle */
-void TRI_Extents (TRI *t, double *extents);
+void TRI_Extents (TRI *t, iREAL *extents);
 
   }
 }

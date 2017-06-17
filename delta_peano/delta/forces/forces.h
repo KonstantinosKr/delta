@@ -1,11 +1,11 @@
 #include <vector>
 #include "delta/collision/contactpoint.h"
-#include "delta/collision/material.h"
+#include "delta/geometry/material.h"
 #include <cmath>
 #include <iostream>
 #include <iomanip>
 #include <limits>
-#include "../core/delta.h"
+#include "delta/core/delta.h"
 
 #define NNMUL(A, B, C)\
 {\
@@ -22,17 +22,48 @@
 
 namespace delta {
   namespace forces {
+  	iREAL spring(
+  	    iREAL normal[3],
+  	    iREAL conpnt[3],
+  	    iREAL depth,
+  	    iREAL vij[3],
+        iREAL positionASpatial[3],
+        iREAL positionBSpatial[3],
+        iREAL positionAReferential[3],
+        iREAL positionBReferential[3],
+        iREAL massA,
+        iREAL massB,
+        iREAL rotationA[9],
+        iREAL rotationB[9],
+        iREAL inverseA[9],
+        iREAL inverseB[9],
+        iREAL f[3],
+        iREAL &damp,
+        iREAL &ma);
 
-  	double spring(iREAL normal[3], iREAL conpnt[3], iREAL depth, iREAL vij[3],
-                  iREAL positionASpatial[3], iREAL positionBSpatial[3],
-                  iREAL positionAReferential[3], iREAL positionBReferential[3],
-                  iREAL massA, iREAL massB,
-                  iREAL rotationA[9], iREAL rotationB[9],
-                  iREAL inverseA[9], iREAL inverseB[9], iREAL f[3], iREAL &damp, iREAL &ma);
+    void friction(
+        iREAL normal[3],
+        iREAL vi[3],
+        iREAL forc,
+        iREAL friction[3]);
 
-    void friction(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3]);
-  	double springSphere(iREAL normal[3], iREAL depth, iREAL relativeVelocity[3], iREAL massA, iREAL massB, iREAL f[3], iREAL &damp, iREAL &ma);
-  	void frictionSphere(iREAL normal[3], iREAL vi[3], iREAL forc, iREAL friction[3], int materialA, int materialB);
+  	iREAL springSphere(
+  	    iREAL normal[3],
+  	    iREAL depth,
+  	    iREAL relativeVelocity[3],
+  	    iREAL massA,
+  	    iREAL massB,
+  	    iREAL f[3],
+  	    iREAL &damp,
+  	    iREAL &ma);
+
+  	void frictionSphere(
+  	    iREAL normal[3],
+  	    iREAL vi[3],
+  	    iREAL forc,
+  	    iREAL friction[3],
+  	    int materialA,
+  	    int materialB);
 
     /**
       @param angularVelocityA is a vector that indicates linear velocity from center of mass

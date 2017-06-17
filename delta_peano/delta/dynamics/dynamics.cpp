@@ -128,7 +128,11 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
   Lambda9 += 1.0;
 }
 
- void delta::dynamics::updateRotationMatrix(iREAL *angular, iREAL *refAngular, iREAL *rotation, iREAL step)
+ void delta::dynamics::updateRotationMatrix(
+     iREAL *angular,
+     iREAL *refAngular,
+     iREAL *rotation,
+     iREAL step)
  {
 	iREAL DL[9];
  	expmap (step*angular[0], step*angular[1], step*angular[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
@@ -150,7 +154,15 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
  	refAngular[2] = rotation[2]*angular[0]+rotation[5]*angular[1]+rotation[8]*angular[2];
  }
 
-void delta::dynamics::updateAngular(iREAL *angular, iREAL *refAngular, iREAL *rotation, iREAL *inertia, iREAL *inverse, iREAL mass, iREAL *torque, iREAL step)
+void delta::dynamics::updateAngular(
+    iREAL *angular,
+    iREAL *refAngular,
+    iREAL *rotation,
+    iREAL *inertia,
+    iREAL *inverse,
+    iREAL mass,
+    iREAL *torque,
+    iREAL step)
 {
 	iREAL half = 0.5*step;
 
@@ -219,8 +231,16 @@ void delta::dynamics::updateAngular(iREAL *angular, iREAL *refAngular, iREAL *ro
 	/////////////////////
 }
 
-
-void delta::dynamics::updateVertices(iREAL *x, iREAL *y, iREAL *z, iREAL *refx, iREAL *refy, iREAL *refz, iREAL *rotation, iREAL *position, iREAL *refposition)
+void delta::dynamics::updateVertices(
+    iREAL *x,
+    iREAL *y,
+    iREAL *z,
+    iREAL *refx,
+    iREAL *refy,
+    iREAL *refz,
+    iREAL *rotation,
+    iREAL *position,
+    iREAL *refposition)
 {
 
 	iREAL C[3], c[3];

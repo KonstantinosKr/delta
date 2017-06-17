@@ -23,49 +23,44 @@
  */
 
 #include "sphere.h"
-#include <complex>
-#include <limits>
-#include <iostream>
-
-#include "dem/mappings/Collision.h"
 
 
 std::vector<delta::collision::contactpoint> delta::collision::sphere(
-  double   xCoordinatesOfPointsOfGeometryA,
-  double   yCoordinatesOfPointsOfGeometryA,
-  double   zCoordinatesOfPointsOfGeometryA,
-  double   diameterA,
-  double   epsilonA,
+  iREAL   xCoordinatesOfPointsOfGeometryA,
+  iREAL   yCoordinatesOfPointsOfGeometryA,
+  iREAL   zCoordinatesOfPointsOfGeometryA,
+  iREAL   diameterA,
+  iREAL   epsilonA,
   bool     frictionA,
   int 	   particleA,
 
-  double   xCoordinatesOfPointsOfGeometryB,
-  double   yCoordinatesOfPointsOfGeometryB,
-  double   zCoordinatesOfPointsOfGeometryB,
-  double   diameterB,
-  double   epsilonB,
+  iREAL   xCoordinatesOfPointsOfGeometryB,
+  iREAL   yCoordinatesOfPointsOfGeometryB,
+  iREAL   zCoordinatesOfPointsOfGeometryB,
+  iREAL   diameterB,
+  iREAL   epsilonB,
   bool     frictionB,
   int 	   particleB,
   bool&    penetration)
 {
 	std::vector<contactpoint> result;
 
-	double distance = std::sqrt(((xCoordinatesOfPointsOfGeometryB-xCoordinatesOfPointsOfGeometryA)*(xCoordinatesOfPointsOfGeometryB-xCoordinatesOfPointsOfGeometryA))+((yCoordinatesOfPointsOfGeometryB-yCoordinatesOfPointsOfGeometryA)*(yCoordinatesOfPointsOfGeometryB-yCoordinatesOfPointsOfGeometryA))+((zCoordinatesOfPointsOfGeometryB-zCoordinatesOfPointsOfGeometryA)*(zCoordinatesOfPointsOfGeometryB-zCoordinatesOfPointsOfGeometryA)));
-	double xd = xCoordinatesOfPointsOfGeometryB - xCoordinatesOfPointsOfGeometryA;
-	double yd = yCoordinatesOfPointsOfGeometryB - yCoordinatesOfPointsOfGeometryA;
-	double zd = zCoordinatesOfPointsOfGeometryB - zCoordinatesOfPointsOfGeometryA;
+	iREAL distance = std::sqrt(((xCoordinatesOfPointsOfGeometryB-xCoordinatesOfPointsOfGeometryA)*(xCoordinatesOfPointsOfGeometryB-xCoordinatesOfPointsOfGeometryA))+((yCoordinatesOfPointsOfGeometryB-yCoordinatesOfPointsOfGeometryA)*(yCoordinatesOfPointsOfGeometryB-yCoordinatesOfPointsOfGeometryA))+((zCoordinatesOfPointsOfGeometryB-zCoordinatesOfPointsOfGeometryA)*(zCoordinatesOfPointsOfGeometryB-zCoordinatesOfPointsOfGeometryA)));
+	iREAL xd = xCoordinatesOfPointsOfGeometryB - xCoordinatesOfPointsOfGeometryA;
+	iREAL yd = yCoordinatesOfPointsOfGeometryB - yCoordinatesOfPointsOfGeometryA;
+	iREAL zd = zCoordinatesOfPointsOfGeometryB - zCoordinatesOfPointsOfGeometryA;
 
-	double xnormal = (1.0/distance) * xd;
-	double ynormal = (1.0/distance) * yd;
-	double znormal = (1.0/distance) * zd;
+	iREAL xnormal = (1.0/distance) * xd;
+	iREAL ynormal = (1.0/distance) * yd;
+	iREAL znormal = (1.0/distance) * zd;
 
-	double xPA = xCoordinatesOfPointsOfGeometryA + ((diameterA/2) * xnormal);
-	double yPA = yCoordinatesOfPointsOfGeometryA + ((diameterA/2) * ynormal);
-	double zPA = zCoordinatesOfPointsOfGeometryA + ((diameterA/2) * znormal);
+	iREAL xPA = xCoordinatesOfPointsOfGeometryA + ((diameterA/2) * xnormal);
+	iREAL yPA = yCoordinatesOfPointsOfGeometryA + ((diameterA/2) * ynormal);
+	iREAL zPA = zCoordinatesOfPointsOfGeometryA + ((diameterA/2) * znormal);
 
-	double xPB = xCoordinatesOfPointsOfGeometryB - ((diameterB/2) * xnormal);
-	double yPB = yCoordinatesOfPointsOfGeometryB - ((diameterB/2) * ynormal);
-	double zPB = zCoordinatesOfPointsOfGeometryB - ((diameterB/2) * znormal);
+	iREAL xPB = xCoordinatesOfPointsOfGeometryB - ((diameterB/2) * xnormal);
+	iREAL yPB = yCoordinatesOfPointsOfGeometryB - ((diameterB/2) * ynormal);
+	iREAL zPB = zCoordinatesOfPointsOfGeometryB - ((diameterB/2) * znormal);
 
 	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA & frictionB);
 
@@ -84,36 +79,36 @@ std::vector<delta::collision::contactpoint> delta::collision::sphere(
 }
 
 
-double pt(double TP1[3], double TP2[3], double TP3[3], double cPoint[3], double tq[3])
+iREAL pt(iREAL TP1[3], iREAL TP2[3], iREAL TP3[3], iREAL cPoint[3], iREAL tq[3])
 {
     //191 flops
-    double E0[3];
+    iREAL E0[3];
     E0[0] = TP2[0] - TP1[0];
     E0[1] = TP2[1] - TP1[1];
     E0[2] = TP2[2] - TP1[2];
 
-    double E1[3];
+    iREAL E1[3];
     E1[0] = TP3[0] - TP1[0];
     E1[1] = TP3[1] - TP1[1];
     E1[2] = TP3[2] - TP1[2];
 
-    double D[3];
+    iREAL D[3];
     D[0] = TP1[0] - cPoint[0];
     D[1] = TP1[1] - cPoint[1];
     D[2] = TP1[2] - cPoint[2];
 
-    double a = DOT(E0,E0);
-    double b = DOT(E0,E1);
-    double c = DOT(E1,E1);
-    double d = DOT(E0,D);
-    double e = DOT(E1,D);
-    double f = DOT(D,D);
+    iREAL a = DOT(E0,E0);
+    iREAL b = DOT(E0,E1);
+    iREAL c = DOT(E1,E1);
+    iREAL d = DOT(E0,D);
+    iREAL e = DOT(E1,D);
+    iREAL f = DOT(D,D);
 
-    double det = a*c - b*b; //% do we have to use abs here?
-    double s   = b*e - c*d;
-    double t   = b*d - a*e;
+    iREAL det = a*c - b*b; //% do we have to use abs here?
+    iREAL s   = b*e - c*d;
+    iREAL t   = b*d - a*e;
 
-    double sqrDistance=0;
+    iREAL sqrDistance=0;
 
     if ((s+t) <= det){
         if (s < 0){
@@ -177,7 +172,7 @@ double pt(double TP1[3], double TP2[3], double TP3[3], double cPoint[3], double 
                 }
             }else {
                 // region 0
-                double invDet = 1/det;
+                iREAL invDet = 1/det;
                 s = s*invDet;
                 t = t*invDet;
                 sqrDistance = s*(a*s + b*t + 2*d) + t*(b*s + c*t + 2*e) + f;
@@ -186,11 +181,11 @@ double pt(double TP1[3], double TP2[3], double TP3[3], double cPoint[3], double 
     }else {
         if (s < 0){
             // region 2
-            double tmp0 = b + d;
-            double tmp1 = c + e;
+            iREAL tmp0 = b + d;
+            iREAL tmp1 = c + e;
             if (tmp1 > tmp0){ // minimum on edge s+t=1
-                double numer = tmp1 - tmp0;
-                double denom = a - 2*b + c;
+                iREAL numer = tmp1 - tmp0;
+                iREAL denom = a - 2*b + c;
                 if (numer >= denom){
                     s = 1;
                     t = 0;
@@ -218,11 +213,11 @@ double pt(double TP1[3], double TP2[3], double TP3[3], double cPoint[3], double 
         }else {
             if (t < 0) {
                 //region6
-                double tmp0 = b + e;
-                double tmp1 = a + d;
+                iREAL tmp0 = b + e;
+                iREAL tmp1 = a + d;
                 if (tmp1 > tmp0){
-                    double numer = tmp1 - tmp0;
-                    double denom = a-2*b+c;
+                    iREAL numer = tmp1 - tmp0;
+                    iREAL denom = a-2*b+c;
                     if (numer >= denom){
                         t = 1;
                         s = 0;
@@ -250,13 +245,13 @@ double pt(double TP1[3], double TP2[3], double TP3[3], double cPoint[3], double 
                 //end of region 6
             }else {
                 // region 1
-                double numer = c + e - b - d;
+                iREAL numer = c + e - b - d;
                 if (numer <= 0){
                     s = 0;
                     t = 1;
                     sqrDistance = c + 2*e + f;
                 }else {
-                    double denom = a - 2*b + c;
+                    iREAL denom = a - 2*b + c;
                     if (numer >= denom){
                         s = 1;
                         t = 0;
@@ -285,31 +280,31 @@ double pt(double TP1[3], double TP2[3], double TP3[3], double cPoint[3], double 
 
 
 std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierAB(
-  double   xCoordinatesOfPointsOfGeometryA,
-  double   yCoordinatesOfPointsOfGeometryA,
-  double   zCoordinatesOfPointsOfGeometryA,
-  double   diameterA,
-  double   epsilonA,
+  iREAL   xCoordinatesOfPointsOfGeometryA,
+  iREAL   yCoordinatesOfPointsOfGeometryA,
+  iREAL   zCoordinatesOfPointsOfGeometryA,
+  iREAL   diameterA,
+  iREAL   epsilonA,
   bool     frictionA,
   int 	   particleA,
 
-  double   *xCoordinatesOfPointsOfGeometryB,
-  double   *yCoordinatesOfPointsOfGeometryB,
-  double   *zCoordinatesOfPointsOfGeometryB,
+  iREAL   *xCoordinatesOfPointsOfGeometryB,
+  iREAL   *yCoordinatesOfPointsOfGeometryB,
+  iREAL   *zCoordinatesOfPointsOfGeometryB,
   int   	  numberOfTrianglesOfGeometryB,
-  double    epsilonB,
+  iREAL    epsilonB,
   bool      frictionB,
   int 		  particleB,
   bool&     penetration)
 {
 	std::vector<contactpoint> result;
 
-	double P[3], Q[3];
-	double xPA, yPA, zPA, xPB, yPB, zPB;
-	double distance;
+	iREAL P[3], Q[3];
+	iREAL xPA, yPA, zPA, xPB, yPB, zPB;
+	iREAL distance;
 	for(int i=0; i<numberOfTrianglesOfGeometryB*3; i+=3)
 	{
-		double TP1[3], TP2[3], TP3[3];
+		iREAL TP1[3], TP2[3], TP3[3];
 		TP1[0] = xCoordinatesOfPointsOfGeometryB[i];
 		TP1[1] = yCoordinatesOfPointsOfGeometryB[i];
 		TP1[2] = zCoordinatesOfPointsOfGeometryB[i];
@@ -328,9 +323,9 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 
 		distance = pt(TP1, TP2, TP3, P, Q) - (diameterA/2);
 
-		double xnormal = (Q[0] - P[0])/(distance+(diameterA/2));
-		double ynormal = (Q[1] - P[1])/(distance+(diameterA/2));
-		double znormal = (Q[2] - P[2])/(distance+(diameterA/2));
+		iREAL xnormal = (Q[0] - P[0])/(distance+(diameterA/2));
+		iREAL ynormal = (Q[1] - P[1])/(distance+(diameterA/2));
+		iREAL znormal = (Q[2] - P[2])/(distance+(diameterA/2));
 
 		xPA = P[0] + ((diameterA/2) * xnormal);
 		yPA = P[1] + ((diameterA/2) * ynormal);
@@ -358,32 +353,32 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 }
 
 std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierBA(
-  double   xCoordinatesOfPointsOfGeometryB,
-  double   yCoordinatesOfPointsOfGeometryB,
-  double   zCoordinatesOfPointsOfGeometryB,
-  double   diameterB,
-  double   epsilonB,
+  iREAL   xCoordinatesOfPointsOfGeometryB,
+  iREAL   yCoordinatesOfPointsOfGeometryB,
+  iREAL   zCoordinatesOfPointsOfGeometryB,
+  iREAL   diameterB,
+  iREAL   epsilonB,
   bool     frictionB,
   int 	   particleB,
 
-  double   *xCoordinatesOfPointsOfGeometryA,
-  double   *yCoordinatesOfPointsOfGeometryA,
-  double   *zCoordinatesOfPointsOfGeometryA,
+  iREAL   *xCoordinatesOfPointsOfGeometryA,
+  iREAL   *yCoordinatesOfPointsOfGeometryA,
+  iREAL   *zCoordinatesOfPointsOfGeometryA,
   int   	 numberOfTrianglesOfGeometryA,
-  double   epsilonA,
+  iREAL   epsilonA,
   bool     frictionA,
   int 	   particleA,
   bool&    penetration)
 {
 	std::vector<contactpoint> result;
 
-	double P[3], Q[3];
-	double xPA, yPA, zPA, xPB, yPB, zPB;
-	double distance;
+	iREAL P[3], Q[3];
+	iREAL xPA, yPA, zPA, xPB, yPB, zPB;
+	iREAL distance;
 
 	for(int i=0; i<numberOfTrianglesOfGeometryA*3; i+=3)
 	{
-		double TP1[3], TP2[3], TP3[3];
+		iREAL TP1[3], TP2[3], TP3[3];
 		TP1[0] = xCoordinatesOfPointsOfGeometryA[i];
 		TP1[1] = yCoordinatesOfPointsOfGeometryA[i];
 		TP1[2] = zCoordinatesOfPointsOfGeometryA[i];
@@ -402,9 +397,9 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
 
 		distance = pt(TP1, TP2, TP3, P, Q) - (diameterB/2);
 
-		double xnormal = (Q[0] - P[0])/(distance+(diameterB/2));
-		double ynormal = (Q[1] - P[1])/(distance+(diameterB/2));
-		double znormal = (Q[2] - P[2])/(distance+(diameterB/2));
+		iREAL xnormal = (Q[0] - P[0])/(distance+(diameterB/2));
+		iREAL ynormal = (Q[1] - P[1])/(distance+(diameterB/2));
+		iREAL znormal = (Q[2] - P[2])/(distance+(diameterB/2));
 
 		xPA = P[0] + ((diameterB/2) * xnormal);
 		yPA = P[1] + ((diameterB/2) * ynormal);
@@ -432,19 +427,19 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
 
 
 bool delta::collision::isSphereOverlayInContact(
-  double   xCoordinatesOfPointsOfGeometryA,
-  double   yCoordinatesOfPointsOfGeometryA,
-  double   zCoordinatesOfPointsOfGeometryA,
-  double   radiusA,
+  iREAL   xCoordinatesOfPointsOfGeometryA,
+  iREAL   yCoordinatesOfPointsOfGeometryA,
+  iREAL   zCoordinatesOfPointsOfGeometryA,
+  iREAL   radiusA,
 
-  double   xCoordinatesOfPointsOfGeometryB,
-  double   yCoordinatesOfPointsOfGeometryB,
-  double   zCoordinatesOfPointsOfGeometryB,
-  double   radiusB)
+  iREAL   xCoordinatesOfPointsOfGeometryB,
+  iREAL   yCoordinatesOfPointsOfGeometryB,
+  iREAL   zCoordinatesOfPointsOfGeometryB,
+  iREAL   radiusB)
 {
 
 	bool contact = 0;
-	double distance = std::sqrt(std::pow(xCoordinatesOfPointsOfGeometryB-xCoordinatesOfPointsOfGeometryA,2)+std::pow(yCoordinatesOfPointsOfGeometryB-yCoordinatesOfPointsOfGeometryA,2)+std::pow(zCoordinatesOfPointsOfGeometryB-zCoordinatesOfPointsOfGeometryA,2)) - (radiusA+radiusB);
+	iREAL distance = std::sqrt(std::pow(xCoordinatesOfPointsOfGeometryB-xCoordinatesOfPointsOfGeometryA,2)+std::pow(yCoordinatesOfPointsOfGeometryB-yCoordinatesOfPointsOfGeometryA,2)+std::pow(zCoordinatesOfPointsOfGeometryB-zCoordinatesOfPointsOfGeometryA,2)) - (radiusA+radiusB);
 	if(distance <= radiusA+radiusB) contact = 1;
 
 	return contact;

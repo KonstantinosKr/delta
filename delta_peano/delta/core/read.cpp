@@ -59,9 +59,9 @@ void delta::core::parseModelGridSchematics(std::string inputfile, std::vector<st
 }
 
 void delta::core::readVTKGeometry(char* fileinput,
-							  std::vector<double>&  xCoordinates,
-							  std::vector<double>&  yCoordinates,
-							  std::vector<double>&  zCoordinates)
+							  std::vector<iREAL>&  xCoordinates,
+							  std::vector<iREAL>&  yCoordinates,
+							  std::vector<iREAL>&  zCoordinates)
 {
 	//////////VTK format////////////
 
@@ -76,7 +76,7 @@ void delta::core::readVTKGeometry(char* fileinput,
 	}
 
 	char ch, word[100];
-	double *point[3];
+	iREAL *point[3];
 
 	do
 	{
@@ -86,9 +86,9 @@ void delta::core::readVTKGeometry(char* fileinput,
 		  ch = fscanf(fp1,"%s",word);
 		  int n = atol(word);
 
-		  point[0] = new double[n];
-		  point[1] = new double[n];
-		  point[2] = new double[n];
+		  point[0] = new iREAL[n];
+		  point[1] = new iREAL[n];
+		  point[2] = new iREAL[n];
 
 		  ch = fscanf(fp1,"%s",word);
 
