@@ -22,13 +22,13 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_PRIMITIVES_BLENDER_H_
-#define DELTA_PRIMITIVES_BLENDER_H_
+#ifndef DELTA_geometry_BLENDER_H_
+#define DELTA_geometry_BLENDER_H_
 
 #include <vector>
 
 namespace delta {
-  namespace primitives {
+  namespace geometry {
     namespace blender {
       void generateBlender(
         double  center[3],
@@ -42,4 +42,4 @@ namespace delta {
 }
 
 
-#endif /* DELTA_PRIMITIVES_BLENDER_H_ */
+#endif /* DELTA_geometry_BLENDER_H_ */

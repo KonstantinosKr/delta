@@ -22,18 +22,18 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_PRIMITIVES_GRAPHITE_H_
-#define DELTA_PRIMITIVES_GRAPHITE_H_
+#ifndef DELTA_geometry_GRAPHITE_H_
+#define DELTA_geometry_GRAPHITE_H_
 
 
 #include <vector>
 
 #include "../core/read.h"
-#include "delta/primitives/properties.h"
+#include "properties.h"
 
 
 namespace delta {
-  namespace primitives {
+  namespace geometry {
     namespace graphite {
       void generateBrickFB(
        double    center[3],
@@ -63,4 +63,4 @@ namespace delta {
 }
 
 
-#endif /* DELTA_PRIMITIVES_GRAPHITE_H_ */
+#endif /* DELTA_geometry_GRAPHITE_H_ */

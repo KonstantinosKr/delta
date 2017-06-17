@@ -1,10 +1,9 @@
-#include "cubes.h"
-
 #include <cmath>
 #include <stdlib.h>
 #include <assert.h>
+#include <delta/geometry/cubes.h>
 
-void delta::primitives::cubes::generateSquare(
+void delta::geometry::cubes::generateSquare(
   double center[2],
   double h,
   double rotationAngle,
@@ -46,7 +45,7 @@ void delta::primitives::cubes::generateSquare(
 }
 
 
-void delta::primitives::cubes::generateCube(
+void delta::geometry::cubes::generateCube(
   double center[3], double h,
   double alphaX,
   double alphaY,
@@ -270,7 +269,7 @@ void delta::primitives::cubes::generateCube(
 
 
 
-void delta::primitives::cubes::generateCube(
+void delta::geometry::cubes::generateCube(
   double center[3],
   double x,
   double y,
@@ -496,7 +495,7 @@ void delta::primitives::cubes::generateCube(
 }
 
 
-void delta::primitives::cubes::generateHullCube(
+void delta::geometry::cubes::generateHullCube(
   double  center[3],
   double  diagonal,
   std::vector<double>&  xCoordinates,
@@ -589,7 +588,7 @@ void delta::primitives::cubes::generateHullCube(
 }
 
 
-void delta::primitives::cubes::generateHullCube(
+void delta::geometry::cubes::generateHullCube(
         double  center[3],
         double x,
         double y,
@@ -597,6 +596,7 @@ void delta::primitives::cubes::generateHullCube(
         double alphaX,
         double alphaY,
         double alphaZ,
+        int    meshmultiplier,
         std::vector<double>&  xCoordinates,
         std::vector<double>&  yCoordinates,
         std::vector<double>&  zCoordinates)
@@ -742,4 +742,5 @@ void delta::primitives::cubes::generateHullCube(
     yCoordinates[i] += center[1];
     zCoordinates[i] += center[2];
   }
+  delta::geometry::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
 }

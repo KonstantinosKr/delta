@@ -22,17 +22,17 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_PRIMITIVES_TRIANGLE_H_
-#define DELTA_PRIMITIVES_TRIANGLE_H_
+#ifndef DELTA_geometry_TRIANGLE_H_
+#define DELTA_geometry_TRIANGLE_H_
 
 
 #include <vector>
 #include <array>
-#include <delta/primitives/properties.h>
-#include <delta/primitives/surface.h>
+#include <delta/geometry/surface.h>
+#include "properties.h"
 
 namespace delta {
-  namespace primitives {
+  namespace geometry {
     namespace triangle {
       void bisectTriangle(
           double xT[3],
@@ -69,7 +69,7 @@ namespace delta {
           std::vector<std::vector<double>>&  yCoordinates,
           std::vector<std::vector<double>>&  zCoordinates, std::vector<std::array<double, 3>>& centroid);
 
-      int octsect(int level, int index, std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
+      int octSect(int level, int index, std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
           std::vector<std::vector<double>>&  xCoordinatesVec,
           std::vector<std::vector<double>>&  yCoordinatesVec,
           std::vector<std::vector<double>>&  zCoordinatesVec, std::vector<std::array<double, 3>>& centroid);
@@ -87,4 +87,4 @@ namespace delta {
 
 
 
-#endif /* DELTA_PRIMITIVES_TRIANGLE_H_ */
+#endif /* DELTA_geometry_TRIANGLE_H_ */

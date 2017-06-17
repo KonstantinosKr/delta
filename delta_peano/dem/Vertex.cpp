@@ -1,7 +1,7 @@
 #include "dem/Vertex.h"
 #include "peano/utils/Loop.h"
 #include "peano/grid/Checkpoint.h"
-#include "delta/primitives/properties.h"
+#include "delta/geometry/properties.h"
 
 dem::Vertex::Vertex():
   Base() { 
@@ -71,12 +71,11 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
 
   double centerOfMass[3], inertia[9], inverse[9], mass, hMin;
 
-  newParticle._persistentRecords._diameter	= delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates)*2;
+  newParticle._persistentRecords._diameter	= delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates)*2;
 
-  //printf("DIAGONAL:%f\n", newParticle.getDiameter());
-  hMin = delta::primitives::properties::computeHMin(xCoordinates, yCoordinates, zCoordinates);
+  hMin = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);
 
-  delta::primitives::properties::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
+  delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
 
   //printf("Inertia: %f %f %f %f %f %f %f %f %f\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
   //printf("mass: %f\n", mass);
@@ -103,7 +102,7 @@ int  dem::Vertex::createNewParticle(const tarch::la::Vector<DIMENSIONS,double>& 
   newParticle._persistentRecords._centre(1) = center(1);
   newParticle._persistentRecords._centre(2) = center(2);
 
-  delta::primitives::properties::computeInverseInertia(inertia, inverse, isObstacle);
+  delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
 
   newParticle._persistentRecords._inverse(0) = inverse[0];
   newParticle._persistentRecords._inverse(1) = inverse[1];
@@ -273,19 +272,8 @@ int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,dou
   std::vector<double>  zCoordinates;
 
   iREAL volume = (4.0/3.0) * 3.14 * pow(radius,3);
-  iREAL density;
 
-  switch(material)
-  {
-    case delta::collision::material::MaterialType::WOOD:
-      density = int(delta::collision::material::MaterialDensity::WOOD);
-      break;
-    case delta::collision::material::MaterialType::GOLD:
-      density = int(delta::collision::material::MaterialDensity::GOLD);
-      break;
-    case delta::collision::material::MaterialType::GRAPHITE:
-      density = int(delta::collision::material::MaterialDensity::GRAPHITE);
-  }
+  iREAL density = int(delta::collision::material::materialToDensitymap.find(material)->second);
   mass = volume * density;
 
   newParticle._persistentRecords._inertia(0) = 0.4 * mass * radius * radius;
@@ -310,7 +298,7 @@ int  dem::Vertex::createNewParticleSphere(const tarch::la::Vector<DIMENSIONS,dou
   newParticle._persistentRecords._centre(1) = center(1);
   newParticle._persistentRecords._centre(2) = center(2);
 
-  delta::primitives::properties::computeInverseInertia(inertia, inverse, isObstacle);
+  delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
 
   newParticle._persistentRecords._inverse(0) = inverse[0];
   newParticle._persistentRecords._inverse(1) = inverse[1];

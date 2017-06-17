@@ -1,8 +1,6 @@
-#include "granulates.h"
-
-
 #include <cmath>
 #include <assert.h>
+#include <delta/geometry/granulates.h>
 #include <stdlib.h>
 
 
@@ -10,7 +8,7 @@
 #include "delta/hull/alg.h"
 
 
-void delta::primitives::granulates::generateParticle(
+void delta::geometry::granulates::generateParticle(
   double  center[2],
   double  h,
   std::vector<double>&  xCoordinates,
@@ -39,7 +37,7 @@ void delta::primitives::granulates::generateParticle(
   }
 }
 
-void delta::primitives::granulates::loadParticle(
+void delta::geometry::granulates::loadParticle(
   double  center[3],
   double  h,
   std::vector<double>&  xCoordinates,
@@ -48,11 +46,11 @@ void delta::primitives::granulates::loadParticle(
 ) {
   char fileinput[100] = "input/rock.vtk";
   delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
-  iREAL diagonal = delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-  delta::primitives::properties::scaleXYZ(h/1.0/diagonal, center, xCoordinates, yCoordinates, zCoordinates);
+  iREAL diagonal = delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::properties::scaleXYZ(h/1.0/diagonal, center, xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::primitives::granulates::generateParticle(
+void delta::geometry::granulates::generateParticle(
   double  center[3],
   double  h,
   std::vector<double>&  xCoordinates,

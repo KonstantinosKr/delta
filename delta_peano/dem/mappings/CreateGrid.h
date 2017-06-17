@@ -29,7 +29,7 @@
 #include "dem/State.h"
 #include "dem/mappings/AdoptGrid.h"
 
-#include "delta/primitives/triangle.h"
+#include "delta/geometry/triangle.h"
 #include "delta/collision/material.h"
 
 namespace dem {

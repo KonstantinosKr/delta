@@ -169,7 +169,7 @@ inline static double* maximal_support_point (double *c, int n, double *v)
   return out;
 }
 
-/* allocate output point for curved primitives */
+/* allocate output point for curved geometry */
 inline static double* output_point (point *w, int n, double x [4][3], short maximal)
 {
   double *out = NULL;
@@ -837,7 +837,7 @@ double gjk_ellip_point (double *a, double *asca, double *arot, double *p, double
   return vlen;
 }
 
-/* compute gap function betwen two primitives along the given unit normal;
+/* compute gap function betwen two geometry along the given unit normal;
  * the normal direction is assumed to be outward to the first primitive */
 double gjk_convex_convex_gap (double *a, int na, double *b, int nb, double *normal)
 {

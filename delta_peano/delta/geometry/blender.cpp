@@ -22,12 +22,11 @@
  SOFTWARE.
  */
 
-#include "blender.h"
-
 #include <stdlib.h>
 #include <assert.h>
+#include <delta/geometry/blender.h>
 
-void delta::primitives::blender::generateBlender(
+void delta::geometry::blender::generateBlender(
 		double    center[3],
 		double 	width,
 		std::vector<double>&  xCoordinates,
@@ -271,17 +270,17 @@ void delta::primitives::blender::generateBlender(
 	rightA[1] = center[1] + width/20;
 	rightA[2] = center[2] + width/20;
 
-    rightB[0] = center[0] + width;
-    rightB[1] = center[1] + width/20;
-    rightB[2] = center[2] - width/20;
+  rightB[0] = center[0] + width;
+  rightB[1] = center[1] + width/20;
+  rightB[2] = center[2] - width/20;
 
-    rightC[0] = center[0] + width;
-    rightC[1] = center[1] - width/20;
-    rightC[2] = center[2] + width/20;
+  rightC[0] = center[0] + width;
+  rightC[1] = center[1] - width/20;
+  rightC[2] = center[2] + width/20;
 
-    rightD[0] = center[0] + width;
-    rightD[1] = center[1] - width/20;
-    rightD[2] = center[2] - width/20;
+  rightD[0] = center[0] + width;
+  rightD[1] = center[1] - width/20;
+  rightD[2] = center[2] - width/20;
 
 	/////top 1
 	xCoordinates[36] = rightA[0];
@@ -416,6 +415,4 @@ void delta::primitives::blender::generateBlender(
 	xCoordinates[65] = leftC[0];
 	yCoordinates[65] = leftC[1];
 	zCoordinates[65] = leftC[2];
-
-
 }

@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
 
- Copyright (c) 2015 Konstantinos Krestenitis
+ Copyright (c) 26 May 2016 Konstantinos Krestenitis
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,62 @@
  SOFTWARE.
  */
 
-#include <vector>
+#ifndef DELTA_geometry_SURFACE_H_
+#define DELTA_geometry_SURFACE_H_
 
-#include "../core/read.h"
-#include "delta/primitives/properties.h"
+
+#include <vector>
+#include <array>
+
+#include "delta/hull/hull.h"
+#include "delta/hull/alg.h"
+#include "delta/geometry/surface.h"
+
+#include "properties.h"
 
 namespace delta {
-  namespace primitives {
-    namespace granulates {
-      void generateParticle(
-        double    center[2],
-        double    h,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates
-      );
-
-      void loadParticle(
-        double  center[3],
-        double  h,
+  namespace geometry {
+    namespace surface {
+      void generateBoundBox(
+        double center[3],
+        std::array<double, 3> minPoint,
+        std::array<double, 3> maxPoint,
         std::vector<double>&  xCoordinates,
         std::vector<double>&  yCoordinates,
         std::vector<double>&  zCoordinates
       );
 
-      void generateParticle(
+      void generateSurface(
         double    center[3],
-        double    h,
+        double 	width,
+        double	height,
         std::vector<double>&  xCoordinates,
         std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates,
-        int noPointsPerParticle);
+        std::vector<double>&  zCoordinates
+      );
+
+      void generateXYZBox(
+          double center[3],
+          double xw,
+          double yw,
+          double zw,
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates
+      );
+
+      void generateCuboid(
+        double    center[3],
+        double 	width,
+        double    height,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates
+      );
     }
   }
 }
+
+
+
+#endif /* DELTA_geometry_SURFACE_H_ */

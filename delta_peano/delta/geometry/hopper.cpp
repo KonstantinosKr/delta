@@ -22,13 +22,12 @@
  SOFTWARE.
  */
 
-#include "hopper.h"
-
 #include <stdlib.h>
 #include <assert.h>
+#include <delta/geometry/hopper.h>
 
 
-void delta::primitives::hopper::generateInnerHopper(
+void delta::geometry::hopper::generateInnerHopper(
 		double  center[3],
 		double 	width,
 		double  height,
@@ -303,10 +302,10 @@ void delta::primitives::hopper::generateInnerHopper(
 	yCoordinates[35] = C[1];
 	zCoordinates[35] = C[2];
 
-	//delta::primitives::hopper::explode(xCoordinates, yCoordinates, zCoordinates, 0.1);
+	//delta::geometry::hopper::explode(xCoordinates, yCoordinates, zCoordinates, 0.1);
 }
 
-void delta::primitives::hopper::generateOuterHopper(
+void delta::geometry::hopper::generateOuterHopper(
     double  center[3],
     double  width,
     double  height,
@@ -407,8 +406,8 @@ void delta::primitives::hopper::generateOuterHopper(
   std::vector<double> eyCoordinates = yCoordinates;
   std::vector<double> ezCoordinates = zCoordinates;
 
-  //delta::primitives::hopper::scaleXYZ(1.2, exCoordinates, eyCoordinates, ezCoordinates);
-  delta::primitives::hopper::generateInnerHopper(center, width, height, hatch, exCoordinates, eyCoordinates, ezCoordinates);
+  //delta::geometry::hopper::scaleXYZ(1.2, exCoordinates, eyCoordinates, ezCoordinates);
+  delta::geometry::hopper::generateInnerHopper(center, width, height, hatch, exCoordinates, eyCoordinates, ezCoordinates);
 
   xCoordinates.insert(xCoordinates.end(), exCoordinates.begin(), exCoordinates.end());
   yCoordinates.insert(yCoordinates.end(), eyCoordinates.begin(), eyCoordinates.end());
@@ -1057,69 +1056,20 @@ void delta::primitives::hopper::generateOuterHopper(
   zCoordinates[35] = tmp[2];
 }
 
-void delta::primitives::hopper::generateHopper(
+void delta::geometry::hopper::generateHopper(
     double  center[3],
     double  width,
     double  height,
     double  hatch,
+    int     meshmultiplier,
     std::vector<double>&  xCoordinates,
     std::vector<double>&  yCoordinates,
     std::vector<double>&  zCoordinates
 )
 {
 
-  delta::primitives::hopper::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
-  delta::primitives::hopper::generateOuterHopper(center, width+0.005, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::hopper::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::hopper::generateOuterHopper(center, width+0.005, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::primitives::hopper::generateHullHopper(
-  double  center[3],
-  std::vector<double>&  xCoordinates,
-  std::vector<double>&  yCoordinates,
-  std::vector<double>&  zCoordinates)
-{
-
-  unsigned int mul=1E8;
-
-  int pointsize = xCoordinates.size(); //number of points for point cloud
-
-  double v[100000][3];
-  for(int i = 0; i<xCoordinates.size(); i++) //create point cloud and do delaunay hull triangulation
-  {
-    v[i][0] = xCoordinates[i];
-    v[i][1] = yCoordinates[i];
-    v[i][2] = zCoordinates[i];
-  }
-
-  delta::hull::GEOMETRIC_EPSILON = 1e-10;
-  delta::hull::TRI* tr = NULL;
-  int pointlength = 0;
-  tr = delta::hull::hull((double *)v, pointsize, &pointlength);
-
-  xCoordinates.resize(pointlength*3);
-  yCoordinates.resize(pointlength*3);
-  zCoordinates.resize(pointlength*3);
-
-  int counter = 0;
-  for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)
-  {//iterate through triangles and assign value
-    xCoordinates[counter] = (t->ver [0][0]/(mul)) + center[0];
-    yCoordinates[counter] = (t->ver [0][1]/(mul)) + center[1];
-    zCoordinates[counter] = (t->ver [0][2]/(mul)) + center[2];
-
-    counter++;
-
-    xCoordinates[counter] = (t->ver [1][0]/(mul)) + center[0];
-    yCoordinates[counter] = (t->ver [1][1]/(mul)) + center[1];
-    zCoordinates[counter] = (t->ver [1][2]/(mul)) + center[2];
-
-    counter++;
-
-    xCoordinates[counter] = (t->ver [2][0]/(mul)) + center[0];
-    yCoordinates[counter] = (t->ver [2][1]/(mul)) + center[1];
-    zCoordinates[counter] = (t->ver [2][2]/(mul)) + center[2];
-
-    counter++;
-  }
-  free(tr);
-}

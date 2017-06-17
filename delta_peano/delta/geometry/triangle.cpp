@@ -22,13 +22,12 @@
  SOFTWARE.
  */
 
-#include "triangle.h"
-
 #include <stdlib.h>
 #include <assert.h>
+#include <delta/geometry/triangle.h>
 #include <cmath>
 
-void delta::primitives::triangle::bisectTriangle(
+void delta::geometry::triangle::bisectTriangle(
 		double A[3],
 		double B[3],
 		double C[3],
@@ -63,7 +62,7 @@ void delta::primitives::triangle::bisectTriangle(
 	zCoordinates.push_back((C[2] + B[2])*0.5);
 }
 
-void delta::primitives::triangle::triSectTriangle(
+void delta::geometry::triangle::triSectTriangle(
     double A[3],
     double B[3],
     double C[3],
@@ -117,7 +116,7 @@ void delta::primitives::triangle::triSectTriangle(
   zCoordinates.push_back(B[2]);
 }
 
-void delta::primitives::triangle::fiveSectTriangle(
+void delta::geometry::triangle::fiveSectTriangle(
     double A[3],
     double B[3],
     double C[3],
@@ -226,7 +225,7 @@ void delta::primitives::triangle::fiveSectTriangle(
   zCoordinates.push_back(AB[2]);
 }
 
-void delta::primitives::triangle::meshDenser(
+void delta::geometry::triangle::meshDenser(
 		int multiplier,
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
@@ -264,20 +263,20 @@ void delta::primitives::triangle::meshDenser(
 	meshDenser(multiplier-1, xCoordinates, yCoordinates, zCoordinates);
 }
 
-int delta::primitives::triangle::meshOctSect(int quadsectTimes,
+int delta::geometry::triangle::meshOctSect(int quadsectTimes,
     std::vector<std::vector<double>>&  xCoordinatesVec,
     std::vector<std::vector<double>>&  yCoordinatesVec,
     std::vector<std::vector<double>>&  zCoordinatesVec, std::vector<std::array<double, 3>>& centroid)
 {
-  std::array<double, 3> minpoint = delta::primitives::properties::minBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
-  std::array<double, 3> maxpoint = delta::primitives::properties::maxBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
+  std::array<double, 3> minpoint = delta::geometry::properties::getMinBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
+  std::array<double, 3> maxpoint = delta::geometry::properties::getMaxBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
 
   double xw = maxpoint[0]-minpoint[0]; double yw = maxpoint[1]-minpoint[1]; double zw = maxpoint[2]-minpoint[2];
   std::array<double, 3> midpoint = {minpoint[0]+xw/2, minpoint[1]+yw/2, minpoint[2]+zw/2};
 
   /*std::vector<double> xCoordinatesBox, yCoordinatesBox, zCoordinatesBox;
   double centre[3] = {midpoint[0], midpoint[1], midpoint[2]};
-  delta::primitives::surface::generateBoundBox(centre, minpoint, maxpoint, xCoordinatesBox, yCoordinatesBox, zCoordinatesBox);
+  delta::geometry::surface::generateBoundBox(centre, minpoint, maxpoint, xCoordinatesBox, yCoordinatesBox, zCoordinatesBox);
 
   for(int i=0; i<xCoordinatesBox.size(); i++)
   {
@@ -288,10 +287,10 @@ int delta::primitives::triangle::meshOctSect(int quadsectTimes,
 
   /////////////////////////////////////////////////////////////////////////
 
-  return octsect(quadsectTimes, 0, minpoint, midpoint, maxpoint, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);;
+  return octSect(quadsectTimes, 0, minpoint, midpoint, maxpoint, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);;
 }
 
-int delta::primitives::triangle::octsect(int level, int index, std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
+int delta::geometry::triangle::octSect(int level, int index, std::array<double, 3> minpoint, std::array<double, 3> midpoint, std::array<double, 3> maxpoint,
     std::vector<std::vector<double>>&  xCoordinatesVec,
     std::vector<std::vector<double>>&  yCoordinatesVec,
     std::vector<std::vector<double>>&  zCoordinatesVec, std::vector<std::array<double, 3>>& centroid)
@@ -466,14 +465,14 @@ int delta::primitives::triangle::octsect(int level, int index, std::array<double
   std::vector<double> xCoordinatesD, yCoordinatesD, zCoordinatesD;
   std::vector<double> xCoordinatesDD, yCoordinatesDD, zCoordinatesDD;
 
-  delta::primitives::surface::generateBoundBox(centreA, minpointA, maxpointA, xCoordinatesA, yCoordinatesA, zCoordinatesA);
-  delta::primitives::surface::generateBoundBox(centreAA, minpointAA, maxpointAA, xCoordinatesAA, yCoordinatesAA, zCoordinatesAA);
-  delta::primitives::surface::generateBoundBox(centreB, minpointB, maxpointB, xCoordinatesB, yCoordinatesB, zCoordinatesB);
-  delta::primitives::surface::generateBoundBox(centreBB, minpointBB, maxpointBB, xCoordinatesBB, yCoordinatesBB, zCoordinatesBB);
-  delta::primitives::surface::generateBoundBox(centreC, minpointC, maxpointC, xCoordinatesC, yCoordinatesC, zCoordinatesC);
-  delta::primitives::surface::generateBoundBox(centreCC, minpointCC, maxpointCC, xCoordinatesCC, yCoordinatesCC, zCoordinatesCC);
-  delta::primitives::surface::generateBoundBox(centreD, minpointD, maxpointD, xCoordinatesD, yCoordinatesD, zCoordinatesD);
-  delta::primitives::surface::generateBoundBox(centreDD, minpointDD, maxpointDD, xCoordinatesDD, yCoordinatesDD, zCoordinatesDD);
+  delta::geometry::surface::generateBoundBox(centreA, minpointA, maxpointA, xCoordinatesA, yCoordinatesA, zCoordinatesA);
+  delta::geometry::surface::generateBoundBox(centreAA, minpointAA, maxpointAA, xCoordinatesAA, yCoordinatesAA, zCoordinatesAA);
+  delta::geometry::surface::generateBoundBox(centreB, minpointB, maxpointB, xCoordinatesB, yCoordinatesB, zCoordinatesB);
+  delta::geometry::surface::generateBoundBox(centreBB, minpointBB, maxpointBB, xCoordinatesBB, yCoordinatesBB, zCoordinatesBB);
+  delta::geometry::surface::generateBoundBox(centreC, minpointC, maxpointC, xCoordinatesC, yCoordinatesC, zCoordinatesC);
+  delta::geometry::surface::generateBoundBox(centreCC, minpointCC, maxpointCC, xCoordinatesCC, yCoordinatesCC, zCoordinatesCC);
+  delta::geometry::surface::generateBoundBox(centreD, minpointD, maxpointD, xCoordinatesD, yCoordinatesD, zCoordinatesD);
+  delta::geometry::surface::generateBoundBox(centreDD, minpointDD, maxpointDD, xCoordinatesDD, yCoordinatesDD, zCoordinatesDD);
 
   for(int i=0; i<xCoordinatesA.size(); i++)
   {
@@ -510,19 +509,19 @@ int delta::primitives::triangle::octsect(int level, int index, std::array<double
     zCoordinatesVec[indexDD].push_back(zCoordinatesDD[i]);
   }*/
 
-  index = octsect(level, index, minpointA, centroid[indexA], maxpointA, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octsect(level, index, minpointAA, centroid[indexAA], maxpointAA, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octsect(level, index, minpointB, centroid[indexB], maxpointB, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octsect(level, index, minpointBB, centroid[indexBB], maxpointBB, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octsect(level, index, minpointC, centroid[indexC], maxpointC, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octsect(level, index, minpointCC, centroid[indexCC], maxpointCC, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octsect(level, index, minpointD, centroid[indexD], maxpointD, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octsect(level, index, minpointDD, centroid[indexDD], maxpointDD, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+  index = octSect(level, index, minpointA, centroid[indexA], maxpointA, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+  index = octSect(level, index, minpointAA, centroid[indexAA], maxpointAA, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+  index = octSect(level, index, minpointB, centroid[indexB], maxpointB, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+  index = octSect(level, index, minpointBB, centroid[indexBB], maxpointBB, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+  index = octSect(level, index, minpointC, centroid[indexC], maxpointC, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+  index = octSect(level, index, minpointCC, centroid[indexCC], maxpointCC, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+  index = octSect(level, index, minpointD, centroid[indexD], maxpointD, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+  index = octSect(level, index, minpointDD, centroid[indexDD], maxpointDD, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
 
   return index;
 }
 
-void delta::primitives::triangle::getTrianglesInBoundingBox(std::array<double, 3> minpoint, std::array<double, 3> maxpoint,
+void delta::geometry::triangle::getTrianglesInBoundingBox(std::array<double, 3> minpoint, std::array<double, 3> maxpoint,
     std::vector<double>&  xCoordinatesRoot,
     std::vector<double>&  yCoordinatesRoot,
     std::vector<double>&  zCoordinatesRoot,

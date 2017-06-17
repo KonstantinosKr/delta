@@ -1,12 +1,12 @@
 #include "dem/mappings/CreateGrid.h"
 
-#include "delta/primitives/cubes.h"
-#include "delta/primitives/granulates.h"
-#include "delta/primitives/properties.h"
-#include "delta/primitives/hopper.h"
-#include "delta/primitives/blender.h"
-#include <delta/primitives/graphite.h>
-#include <delta/primitives/surface.h>
+#include "delta/geometry/cubes.h"
+#include "delta/geometry/granulates.h"
+#include "delta/geometry/properties.h"
+#include "delta/geometry/hopper.h"
+#include "delta/geometry/blender.h"
+#include <delta/geometry/graphite.h>
+#include <delta/geometry/surface.h>
 #include <delta/world/assembly.h>
 
 #include "peano/grid/aspects/VertexStateAnalysis.h"
@@ -134,7 +134,7 @@ void dem::mappings::CreateGrid::createInnerVertex(
         }
       }
 
-      if(fineGridH(0) > 0.2)
+      if(fineGridH(0) > 0.3)
       {
         fineGridVertex.refine();
       }
@@ -157,20 +157,11 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 ) {
 	logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-	if(_gridType != NoGrid)
-	{
-    if(_gridType == RegularGrid && fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
-    {
-      fineGridVertex.refine();
-    }
-    else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid) && fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
-    {
-      if(fineGridH(0) > 0.2)
-      {
-        fineGridVertex.refine();
-      }
-    }
-	}
+
+  if(_gridType != NoGrid && fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+  {
+    fineGridVertex.refine();
+  }
 
 	fineGridVertex.init();
 
@@ -551,9 +542,7 @@ int dem::mappings::CreateGrid::makeHopper(dem::Vertex&  vertex, int quadsect, in
                                           bool isObstacle)
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-  delta::primitives::hopper::generateHopper(position, _hopperWidth, _hopperHeight, _hopperHatch, xCoordinates, yCoordinates, zCoordinates);
-  delta::primitives::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
-
+  delta::geometry::hopper::generateHopper(position, _hopperWidth, _hopperHeight, _hopperHatch, meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
   return createParticleObject(quadsect, vertex, position, eps, material, friction, isObstacle, xCoordinates, yCoordinates, zCoordinates);
 }
 
@@ -570,9 +559,7 @@ int dem::mappings::CreateGrid::makeBox(dem::Vertex&  vertex, int quadsect, int m
                                           bool isObstacle)
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-  delta::primitives::cubes::generateHullCube(position, width, height, width, rx, ry, rz, xCoordinates, yCoordinates, zCoordinates);
-
-  delta::primitives::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::cubes::generateHullCube(position, width, height, width, rx, ry, rz, meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
   return createParticleObject(quadsect, vertex, position, eps, material, friction, isObstacle, xCoordinates, yCoordinates, zCoordinates);
 }
 
@@ -588,10 +575,10 @@ int dem::mappings::CreateGrid::createParticleObject(int quadsect, dem::Vertex&  
     double inertia[9];
     double inverse[9];
     double mass;
-    double hMin = delta::primitives::properties::computeHMin(xCoordinates, yCoordinates, zCoordinates);
-    double diameter = delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-    delta::primitives::properties::computeInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
-    delta::primitives::properties::computeInverseInertia(inertia, inverse, isObstacle);
+    double hMin = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);
+    double diameter = delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
+    delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
 
     std::vector<std::vector<double>> xCoordinatesVec, yCoordinatesVec, zCoordinatesVec;
     std::vector<std::array<double, 3>> centroid;
@@ -611,7 +598,7 @@ int dem::mappings::CreateGrid::createParticleObject(int quadsect, dem::Vertex&  
     }
     xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-    int numOfSubParticles = delta::primitives::triangle::meshOctSect(quadsect, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+    int numOfSubParticles = delta::geometry::triangle::meshOctSect(quadsect, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
 
     for(int i=numOfSubParticles; i>(quadsect-1)*8; i--)
     {
@@ -626,8 +613,8 @@ int dem::mappings::CreateGrid::createParticleObject(int quadsect, dem::Vertex&  
       pos[0] = centroid[i][0];
       pos[1] = centroid[i][1];
       pos[2] = centroid[i][2];
-      //delta::primitives::properties::centerOfGeometry(pos, xCoordinates, yCoordinates, zCoordinates);
-      double diameter = delta::primitives::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+      //delta::geometry::properties::centerOfGeometry(pos, xCoordinates, yCoordinates, zCoordinates);
+      double diameter = delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
       newParticleNumber = vertex.createNewSubParticle(pos, xCoordinates, yCoordinates, zCoordinates, centerOfMass, inertia, inverse, mass, hMin, diameter, eps, friction, material, isObstacle, _numberOfParticles, i);
 
       _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
@@ -649,9 +636,7 @@ int dem::mappings::CreateGrid::makeSphere(dem::Vertex&  vertex,
                                           bool friction,
                                           bool isObstacle)
 {
-  //printf("%i\n", _numberOfParticles);
-  int localparticleNumber = 0;
-  int particleid = vertex.createNewParticleSphere(position, radius, eps, friction, material, isObstacle, _numberOfParticles, localparticleNumber);
+  int particleid = vertex.createNewParticleSphere(position, radius, eps, friction, material, isObstacle, _numberOfParticles, 0);
   _numberOfParticles++;
   if(isObstacle) dem::mappings::CreateGrid::_numberOfObstacles++;
   return particleid;
@@ -667,9 +652,8 @@ int dem::mappings::CreateGrid::makeLoadedNonSpherical(dem::Vertex&  vertex,
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
 
-  delta::primitives::granulates::loadParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates);
-  int localparticleNumber = 0;
-  int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, localparticleNumber);
+  delta::geometry::granulates::loadParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates);
+  int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, 0);
   dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
   return newParticleNumber;
 }
@@ -685,9 +669,8 @@ int dem::mappings::CreateGrid::makeNonSpherical(dem::Vertex&  vertex,
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
 
-  delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
-  int localparticleNumber = 0;
-  int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, localparticleNumber);
+  delta::geometry::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
+  int newParticleNumber = vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, 0);
   dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
   return newParticleNumber;
 }
@@ -726,7 +709,7 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(dem::Vertex&  vertex
       {
         std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
 
-        delta::primitives::graphite::generateBrickFB(position, _rad[i]*0.9, xCoordinates, yCoordinates, zCoordinates);
+        delta::geometry::graphite::generateBrickFB(position, _rad[i]*0.9, xCoordinates, yCoordinates, zCoordinates);
         int localparticleNumber = 0;
         vertex.createNewParticle(position, xCoordinates, yCoordinates, zCoordinates, _rad[i]*eps, friction, material, isObstacle, _numberOfParticles, localparticleNumber);
         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
@@ -1024,7 +1007,6 @@ void dem::mappings::CreateGrid::touchVertexFirstTime(
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
-
 void dem::mappings::CreateGrid::touchVertexLastTime(
 		dem::Vertex&         fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
@@ -1040,7 +1022,6 @@ void dem::mappings::CreateGrid::touchVertexLastTime(
 	logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
-
 void dem::mappings::CreateGrid::enterCell(
 		dem::Cell&                 fineGridCell,
 		dem::Vertex * const        fineGridVertices,
@@ -1055,7 +1036,6 @@ void dem::mappings::CreateGrid::enterCell(
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
 
-
 void dem::mappings::CreateGrid::leaveCell(
 		dem::Cell&           fineGridCell,
 		dem::Vertex * const  fineGridVertices,
@@ -1067,7 +1047,6 @@ void dem::mappings::CreateGrid::leaveCell(
 ) {
 }
 
-
 void dem::mappings::CreateGrid::descend(
 		dem::Cell * const          fineGridCells,
 		dem::Vertex * const        fineGridVertices,
@@ -1077,7 +1056,6 @@ void dem::mappings::CreateGrid::descend(
 		dem::Cell&                 coarseGridCell
 ) {
 }
-
 
 void dem::mappings::CreateGrid::ascend(
 		dem::Cell * const    fineGridCells,

@@ -25,9 +25,9 @@
 #include <vector>
 #include <array>
 #include "delta/collision/material.h"
-#include "delta/primitives/properties.h"
-#include "delta/primitives/granulates.h"
-#include "delta/primitives/graphite.h"
+#include "delta/geometry/properties.h"
+#include "delta/geometry/granulates.h"
+#include "delta/geometry/graphite.h"
 #include "stdlib.h"
 #include <string>
 

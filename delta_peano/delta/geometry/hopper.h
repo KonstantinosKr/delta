@@ -22,20 +22,21 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_PRIMITIVES_HOPPER_H_
-#define DELTA_PRIMITIVES_HOPPER_H_
+#ifndef DELTA_geometry_HOPPER_H_
+#define DELTA_geometry_HOPPER_H_
 
 #include <vector>
 
 #include "delta/hull/hull.h"
 #include "delta/hull/alg.h"
 #include <cmath>
-#include "delta/primitives/properties.h"
+
+#include "properties.h"
+#include "delta/geometry/triangle.h"
 
 namespace delta {
-  namespace primitives {
+  namespace geometry {
     namespace hopper{
-
       void generateInnerHopper(
             double  center[3],
             double  width,
@@ -59,15 +60,10 @@ namespace delta {
             double 	width,
             double  height,
             double 	hatch,
+            int     meshmultiplier,
             std::vector<double>&  xCoordinates,
             std::vector<double>&  yCoordinates,
             std::vector<double>&  zCoordinates);
-
-        void generateHullHopper(
-          double  center[3],
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
     }
   }
 }
@@ -75,4 +71,4 @@ namespace delta {
 
 
 
-#endif /* DELTA_PRIMITIVES_HOPPER_H_ */
+#endif /* DELTA_geometry_HOPPER_H_ */

@@ -25,15 +25,16 @@
 
 #include <vector>
 #include <math.h>
-#include "delta/hull/alg.h"
 #include <cmath>
 #include <stdlib.h>
 #include <limits>
 #include <array>
+#include <stdio.h>
+#include "delta/hull/alg.h"
 #include "delta/collision/material.h"
 
 namespace delta {
-  namespace primitives {
+  namespace geometry {
     namespace properties {
 
       void moveMeshFromPositionToOrigin(
@@ -48,67 +49,70 @@ namespace delta {
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates);
 
-      void scaleXYZ(double scale,
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates);
-
-      void scaleXYZ(double scale,
+      void scaleXYZ(
+          double scale,
           double position[3],
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates);
 
-      void rotateX(double alphaX,
+      void rotateX(
+          double alphaX,
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates);
 
-      void rotateY(double alphaY,
+      void rotateY(
+          double alphaY,
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates);
 
-      void rotateZ(double alphaZ,
+      void rotateZ(
+          double alphaZ,
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates);
 
-      double computeXYZWidth(std::vector<double>&  xCoordinates,
-                std::vector<double>&  yCoordinates,
-                std::vector<double>&  zCoordinates);
+      double getXYZWidth(
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-      double computeXZWidth(std::vector<double>&  xCoordinates,
-                std::vector<double>&  yCoordinates,
-                std::vector<double>&  zCoordinates);
+      double getXZWidth(
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-      double computeXw(std::vector<double>&  xCoordinates,
-              std::vector<double>&  yCoordinates,
-              std::vector<double>&  zCoordinates);
+      double getXw(
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-      double computeYw(std::vector<double>&  xCoordinates,
-              std::vector<double>&  yCoordinates,
-              std::vector<double>&  zCoordinates);
+      double getYw(
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-      double computeZw(std::vector<double>&  xCoordinates,
-              std::vector<double>&  yCoordinates,
-              std::vector<double>&  zCoordinates);
+      double getZw(
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-      std::array<double, 3> minBoundaryVertex(std::vector<double>&  xCoordinates,
-                      std::vector<double>&  yCoordinates,
-                      std::vector<double>&  zCoordinates);
+      std::array<double, 3> getMinBoundaryVertex(
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-      std::array<double, 3> maxBoundaryVertex(std::vector<double>&  xCoordinates,
-                      std::vector<double>&  yCoordinates,
-                      std::vector<double>&  zCoordinates);
+      std::array<double, 3> getMaxBoundaryVertex(
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
-      double computeDiagonal(std::vector<double>&  xCoordinates,
-                       std::vector<double>&  yCoordinates,
-                       std::vector<double>&  zCoordinates);
-
-      double computeMaxXWidth(std::vector<double>&  xCoordinates);
-      double computeMaxYWidth(std::vector<double>&  yCoordinates);
-      double computeMaxZWidth(std::vector<double>&  zCoordinates);
+      double computeDiagonal(
+          std::vector<double>&  xCoordinates,
+          std::vector<double>&  yCoordinates,
+          std::vector<double>&  zCoordinates);
 
       double getMaxXAxis(std::vector<double>&  xCoordinates);
       double getMaxYAxis(std::vector<double>&  yCoordinates);
@@ -149,12 +153,12 @@ namespace delta {
         std::vector<double>&  yCoordinates,
         std::vector<double>&  zCoordinates);
 
-      double computeHMin(
-          const std::vector<double>&  xCoordinates,
-          const std::vector<double>&  yCoordinates,
-          const std::vector<double>&  zCoordinates);
+      double getHMin(
+        const std::vector<double>&  xCoordinates,
+        const std::vector<double>&  yCoordinates,
+        const std::vector<double>&  zCoordinates);
 
-      void computeInertia(
+      void getInertia(
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates,
@@ -163,18 +167,18 @@ namespace delta {
           double center[3],
           double inertia[9]);
 
-      double computeMass(
+      double getMass(
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates,
           delta::collision::material::MaterialType material);
 
-      double computeVolume(
+      double getVolume(
           std::vector<double>&  xCoordinates,
           std::vector<double>&  yCoordinates,
           std::vector<double>&  zCoordinates);
 
-      void computeInverseInertia(double inertia[9], double inverse[9], bool isObject);
+      void getInverseInertia(double inertia[9], double inverse[9], bool isObject);
 
       double simplex_J (double *a, double *b, double *c, double *d);
 
@@ -233,12 +237,6 @@ namespace delta {
       (c) [2]*(a) [2] + (c) [2]*(b) [2] + 2.*(c) [2]*(c) [2] + (c) [2]*(d) [2] +\
       (d) [2]*(a) [2] + (d) [2]*(b) [2] + (d) [2]*(c) [2] + 2.*(d) [2]*(d) [2] \
       ))
-
-      double getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass);
-
-      double getKineticEnergy(double velocity[3], double mass);
-
-      double getRotationalEnergy(double angular[3], double inertia[9]);
     }
   }
 }

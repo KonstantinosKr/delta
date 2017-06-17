@@ -31,9 +31,10 @@
 
 #include "delta/hull/hull.h"
 #include "delta/hull/alg.h"
+#include "delta/geometry/triangle.h"
 
 namespace delta {
-  namespace primitives {
+  namespace geometry {
     namespace cubes {
       /**
        * Generates a square
@@ -87,6 +88,7 @@ namespace delta {
              double alphaX,
              double alphaY,
              double alphaZ,
+             int    meshmultiplier,
              std::vector<double>&  xCoordinates,
              std::vector<double>&  yCoordinates,
              std::vector<double>&  zCoordinates);

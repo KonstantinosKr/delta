@@ -22,12 +22,11 @@
  SOFTWARE.
  */
 
-#include "surface.h"
-
 #include <stdlib.h>
 #include <assert.h>
+#include <delta/geometry/surface.h>
 
-void delta::primitives::surface::generateBoundBox(
+void delta::geometry::surface::generateBoundBox(
 		double center[3],
 		std::array<double, 3> minPoint,
 		std::array<double, 3> maxPoint,
@@ -40,14 +39,14 @@ void delta::primitives::surface::generateBoundBox(
 	double yw = maxPoint[1] - minPoint[1];
 	double zw = maxPoint[2] - minPoint[2];
 
-	//double xw = delta::primitives::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
-  //double yw = delta::primitives::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
-  //double zw = delta::primitives::properties::computeZw(xCoordinates, yCoordinates, zCoordinates);
+	//double xw = delta::geometry::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
+  //double yw = delta::geometry::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
+  //double zw = delta::geometry::properties::computeZw(xCoordinates, yCoordinates, zCoordinates);
 
 	generateXYZBox(center, xw, yw, zw, xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::primitives::surface::generateSurface(
+void delta::geometry::surface::generateSurface(
 		double center[3],
 		double width,
 		double height,
@@ -236,7 +235,7 @@ void delta::primitives::surface::generateSurface(
 
 }
 
-void delta::primitives::surface::generateXYZBox(
+void delta::geometry::surface::generateXYZBox(
 		double center[3],
 		double xw,
 		double yw,
@@ -426,7 +425,7 @@ void delta::primitives::surface::generateXYZBox(
 
 }
 
-void delta::primitives::surface::generateCuboid(
+void delta::geometry::surface::generateCuboid(
 		double center[3],
 		double width,
 		double height,

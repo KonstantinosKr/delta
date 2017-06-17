@@ -1,10 +1,10 @@
-#include "delta/primitives/properties.h"
-#include <stdio.h>
+#include "properties.h"
 
-void delta::primitives::properties::moveMeshFromPositionToOrigin(double center[3],
-										  std::vector<double>&  xCoordinates,
-										  std::vector<double>&  yCoordinates,
-										  std::vector<double>&  zCoordinates)
+void delta::geometry::properties::moveMeshFromPositionToOrigin(
+    double center[3],
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
 	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
@@ -14,10 +14,11 @@ void delta::primitives::properties::moveMeshFromPositionToOrigin(double center[3
 	}
 }
 
-void delta::primitives::properties::moveMeshFromOriginToPosition(double center[3],
-										  std::vector<double>&  xCoordinates,
-										  std::vector<double>&  yCoordinates,
-										  std::vector<double>&  zCoordinates)
+void delta::geometry::properties::moveMeshFromOriginToPosition(
+    double center[3],
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
 	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
@@ -27,36 +28,25 @@ void delta::primitives::properties::moveMeshFromOriginToPosition(double center[3
 	}
 }
 
-void delta::primitives::properties::scaleXYZ(double scale,
+void delta::geometry::properties::scaleXYZ(
+    double scale,
     double position[3],
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates)
 {
-  delta::primitives::properties::moveMeshFromPositionToOrigin(position, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::properties::moveMeshFromPositionToOrigin(position, xCoordinates, yCoordinates, zCoordinates);
 	for(unsigned i=0;i<xCoordinates.size();i++)
 	{
 		xCoordinates[i] = xCoordinates[i]*scale;
 		yCoordinates[i] = yCoordinates[i]*scale;
 		zCoordinates[i] = zCoordinates[i]*scale;
 	}
-	delta::primitives::properties::moveMeshFromOriginToPosition(position, xCoordinates, yCoordinates, zCoordinates);
+	delta::geometry::properties::moveMeshFromOriginToPosition(position, xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::primitives::properties::scaleXYZ(double scale,
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates)
-{
-  for(unsigned i=0;i<xCoordinates.size();i++)
-  {
-    xCoordinates[i] = xCoordinates[i]*scale;
-    yCoordinates[i] = yCoordinates[i]*scale;
-    zCoordinates[i] = zCoordinates[i]*scale;
-  }
-}
-
-void delta::primitives::properties::rotateX(double alphaX,
+void delta::geometry::properties::rotateX(
+    double alphaX,
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates)
@@ -80,7 +70,8 @@ void delta::primitives::properties::rotateX(double alphaX,
 	}
 }
 
-void delta::primitives::properties::rotateY(double alphaY,
+void delta::geometry::properties::rotateY(
+    double alphaY,
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates)
@@ -103,7 +94,8 @@ void delta::primitives::properties::rotateY(double alphaY,
 	}
 }
 
-void delta::primitives::properties::rotateZ(double alphaZ,
+void delta::geometry::properties::rotateZ(
+    double alphaZ,
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates)
@@ -126,18 +118,21 @@ void delta::primitives::properties::rotateZ(double alphaZ,
 	}
 }
 
-double delta::primitives::properties::computeDistanceAB(std::array<double, 3> A, std::array<double, 3> B)
+double delta::geometry::properties::computeDistanceAB(
+    std::array<double, 3> A,
+    std::array<double, 3> B)
 {
 	return std::sqrt(((B[0]-A[0])*(B[0]-A[0]))+((B[1]-A[1])*(B[1]-A[1]))+((B[2]-A[2])*(B[2]-A[2])));
 }
 
-double delta::primitives::properties::computeXYZWidth(std::vector<double>&  xCoordinates,
-											std::vector<double>&  yCoordinates,
-											std::vector<double>&  zCoordinates)
+double delta::geometry::properties::getXYZWidth(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
-	double xw = delta::primitives::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
-	double yw = delta::primitives::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
-	double zw = delta::primitives::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
+	double xw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	double yw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	double zw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
 
 	double tmp = xw > yw ? xw : yw;
 	double width = tmp>zw ? tmp : zw;
@@ -145,53 +140,57 @@ double delta::primitives::properties::computeXYZWidth(std::vector<double>&  xCoo
 	return width;
 }
 
-double delta::primitives::properties::computeXZWidth(std::vector<double>&  xCoordinates,
-											std::vector<double>&  yCoordinates,
-											std::vector<double>&  zCoordinates)
+double delta::geometry::properties::getXZWidth(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
-	double xw = delta::primitives::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
-	double zw = delta::primitives::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
+	double xw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	double zw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
 	double width = xw>zw ? xw : zw;
 
 	return width;
 }
 
-
-double delta::primitives::properties::computeXw(std::vector<double>&  xCoordinates,
-                                                std::vector<double>&  yCoordinates,
-                                                std::vector<double>&  zCoordinates)
+double delta::geometry::properties::getXw(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
 
-	std::array<double, 3> min = delta::primitives::properties::minBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
-	std::array<double, 3> max = delta::primitives::properties::maxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<double, 3> min = delta::geometry::properties::getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<double, 3> max = delta::geometry::properties::getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
 
 	return std::abs(min[0] - max[0]);
 }
 
-double delta::primitives::properties::computeYw(std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates)
+double delta::geometry::properties::getYw(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
 
-	std::array<double, 3> min = delta::primitives::properties::minBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
-	std::array<double, 3> max = delta::primitives::properties::maxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<double, 3> min = delta::geometry::properties::getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<double, 3> max = delta::geometry::properties::getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
 
 	return std::abs(min[1] - max[1]);
 }
 
-double delta::primitives::properties::computeZw(std::vector<double>&  xCoordinates,
-		std::vector<double>&  yCoordinates,
-		std::vector<double>&  zCoordinates)
+double delta::geometry::properties::getZw(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
-	std::array<double, 3> min = delta::primitives::properties::minBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
-	std::array<double, 3> max = delta::primitives::properties::maxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<double, 3> min = delta::geometry::properties::getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	std::array<double, 3> max = delta::geometry::properties::getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
 
 	return std::abs(min[2] - max[2]);
 }
 
-std::array<double, 3> delta::primitives::properties::minBoundaryVertex(std::vector<double>&  xCoordinates,
-													std::vector<double>&  yCoordinates,
-													std::vector<double>&  zCoordinates)
+std::array<double, 3> delta::geometry::properties::getMinBoundaryVertex(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
 	std::array<double, 3> vertex;
 
@@ -202,9 +201,10 @@ std::array<double, 3> delta::primitives::properties::minBoundaryVertex(std::vect
 	return vertex;
 }
 
-std::array<double, 3> delta::primitives::properties::maxBoundaryVertex(std::vector<double>&  xCoordinates,
-													std::vector<double>&  yCoordinates,
-													std::vector<double>&  zCoordinates)
+std::array<double, 3> delta::geometry::properties::getMaxBoundaryVertex(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
 	std::array<double, 3> vertex;
 
@@ -215,73 +215,21 @@ std::array<double, 3> delta::primitives::properties::maxBoundaryVertex(std::vect
 	return vertex;
 }
 
-double delta::primitives::properties::computeDiagonal(std::vector<double>&  xCoordinates,
-										std::vector<double>&  yCoordinates,
-										std::vector<double>&  zCoordinates)
+double delta::geometry::properties::computeDiagonal(
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
 	std::array<double, 3> minPoint, maxPoint;
 
-	minPoint = minBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
-	maxPoint = maxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	minPoint = getMinBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
+	maxPoint = getMaxBoundaryVertex(xCoordinates, yCoordinates, zCoordinates);
 
 	return computeDistanceAB(minPoint,maxPoint);
 }
 
-double delta::primitives::properties::computeMaxXWidth(std::vector<double>&  xCoordinates)
-{
-	double max = 0;
-
-	for(unsigned i=0;i<xCoordinates.size();i++)
-	{
-		double A = xCoordinates[i];
-
-		for(unsigned j=i+1;j<xCoordinates.size();j++)
-		{
-			double B = xCoordinates[j];
-			double distance = std::abs(B - A);
-			if (max < distance) max = distance;
-		}
-	}
-	return max;
-}
-
-double delta::primitives::properties::computeMaxYWidth(std::vector<double>&  yCoordinates)
-{
-	double max = -1E99;
-
-	for(unsigned i=0;i<yCoordinates.size();i++)
-	{
-		double A = yCoordinates[i];
-
-		for(unsigned j=i+1;j<yCoordinates.size();j++)
-		{
-			double B = yCoordinates[j];
-			double distance = std::abs(B - A);
-			if (max < distance) max = distance;
-		}
-	}
-	return max;
-}
-
-double delta::primitives::properties::computeMaxZWidth(std::vector<double>&  zCoordinates)
-{
-	double max = -1E99;
-
-	for(unsigned i=0;i<zCoordinates.size();i++)
-	{
-		double A = zCoordinates[i];
-
-		for(unsigned j=i+1;j<zCoordinates.size();j++)
-		{
-			double B = zCoordinates[j];
-			double distance = std::abs(B - A);
-			if (max < distance) max = distance;
-		}
-	}
-	return max;
-}
-
-double delta::primitives::properties::getMaxXAxis(std::vector<double>&  xCoordinates)
+double delta::geometry::properties::getMaxXAxis(
+    std::vector<double>&  xCoordinates)
 {
 	double max = std::numeric_limits<double>::min();
 
@@ -292,7 +240,8 @@ double delta::primitives::properties::getMaxXAxis(std::vector<double>&  xCoordin
 	return max;
 }
 
-double delta::primitives::properties::getMaxYAxis(std::vector<double>&  yCoordinates)
+double delta::geometry::properties::getMaxYAxis(
+    std::vector<double>&  yCoordinates)
 {
 	double max = std::numeric_limits<double>::min();
 
@@ -303,7 +252,8 @@ double delta::primitives::properties::getMaxYAxis(std::vector<double>&  yCoordin
 	return max;
 }
 
-double delta::primitives::properties::getMaxZAxis(std::vector<double>&  zCoordinates)
+double delta::geometry::properties::getMaxZAxis(
+    std::vector<double>&  zCoordinates)
 {
 	double max = std::numeric_limits<double>::min();
 
@@ -314,7 +264,8 @@ double delta::primitives::properties::getMaxZAxis(std::vector<double>&  zCoordin
 	return max;
 }
 
-double delta::primitives::properties::getMinXAxis(std::vector<double>&  xCoordinates)
+double delta::geometry::properties::getMinXAxis(
+    std::vector<double>&  xCoordinates)
 {
 	double min = std::numeric_limits<double>::max();
 
@@ -325,7 +276,8 @@ double delta::primitives::properties::getMinXAxis(std::vector<double>&  xCoordin
 	return min;
 }
 
-double delta::primitives::properties::getMinYAxis(std::vector<double>&  yCoordinates)
+double delta::geometry::properties::getMinYAxis(
+    std::vector<double>&  yCoordinates)
 {
 	double min = std::numeric_limits<double>::max();
 
@@ -336,7 +288,8 @@ double delta::primitives::properties::getMinYAxis(std::vector<double>&  yCoordin
 	return min;
 }
 
-double delta::primitives::properties::getMinZAxis(std::vector<double>&  zCoordinates)
+double delta::geometry::properties::getMinZAxis(
+    std::vector<double>&  zCoordinates)
 {
 	double min = std::numeric_limits<double>::max();
 
@@ -347,10 +300,11 @@ double delta::primitives::properties::getMinZAxis(std::vector<double>&  zCoordin
 	return min;
 }
 
-void delta::primitives::properties::centerOfGeometry(double centreOfGeometry[3],
-										  std::vector<double>&  xCoordinates,
-										  std::vector<double>&  yCoordinates,
-										  std::vector<double>&  zCoordinates)
+void delta::geometry::properties::centerOfGeometry(
+    double centreOfGeometry[3],
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates)
 {
 	centreOfGeometry[0] = 0.0;
 	centreOfGeometry[1] = 0.0;
@@ -370,7 +324,7 @@ void delta::primitives::properties::centerOfGeometry(double centreOfGeometry[3],
 	centreOfGeometry[2] = centreOfGeometry[2]/(nVertices);
 }
 
-void delta::primitives::properties::centerOfMass(
+void delta::geometry::properties::centerOfMass(
   std::vector<double>&  xCoordinates,
   std::vector<double>&  yCoordinates,
   std::vector<double>&  zCoordinates,
@@ -404,7 +358,7 @@ void delta::primitives::properties::centerOfMass(
   refcentreOfMassZ = centreOfMassZ;
 }
 
-void delta::primitives::properties::explode(
+void delta::geometry::properties::explode(
   std::vector<double>&  xCoordinates,
   std::vector<double>&  yCoordinates,
   std::vector<double>&  zCoordinates,
@@ -464,7 +418,7 @@ void delta::primitives::properties::explode(
   zCoordinates.insert(zCoordinates.end(), ezCoordinates.begin(), ezCoordinates.end());
 }
 
-void delta::primitives::properties::exploded(
+void delta::geometry::properties::exploded(
   std::vector<double>&  xCoordinates,
   std::vector<double>&  yCoordinates,
   std::vector<double>&  zCoordinates,
@@ -520,7 +474,7 @@ void delta::primitives::properties::exploded(
   }
 }
 
-double delta::primitives::properties::computeHMin(
+double delta::geometry::properties::getHMin(
   const std::vector<double>&  xCoordinates,
   const std::vector<double>&  yCoordinates,
   const std::vector<double>&  zCoordinates
@@ -556,7 +510,8 @@ double delta::primitives::properties::computeHMin(
   return min;
 }
 
-double delta::primitives::properties::simplex_J (double *a, double *b, double *c, double *d)
+double delta::geometry::properties::simplex_J (
+    double *a, double *b, double *c, double *d)
 {
   double q [9], J;
 
@@ -579,9 +534,9 @@ double delta::primitives::properties::simplex_J (double *a, double *b, double *c
 #define TRACE(A) ((A)[0] + (A)[4] + (A)[8])
 
 /*
- * computes the inertia using simplex integration from solfec
+ * gets the inertia using simplex integration from solfec
  */
-void delta::primitives::properties::computeInertia(
+void delta::geometry::properties::getInertia(
 		std::vector<double>&  xCoordinates,
 		std::vector<double>&  yCoordinates,
 		std::vector<double>&  zCoordinates,
@@ -674,7 +629,7 @@ void delta::primitives::properties::computeInertia(
 #endif
 }
 
-double delta::primitives::properties::computeMass(
+double delta::geometry::properties::getMass(
     std::vector<double>&  xCoordinates,
     std::vector<double>&  yCoordinates,
     std::vector<double>&  zCoordinates,
@@ -710,7 +665,7 @@ double delta::primitives::properties::computeMass(
   return me;
 }
 
-double delta::primitives::properties::computeVolume(
+double delta::geometry::properties::getVolume(
     std::vector<double>&  xCoordinates,
     std::vector<double>&  yCoordinates,
     std::vector<double>&  zCoordinates)
@@ -744,7 +699,10 @@ double delta::primitives::properties::computeVolume(
   return vol;
 }
 
-void delta::primitives::properties::computeInverseInertia(double inertia[9], double inverse[9], bool isObject)
+void delta::geometry::properties::getInverseInertia(
+    double inertia[9],
+    double inverse[9],
+    bool isObject)
 {
 	iREAL det;
 
@@ -773,19 +731,3 @@ void delta::primitives::properties::computeInverseInertia(double inertia[9], dou
 	}
 }
 
-double delta::primitives::properties::getKineticRotationalEnergy(double velocity[3], double angular[3], double inertia[9], double mass){
-	iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
-	iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
-
-	return rotation+kinetic;
-}
-
-double delta::primitives::properties::getKineticEnergy(double velocity[3], double mass){
-	iREAL kinetic = 0.5 * mass*(velocity[0]*velocity[0])+(velocity[1]*velocity[1])+(velocity[2]*velocity[2]);
-	return kinetic;
-}
-
-double delta::primitives::properties::getRotationalEnergy(double angular[3], double inertia[9]){
-	iREAL rotation = 0.5 * inertia[0]*(angular[0]*angular[0])+0.5*inertia[4]*(angular[1]*angular[1])+0.5*inertia[4]*(angular[2]*angular[2]);
-	return rotation;
-}

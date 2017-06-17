@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
 
- Copyright (c) 26 May 2016 Konstantinos Krestenitis
+ Copyright (c) 2015 Konstantinos Krestenitis
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,61 +22,36 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_PRIMITIVES_SURFACE_H_
-#define DELTA_PRIMITIVES_SURFACE_H_
-
-
 #include <vector>
-#include <array>
 
-#include "delta/hull/hull.h"
-#include "delta/hull/alg.h"
-#include "delta/primitives/surface.h"
-#include "delta/primitives/properties.h"
+#include "../core/read.h"
+#include "properties.h"
 
 namespace delta {
-  namespace primitives {
-    namespace surface {
-      void generateBoundBox(
-        double center[3],
-        std::array<double, 3> minPoint,
-        std::array<double, 3> maxPoint,
+  namespace geometry {
+    namespace granulates {
+      void generateParticle(
+        double    center[2],
+        double    h,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates
+      );
+
+      void loadParticle(
+        double  center[3],
+        double  h,
         std::vector<double>&  xCoordinates,
         std::vector<double>&  yCoordinates,
         std::vector<double>&  zCoordinates
       );
 
-      void generateSurface(
+      void generateParticle(
         double    center[3],
-        double 	width,
-        double	height,
+        double    h,
         std::vector<double>&  xCoordinates,
         std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates
-      );
-
-      void generateXYZBox(
-          double center[3],
-          double xw,
-          double yw,
-          double zw,
-          std::vector<double>&  xCoordinates,
-          std::vector<double>&  yCoordinates,
-          std::vector<double>&  zCoordinates
-      );
-
-      void generateCuboid(
-        double    center[3],
-        double 	width,
-        double    height,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates
-      );
+        std::vector<double>&  zCoordinates,
+        int noPointsPerParticle);
     }
   }
 }
-
-
-
-#endif /* DELTA_PRIMITIVES_SURFACE_H_ */

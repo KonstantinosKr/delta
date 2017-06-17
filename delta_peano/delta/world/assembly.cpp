@@ -100,7 +100,6 @@ std::vector<std::array<double, 3>> delta::world::assembly::array3d(double positi
 	return array;
 }
 
-
 std::vector<std::array<double, 3>> delta::world::assembly::getGridArrayList(double position[3], int xzcuts, int ycuts, double width)
 {
   return delta::world::assembly::array3d(position, width, xzcuts, width, ycuts);
@@ -151,14 +150,14 @@ void delta::world::assembly::uniMeshGeometry(double totalMass,
     position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
 
     std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-    delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
+    delta::geometry::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
 
     xCoordinatesArray.push_back(xCoordinates);
     yCoordinatesArray.push_back(yCoordinates);
     zCoordinatesArray.push_back(zCoordinates);
 
-    double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, material);
-    //double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
+    double mt = delta::geometry::properties::getMass(xCoordinates, yCoordinates, zCoordinates, material);
+    //double vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
     //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
     //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
     reMassTotal += mt;
@@ -181,10 +180,10 @@ void delta::world::assembly::uniMeshGeometry(double totalMass,
   for(unsigned j=0; j<xCoordinatesArray.size(); j++)
   {
     std::array<double, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-    delta::primitives::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+    delta::geometry::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
 
-    //double mt = delta::primitives::properties::computeMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], delta::collision::material::MaterialType::WOOD);
-    //double vt = delta::primitives::properties::computeVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+    //double mt = delta::geometry::properties::getMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], delta::collision::material::MaterialType::WOOD);
+    //double vt = delta::geometry::properties::getVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
     //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
     //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::collision::material::MaterialDensity::WOOD);
 
@@ -280,14 +279,14 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
     rad.push_back(particleDiameter/2);
     radius = particleDiameter/2;
 
-    delta::primitives::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
+    delta::geometry::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
 
     xCoordinatesArray.push_back(xCoordinates);
     yCoordinatesArray.push_back(yCoordinates);
     zCoordinatesArray.push_back(zCoordinates);
 
-    double mt = delta::primitives::properties::computeMass(xCoordinates, yCoordinates, zCoordinates, material);
-    //double vt = delta::primitives::properties::computeVolume(xCoordinates, yCoordinates, zCoordinates);
+    double mt = delta::geometry::properties::getMass(xCoordinates, yCoordinates, zCoordinates, material);
+    //double vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
     //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
     //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
     reMassTotal += mt;
@@ -305,7 +304,7 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
   for(unsigned j=0; j<xCoordinatesArray.size(); j++)
   {
     std::array<double, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-    delta::primitives::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+    delta::geometry::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
 
     rad[j] = rad[j] * rescale;
     if(rad[j]*2<minParticleDiam)
@@ -313,8 +312,8 @@ void delta::world::assembly::nonUniMeshGeometry(double totalMass,
     if(rad[j]*2>maxParticleDiam)
       maxParticleDiam = rad[j]*2;
 
-    //double mt = delta::primitives::properties::computeMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], material);
-    //double vt = delta::primitives::properties::computeVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+    //double mt = delta::geometry::properties::getMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], material);
+    //double vt = delta::geometry::properties::getVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
     //double vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
     //double ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::collision::material::MaterialDensity::WOOD);
 
@@ -337,9 +336,9 @@ void delta::world::assembly::makeLoadNuclearGeometry(double position[3],
 
   //measurements
   iREAL pos[] = {0,0,0};
-  delta::primitives::graphite::generateBrickFB(pos, 1, xCoordinates, yCoordinates, zCoordinates);
-  double width = delta::primitives::properties::computeXZWidth(xCoordinates, yCoordinates, zCoordinates);
-  double height = delta::primitives::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::graphite::generateBrickFB(pos, 1, xCoordinates, yCoordinates, zCoordinates);
+  double width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
+  double height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
   //read nuclear graphite schematics
@@ -379,9 +378,9 @@ void delta::world::assembly::makeFullBrickFBGrid(double position[3],
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
   double pos[3]; pos[0] = pos[1] = pos[2] = 0;
-  delta::primitives::graphite::generateBrickFB(pos, 1, xCoordinates, yCoordinates, zCoordinates);
-  double width = delta::primitives::properties::computeXZWidth(xCoordinates, yCoordinates, zCoordinates);
-  double height = delta::primitives::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::graphite::generateBrickFB(pos, 1, xCoordinates, yCoordinates, zCoordinates);
+  double width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
+  double height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
