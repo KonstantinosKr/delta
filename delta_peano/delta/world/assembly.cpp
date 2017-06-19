@@ -125,6 +125,88 @@ std::vector<std::array<iREAL, 3>> delta::world::assembly::getGridArrayList(
   return delta::world::assembly::array3d(position, width, xzcuts, width, ycuts);
 }
 
+void delta::world::assembly::uniform (
+    iREAL totalMass,
+    delta::geometry::material::MaterialType material,
+    bool isSphereOrNone,
+    int noPointsPerParticle,
+    std::vector<iREAL>  &rad,
+    std::vector<std::array<iREAL, 3>> &particleGrid,
+    std::vector<std::string> &componentGrid,
+    iREAL &minParticleDiam,
+    iREAL &maxParticleDiam,
+    std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &zCoordinatesArray)
+{
+  if(isSphereOrNone)
+  {
+    delta::world::assembly::uniSphereRadius(
+         totalMass,
+         material,
+         rad,
+         particleGrid,
+         componentGrid,
+         minParticleDiam,
+         maxParticleDiam);
+  } else {
+    delta::world::assembly::uniMeshGeometry(
+        totalMass,
+        material,
+        noPointsPerParticle,
+        rad,
+        particleGrid,
+        componentGrid,
+        minParticleDiam,
+        maxParticleDiam,
+        xCoordinatesArray,
+        yCoordinatesArray,
+        zCoordinatesArray);
+  }
+}
+
+void delta::world::assembly::nonuniform (
+    iREAL totalMass,
+    delta::geometry::material::MaterialType material,
+    bool isSphereOrNone,
+    iREAL subcellx,
+    int noPointsPerParticle,
+    std::vector<iREAL>  &rad,
+    std::vector<std::array<iREAL, 3>> &particleGrid,
+    std::vector<std::string> &componentGrid,
+    iREAL &minParticleDiam, iREAL &maxParticleDiam,
+    std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &zCoordinatesArray)
+{
+  if(isSphereOrNone)
+  {
+    delta::world::assembly::nonUniSphereRadius(
+        totalMass,
+        material,
+        subcellx,
+        rad,
+        particleGrid,
+        componentGrid,
+        minParticleDiam,
+        maxParticleDiam);
+  } else {
+    delta::world::assembly::nonUniMeshGeometry(
+        totalMass,
+        material,
+        subcellx,
+        noPointsPerParticle,
+        rad,
+        particleGrid,
+        componentGrid,
+        minParticleDiam,
+        maxParticleDiam,
+        xCoordinatesArray,
+        yCoordinatesArray,
+        zCoordinatesArray);
+  }
+}
+
 void delta::world::assembly::uniSphereRadius(
     iREAL totalMass,
     delta::geometry::material::MaterialType material,

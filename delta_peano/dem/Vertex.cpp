@@ -59,7 +59,7 @@ void dem::Vertex::destroy() const {
 #endif
 }
 
-int dem::Vertex::createNewParticle(
+int dem::Vertex::createParticle(
     const tarch::la::Vector<DIMENSIONS,double>&   center,
     std::vector<double>&  xCoordinates,
     std::vector<double>&  yCoordinates,
@@ -77,7 +77,7 @@ int dem::Vertex::createNewParticle(
 
   double centerOfMass[3], inertia[9], inverse[9], mass, hMin;
 
-  newParticle._persistentRecords._diameter	= delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates)*2;
+  newParticle._persistentRecords._diameter	= delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
 
   hMin = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);
 
@@ -171,7 +171,7 @@ int dem::Vertex::createNewParticle(
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 
-int dem::Vertex::createNewSubParticle(
+int dem::Vertex::createSubParticle(
     const tarch::la::Vector<DIMENSIONS,double>& center,
     std::vector<double>&  xCoordinates,
     std::vector<double>&  yCoordinates,
@@ -180,8 +180,6 @@ int dem::Vertex::createNewSubParticle(
     double inertia[9],
     double inverse[9],
     double mass,
-    double hMin,
-    double diameter,
     double epsilon,
     bool friction,
     delta::geometry::material::MaterialType material,
@@ -193,7 +191,7 @@ int dem::Vertex::createNewSubParticle(
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
-  newParticle._persistentRecords._diameter  = diameter;
+  newParticle._persistentRecords._diameter  = delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
 
   newParticle._persistentRecords._inertia(0) = inertia[0];
   newParticle._persistentRecords._inertia(1) = inertia[1];
@@ -239,9 +237,9 @@ int dem::Vertex::createNewSubParticle(
 
   newParticle._persistentRecords._mass            = mass;
   newParticle._persistentRecords._friction        = friction;
-  newParticle._persistentRecords._influenceRadius = (diameter+epsilon) * 1.1;
+  newParticle._persistentRecords._influenceRadius = (newParticle._persistentRecords._diameter+epsilon) * 1.1;
   newParticle._persistentRecords._epsilon         = epsilon;
-  newParticle._persistentRecords._hMin            = hMin;
+  newParticle._persistentRecords._hMin            = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);;
 
   newParticle._persistentRecords._numberOfTriangles = xCoordinates.size()/DIMENSIONS;
   newParticle._persistentRecords._isObstacle        = isObstacle;
@@ -274,15 +272,14 @@ int dem::Vertex::createNewSubParticle(
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 
-int dem::Vertex::createNewParticleSphere(
+int dem::Vertex::createSphereParticle(
     const tarch::la::Vector<DIMENSIONS,double>& center,
 		double radius,
 		double epsilon,
 		bool friction,
 		delta::geometry::material::MaterialType material,
 		bool isObstacle,
-		int particleId,
-		int localparticleId)
+		int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
@@ -350,7 +347,7 @@ int dem::Vertex::createNewParticleSphere(
   newParticle._persistentRecords._isObstacle 		    = isObstacle;
   newParticle._persistentRecords._material 			    = int(material);
   newParticle._persistentRecords._globalParticleId  = particleId;
-  newParticle._persistentRecords._localParticleId   = localparticleId;
+  newParticle._persistentRecords._localParticleId   = 0;
 
   newParticle._persistentRecords._velocity          = tarch::la::Vector<DIMENSIONS,double>(0.0);
   newParticle._persistentRecords._angular		 	      = tarch::la::Vector<DIMENSIONS,double>(0.0);

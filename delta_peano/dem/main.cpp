@@ -237,12 +237,12 @@ int main(int argc, char** argv)
   }
   else if (scenario=="sla") {
     scenarioArray[0] = dem::mappings::CreateGrid::sla;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="nuclearArray") {
     scenarioArray[0] = dem::mappings::CreateGrid::nuclearArray;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="two-particles-crash") {
@@ -313,23 +313,18 @@ int main(int argc, char** argv)
   //////////////PHYSICS TESTS START/////////////////////////////////////
   else if (scenario=="frictionStatic") {
     scenarioArray[0] = dem::mappings::CreateGrid::frictionStatic;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[1] = dem::mappings::CreateGrid::friction;
+    scenarioArray[2] = dem::mappings::CreateGrid::sstatic;
   }
   else if (scenario=="frictionSlide") {
     scenarioArray[0] = dem::mappings::CreateGrid::frictionSlide;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
-  }
-  else if (scenario=="frictionSlideRotate") {
-    scenarioArray[0] = dem::mappings::CreateGrid::frictionSlide;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[1] = dem::mappings::CreateGrid::friction;
+    scenarioArray[2] = dem::mappings::CreateGrid::slide;
   }
   else if (scenario=="frictionRoll") {
     scenarioArray[0] = dem::mappings::CreateGrid::frictionRoll;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[1] = dem::mappings::CreateGrid::friction;
+    scenarioArray[2] = dem::mappings::CreateGrid::roll;
   }
   //////////////PHYSICS TESTS END/////////////////////////////////////
   else {

@@ -46,6 +46,34 @@ namespace delta {
 
   	  std::vector<std::array<iREAL, 3>> getGridArrayList(iREAL position[3], int xzcuts, int ycuts, iREAL width);
 
+  	  void uniform(
+  	      iREAL totalMass,
+  	      delta::geometry::material::MaterialType material,
+  	      bool isSphereOrNone,
+  	      int noPointsPerParticle,
+  	      std::vector<iREAL>  &rad,
+  	      std::vector<std::array<iREAL, 3>> &particleGrid,
+  	      std::vector<std::string> &componentGrid,
+  	      iREAL &minParticleDiam,
+  	      iREAL &maxParticleDiam,
+  	      std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+  	      std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+  	      std::vector<std::vector<iREAL>>  &zCoordinatesArray);
+
+  	  void nonuniform (
+  	      iREAL totalMass,
+  	      delta::geometry::material::MaterialType material,
+  	      bool isSphereOrNone,
+  	      iREAL subcellx,
+  	      int noPointsPerParticle,
+  	      std::vector<iREAL>  &rad,
+  	      std::vector<std::array<iREAL, 3>> &particleGrid,
+  	      std::vector<std::string> &componentGrid,
+  	      iREAL &minParticleDiam, iREAL &maxParticleDiam,
+  	      std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+  	      std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+  	      std::vector<std::vector<iREAL>>  &zCoordinatesArray);
+
   	  void uniSphereRadius(
   	      iREAL totalMass,
           delta::geometry::material::MaterialType material,

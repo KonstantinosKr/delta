@@ -57,6 +57,7 @@ class dem::mappings::CreateGrid {
       freefallWithCubes,
       freefallWithGranulates,
 
+      nuclear,
       sla,
       nuclearArray,
       TwoParticlesCrash,
@@ -138,6 +139,7 @@ class dem::mappings::CreateGrid {
     static double   _maxParticleDiam;
     static int      _noPointsPerParticle;
     static double   _epsilon;
+    static bool     _isSphere;
 
     static GridType _gridType;
 
@@ -150,7 +152,7 @@ class dem::mappings::CreateGrid {
     static std::vector<std::array<double, 3>> _particleGrid;
     static std::vector<std::string> _componentGrid;
 
-    static std::vector<double> _rad;
+    static std::vector<double> _radArray;
     static std::vector<std::vector<double>> _xCoordinatesArray;
     static std::vector<std::vector<double>> _yCoordinatesArray;
     static std::vector<std::vector<double>> _zCoordinatesArray;
@@ -160,24 +162,16 @@ class dem::mappings::CreateGrid {
         int particleNumber,
         VScheme velocity);
 
-    void makeCoarseEnviroment(
-        dem::Vertex& vertex,
-        double centreAsArray[3],
-        double eps,
-        int noPointsPerParticle);
+    void deployCoarseEnviroment(
+        dem::Vertex& vertex);
   
-    void makeFineEnviroment(
+    void deployFineEnviroment(
         dem::Vertex& vertex,
-        dem::Vertex * const coarseGridVertices,
-        const peano::grid::VertexEnumerator&  coarseGridVerticesEnumerator,
         double centreAsArray[3],
         double cellSize,
-        double eps,
-        int noPointsPerParticle,
         delta::geometry::material::MaterialType material,
         double friction,
-        double isObstacle,
-        double &minParticleDiam, double &maxParticleDiam);
+        double isObstacle);
 
     int createParticleObject(
         int quadsect, dem::Vertex& vertex,
@@ -196,7 +190,7 @@ class dem::mappings::CreateGrid {
         std::vector<double>&  zCoordinates,
         bool isObstacle);
 
-    int makeHopper(
+    int deployHopper(
         dem::Vertex&  vertex, int quadsect, int meshmultiplier,
         double position[3],
         double _hopperWidth,
@@ -207,7 +201,7 @@ class dem::mappings::CreateGrid {
         bool friction,
         bool isObstacle);
   
-    int makeBox(
+    int deployBox(
         dem::Vertex&  vertex,
         int quadsect,
         int meshmultiplier,
@@ -222,7 +216,7 @@ class dem::mappings::CreateGrid {
         bool friction,
         bool isObstacle);
 
-    int makeSphere(
+    int deploySphere(
         dem::Vertex&  vertex,
         double position[3],
         double radius,
@@ -231,7 +225,7 @@ class dem::mappings::CreateGrid {
         bool friction,
         bool isObstacle);
 
-    int makeLoadedNonSpherical(
+    int deployGranulateFromFile(
         dem::Vertex&  vertex,
         double position[3],
         double radius,
@@ -240,12 +234,11 @@ class dem::mappings::CreateGrid {
         bool friction,
         bool isObstacle);
 
-    int makeNonSpherical(
+    int deployGranulate(
         dem::Vertex&  vertex,
         double position[3],
         double radius,
         double eps,
-        int noPointsPerParticle,
         delta::geometry::material::MaterialType material,
         bool friction,
         bool isObstacle);
