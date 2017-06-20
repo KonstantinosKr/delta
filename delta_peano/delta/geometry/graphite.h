@@ -43,6 +43,13 @@ namespace delta {
        std::vector<iREAL>&  zCoordinates
       );
 
+      void generateBrickFB(
+       iREAL    center[3],
+       std::vector<iREAL>&  xCoordinates,
+       std::vector<iREAL>&  yCoordinates,
+       std::vector<iREAL>&  zCoordinates
+      );
+
       void generateKeyXK(
        iREAL    center[3],
        iREAL    h,

@@ -46,6 +46,8 @@ namespace delta {
 
   	  std::vector<std::array<iREAL, 3>> getGridArrayList(iREAL position[3], int xzcuts, int ycuts, iREAL width);
 
+  	  void collapseUniformGrid(iREAL position[3], std::vector<std::array<iREAL, 3>>& grid, int xzcuts, int ycuts, iREAL elementWidth, iREAL elementHeight, iREAL epsilon);
+
   	  void uniform(
   	      iREAL totalMass,
   	      delta::geometry::material::MaterialType material,
@@ -117,19 +119,23 @@ namespace delta {
           std::vector<std::vector<iREAL>>  &yCoordinatesArray,
           std::vector<std::vector<iREAL>>  &zCoordinatesArray);
 
-  	  void makeLoadNuclearGeometry(iREAL position[3],
+  	  void loadNuclearGeometry(iREAL position[3],
   	      std::vector<std::array<iREAL, 3>> &particleGrid,
   	      std::vector<std::string> &componentGrid,
   	      std::vector<iREAL> &radius,
   	      iREAL &minParticleDiam, iREAL &maxParticleDiam);
 
-  	  void makeFullBrickFBGrid(iREAL position[3],
-  	      iREAL length,
-  	      iREAL elements,
+  	  void makeBrickGrid(
+  	      iREAL position[3],
+  	      iREAL arrayXZlength,
+  	      int   xzElements,
+  	      iREAL arrayYlength,
+  	      int   yElements,
   	      std::vector<std::array<iREAL, 3>> &particleGrid,
   	      std::vector<std::string> &componentGrid,
   	      std::vector<iREAL> &radius,
-  	      iREAL &minParticleDiam, iREAL &maxParticleDiam);
+  	      iREAL &minParticleDiam,
+  	      iREAL &maxParticleDiam);
     }
   }
 }

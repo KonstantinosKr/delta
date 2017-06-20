@@ -57,9 +57,15 @@ class dem::mappings::CreateGrid {
       freefallWithCubes,
       freefallWithGranulates,
 
+      blackHole,
+      hopper,
+      freefall,
+
       nuclear,
       sla,
-      nuclearArray,
+      dla,
+      nuclearDeck,
+
       TwoParticlesCrash,
 
       hopperUniform,
@@ -78,16 +84,16 @@ class dem::mappings::CreateGrid {
       frictionSlide,
       frictionRoll,
 
-      blackHole,
-      hopper,
-      freefall,
-
       randomOriented,
       cubes,
       granulates,
 
       uniform,
       nonuniform,
+      n32,
+      n64,
+      n256,
+
       n100,
       n1k,
       n10k,

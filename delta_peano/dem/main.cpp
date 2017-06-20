@@ -47,8 +47,11 @@ void printManual()
 
           << "  two-particles-crash" << std::endl
 
-          << "  sla"<< std::endl
-          << "  nuclearArray" << std::endl
+          << "  SLA"<< std::endl
+          << "  DLA"<< std::endl
+          << "  nuclearDeck32" << std::endl
+          << "  nuclearDeck64" << std::endl
+          << "  nuclearDeck256" << std::endl
 
           << "  hopperUniform" << std::endl
           << "  hopperUniform1k" << std::endl
@@ -235,15 +238,30 @@ int main(int argc, char** argv)
   scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
   scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
-  else if (scenario=="sla") {
+  else if (scenario=="nuclearSLA") {
     scenarioArray[0] = dem::mappings::CreateGrid::sla;
     scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
-  else if (scenario=="nuclearArray") {
-    scenarioArray[0] = dem::mappings::CreateGrid::nuclearArray;
+  else if (scenario=="nuclearDLA") {
+    scenarioArray[0] = dem::mappings::CreateGrid::sla;
     scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+  }
+  else if (scenario=="nuclearDeck32") {
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
+    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[2] = dem::mappings::CreateGrid::n32;
+  }
+  else if (scenario=="nuclearDeck64") {
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
+    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[2] = dem::mappings::CreateGrid::n64;
+  }
+  else if (scenario=="nuclearDeck256") {
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
+    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[2] = dem::mappings::CreateGrid::n256;
   }
   else if (scenario=="two-particles-crash") {
     scenarioArray[0] = dem::mappings::CreateGrid::TwoParticlesCrash;

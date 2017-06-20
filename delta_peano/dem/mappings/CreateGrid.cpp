@@ -259,17 +259,34 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     auto material = delta::geometry::material::MaterialType::GOLD;
     iREAL position[] = {_centreAsArray[0], _centreAsArray[1], _centreAsArray[2]};
     double floorHeight = 0.05;
-
     int particleid = deployBox(vertex, 0, 0, position, 1, floorHeight, 0, 0, 0, _epsilon, material, true, true);
     dem::mappings::CreateGrid::setVScheme(vertex,  particleid, dem::mappings::CreateGrid::moveLeft);
+    //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
 
     if(_scenario[0] == sla)
     {
-      delta::world::assembly::makeLoadNuclearGeometry(_centreAsArray, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+      delta::world::assembly::loadNuclearGeometry(_centreAsArray, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
     }
-    else if(_scenario[0] == nuclearArray)
+    else if(_scenario[0] == nuclearDeck)
     {
-      delta::world::assembly::makeFullBrickFBGrid(_centreAsArray, 1, 10, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+      if(_scenario[2] == n32)
+      {
+        //nuclear deck 32
+        _centreAsArray[1] += 0.05/2;
+        delta::world::assembly::makeBrickGrid(_centreAsArray, 0.3, 4, 0.3, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+      }
+      else if(_scenario[2] == n64)
+      {
+        //nuclear deck 64
+        _centreAsArray[1] += 0.05/2;
+        delta::world::assembly::makeBrickGrid(_centreAsArray, 0.3, 4, 0.4, 4, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+      }
+      else if(_scenario[2] == n256)
+      {
+        //nuclear deck 256
+        _centreAsArray[1] += 0.05/2;
+        delta::world::assembly::makeBrickGrid(_centreAsArray, 0.5, 4, 0.3, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+      }
     }
   } else if(_scenario[1] == hopper)
   {
@@ -366,10 +383,12 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
   }
   else if(_scenario[1] == friction)
   {
+    //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
     auto material = delta::geometry::material::MaterialType::WOOD;
     double height = 0.05; double width = 0.35;
     deployBox(vertex, 0, 0, _centreAsArray, width, height, 0,0,0, _epsilon, material, true, true);
     double radius = 0.01; double eps = radius*0.2;
+    //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
 
     if(_scenario[2] == sstatic)
     {
