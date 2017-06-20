@@ -361,10 +361,11 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._vertices(4) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(5) = DEMDoubleHeap::getInstance().createData();
 
+  #ifdef CONTACTSTATS
   std::cout   << "#####PARTICLE-INIT-PROPERTIES-DATA#####" << std::endl
               << "partiId=" << std::fixed << std::setprecision(10) << newParticle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << newParticle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << newParticle.getDiameter() << std::endl
               << "influRa=" << std::fixed << std::setprecision(10) << newParticle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << newParticle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << newParticle.getHMin() << std::endl;
-
+  #endif
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 

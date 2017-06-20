@@ -266,6 +266,9 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     if(_scenario[0] == sla)
     {
       delta::world::assembly::loadNuclearGeometry(_centreAsArray, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+    } else if(_scenario[0] == dla)
+    {
+      delta::world::assembly::loadNuclearGeometry(_centreAsArray, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
     }
     else if(_scenario[0] == nuclearDeck)
     {

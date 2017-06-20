@@ -191,8 +191,8 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
 ) {
   logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-  double minDiameter       = std::numeric_limits<double>::max();
-  int    numberOfParticles = 0;
+  double minDiameter  = std::numeric_limits<double>::max();
+  int numberOfParticles = 0;
 
   dfor2(k) //get min diameter particle
     numberOfParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles();
