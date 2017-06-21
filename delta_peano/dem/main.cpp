@@ -244,7 +244,7 @@ int main(int argc, char** argv)
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="nuclearDLA") {
-    scenarioArray[0] = dem::mappings::CreateGrid::sla;
+    scenarioArray[0] = dem::mappings::CreateGrid::dla;
     scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
