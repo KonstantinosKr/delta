@@ -120,6 +120,8 @@ namespace delta {
           std::vector<std::vector<iREAL>>  &zCoordinatesArray);
 
   	  void loadNuclearGeometry(iREAL position[3],
+  	      iREAL width,
+  	      int layers,
   	      std::vector<std::array<iREAL, 3>> &particleGrid,
   	      std::vector<std::string> &componentGrid,
   	      std::vector<iREAL> &radius,

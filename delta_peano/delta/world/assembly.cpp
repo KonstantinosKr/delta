@@ -486,19 +486,19 @@ void delta::world::assembly::nonUniMeshGeometry(
 
 void delta::world::assembly::loadNuclearGeometry(
     iREAL position[3],
+    iREAL width,
+    int layers,
     std::vector<std::array<iREAL, 3>> &particleGrid,
-    std::vector<std::string> &componentGrid,
+    std::vector<std::string>& componentGrid,
     std::vector<iREAL> &radius,
     iREAL &minParticleDiam,
     iREAL &maxParticleDiam)
 {
-  std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
-
   //measurements
-  iREAL pos[] = {0,0,0};
-  delta::geometry::graphite::generateBrickFB(pos, 1, xCoordinates, yCoordinates, zCoordinates);
-  iREAL width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
-  iREAL height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
+  std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
+  delta::geometry::graphite::generateBrickFB(xCoordinates, yCoordinates, zCoordinates);
+  iREAL w = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
+  iREAL h = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
   //read nuclear graphite schematics
@@ -507,22 +507,37 @@ void delta::world::assembly::loadNuclearGeometry(
 
   ///place components of 2d array structure
   int elements = 46;
-  iREAL arrayXZlength = 1;
+  iREAL arrayXZlength = width/2;
   iREAL xzWCell = delta::world::assembly::getDiscritization(arrayXZlength, elements);
 
-  iREAL scaleDownPercentage = 0;
-  if(xzWCell < width || xzWCell < height)
-  {//brick is bigger than grid
-    iREAL excess = width - xzWCell;
-    scaleDownPercentage = ((width - excess)/width);
-    //printf("SCALE DOWN: %f xw:%f boxWidth:%f excess:%f\n", scaleDownPercentage, width, xzWCell, excess);
+  iREAL scalePercentage = 0;
+  if(w > xzWCell)//brick is bigger than grid
+  {
+    iREAL excess = w - xzWCell;
+    scalePercentage = ((w-excess)/w);
+    printf("SCALE DOWN:%f w:%f wperc:%f excess:%f boxWidth:%f\n", scalePercentage, w, w/100, xzWCell, excess);
   }
 
-  position[0] = xzWCell/2;
-  position[1] += ((height/2)*scaleDownPercentage);
-  position[2] = xzWCell/2;
-  particleGrid = delta::world::assembly::array2d(position, arrayXZlength, elements);
-  for(unsigned i=0;i<particleGrid.size();i++) radius.push_back(0);
+  position[0] -= arrayXZlength/2;
+  position[1] -= (h*scalePercentage);
+  position[2] -= arrayXZlength/2;
+
+  for(int i=0; i<layers; i++)
+  {
+    position[1] += (h*scalePercentage)*i;
+    std::vector<std::array<iREAL, 3>> tmp = delta::world::assembly::array2d(position, arrayXZlength, elements);
+    //particleGrid.insert(particleGrid.end(), tmp.begin(), tmp.end());
+    for(int j=0; j<tmp.size(); j++)
+    {
+        particleGrid.push_back(tmp[i]);
+    }
+    std::cout << tmp.size() << " " << particleGrid.size() << std::endl;
+  }
+
+  for(unsigned i=0; i<particleGrid.size(); i++) {
+    radius.push_back(scalePercentage);
+    componentGrid.push_back("FB");
+  }
 }
 
 void delta::world::assembly::makeBrickGrid(
@@ -583,7 +598,6 @@ void delta::world::assembly::makeBrickGrid(
   particleGrid = delta::world::assembly::array3d(position, arrayXZlength, xzElements, arrayYlength, yElements);
 
   collapseUniformGrid(position, particleGrid, xzElements, yElements, width, height, 0);
-
 
   for(unsigned i=0; i<particleGrid.size(); i++) {
     radius.push_back(scalePercentage);

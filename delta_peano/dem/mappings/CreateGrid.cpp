@@ -258,37 +258,35 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
     auto material = delta::geometry::material::MaterialType::GOLD;
     iREAL position[] = {_centreAsArray[0], _centreAsArray[1], _centreAsArray[2]};
-    double floorHeight = 0.05;
-    int particleid = deployBox(vertex, 0, 0, position, 1, floorHeight, 0, 0, 0, _epsilon, material, true, true);
+    double height = 0.05; double width = 0.35;
+    int particleid = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
     dem::mappings::CreateGrid::setVScheme(vertex,  particleid, dem::mappings::CreateGrid::moveLeft);
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
 
+    position[1] += height/2;
     if(_scenario[0] == sla)
     {
-      delta::world::assembly::loadNuclearGeometry(_centreAsArray, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+      delta::world::assembly::loadNuclearGeometry(position, width, 1, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
     } else if(_scenario[0] == dla)
     {
-      delta::world::assembly::loadNuclearGeometry(_centreAsArray, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+      delta::world::assembly::loadNuclearGeometry(position, width, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
     }
     else if(_scenario[0] == nuclearDeck)
     {
       if(_scenario[2] == n32)
       {
-        //nuclear deck 32
-        _centreAsArray[1] += 0.05/2;
-        delta::world::assembly::makeBrickGrid(_centreAsArray, 0.3, 4, 0.3, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+        //nuclear deck 32s
+        delta::world::assembly::makeBrickGrid(position, 0.3, 4, 0.3, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
       }
       else if(_scenario[2] == n64)
       {
         //nuclear deck 64
-        _centreAsArray[1] += 0.05/2;
-        delta::world::assembly::makeBrickGrid(_centreAsArray, 0.3, 4, 0.4, 4, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+        delta::world::assembly::makeBrickGrid(position, 0.3, 4, 0.4, 4, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
       }
       else if(_scenario[2] == n256)
       {
         //nuclear deck 256
-        _centreAsArray[1] += 0.05/2;
-        delta::world::assembly::makeBrickGrid(_centreAsArray, 0.5, 4, 0.3, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+        delta::world::assembly::makeBrickGrid(position, 0.5, 4, 0.3, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
       }
     }
   } else if(_scenario[1] == hopper)
@@ -746,9 +744,8 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
       } else if(_componentGrid[i] == "FB")
       {
         std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-
-        delta::geometry::graphite::generateBrickFB(position, _radArray[i]*0.9, xCoordinates, yCoordinates, zCoordinates);
-        vertex.createParticle(position, xCoordinates, yCoordinates, zCoordinates, _radArray[i]*eps, friction, material, isObstacle, _numberOfParticles, 0);
+        delta::geometry::graphite::generateBrickFB(position, _radArray[i], xCoordinates, yCoordinates, zCoordinates);
+        vertex.createParticle(position, xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, 0);
         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
       }
     }
