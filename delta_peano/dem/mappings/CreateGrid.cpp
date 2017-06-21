@@ -83,8 +83,6 @@ void dem::mappings::CreateGrid::setScenario(
 	_gridType        		  = gridType;
 	_epsilon 		 		      = epsilon;
 	_noPointsPerParticle	= noPointsPerGranulate;
-	_isSphere             = (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
-                           dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none);
 }
 
 void dem::mappings::CreateGrid::beginIteration(
@@ -105,6 +103,9 @@ void dem::mappings::CreateGrid::beginIteration(
 
   solverState.setPrescribedMinimumMeshWidth(_minParticleDiam);
   solverState.setPrescribedMaximumMeshWidth(_maxParticleDiam);
+
+  _isSphere = (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
+               dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none);
 
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
@@ -286,7 +287,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
       else if(_scenario[2] == n256)
       {
         //nuclear deck 256
-        delta::world::assembly::makeBrickGrid(position, 0.5, 4, 0.3, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+        delta::world::assembly::makeBrickGrid(position, 0.15, 10, 0.08, 4, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
       }
     }
   } else if(_scenario[1] == hopper)
@@ -294,7 +295,6 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     ////////HOPPER////////////////////////////////////////////////////////////////////////////////////////////
     auto material = delta::geometry::material::MaterialType::GOLD;
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.05;
-    //HOPPER DIAGONAL:0.382926
     int particleId = deployHopper(vertex, 0, 0, _centreAsArray, _hopperWidth, _hopperHeight, _hopperHatch, _epsilon, material, false, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -306,14 +306,13 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     _maxComputeDomain[1] = _centreAsArray[1] + _hopperHeight*2.5;
     _maxComputeDomain[2] = _centreAsArray[2] + _hopperWidth/2;
 
-
-    ////////FLOOR////////////////floor DIAGONAL:0.344674///////////////////////////////////////////
+    ////////FLOOR///////////////////////////////////////////////////////////////////////////////////////////
     iREAL position[] = {_centreAsArray[0], 0.35, _centreAsArray[2]};
     double height = 0.05; double width = 0.35;
     particleId = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //////////PARTICLE GRID///////////////////////////////////////////////////////////////////////////////////////
+    //////////PARTICLE GRID/////////////////////////////////////////////////////////////////////////////////
     iREAL xzcuts = 0; iREAL ycuts = 0;
     if(_scenario[3] == n100)
     {
@@ -341,8 +340,8 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     iREAL minArraylengthXZ = (double)_hopperWidth - _epsilon * 6;
     iREAL margin = ((double)minArraylengthXZ/(double)xzcuts)/2.0;
 
-    //iREAL minParticleDiameter = ((double)_hopperWidth/(double)xzcuts)-(margin*2.0);
-    //printf("minParDiameter:%.10f\n", minParticleDiameter);
+    //iREAL minParticleDiam = ((double)_hopperWidth/(double)xzcuts)-(margin*2.0);
+    //printf("minParDiam:%.10f\n", minParticleDiam);
 
     position[0] = (_centreAsArray[0] - _hopperWidth/2) + margin; position[1] = _centreAsArray[1] + _hopperHeight/2; position[2] = (_centreAsArray[2] - _hopperWidth/2) + margin;
     _particleGrid = delta::world::assembly::getGridArrayList(position, xzcuts, ycuts, _hopperWidth);
@@ -428,15 +427,15 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
   }
   else if(_scenario[0] == TwoParticlesCrash)
   {
-    double radius = 0.05;
+    double radius = 0.005;
     auto material = delta::geometry::material::MaterialType::WOOD;
-    iREAL position[] = {_centreAsArray[0], _centreAsArray[1] + radius*2, _centreAsArray[2]};
+    iREAL position[] = {_centreAsArray[0], 0.8, _centreAsArray[2]};
     if(_isSphere)
     {
       int newParticleNumber = dem::mappings::CreateGrid::deploySphere(vertex, position, radius, _epsilon, material, false, false);
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = -0.5;
 
-      position[1] = _centreAsArray[1] - radius*2;
+      position[1] = 0.2;
       newParticleNumber = dem::mappings::CreateGrid::deploySphere(vertex, position, radius, _epsilon, material, false, false);
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = 0.5;
     } else {
@@ -528,7 +527,6 @@ void dem::mappings::CreateGrid::createCell(
 		{
 			particlesInCellPerAxis = 1;
 			//_maxParticleDiam = fineGridVerticesEnumerator.getCellSize()(0); //_minParticleDiam = std::min(_minParticleDiam, _maxParticleDiam);
-			//logWarning( "createCell(...)", "particle size has been too small for coarsest prescribed grid. Reduce particle size to " << _minParticleDiam << "-" << fineGridVerticesEnumerator.getCellSize()(0) );
 		}
 
 		dfor(k,particlesInCellPerAxis)

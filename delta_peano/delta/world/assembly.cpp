@@ -142,7 +142,7 @@ void delta::world::assembly::collapseUniformGrid(iREAL position[3], std::vector<
     if(yAxisLoc > 0)
     {
       //printf("%i\n", yAxisLoc);
-      grid[i][1] -= dy;
+      //grid[i][1] -= dy;
     }
     if(zAxisLoc > 0)
     {

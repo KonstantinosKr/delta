@@ -132,7 +132,7 @@ int main(int argc, char** argv)
   const double       stepSize         	 = atof(argv[7]);
   const std::string  plotIdentifier      = argv[8];
   const double		   realSnapshot		     = atof(argv[9]);
-  const bool         gravity             = (argv[10]);
+  const std::string  gravity             = argv[10];
   const std::string  collisionModel      = argv[11];
   const int			     meshMultiplier 	   = atof(argv[12]);
 
@@ -427,7 +427,7 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  dem::mappings::MoveParticles::gravity	= (gravity==true) ? 9.81 : 0.0;
+  dem::mappings::MoveParticles::gravity	= (gravity=="true") ? 9.81 : 0.0;
 
   logInfo( "run(...)", "scenario:" << (scenario)                                 << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)       << std::endl
                     << "stepSize:" << (stepSize)                                 << ", plot:"     << (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)   << std::endl
