@@ -232,15 +232,15 @@ void delta::dynamics::updateAngular(
 }
 
 void delta::dynamics::updateVertices(
-    iREAL& x,
-    iREAL& y,
-    iREAL& z,
-    iREAL& refx,
-    iREAL& refy,
-    iREAL& refz,
-    iREAL& rotation,
-    iREAL& position,
-    iREAL& refposition)
+    iREAL* x,
+    iREAL* y,
+    iREAL* z,
+    iREAL* refx,
+    iREAL* refy,
+    iREAL* refz,
+    iREAL* rotation,
+    iREAL* position,
+    iREAL* refposition)
 {
 	iREAL C[3], c[3];
 

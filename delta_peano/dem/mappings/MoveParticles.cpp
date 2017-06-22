@@ -83,12 +83,12 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
       double* refz = fineGridVertex.getZRefCoordinates(i);
 
       #pragma simd
-      for (int j=0; j<particle.getNumberOfTriangles()*DIMENSIONS; j++)
+      for(int j=0; j<particle.getNumberOfTriangles()*DIMENSIONS; j++)
       {
-        delta::dynamics::updateVertices(x[j], y[j], z[j], refx[j], refy[j], refz[j],
-                                        particle._persistentRecords._orientation(0),
-                                        particle._persistentRecords._centreOfMass(0),
-                                        particle._persistentRecords._referentialCentreOfMass(0));
+        delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
+                                        &particle._persistentRecords._orientation(0),
+                                        &particle._persistentRecords._centreOfMass(0),
+                                        &particle._persistentRecords._referentialCentreOfMass(0));
       }
     }
   }
