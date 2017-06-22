@@ -277,12 +277,12 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
       if(_scenario[2] == n32)
       {
         //nuclear deck 32s
-        delta::world::assembly::makeBrickGrid(position, 0.3, 4, 0.3, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+        delta::world::assembly::makeBrickGrid(position, 0.15, 4, 0.1, 2, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
       }
       else if(_scenario[2] == n64)
       {
         //nuclear deck 64
-        delta::world::assembly::makeBrickGrid(position, 0.3, 4, 0.4, 4, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
+        delta::world::assembly::makeBrickGrid(position, 0.15, 4, 0.4, 4, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
       }
       else if(_scenario[2] == n256)
       {
