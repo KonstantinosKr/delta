@@ -5,6 +5,8 @@
 # Is invoked with the following arguments
 # $1 path to the output file
 
+JOB_SCRIPT0000=runjobBatch1
+JOB_SCRIPT000=runjobBatch1
 JOB_SCRIPT00=runjobBatch1
 JOB_SCRIPT0=runjobBatch1
 JOB_SCRIPT1=runjobBatch2
@@ -14,15 +16,19 @@ JOB_SCRIPT4=runjobBatch6
 JOB_SCRIPT5=runjobBatch8
 JOB_SCRIPT6=runjobBatch16
 
-exp00o=/scratch/rfmw74/streamSerial
-exp0o=/scratch/rfmw74/streamOMP1
-exp1o=/scratch/rfmw74/streamOMP2
-exp2o=/scratch/rfmw74/streamOMP3
-exp3o=/scratch/rfmw74/streamOMP4
-exp4o=/scratch/rfmw74/streamOMP6
-exp5o=/scratch/rfmw74/streamOMP8
-exp6o=/scratch/rfmw74/streamOMP16
+exp00o=/ddn/data/rfmw74/streamSerialLikwidMEM
+exp00o=/ddn/data/rfmw74/streamSerialLikwidFlop
+exp00o=/ddn/data/rfmw74/streamSerial
+exp0o=/ddn/data/rfmw74/streamOMP1
+exp1o=/ddn/data/rfmw74/streamOMP2
+exp2o=/ddn/data/rfmw74/streamOMP3
+exp3o=/ddn/data/rfmw74/streamOMP4
+exp4o=/ddn/data/rfmw74/streamOMP6
+exp5o=/ddn/data/rfmw74/streamOMP8
+exp6o=/ddn/data/rfmw74/streamOMP16
 
+exp0000="likwid-perfctr -f -C 1 -g MEM ./streamSerial"
+exp000="likwid-perfctr -f -C 1 -g FLOPS_DP ./streamSerial"
 exp00="./streamSerial"
 exp0="./streamOMP"
 exp1="./streamOMP"
@@ -31,6 +37,20 @@ exp3="./streamOMP"
 exp4="./streamOMP"
 exp5="./streamOMP"
 exp6="./streamOMP"
+
+sed "s,{OUTPUT_FILE},$exp0000o,g" ${JOB_SCRIPT000} > ${JOB_SCRIPT0000}_tmp
+sed "s,{RUN},$exp0000,g" ${JOB_SCRIPT0000}_tmp > ${JOB_SCRIPT0000}_tmp1
+sbatch ${JOB_SCRIPT0000}_tmp1
+
+rm ${JOB_SCRIPT0000}_tmp
+rm ${JOB_SCRIPT0000}_tmp1
+
+sed "s,{OUTPUT_FILE},$exp000o,g" ${JOB_SCRIPT00} > ${JOB_SCRIPT000}_tmp
+sed "s,{RUN},$exp000,g" ${JOB_SCRIPT000}_tmp > ${JOB_SCRIPT000}_tmp1
+sbatch ${JOB_SCRIPT000}_tmp1
+
+rm ${JOB_SCRIPT000}_tmp
+rm ${JOB_SCRIPT000}_tmp1
 
 sed "s,{OUTPUT_FILE},$exp00o,g" ${JOB_SCRIPT00} > ${JOB_SCRIPT00}_tmp
 sed "s,{RUN},$exp00,g" ${JOB_SCRIPT00}_tmp > ${JOB_SCRIPT00}_tmp1
