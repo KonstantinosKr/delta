@@ -40,15 +40,15 @@ namespace delta {
         iREAL *rotation,
         iREAL step);
 
-    void updateVertices(
-        iREAL *x,
-        iREAL *y,
-        iREAL *z,
-        iREAL *refx,
-        iREAL *refy,
-        iREAL *refz,
-        iREAL *rotation,
-        iREAL *position,
-        iREAL *refposition);
+    void delta::dynamics::updateVertices(
+        iREAL& x,
+        iREAL& y,
+        iREAL& z,
+        iREAL& refx,
+        iREAL& refy,
+        iREAL& refz,
+        iREAL& rotation,
+        iREAL& position,
+        iREAL& refposition);
   }
 }

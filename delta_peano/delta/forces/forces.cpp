@@ -1,7 +1,7 @@
 #include "forces.h"
 
 //particle parameters
-#define SPRING 1E3
+#define SPRING 1E2
 #define DAMPER 0.8
 #define FRICTION 0.8
 
