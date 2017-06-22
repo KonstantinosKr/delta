@@ -1,5 +1,5 @@
 #!/bin/csh
-#SBATCH -p par6.q
+#SBATCH -p par7.q
 #SBATCH -N 1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=6

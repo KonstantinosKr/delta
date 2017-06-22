@@ -2,7 +2,7 @@
 #SBATCH -p par7.q
 #SBATCH -N 1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=12
 #SBATCH --output={OUTPUT_FILE}
 #SBATCH -t 30:00:00
 #SBATCH --exclusive
@@ -12,6 +12,6 @@ module load intel/xe_2015.2
 module load intelmpi/intel/5.0.3
 module load slurm
 
-setenv OMP_NUM_THREADS 1
+setenv OMP_NUM_THREADS 12
 
 srun {RUN}
