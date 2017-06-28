@@ -706,22 +706,27 @@ void delta::geometry::properties::getInverseInertia(
 {
 	iREAL det;
 
-    iREAL a[9], x[9];
+  iREAL a[9], x[9];
 
-    for (int j = 0; j < 9; j++)
-    {
-      a[j] = inertia[j];
-    }
+  for (int j = 0; j < 9; j++)
+  {
+    a[j] = inertia[j];
+  }
 
-    INVERT (a, x, det);
+  INVERT (a, x, det);
 	//INVERT (inertia, inverse, det);
+
+  for (int j = 0; j < 9; j++)
+  {
+    printf("%f\n", x[j]);
+  }
 
 	//zero inverse because it is an object
 	if(isObject)
 	{
 		for (int j = 0; j < 9; j++)
 		{
-			inverse[j] = 0;
+			inverse[j] = 0.0;
 		}
 	} else {
 		for (int j = 0; j < 9; j++)

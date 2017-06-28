@@ -120,15 +120,15 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._inverse(7) = inverse[7];
   newParticle._persistentRecords._inverse(8) = inverse[8];
 
-  newParticle._persistentRecords._orientation(0) = 1;
+  newParticle._persistentRecords._orientation(0) = 1.0;
   newParticle._persistentRecords._orientation(1) = 0;
   newParticle._persistentRecords._orientation(2) = 0;
   newParticle._persistentRecords._orientation(3) = 0;
-  newParticle._persistentRecords._orientation(4) = 1;
+  newParticle._persistentRecords._orientation(4) = 1.0;
   newParticle._persistentRecords._orientation(5) = 0;
   newParticle._persistentRecords._orientation(6) = 0;
   newParticle._persistentRecords._orientation(7) = 0;
-  newParticle._persistentRecords._orientation(8) = 1;
+  newParticle._persistentRecords._orientation(8) = 1.0;
 
   newParticle._persistentRecords._mass            = mass;
   newParticle._persistentRecords._friction			  = friction;
@@ -286,21 +286,20 @@ int dem::Vertex::createSphereParticle(
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
-  double inertia[9], inverse[9], mass;
-
-  iREAL volume = (4.0/3.0) * 3.14 * pow(radius,3);
+  double inertia[9], inverse[9];
 
   iREAL density = int(delta::geometry::material::materialToDensitymap.find(material)->second);
-  mass = volume * density;
+  iREAL volume = (4.0/3.0) * 3.14 * radius * radius * radius;
+  double mass = volume * density;
 
   newParticle._persistentRecords._inertia(0) = 0.4 * mass * radius * radius;
-  newParticle._persistentRecords._inertia(1) = 0;
-  newParticle._persistentRecords._inertia(2) = 0;
-  newParticle._persistentRecords._inertia(3) = 0;
+  newParticle._persistentRecords._inertia(1) = 0.0;
+  newParticle._persistentRecords._inertia(2) = 0.0;
+  newParticle._persistentRecords._inertia(3) = 0.0;
   newParticle._persistentRecords._inertia(4) = 0.4 * mass * radius * radius;
-  newParticle._persistentRecords._inertia(5) = 0;
-  newParticle._persistentRecords._inertia(6) = 0;
-  newParticle._persistentRecords._inertia(7) = 0;
+  newParticle._persistentRecords._inertia(5) = 0.0;
+  newParticle._persistentRecords._inertia(6) = 0.0;
+  newParticle._persistentRecords._inertia(7) = 0.0;
   newParticle._persistentRecords._inertia(8) = 0.4 * mass * radius * radius;
 
   newParticle._persistentRecords._centreOfMass(0) = center(0);

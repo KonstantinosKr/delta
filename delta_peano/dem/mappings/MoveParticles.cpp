@@ -50,18 +50,16 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
 {
   double timeStepSize = _state.getTimeStepSize();
 
-  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  if(!dem::mappings::CreateGrid::_isSphere)
   {
-    records::Particle&  particle = fineGridVertex.getParticle(i);
-
-    if(particle.getIsObstacle() && particle._persistentRecords._velocity(0) != 0 && particle._persistentRecords._velocity(1) != 0 && particle._persistentRecords._velocity(2) != 0)
+    for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
     {
-      continue;
-    } else {
-      if(!particle.getIsObstacle())
-      {
-        particle._persistentRecords._velocity(1) += timeStepSize*(gravity*-9.8);
-      }
+      records::Particle&  particle = fineGridVertex.getParticle(i);
+
+      if(particle.getIsObstacle()) continue;
+
+      particle._persistentRecords._velocity(1) += timeStepSize*(gravity*-9.8);
+
       particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
       particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
       particle._persistentRecords._centre(2) += timeStepSize*particle._persistentRecords._velocity(2);
@@ -82,7 +80,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
       double* refy = fineGridVertex.getYRefCoordinates(i);
       double* refz = fineGridVertex.getZRefCoordinates(i);
 
-      #pragma simd
+      //#pragma simd
       for(int j=0; j<particle.getNumberOfTriangles()*DIMENSIONS; j++)
       {
         delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
@@ -90,6 +88,23 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
                                         &particle._persistentRecords._centreOfMass(0),
                                         &particle._persistentRecords._referentialCentreOfMass(0));
       }
+    }
+  } else {
+    for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+    {
+      records::Particle&  particle = fineGridVertex.getParticle(i);
+
+      if(particle.getIsObstacle()) continue;
+
+      particle._persistentRecords._velocity(1) += timeStepSize*(gravity*-9.8);
+
+      particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
+      particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
+      particle._persistentRecords._centre(2) += timeStepSize*particle._persistentRecords._velocity(2);
+
+      particle._persistentRecords._centreOfMass(0) += timeStepSize*particle._persistentRecords._velocity(0);
+      particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
+      particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
     }
   }
 }

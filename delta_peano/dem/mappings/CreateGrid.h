@@ -131,6 +131,8 @@ class dem::mappings::CreateGrid {
         double particleDiamMin, double particleDiamMax,
         GridType gridType, int noPointsPerGranulate);
 
+
+    static bool     _isSphere;
   private:
     /**
      * Logging device for the trace macros.
@@ -145,7 +147,6 @@ class dem::mappings::CreateGrid {
     static double   _maxParticleDiam;
     static int      _noPointsPerParticle;
     static double   _epsilon;
-    static bool     _isSphere;
 
     static GridType _gridType;
 
