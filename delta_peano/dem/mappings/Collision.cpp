@@ -549,7 +549,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		}
 	}
 
-	_state.incNumberOfParticleComparisons(fineGridVertex.getNumberOfParticles() * fineGridVertex.getNumberOfRealAndVirtualParticles())
+	_state.incNumberOfParticleComparisons(fineGridVertex.getNumberOfParticles() * fineGridVertex.getNumberOfRealAndVirtualParticles());
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 

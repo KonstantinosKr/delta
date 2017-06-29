@@ -32,8 +32,8 @@ PEANO_SETTINGS=-DTrackGridStatistics
 
 ##############################################################################################
 
-GCCRUN=-O3 -Wall -ftree-vectorize -ftree-vectorizer-verbose=3 -ftree-loop-optimize -faggressive-loop-optimizations -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing -march=native
-GCCDEBUG=-O3 -Wall -Werror -Wconversions -Wno-long-long -Wno-conversion -g -DDebug -DAsserts -pedantic -pedantic-errors -march=native 
+GCCRUN=-O3 -Wall -ftree-vectorize -ftree-vectorizer-verbose=3 -ftree-loop-optimize -faggressive-loop-optimizations -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing 
+GCCDEBUG=-O3 -Wall -Wconversion -Wno-long-long -Wno-conversion -g -DDebug -DAsserts -pedantic -pedantic-errors 
 
 ##############################################################################################
 

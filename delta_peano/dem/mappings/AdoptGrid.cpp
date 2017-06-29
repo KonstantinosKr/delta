@@ -129,7 +129,7 @@ void dem::mappings::liftAllParticles(
   dem::Vertex * const                           coarseGridVertices,
   const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator
 ) {
-  logTraceInWith1Argument( "liftAllParticles(...)", fineGridVertex.toString() );
+  //logTraceInWith1Argument( "liftAllParticles(...)", fineGridVertex.toString() );
 
   int i=0;
   while (i<fineGridVertex.getNumberOfParticles())
@@ -144,7 +144,7 @@ void dem::mappings::liftAllParticles(
     i++;
   }
 
-  logTraceOutWith1Argument( "liftAllParticles(...)", fineGridVertex );
+  //logTraceOutWith1Argument( "liftAllParticles(...)", fineGridVertex );
 }
 
 void dem::mappings::AdoptGrid::destroyHangingVertex(
