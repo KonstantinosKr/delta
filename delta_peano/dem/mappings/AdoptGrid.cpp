@@ -182,7 +182,7 @@ void dem::mappings::dropParticles(
     {
       for(int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
       {
-        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0))
+        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0)/1.1)
         {
           fineGridVertex.appendParticle(coarseGridVertexAtSamePosition.getParticle(i));
           coarseGridVertexAtSamePosition.releaseParticle(i);

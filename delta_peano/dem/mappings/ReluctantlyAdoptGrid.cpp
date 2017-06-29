@@ -56,7 +56,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   {
     for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
     {
-      if (fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+      if(fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
       {
         logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
         fineGridVertex.refine();
