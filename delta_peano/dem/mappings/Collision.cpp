@@ -855,7 +855,7 @@ void dem::mappings::Collision::enterCell(
     dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(6)]);
   }
 
-  if(fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() > 0)
+  if(fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() > 0)
   {
     dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(5)]);
     dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(4)]);
