@@ -41,11 +41,14 @@ namespace delta {
         iREAL &damp,
         iREAL &ma);
 
-    void friction(
+    void delta::forces::friction(
         iREAL normal[3],
         iREAL vi[3],
-        iREAL forc,
-        iREAL friction[3]);
+        iREAL force,
+        iREAL friction[3],
+        int materialA,
+        int materialB,
+        bool isSphere);
 
   	iREAL springSphere(
   	    iREAL normal[3],
@@ -56,14 +59,6 @@ namespace delta {
   	    iREAL f[3],
   	    iREAL &damp,
   	    iREAL &ma);
-
-  	void frictionSphere(
-  	    iREAL normal[3],
-  	    iREAL vi[3],
-  	    iREAL forc,
-  	    iREAL friction[3],
-  	    int materialA,
-  	    int materialB);
 
     /**
       @param angularVelocityA is a vector that indicates linear velocity from center of mass
