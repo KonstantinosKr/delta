@@ -487,7 +487,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
           break;
         }
         case CollisionModel::HybridStat: {
-          newContactPoints = delta::collision::hybridStat(
+          newContactPoints = delta::collision::hybridTriangleStat(
               fineGridVertex.getNumberOfTriangles(i),
               fineGridVertex.getXCoordinates(i),
               fineGridVertex.getYCoordinates(i),
@@ -720,7 +720,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
           break;
         }
         case CollisionModel::HybridStat: {
-          newContactPoints = delta::collision::hybridStat(
+          newContactPoints = delta::collision::hybridTriangleStat(
               vertexA.getNumberOfTriangles(i), vertexA.getXCoordinates(i),
               vertexA.getYCoordinates(i), vertexA.getZCoordinates(i),
               vertexA.getParticle(i).getEpsilon(),

@@ -90,6 +90,8 @@ class dem::mappings::CreateGrid {
 
       uniform,
       nonuniform,
+      n1,
+      n4,
       n32,
       n64,
       n256,

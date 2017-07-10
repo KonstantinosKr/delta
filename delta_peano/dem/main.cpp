@@ -51,6 +51,7 @@ void printManual()
 
           << "  SLA"<< std::endl
           << "  DLA"<< std::endl
+          << "  nuclearDeck4" << std::endl
           << "  nuclearDeck32" << std::endl
           << "  nuclearDeck64" << std::endl
           << "  nuclearDeck256" << std::endl
@@ -249,6 +250,16 @@ int main(int argc, char** argv)
     scenarioArray[0] = dem::mappings::CreateGrid::dla;
     scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+  }
+  else if (scenario=="nuclearDeck1") {
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
+    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[2] = dem::mappings::CreateGrid::n1;
+  }
+  else if (scenario=="nuclearDeck4") {
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
+    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[2] = dem::mappings::CreateGrid::n4;
   }
   else if (scenario=="nuclearDeck32") {
     scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;

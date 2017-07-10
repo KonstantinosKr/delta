@@ -41,7 +41,7 @@ namespace delta {
         iREAL &damp,
         iREAL &ma);
 
-    void delta::forces::friction(
+    void friction(
         iREAL normal[3],
         iREAL vi[3],
         iREAL force,

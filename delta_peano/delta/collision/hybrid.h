@@ -84,23 +84,39 @@ namespace delta {
       int 	    particleB);
 
 
-    std::vector<contactpoint> hybridStat(
-      int       numberOfTrianglesOfGeometryA,
+    std::vector<contactpoint> hybridBatchStat(
+      int      numberOfTrianglesOfGeometryA,
       iREAL*   xCoordinatesOfPointsOfGeometryA,
       iREAL*   yCoordinatesOfPointsOfGeometryA,
       iREAL*   zCoordinatesOfPointsOfGeometryA,
       iREAL    epsilonA,
-      bool      frictionA,
-      int       particleA,
+      bool     frictionA,
+      int      particleA,
 
-      int       numberOfTrianglesOfGeometryB,
+      int      numberOfTrianglesOfGeometryB,
       iREAL*   xCoordinatesOfPointsOfGeometryB,
       iREAL*   yCoordinatesOfPointsOfGeometryB,
       iREAL*   zCoordinatesOfPointsOfGeometryB,
       iREAL    epsilonB,
-      bool      frictionB,
-      int       particleB);
+      bool     frictionB,
+      int      particleB);
 
+    std::vector<contactpoint> hybridTriangleStat(
+      int      numberOfTrianglesOfGeometryA,
+      iREAL*   xCoordinatesOfPointsOfGeometryA,
+      iREAL*   yCoordinatesOfPointsOfGeometryA,
+      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      iREAL    epsilonA,
+      bool     frictionA,
+      int      particleA,
+
+      int      numberOfTrianglesOfGeometryB,
+      iREAL*   xCoordinatesOfPointsOfGeometryB,
+      iREAL*   yCoordinatesOfPointsOfGeometryB,
+      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      iREAL    epsilonB,
+      bool     frictionB,
+      int      particleB);
 
     static int numberOfPenaltyFails;
     static int numberOfBatchFails;

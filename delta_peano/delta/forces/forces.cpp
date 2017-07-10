@@ -439,7 +439,6 @@ void delta::forces::getContactForce(
   if(isSphere)
   {
     forc = delta::forces::springSphere(conpnt.normal, conpnt.depth, vij, massA, massB, f, damp, ma);
-
     #ifdef CONTACTSTATS
     std::cout << "id=" << std::fixed << std::setprecision(10) << 0.0 << ", SDAMPER=" << std::fixed << std::setprecision(10) << SDAMPER << ", SSPRING=" << std::fixed << std::setprecision(10) << SSPRING << std::endl
               << "vij[0]=" << std::fixed << std::setprecision(10) << vij[0] << ", vij[1]=" << std::fixed << std::setprecision(10) << vij[1] << ", vij[2]" << std::fixed << std::setprecision(10) << vij[2] << std::endl
@@ -451,7 +450,6 @@ void delta::forces::getContactForce(
                                 positionASpatial, positionBSpatial,
                                 positionAReferential, positionBReferential, massA, massB,
                                 rotationA, rotationB, inverseA, inverseB, f, damp, ma);
-
     #ifdef CONTACTSTATS
     std::cout << "id=" << std::fixed << std::setprecision(10) << 0.0 << ", DAMPER=" << std::fixed << std::setprecision(10) << DAMPER << ", SPRING=" << std::fixed << std::setprecision(10) << SPRING << std::endl
               << "vij[0]=" << std::fixed << std::setprecision(10) << vij[0] << ", vij[1]=" << std::fixed << std::setprecision(10) << vij[1] << ", vij[2]" << std::fixed << std::setprecision(10) << vij[2] << std::endl
