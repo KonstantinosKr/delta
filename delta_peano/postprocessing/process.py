@@ -1,3 +1,40 @@
+def removeMinObstacles(obstacles,
+                   listParticleMinId,
+                   listLinear,
+                   listAngular,
+                   listCenterOfMass,
+                   listParticlePropertyId,
+                   listMass,
+                   listDiameter,
+                   listInfluenceRadius,
+                   listEpsilon,
+                   listhMin):
+
+    for i, val in enumerate(listParticleMinId):
+        if val < obstacles:
+            del listLinear[i]
+            del listAngular[i]
+            del listCenterOfMass[i]
+
+    for i, val in enumerate(listParticlePropertyId):
+        if val < obstacles:
+            del listMass[i]
+            del listDiameter[i]
+            del listInfluenceRadius[i]
+            del listEpsilon[i]
+            del listhMin[i]
+
+    return listParticleMinId, \
+           listLinear, \
+           listAngular, \
+           listCenterOfMass, \
+           listParticlePropertyId, \
+           listMass, \
+           listDiameter, \
+           listInfluenceRadius, \
+           listEpsilon, \
+           listhMin
+
 
 def removeObstacles(listIsObstacle,
                     listParticleId,

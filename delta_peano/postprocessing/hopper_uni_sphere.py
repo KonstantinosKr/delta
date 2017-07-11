@@ -1,80 +1,29 @@
-from store import *
-import numpy as np
+import particleData
 import symmetry as sym
-import process as pr
+import readSimulationLog
 
-"""
-getSimSteps()
-getPlotSteps()
-getParticleCount()
-getListOfUniqueParticleIds()
+filename = "../hopper/uniformsphere/uniformsphere.log"
 
-listParticleId, listMass, listDiameter, \
-listInfluenceRadius, listEpsilon, listthMin, listNoOfTriangles, \
-listIsObstacle, listMaterial, listLinear, listAngular, \
-listRefangular, listCentre, listCenterOfMass, \
-listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(particleIndex)
-
-listParticleId, listMass, listDiameter, \
-listInfluenceRadius, listEpsilon, listthMin, listNoOfTriangles, \
-listIsObstacle, listMaterial, listLinear, listAngular, \
-listRefangular, listCentre, listCenterOfMass, \
-listRefCenterOfMass, listInertia, listInverse, listOrientation = getParticleData(particleIndexStart, particleIndexEnd, timestep)
-
-listContactId, listMasterId, listSlaveId, listHasFriction, \
-listDistance, listDepth, listEpsilon, listContactPosition, \
-listNormalX, listP, listQ = getContactData(masterIndex, slaveIndex, interchangeable)
-
-"""
+#step = 14800
+step = 0
 
 
-getSimSteps()
-getPlotSteps()
-getParticleCount()
-getListOfUniqueParticleIds()
+particleCount, obstacleCount, triangleCount = readSimulationLog.readSimCreatedParticlesLog(filename)
 
-filename = "../hopper/uniSphere100/uniformSphere.log"
-
-listParticleId, \
+listParticlePropertyId, \
 listMass, \
 listDiameter, \
 listInfluenceRadius, \
 listEpsilon, \
-listthMin, \
-listNoOfTriangles, \
-listIsObstacle, \
-listMaterial, \
+listhMin = particleData.getPropertyData(obstacleCount, particleCount, filename)
+
+listParticleMinId, \
 listLinear, \
 listAngular, \
-listRefangular, \
-listCentre, \
-listCenterOfMass, \
-listRefCenterOfMass, \
-listInertia, \
-listInverse, \
-listOrientation = getParticleData(0, 2, 0, filename)
-
-pr.removeObstacles(listIsObstacle,
-                    listParticleId,
-                    listMass,
-                    listDiameter,
-                    listInfluenceRadius,
-                    listEpsilon,
-                    listthMin,
-                    listNoOfTriangles,
-                    listMaterial,
-                    listLinear,
-                    listAngular,
-                    listRefangular,
-                    listCentre,
-                    listCenterOfMass,
-                    listRefCenterOfMass,
-                    listInertia,
-                    listInverse,
-                    listOrientation)
+listCenterOfMass = particleData.getMinData(obstacleCount, particleCount, step, filename)
 
 centrePoint = 0.5
-sym.symmetryPlot(listMass, listDiameter, listCentre)
+sym.symmetryPlot(listMass, listDiameter, listCenterOfMass, centrePoint)
 
 #400 - iteration 4800
 '''

@@ -1,9 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
+def symmetryPlot(listMass, listDiameter, listCentre, centrePoint):
 
-def symmetryPlot(N, x, listMass, listDiameter, listCentre, centrePoint):
     N = len(listCentre)
-
     x = np.array([np.array(i[0] - centrePoint) for i in listCentre])
     y = np.array([np.array(i[1]) for i in listCentre])
 
@@ -13,7 +12,6 @@ def symmetryPlot(N, x, listMass, listDiameter, listCentre, centrePoint):
     miny = min(y)
     maxy = max(y)
     height = abs(miny - maxy)
-
 
     area = np.array([np.array(i * 100000) for i in listDiameter])  # 0 to 15 point radii
 
