@@ -12,7 +12,7 @@ INCLUDE_MPI=$(MPI_INC)
 LINK_TBB=$(TBB_SHLIB)
 LINK_OMP=$(OMP_SHLIB)
 LINK_OMP=-fopenmp
-LINK_MPI=
+LINK_MPI=-L /usr/local/Cluster-Apps/openmpi/gcc-4.9.1/1.8.2/lib/ -lmpi
 
 ##############################################################################################
 
@@ -156,16 +156,16 @@ dim3-gcc-release-tbb-omp-triangle-phi: header build
 dim3-gcc-release-mpi: CC=mpic++ -std=c++0x
 dim3-gcc-release-mpi: DIM=-DDim3
 dim3-gcc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DParallel
-dim3-gcc-release-mpi: CFLAGS=$(GCCRUN) $(INCLUDE_MPI)
-dim3-gcc-release-mpi: LFLAGS=$(MPI_INC)
+dim3-gcc-release-mpi: CFLAGS=$(GCCRUN) $(INCLUDE_MPI) 
+dim3-gcc-release-mpi: LFLAGS=$(LINK_MPI)
 dim3-gcc-release-mpi: EXECUTABLE=dem-3d-release-mpi
 dim3-gcc-release-mpi: header build
 
 dim3-gcc-release-mpi-tbb: CC=mpic++ -std=c++0x
 dim3-gcc-release-mpi-tbb: DIM=-DDim3
 dim3-gcc-release-mpi-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel
-dim3-gcc-release-mpi-tbb: CFLAGS=$(GCCRUN) $(INCLUDE_TBB)
-dim3-gcc-release-mpi-tbb: LFLAGS=$(MPI_INC) $(LINK_TBB) 
+dim3-gcc-release-mpi-tbb: CFLAGS=$(GCCRUN) $(INCLUDE_TBB) $(INCLUDE_MPI) 
+dim3-gcc-release-mpi-tbb: LFLAGS=$(LINK_TBB) $(LINK_MPI) 
 dim3-gcc-release-mpi-tbb: EXECUTABLE=dem-3d-release-mpi-tbb
 dim3-gcc-release-mpi-tbb: header build
 
@@ -263,8 +263,8 @@ dim3-icc-release-tbb-omp-particle: header build
 
 dim3-icc-release-mpi: CC=mpiicc --std=c++11
 dim3-icc-release-mpi: DIM=-DDim3
-dim3-icc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DParallel
-dim3-icc-release-mpi: CFLAGS=$(ICCRUN) $(INCLUDE_MPI)
+dim3-icc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DAsserts -DParallel
+dim3-icc-release-mpi: CFLAGS=$(ICCRUN) $(INCLUDE_MPI) 
 dim3-icc-release-mpi: LFLAGS=$(LINK_MPI)
 dim3-icc-release-mpi: EXECUTABLE=dem-3d-release-mpi
 dim3-icc-release-mpi: header build
@@ -272,8 +272,8 @@ dim3-icc-release-mpi: header build
 dim3-icc-release-mpi-tbb: CC=mpiicc --std=c++11
 dim3-icc-release-mpi-tbb: DIM=-DDim3
 dim3-icc-release-mpi-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel
-dim3-icc-release-mpi-tbb: CFLAGS=$(ICCRUN) $(INCLUDE_TBB) $(INCLUDE_MPI)
-dim3-icc-release-mpi-tbb: LFLAGS=$(LINK_TBB) $(LINK_MPI)
+dim3-icc-release-mpi-tbb: CFLAGS=$(ICCRUN) $(INCLUDE_MPI) $(INCLUDE_TBB) 
+dim3-icc-release-mpi-tbb: LFLAGS=$(LINK_MPI) $(LINK_TBB) 
 dim3-icc-release-mpi-tbb: EXECUTABLE=dem-3d-release-mpi-tbb
 dim3-icc-release-mpi-tbb: header build
 
