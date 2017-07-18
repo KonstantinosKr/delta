@@ -192,14 +192,14 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          #endif
          MPI_Datatype subtypes[Attributes] = {
             #ifndef MPI2
-            , MPI_UB
+            MPI_UB
             #endif
             
          };
          
          int blocklen[Attributes] = {
             #ifndef MPI2
-            , 1
+            1
             #endif
             
          };
@@ -875,14 +875,14 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          #endif
          MPI_Datatype subtypes[Attributes] = {
             #ifndef MPI2
-            , MPI_UB
+            MPI_UB
             #endif
             
          };
          
          int blocklen[Attributes] = {
             #ifndef MPI2
-            , 1
+            1
             #endif
             
          };

@@ -407,7 +407,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
         newParticleNumber = dem::mappings::CreateGrid::deploySphere(vertex, position, radius, eps, material, true, false);
       } else {
         iREAL position[] = {_centreAsArray[0], _centreAsArray[1] + ((height)/1.5)-width/2, _centreAsArray[2]};
-        newParticleNumber = dem::mappings::CreateGrid::deployBox(vertex, 1, 1, position, width, height, 0,0,0, eps, material, true, false);
+        newParticleNumber = dem::mappings::CreateGrid::deployBox(vertex, 0.1, 0.1 , position, width, height, 0,0,0, eps, material, true, false);
       }
       setVScheme(vertex, newParticleNumber, dem::mappings::CreateGrid::crashY);
     }

@@ -50,10 +50,7 @@ module load intelmpi/intel/2017.2
 setenv CC Intel
 module load gcc/4.9.1
 setenv TBB_INC "-I/opt/intel/tbb/include/"
-setenv TBB_SHLIB '-L/gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.4 -ltbb'
-setenv TBB_SHLIB "-L/gpfs/hamilton6/apps/intel/xe_2015/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1/ -ltbb"
 setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7/ -ltbb"
-
 
 phi1 - sandy
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/intel64/gcc4.4/
@@ -75,10 +72,6 @@ export TBB_INC=-I/opt/intel/tbb/include/
 export TBB_SHLIB="-L/opt/intel/tbb/lib/intel64/gcc4.4/ -ltbb"
 
 /opt/intel/mic/bin/micnativeloadex ./dem-3d-release-vec -a "0.5 0.5 0.5 random-velocities 50 regular-grid 0.001 never 0 bf"
-
-phi 1 - VTunes
-/opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-gui
-
 nohup /opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-cl -r xperiment -collect hotspots -no-auto-finalize -- ./dem-3d-release-novec > lol.log &
 
 Mac - ivy bridge

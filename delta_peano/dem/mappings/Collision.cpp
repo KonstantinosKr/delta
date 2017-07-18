@@ -118,11 +118,11 @@ void dem::mappings::Collision::addCollision(
 		//printf("COLLISION DETECTED\n");
 	}
 	//START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
-	if ( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
+	if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
 		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
 	}
 
-	if ( _collisionsOfNextTraversal.count(particleB.getGlobalParticleId())==0 ) {
+	if( _collisionsOfNextTraversal.count(particleB.getGlobalParticleId())==0 ) {
 		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleId(), std::vector<Collisions>()));
 	}
 	///////////////END
@@ -136,16 +136,16 @@ void dem::mappings::Collision::addCollision(
 	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].begin();
 		 p!=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].end();  p++)
 	{
-		if (p->_copyOfPartnerParticle.getGlobalParticleId()==particleB.getGlobalParticleId())
+		if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleB.getGlobalParticleId())
 		{
 			dataSetA = &(*p);
 		}
 	}
 
-	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].begin();
+	for(std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].begin();
 		 p!=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].end(); p++)
 	{
-		if (p->_copyOfPartnerParticle.getGlobalParticleId()==particleA.getGlobalParticleId())
+		if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleA.getGlobalParticleId())
 		{
 			dataSetB = &(*p);
 		}
@@ -157,7 +157,7 @@ void dem::mappings::Collision::addCollision(
     //END
 
 	//START if data A is empty
-	if (dataSetA==nullptr)
+	if(dataSetA==nullptr)
 	{
 		//START push_back collisions object into corresponding both A and B particle index collision list
 		_collisionsOfNextTraversal[particleA.getGlobalParticleId()].push_back( Collisions() );
@@ -227,7 +227,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	
 	double timeStepSize = _state.getTimeStepSize();
 
-	for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++) //No need to loop over virtual particles here
+	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) //No need to loop over virtual particles here
 	{
 		records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
@@ -238,7 +238,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
 
 		//collisions with other partner particles
-		for (std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin(); p != _activeCollisions[currentParticle.getGlobalParticleId()].end(); p++)
+		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin(); p != _activeCollisions[currentParticle.getGlobalParticleId()].end(); p++)
 		{
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
@@ -301,10 +301,10 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	#ifdef ompParticle
 		#pragma omp parallel for
 	#endif
-	for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
 	{ // No nead to loop over virtual particles here as well
 		//printf("Number in the grid master:%d\n", fineGridVertex.getNumberOfParticles());
-		for (int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
+		for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{
 			//printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
 			//printf("I:%d J:%d\n", fineGridVertex.getParticle(i).getGlobalParticleNumber(), fineGridVertex.getParticle(j).getGlobalParticleNumber());
@@ -313,7 +313,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 				 (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
 				 continue;
 
-      if (_enableOverlapCheck)
+      if(_enableOverlapCheck)
         if (delta::collision::isSphereOverlayInContact(
             fineGridVertex.getParticle(i).getCentre(0),
             fineGridVertex.getParticle(i).getCentre(1),
@@ -332,7 +332,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
       {
         case CollisionModel::Sphere: {
           bool penetration = false;
-          if (fineGridVertex.getParticle(i).getIsObstacle()
+          if(fineGridVertex.getParticle(i).getIsObstacle()
               && !fineGridVertex.getParticle(j).getIsObstacle()) {
             //printf("ENTERED fine grid sphere BA\n");
             newContactPoints = delta::collision::sphereWithBarrierBA(
@@ -529,7 +529,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
         }
       }
 
-			if (!newContactPoints.empty())
+			if(!newContactPoints.empty())
 			{
         #ifdef ompParticle
           #pragma omp critical
@@ -563,9 +563,9 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 	#ifdef ompParticle
 		#pragma omp parallel for
 	#endif
-	for (int i=0; i<vertexA.getNumberOfRealAndVirtualParticles(); i++)
+	for(int i=0; i<vertexA.getNumberOfRealAndVirtualParticles(); i++)
 	{
-		for (int j=0; j<vertexB.getNumberOfRealAndVirtualParticles(); j++)
+		for(int j=0; j<vertexB.getNumberOfRealAndVirtualParticles(); j++)
 		{
 			if(((vertexA.getParticle(i).getIsObstacle()) && (vertexB.getParticle(j).getIsObstacle())) ||
 			   ((vertexA.getParticle(i).getGlobalParticleId()) == (vertexB.getParticle(j).getGlobalParticleId()))) continue;
@@ -587,7 +587,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			{
         case CollisionModel::Sphere: {
           bool penetration = false;
-          if (vertexA.getParticle(i).getIsObstacle()
+          if(vertexA.getParticle(i).getIsObstacle()
               && !vertexB.getParticle(j).getIsObstacle()) {
             //printf("ENTERED neighbor grid sphere BA\n");
             newContactPoints = delta::collision::sphereWithBarrierBA(
@@ -605,7 +605,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
                 vertexA.getParticle(i).getFriction(),
                 vertexA.getParticle(i).getGlobalParticleId(), penetration);
 
-          } else if (!vertexA.getParticle(i).getIsObstacle()
+          } else if(!vertexA.getParticle(i).getIsObstacle()
               && vertexB.getParticle(j).getIsObstacle()) {
             //printf("ENTERED neighbor grid sphere AB\n");
             newContactPoints = delta::collision::sphereWithBarrierAB(
@@ -640,7 +640,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
                 vertexB.getParticle(j).getFriction(),
                 vertexB.getParticle(j).getGlobalParticleId(), penetration);
           }
-          if (penetration) {
+          if(penetration) {
             _state.informStatePenetration();
           }
           break;
@@ -754,7 +754,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
         }
 			}
 
-			if (!newContactPoints.empty())
+			if(!newContactPoints.empty())
 			{
         #ifdef ompParticle
           #pragma omp critical
