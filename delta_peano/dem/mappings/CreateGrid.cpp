@@ -16,7 +16,7 @@
 #include <cmath>
 #include <ctime>
 
-#define epsilon 0.001
+#define epsilon 0.002
 
 /**
  * @todo Please tailor the parameters to your mapping's properties.

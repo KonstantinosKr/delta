@@ -155,7 +155,7 @@ dim3-gcc-release-tbb-omp-triangle-phi: header build
 
 dim3-gcc-release-mpi: CC=mpic++ -std=c++0x
 dim3-gcc-release-mpi: DIM=-DDim3
-dim3-gcc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DParallel
+dim3-gcc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DAsserts -DParallel
 dim3-gcc-release-mpi: CFLAGS=$(GCCRUN) $(INCLUDE_MPI) 
 dim3-gcc-release-mpi: LFLAGS=$(LINK_MPI)
 dim3-gcc-release-mpi: EXECUTABLE=dem-3d-release-mpi

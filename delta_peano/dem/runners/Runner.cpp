@@ -190,6 +190,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
         repository.switchToTimeStep();
       }
     }
+
     logInfo("runAsMaster(...)", "i=" << i
       << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
       << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
