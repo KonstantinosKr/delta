@@ -113,10 +113,6 @@ void dem::mappings::Collision::addCollision(
 ) {
 	assertion( !newContactPoints.empty() );
 
-	//if(particleA.getGlobalParticleId() == 57 || particleB.getGlobalParticleId() == 57)
-	{
-		//printf("COLLISION DETECTED\n");
-	}
 	//START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
 	if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
 		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
@@ -154,7 +150,7 @@ void dem::mappings::Collision::addCollision(
 
 	///ASSERT we have data assigned to both data pointers
 	assertion( (dataSetA==nullptr && dataSetB==nullptr) || (dataSetA!=nullptr && dataSetB!=nullptr) );
-    //END
+  //END
 
 	//START if data A is empty
 	if(dataSetA==nullptr)
@@ -176,19 +172,14 @@ void dem::mappings::Collision::addCollision(
 	}
 	////////END
 
+  delta::collision::filterNewContacts(newContactPoints);
 	if(sphere)
 	{
-		delta::collision::filterNewContacts(newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
-		{
-			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
-			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
-		}
+    delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
+    delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
 	} else {	//filter multiple contacts for same area of mesh
-		delta::collision::filterNewContacts(newContactPoints);
-		{
-			delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
-			delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
-		}
+    delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+    delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 	}
 
 	/*
@@ -224,7 +215,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
 ) {
 	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-	
+
 	double timeStepSize = _state.getTimeStepSize();
 
 	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) //No need to loop over virtual particles here

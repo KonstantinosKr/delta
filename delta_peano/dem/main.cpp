@@ -237,9 +237,9 @@ int main(int argc, char** argv)
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="freefallWithGranulates") {
-  scenarioArray[0] = dem::mappings::CreateGrid::freefallWithGranulates;
-  scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-  scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[0] = dem::mappings::CreateGrid::freefallWithGranulates;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="nuclearSLA") {
     scenarioArray[0] = dem::mappings::CreateGrid::sla;
@@ -363,10 +363,7 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  dem::mappings::CreateGrid::setScenario(scenarioArray,
-                                         gridHMax,
-                                         particleDiamMin, particleDiamMax,
-                                         gridType, meshMultiplier);
+  dem::mappings::CreateGrid::setScenario(scenarioArray, gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
 
   dem::runners::Runner::Plot plot;
   int trackID = -1;

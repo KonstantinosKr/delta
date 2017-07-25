@@ -1057,6 +1057,7 @@ void delta::geometry::hopper::generateOuterHopper(
 void delta::geometry::hopper::generateHopper(
     iREAL  center[3],
     iREAL  width,
+    iREAL  thickness,
     iREAL  height,
     iREAL  hatch,
     int     meshmultiplier,
@@ -1067,7 +1068,7 @@ void delta::geometry::hopper::generateHopper(
 {
 
   delta::geometry::hopper::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
-  delta::geometry::hopper::generateOuterHopper(center, width+0.005, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::hopper::generateOuterHopper(center, width+thickness, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
   delta::geometry::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
 }
 

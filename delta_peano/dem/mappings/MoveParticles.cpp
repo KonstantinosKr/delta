@@ -168,7 +168,6 @@ void dem::mappings::MoveParticles::touchVertexFirstTime(
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   moveAllParticlesAssociatedToVertex(fineGridVertex);
-  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
@@ -219,7 +218,6 @@ void dem::mappings::MoveParticles::beginIteration(
 
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
-
 
 void dem::mappings::MoveParticles::endIteration(
   dem::State&  solverState

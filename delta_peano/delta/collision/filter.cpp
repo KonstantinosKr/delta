@@ -1,56 +1,5 @@
 #include "delta/collision/filter.h"
 
-void delta::collision::filterNewContacts(
-    std::vector<contactpoint>& newContactPoints,
-    iREAL rA,
-    iREAL rB)
-{ //search similarities in new contacts
-	std::vector<contactpoint> tmp;
-
-	for (unsigned i = 0; i < newContactPoints.size(); i++)
-	{
-		bool ignore = false;
-		for (unsigned j = 0; j < tmp.size(); j++)
-		{
-			iREAL sub[3];
-			sub[0] = newContactPoints[i].x[0] - tmp[j].x[0];
-			sub[1] = newContactPoints[i].x[1] - tmp[j].x[1];
-			sub[2] = newContactPoints[i].x[2] - tmp[j].x[2];
-
-			iREAL distance = std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
-
-			if (distance == 0)
-			{
-				ignore = true;
-			}
-
-			iREAL A[3], B[3];
-
-			A[0] = newContactPoints[i].normal[0];
-			A[1] = newContactPoints[i].normal[1];
-			A[2] = newContactPoints[i].normal[2];
-
-			B[0] = tmp[j].normal[0];
-			B[1] = tmp[j].normal[1];
-			B[2] = tmp[j].normal[2];
-
-			iREAL dot = A[0]*B[0]+
-						 A[1]*B[1]+
-						 A[2]*B[2];
-
-			if (dot >= 0.70)
-			{
-				ignore = true;
-			}
-		}
-		if(!ignore)
-		{
-			tmp.push_back(newContactPoints[i]);
-		}
-	}
-	newContactPoints = tmp;
-}
-
 void delta::collision::filterOldContacts(
     std::vector<contactpoint>& dataStoredContactPoints,
     std::vector<contactpoint>& newContactPoints,

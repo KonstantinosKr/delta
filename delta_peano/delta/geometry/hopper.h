@@ -59,10 +59,11 @@ namespace delta {
 
         void generateHopper(
             iREAL  center[3],
-            iREAL 	width,
+            iREAL  width,
+            iREAL  thickness,
             iREAL  height,
-            iREAL 	hatch,
-            int     meshmultiplier,
+            iREAL  hatch,
+            int    meshmultiplier,
             std::vector<iREAL>&  xCoordinates,
             std::vector<iREAL>&  yCoordinates,
             std::vector<iREAL>&  zCoordinates);

@@ -69,7 +69,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphere(
 		result.push_back( newContactPoint );
 	}
 
-	if(distance <= (diameterA/2)+(diameterB/2))
+	if(distance <= (diameterA/2.0)+(diameterB/2.0))
 	{
 		//printf("PENETRATED Sphere:%f\n", distance);
 		penetration = true;
@@ -285,26 +285,26 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
   iREAL   zCoordinatesOfPointsOfGeometryA,
   iREAL   diameterA,
   iREAL   epsilonA,
-  bool     frictionA,
-  int 	   particleA,
+  bool    frictionA,
+  int 	  particleA,
 
   iREAL   *xCoordinatesOfPointsOfGeometryB,
   iREAL   *yCoordinatesOfPointsOfGeometryB,
   iREAL   *zCoordinatesOfPointsOfGeometryB,
-  int   	  numberOfTrianglesOfGeometryB,
-  iREAL    epsilonB,
-  bool      frictionB,
-  int 		  particleB,
-  bool&     penetration)
+  int   	numberOfTrianglesOfGeometryB,
+  iREAL   epsilonB,
+  bool    frictionB,
+  int 		particleB,
+  bool&   penetration)
 {
 	std::vector<contactpoint> result;
 
-	iREAL P[3], Q[3];
-	iREAL xPA, yPA, zPA, xPB, yPB, zPB;
-	iREAL distance;
 	for(int i=0; i<numberOfTrianglesOfGeometryB*3; i+=3)
 	{
-		iREAL TP1[3], TP2[3], TP3[3];
+	  iREAL P[3], Q[3];
+	  iREAL xPA, yPA, zPA, xPB, yPB, zPB;
+
+	  iREAL TP1[3], TP2[3], TP3[3];
 		TP1[0] = xCoordinatesOfPointsOfGeometryB[i];
 		TP1[1] = yCoordinatesOfPointsOfGeometryB[i];
 		TP1[2] = zCoordinatesOfPointsOfGeometryB[i];
@@ -321,15 +321,15 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 		P[1] = yCoordinatesOfPointsOfGeometryA;
 		P[2] = zCoordinatesOfPointsOfGeometryA;
 
-		distance = pt(TP1, TP2, TP3, P, Q) - (diameterA/2);
+		iREAL distance = pt(TP1, TP2, TP3, P, Q) - (diameterA/2.0);
 
-		iREAL xnormal = (Q[0] - P[0])/(distance+(diameterA/2));
-		iREAL ynormal = (Q[1] - P[1])/(distance+(diameterA/2));
-		iREAL znormal = (Q[2] - P[2])/(distance+(diameterA/2));
+		iREAL xnormal = (Q[0] - P[0])/(distance+(diameterA/2.0));
+		iREAL ynormal = (Q[1] - P[1])/(distance+(diameterA/2.0));
+		iREAL znormal = (Q[2] - P[2])/(distance+(diameterA/2.0));
 
-		xPA = P[0] + ((diameterA/2) * xnormal);
-		yPA = P[1] + ((diameterA/2) * ynormal);
-		zPA = P[2] + ((diameterA/2) * znormal);
+		xPA = P[0] + ((diameterA/2.0) * xnormal);
+		yPA = P[1] + ((diameterA/2.0) * ynormal);
+		zPA = P[2] + ((diameterA/2.0) * znormal);
 
 		xPB = Q[0];
 		yPB = Q[1];
@@ -364,20 +364,19 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
   iREAL   *xCoordinatesOfPointsOfGeometryA,
   iREAL   *yCoordinatesOfPointsOfGeometryA,
   iREAL   *zCoordinatesOfPointsOfGeometryA,
-  int   	 numberOfTrianglesOfGeometryA,
+  int   	numberOfTrianglesOfGeometryA,
   iREAL   epsilonA,
-  bool     frictionA,
-  int 	   particleA,
-  bool&    penetration)
+  bool    frictionA,
+  int 	  particleA,
+  bool&   penetration)
 {
 	std::vector<contactpoint> result;
 
-	iREAL P[3], Q[3];
-	iREAL xPA, yPA, zPA, xPB, yPB, zPB;
-	iREAL distance;
-
 	for(int i=0; i<numberOfTrianglesOfGeometryA*3; i+=3)
 	{
+	  iREAL P[3], Q[3];
+	  iREAL xPA, yPA, zPA, xPB, yPB, zPB;
+
 		iREAL TP1[3], TP2[3], TP3[3];
 		TP1[0] = xCoordinatesOfPointsOfGeometryA[i];
 		TP1[1] = yCoordinatesOfPointsOfGeometryA[i];
@@ -395,15 +394,15 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
 		P[1] = yCoordinatesOfPointsOfGeometryB;
 		P[2] = zCoordinatesOfPointsOfGeometryB;
 
-		distance = pt(TP1, TP2, TP3, P, Q) - (diameterB/2);
+		iREAL distance = pt(TP1, TP2, TP3, P, Q) - (diameterB/2.0);
 
-		iREAL xnormal = (Q[0] - P[0])/(distance+(diameterB/2));
-		iREAL ynormal = (Q[1] - P[1])/(distance+(diameterB/2));
-		iREAL znormal = (Q[2] - P[2])/(distance+(diameterB/2));
+		iREAL xnormal = (Q[0] - P[0])/(distance+(diameterB/2.0));
+		iREAL ynormal = (Q[1] - P[1])/(distance+(diameterB/2.0));
+		iREAL znormal = (Q[2] - P[2])/(distance+(diameterB/2.0));
 
-		xPA = P[0] + ((diameterB/2) * xnormal);
-		yPA = P[1] + ((diameterB/2) * ynormal);
-		zPA = P[2] + ((diameterB/2) * znormal);
+		xPA = P[0] + ((diameterB/2.0) * xnormal);
+		yPA = P[1] + ((diameterB/2.0) * ynormal);
+		zPA = P[2] + ((diameterB/2.0) * znormal);
 
 		xPB = Q[0];
 		yPB = Q[1];

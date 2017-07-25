@@ -133,7 +133,6 @@ class dem::mappings::CreateGrid {
         double particleDiamMin, double particleDiamMax,
         GridType gridType, int noPointsPerGranulate);
 
-
     static bool     _isSphere;
   private:
     /**
@@ -204,6 +203,7 @@ class dem::mappings::CreateGrid {
         double position[3],
         double _hopperWidth,
         double _hopperHeight,
+        double _hopperThickness,
         double _hopperHatch,
         double eps,
         delta::geometry::material::MaterialType material,

@@ -586,13 +586,6 @@ void dem::Vertex::inheritCoarseGridParticles(const Vertex&  vertex)
       }
     }
 
-/* inherit all virtual particles
-    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
-    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
-    ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).begin(),
-    ParticleHeap::getInstance().getData(vertex._vertexData.getParticlesOnCoarserLevels()).end());*/
-
-
     //inherit real particles from coarse level
     ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
     ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
@@ -600,3 +593,4 @@ void dem::Vertex::inheritCoarseGridParticles(const Vertex&  vertex)
     ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
   }
 }
+
