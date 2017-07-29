@@ -60,7 +60,6 @@ void dem::Vertex::destroy() const {
 }
 
 int dem::Vertex::createParticle(
-    const tarch::la::Vector<DIMENSIONS,double>&   center,
     std::vector<double>&  xCoordinates,
     std::vector<double>&  yCoordinates,
     std::vector<double>&  zCoordinates,
@@ -104,9 +103,9 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._referentialCentreOfMass(1) = centerOfMass[1];
   newParticle._persistentRecords._referentialCentreOfMass(2) = centerOfMass[2];
 
-  newParticle._persistentRecords._centre(0) = center(0);
-  newParticle._persistentRecords._centre(1) = center(1);
-  newParticle._persistentRecords._centre(2) = center(2);
+  newParticle._persistentRecords._centre(0) = centerOfMass[0];
+  newParticle._persistentRecords._centre(1) = centerOfMass[1];
+  newParticle._persistentRecords._centre(2) = centerOfMass[2];
 
   delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
 

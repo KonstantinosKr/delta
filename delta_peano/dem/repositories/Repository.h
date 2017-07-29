@@ -73,6 +73,9 @@ class dem::repositories::Repository {
     virtual void switchToCreateGridAndPlot() = 0;    
     virtual void switchToTimeStep() = 0;    
     virtual void switchToTimeStepAndPlot() = 0;    
+    virtual void switchToCollision() = 0;    
+    virtual void switchToMoveParticles() = 0;    
+    virtual void switchToPlotData() = 0;    
     virtual void switchToTimeStepOnDynamicGrid() = 0;    
     virtual void switchToTimeStepAndPlotOnDynamicGrid() = 0;    
     virtual void switchToTimeStepOnReluctantDynamicGrid() = 0;    
@@ -82,6 +85,9 @@ class dem::repositories::Repository {
     virtual bool isActiveAdapterCreateGridAndPlot() const = 0;
     virtual bool isActiveAdapterTimeStep() const = 0;
     virtual bool isActiveAdapterTimeStepAndPlot() const = 0;
+    virtual bool isActiveAdapterCollision() const = 0;
+    virtual bool isActiveAdapterMoveParticles() const = 0;
+    virtual bool isActiveAdapterPlotData() const = 0;
     virtual bool isActiveAdapterTimeStepOnDynamicGrid() const = 0;
     virtual bool isActiveAdapterTimeStepAndPlotOnDynamicGrid() const = 0;
     virtual bool isActiveAdapterTimeStepOnReluctantDynamicGrid() const = 0;

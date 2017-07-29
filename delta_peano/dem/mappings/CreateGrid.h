@@ -18,6 +18,7 @@
 #include "tarch/multicore/MulticoreDefinitions.h"
 
 #include "dem/mappings/Collision.h"
+#include "dem/mappings/MoveParticles.h"
 
 #include <array>
 #include <vector>
@@ -31,6 +32,7 @@
 
 #include "delta/geometry/triangle.h"
 #include "delta/geometry/material.h"
+
 
 namespace dem {
   namespace mappings {
@@ -257,6 +259,14 @@ class dem::mappings::CreateGrid {
         double centreAsArray[3],
         double cellSize,
         double epsilon,
+        delta::geometry::material::MaterialType material,
+        double friction,
+        double isObstacle);
+
+    void deployParticleSubGrid(
+        dem::Vertex&  vertex,
+        double centreAsArray[3],
+        double eps,
         delta::geometry::material::MaterialType material,
         double friction,
         double isObstacle);

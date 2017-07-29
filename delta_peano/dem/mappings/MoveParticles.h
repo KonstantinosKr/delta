@@ -27,6 +27,11 @@
 namespace dem {
   namespace mappings {
     class MoveParticles;
+
+    void reassignParticles(
+      dem::Vertex * const                        fineGridVertices,
+      const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator
+    );
   }
 }
 
@@ -52,21 +57,13 @@ class dem::mappings::MoveParticles {
 
     State                       _state;
 
-    void moveAllParticlesAssociatedToVertex(
-      dem::Vertex&                               fineGridVertex
-    );
+    void moveAllParticlesAssociatedToVertex(dem::Vertex&  fineGridVertex);
 
-    void reassignParticles(
-      dem::Vertex * const                        fineGridVertices,
-      const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator
-    );
-
-    void reflectParticles(
-      dem::Vertex&                               fineGridVertices
-    );
+    void reflectParticles(dem::Vertex&  fineGridVertices);
 
   public:
     static double    gravity;
+
   public:
   /**
    * These flags are used to inform Peano about your operation. It tells the

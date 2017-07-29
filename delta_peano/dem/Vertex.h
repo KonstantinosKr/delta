@@ -90,7 +90,6 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      *                    which particle a triangle belongs to
      */
     int createParticle(
-        const tarch::la::Vector<DIMENSIONS,double>& center,
   		  std::vector<double>&  xCoordinates,
   		  std::vector<double>&  yCoordinates,
   		  std::vector<double>&  zCoordinates,

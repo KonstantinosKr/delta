@@ -52,6 +52,19 @@ adapter:
   merge-with-user-defined-mapping: MoveParticles
   merge-with-user-defined-mapping: Plot
   merge-with-predefined-mapping: VTKGridVisualiser(grid)
+  
+adapter:
+  name: Collision
+  merge-with-user-defined-mapping: Collision
+
+adapter: 
+  name: MoveParticles
+  merge-with-user-defined-mapping: MoveParticles
+
+adapter: 
+  name: PlotData
+  merge-with-user-defined-mapping: Plot
+  merge-with-predefined-mapping: VTKGridVisualiser(grid)
 
 adapter:
   name: TimeStepOnDynamicGrid

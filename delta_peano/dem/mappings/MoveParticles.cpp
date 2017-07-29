@@ -56,6 +56,8 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
 
     if(particle.getIsObstacle()) continue;
 
+    if(particle.getGlobalParticleId() == 57)
+    printf("MOVED\n");
     particle._persistentRecords._velocity(1) += timeStepSize*(gravity*-9.8);
 
     particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
@@ -89,15 +91,16 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
   }
 }
 
-void dem::mappings::MoveParticles::reassignParticles(
+void dem::mappings::reassignParticles(
   dem::Vertex * const                        fineGridVertices,
   const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator)
 {
   int numberOfReassignments = 0;
   dfor2(k) //size 2, dimension 3
-    for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
+    dem::Vertex vertexi= fineGridVertices[fineGridVerticesEnumerator(k)];
+    for(int i=0; i<vertexi.getNumberOfParticles(); i++)
     {
-      records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
+      records::Particle&  particle = vertexi.getParticle(i);
       tarch::la::Vector<DIMENSIONS,int> correctVertex;
 
       for(int d=0; d<DIMENSIONS; d++)//correct vertex in cell
@@ -105,10 +108,10 @@ void dem::mappings::MoveParticles::reassignParticles(
         correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
       }
 
-      if(correctVertex != k)
+      if(correctVertex != k)//if not same vertex
       {
         fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
-        fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
+        vertexi.releaseParticle(i);
         numberOfReassignments++;
 
         /*std::cout << "reassignParticles(...):"
@@ -118,7 +121,7 @@ void dem::mappings::MoveParticles::reassignParticles(
       }
     }
   enddforx
-  _state.incNumberOfParticleReassignments(numberOfReassignments);
+  //_state.incNumberOfParticleReassignments(numberOfReassignments);
 }
 
 void dem::mappings::MoveParticles::reflectParticles(dem::Vertex& fineGridVertex)
@@ -167,8 +170,6 @@ void dem::mappings::MoveParticles::touchVertexFirstTime(
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  moveAllParticlesAssociatedToVertex(fineGridVertex);
-
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
@@ -199,11 +200,13 @@ void dem::mappings::MoveParticles::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  moveAllParticlesAssociatedToVertex(fineGridVertex);
+
   if (fineGridVertex.isBoundary()) {
     reflectParticles(fineGridVertex);
   }
 
-  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

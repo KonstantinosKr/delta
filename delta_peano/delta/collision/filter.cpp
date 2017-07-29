@@ -51,26 +51,6 @@ void delta::collision::filterOldContacts(
 	newContactPoints = tmp;
 }
 
-void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPoints)
-{//filter multiples within new contacts
-	std::vector<contactpoint> tmpContactPoints;
-
-	//search similarities in new contacts
-	for(auto i:newContactPoints)
-	{
-		bool ignore = false;//found or ignore
-		for (auto j:tmpContactPoints)
-		{
-			iREAL sub[] = {i.x[0] - j.x[0], i.x[1] - j.x[1], i.x[2] - j.x[2]};
-			iREAL distance = std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
-			if(distance == 0) ignore = true;
-		}
-
-		if(!ignore) tmpContactPoints.push_back(i);
-	}
-	newContactPoints = tmpContactPoints;
-}
-
 void delta::collision::filterOldContacts(
     std::vector<contactpoint>& dataStoredContactPoints,
     std::vector<contactpoint>& newContactPoints,
@@ -101,4 +81,28 @@ void delta::collision::filterOldContacts(
 		}
 	}
 	newContactPoints = tmpContactPoints;
+}
+
+void delta::collision::filterNewContacts(std::vector<contactpoint>& newContactPoints)
+{//filter multiples within new contacts
+  std::vector<contactpoint> tmpContactPoints;
+
+  //search similarities in new contacts
+  for(auto i:newContactPoints)
+  {
+    bool ignore = false;//found or ignore
+    for (auto j:tmpContactPoints)
+    {
+      iREAL A = i.x[0] - j.x[0];
+      iREAL B = i.x[1] - j.x[1];
+      iREAL C = i.x[2] - j.x[2];
+
+      //iREAL distance = std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
+      iREAL eps = 0.0001;
+      if(std::abs(A) < eps && std::abs(B) < eps && std::abs(C) < eps) ignore = true;
+    }
+
+    if(!ignore) tmpContactPoints.push_back(i);
+  }
+  newContactPoints = tmpContactPoints;
 }

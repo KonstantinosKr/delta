@@ -2,12 +2,12 @@
 
 //particle parameters
 #define SPRING 1E3
-#define DAMPER 0.8
-#define FRICTION 0.8
+#define DAMPER 0.5
+#define FRICTION 0.5
 
 //sphere parameters for piling simulation
-#define SSPRING 1E3
-#define SDAMPER 0.8
+#define SSPRING 5E3
+#define SDAMPER 0.5
 #define SFRICTIONGOLD 0.5
 #define SFRICTIONWOOD 0.05
 #define SFRICTIONROLLING 0.005
