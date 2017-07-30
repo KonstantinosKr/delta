@@ -151,12 +151,45 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   dem::mappings::Collision::_collisionModel = model;*/
   ///////////////////////////////////////////////////////////////////////////////////////////
 
-  //repository.switchToTimeStepAndPlot();
   for (int i=0; i<iterations; i++)
   {
     timestamp = repository.getState().getTime();
     repository.getState().setTimeStep(i);
 
+    bool plotThisTraversal = (plot == EveryIteration) ||  (plot == Track) ||
+                             (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
+                                                     !repository.getState().isGridStationary() || i%50==0 ||
+                                                     repository.getState().getNumberOfParticleReassignments()>0 )) ||
+                             (plot == EveryBatch && i%50 == 0) ||
+                             ((plot == Adaptive && ((elapsed > realSnapshot) || (i == 0)))) ||
+                             (plot == Range && ((i >= minRange) && (i < maxRange)));
+
+    if(plotThisTraversal)
+    {
+      //delta::sys::Sys::saveIteration(repository.getState().getTimeStepSize(), i, iterations);
+
+      if (gridType==mappings::CreateGrid::AdaptiveGrid)
+      {
+        repository.switchToTimeStepAndPlotOnDynamicGrid();
+      }
+      else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
+      {
+        repository.switchToTimeStepAndPlotOnReluctantDynamicGrid();
+      } else {
+        repository.switchToTimeStepAndPlot();
+      }
+    } else {
+      if (gridType==mappings::CreateGrid::AdaptiveGrid)
+      {
+        repository.switchToTimeStepOnDynamicGrid();
+      }
+      else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
+      {
+        repository.switchToTimeStepOnReluctantDynamicGrid();
+      } else {
+        repository.switchToTimeStep();
+      }
+    }
 
     logInfo("runAsMaster(...)", "i=" << i
       << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
@@ -166,7 +199,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", v=" << repository.getState().getNumberOfInnerVertices()
       << ", t=" << repository.getState().getTime()
       << ", dt=" << repository.getState().getTimeStepSize()
-      << ", plot=" << 1);
+      << ", plot=" << plotThisTraversal);
     logInfo("runAsMaster(...)",
           "h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
       <<", h_max(prescribed)=" << repository.getState().getPrescribedMaximumMeshWidth());
@@ -180,13 +213,6 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     repository.getState().clearAccumulatedData();
 
-
-    repository.switchToCollision();
-    repository.iterate();
-    repository.switchToMoveParticles();
-    repository.iterate();
-
-    repository.switchToPlotData();
     repository.iterate();
   }
 

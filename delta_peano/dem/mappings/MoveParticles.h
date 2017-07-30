@@ -23,15 +23,10 @@
 #include "dem/Cell.h"
 #include "dem/State.h"
 
-
 namespace dem {
   namespace mappings {
     class MoveParticles;
 
-    void reassignParticles(
-      dem::Vertex * const                        fineGridVertices,
-      const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator
-    );
   }
 }
 
@@ -60,6 +55,11 @@ class dem::mappings::MoveParticles {
     void moveAllParticlesAssociatedToVertex(dem::Vertex&  fineGridVertex);
 
     void reflectParticles(dem::Vertex&  fineGridVertices);
+
+    void reassignParticles(
+      dem::Vertex * const                        fineGridVertices,
+      const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator
+    );
 
   public:
     static double    gravity;

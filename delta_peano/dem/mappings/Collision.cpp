@@ -297,7 +297,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	{
 		//printf("Number in the grid master:%d\n", fineGridVertex.getNumberOfParticles());
     //printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
-		for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
+		for(int j=i+1; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{
 		  //if(fineGridVertex.getParticle(i).getGlobalParticleId() == 58 || fineGridVertex.getParticle(j).getGlobalParticleId() == 58)
 			//printf("I:%d J:%d\n", fineGridVertex.getParticle(i).getGlobalParticleId(), fineGridVertex.getParticle(j).getGlobalParticleId());
@@ -781,183 +781,184 @@ void dem::mappings::Collision::enterCell(
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-	if(
-	fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
-  fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
-  fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() == 0 &&
-  fineGridVertices[fineGridVerticesEnumerator(3)].getNumberOfParticles() == 0 &&
-  fineGridVertices[fineGridVerticesEnumerator(4)].getNumberOfParticles() == 0 &&
-  fineGridVertices[fineGridVerticesEnumerator(5)].getNumberOfParticles() == 0 &&
-  fineGridVertices[fineGridVerticesEnumerator(6)].getNumberOfParticles() == 0 &&
-  fineGridVertices[fineGridVerticesEnumerator(7)].getNumberOfParticles() == 0)return;
+    if(
+    fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
+    fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
+    fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() == 0 &&
+    fineGridVertices[fineGridVerticesEnumerator(3)].getNumberOfParticles() == 0 &&
+    fineGridVertices[fineGridVerticesEnumerator(4)].getNumberOfParticles() == 0 &&
+    fineGridVertices[fineGridVerticesEnumerator(5)].getNumberOfParticles() == 0 &&
+    fineGridVertices[fineGridVerticesEnumerator(6)].getNumberOfParticles() == 0 &&
+    fineGridVertices[fineGridVerticesEnumerator(7)].getNumberOfParticles() == 0)return;
 
-	//TODO run in parallel these statements
-	//phase A
-#ifdef ompParticle
-  #pragma omp parallel
-  {
-    #pragma omp single
+    //TODO run in parallel these statements
+    //phase A
+  #ifdef ompParticle
+    #pragma omp parallel
     {
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(1)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(2)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(3)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(5)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(6)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(7)]);
+      #pragma omp single
+      {
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(1)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(2)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(3)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(4)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(5)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(6)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(7)]);
 
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(2)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(6)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(2)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(4)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(6)]);
 
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(5)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-      #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(3)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-      #pragma omp taskwait
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(5)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(4)]);
+        #pragma omp task
+          dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(3)], fineGridVertices[fineGridVerticesEnumerator(4)]);
+        #pragma omp taskwait
+      }
     }
-  }
-#else
-  if(fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() > 0)
-  {
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(1)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(2)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(3)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(5)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(6)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(7)]);
-  }
+  #else
+    if(fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() > 0)
+    {
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(1)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(2)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(3)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(4)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(5)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(6)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(7)]);
+    }
 
-  if(fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() > 0)
-  {
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(2)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(6)]);
-  }
+    if(fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() > 0)
+    {
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(2)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(4)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(6)]);
+    }
 
-  if(fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() > 0)
-  {
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(5)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-  }
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(3)], fineGridVertices[fineGridVerticesEnumerator(4)]);
-#endif
+    if(fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() > 0)
+    {
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(5)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(4)]);
+    }
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(3)], fineGridVertices[fineGridVerticesEnumerator(4)]);
+  #endif
 
-	//phase B
-	//back face is boundary
-  bool backface = ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) &&
-                   (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
+    //phase B
+    //back face is boundary
+    bool backface = ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) &&
+                     (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
 
-                  ((!fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary()) &&
-                   (!fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()));
+                    ((!fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary()) &&
+                     (!fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()));
 
-  bool backfaceLRUDHalo = ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) &&
-                           (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
+    bool backfaceLRUDHalo = ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) &&
+                             (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
 
-                         ((fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary()) || //left halo
-                          (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) || //right halo
-                          (fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) || //up halo
-                          (fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary()));  //down halo
+                           ((fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary()) || //left halo
+                            (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) || //right halo
+                            (fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) || //up halo
+                            (fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary()));  //down halo
 
-  bool topface = ((fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
-                   (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
+    bool topface = ((fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
+                     (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
 
-                 ((!fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary()) &&
-                   (!fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()));
+                   ((!fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary()) &&
+                     (!fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()));
 
-  bool topfaceLRUDHalo = ((fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
-                          (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
+    bool topfaceLRUDHalo = ((fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
+                            (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
 
-                         ((fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary()) || //left halo
-                          (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) || //right halo
-                          (fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) || //up halo
-                          (fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary()));  //down halo
+                           ((fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary()) || //left halo
+                            (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) || //right halo
+                            (fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) || //up halo
+                            (fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary()));  //down halo
 
-  bool rightface = ((fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
-                    (fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
+    bool rightface = ((fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
+                      (fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
 
-                   ((!fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary()) &&
-                    (!fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary()));
+                     ((!fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary()) &&
+                      (!fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && !fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary()));
 
-  bool rightfaceLRUDHalo = ((fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
-                            (fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
+    bool rightfaceLRUDHalo = ((fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
+                              (fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary())) &&
 
-                           ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary()) || //left halo
-                            (fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary()) || //right halo
-                            (fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary()) || //up halo
-                            (fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary()));  //down halo
+                             ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary()) || //left halo
+                              (fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary()) || //right halo
+                              (fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary()) || //up halo
+                              (fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary()));  //down halo
 
-	if(backface || backfaceLRUDHalo)
-	{
-    //face X
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5)], fineGridVertices[ fineGridVerticesEnumerator(6)]);
-    //face L
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4)], fineGridVertices[ fineGridVerticesEnumerator(5)]);
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4)], fineGridVertices[ fineGridVerticesEnumerator(6)]);
-	}
+    if(backface || backfaceLRUDHalo)
+    {
+      //face X
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5)], fineGridVertices[ fineGridVerticesEnumerator(6)]);
+      //face L
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4)], fineGridVertices[ fineGridVerticesEnumerator(5)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4)], fineGridVertices[ fineGridVerticesEnumerator(6)]);
+    }
 
-  //face top vertex is boundary
-  if(topface || topfaceLRUDHalo)
-  {
-    //face X
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(7)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(3)], fineGridVertices[fineGridVerticesEnumerator(6)]);
-    //face L
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(6)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(3)]);
-  }
+    //face top vertex is boundary
+    if(topface || topfaceLRUDHalo)
+    {
+      //face X
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(7)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(3)], fineGridVertices[fineGridVerticesEnumerator(6)]);
+      //face L
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(6)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(3)]);
+    }
 
-  //right face is boundary
-  if(rightface || rightfaceLRUDHalo)
-  {
-    //face X
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(3)], fineGridVertices[ fineGridVerticesEnumerator(5)]);
-    //face L
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[ fineGridVerticesEnumerator(3)]);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[ fineGridVerticesEnumerator(5)]);
-  }
+    //right face is boundary
+    if(rightface || rightfaceLRUDHalo)
+    {
+      //face X
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(3)], fineGridVertices[ fineGridVerticesEnumerator(5)]);
+      //face L
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[ fineGridVerticesEnumerator(3)]);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[ fineGridVerticesEnumerator(5)]);
+    }
 
-  bool backtopEdge = ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) &&
-                      (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary()) &&
-                      (fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()));
-
-  bool backrightEdge = ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) &&
+    bool backtopEdge = ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) &&
                         (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary()) &&
-                        (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()));
+                        (fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()));
 
-  bool toprightEdge = ((fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
-                       (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary()) &&
-                       (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()));
+    bool backrightEdge = ((fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()) &&
+                          (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary()) &&
+                          (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()));
 
-  if(backtopEdge)
-	{
-		dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(6)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
-	}
+    bool toprightEdge = ((fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(3)].isBoundary()) &&
+                         (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary()) &&
+                         (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()));
 
-  if(backrightEdge)
-  {
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
-  }
+    if(backtopEdge)
+    {
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(6)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
+    }
 
-  if(toprightEdge)
-  {
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
-  }
+    if(backrightEdge)
+    {
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
+    }
+
+    if(toprightEdge)
+    {
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
+    }
+
 
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
@@ -1273,6 +1274,7 @@ void dem::mappings::Collision::leaveCell(
 		dem::Cell&           coarseGridCell,
 		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
+
 }
 
 void dem::mappings::Collision::descend(

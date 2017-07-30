@@ -259,7 +259,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
     auto material = delta::geometry::material::MaterialType::GOLD;
     iREAL position[] = {_centreAsArray[0], _centreAsArray[1], _centreAsArray[2]};
-    double height = 0.05; double width = 0.35;
+    double height = 0.05; double width = 0.30;
     int particleid = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
     dem::mappings::CreateGrid::setVScheme(vertex,  particleid, dem::mappings::CreateGrid::moveLeft);
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -316,7 +316,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
 
     ////////FLOOR///////////////////////////////////////////////////////////////////////////////////////////
     iREAL position[] = {_centreAsArray[0], _centreAsArray[1] + (_hopperHeight/2)-0.05/3.2, _centreAsArray[2]};
-    double height = 0.05; double width = 0.35;
+    double height = 0.05; double width = 0.32;
     particleId = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -570,8 +570,11 @@ void dem::mappings::CreateGrid::createCell(
 		deployCoarseEnviroment(vertex);
 	}
 
-	if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(fineGridVertices, fineGridVerticesEnumerator,  Vertex::Records::Unrefined) &&
-	  !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices,  fineGridVerticesEnumerator))
+	if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(
+	    fineGridVertices,
+	    fineGridVerticesEnumerator,
+	    Vertex::Records::Unrefined) &&
+	  !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices, fineGridVerticesEnumerator))
 	{
 
 	  if(dem::mappings::CreateGrid::_gridType == NoGrid)
@@ -588,7 +591,6 @@ void dem::mappings::CreateGrid::createCell(
       particlesInCellPerAxis = 1;
       //_maxParticleDiam = fineGridVerticesEnumerator.getCellSize()(0); //_minParticleDiam = std::min(_minParticleDiam, _maxParticleDiam);
     }
-
 
 		dfor(k,particlesInCellPerAxis)
 		{
@@ -1140,7 +1142,8 @@ void dem::mappings::CreateGrid::touchVertexLastTime(
 		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
 	logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-	// @todo Insert your code here
+
+  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
 
 	logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

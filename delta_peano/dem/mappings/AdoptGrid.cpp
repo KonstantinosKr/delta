@@ -176,14 +176,17 @@ void dem::mappings::dropParticles(
 
   if(peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(fineGridPositionOfVertex))
   {
-    Vertex& coarseGridVertexAtSamePosition = coarseGridVertices[coarseGridVerticesEnumerator( peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) )];
+    Vertex& coarseGridVertexAtSamePosition = coarseGridVertices[coarseGridVerticesEnumerator(
+        peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) )];
 
     if(!coarseGridVertexAtSamePosition.isOutside())
     {
       for(int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
       {
-        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0)/1.1)
+        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0)/1)
         {
+          //printf("ID:%i CELL SIZE:%f DIAMETER:%f\n", coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId(), coarseGridVerticesEnumerator.getCellSize()(0), coarseGridVertexAtSamePosition.getParticle(i).getDiameter());
+
           fineGridVertex.appendParticle(coarseGridVertexAtSamePosition.getParticle(i));
           coarseGridVertexAtSamePosition.releaseParticle(i);
 
@@ -212,7 +215,7 @@ void dem::mappings::AdoptGrid::createInnerVertex(
   fineGridVertex.init();
 
   //tarch::multicore::Lock lock(_AdoptSemaphore);
-  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
   //lock.free();
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
@@ -232,7 +235,7 @@ void dem::mappings::AdoptGrid::createBoundaryVertex(
   fineGridVertex.init();
 
   //tarch::multicore::Lock lock(_AdoptSemaphore);
-  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
   //lock.free();
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
