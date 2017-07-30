@@ -138,7 +138,7 @@ void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
 
   fineGridVertex.init();
   //tarch::multicore::Lock lock(_ReluctantSemaphore);
-  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
   //lock.free();
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
@@ -157,7 +157,7 @@ void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
 
   fineGridVertex.init();
   //tarch::multicore::Lock lock(_ReluctantSemaphore);
-  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
   //lock.free();
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
