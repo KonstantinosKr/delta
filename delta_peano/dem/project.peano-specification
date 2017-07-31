@@ -61,6 +61,10 @@ adapter:
   name: MoveParticles
   merge-with-user-defined-mapping: MoveParticles
 
+adapter:
+  name: Adopt
+  merge-with-user-defined-mapping: AdoptGrid
+
 adapter: 
   name: PlotData
   merge-with-user-defined-mapping: Plot

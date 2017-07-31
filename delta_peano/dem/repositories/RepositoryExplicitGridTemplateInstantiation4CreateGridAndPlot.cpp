@@ -19,6 +19,7 @@
  #include "dem/adapters/TimeStepAndPlot.h" 
  #include "dem/adapters/Collision.h" 
  #include "dem/adapters/MoveParticles.h" 
+ #include "dem/adapters/Adopt.h" 
  #include "dem/adapters/PlotData.h" 
  #include "dem/adapters/TimeStepOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepAndPlotOnDynamicGrid.h" 

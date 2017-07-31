@@ -123,9 +123,10 @@ void dem::mappings::CreateGrid::createInnerVertex(
 
   if(_gridType != NoGrid && fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
   {
+    //fineGridVertex.refine();
     if(_gridType == RegularGrid)
     {
-      fineGridVertex.refine();
+      //fineGridVertex.refine();
     }
     else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
     {
@@ -133,12 +134,12 @@ void dem::mappings::CreateGrid::createInnerVertex(
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
          fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
       {
-        fineGridVertex.refine();
+        //fineGridVertex.refine();
       }
 
       if(fineGridH(0) >= 0.33)
       {
-        fineGridVertex.refine();
+        //fineGridVertex.refine();
       }
     }
   }
@@ -161,9 +162,10 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 
   if(_gridType != NoGrid && fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
   {
+    //fineGridVertex.refine();
     if(_gridType == RegularGrid)
     {
-      fineGridVertex.refine();
+      //fineGridVertex.refine();
     }
     else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
     {
@@ -171,15 +173,16 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
          fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
       {
-        fineGridVertex.refine();
+        //fineGridVertex.refine();
       }
 
       if(fineGridH(0) >= 0.33)
       {
-        fineGridVertex.refine();
+        //fineGridVertex.refine();
       }
     }
   }
+
 
 	fineGridVertex.init();
 
@@ -317,7 +320,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     ////////FLOOR///////////////////////////////////////////////////////////////////////////////////////////
     iREAL position[] = {_centreAsArray[0], _centreAsArray[1] + (_hopperHeight/2)-0.05/3.2, _centreAsArray[2]};
     double height = 0.05; double width = 0.32;
-    particleId = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
+    //particleId = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////PARTICLE GRID/////////////////////////////////////////////////////////////////////////////////
@@ -735,8 +738,6 @@ int dem::mappings::CreateGrid::deploySphere(
     bool friction,
     bool isObstacle)
 {
-  _numberOfParticles++;
-  if(isObstacle) dem::mappings::CreateGrid::_numberOfObstacles++;
   return vertex.createSphereParticle(position, radius, eps, friction, material, isObstacle, _numberOfParticles);
 }
 
@@ -798,7 +799,9 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
       iREAL position[] = {_particleGrid[i][0], _particleGrid[i][1], _particleGrid[i][2]};
       if(_componentGrid[i] == "sphere")
       {
+        std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
         deploySphere(vertex, position, _radArray[i], _radArray[i]*eps, material, friction, isObstacle);
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
       } else if(_componentGrid[i] == "nonSpherical")
       {
         vertex.createParticle(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _radArray[i]*eps, friction, material, isObstacle, _numberOfParticles, 0);
@@ -828,7 +831,9 @@ void dem::mappings::CreateGrid::deployParticleSubGrid(
     iREAL position[] = {_particleGrid[i][0], _particleGrid[i][1], _particleGrid[i][2]};
     if(_componentGrid[i] == "sphere")
     {
+      std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
       deploySphere(vertex, position, _radArray[i], _radArray[i]*eps, material, friction, isObstacle);
+      dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
     } else if(_componentGrid[i] == "nonSpherical")
     {
       vertex.createParticle(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _radArray[i]*eps, friction, material, isObstacle, _numberOfParticles, 0);
@@ -1143,7 +1148,7 @@ void dem::mappings::CreateGrid::touchVertexLastTime(
 ) {
 	logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
+  //dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
 
 	logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

@@ -54,6 +54,14 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
   {
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
+    if(particle.getGlobalParticleId() == 96)
+    {
+      printf("PID%i\n", particle.getGlobalParticleId());
+      printf("OBJ%i\n", particle.getIsObstacle());
+
+      //particle._persistentRecords._centre(0) += 0.01;
+      //particle._persistentRecords._centreOfMass(0) += 0.01;
+    }
     if(particle.getIsObstacle()) continue;
 
     particle._persistentRecords._velocity(1) += timeStepSize*(gravity*-9.8);
@@ -95,6 +103,9 @@ void dem::mappings::MoveParticles::reassignParticles(
 {
   int numberOfReassignments = 0;
   dfor2(k) //size 2, dimension 3
+    //Vertex a = fineGridVertices[fineGridVerticesEnumerator(k)];
+    //std::cout << a.toString() << std::endl;
+    //printf("%i\n", fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles());
     for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
     {
       records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
@@ -197,11 +208,11 @@ void dem::mappings::MoveParticles::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  moveAllParticlesAssociatedToVertex(fineGridVertex);
+
   if (fineGridVertex.isBoundary()) {
     reflectParticles(fineGridVertex);
   }
-
-  moveAllParticlesAssociatedToVertex(fineGridVertex);
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

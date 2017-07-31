@@ -151,7 +151,18 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   dem::mappings::Collision::_collisionModel = model;*/
   ///////////////////////////////////////////////////////////////////////////////////////////
 
-  for (int i=0; i<iterations; i++)
+  if((plot == EveryIteration) ||  (plot == Track) ||
+      (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
+                              !repository.getState().isGridStationary() || 0%50==0 ||
+                              repository.getState().getNumberOfParticleReassignments()>0 )) ||
+      (plot == EveryBatch && 0%50 == 0) ||
+      ((plot == Adaptive && ((elapsed > realSnapshot) || (0 == 0)))))
+  {
+    repository.switchToPlotData();
+    repository.iterate();
+  }
+
+  for (int i=1; i<iterations; i++)
   {
     timestamp = repository.getState().getTime();
     repository.getState().setTimeStep(i);
@@ -213,13 +224,16 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     repository.getState().clearAccumulatedData();
 
-    /*repository.switchToMoveParticles();
-    repository.iterate();
-
     repository.switchToCollision();
-
     repository.iterate();
-    repository.switchToPlotData();*/
+
+    repository.switchToMoveParticles();
+    repository.iterate();
+
+    repository.switchToAdopt();
+    repository.iterate();
+
+    repository.switchToPlotData();
 
     repository.iterate();
   }

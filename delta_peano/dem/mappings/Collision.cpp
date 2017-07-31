@@ -113,6 +113,11 @@ void dem::mappings::Collision::addCollision(
 ) {
 	assertion( !newContactPoints.empty() );
 
+	int id = 96;
+	if((particleA.getGlobalParticleId() == id && particleB.getGlobalParticleId() == 0) ||
+	   (particleB.getGlobalParticleId() == id || particleA.getGlobalParticleId() == 0))
+    printf("IN CONTACT\n");
+
 	//START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
 	if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
 		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
@@ -172,11 +177,11 @@ void dem::mappings::Collision::addCollision(
 	}
 	////////END
 
-  delta::collision::filterNewContacts(newContactPoints);
+  //delta::collision::filterNewContacts(newContactPoints);
 	if(sphere)
 	{
-    delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
-    delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
+    //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
+    //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
 	} else {	//filter multiple contacts for same area of mesh
     delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
     delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
@@ -190,7 +195,7 @@ void dem::mappings::Collision::addCollision(
 	 * C. we always want to ensure that normal of particle point away from obstacle
 	 * D. we don't care about normal of obstacle.
 	 */
-	dataSetA->_contactPoints.insert( dataSetA->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
+	dataSetA->_contactPoints.insert(dataSetA->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
 
 	for (std::vector<delta::collision::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
 	{
@@ -200,7 +205,16 @@ void dem::mappings::Collision::addCollision(
 		p->normal[2] = -1.0 * p->normal[2];
 	}
 
-	dataSetB->_contactPoints.insert( dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end() );
+	dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
+
+  if((particleA.getGlobalParticleId() == id && particleB.getGlobalParticleId() == 0) ||
+     (particleB.getGlobalParticleId() == id || particleA.getGlobalParticleId() == 0))
+  {
+    for(auto i:newContactPoints)
+    {
+      printf("%f\n", i.getDistance());
+    }
+  }
 
 	_state.incNumberOfContactPoints(newContactPoints.size());
 }
@@ -296,14 +310,14 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	{
 		//printf("Number in the grid master:%d\n", fineGridVertex.getNumberOfParticles());
     //printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
-/*
-	  if(fineGridVertex.getParticle(i).getGlobalParticleId() == 2)
+
+	  if(fineGridVertex.getParticle(i).getGlobalParticleId() == 100)
 	  {
 	    for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 	    {
 	      printf("Inherted :%i\n", fineGridVertex.getParticle(j).getGlobalParticleId());
 	    }
-	  }*/
+	  }
 
 		for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{
@@ -781,7 +795,7 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-
+return;
    if(
     fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
