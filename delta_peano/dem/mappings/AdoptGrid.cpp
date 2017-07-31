@@ -41,6 +41,43 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::descendSpecification(int
 
 tarch::logging::Log dem::mappings::AdoptGrid::_log( "dem::mappings::AdoptGrid" );
 
+void dem::mappings::dropParticles(
+  dem::Vertex&                                 fineGridVertex,
+  dem::Vertex * const                          coarseGridVertices,
+  const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
+  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+) {
+  assertion1( !fineGridVertex.isHangingNode(), fineGridVertex.toString() );
+
+  if(peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(fineGridPositionOfVertex))
+  {
+    Vertex& coarseGridVertexAtSamePosition = coarseGridVertices[coarseGridVerticesEnumerator(
+        peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) )];
+
+    if(!coarseGridVertexAtSamePosition.isOutside())
+    {
+      for(int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
+      {
+        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0)/1)
+        {
+          //printf("ID:%i CELL SIZE:%f DIAMETER:%f\n", coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId(), coarseGridVerticesEnumerator.getCellSize()(0), coarseGridVertexAtSamePosition.getParticle(i).getDiameter());
+
+          if(coarseGridVertexAtSamePosition.getParticle(i).getIsObstacle())
+            continue;
+          fineGridVertex.appendParticle(coarseGridVertexAtSamePosition.getParticle(i));
+          coarseGridVertexAtSamePosition.releaseParticle(i);
+
+          /*std::cout << "dropParticle(): GLOBALID: "
+                    << coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId() << " LOCALID: "
+                    << coarseGridVertexAtSamePosition.getParticle(i).getLocalParticleId() << " from "
+                    << peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) << " into "
+                    << fineGridPositionOfVertex << std::endl;*/
+        }
+      }
+    }
+  }
+}
+
 void dem::mappings::AdoptGrid::touchVertexFirstTime(
   dem::Vertex&                                 fineGridVertex,
   const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
@@ -59,9 +96,6 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
     {
       //logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
-    } else {
-      //Does not hold as it might happen that we lift particles temporarily through hanging nodes
-      //assertion2(fineGridVertex.getParticle(i).getDiameter>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());
     }
   }
 
@@ -103,6 +137,8 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
   fineGridVertex.eraseIfParticleDistributionPermits();
   restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
+  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
+
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
@@ -129,7 +165,7 @@ void dem::mappings::liftAllParticles(
   dem::Vertex * const                           coarseGridVertices,
   const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator
 ) {
-  //logTraceInWith1Argument( "liftAllParticles(...)", fineGridVertex.toString() );
+  logTraceInWith1Argument( "liftAllParticles(...)", fineGridVertex.toString() );
 
   int i=0;
   while (i<fineGridVertex.getNumberOfParticles())
@@ -144,7 +180,7 @@ void dem::mappings::liftAllParticles(
     i++;
   }
 
-  //logTraceOutWith1Argument( "liftAllParticles(...)", fineGridVertex );
+  logTraceOutWith1Argument( "liftAllParticles(...)", fineGridVertex );
 }
 
 void dem::mappings::AdoptGrid::destroyHangingVertex(
@@ -164,41 +200,6 @@ void dem::mappings::AdoptGrid::destroyHangingVertex(
   fineGridVertex.destroy();
 
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
-}
-
-void dem::mappings::dropParticles(
-  dem::Vertex&                                 fineGridVertex,
-  dem::Vertex * const                          coarseGridVertices,
-  const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
-) {
-  assertion1( !fineGridVertex.isHangingNode(), fineGridVertex.toString() );
-
-  if(peano::grid::SingleLevelEnumerator::isVertexPositionAlsoACoarseVertexPosition(fineGridPositionOfVertex))
-  {
-    Vertex& coarseGridVertexAtSamePosition = coarseGridVertices[coarseGridVerticesEnumerator(
-        peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) )];
-
-    if(!coarseGridVertexAtSamePosition.isOutside())
-    {
-      for(int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
-      {
-        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0)/1)
-        {
-          //printf("ID:%i CELL SIZE:%f DIAMETER:%f\n", coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId(), coarseGridVerticesEnumerator.getCellSize()(0), coarseGridVertexAtSamePosition.getParticle(i).getDiameter());
-
-          fineGridVertex.appendParticle(coarseGridVertexAtSamePosition.getParticle(i));
-          coarseGridVertexAtSamePosition.releaseParticle(i);
-
-          /*std::cout << "dropParticle(): GLOBALID: "
-                    << coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId() << " LOCALID: "
-                    << coarseGridVertexAtSamePosition.getParticle(i).getLocalParticleId() << " from "
-                    << peano::grid::SingleLevelEnumerator::getVertexPositionOnCoarserLevel(fineGridPositionOfVertex) << " into "
-                    << fineGridPositionOfVertex << std::endl;*/
-        }
-      }
-    }
-  }
 }
 
 void dem::mappings::AdoptGrid::createInnerVertex(

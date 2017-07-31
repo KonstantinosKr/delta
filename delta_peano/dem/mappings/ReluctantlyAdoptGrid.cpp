@@ -52,6 +52,8 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
+
   if (fineGridVertex.getNumberOfParticles()>1)
   {
     for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
@@ -60,9 +62,6 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
       {
         logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
         fineGridVertex.refine();
-      } else {
-          //Does not hold as it might happen that we lift particles temporarily through hanging nodes
-          //assertion2(fineGridVertex.getParticle(i).getDiameter()>=fineGridH(0)/3.0, fineGridVertex.toString(), fineGridVertex.getParticle(i).toString());
       }
     }
   }

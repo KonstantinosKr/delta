@@ -559,7 +559,7 @@ void dem::Vertex::clearInheritedCoarseGridParticles() {
 
 void dem::Vertex::inheritCoarseGridParticles(const Vertex&  vertex)
 {
-  if (!vertex.isOutside())
+  if(!vertex.isOutside())
   {
 	  //inherit unique virtual particles from coarse level
     for(auto &particleCoarse:

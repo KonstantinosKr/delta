@@ -289,23 +289,24 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)]);
 	enddforx
 
-	// contact detection within cell
 	#ifdef ompParticle
 		#pragma omp parallel for
 	#endif
-	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) // No nead to loop over virtual particles here as well
+	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) // No need to loop over virtual particles here as well
 	{
 		//printf("Number in the grid master:%d\n", fineGridVertex.getNumberOfParticles());
     //printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
-		for(int j=i+1; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
+/*
+	  if(fineGridVertex.getParticle(i).getGlobalParticleId() == 2)
+	  {
+	    for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
+	    {
+	      printf("Inherted :%i\n", fineGridVertex.getParticle(j).getGlobalParticleId());
+	    }
+	  }*/
+
+		for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{
-		  //if(fineGridVertex.getParticle(i).getGlobalParticleId() == 58 || fineGridVertex.getParticle(j).getGlobalParticleId() == 58)
-			//printf("I:%d J:%d\n", fineGridVertex.getParticle(i).getGlobalParticleId(), fineGridVertex.getParticle(j).getGlobalParticleId());
-
-			if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
-				 (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
-				 continue;
-
       if(_enableOverlapCheck)
         if (delta::collision::isSphereOverlayInContact(
             fineGridVertex.getParticle(i).getCentre(0),
@@ -781,7 +782,7 @@ void dem::mappings::Collision::enterCell(
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-    if(
+   if(
     fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() == 0 &&
@@ -791,7 +792,6 @@ void dem::mappings::Collision::enterCell(
     fineGridVertices[fineGridVerticesEnumerator(6)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(7)].getNumberOfParticles() == 0)return;
 
-    //TODO run in parallel these statements
     //phase A
   #ifdef ompParticle
     #pragma omp parallel
@@ -830,7 +830,7 @@ void dem::mappings::Collision::enterCell(
       }
     }
   #else
-    if(fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() > 0)
+    //if(fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() > 0)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(1)]);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(2)]);
@@ -841,14 +841,14 @@ void dem::mappings::Collision::enterCell(
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(7)]);
     }
 
-    if(fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() > 0)
+    //if(fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() > 0)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(2)]);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(4)]);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(6)]);
     }
 
-    if(fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() > 0)
+    //if(fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() > 0)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(5)]);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(4)]);

@@ -13,40 +13,20 @@ void delta::collision::filterOldContacts(
 		bool ignore = false;
 		for (unsigned j = 0; j < dataStoredContactPoints.size(); j++)
 		{
-			iREAL sub[3];
-			sub[0] = newContactPoints[i].x[0] - dataStoredContactPoints[j].x[0];
-			sub[1] = newContactPoints[i].x[1] - dataStoredContactPoints[j].x[1];
-			sub[2] = newContactPoints[i].x[2] - dataStoredContactPoints[j].x[2];
+      iREAL A = newContactPoints[i].x[0] - dataStoredContactPoints[j].x[0];
+      iREAL B = newContactPoints[i].x[1] - dataStoredContactPoints[j].x[1];
+      iREAL C = newContactPoints[i].x[2] - dataStoredContactPoints[j].x[2];
 
-			iREAL distance =  std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
+      iREAL eps = 0.0001;
+      if(std::abs(A) < eps && std::abs(B) < eps && std::abs(C) < eps) ignore = true;
 
 			//iREAL SA = sqrt((rA*2)-(((rA-((dataStoredContactPoints[i].depth/2)*2)))*2));
 			//iREAL SB = sqrt((rB*2)-(((rB-((dataStoredContactPoints[i].depth/2)*2)))*2));
 
 			//iREAL hMin = std::min(SA,SB);
 			//printf("rA:%f depth:%f hMin:%f\n", rA, dataStoredContactPoints[j].depth, hMin);
-			if(distance == 0)
-			{
-				ignore = true;
-			}
-/*
-			iREAL A[3], B[3];
-			A[0] = newContactPoints[i].normal[0];
-			A[1] = newContactPoints[i].normal[1];
-			A[2] = newContactPoints[i].normal[2];
-
-			B[0] = dataStoredContactPoints[j].normal[0];
-			B[1] = dataStoredContactPoints[j].normal[1];
-			B[2] = dataStoredContactPoints[j].normal[2];
-
-			iREAL dot = A[0]*B[0]+
-						 A[1]*B[1]+
-						 A[2]*B[2];*/
 		}
-		if(!ignore)
-		{
-			tmp.push_back(newContactPoints[i]);
-		}
+		if(!ignore) tmp.push_back(newContactPoints[i]);
 	}
 	newContactPoints = tmp;
 }
@@ -63,22 +43,15 @@ void delta::collision::filterOldContacts(
 		bool ignore = false;//found or ignore
 		for (unsigned j = 0; j < dataStoredContactPoints.size(); j++)//loop through new, if similar then don't write in new-new contacts
 		{
-			iREAL sub[3];
-			sub[0] = newContactPoints[i].x[0] - dataStoredContactPoints[j].x[0];
-			sub[1] = newContactPoints[i].x[1] - dataStoredContactPoints[j].x[1];
-			sub[2] = newContactPoints[i].x[2] - dataStoredContactPoints[j].x[2];
+      iREAL A = newContactPoints[i].x[0] - dataStoredContactPoints[j].x[0];
+      iREAL B = newContactPoints[i].x[1] - dataStoredContactPoints[j].x[1];
+      iREAL C = newContactPoints[i].x[2] - dataStoredContactPoints[j].x[2];
 
-			iREAL distance = std::abs(sqrt(sub[0]*sub[0]+sub[1]*sub[1]+sub[2]*sub[2]));
-			if (distance == 0)
-			{
-				ignore = true;
-			}
+      iREAL eps = 0.0001;
+      if(std::abs(A) < eps && std::abs(B) < eps && std::abs(C) < eps) ignore = true;
 		}
 
-		if(!ignore)
-		{
-			tmpContactPoints.push_back(newContactPoints[i]);
-		}
+		if(!ignore) tmpContactPoints.push_back(newContactPoints[i]);
 	}
 	newContactPoints = tmpContactPoints;
 }
