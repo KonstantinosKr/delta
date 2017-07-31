@@ -317,7 +317,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     ////////FLOOR///////////////////////////////////////////////////////////////////////////////////////////
     iREAL position[] = {_centreAsArray[0], _centreAsArray[1] + (_hopperHeight/2)-0.05/3.2, _centreAsArray[2]};
     double height = 0.05; double width = 0.32;
-    //particleId = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
+    particleId = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////PARTICLE GRID/////////////////////////////////////////////////////////////////////////////////
