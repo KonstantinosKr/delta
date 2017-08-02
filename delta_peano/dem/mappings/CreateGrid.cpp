@@ -126,7 +126,7 @@ void dem::mappings::CreateGrid::createInnerVertex(
     //fineGridVertex.refine();
     if(_gridType == RegularGrid)
     {
-      //fineGridVertex.refine();
+      fineGridVertex.refine();
     }
     else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
     {
@@ -134,12 +134,12 @@ void dem::mappings::CreateGrid::createInnerVertex(
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
          fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
       {
-        //fineGridVertex.refine();
+        fineGridVertex.refine();
       }
 
       if(fineGridH(0) >= 0.33)
       {
-        //fineGridVertex.refine();
+        fineGridVertex.refine();
       }
     }
   }
@@ -165,7 +165,7 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
     //fineGridVertex.refine();
     if(_gridType == RegularGrid)
     {
-      //fineGridVertex.refine();
+      fineGridVertex.refine();
     }
     else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
     {
@@ -173,12 +173,12 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
          fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
       {
-        //fineGridVertex.refine();
+        fineGridVertex.refine();
       }
 
       if(fineGridH(0) >= 0.33)
       {
-        //fineGridVertex.refine();
+        fineGridVertex.refine();
       }
     }
   }
@@ -318,9 +318,9 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     _maxComputeDomain[2] = _centreAsArray[2] + _hopperWidth/2;
 
     ////////FLOOR///////////////////////////////////////////////////////////////////////////////////////////
-    iREAL position[] = {_centreAsArray[0], _centreAsArray[1] + (_hopperHeight/2)-0.05/3.2, _centreAsArray[2]};
+    iREAL position[] = {_centreAsArray[0], 0.35, _centreAsArray[2]};
     double height = 0.05; double width = 0.32;
-    //particleId = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
+    particleId = deployBox(vertex, 0, 0, position, width, height, 0, 0, 0, _epsilon, material, true, true);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////PARTICLE GRID/////////////////////////////////////////////////////////////////////////////////

@@ -224,7 +224,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     repository.getState().clearAccumulatedData();
 
-    repository.switchToCollision();
+    /*repository.switchToCollision();
     repository.iterate();
 
     repository.switchToMoveParticles();
@@ -233,7 +233,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     repository.switchToAdopt();
     repository.iterate();
 
-    repository.switchToPlotData();
+    repository.switchToPlotData();*/
 
     repository.iterate();
   }

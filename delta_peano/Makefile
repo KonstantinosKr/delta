@@ -33,12 +33,12 @@ PEANO_SETTINGS=-DTrackGridStatistics
 ##############################################################################################
 
 GCCRUN=-O3 -Wall -ftree-vectorize -ftree-vectorizer-verbose=3 -ftree-loop-optimize -faggressive-loop-optimizations -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing 
-GCCDEBUG=-O3 -Wall -Wconversion -Wno-long-long -Wno-conversion -g -DDebug -DAsserts -pedantic -pedantic-errors 
+GCCDEBUG=-O3 -Wall -g -DDebug -DAsserts -pedantic -pedantic-errors 
 
 ##############################################################################################
 
 ICCRUN=-fast -Wall -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -qopt-streaming-stores always -xHOST
-ICCDEBUG=-O3 -Wall -Werror -Wconversions -g -DDebug -DAsserts -pedantic -pedantic-errors 
+ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors 
 
 ##############################################################################################
 
@@ -196,6 +196,14 @@ dim3-icc-release-vec: CFLAGS=$(ICCRUN)
 dim3-icc-release-vec: LFLAGS=
 dim3-icc-release-vec: EXECUTABLE=dem-3d-release-vec
 dim3-icc-release-vec: header build
+
+dim3-icc-release-vec-assert: CC=icpc --std=c++11
+dim3-icc-release-vec-assert: DIM=-DDim3
+dim3-icc-release-vec-assert: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
+dim3-icc-release-vec-assert: CFLAGS=$(ICCDEBUG)
+dim3-icc-release-vec-assert: LFLAGS=
+dim3-icc-release-vec-assert: EXECUTABLE=dem-3d-release-vec-assert
+dim3-icc-release-vec-assert: header build
 
 dim3-icc-release-omp-triangle: CC=icpc --std=c++11
 dim3-icc-release-omp-triangle: DIM=-DDim3

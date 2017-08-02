@@ -112,12 +112,12 @@ void dem::mappings::Collision::addCollision(
 		bool sphere
 ) {
 	assertion( !newContactPoints.empty() );
-
+/*
 	int id = 96;
 	if((particleA.getGlobalParticleId() == id && particleB.getGlobalParticleId() == 0) ||
 	   (particleB.getGlobalParticleId() == id || particleA.getGlobalParticleId() == 0))
     printf("IN CONTACT\n");
-
+*/
 	//START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
 	if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
 		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
@@ -206,7 +206,7 @@ void dem::mappings::Collision::addCollision(
 	}
 
 	dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
-
+/*
   if((particleA.getGlobalParticleId() == id && particleB.getGlobalParticleId() == 0) ||
      (particleB.getGlobalParticleId() == id || particleA.getGlobalParticleId() == 0))
   {
@@ -214,7 +214,7 @@ void dem::mappings::Collision::addCollision(
     {
       printf("%f\n", i.getDistance());
     }
-  }
+  }*/
 
 	_state.incNumberOfContactPoints(newContactPoints.size());
 }
@@ -310,14 +310,14 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	{
 		//printf("Number in the grid master:%d\n", fineGridVertex.getNumberOfParticles());
     //printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
-
+/*
 	  if(fineGridVertex.getParticle(i).getGlobalParticleId() == 100)
 	  {
 	    for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 	    {
 	      printf("Inherted :%i\n", fineGridVertex.getParticle(j).getGlobalParticleId());
 	    }
-	  }
+	  }*/
 
 		for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{
