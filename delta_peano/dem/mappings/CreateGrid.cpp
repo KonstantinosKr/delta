@@ -121,30 +121,23 @@ void dem::mappings::CreateGrid::createInnerVertex(
 ) {
 	logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+	fineGridVertex.init();
+  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
+
   if(_gridType != NoGrid && fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
   {
-    //fineGridVertex.refine();
     if(_gridType == RegularGrid)
     {
       fineGridVertex.refine();
     }
     else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
     {
-      if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
-         fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
-         fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
-      {
-        fineGridVertex.refine();
-      }
-
       if(fineGridH(0) >= 0.33)
       {
         fineGridVertex.refine();
       }
     }
   }
-
-	fineGridVertex.init();
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
@@ -160,31 +153,23 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 ) {
 	logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+	fineGridVertex.init();
+  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
+
   if(_gridType != NoGrid && fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
   {
-    //fineGridVertex.refine();
     if(_gridType == RegularGrid)
     {
       fineGridVertex.refine();
     }
     else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
     {
-      if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
-         fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
-         fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
-      {
-        fineGridVertex.refine();
-      }
-
       if(fineGridH(0) >= 0.33)
       {
         fineGridVertex.refine();
       }
     }
   }
-
-
-	fineGridVertex.init();
 
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
@@ -584,27 +569,40 @@ void dem::mappings::CreateGrid::createCell(
 	  {
       auto material = delta::geometry::material::MaterialType::WOOD; bool friction = true; bool obstacle = false;
       deployFineEnviroment(vertex, _centreAsArray, fineGridVerticesEnumerator.getCellSize()(0), material, friction, obstacle);
+
+      dfor2(k) //size 2, dimension 3
+        for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
+        {
+          records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
+          tarch::la::Vector<DIMENSIONS,int> correctVertex;
+
+          for(int d=0; d<DIMENSIONS; d++)
+          {
+            correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
+          }
+
+          if(correctVertex != k)
+          {
+            fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
+            fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
+          }
+        }
+      enddforx
       return;
 	  }
 
 		int particlesInCellPerAxis = std::floor(fineGridVerticesEnumerator.getCellSize()(0) / _maxParticleDiam);
-
-    if(particlesInCellPerAxis==0)
-    {
-      particlesInCellPerAxis = 1;
-      //_maxParticleDiam = fineGridVerticesEnumerator.getCellSize()(0); //_minParticleDiam = std::min(_minParticleDiam, _maxParticleDiam);
-    }
+    if(particlesInCellPerAxis==0) particlesInCellPerAxis = 1;
 
 		dfor(k,particlesInCellPerAxis)
 		{
-		  const auto centre = fineGridVerticesEnumerator.getVertexPosition() + _maxParticleDiam * (k.convertScalar<double>()+0.5);
+		  const auto centre = fineGridVerticesEnumerator.getVertexPosition() + _maxParticleDiam * k.convertScalar<double>();
       double centreAsArray[] = {centre(0),centre(1),centre(2)};
 
       auto material = delta::geometry::material::MaterialType::WOOD; bool friction = true; bool obstacle = false;
       deployFineEnviroment(vertex, centreAsArray, fineGridVerticesEnumerator.getCellSize()(0), material, friction, obstacle);
 		}
 	}
-
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
 
@@ -909,7 +907,9 @@ void dem::mappings::CreateGrid::createHangingVertex(
 		const tarch::la::Vector<DIMENSIONS,int>&                   fineGridPositionOfVertex
 ) {
 	logTraceInWith6Arguments( "createHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-	// @todo Insert your code here
+
+  fineGridVertex.init();
+
 	logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
 }
 
@@ -923,7 +923,6 @@ void dem::mappings::CreateGrid::destroyHangingVertex(
 		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
 	logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-	// @todo Insert your code here
 	logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
 
@@ -937,7 +936,6 @@ void dem::mappings::CreateGrid::destroyVertex(
 		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
 	logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-	// @todo Insert your code here
 	logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
 
@@ -1148,7 +1146,7 @@ void dem::mappings::CreateGrid::touchVertexLastTime(
 ) {
 	logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  //dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
 	logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

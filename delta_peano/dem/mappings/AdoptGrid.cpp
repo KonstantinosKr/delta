@@ -58,7 +58,7 @@ void dem::mappings::dropParticles(
     {
       for(int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
       {
-        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0)/1)
+        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0))
         {
           //printf("ID:%i CELL SIZE:%f DIAMETER:%f\n", coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId(), coarseGridVerticesEnumerator.getCellSize()(0), coarseGridVertexAtSamePosition.getParticle(i).getDiameter());
 
@@ -91,9 +91,9 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
 
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
-    if(fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+    if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
     {
-      //logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
+      logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
     }
   }
@@ -136,8 +136,6 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
   fineGridVertex.eraseIfParticleDistributionPermits();
   restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
-  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
-
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
@@ -164,8 +162,6 @@ void dem::mappings::liftAllParticles(
   dem::Vertex * const                           coarseGridVertices,
   const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator
 ) {
-  //logTraceInWith1Argument( "liftAllParticles(...)", fineGridVertex.toString() );
-
   int i=0;
   while (i<fineGridVertex.getNumberOfParticles())
   {
@@ -178,8 +174,6 @@ void dem::mappings::liftAllParticles(
 
     i++;
   }
-
-  //logTraceOutWith1Argument( "liftAllParticles(...)", fineGridVertex );
 }
 
 void dem::mappings::AdoptGrid::destroyHangingVertex(
@@ -496,6 +490,7 @@ void dem::mappings::AdoptGrid::enterCell(
       dem::Cell&                 coarseGridCell,
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
+
 }
 
 void dem::mappings::AdoptGrid::leaveCell(

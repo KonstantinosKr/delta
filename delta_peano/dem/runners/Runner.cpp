@@ -224,18 +224,19 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     repository.getState().clearAccumulatedData();
 
-    /*repository.switchToCollision();
-    repository.iterate();
+    //repository.switchToCollision();
+    //repository.iterate();
 
+    printf("MOVE\n");
     repository.switchToMoveParticles();
     repository.iterate();
-
+    printf("ADOPT\n");
     repository.switchToAdopt();
     repository.iterate();
-
-    repository.switchToPlotData();*/
-
-    repository.iterate();
+    //printf("PLOT\n");
+    //repository.switchToPlotData();
+    //repository.iterate();
+    printf("ENDED\n");
   }
 
   repository.logIterationStatistics(false);

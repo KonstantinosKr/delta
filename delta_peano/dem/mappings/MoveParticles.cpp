@@ -105,7 +105,8 @@ void dem::mappings::MoveParticles::reassignParticles(
   dfor2(k) //size 2, dimension 3
     //Vertex a = fineGridVertices[fineGridVerticesEnumerator(k)];
     //std::cout << a.toString() << std::endl;
-    //printf("%i\n", fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles());
+
+    if(!fineGridVertices[fineGridVerticesEnumerator(k)].isHangingNode())
     for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
     {
       records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
@@ -194,7 +195,9 @@ void dem::mappings::MoveParticles::enterCell(
 ) {
   logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-  //reassignParticles(fineGridVertices, fineGridVerticesEnumerator);
+  printf("before\n");
+  reassignParticles(fineGridVertices, fineGridVerticesEnumerator);
+  printf("after\n");
 
   logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
@@ -210,11 +213,11 @@ void dem::mappings::MoveParticles::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-
-
+  printf("before reflect\n");
   if (fineGridVertex.isBoundary()) {
     reflectParticles(fineGridVertex);
   }
+  printf("after reflect\n");
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

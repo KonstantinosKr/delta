@@ -71,6 +71,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 {
   _iterationNumber       = solverState.getTimeStep();
   logTraceInWith1Argument( "endIteration(State)", solverState );
+
 /*
  * TODO
  * 1)print mesh epsilon by resizing mess and creating a double
