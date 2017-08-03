@@ -177,11 +177,11 @@ void dem::mappings::Collision::addCollision(
 	}
 	////////END
 
-  //delta::collision::filterNewContacts(newContactPoints);
+  delta::collision::filterNewContacts(newContactPoints);
 	if(sphere)
 	{
-    //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
-    //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
+    delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
+    delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, particleA.getDiameter()/2, particleB.getDiameter()/2);
 	} else {	//filter multiple contacts for same area of mesh
     delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
     delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
@@ -795,7 +795,6 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-return;
    if(
     fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
