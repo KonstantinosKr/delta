@@ -64,6 +64,7 @@ void dem::mappings::dropParticles(
 
           if(coarseGridVertexAtSamePosition.getParticle(i).getIsObstacle())
             continue;
+
           fineGridVertex.appendParticle(coarseGridVertexAtSamePosition.getParticle(i));
           coarseGridVertexAtSamePosition.releaseParticle(i);
 

@@ -195,9 +195,7 @@ void dem::mappings::MoveParticles::enterCell(
 ) {
   logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-  printf("before\n");
   reassignParticles(fineGridVertices, fineGridVerticesEnumerator);
-  printf("after\n");
 
   logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
@@ -213,11 +211,9 @@ void dem::mappings::MoveParticles::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  printf("before reflect\n");
   if (fineGridVertex.isBoundary()) {
     reflectParticles(fineGridVertex);
   }
-  printf("after reflect\n");
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
