@@ -58,12 +58,10 @@ void dem::mappings::dropParticles(
     {
       for(int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
       {
+        if(!coarseGridVertexAtSamePosition.getParticle(i).getIsObstacle())
         if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0))
         {
           //printf("ID:%i CELL SIZE:%f DIAMETER:%f\n", coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId(), coarseGridVerticesEnumerator.getCellSize()(0), coarseGridVertexAtSamePosition.getParticle(i).getDiameter());
-
-          if(coarseGridVertexAtSamePosition.getParticle(i).getIsObstacle())
-            continue;
 
           fineGridVertex.appendParticle(coarseGridVertexAtSamePosition.getParticle(i));
           coarseGridVertexAtSamePosition.releaseParticle(i);
@@ -89,6 +87,8 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
   const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {

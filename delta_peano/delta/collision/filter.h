@@ -42,6 +42,10 @@ namespace delta {
 
     void filterOldContacts(
         std::vector<contactpoint>& dataStoredContactPoints,
+        std::vector<contactpoint>& newContactPoints);
+
+    void filterOldContacts(
+        std::vector<contactpoint>& dataStoredContactPoints,
         std::vector<contactpoint>& newContactPoints,
         iREAL hMin);
 

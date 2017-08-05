@@ -33,6 +33,29 @@ void delta::collision::filterOldContacts(
 
 void delta::collision::filterOldContacts(
     std::vector<contactpoint>& dataStoredContactPoints,
+    std::vector<contactpoint>& newContactPoints)
+{
+  std::vector<contactpoint> tmp;
+
+  for (unsigned i = 0; i < newContactPoints.size(); i++)
+  {
+    bool ignore = false;
+    for (unsigned j = 0; j < dataStoredContactPoints.size(); j++)
+    {
+      iREAL A = newContactPoints[i].x[0] - dataStoredContactPoints[j].x[0];
+      iREAL B = newContactPoints[i].x[1] - dataStoredContactPoints[j].x[1];
+      iREAL C = newContactPoints[i].x[2] - dataStoredContactPoints[j].x[2];
+
+      iREAL eps = 0.0001;
+      if(std::abs(A) < eps && std::abs(B) < eps && std::abs(C) < eps) ignore = true;
+    }
+    if(!ignore) tmp.push_back(newContactPoints[i]);
+  }
+  newContactPoints = tmp;
+}
+
+void delta::collision::filterOldContacts(
+    std::vector<contactpoint>& dataStoredContactPoints,
     std::vector<contactpoint>& newContactPoints,
     iREAL hMin)
 {
