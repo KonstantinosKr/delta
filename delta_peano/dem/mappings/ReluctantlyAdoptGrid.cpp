@@ -52,7 +52,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex);
+  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
 
   if (fineGridVertex.getNumberOfParticles()>1)
   {
@@ -136,9 +136,6 @@ void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   fineGridVertex.init();
-  //tarch::multicore::Lock lock(_ReluctantSemaphore);
-  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
-  //lock.free();
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
@@ -155,9 +152,6 @@ void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   fineGridVertex.init();
-  //tarch::multicore::Lock lock(_ReluctantSemaphore);
-  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
-  //lock.free();
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }

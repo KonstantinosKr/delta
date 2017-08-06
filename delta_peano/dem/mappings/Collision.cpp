@@ -179,11 +179,11 @@ void dem::mappings::Collision::addCollision(
 	}
 	////////END
 
-  //delta::collision::filterNewContacts(newContactPoints);
+  delta::collision::filterNewContacts(newContactPoints);
 	if(sphere)
 	{
-    delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints);
-    delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints);
+    //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints);
+    //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints);
 	} else {	//filter multiple contacts for same area of mesh
     //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
     //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
@@ -913,7 +913,7 @@ void dem::mappings::Collision::enterCell(
                               (fineGridVertices[fineGridVerticesEnumerator(2)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary()) || //up halo
                               (fineGridVertices[fineGridVerticesEnumerator(0)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(4)].isBoundary()));  //down halo
 
-    //if(backface || backfaceLRUDHalo)
+    if(backface || backfaceLRUDHalo)
     {
       //face X
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(4)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
@@ -924,7 +924,7 @@ void dem::mappings::Collision::enterCell(
     }
 
     //face top vertex is boundary
-    //if(topface || topfaceLRUDHalo)
+    if(topface || topfaceLRUDHalo)
     {
       //face X
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(7)]);
@@ -935,7 +935,7 @@ void dem::mappings::Collision::enterCell(
     }
 
     //right face is boundary
-    //if(rightface || rightfaceLRUDHalo)
+    if(rightface || rightfaceLRUDHalo)
     {
       //face X
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
@@ -957,17 +957,17 @@ void dem::mappings::Collision::enterCell(
                          (fineGridVertices[fineGridVerticesEnumerator(6)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(7)].isBoundary()) &&
                          (fineGridVertices[fineGridVerticesEnumerator(1)].isBoundary() && fineGridVertices[fineGridVerticesEnumerator(5)].isBoundary()));
 
-    //if(backtopEdge)
+    if(backtopEdge)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(6)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
     }
 
-    //if(backrightEdge)
+    if(backrightEdge)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(5)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
     }
 
-    //if(toprightEdge)
+    if(toprightEdge)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[ fineGridVerticesEnumerator(3)], fineGridVertices[ fineGridVerticesEnumerator(7)]);
     }

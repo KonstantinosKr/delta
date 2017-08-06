@@ -45,7 +45,8 @@ void dem::mappings::dropParticles(
   dem::Vertex&                                 fineGridVertex,
   dem::Vertex * const                          coarseGridVertices,
   const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex,
+  double                                       fineGridH
 ) {
   assertion1( !fineGridVertex.isHangingNode(), fineGridVertex.toString() );
 
@@ -58,8 +59,8 @@ void dem::mappings::dropParticles(
     {
       for(int i=0; i<coarseGridVertexAtSamePosition.getNumberOfParticles(); i++)
       {
-        if(!coarseGridVertexAtSamePosition.getParticle(i).getIsObstacle())
-        if(coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0))
+        //if(!coarseGridVertexAtSamePosition.getParticle(i).getIsObstacle())
+        if(fineGridH < coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0))
         {
           //printf("ID:%i CELL SIZE:%f DIAMETER:%f\n", coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId(), coarseGridVerticesEnumerator.getCellSize()(0), coarseGridVertexAtSamePosition.getParticle(i).getDiameter());
 
@@ -132,7 +133,7 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex, fineGridH(0));
 
   fineGridVertex.eraseIfParticleDistributionPermits();
   restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
@@ -209,10 +210,6 @@ void dem::mappings::AdoptGrid::createInnerVertex(
 
   fineGridVertex.init();
 
-  tarch::multicore::Lock lock(_AdoptSemaphore);
-  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
-  lock.free();
-
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
 
@@ -228,10 +225,6 @@ void dem::mappings::AdoptGrid::createBoundaryVertex(
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   fineGridVertex.init();
-
-  tarch::multicore::Lock lock(_AdoptSemaphore);
-  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
-  lock.free();
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }

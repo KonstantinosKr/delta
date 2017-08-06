@@ -367,7 +367,7 @@ void delta::world::assembly::nonUniSphereRadius(
 
   iREAL reMassTotal = 0;
 
-  iREAL mindiam = radius/2;
+  iREAL mindiam = radius;
   iREAL maxdiam = radius*2;
 
   if(radius*2 > subcellx)

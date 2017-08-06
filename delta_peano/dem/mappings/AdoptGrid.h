@@ -37,7 +37,8 @@ namespace dem {
       dem::Vertex&                                 fineGridVertex,
       dem::Vertex * const                          coarseGridVertices,
       const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-      const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+      const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex,
+      double                                       fineGridH
     );
 
     void liftAllParticles(
