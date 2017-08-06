@@ -423,7 +423,7 @@ void delta::world::assembly::nonUniMeshGeometry(
 
   iREAL position[3];
   //std::vector<iREAL> rad;
-  iREAL mindiam = radius*2/2;
+  iREAL mindiam = radius;
   iREAL maxdiam = radius*2;
   if(radius*2 > subcellx)
     printf("ERROR:radius bigger than subcellx\n");

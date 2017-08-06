@@ -118,6 +118,7 @@ void dem::mappings::Collision::addCollision(
 	   (particleB.getGlobalParticleId() == id || particleA.getGlobalParticleId() == 0))
     printf("IN CONTACT\n");
 */
+
 	//////////////START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
 	if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
 		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
@@ -185,8 +186,8 @@ void dem::mappings::Collision::addCollision(
     //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints);
     //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints);
 	} else {	//filter multiple contacts for same area of mesh
-    //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
-    //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+    delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+    delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 	}
 
 	/*
@@ -323,6 +324,10 @@ void dem::mappings::Collision::touchVertexFirstTime(
 
 		for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{
+      if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
+         (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
+        continue;
+
       if(_enableOverlapCheck)
         if (delta::collision::isSphereOverlayInContact(
             fineGridVertex.getParticle(i).getCentre(0),
@@ -794,7 +799,7 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-
+return;
 	if(
     fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&

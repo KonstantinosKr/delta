@@ -34,6 +34,8 @@ peano::MappingSpecification   dem::mappings::Plot::descendSpecification(int leve
 
 tarch::logging::Log  dem::mappings::Plot::_log( "dem::mappings::Plot" );
 int                  dem::mappings::Plot::_snapshotCounter( 0 );
+int                  dem::mappings::Plot::_mini;
+int                  dem::mappings::Plot::_maxi;
 
 void dem::mappings::Plot::beginIteration(dem::State&  solverState)
 {
@@ -69,15 +71,15 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
 
 void dem::mappings::Plot::endIteration( dem::State&  solverState)
 {
-  _iterationNumber       = solverState.getTimeStep();
   logTraceInWith1Argument( "endIteration(State)", solverState );
 
 /*
- * TODO
- * 1)print mesh epsilon by resizing mess and creating a double
+ * TODO print mesh epsilon by resizing mess and creating a double
  */
   assertion( Collision::_collisionsOfNextTraversal.empty() );
   assertion( solverState.getNumberOfContactPoints()==0 || !Collision::_activeCollisions.empty() );
+
+  _iterationNumber       = solverState.getTimeStep();
 
   std::vector<std::pair<int,int>> particlePrinted;
   //loop every collision list of every particle
@@ -273,15 +275,20 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   _particleInfluence->close();
   _vertexColoring->close();
 
-  std::ostringstream snapshotFileName;
-  snapshotFileName << "geometry"
-                   #ifdef Parallel
-                   << "-rank-" << tarch::parallel::Node::getInstance().getRank()
-                   #endif
-                   << "-" << _snapshotCounter;
-  _writer->writeToFile( snapshotFileName.str() );
-
-  _snapshotCounter++;
+  if(_mini < _iterationNumber < _maxi)
+  {
+    std::ostringstream snapshotFileName;
+    snapshotFileName << "geometry"
+                     #ifdef Parallel
+                     << "-rank-" << tarch::parallel::Node::getInstance().getRank()
+                     #endif
+                     << "-" << _snapshotCounter;
+    _writer->writeToFile( snapshotFileName.str() );
+    #ifdef Asserts
+    logInfo( "endIteration(State)", "particles written=" << _particleCounter << ", collision points written=" << (_collisionPointCounter/2) << ", file=" << snapshotFileName.str() );
+    #endif
+    _snapshotCounter++;
+  }
 
   delete _vertexWriter;
   delete _cellWriter;
@@ -298,10 +305,6 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   delete _particleEpsilon;
   delete _particleInfluence;
   delete _vertexColoring;
-
-  #ifdef Asserts
-  logInfo( "endIteration(State)", "particles written=" << _particleCounter << ", collision points written=" << (_collisionPointCounter/2) << ", file=" << snapshotFileName.str() );
-  #endif
 
   logTraceOutWith1Argument( "endIteration(State)", solverState);
 }

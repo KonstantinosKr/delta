@@ -20,6 +20,7 @@
 
 #include "dem/mappings/MoveParticles.h"
 #include "dem/mappings/CreateGrid.h"
+#include "dem/mappings/Plot.h"
 #include <stdlib.h>
 #include <string>
 
@@ -126,8 +127,17 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   double elapsed = 0.0;
   double timestamp = 0.0;
 
-  int minRange = 4000;
-  int maxRange = 8000;
+  int minRange = 100000;
+  int maxRange = 200000;
+
+  if(plot == EveryIteration)
+  {
+     dem::mappings::Plot::_mini = 0;
+     dem::mappings::Plot::_maxi = iterations;
+  } else {
+    dem::mappings::Plot::_mini = minRange;
+    dem::mappings::Plot::_maxi = maxRange;
+  }
 
   /////////////////////PRE-STEP
   /*dem::mappings::Collision::CollisionModel model = dem::mappings::Collision::_collisionModel;
