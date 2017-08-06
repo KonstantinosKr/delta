@@ -275,8 +275,9 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   _particleInfluence->close();
   _vertexColoring->close();
 
-  if(_mini < _iterationNumber < _maxi)
+  if(100000 < _iterationNumber && _iterationNumber < 200000)
   {
+//    printf("ENTERED %i %i %i\n", _mini, _maxi, _iterationNumber);
     std::ostringstream snapshotFileName;
     snapshotFileName << "geometry"
                      #ifdef Parallel
