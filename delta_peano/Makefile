@@ -105,6 +105,14 @@ dim3-gcc-release-omp-triangle: LFLAGS=$(LINK_OMP)
 dim3-gcc-release-omp-triangle: EXECUTABLE=dem-3d-release-omp-triangle
 dim3-gcc-release-omp-triangle: header build
 
+dim3-gcc-release-omp-triangle-stats: CC=g++ -std=c++0x
+dim3-gcc-release-omp-triangle-stats: DIM=-DDim3
+dim3-gcc-release-omp-triangle-stats: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(DELTA_STATS) -DompTriangle
+dim3-gcc-release-omp-triangle-stats: CFLAGS=$(GCCRUN) $(GCC_SHAREDMEMORY)
+dim3-gcc-release-omp-triangle-stats: LFLAGS=$(LINK_OMP)
+dim3-gcc-release-omp-triangle-stats: EXECUTABLE=dem-3d-release-omp-triangle
+dim3-gcc-release-omp-triangle-stats: header build
+
 dim3-gcc-release-omp-triangle-phi: CC=g++ -std=c++0x
 dim3-gcc-release-omp-triangle-phi: DIM=-DDim3
 dim3-gcc-release-omp-triangle-phi: SETTINGS=$(DELTAPHI_SETTINGS) $(PEANO_SETTINGS) -DompTriangle
