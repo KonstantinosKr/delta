@@ -41,6 +41,8 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
 {
   logTraceInWith1Argument( "beginIteration(State)", solverState );
 
+  _iterationNumber       = solverState.getTimeStep();
+
   if(_mini < _iterationNumber && _iterationNumber < _maxi)
   {
     //printf("ENTERED %i %i %i\n", _mini, _maxi, _iterationNumber);
@@ -66,7 +68,6 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
     _vertexCounter         = 0;
     _particleCounter       = 0;
     _collisionPointCounter = 0;
-    _iterationNumber       = solverState.getTimeStep();
 
     // _trackParticle = _trackID >= 0 ? true : false;
   }
@@ -77,9 +78,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
 
-/*
- * TODO print mesh epsilon by resizing mess and creating a double
- */
+  //TODO print mesh epsilon by resizing mess and creating a double
   assertion( Collision::_collisionsOfNextTraversal.empty() );
   assertion( solverState.getNumberOfContactPoints()==0 || !Collision::_activeCollisions.empty() );
 
@@ -256,6 +255,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
     delete _vertexColoring;
   }
 
+
   for(auto p:Collision::_activeCollisions)
   {
     for(auto pp:p.second)
@@ -340,7 +340,6 @@ void dem::mappings::Plot::touchVertexLastTime(
   if(_mini < _iterationNumber && _iterationNumber < _maxi)
   {
     //printf("ENTERED %i %i %i\n", _mini, _maxi, _iterationNumber);
-
 
     _vertexCounter++;
 

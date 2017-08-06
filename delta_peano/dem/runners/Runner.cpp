@@ -168,8 +168,14 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       (plot == EveryBatch && 0%50 == 0) ||
       ((plot == Adaptive && ((elapsed > realSnapshot) || (0 == 0)))))
   {
+    timestamp = repository.getState().getTime();
+    repository.getState().setTimeStep(0);
+
     repository.switchToPlotData();
     repository.iterate();
+
+    elapsed = repository.getState().getTime() - timestamp;
+    repository.getState().finishedTimeStep(initialStepSize);
   }
 
   for (int i=1; i<iterations; i++)
