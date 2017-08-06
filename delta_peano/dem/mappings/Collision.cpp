@@ -156,6 +156,7 @@ void dem::mappings::Collision::addCollision(
 
 	if((dataSetA!=nullptr && dataSetB!=nullptr)) return;
 
+	//printf("ENTERED: %i %i\n", particleA.getGlobalParticleId(), particleB.getGlobalParticleId());
 	///ASSERT we have data assigned to both data pointers
 	assertion( (dataSetA==nullptr && dataSetB==nullptr) || (dataSetA!=nullptr && dataSetB!=nullptr) );
   //END
@@ -799,7 +800,7 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-return;
+
 	if(
     fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
