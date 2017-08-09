@@ -181,14 +181,14 @@ void dem::mappings::Collision::addCollision(
 	}
 	////////END
 
-  delta::collision::filterNewContacts(newContactPoints);
+  //delta::collision::filterNewContacts(newContactPoints);
 	if(sphere)
 	{
     //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints);
     //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints);
 	} else {	//filter multiple contacts for same area of mesh
-    delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
-    delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+    //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
+    //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 	}
 
 	/*

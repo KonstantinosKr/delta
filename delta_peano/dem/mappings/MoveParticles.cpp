@@ -183,8 +183,6 @@ void dem::mappings::MoveParticles::touchVertexFirstTime(
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  moveAllParticlesAssociatedToVertex(fineGridVertex);
-
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
@@ -218,6 +216,8 @@ void dem::mappings::MoveParticles::touchVertexLastTime(
   if (fineGridVertex.isBoundary()) {
     reflectParticles(fineGridVertex);
   }
+
+  moveAllParticlesAssociatedToVertex(fineGridVertex);
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

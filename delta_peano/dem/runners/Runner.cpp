@@ -127,8 +127,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   double elapsed = 0.0;
   double timestamp = 0.0;
 
-  int minRange = 100000;
-  int maxRange = 200000;
+  int minRange = 0;
+  int maxRange = 50000;
 
   if(plot == EveryIteration)
   {
