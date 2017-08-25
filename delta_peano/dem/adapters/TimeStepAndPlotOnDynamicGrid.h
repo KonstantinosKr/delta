@@ -19,8 +19,8 @@
 
 
  #include "dem/mappings/Collision.h"
- #include "dem/mappings/MoveParticles.h"
  #include "dem/mappings/AdoptGrid.h"
+ #include "dem/mappings/MoveParticles.h"
  #include "dem/mappings/Plot.h"
  #include "dem/adapters/TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4.h"
 
@@ -43,14 +43,14 @@ namespace dem {
 class dem::adapters::TimeStepAndPlotOnDynamicGrid {
   private:
     typedef mappings::Collision Mapping0;
-    typedef mappings::MoveParticles Mapping1;
-    typedef mappings::AdoptGrid Mapping2;
+    typedef mappings::AdoptGrid Mapping1;
+    typedef mappings::MoveParticles Mapping2;
     typedef mappings::Plot Mapping3;
     typedef adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 Mapping4;
 
      Mapping0  _map2Collision;
-     Mapping1  _map2MoveParticles;
-     Mapping2  _map2AdoptGrid;
+     Mapping1  _map2AdoptGrid;
+     Mapping2  _map2MoveParticles;
      Mapping3  _map2Plot;
      Mapping4  _map2TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4;
 

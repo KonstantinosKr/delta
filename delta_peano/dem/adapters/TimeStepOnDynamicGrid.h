@@ -19,8 +19,8 @@
 
 
  #include "dem/mappings/Collision.h"
- #include "dem/mappings/MoveParticles.h"
  #include "dem/mappings/AdoptGrid.h"
+ #include "dem/mappings/MoveParticles.h"
 
 
 
@@ -41,12 +41,12 @@ namespace dem {
 class dem::adapters::TimeStepOnDynamicGrid {
   private:
     typedef mappings::Collision Mapping0;
-    typedef mappings::MoveParticles Mapping1;
-    typedef mappings::AdoptGrid Mapping2;
+    typedef mappings::AdoptGrid Mapping1;
+    typedef mappings::MoveParticles Mapping2;
 
      Mapping0  _map2Collision;
-     Mapping1  _map2MoveParticles;
-     Mapping2  _map2AdoptGrid;
+     Mapping1  _map2AdoptGrid;
+     Mapping2  _map2MoveParticles;
 
 
   public:

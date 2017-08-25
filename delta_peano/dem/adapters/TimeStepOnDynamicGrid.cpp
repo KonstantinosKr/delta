@@ -4,8 +4,8 @@
 peano::CommunicationSpecification   dem::adapters::TimeStepOnDynamicGrid::communicationSpecification() const {
   return peano::CommunicationSpecification::getMinimalSpecification()
     &  _map2Collision.communicationSpecification()
-    &  _map2MoveParticles.communicationSpecification()
     &  _map2AdoptGrid.communicationSpecification()
+    &  _map2MoveParticles.communicationSpecification()
 
   ;
 }
@@ -14,8 +14,8 @@ peano::CommunicationSpecification   dem::adapters::TimeStepOnDynamicGrid::commun
 peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2Collision.touchVertexLastTimeSpecification(level)
-    &  _map2MoveParticles.touchVertexLastTimeSpecification(level)
     &  _map2AdoptGrid.touchVertexLastTimeSpecification(level)
+    &  _map2MoveParticles.touchVertexLastTimeSpecification(level)
 
   ;
 }
@@ -24,8 +24,8 @@ peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::touchVertexL
 peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::touchVertexFirstTimeSpecification(int level) const { 
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2Collision.touchVertexFirstTimeSpecification(level)
-    &  _map2MoveParticles.touchVertexFirstTimeSpecification(level)
     &  _map2AdoptGrid.touchVertexFirstTimeSpecification(level)
+    &  _map2MoveParticles.touchVertexFirstTimeSpecification(level)
 
   ;
 }
@@ -34,8 +34,8 @@ peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::touchVertexF
 peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::enterCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2Collision.enterCellSpecification(level)
-    &  _map2MoveParticles.enterCellSpecification(level)
     &  _map2AdoptGrid.enterCellSpecification(level)
+    &  _map2MoveParticles.enterCellSpecification(level)
 
   ;
 }
@@ -44,8 +44,8 @@ peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::enterCellSpe
 peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::leaveCellSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2Collision.leaveCellSpecification(level)
-    &  _map2MoveParticles.leaveCellSpecification(level)
     &  _map2AdoptGrid.leaveCellSpecification(level)
+    &  _map2MoveParticles.leaveCellSpecification(level)
 
   ;
 }
@@ -54,8 +54,8 @@ peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::leaveCellSpe
 peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::ascendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2Collision.ascendSpecification(level)
-    &  _map2MoveParticles.ascendSpecification(level)
     &  _map2AdoptGrid.ascendSpecification(level)
+    &  _map2MoveParticles.ascendSpecification(level)
 
   ;
 }
@@ -64,8 +64,8 @@ peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::ascendSpecif
 peano::MappingSpecification   dem::adapters::TimeStepOnDynamicGrid::descendSpecification(int level) const {
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2Collision.descendSpecification(level)
-    &  _map2MoveParticles.descendSpecification(level)
     &  _map2AdoptGrid.descendSpecification(level)
+    &  _map2MoveParticles.descendSpecification(level)
 
   ;
 }
@@ -82,8 +82,8 @@ dem::adapters::TimeStepOnDynamicGrid::~TimeStepOnDynamicGrid() {
 #if defined(SharedMemoryParallelisation)
 dem::adapters::TimeStepOnDynamicGrid::TimeStepOnDynamicGrid(const TimeStepOnDynamicGrid&  masterThread):
   _map2Collision(masterThread._map2Collision) , 
-  _map2MoveParticles(masterThread._map2MoveParticles) , 
-  _map2AdoptGrid(masterThread._map2AdoptGrid) 
+  _map2AdoptGrid(masterThread._map2AdoptGrid) , 
+  _map2MoveParticles(masterThread._map2MoveParticles) 
 
 {
 }
@@ -91,8 +91,8 @@ dem::adapters::TimeStepOnDynamicGrid::TimeStepOnDynamicGrid(const TimeStepOnDyna
 
 void dem::adapters::TimeStepOnDynamicGrid::mergeWithWorkerThread(const TimeStepOnDynamicGrid& workerThread) {
   _map2Collision.mergeWithWorkerThread(workerThread._map2Collision);
-  _map2MoveParticles.mergeWithWorkerThread(workerThread._map2MoveParticles);
   _map2AdoptGrid.mergeWithWorkerThread(workerThread._map2AdoptGrid);
+  _map2MoveParticles.mergeWithWorkerThread(workerThread._map2MoveParticles);
 
 }
 #endif
@@ -108,8 +108,8 @@ void dem::adapters::TimeStepOnDynamicGrid::createHangingVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                   fineGridPositionOfVertex
 ) {
   _map2Collision.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2MoveParticles.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2AdoptGrid.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2MoveParticles.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 
 }
@@ -125,8 +125,8 @@ void dem::adapters::TimeStepOnDynamicGrid::destroyHangingVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
   _map2Collision.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2MoveParticles.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2AdoptGrid.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2MoveParticles.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -141,8 +141,8 @@ void dem::adapters::TimeStepOnDynamicGrid::createInnerVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   _map2Collision.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2MoveParticles.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2AdoptGrid.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2MoveParticles.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -157,8 +157,8 @@ void dem::adapters::TimeStepOnDynamicGrid::createBoundaryVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   _map2Collision.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2MoveParticles.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2AdoptGrid.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2MoveParticles.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -173,8 +173,8 @@ void dem::adapters::TimeStepOnDynamicGrid::destroyVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
   _map2Collision.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2MoveParticles.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2AdoptGrid.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2MoveParticles.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -189,8 +189,8 @@ void dem::adapters::TimeStepOnDynamicGrid::createCell(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
   _map2Collision.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
-  _map2MoveParticles.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2AdoptGrid.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
+  _map2MoveParticles.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -205,8 +205,8 @@ void dem::adapters::TimeStepOnDynamicGrid::destroyCell(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
   _map2Collision.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
-  _map2MoveParticles.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2AdoptGrid.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
+  _map2MoveParticles.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -221,8 +221,8 @@ void dem::adapters::TimeStepOnDynamicGrid::mergeWithNeighbour(
   int                                           level
 ) {
    _map2Collision.mergeWithNeighbour( vertex, neighbour, fromRank, fineGridX, fineGridH, level );
-   _map2MoveParticles.mergeWithNeighbour( vertex, neighbour, fromRank, fineGridX, fineGridH, level );
    _map2AdoptGrid.mergeWithNeighbour( vertex, neighbour, fromRank, fineGridX, fineGridH, level );
+   _map2MoveParticles.mergeWithNeighbour( vertex, neighbour, fromRank, fineGridX, fineGridH, level );
 
 }
 
@@ -235,8 +235,8 @@ void dem::adapters::TimeStepOnDynamicGrid::prepareSendToNeighbour(
   int                                           level
 ) {
    _map2Collision.prepareSendToNeighbour( vertex, toRank, x, h, level );
-   _map2MoveParticles.prepareSendToNeighbour( vertex, toRank, x, h, level );
    _map2AdoptGrid.prepareSendToNeighbour( vertex, toRank, x, h, level );
+   _map2MoveParticles.prepareSendToNeighbour( vertex, toRank, x, h, level );
 
 }
 
@@ -249,8 +249,8 @@ void dem::adapters::TimeStepOnDynamicGrid::prepareCopyToRemoteNode(
   int                                           level
 ) {
    _map2Collision.prepareCopyToRemoteNode( localVertex, toRank, x, h, level );
-   _map2MoveParticles.prepareCopyToRemoteNode( localVertex, toRank, x, h, level );
    _map2AdoptGrid.prepareCopyToRemoteNode( localVertex, toRank, x, h, level );
+   _map2MoveParticles.prepareCopyToRemoteNode( localVertex, toRank, x, h, level );
 
 }
 
@@ -263,8 +263,8 @@ void dem::adapters::TimeStepOnDynamicGrid::prepareCopyToRemoteNode(
       int                                           level
 ) {
    _map2Collision.prepareCopyToRemoteNode( localCell, toRank, x, h, level );
-   _map2MoveParticles.prepareCopyToRemoteNode( localCell, toRank, x, h, level );
    _map2AdoptGrid.prepareCopyToRemoteNode( localCell, toRank, x, h, level );
+   _map2MoveParticles.prepareCopyToRemoteNode( localCell, toRank, x, h, level );
 
 }
 
@@ -278,8 +278,8 @@ void dem::adapters::TimeStepOnDynamicGrid::mergeWithRemoteDataDueToForkOrJoin(
   int                                       level
 ) {
    _map2Collision.mergeWithRemoteDataDueToForkOrJoin( localVertex, masterOrWorkerVertex, fromRank, x, h, level );
-   _map2MoveParticles.mergeWithRemoteDataDueToForkOrJoin( localVertex, masterOrWorkerVertex, fromRank, x, h, level );
    _map2AdoptGrid.mergeWithRemoteDataDueToForkOrJoin( localVertex, masterOrWorkerVertex, fromRank, x, h, level );
+   _map2MoveParticles.mergeWithRemoteDataDueToForkOrJoin( localVertex, masterOrWorkerVertex, fromRank, x, h, level );
 
 }
 
@@ -293,8 +293,8 @@ void dem::adapters::TimeStepOnDynamicGrid::mergeWithRemoteDataDueToForkOrJoin(
   int                                       level
 ) {
    _map2Collision.mergeWithRemoteDataDueToForkOrJoin( localCell, masterOrWorkerCell, fromRank, x, h, level );
-   _map2MoveParticles.mergeWithRemoteDataDueToForkOrJoin( localCell, masterOrWorkerCell, fromRank, x, h, level );
    _map2AdoptGrid.mergeWithRemoteDataDueToForkOrJoin( localCell, masterOrWorkerCell, fromRank, x, h, level );
+   _map2MoveParticles.mergeWithRemoteDataDueToForkOrJoin( localCell, masterOrWorkerCell, fromRank, x, h, level );
 
 }
 
@@ -311,8 +311,8 @@ bool dem::adapters::TimeStepOnDynamicGrid::prepareSendToWorker(
 ) {
   bool result = false;
    result |= _map2Collision.prepareSendToWorker( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell, worker );
-   result |= _map2MoveParticles.prepareSendToWorker( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell, worker );
    result |= _map2AdoptGrid.prepareSendToWorker( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell, worker );
+   result |= _map2MoveParticles.prepareSendToWorker( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell, worker );
 
   return result;
 }
@@ -328,8 +328,8 @@ void dem::adapters::TimeStepOnDynamicGrid::prepareSendToMaster(
   const tarch::la::Vector<DIMENSIONS,int>&   fineGridPositionOfCell
 ) {
    _map2Collision.prepareSendToMaster( localCell, vertices, verticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
-   _map2MoveParticles.prepareSendToMaster( localCell, vertices, verticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
    _map2AdoptGrid.prepareSendToMaster( localCell, vertices, verticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
+   _map2MoveParticles.prepareSendToMaster( localCell, vertices, verticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -350,8 +350,8 @@ void dem::adapters::TimeStepOnDynamicGrid::mergeWithMaster(
   dem::State&                masterState
 ) {
    _map2Collision.mergeWithMaster( workerGridCell, workerGridVertices, workerEnumerator, fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell, worker, workerState, masterState );
-   _map2MoveParticles.mergeWithMaster( workerGridCell, workerGridVertices, workerEnumerator, fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell, worker, workerState, masterState );
    _map2AdoptGrid.mergeWithMaster( workerGridCell, workerGridVertices, workerEnumerator, fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell, worker, workerState, masterState );
+   _map2MoveParticles.mergeWithMaster( workerGridCell, workerGridVertices, workerEnumerator, fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell, worker, workerState, masterState );
 
 }
 
@@ -369,8 +369,8 @@ void dem::adapters::TimeStepOnDynamicGrid::receiveDataFromMaster(
       const tarch::la::Vector<DIMENSIONS,int>&    fineGridPositionOfCell
 ) {
    _map2Collision.receiveDataFromMaster( receivedCell, receivedVertices, receivedVerticesEnumerator, receivedCoarseGridVertices, receivedCoarseGridVerticesEnumerator, receivedCoarseGridCell, workersCoarseGridVertices, workersCoarseGridVerticesEnumerator, workersCoarseGridCell, fineGridPositionOfCell );
-   _map2MoveParticles.receiveDataFromMaster( receivedCell, receivedVertices, receivedVerticesEnumerator, receivedCoarseGridVertices, receivedCoarseGridVerticesEnumerator, receivedCoarseGridCell, workersCoarseGridVertices, workersCoarseGridVerticesEnumerator, workersCoarseGridCell, fineGridPositionOfCell );
    _map2AdoptGrid.receiveDataFromMaster( receivedCell, receivedVertices, receivedVerticesEnumerator, receivedCoarseGridVertices, receivedCoarseGridVerticesEnumerator, receivedCoarseGridCell, workersCoarseGridVertices, workersCoarseGridVerticesEnumerator, workersCoarseGridCell, fineGridPositionOfCell );
+   _map2MoveParticles.receiveDataFromMaster( receivedCell, receivedVertices, receivedVerticesEnumerator, receivedCoarseGridVertices, receivedCoarseGridVerticesEnumerator, receivedCoarseGridCell, workersCoarseGridVertices, workersCoarseGridVerticesEnumerator, workersCoarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -383,8 +383,8 @@ void dem::adapters::TimeStepOnDynamicGrid::mergeWithWorker(
   int                                          level
 ) {
    _map2Collision.mergeWithWorker( localCell, receivedMasterCell, cellCentre, cellSize, level );
-   _map2MoveParticles.mergeWithWorker( localCell, receivedMasterCell, cellCentre, cellSize, level );
    _map2AdoptGrid.mergeWithWorker( localCell, receivedMasterCell, cellCentre, cellSize, level );
+   _map2MoveParticles.mergeWithWorker( localCell, receivedMasterCell, cellCentre, cellSize, level );
 
 }
 
@@ -397,8 +397,8 @@ void dem::adapters::TimeStepOnDynamicGrid::mergeWithWorker(
   int                                           level
 ) {
    _map2Collision.mergeWithWorker( localVertex, receivedMasterVertex, x, h, level );
-   _map2MoveParticles.mergeWithWorker( localVertex, receivedMasterVertex, x, h, level );
    _map2AdoptGrid.mergeWithWorker( localVertex, receivedMasterVertex, x, h, level );
+   _map2MoveParticles.mergeWithWorker( localVertex, receivedMasterVertex, x, h, level );
 
 }
 #endif
@@ -414,8 +414,8 @@ void dem::adapters::TimeStepOnDynamicGrid::touchVertexFirstTime(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   _map2Collision.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2MoveParticles.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2AdoptGrid.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2MoveParticles.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -430,8 +430,8 @@ void dem::adapters::TimeStepOnDynamicGrid::touchVertexLastTime(
       const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
   _map2Collision.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2MoveParticles.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2AdoptGrid.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2MoveParticles.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -446,8 +446,8 @@ void dem::adapters::TimeStepOnDynamicGrid::enterCell(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
   _map2Collision.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
-  _map2MoveParticles.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2AdoptGrid.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
+  _map2MoveParticles.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -462,8 +462,8 @@ void dem::adapters::TimeStepOnDynamicGrid::leaveCell(
       const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
   _map2Collision.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
-  _map2MoveParticles.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2AdoptGrid.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
+  _map2MoveParticles.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -472,8 +472,8 @@ void dem::adapters::TimeStepOnDynamicGrid::beginIteration(
   dem::State&  solverState
 ) {
   _map2Collision.beginIteration( solverState );
-  _map2MoveParticles.beginIteration( solverState );
   _map2AdoptGrid.beginIteration( solverState );
+  _map2MoveParticles.beginIteration( solverState );
 
 }
 
@@ -482,8 +482,8 @@ void dem::adapters::TimeStepOnDynamicGrid::endIteration(
   dem::State&  solverState
 ) {
   _map2Collision.endIteration( solverState );
-  _map2MoveParticles.endIteration( solverState );
   _map2AdoptGrid.endIteration( solverState );
+  _map2MoveParticles.endIteration( solverState );
 
 }
 
@@ -499,8 +499,8 @@ void dem::adapters::TimeStepOnDynamicGrid::descend(
   dem::Cell&                 coarseGridCell
 ) {
   _map2Collision.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
-  _map2MoveParticles.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
   _map2AdoptGrid.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
+  _map2MoveParticles.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
 
 }
 
@@ -514,7 +514,7 @@ void dem::adapters::TimeStepOnDynamicGrid::ascend(
   dem::Cell&           coarseGridCell
 ) {
   _map2Collision.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
-  _map2MoveParticles.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
   _map2AdoptGrid.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
+  _map2MoveParticles.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
 
 }
