@@ -52,8 +52,6 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
-
   if (fineGridVertex.getNumberOfParticles()>1)
   {
     for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
@@ -81,6 +79,8 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
   const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
+  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
 
   fineGridVertex.eraseIfParticleDistributionPermits();
   restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
