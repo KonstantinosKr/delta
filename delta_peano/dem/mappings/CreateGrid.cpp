@@ -558,7 +558,7 @@ void dem::mappings::CreateGrid::createCell(
 {
 	logTraceInWith4Arguments( "createCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-  dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];
+  dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(3)];
 
 	if(_scenario[0] == nonescenario) return;
 	if (coarseGridCell.isRoot())
@@ -567,7 +567,9 @@ void dem::mappings::CreateGrid::createCell(
     _centreAsArray[1] = fineGridVerticesEnumerator.getCellCenter()(1),
     _centreAsArray[2] = fineGridVerticesEnumerator.getCellCenter()(2);
 
-		deployCoarseEnviroment(vertex);
+    dem::Vertex&  vertexA  = fineGridVertices[fineGridVerticesEnumerator(3)];
+
+		deployCoarseEnviroment(vertexA);
 	}
 
 	if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(
@@ -595,8 +597,8 @@ void dem::mappings::CreateGrid::createCell(
 
           if(correctVertex != k)
           {
-            fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
-            fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
+            //fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
+            //fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
           }
         }
       enddforx

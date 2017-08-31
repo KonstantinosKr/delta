@@ -18,8 +18,8 @@
 #include "dem/State.h"
 
 
- #include "dem/mappings/Collision.h"
  #include "dem/mappings/ReluctantlyAdoptGrid.h"
+ #include "dem/mappings/Collision.h"
  #include "dem/mappings/MoveParticles.h"
  #include "dem/mappings/Plot.h"
  #include "dem/adapters/TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4.h"
@@ -42,14 +42,14 @@ namespace dem {
  */
 class dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid {
   private:
-    typedef mappings::Collision Mapping0;
-    typedef mappings::ReluctantlyAdoptGrid Mapping1;
+    typedef mappings::ReluctantlyAdoptGrid Mapping0;
+    typedef mappings::Collision Mapping1;
     typedef mappings::MoveParticles Mapping2;
     typedef mappings::Plot Mapping3;
     typedef adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4 Mapping4;
 
-     Mapping0  _map2Collision;
-     Mapping1  _map2ReluctantlyAdoptGrid;
+     Mapping0  _map2ReluctantlyAdoptGrid;
+     Mapping1  _map2Collision;
      Mapping2  _map2MoveParticles;
      Mapping3  _map2Plot;
      Mapping4  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4;

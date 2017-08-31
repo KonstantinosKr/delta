@@ -191,6 +191,11 @@ void dem::mappings::Collision::addCollision(
     //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 	}
 
+	if((particleA.getIsObstacle() == false && particleB.getIsObstacle() == false))
+	{
+	//  return;
+	}
+
 	/*
 	 * Problem here was:
 	 * Although all normals were pointing to opposite direction for each particle due to how we loop particles
@@ -210,7 +215,8 @@ void dem::mappings::Collision::addCollision(
 	}
 
 	dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
-/*
+
+	/*
   if((particleA.getGlobalParticleId() == id && particleB.getGlobalParticleId() == 0) ||
      (particleB.getGlobalParticleId() == id || particleA.getGlobalParticleId() == 0))
   {
@@ -301,10 +307,10 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	}
 
 
-	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
+	//fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
 
 	dfor2(k)
-		fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)]);
+		//fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)]);
 	enddforx
 
 	#ifdef ompParticle
@@ -314,8 +320,8 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	{
 		//printf("Number in the grid master:%d\n", fineGridVertex.getNumberOfParticles());
     //printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
-/*
-	  if(fineGridVertex.getParticle(i).getGlobalParticleId() == 100)
+
+	  /*if(fineGridVertex.getParticle(i).getGlobalParticleId() == 100)
 	  {
 	    for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 	    {
@@ -800,7 +806,8 @@ void dem::mappings::Collision::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-/*
+
+	/*
 	if(
     fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
