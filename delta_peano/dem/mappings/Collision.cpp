@@ -112,12 +112,6 @@ void dem::mappings::Collision::addCollision(
 		bool sphere
 ) {
 	assertion( !newContactPoints.empty() );
-/*
-	int id = 96;
-	if((particleA.getGlobalParticleId() == id && particleB.getGlobalParticleId() == 0) ||
-	   (particleB.getGlobalParticleId() == id || particleA.getGlobalParticleId() == 0))
-    printf("IN CONTACT\n");
-*/
 
 	//////////////START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
 	if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
@@ -156,7 +150,6 @@ void dem::mappings::Collision::addCollision(
 
 	if((dataSetA!=nullptr && dataSetB!=nullptr)) return;
 
-	//printf("ENTERED: %i %i\n", particleA.getGlobalParticleId(), particleB.getGlobalParticleId());
 	///ASSERT we have data assigned to both data pointers
 	assertion( (dataSetA==nullptr && dataSetB==nullptr) || (dataSetA!=nullptr && dataSetB!=nullptr) );
   //END
@@ -191,11 +184,6 @@ void dem::mappings::Collision::addCollision(
     //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 	}
 
-	if((particleA.getIsObstacle() == false && particleB.getIsObstacle() == false))
-	{
-	//  return;
-	}
-
 	/*
 	 * Problem here was:
 	 * Although all normals were pointing to opposite direction for each particle due to how we loop particles
@@ -215,16 +203,6 @@ void dem::mappings::Collision::addCollision(
 	}
 
 	dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
-
-	/*
-  if((particleA.getGlobalParticleId() == id && particleB.getGlobalParticleId() == 0) ||
-     (particleB.getGlobalParticleId() == id || particleA.getGlobalParticleId() == 0))
-  {
-    for(auto i:newContactPoints)
-    {
-      printf("%f\n", i.getDistance());
-    }
-  }*/
 
 	_state.incNumberOfContactPoints(newContactPoints.size());
 }
@@ -296,8 +274,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle.getMass());
 			currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle.getMass());
 
-			delta::dynamics::updateAngular(&currentParticle._persistentRecords._angular(0),
-                                      &currentParticle._persistentRecords._referentialAngular(0),
+			delta::dynamics::updateAngular(&currentParticle._persistentRecords._referentialAngular(0),
                                       &currentParticle._persistentRecords._orientation(0),
                                       &currentParticle._persistentRecords._inertia(0),
                                       &currentParticle._persistentRecords._inverse(0),
@@ -307,10 +284,10 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	}
 
 
-	//fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
+	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
 
 	dfor2(k)
-		//fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)]);
+		fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)]);
 	enddforx
 
 	#ifdef ompParticle
@@ -320,14 +297,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	{
 		//printf("Number in the grid master:%d\n", fineGridVertex.getNumberOfParticles());
     //printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
-
-	  /*if(fineGridVertex.getParticle(i).getGlobalParticleId() == 100)
-	  {
-	    for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
-	    {
-	      printf("Inherted :%i\n", fineGridVertex.getParticle(j).getGlobalParticleId());
-	    }
-	  }*/
 
 		for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{

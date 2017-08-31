@@ -126,28 +126,37 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
      iREAL *rotation,
      iREAL step)
  {
-	iREAL DL[9];
+	iREAL DL[9], rot0[0];
  	expmap (step*angular[0], step*angular[1], step*angular[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
 
- 	//NNMUL (rotation, DL, rotation);
- 	rotation[0] = rotation[0]*DL[0]+rotation[3]*DL[1]+rotation[6]*DL[2];
- 	rotation[1] = rotation[1]*DL[0]+rotation[4]*DL[1]+rotation[7]*DL[2];
- 	rotation[2] = rotation[2]*DL[0]+rotation[5]*DL[1]+rotation[8]*DL[2];
- 	rotation[3] = rotation[0]*DL[3]+rotation[3]*DL[4]+rotation[6]*DL[5];
- 	rotation[4] = rotation[1]*DL[3]+rotation[4]*DL[4]+rotation[7]*DL[5];
- 	rotation[5] = rotation[2]*DL[3]+rotation[5]*DL[4]+rotation[8]*DL[5];
- 	rotation[6] = rotation[0]*DL[6]+rotation[3]*DL[7]+rotation[6]*DL[8];
- 	rotation[7] = rotation[1]*DL[6]+rotation[4]*DL[7]+rotation[7]*DL[8];
- 	rotation[8] = rotation[2]*DL[6]+rotation[5]*DL[7]+rotation[8]*DL[8];
+ 	rot0[0] = rotation[0];
+  rot0[1] = rotation[1];
+  rot0[2] = rotation[2];
+  rot0[3] = rotation[3];
+  rot0[4] = rotation[4];
+  rot0[5] = rotation[5];
+  rot0[6] = rotation[6];
+  rot0[7] = rotation[7];
+  rot0[8] = rotation[8];
 
- 	//NVMUL (rotation, angular, refangular);
- 	refAngular[0] = rotation[0]*angular[0]+rotation[3]*angular[1]+rotation[6]*angular[2];
- 	refAngular[1] = rotation[1]*angular[0]+rotation[4]*angular[1]+rotation[7]*angular[2];
- 	refAngular[2] = rotation[2]*angular[0]+rotation[5]*angular[1]+rotation[8]*angular[2];
+ 	//NNMUL (rot0, DL, rotation);
+ 	rotation[0] = rot0[0]*DL[0]+rot0[3]*DL[1]+rot0[6]*DL[2];
+ 	rotation[1] = rot0[1]*DL[0]+rot0[4]*DL[1]+rot0[7]*DL[2];
+ 	rotation[2] = rot0[2]*DL[0]+rot0[5]*DL[1]+rot0[8]*DL[2];
+ 	rotation[3] = rot0[0]*DL[3]+rot0[3]*DL[4]+rot0[6]*DL[5];
+ 	rotation[4] = rot0[1]*DL[3]+rot0[4]*DL[4]+rot0[7]*DL[5];
+ 	rotation[5] = rot0[2]*DL[3]+rot0[5]*DL[4]+rot0[8]*DL[5];
+ 	rotation[6] = rot0[0]*DL[6]+rot0[3]*DL[7]+rot0[6]*DL[8];
+ 	rotation[7] = rot0[1]*DL[6]+rot0[4]*DL[7]+rot0[7]*DL[8];
+ 	rotation[8] = rot0[2]*DL[6]+rot0[5]*DL[7]+rot0[8]*DL[8];
+
+ 	//NVMUL (rotation, refAngular, angular);
+ 	angular[0] = rotation[0]*refAngular[0]+rotation[3]*refAngular[1]+rotation[6]*refAngular[2];
+ 	angular[1] = rotation[1]*refAngular[0]+rotation[4]*refAngular[1]+rotation[7]*refAngular[2];
+ 	angular[2] = rotation[2]*refAngular[0]+rotation[5]*refAngular[1]+rotation[8]*refAngular[2];
  }
 
 void delta::dynamics::updateAngular(
-    iREAL *angular,
     iREAL *refAngular,
     iREAL *rotation,
     iREAL *inertia,
@@ -173,12 +182,12 @@ void delta::dynamics::updateAngular(
 
 	////EQUATION (14) START
 	///////////////////////
-	expmap (-half*angular[0], -half*angular[1], -half*angular[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
+	expmap (-half*refAngular[0], -half*refAngular[1], -half*refAngular[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
 
-	//NVMUL (inertia, angular, A);
-	A[0] = inertia[0]*angular[0]+inertia[3]*angular[1]+inertia[6]*angular[2];
-	A[1] = inertia[1]*angular[0]+inertia[4]*angular[1]+inertia[7]*angular[2];
-	A[2] = inertia[2]*angular[0]+inertia[5]*angular[1]+inertia[8]*angular[2];
+	//NVMUL (inertia, refAngular, A);
+	A[0] = inertia[0]*refAngular[0]+inertia[3]*refAngular[1]+inertia[6]*refAngular[2];
+	A[1] = inertia[1]*refAngular[0]+inertia[4]*refAngular[1]+inertia[7]*refAngular[2];
+	A[2] = inertia[2]*refAngular[0]+inertia[5]*refAngular[1]+inertia[8]*refAngular[2];
 
 	//NVMUL (DL, A, B);
 	B[0] = DL[0]*A[0]+DL[3]*A[1]+DL[6]*A[2];
@@ -215,10 +224,10 @@ void delta::dynamics::updateAngular(
 	T[1] *= step;
 	T[2] *= step;
 
-	//NVADDMUL (angular, inverse, T, angular); // O(t+h)
-	angular[0] = angular[0] + inverse[0]*T[0]+inverse[3]*T[1]+inverse[6]*T[2];
-	angular[1] = angular[1] + inverse[1]*T[0]+inverse[4]*T[1]+inverse[7]*T[2];
-	angular[2] = angular[2] + inverse[2]*T[0]+inverse[5]*T[1]+inverse[8]*T[2];
+	//NVADDMUL (refAngular, inverse, T, refAngular); // O(t+h)
+	refAngular[0] = refAngular[0] + inverse[0]*T[0]+inverse[3]*T[1]+inverse[6]*T[2];
+	refAngular[1] = refAngular[1] + inverse[1]*T[0]+inverse[4]*T[1]+inverse[7]*T[2];
+	refAngular[2] = refAngular[2] + inverse[2]*T[0]+inverse[5]*T[1]+inverse[8]*T[2];
 	////EQUATION (15) END
 	/////////////////////
 }
@@ -234,7 +243,6 @@ void delta::dynamics::updateVertices(
     iREAL *position,
     iREAL *refposition)
 {
-
 	iREAL C[3], c[3];
 
 	//point A REFERENCIAL
@@ -243,7 +251,6 @@ void delta::dynamics::updateVertices(
 	C[2] = *refz - refposition[2];
 
 	//SCC (refposition, C);
-
 	c[0] = position[0] + (rotation[0]*(C)[0]+rotation[3]*C[1]+rotation[6]*C[2]);
 	c[1] = position[1] + (rotation[1]*(C)[0]+rotation[4]*C[1]+rotation[7]*C[2]);
 	c[2] = position[2] + (rotation[2]*(C)[0]+rotation[5]*C[1]+rotation[8]*C[2]);

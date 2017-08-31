@@ -25,7 +25,6 @@
 namespace delta {
   namespace dynamics {
     void updateAngular(
-        iREAL *angular,
         iREAL *refAngular,
         iREAL *rotation,
         iREAL *inertia,

@@ -53,20 +53,10 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
   for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
     records::Particle&  particle = fineGridVertex.getParticle(i);
-/*
-    if(particle.getGlobalParticleId() == 96)
-    {
-      printf("PID%i\n", particle.getGlobalParticleId());
-      printf("OBJ%i\n", particle.getIsObstacle());
 
-      //particle._persistentRecords._centre(0) += 0.01;
-      //particle._persistentRecords._centreOfMass(0) += 0.01;
-    }*/
     if(particle.getIsObstacle()) continue;
 
     particle._persistentRecords._velocity(1) += timeStepSize*(gravity*-9.8);
-
-    //printf("BEFORE%f ID:%i\n", particle._persistentRecords._centre(1), particle.getGlobalParticleId());
 
     particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
@@ -75,8 +65,6 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     particle._persistentRecords._centreOfMass(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
-
-    //printf("AFTER:%f ID:%i\n", particle._persistentRecords._centre(1), particle.getGlobalParticleId());
 
     delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
                                           &particle._persistentRecords._referentialAngular(0),
