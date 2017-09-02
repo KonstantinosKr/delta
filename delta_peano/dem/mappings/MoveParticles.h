@@ -61,8 +61,6 @@ class dem::mappings::MoveParticles {
       const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator
     );
 
-  public:
-    static double    gravity;
 
   public:
   /**

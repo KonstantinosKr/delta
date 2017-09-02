@@ -437,11 +437,11 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  dem::mappings::MoveParticles::gravity	= (gravity=="true") ? 9.81 : 0.0;
+  dem::mappings::Collision::gravity	= (gravity=="true") ? 9.81 : 0.0;
 
   logInfo( "run(...)", "scenario:" << (scenario)                                 << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)       << std::endl
                     << "stepSize:" << (stepSize)                                 << ", plot:"     << (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)   << std::endl
-                    << "gravity:"  << (dem::mappings::MoveParticles::gravity)    << ", model:"    << (collisionModel)      << ", triangleNumber:"  << (meshMultiplier));
+                    << "gravity:"  << (dem::mappings::Collision::gravity)    << ", model:"    << (collisionModel)      << ", triangleNumber:"  << (meshMultiplier));
 
   // Configure the output
   tarch::logging::CommandLineLogger::getInstance().clearFilterList();

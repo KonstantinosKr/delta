@@ -95,30 +95,6 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
       //loop every partner particle in list of collisions
       for(auto pp:p.second)
       {
-        int masterID = p.first, slaveID = pp._copyOfPartnerParticle.getGlobalParticleId();
-        iREAL *centreOfMass, *referentialCentreOfMass, *angular, *referentialAngular, *velocity, *inverse, *orientation, mass, material;
-        //find master data in collision data as slave
-        for(auto iCollision:Collision::_activeCollisions)
-        {
-          for(auto j:iCollision.second)
-          {
-            if(j._copyOfPartnerParticle.getGlobalParticleId() == masterID)
-            {
-              centreOfMass = &j._copyOfPartnerParticle._persistentRecords._centreOfMass(0);
-              referentialCentreOfMass = &j._copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0);
-              angular = &j._copyOfPartnerParticle._persistentRecords._angular(0);
-              referentialAngular = &j._copyOfPartnerParticle._persistentRecords._referentialAngular(0);
-              velocity = &j._copyOfPartnerParticle._persistentRecords._velocity(0);
-              inverse = &j._copyOfPartnerParticle._persistentRecords._inverse(0);
-              orientation = &j._copyOfPartnerParticle._persistentRecords._orientation(0);
-              mass = j._copyOfPartnerParticle.getMass();
-              material = j._copyOfPartnerParticle.getMaterial();
-
-              break;
-            }
-          }
-        }
-
         //loop every contact point
         for (auto ppp:pp._contactPoints)
         {
@@ -260,14 +236,30 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   {
     for(auto pp:p.second)
     {
-      #ifdef CONTACTSTATS
-      bool found = false;
-      for(auto x:particlePrinted)
-        if((x.first==masterID && x.second == slaveID) || (x.second==masterID && x.first == slaveID))
-          found = true;
-      if(!found) particlePrinted.push_back(std::pair<int,int>(masterID, slaveID));
-      else continue;
-      #endif
+      int masterID = p.first, slaveID = pp._copyOfPartnerParticle.getGlobalParticleId();
+      iREAL *centreOfMass, *referentialCentreOfMass, *angular, *referentialAngular, *velocity, *inverse, *orientation, mass, material;
+      //find master data in collision data as slave
+      for(auto iCollision:Collision::_activeCollisions)
+      {
+        for(auto j:iCollision.second)
+        {
+          if(j._copyOfPartnerParticle.getGlobalParticleId() == masterID)
+          {
+            centreOfMass = &j._copyOfPartnerParticle._persistentRecords._centreOfMass(0);
+            referentialCentreOfMass = &j._copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0);
+            angular = &j._copyOfPartnerParticle._persistentRecords._angular(0);
+            referentialAngular = &j._copyOfPartnerParticle._persistentRecords._referentialAngular(0);
+            velocity = &j._copyOfPartnerParticle._persistentRecords._velocity(0);
+            inverse = &j._copyOfPartnerParticle._persistentRecords._inverse(0);
+            orientation = &j._copyOfPartnerParticle._persistentRecords._orientation(0);
+            mass = j._copyOfPartnerParticle.getMass();
+            material = j._copyOfPartnerParticle.getMaterial();
+
+            break;
+          }
+        }
+      }
+
       //loop every contact point
       for (auto ppp:pp._contactPoints)
       {
@@ -285,20 +277,24 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
         }
         */
         std::cout << "#####CONTACT-DATA#####" << std::endl
-                  << "contactId=" << std::fixed << std::setprecision(10) << std::to_string(ppp.x[0]+ppp.x[1]+ppp.x[2]) << ", MasterId=" << std::fixed << std::setprecision(10) << masterID << ", SlaveId=" << std::fixed << std::setprecision(10) << slaveID << std::endl
-                  << "friction=" << std::fixed << std::setprecision(10) << ppp.friction << ", massA=" << std::fixed << std::setprecision(10) << mass << ", massB=" << std::fixed << std::setprecision(10) << pp._copyOfPartnerParticle.getMass() << std::endl
+                  << "contactId=" << std::fixed << std::setprecision(10) << std::to_string(ppp.x[0]+ppp.x[1]+ppp.x[2]) << ", MasterId=" << std::fixed << std::setprecision(10) << ppp.master << ", SlaveId=" << std::fixed << std::setprecision(10) << ppp.slave << std::endl
+                  << "friction=" << std::fixed << std::setprecision(10) << ppp.friction << std::endl
                   << "distance=" << std::fixed << std::setprecision(10) << ppp.getDistance() << ", depth=" << std::fixed << std::setprecision(10) << ppp.depth << ", epsilonTotal=" << std::fixed << std::setprecision(10) << ppp.epsilonTotal << std::endl;
 
+        double rforce[3]  = {0.0,0.0,0.0};
+        double rtorque[3] = {0.0,0.0,0.0};
+        double rfriction[3] = {0.0,0.0,0.0};
         delta::forces::getContactForce(ppp,
-                                       centreOfMass,
-                                       referentialCentreOfMass,
-                                       angular,
-                                       referentialAngular,
-                                       velocity,
-                                       mass,
-                                       inverse,
-                                       orientation,
-                                       material,
+                                      centreOfMass,
+                                      referentialCentreOfMass,
+                                      angular,
+                                      referentialAngular,
+                                      velocity,
+                                      mass,
+                                      inverse,
+                                      orientation,
+                                      material,
+
                                        &(pp._copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
                                        &(pp._copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0)),
                                        &(pp._copyOfPartnerParticle._persistentRecords._angular(0)),
@@ -308,14 +304,14 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
                                        &(pp._copyOfPartnerParticle._persistentRecords._inverse(0)),
                                        &(pp._copyOfPartnerParticle._persistentRecords._orientation(0)),
                                        pp._copyOfPartnerParticle.getMaterial(),
-                                       force, torque, friction,
+                                       rforce, rtorque, rfriction,
                                        (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
 
         std::cout  << "xX=" << std::fixed << std::setprecision(10) << ppp.x[0] <<", xY=" << std::fixed << std::setprecision(10) << ppp.x[1] << ", xZ=" << std::fixed << std::setprecision(10) << ppp.x[2] << std::endl
                    << "normalX=" << std::fixed << std::setprecision(10) << ppp.normal[0] <<", normalY=" << std::fixed << std::setprecision(10) << ppp.normal[1] << ", normalZ=" << std::fixed << std::setprecision(10) << ppp.normal[2] << std::endl
-                   << "frictionX=" << std::fixed << std::setprecision(10) << friction[0] <<", frictionY=" << std::fixed << std::setprecision(10) << friction[1] << ", frictionZ=" << std::fixed << std::setprecision(10) << friction[2] << std::endl
-                   << "fX=" << std::fixed << std::setprecision(10) << force[0] << ", fY=" << std::fixed << std::setprecision(10) << force[1] << ", fZ=" << std::fixed << std::setprecision(10) << force[2] << std::endl
-                   << "tX=" << std::fixed << std::setprecision(10) << torque[0] << ", tY=" << std::fixed << std::setprecision(10) << torque[1] << ", tZ=" << std::fixed << std::setprecision(10) << torque[2] << std::endl
+                   << "frictionX=" << std::fixed << std::setprecision(10) << rfriction[0] <<", frictionY=" << std::fixed << std::setprecision(10) << rfriction[1] << ", frictionZ=" << std::fixed << std::setprecision(10) << rfriction[2] << std::endl
+                   << "fX=" << std::fixed << std::setprecision(10) << rforce[0] << ", fY=" << std::fixed << std::setprecision(10) << rforce[1] << ", fZ=" << std::fixed << std::setprecision(10) << rforce[2] << std::endl
+                   << "tX=" << std::fixed << std::setprecision(10) << rtorque[0] << ", tY=" << std::fixed << std::setprecision(10) << rtorque[1] << ", tZ=" << std::fixed << std::setprecision(10) << rtorque[2] << std::endl
                    << "pX=" << std::fixed << std::setprecision(10) << ppp.P[0] <<", pY=" << std::fixed << std::setprecision(10) << ppp.P[1] << ", pZ=" << std::fixed << std::setprecision(10) << ppp.P[2] << std::endl
                    << "qX=" << std::fixed << std::setprecision(10) << ppp.Q[0] <<", qY=" << std::fixed << std::setprecision(10) << ppp.Q[1] << ", qZ=" << std::fixed << std::setprecision(10) << ppp.Q[2] << std::endl;
         #endif
@@ -642,15 +638,15 @@ void dem::mappings::Plot::touchVertexLastTime(
                  << "centreX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centre(0) <<", centreY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centre(1) << ", centreZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centre(2) << std::endl
                  << "cOfMasX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centreOfMass(0) <<", cOfMasY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centreOfMass(1) << ", cOfMasZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._centreOfMass(2) << std::endl
                  << "rcOfMaX=" << std::fixed << std::setprecision(10) << particle._persistentRecords._referentialCentreOfMass(0) <<", rcOfMaY=" << std::fixed << std::setprecision(10) << particle._persistentRecords._referentialCentreOfMass(1) << ", rcOfMaZ=" << std::fixed << std::setprecision(10) << particle._persistentRecords._referentialCentreOfMass(2) << std::endl
-                 << "iner[0]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inertia(0) <<", iner[1]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inertia(1) << ", iner[2]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inertia(2) << std::endl
-                 << "iner[3]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inertia(3) <<", iner[4]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inertia(4) << ", iner[5]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inertia(5) << std::endl
-                 << "iner[6]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inertia(6) <<", iner[7]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inertia(7) << ", iner[8]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inertia(8) << std::endl
-                 << "inve[0]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(0) <<", inve[1]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(1) << ", inve[2]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(2) << std::endl
-                 << "inve[3]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(3) <<", inve[4]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(4) << ", inve[5]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(5) << std::endl
-                 << "inve[6]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(6) <<", inve[7]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(7) << ", inve[8]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._inverse(8) << std::endl
-                 << "orie[0]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(0) <<", orie[1]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(1) << ", orie[2]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(2) << std::endl
-                 << "orie[3]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(3) <<", orie[4]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(4) << ", orie[5]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(5) << std::endl
-                 << "orie[6]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(6) <<", orie[7]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(7) << ", orie[8]=" << std::fixed << std::setprecision(10) << particle._persistentRecords._orientation(8) << std::endl;
+                 << "iner[0]=" << std::fixed << particle._persistentRecords._inertia(0) <<", iner[1]=" << particle._persistentRecords._inertia(1) << ", iner[2]=" << particle._persistentRecords._inertia(2) << std::endl
+                 << "iner[3]=" << std::fixed << particle._persistentRecords._inertia(3) <<", iner[4]=" << particle._persistentRecords._inertia(4) << ", iner[5]=" << particle._persistentRecords._inertia(5) << std::endl
+                 << "iner[6]=" << std::fixed << particle._persistentRecords._inertia(6) <<", iner[7]=" << particle._persistentRecords._inertia(7) << ", iner[8]=" << particle._persistentRecords._inertia(8) << std::endl
+                 << "inve[0]=" << std::fixed << particle._persistentRecords._inverse(0) <<", inve[1]=" << particle._persistentRecords._inverse(1) << ", inve[2]=" << particle._persistentRecords._inverse(2) << std::endl
+                 << "inve[3]=" << std::fixed << particle._persistentRecords._inverse(3) <<", inve[4]=" << particle._persistentRecords._inverse(4) << ", inve[5]=" << particle._persistentRecords._inverse(5) << std::endl
+                 << "inve[6]=" << std::fixed << particle._persistentRecords._inverse(6) <<", inve[7]=" << particle._persistentRecords._inverse(7) << ", inve[8]=" << particle._persistentRecords._inverse(8) << std::endl
+                 << "orie[0]=" << std::fixed << particle._persistentRecords._orientation(0) <<", orie[1]=" << particle._persistentRecords._orientation(1) << ", orie[2]=" << particle._persistentRecords._orientation(2) << std::endl
+                 << "orie[3]=" << std::fixed << particle._persistentRecords._orientation(3) <<", orie[4]=" << particle._persistentRecords._orientation(4) << ", orie[5]=" << particle._persistentRecords._orientation(5) << std::endl
+                 << "orie[6]=" << std::fixed << particle._persistentRecords._orientation(6) <<", orie[7]=" << particle._persistentRecords._orientation(7) << ", orie[8]=" << particle._persistentRecords._orientation(8) << std::endl;
 
     iREAL linE = 0.5 * particle.getMass()*(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0))+(particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1))+(particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2));
     iREAL rotE = 0.5 * particle._persistentRecords._inertia(0)*(particle._persistentRecords._angular(0)*particle._persistentRecords._angular(0))+0.5*particle._persistentRecords._inertia(4)*(particle._persistentRecords._angular(1)*particle._persistentRecords._angular(1))+0.5*particle._persistentRecords._inertia(8)*(particle._persistentRecords._angular(2)*particle._persistentRecords._angular(2));

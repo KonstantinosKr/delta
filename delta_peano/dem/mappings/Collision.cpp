@@ -207,6 +207,8 @@ void dem::mappings::Collision::addCollision(
 	_state.incNumberOfContactPoints(newContactPoints.size());
 }
 
+double                dem::mappings::Collision::gravity = 0.0;
+
 void dem::mappings::Collision::touchVertexFirstTime(
 		dem::Vertex&                                 fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
@@ -225,18 +227,19 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
 		//if value doesn't exist in map - no collision - skip particle
-		if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
+		//if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
 
-    double force[3]  = {0.0,0.0,0.0};
+    double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
     double torque[3] = {0.0,0.0,0.0};
 
-		//collisions with other partner particles
+		//collisions with partner particles
 		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin(); p != _activeCollisions[currentParticle.getGlobalParticleId()].end(); p++)
 		{
+		  //break;
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
 
-			//for each partner get contacts
+			//for each partner contact get force
 			delta::forces::getContactsForces(p->_contactPoints,
                                        &(currentParticle._persistentRecords._centreOfMass(0)),
                                        &(currentParticle._persistentRecords._referentialCentreOfMass(0)),
@@ -595,7 +598,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
                 vertexA.getParticle(i).getEpsilon(),
                 vertexA.getParticle(i).getFriction(),
                 vertexA.getParticle(i).getGlobalParticleId(), penetration);
-
           } else if(!vertexA.getParticle(i).getIsObstacle()
               && vertexB.getParticle(j).getIsObstacle()) {
             //printf("ENTERED neighbor grid sphere AB\n");

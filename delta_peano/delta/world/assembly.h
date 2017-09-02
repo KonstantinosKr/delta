@@ -28,6 +28,7 @@
 #include "delta/geometry/properties.h"
 #include "delta/geometry/granulates.h"
 #include "delta/geometry/graphite.h"
+#include "delta/geometry/cubes.h"
 #include "stdlib.h"
 #include <string>
 
@@ -86,6 +87,18 @@ namespace delta {
 
   	  void uniMeshGeometry(
   	      iREAL totalMass,
+          delta::geometry::material::MaterialType material,
+          int noPointsPerParticle,
+          std::vector<iREAL>  &rad,
+          std::vector<std::array<iREAL, 3>> &particleGrid,
+          std::vector<std::string> &componentGrid,
+          iREAL &minParticleDiam, iREAL &maxParticleDiam,
+          std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+          std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+          std::vector<std::vector<iREAL>>  &zCoordinatesArray);
+
+      void uniCubeGeometry(
+          iREAL totalMass,
           delta::geometry::material::MaterialType material,
           int noPointsPerParticle,
           std::vector<iREAL>  &rad,

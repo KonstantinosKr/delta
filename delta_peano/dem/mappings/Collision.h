@@ -67,6 +67,8 @@ class dem::mappings::Collision {
   static tarch::multicore::BooleanSemaphore        _mySemaphore;
 
   public:
+  static double    gravity;
+
     enum class CollisionModel {
     	Sphere,
     	BruteForce,

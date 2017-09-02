@@ -557,7 +557,9 @@ void delta::geometry::properties::getInertia(
   euler[3] = euler[4] = euler[5] =
   euler[6] = euler[7] = euler[8] = 0.0;
 
-  int rho = int(delta::geometry::material::materialToDensitymap.find(material)->second);
+  iREAL rho = iREAL(delta::geometry::material::materialToDensitymap.find(material)->second);
+
+  printf("Rho: %f", rho);
 
   for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {
@@ -589,16 +591,15 @@ void delta::geometry::properties::getInertia(
   }
 
   mass = me;
-#ifdef STATS
-  printf("mass: %f\n", mass);
-  printf("sx:%f sy:%f sz:%f\n", sx, sy, sz);
-#endif
+//#ifdef STATS
+  //printf("sx:%f sy:%f sz:%f\n", sx, sy, sz);
+//#endif
   center[0] = (sx / me);
   center[1] = (sy / me);
   center[2] = (sz / me);
-#ifdef STATS
-  printf("c %f c %f c %f\n", center[0], center[1], center[2]);
-#endif
+//#ifdef STATS
+  //printf("c %f c %f c %f\n", center[0], center[1], center[2]);
+//#endif
 
 #ifdef STATS
   printf("euler %f %f %f %f %f %f %f %f %f\n", euler[0], euler[1], euler[2], euler[3], euler[4], euler[5], euler[6], euler[7], euler[8]);
@@ -624,9 +625,9 @@ void delta::geometry::properties::getInertia(
   inertia[5] = -euler[5];
   inertia[6] = -euler[6];
   inertia[7] = -euler[7]; /* inertia = tr(euler)*one - euler */
-#ifdef STATS
-  printf("Inertia %f %f %f %f %f %f %f %f %f\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
-#endif
+//#ifdef STATS
+  //printf("Inertia %e %e %e %e %e %e %e %e %e\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
+//#endif
 }
 
 iREAL delta::geometry::properties::getMass(

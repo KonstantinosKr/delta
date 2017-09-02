@@ -44,7 +44,6 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
 }
 
 tarch::logging::Log		dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" );
-double					      dem::mappings::MoveParticles::gravity = 0.0;
 
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Vertex&	fineGridVertex)
 {
@@ -55,8 +54,6 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
     if(particle.getIsObstacle()) continue;
-
-    particle._persistentRecords._velocity(1) += timeStepSize*(gravity*-9.8);
 
     particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);

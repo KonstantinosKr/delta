@@ -203,7 +203,20 @@ void delta::world::assembly::uniform (
          minParticleDiam,
          maxParticleDiam);
   } else {
-    delta::world::assembly::uniMeshGeometry(
+    /*delta::world::assembly::uniMeshGeometry(
+        totalMass,
+        material,
+        noPointsPerParticle,
+        rad,
+        particleGrid,
+        componentGrid,
+        minParticleDiam,
+        maxParticleDiam,
+        xCoordinatesArray,
+        yCoordinatesArray,
+        zCoordinatesArray);*/
+
+    delta::world::assembly::uniCubeGeometry(
         totalMass,
         material,
         noPointsPerParticle,
@@ -257,7 +270,7 @@ void delta::world::assembly::nonuniform (
         xCoordinatesArray,
         yCoordinatesArray,
         zCoordinatesArray);
-  }
+     }
 }
 
 void delta::world::assembly::uniSphereRadius(
@@ -283,6 +296,7 @@ void delta::world::assembly::uniSphereRadius(
     componentGrid.push_back("sphere");
   }
 }
+
 
 void delta::world::assembly::uniMeshGeometry(
     iREAL totalMass,
@@ -351,6 +365,61 @@ void delta::world::assembly::uniMeshGeometry(
     //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
   }
   //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
+}
+
+
+void delta::world::assembly::uniCubeGeometry(
+    iREAL totalMass,
+    delta::geometry::material::MaterialType material,
+    int noPointsPerParticle,
+    std::vector<iREAL>  &rad,
+    std::vector<std::array<iREAL, 3>> &particleGrid,
+    std::vector<std::string> &componentGrid,
+    iREAL &minParticleDiam, iREAL &maxParticleDiam,
+    std::vector<std::vector<iREAL>>  &xCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &yCoordinatesArray,
+    std::vector<std::vector<iREAL>>  &zCoordinatesArray)
+{
+  iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
+  iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+
+  iREAL reMassTotal = 0;
+  //iREAL masssphere = 0;
+
+  iREAL position[3];
+  for(auto i:particleGrid)
+  {
+    position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
+
+    std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
+
+    delta::geometry::cubes::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+
+    xCoordinatesArray.push_back(xCoordinates);
+    yCoordinatesArray.push_back(yCoordinates);
+    zCoordinatesArray.push_back(zCoordinates);
+
+    iREAL mt = delta::geometry::properties::getMass(xCoordinates, yCoordinates, zCoordinates, material);
+
+    reMassTotal += mt;
+    xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+
+    componentGrid.push_back("nonSpherical");
+    rad.push_back(radius);
+    if(radius*2<minParticleDiam)
+      minParticleDiam = radius*2;
+    if(radius*2>maxParticleDiam)
+      maxParticleDiam = radius*2;
+  }
+
+  iREAL rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+
+  reMassTotal=0;
+  for(unsigned j=0; j<xCoordinatesArray.size(); j++)
+  {
+    std::array<iREAL, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
+    delta::geometry::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+  }
 }
 
 void delta::world::assembly::nonUniSphereRadius(
