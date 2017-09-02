@@ -1,8 +1,17 @@
 #include "forces.h"
 
 //particle parameters
-#define SPRING 1E3
-#define DAMPER 0.5
+//mine
+//#define SPRING 1E3
+//#define DAMPER 0.5
+
+#define SPRING 50
+#define DAMPER 0.2
+//mine
+//#define SPRING 1E3
+//#define DAMPER 0.5
+
+
 #define FRICTION 0.5
 
 //sphere parameters for piling simulation
@@ -12,7 +21,7 @@
 #define SFRICTIONWOOD 0.05
 #define SFRICTIONROLLING 0.005
 
-iREAL delta::forces::spring(
+void delta::forces::spring(
     iREAL normal[3],
     iREAL conpnt[3],
     iREAL depth,
@@ -28,8 +37,7 @@ iREAL delta::forces::spring(
     iREAL inverseA[9],
     iREAL inverseB[9],
     iREAL f[3],
-    iREAL &damp,
-    iREAL &ma)
+    iREAL &forc)
 {
 	//RefConPoint = Rotation^T *(spatial contact point - spatial centre) + RefCentre;
 	iREAL refconptA[3], refconptB[3], conptSubPosition[3];
@@ -198,11 +206,11 @@ iREAL delta::forces::spring(
 
 	//ma = 1.0/W_NN;
 
-	ma = 1.0/((1.0/massA) + (1.0/massB));
+	iREAL ma = 1.0/((1.0/massA) + (1.0/massB));
 
 	iREAL velocity = (vij[0]*normal[0]) + (vij[1]*normal[1]) + (vij[2]*normal[2]);
 
-	damp = DAMPER * 2.0 * sqrt(ma*SPRING)*velocity;
+	iREAL damp = DAMPER; //* 2.0 * sqrt(ma*SPRING)*velocity;
 
 	iREAL force = SPRING*depth+damp;
 
@@ -210,24 +218,27 @@ iREAL delta::forces::spring(
 	f[1] = force*normal[1];
 	f[2] = force*normal[2];
 
-	return force;
+	forc = force;
+
+  #ifdef CONTACTSTATS
+  std::cout << ", damp=" << std::fixed << std::setprecision(10) << damp << ", 1/W_NN=" << std::fixed << std::setprecision(10) << ma << std::endl;
+  #endif
 }
 
-iREAL delta::forces::springSphere(
+void delta::forces::springSphere(
     iREAL normal[3],
     iREAL depth,
     iREAL relativeVelocity[3],
     iREAL massA,
     iREAL massB,
     iREAL f[3],
-    iREAL &damp,
-    iREAL &ma)
+    iREAL &forc)
 {
-  ma = 1.0/((1.0/massA) + (1.0/massB));
+  iREAL ma = 1.0/((1.0/massA) + (1.0/massB));
 
   iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
 
-  damp = 2.0 * SDAMPER * sqrt(SSPRING*ma)*velocity;
+  iREAL damp = 2.0 * SDAMPER * sqrt(SSPRING*ma)*velocity;
 
   iREAL force = SSPRING*depth + damp;
 
@@ -235,7 +246,11 @@ iREAL delta::forces::springSphere(
   f[1] = force*normal[1];
   f[2] = force*normal[2];
 
-  return force;
+  forc = force;
+
+  #ifdef CONTACTSTATS
+  std::cout << ", damp=" << std::fixed << std::setprecision(10) << damp << ", 1/W_NN=" << std::fixed << std::setprecision(10) << ma << std::endl;
+  #endif
 }
 
 void delta::forces::friction(
@@ -254,8 +269,11 @@ void delta::forces::friction(
 
   if(isSphere)
   {
-    if(materialA == int(delta::geometry::material::MaterialType::GOLD) || materialB == int(delta::geometry::material::MaterialType::GOLD))
-    {
+    friction[0] =  -vt[0]*SFRICTIONGOLD*force;
+    friction[1] =  -vt[1]*SFRICTIONGOLD*force;
+    friction[2] =  -vt[2]*SFRICTIONGOLD*force;
+    /*if(materialA == int(delta::geometry::material::MaterialType::GOLD) || materialB == int(delta::geometry::material::MaterialType::GOLD))
+      {
       friction[0] =  -vt[0]*SFRICTIONGOLD*force;
       friction[1] =  -vt[1]*SFRICTIONGOLD*force;
       friction[2] =  -vt[2]*SFRICTIONGOLD*force;
@@ -263,7 +281,7 @@ void delta::forces::friction(
       friction[0] =  -vt[0]*SFRICTIONWOOD*force;
       friction[1] =  -vt[1]*SFRICTIONWOOD*force;
       friction[2] =  -vt[2]*SFRICTIONWOOD*force;
-    }
+    }*/
   } else {
     friction[0] =  -vt[0]*FRICTION*force;
     friction[1] =  -vt[1]*FRICTION*force;
@@ -308,9 +326,9 @@ void delta::forces::getContactsForces(
     z[2] = conpnt[k].x[2]-positionASpatial[2];
 
     //cross product - relative angular i to contact point plus linear i
-    vi[0] = refAngularA[1]*z[2]-refAngularA[2]*z[1] + linearA[0];
-    vi[1] = refAngularA[2]*z[0]-refAngularA[0]*z[2] + linearA[1];
-    vi[2] = refAngularA[0]*z[1]-refAngularA[1]*z[0] + linearA[2];
+    vi[0] = angularA[1]*z[2]-angularA[2]*z[1] + linearA[0];
+    vi[1] = angularA[2]*z[0]-angularA[0]*z[2] + linearA[1];
+    vi[2] = angularA[0]*z[1]-angularA[1]*z[0] + linearA[2];
 
     //contact point - position j
     z[0] = conpnt[k].x[0]-positionBSpatial[0];
@@ -318,9 +336,9 @@ void delta::forces::getContactsForces(
     z[2] = conpnt[k].x[2]-positionBSpatial[2];
 
     //cross product - relative angular j to contact point plus linear j
-    vj[0] = refAngularB[1]*z[2]-refAngularB[2]*z[1] + linearB[0];
-    vj[1] = refAngularB[2]*z[0]-refAngularB[0]*z[2] + linearB[1];
-    vj[2] = refAngularB[0]*z[1]-refAngularB[1]*z[0] + linearB[2];
+    vj[0] = angularB[1]*z[2]-angularB[2]*z[1] + linearB[0];
+    vj[1] = angularB[2]*z[0]-angularB[0]*z[2] + linearB[1];
+    vj[2] = angularB[0]*z[1]-angularB[1]*z[0] + linearB[2];
 
     //relative velocities
     vij[0] = vj[0] - vi[0];
@@ -329,19 +347,18 @@ void delta::forces::getContactsForces(
 
     iREAL f[] = {0.0, 0.0, 0.0}, friction[] = {0.0, 0.0, 0.0}, forc;
 
-    iREAL ma, damp;
     if(isSphere)
     {
-      forc = delta::forces::springSphere(conpnt[k].normal, conpnt[k].depth, vij, massA, massB, f, damp, ma);
+      delta::forces::springSphere(conpnt[k].normal, conpnt[k].depth, vij, massA, massB, f, forc);
     } else {
-      forc = delta::forces::spring(conpnt[k].normal, conpnt[k].x, conpnt[k].depth, vij,
+      delta::forces::spring(conpnt[k].normal, conpnt[k].x, conpnt[k].depth, vij,
                                   positionASpatial, positionBSpatial,
                                   positionAReferential, positionBReferential, massA, massB,
-                                  rotationA, rotationB, inverseA, inverseB, f, damp, ma);
+                                  rotationA, rotationB, inverseA, inverseB, f, forc);
     }
 
-    if(conpnt[k].friction)
-      delta::forces::friction(conpnt[k].normal, vi, forc, friction, materialA, materialB, isSphere);
+    //if(conpnt[k].friction)
+    //  delta::forces::friction(conpnt[k].normal, vi, forc, friction, materialA, materialB, isSphere);
 
     //accumulate force
     force[0] += f[0] + friction[0];
@@ -414,9 +431,9 @@ void delta::forces::getContactForce(
   z[2] = conpnt.x[2]-positionASpatial[2];
 
   //cross product - relative angular i to contact point plus linear i
-  vi[0] = refAngularA[1]*z[2]-refAngularA[2]*z[1] + linearA[0];
-  vi[1] = refAngularA[2]*z[0]-refAngularA[0]*z[2] + linearA[1];
-  vi[2] = refAngularA[0]*z[1]-refAngularA[1]*z[0] + linearA[2];
+  vi[0] = angularA[1]*z[2]-angularA[2]*z[1] + linearA[0];
+  vi[1] = angularA[2]*z[0]-angularA[0]*z[2] + linearA[1];
+  vi[2] = angularA[0]*z[1]-angularA[1]*z[0] + linearA[2];
 
   //contact point - position j
   z[0] = conpnt.x[0]-positionBSpatial[0];
@@ -424,9 +441,9 @@ void delta::forces::getContactForce(
   z[2] = conpnt.x[2]-positionBSpatial[2];
 
   //cross product - relative angular j to contact point plus linear j
-  vj[0] = refAngularB[1]*z[2]-refAngularB[2]*z[1] + linearB[0];
-  vj[1] = refAngularB[2]*z[0]-refAngularB[0]*z[2] + linearB[1];
-  vj[2] = refAngularB[0]*z[1]-refAngularB[1]*z[0] + linearB[2];
+  vj[0] = angularB[1]*z[2]-angularB[2]*z[1] + linearB[0];
+  vj[1] = angularB[2]*z[0]-angularB[0]*z[2] + linearB[1];
+  vj[2] = angularB[0]*z[1]-angularB[1]*z[0] + linearB[2];
 
   //relative velocities
   vij[0] = vj[0] - vi[0];
@@ -435,27 +452,26 @@ void delta::forces::getContactForce(
 
   iREAL f[] = {0.0, 0.0, 0.0}, friction[] = {0.0, 0.0, 0.0}, forc;
 
-  iREAL ma, damp;
   if(isSphere)
   {
-    forc = delta::forces::springSphere(conpnt.normal, conpnt.depth, vij, massA, massB, f, damp, ma);
+    delta::forces::springSphere(conpnt.normal, conpnt.depth, vij, massA, massB, f, forc);
     #ifdef CONTACTSTATS
     std::cout << "id=" << std::fixed << std::setprecision(10) << 0.0 << ", SDAMPER=" << std::fixed << std::setprecision(10) << SDAMPER << ", SSPRING=" << std::fixed << std::setprecision(10) << SSPRING << std::endl
               << "vij[0]=" << std::fixed << std::setprecision(10) << vij[0] << ", vij[1]=" << std::fixed << std::setprecision(10) << vij[1] << ", vij[2]" << std::fixed << std::setprecision(10) << vij[2] << std::endl
               << "vij*normal=" << std::fixed << std::setprecision(10) << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << std::fixed << std::setprecision(10) << conpnt.depth << ", spring*depth=" << std::fixed << std::setprecision(10) << SPRING*conpnt.depth << std::endl
-              << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", 1/W_NN=" << std::fixed << std::setprecision(10) << ma << std::endl;
+              << "totalforce=" << std::fixed << std::setprecision(10) << forc;
     #endif
   } else {
-    forc = delta::forces::spring(conpnt.normal,conpnt.x, conpnt.depth, vij,
-                                positionASpatial, positionBSpatial,
-                                positionAReferential, positionBReferential, massA, massB,
-                                rotationA, rotationB, inverseA, inverseB, f, damp, ma);
     #ifdef CONTACTSTATS
     std::cout << "id=" << std::fixed << std::setprecision(10) << 0.0 << ", DAMPER=" << std::fixed << std::setprecision(10) << DAMPER << ", SPRING=" << std::fixed << std::setprecision(10) << SPRING << std::endl
               << "vij[0]=" << std::fixed << std::setprecision(10) << vij[0] << ", vij[1]=" << std::fixed << std::setprecision(10) << vij[1] << ", vij[2]" << std::fixed << std::setprecision(10) << vij[2] << std::endl
               << "vij*normal=" << std::fixed << std::setprecision(10) << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << std::fixed << std::setprecision(10) << conpnt.depth << ", spring*depth=" << std::fixed << std::setprecision(10) << SPRING*conpnt.depth << std::endl
-              << "totalforce=" << std::fixed << std::setprecision(10) << forc << ", damp=" << std::fixed << std::setprecision(10) << damp << ", 1/W_NN=" << std::fixed << std::setprecision(10) << ma << std::endl;
+              << "totalforce=" << std::fixed << std::setprecision(10) << forc;
     #endif
+    delta::forces::spring(conpnt.normal,conpnt.x, conpnt.depth, vij,
+                                positionASpatial, positionBSpatial,
+                                positionAReferential, positionBReferential, massA, massB,
+                                rotationA, rotationB, inverseA, inverseB, f, forc);
   }
   if(conpnt.friction)
     delta::forces::friction(conpnt.normal, vi, forc, friction, materialA, materialB, isSphere);

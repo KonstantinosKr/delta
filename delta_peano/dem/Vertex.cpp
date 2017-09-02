@@ -78,12 +78,10 @@ int dem::Vertex::createParticle(
 
   newParticle._persistentRecords._diameter	= delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
 
+  //printf("WIDTH%f\n", delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates));
   hMin = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);
 
   delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
-
-  //printf("Inertia: %f %f %f %f %f %f %f %f %f\n", inertia[0], inertia[1], inertia[2], inertia[3], inertia[4], inertia[5], inertia[6], inertia[7], inertia[8]);
-  //printf("mass: %f\n", mass);
 
   newParticle._persistentRecords._inertia(0) = inertia[0];
   newParticle._persistentRecords._inertia(1) = inertia[1];
@@ -325,18 +323,7 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._centre(1) = center(1);
   newParticle._persistentRecords._centre(2) = center(2);
 
-  /*printf("inertia:\n");
-  printf("%f %f %f\n", inertia[0], inertia[1], inertia[2]);
-  printf("%f %f %f\n", inertia[3], inertia[4], inertia[5]);
-  printf("%f %f %f\n", inertia[6], inertia[7], inertia[8]);*/
-
   delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
-
-/*
-  printf("inverse inertia:\n");
-  printf("%f %f %f\n", inverse[0], inverse[1], inverse[2]);
-  printf("%f %f %f\n", inverse[3], inverse[4], inverse[5]);
-  printf("%f %f %f\n", inverse[6], inverse[7], inverse[8]);*/
 
   newParticle._persistentRecords._inverse(0) = inverse[0];
   newParticle._persistentRecords._inverse(1) = inverse[1];

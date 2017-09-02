@@ -62,8 +62,9 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
   #endif
   for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   {
-    __attribute__ ((aligned(byteAlignment))) iREAL shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
+    iREAL dd = 1E99;
 
     #if defined(__INTEL_COMPILER)
     #pragma simd
@@ -92,11 +93,11 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
         yPB,
         zPB);
 
-      iREAL di = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
-      if(di<=shortestDistance)
+      iREAL d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
+      if(d <= epsilonMargin && d <= dd)
       {
         nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-        shortestDistance    = di;
+        dd = d;
       }
     }
 

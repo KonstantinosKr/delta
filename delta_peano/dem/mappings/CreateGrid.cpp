@@ -301,7 +301,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
   } else if(_scenario[1] == hopper)
   {
     ////////HOPPER////////////////////////////////////////////////////////////////////////////////////////////
-    auto material = delta::geometry::material::MaterialType::GOLD;
+    auto material = delta::geometry::material::MaterialType::WOOD;
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5; double _hopperHatch = 0.05; double _hopperThickness = 0.005;
     int particleId = deployHopper(vertex, 0, 0, _centreAsArray, _hopperWidth, _hopperThickness, _hopperHeight, _hopperHatch, _epsilon, material, false, true);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -324,7 +324,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     iREAL xzcuts = 0; iREAL ycuts = 0;
     if(_scenario[3] == n100)
     {
-      xzcuts = 10; ycuts = 1;
+      xzcuts = 2; ycuts = 2;
     }
     else if(_scenario[3] == n1k)
     {
@@ -436,19 +436,21 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     double height = 0.05; double width = 0.35;
     deployBox(vertex, 0, 0, _centreAsArray, width, height, 0,0,0, _epsilon, material, true, true);
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
+    //Y: 0.5+0.028868/2
 
-    double radius = 0.01; double eps = radius*0.2;
+    double radius = 0.02; double eps = radius*0.2;
     if(_scenario[2] == sstatic)
     {
       int newParticleNumber;
-      iREAL position[] = {_centreAsArray[0], _centreAsArray[1] + height, _centreAsArray[2]};
+      //Y: 0.55-0.011547/2
+
+      iREAL position[] = {_centreAsArray[0]+0.05, _centreAsArray[1] + height, _centreAsArray[2]};
       if(_isSphere)
       {
         newParticleNumber = dem::mappings::CreateGrid::deploySphere(vertex, position, radius, eps, material, true, false);
       } else {
-        newParticleNumber = dem::mappings::CreateGrid::deployBox(vertex, 0, 0, position, radius*2, radius*2, 0,0,0, eps, material, true, false);
+        newParticleNumber = dem::mappings::CreateGrid::deployBox(vertex, 0, 0, position, radius, radius, 0,0,0, eps, material, true, false);
       }
-      setVScheme(vertex, newParticleNumber, dem::mappings::CreateGrid::crashY);
     }
     else if(_scenario[2] == slide || _scenario[2] == roll)
     {
@@ -474,7 +476,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
   }
   else if(_scenario[0] == TwoParticlesCrash)
   {
-    double radius = 0.005;
+    double radius = 0.1;
     auto material = delta::geometry::material::MaterialType::WOOD;
     iREAL position[] = {_centreAsArray[0], 0.8, _centreAsArray[2]};
     if(_isSphere)
@@ -812,7 +814,7 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
         std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
         deploySphere(vertex, position, _radArray[i], _radArray[i]*eps, material, friction, isObstacle);
         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
-      } else if(_componentGrid[i] == "nonSpherical")
+      } else if(_componentGrid[i] == "nonSpherical" || _componentGrid[i] == "cube")
       {
         vertex.createParticle(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _radArray[i]*eps, friction, material, isObstacle, _numberOfParticles, 0);
         dem::mappings::CreateGrid::addParticleToState(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], isObstacle);
@@ -823,6 +825,11 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
         vertex.createParticle(xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, 0);
         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
       }
+      /*else if(_componentGrid[i] == "cube")
+      {
+        vertex.createParticle(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _radArray[i]*eps, friction, material, isObstacle, _numberOfParticles, 0);
+        dem::mappings::CreateGrid::addParticleToState(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], isObstacle);
+      }*/
     }
   }
 }
