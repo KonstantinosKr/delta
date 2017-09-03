@@ -162,6 +162,10 @@ class dem::mappings::CreateGrid {
     static std::vector<std::array<double, 3>> _particleGrid;
     static std::vector<std::string> _componentGrid;
 
+    static std::vector<std::array<double, 3>> _xyzDimensionsArray;
+    static std::vector<std::array<double, 3>> _linearVelocityArray;
+    static std::vector<std::array<double, 3>> _angularVelocityArray;
+
     static std::vector<double> _radArray;
     static std::vector<bool> _isObstacleArray;
     static std::vector<bool> _isFrictionArray;
@@ -192,7 +196,6 @@ class dem::mappings::CreateGrid {
   
     void deployFineEnviroment(
         dem::Vertex& vertex,
-        double centreAsArray[3],
         double cellSize);
 
     int createParticleObject(
@@ -271,9 +274,6 @@ class dem::mappings::CreateGrid {
         double centreAsArray[3],
         double cellSize,
         double epsilon,
-        delta::geometry::material::MaterialType material,
-        double friction,
-        double isObstacle,
         bool insitu);
 
 

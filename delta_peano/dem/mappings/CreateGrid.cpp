@@ -67,6 +67,9 @@ bool                                 dem::mappings::CreateGrid::_isSphere;
 std::vector<bool>                    dem::mappings::CreateGrid::_isObstacleArray;
 std::vector<bool>                    dem::mappings::CreateGrid::_isFrictionArray;
 std::vector<delta::geometry::material::MaterialType>  dem::mappings::CreateGrid::_materialArray;
+std::vector<std::array<double, 3>>   dem::mappings::CreateGrid::_linearVelocityArray;
+std::vector<std::array<double, 3>>   dem::mappings::CreateGrid::_angularVelocityArray;
+std::vector<std::array<double, 3>>   dem::mappings::CreateGrid::_xyzDimensionsArray;
 
 std::vector<std::array<double, 3>>               dem::mappings::CreateGrid::_coarsePositionArray;
 std::vector<double>                              dem::mappings::CreateGrid::_coarseisFrictionArray;
@@ -148,6 +151,7 @@ void dem::mappings::CreateGrid::beginIteration(
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+    /////////FINE GRID///////////////////////////////
     iREAL pos[3];
     pos[0] = _coarsePositionArray[0][0];
     pos[1] += _coarseXYZDimensionsArray[0][1]/2;
@@ -185,8 +189,13 @@ void dem::mappings::CreateGrid::beginIteration(
         delta::world::assembly::makeBrickGrid(pos, 0.15, 10, 0.08, 4, _particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam);
       }
     }
-  }
-  if(_scenario[1] == hopper)
+    for(int i=0; i<1000; i++)
+    {
+      _materialArray.push_back(delta::geometry::material::MaterialType::GOLD);
+      _isFrictionArray.push_back(false);
+      _isObstacleArray.push_back(false);
+    }
+  } else if(_scenario[1] == hopper)
   {
     ////////HOPPER////////////////////////////////////////////////////////////////////////////////////////////
     double _hopperHatch = 0.05; double _hopperThickness = 0.005;
@@ -346,8 +355,13 @@ void dem::mappings::CreateGrid::beginIteration(
       }
     }
 
-  }
-  if(_scenario[1] == friction)
+    for(int i=0; i<10000; i++)
+    {
+      _materialArray.push_back(delta::geometry::material::MaterialType::GOLD);
+      _isFrictionArray.push_back(true);
+      _isObstacleArray.push_back(false);
+    }
+  } else if(_scenario[1] == friction)
   {
 
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,8 +469,7 @@ void dem::mappings::CreateGrid::beginIteration(
         _coarseComponentArray.push_back("cube");
       }
     }
-  }
-  if(_scenario[0] == TwoParticlesCrash)
+  } else if(_scenario[0] == TwoParticlesCrash)
   {
     //create two particles
     _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
@@ -488,6 +501,98 @@ void dem::mappings::CreateGrid::beginIteration(
       _coarseComponentArray.push_back("sphere");
     } else {
       _coarseComponentArray.push_back("granulate");
+    }
+  } else if(_scenario[0] == blackHoleWithRandomOrientedCubes ||
+     _scenario[0] == freefallWithRandomOrientedCubes)
+  {
+    _materialArray.push_back(delta::geometry::material::MaterialType::WOOD);
+    _isFrictionArray.push_back(false);
+    _isObstacleArray.push_back(false);
+    _radArray.push_back(0.1);
+    std::array<double, 3> position = {centre[0], 0.8, centre[2]};
+    _particleGrid.push_back(position);
+    std::array<double, 3> angular = {0, 0, 0};
+    _angularVelocityArray.push_back(angular);
+    if(_isSphere){
+      _componentGrid.push_back("sphere");
+    } else {
+      _componentGrid.push_back("cubes");
+    }
+
+    std::array<double, 3> xyz = {_radArray[0], _radArray[0], _radArray[0]};
+    _xyzDimensionsArray.push_back(xyz);
+
+    if(_scenario[0] == blackHoleWithRandomOrientedCubes)
+    {
+      std::array<double, 3> linear = {static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX)};
+    } else
+    {
+      std::array<double, 3> linear = {0, 0, 0};
+      _linearVelocityArray.push_back(linear);
+    }
+  }
+  else if(_scenario[0] == blackHoleWithCubes ||
+          _scenario[0] == freefallWithCubes)
+  {
+    //double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
+    //int particleid = deployBox(vertex, 0, 0, _centreAsArray, particleDiameter/2, particleDiameter/2, 0, 1.0/8.0, 1.0/8.0, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+
+    _materialArray.push_back(delta::geometry::material::MaterialType::WOOD);
+    _isFrictionArray.push_back(false);
+    _isObstacleArray.push_back(false);
+    _radArray.push_back(0.1);
+    std::array<double, 3> position = {centre[0], 0.8, centre[2]};
+    _particleGrid.push_back(position);
+    std::array<double, 3> angular = {0, 0, 0};
+    _angularVelocityArray.push_back(angular);
+    if(_isSphere){
+      _componentGrid.push_back("sphere");
+    } else {
+      _componentGrid.push_back("cubes");
+    }
+
+    std::array<double, 3> xyz = {_radArray[0], _radArray[0], _radArray[0]};
+    _xyzDimensionsArray.push_back(xyz);
+
+    if(_scenario[0] == blackHoleWithCubes)
+    {
+      std::array<double, 3> linear = {static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX)};
+    } else
+    {
+      std::array<double, 3> linear = {0, 0, 0};
+      _linearVelocityArray.push_back(linear);
+    }
+  }
+  else if(_scenario[0] == blackHoleWithGranulates ||
+          _scenario[0] == freefallWithGranulates)
+  {
+    //double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
+    //int particleid = dem::mappings::CreateGrid::deployGranulate(vertex, _centreAsArray, particleDiameter/2, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+
+    _materialArray.push_back(delta::geometry::material::MaterialType::WOOD);
+    _isFrictionArray.push_back(false);
+    _isObstacleArray.push_back(false);
+    _radArray.push_back(0.1);
+    std::array<double, 3> position = {centre[0], 0.8, centre[2]};
+    _particleGrid.push_back(position);
+    std::array<double, 3> angular = {0, 0, 0};
+    _angularVelocityArray.push_back(angular);
+    if(_isSphere){
+      _componentGrid.push_back("sphere");
+    } else {
+      _componentGrid.push_back("granulates");
+    }
+
+    std::array<double, 3> xyz = {_radArray[0], _radArray[0], _radArray[0]};
+    _xyzDimensionsArray.push_back(xyz);
+
+    if(_scenario[0] == blackHoleWithGranulates)
+    {
+      std::array<double, 3> linear = {static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX)};
+    } else
+    {
+      std::array<double, 3> linear = {0, 0, 0};
+      _linearVelocityArray.push_back(linear);
     }
   }
 
@@ -667,43 +772,41 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
 
 void dem::mappings::CreateGrid::deployFineEnviroment(
     dem::Vertex& vertex,
-    double centreAsArray[3],
     double cellSize)
 {
-  if(_scenario[0] == blackHoleWithRandomOrientedCubes ||
-     _scenario[0] == freefallWithRandomOrientedCubes)
+  if((_scenario[0] == blackHoleWithRandomOrientedCubes ||
+           _scenario[0] == freefallWithRandomOrientedCubes) ||
+          (_scenario[0] == blackHoleWithCubes ||
+          _scenario[0] == freefallWithCubes) ||
+         (_scenario[0] == blackHoleWithGranulates ||
+          _scenario[0] == freefallWithGranulates))
   {
-    int particleid = deployBox(vertex, 0, 0, centreAsArray, _maxParticleDiam, _maxParticleDiam, static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
-        static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
-        static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
-        _epsilon, _materialArray[0], true, false);
-    if(_scenario[0] == blackHoleWithRandomOrientedCubes)
-      dem::mappings::CreateGrid::setVScheme(vertex, particleid, dem::mappings::CreateGrid::randomLinearAngular);
-  }
-  else if(_scenario[0] == blackHoleWithCubes ||
-          _scenario[0] == freefallWithCubes)
-  {
-    double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
-    int particleid = deployBox(vertex, 0, 0, centreAsArray, particleDiameter/2, particleDiameter/2, 0, 1.0/8.0, 1.0/8.0, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+    int newParticleNumber;
+    if(_componentGrid[0] == "sphere")
+    {
+      newParticleNumber = dem::mappings::CreateGrid::deploySphere(vertex, _centreAsArray, _radArray[0], _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+    }
+    if(_componentGrid[0] == "cube")
+    {
+      newParticleNumber = dem::mappings::CreateGrid::deployBox(vertex, 0, 0, _centreAsArray, _xyzDimensionsArray[0][0], _xyzDimensionsArray[0][1], 0, 1.0/8.0, 1.0/8.0, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+    } else if(_componentGrid[0] == "granulate")
+    {
+      newParticleNumber = dem::mappings::CreateGrid::deployGranulate(vertex, _centreAsArray, _radArray[0], _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+    }
+    vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _coarseLinearVelocityArray[0][0];
+    vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _coarseLinearVelocityArray[0][1];
+    vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = _coarseLinearVelocityArray[0][2];
 
-    if(_scenario[0] == blackHoleWithCubes)
-      dem::mappings::CreateGrid::setVScheme(vertex, particleid, dem::mappings::CreateGrid::randomLinearAngular);
-  }
-  else if(_scenario[0] == blackHoleWithGranulates ||
-          _scenario[0] == freefallWithGranulates)
-  {
-    double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
-    int particleid = dem::mappings::CreateGrid::deployGranulate(vertex, centreAsArray, particleDiameter/2, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
-    if(_scenario[0] == blackHoleWithGranulates)
-      dem::mappings::CreateGrid::setVScheme(vertex, particleid, dem::mappings::CreateGrid::randomLinearAngular);
-  }
-  else if(_scenario[1] == nuclear || _scenario[1] == hopper)
+    vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _coarseAngularVelocityArray[0][0];
+    vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _coarseAngularVelocityArray[0][1];
+    vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = _coarseAngularVelocityArray[0][2];
+  } else if(_scenario[1] == nuclear || _scenario[1] == hopper)
   {
     double epsMulti = 0.2;//percentage of radius is epsilon
     bool insitu = true;
     if(dem::mappings::CreateGrid::_gridType == NoGrid) insitu = false;
 
-    dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, centreAsArray, cellSize, epsMulti, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0], insitu);
+    dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, _centreAsArray, cellSize, epsMulti, insitu);
   }
 
   #ifdef STATSPARTICLE
@@ -743,7 +846,7 @@ void dem::mappings::CreateGrid::createCell(
 	{
 	  if(dem::mappings::CreateGrid::_gridType == NoGrid)
 	  {
-      deployFineEnviroment(vertex, _centreAsArray, fineGridVerticesEnumerator.getCellSize()(0));
+      deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0));
 
       dfor2(k) //size 2, dimension 3
         for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
@@ -774,7 +877,7 @@ void dem::mappings::CreateGrid::createCell(
 		  const auto centre = fineGridVerticesEnumerator.getVertexPosition() + _maxParticleDiam * k.convertScalar<double>();
       double centreAsArray[] = {centre(0),centre(1),centre(2)};
 
-      deployFineEnviroment(vertex, centreAsArray, fineGridVerticesEnumerator.getCellSize()(0));
+      deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0));
 		}
 	}
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
@@ -984,18 +1087,18 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
       if(_componentGrid[i] == "sphere")
       {
         std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-        deploySphere(vertex, position, _radArray[i], _radArray[i]*eps, material, friction, isObstacle);
-        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
+        deploySphere(vertex, position, _radArray[i], _radArray[i]*eps, _materialArray[i], _isFrictionArray[i], _isObstacleArray[i]);
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[i]);
       } else if(_componentGrid[i] == "granulate" || _componentGrid[i] == "cube")
       {
-        vertex.createParticle(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _radArray[i]*eps, friction, material, isObstacle, _numberOfParticles, 0);
-        dem::mappings::CreateGrid::addParticleToState(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], isObstacle);
+        vertex.createParticle(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _radArray[i]*eps, _isFrictionArray[i], _materialArray[i], _isObstacleArray[i], _numberOfParticles, 0);
+        dem::mappings::CreateGrid::addParticleToState(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _isObstacleArray[i]);
       } else if(_componentGrid[i] == "FB")
       {
         std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
         delta::geometry::graphite::generateBrickFB(position, _radArray[i], xCoordinates, yCoordinates, zCoordinates);
-        vertex.createParticle(xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, 0);
-        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
+        vertex.createParticle(xCoordinates, yCoordinates, zCoordinates, eps, _isFrictionArray[i], _materialArray[i], _isObstacleArray[i], _numberOfParticles, 0);
+        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[i]);
       }
     }
   }
