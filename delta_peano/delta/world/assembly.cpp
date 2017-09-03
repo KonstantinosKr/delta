@@ -337,7 +337,7 @@ void delta::world::assembly::uniMeshGeometry(
     //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
     xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-    componentGrid.push_back("nonSpherical");
+    componentGrid.push_back("granulate");
     rad.push_back(radius);
     if(radius*2<minParticleDiam)
       minParticleDiam = radius*2;
@@ -404,7 +404,7 @@ void delta::world::assembly::uniCubeGeometry(
     reMassTotal += mt;
     xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-    componentGrid.push_back("nonSpherical");
+    componentGrid.push_back("granulate");
     rad.push_back(radius);
     if(radius*2<minParticleDiam)
       minParticleDiam = radius*2;
@@ -564,6 +564,9 @@ void delta::world::assembly::loadNuclearGeometry(
     iREAL &minParticleDiam,
     iREAL &maxParticleDiam)
 {
+
+  //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
+
   //measurements
   std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
   delta::geometry::graphite::generateBrickFB(xCoordinates, yCoordinates, zCoordinates);

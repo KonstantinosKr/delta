@@ -163,6 +163,21 @@ class dem::mappings::CreateGrid {
     static std::vector<std::string> _componentGrid;
 
     static std::vector<double> _radArray;
+    static std::vector<bool> _isObstacleArray;
+    static std::vector<bool> _isFrictionArray;
+    static std::vector<delta::geometry::material::MaterialType> _materialArray;
+
+
+    static std::vector<std::array<double, 3>> _coarsePositionArray;
+    static std::vector<double> _coarseisFrictionArray;
+    static std::vector<double> _coarseisObstacleArray;
+    static std::vector<delta::geometry::material::MaterialType> _coarseMaterialArray;
+    static std::vector<std::array<double, 3>> _coarseXYZDimensionsArray;
+    static std::vector<double> _coarseRadiusArray;
+    static std::vector<std::array<double, 3>> _coarseLinearVelocityArray;
+    static std::vector<std::array<double, 3>> _coarseAngularVelocityArray;
+    static std::vector<std::string> _coarseComponentArray;
+
     static std::vector<std::vector<double>> _xCoordinatesArray;
     static std::vector<std::vector<double>> _yCoordinatesArray;
     static std::vector<std::vector<double>> _zCoordinatesArray;
@@ -178,10 +193,7 @@ class dem::mappings::CreateGrid {
     void deployFineEnviroment(
         dem::Vertex& vertex,
         double centreAsArray[3],
-        double cellSize,
-        delta::geometry::material::MaterialType material,
-        double friction,
-        double isObstacle);
+        double cellSize);
 
     int createParticleObject(
         int quadsect, dem::Vertex& vertex,
