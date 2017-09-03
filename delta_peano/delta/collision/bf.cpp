@@ -43,13 +43,13 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
     int 	    particleB)
 {
 #if defined(__INTEL_COMPILER)
-/*  __assume_aligned(xxCoordinatesOfPointsOfGeometryA, byteAlignment);
-  __assume_aligned(yyCoordinatesOfPointsOfGeometryA, byteAlignment);
-  __assume_aligned(zzCoordinatesOfPointsOfGeometryA, byteAlignment);
+  __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
+  __assume_aligned(yCoordinatesOfPointsOfGeometryA, byteAlignment);
+  __assume_aligned(zCoordinatesOfPointsOfGeometryA, byteAlignment);
 
-  __assume_aligned(xxCoordinatesOfPointsOfGeometryB, byteAlignment);
-  __assume_aligned(yyCoordinatesOfPointsOfGeometryB, byteAlignment);
-  __assume_aligned(zzCoordinatesOfPointsOfGeometryB, byteAlignment);*/
+  __assume_aligned(xCoordinatesOfPointsOfGeometryB, byteAlignment);
+  __assume_aligned(yCoordinatesOfPointsOfGeometryB, byteAlignment);
+  __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
 #endif
 
   std::vector<contactpoint> result;
@@ -64,7 +64,7 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
   {
     __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
-    iREAL dd = 1E99;
+    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
 
     #if defined(__INTEL_COMPILER)
     #pragma simd
@@ -73,12 +73,12 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
     #endif
     for(int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
     {
-      __attribute__ ((aligned(byteAlignment))) iREAL xPA=0.0;// __attribute__ ((aligned(byteAlignment))) ;
-      __attribute__ ((aligned(byteAlignment))) iREAL yPA=0.0;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) iREAL zPA=0.0;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) iREAL xPB=0.0;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) iREAL yPB=0.0;// __attribute__ ((aligned(byteAlignment)));
-      __attribute__ ((aligned(byteAlignment))) iREAL zPB=0.0;// __attribute__ ((aligned(byteAlignment)));
+      __attribute__ ((aligned(byteAlignment))) iREAL xPA=0.0;
+      __attribute__ ((aligned(byteAlignment))) iREAL yPA=0.0;
+      __attribute__ ((aligned(byteAlignment))) iREAL zPA=0.0;
+      __attribute__ ((aligned(byteAlignment))) iREAL xPB=0.0;
+      __attribute__ ((aligned(byteAlignment))) iREAL yPB=0.0;
+      __attribute__ ((aligned(byteAlignment))) iREAL zPB=0.0;
 
       bf(xCoordinatesOfPointsOfGeometryA+(iA),
         yCoordinatesOfPointsOfGeometryA+(iA),

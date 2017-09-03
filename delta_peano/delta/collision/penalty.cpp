@@ -82,8 +82,9 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
   #endif
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-    __attribute__ ((aligned(byteAlignment))) iREAL	shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) iREAL	epsilonMargin = (epsilonA+epsilonB);
     contactpoint *nearestContactPoint = nullptr;
+    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
@@ -115,10 +116,10 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
       numberOfNewtonIterations[numberOfNewtonIterationsRequired]++;
 
       iREAL d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
-      if (d<=shortestDistance)
+      if (d <= epsilonMargin && d <= dd)
       {
         nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);;
-        shortestDistance    = d;
+        dd    = d;
       }
     }
     if (nearestContactPoint != nullptr)
@@ -169,7 +170,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
     __attribute__ ((aligned(byteAlignment))) bool failed = 0;
-    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], dd[10000];
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
@@ -188,18 +189,19 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
               xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB],
               MaxError, failed);
 
-      dd[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
+      d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
-    __attribute__ ((aligned(byteAlignment))) iREAL shortestDistance = (epsilonA+epsilonB);
+    __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
     contactpoint *nearestContactPoint = nullptr;
+    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
 
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-      if(dd[iB] <= shortestDistance)
+      if(d[iB] <= epsilonMargin && d[iB] <= dd)
       {
         nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-        shortestDistance    = dd[iB];
+        dd    = d[iB];
       }
     }
 
