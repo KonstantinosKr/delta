@@ -261,15 +261,8 @@ class dem::mappings::CreateGrid {
         double epsilon,
         delta::geometry::material::MaterialType material,
         double friction,
-        double isObstacle);
-
-    void deployParticleSubGrid(
-        dem::Vertex&  vertex,
-        double centreAsArray[3],
-        double eps,
-        delta::geometry::material::MaterialType material,
-        double friction,
-        double isObstacle);
+        double isObstacle,
+        bool insitu);
 
 
   public:

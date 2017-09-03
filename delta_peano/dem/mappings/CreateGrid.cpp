@@ -536,12 +536,12 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
   else if(_scenario[1] == nuclear || _scenario[1] == hopper)
   {
     double epsMulti = 0.2;//percentage of radius is epsilon
+    bool insitu = true;
     if(dem::mappings::CreateGrid::_gridType == NoGrid)
     {
-      dem::mappings::CreateGrid::deployParticleSubGrid(vertex, centreAsArray, epsMulti, material, friction, isObstacle);
-      return;
+      insitu = false;
     }
-    dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, centreAsArray, cellSize, epsMulti, material, friction, isObstacle);
+    dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, centreAsArray, cellSize, epsMulti, material, friction, isObstacle, insitu);
   }
 
   #ifdef STATSPARTICLE
@@ -793,7 +793,8 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
     double eps,
     delta::geometry::material::MaterialType material,
     double friction,
-    double isObstacle)
+    double isObstacle,
+    bool insitu)
 {
   iREAL cellXLeftBoundary = centreAsArray[0] - cellSize/2, cellZLeftBoundary = centreAsArray[2] - cellSize/2;
   iREAL cellXRightBoundary= centreAsArray[0] + cellSize/2, cellZRightBoundary = centreAsArray[2] + cellSize/2;
@@ -804,9 +805,20 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
   if((_numberOfParticles-_numberOfObstacles) <= _particleGrid.size())
   for(unsigned i=0; i<_particleGrid.size(); i++)
   {
-    if((_particleGrid[i][0] >= cellXLeftBoundary && _particleGrid[i][0] <= cellXRightBoundary) &&
-       (_particleGrid[i][1] >= cellYDWBoundary && _particleGrid[i][1] <= cellYUPBoundary) &&
-       (_particleGrid[i][2] >= cellZLeftBoundary && _particleGrid[i][2] <= cellZRightBoundary))
+    bool deploy = false;
+    if(insitu)
+    {
+      if((_particleGrid[i][0] >= cellXLeftBoundary && _particleGrid[i][0] <= cellXRightBoundary) &&
+         (_particleGrid[i][1] >= cellYDWBoundary && _particleGrid[i][1] <= cellYUPBoundary) &&
+         (_particleGrid[i][2] >= cellZLeftBoundary && _particleGrid[i][2] <= cellZRightBoundary))
+      {
+        deploy = true;
+      }
+    } else {
+      deploy = true;
+    }
+
+    if(deploy)
     {
       iREAL position[] = {_particleGrid[i][0], _particleGrid[i][1], _particleGrid[i][2]};
       if(_componentGrid[i] == "sphere")
@@ -825,42 +837,6 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
         vertex.createParticle(xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, 0);
         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
       }
-      /*else if(_componentGrid[i] == "cube")
-      {
-        vertex.createParticle(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _radArray[i]*eps, friction, material, isObstacle, _numberOfParticles, 0);
-        dem::mappings::CreateGrid::addParticleToState(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], isObstacle);
-      }*/
-    }
-  }
-}
-
-void dem::mappings::CreateGrid::deployParticleSubGrid(
-    dem::Vertex&  vertex,
-    double centreAsArray[3],
-    double eps,
-    delta::geometry::material::MaterialType material,
-    double friction,
-    double isObstacle)
-{
-  if((_numberOfParticles-_numberOfObstacles) <= _particleGrid.size())
-  for(unsigned i=0; i<_particleGrid.size(); i++)
-  {
-    iREAL position[] = {_particleGrid[i][0], _particleGrid[i][1], _particleGrid[i][2]};
-    if(_componentGrid[i] == "sphere")
-    {
-      std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-      deploySphere(vertex, position, _radArray[i], _radArray[i]*eps, material, friction, isObstacle);
-      dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
-    } else if(_componentGrid[i] == "nonSpherical")
-    {
-      vertex.createParticle(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], _radArray[i]*eps, friction, material, isObstacle, _numberOfParticles, 0);
-      dem::mappings::CreateGrid::addParticleToState(_xCoordinatesArray[i], _yCoordinatesArray[i], _zCoordinatesArray[i], isObstacle);
-    } else if(_componentGrid[i] == "FB")
-    {
-      std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-      delta::geometry::graphite::generateBrickFB(position, _radArray[i], xCoordinates, yCoordinates, zCoordinates);
-      vertex.createParticle(xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, 0);
-      dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
     }
   }
 }
