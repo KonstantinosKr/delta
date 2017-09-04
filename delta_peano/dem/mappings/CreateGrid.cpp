@@ -250,7 +250,7 @@ void dem::mappings::CreateGrid::beginIteration(
     iREAL xzcuts = 0; iREAL ycuts = 0;
     if(_scenario[3] == n100)
     {
-      xzcuts = 2; ycuts = 2;
+      xzcuts = 10; ycuts = 1;
     }
     else if(_scenario[3] == n1k)
     {
@@ -1054,9 +1054,6 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
     double centreAsArray[3],
     double cellSize,
     double eps,
-    delta::geometry::material::MaterialType material,
-    double friction,
-    double isObstacle,
     bool insitu)
 {
   iREAL cellXLeftBoundary = centreAsArray[0] - cellSize/2, cellZLeftBoundary = centreAsArray[2] - cellSize/2;

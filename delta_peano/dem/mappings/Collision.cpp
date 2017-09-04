@@ -229,13 +229,13 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		//if value doesn't exist in map - no collision - skip particle
 		//if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
 
-    double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
+    //double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
+		double force[3]  = {0.0,0.0,0.0};
     double torque[3] = {0.0,0.0,0.0};
 
 		//collisions with partner particles
 		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin(); p != _activeCollisions[currentParticle.getGlobalParticleId()].end(); p++)
 		{
-		  //break;
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
 

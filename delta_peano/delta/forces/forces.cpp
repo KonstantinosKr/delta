@@ -5,21 +5,21 @@
 //#define SPRING 1E3
 //#define DAMPER 0.5
 
-#define SPRING 50
-#define DAMPER 0.2
+//#define SPRING 50
+//#define DAMPER 0.2
 //mine
-//#define SPRING 1E3
-//#define DAMPER 0.5
+#define SPRING 1E3
+#define DAMPER 0.5
 
 
 #define FRICTION 0.5
 
 //sphere parameters for piling simulation
-#define SSPRING 5E3
+#define SSPRING 1E4
 #define SDAMPER 0.5
-#define SFRICTIONGOLD 0.5
-#define SFRICTIONWOOD 0.05
-#define SFRICTIONROLLING 0.005
+#define SFRICTIONGOLD 1
+#define SFRICTIONWOOD 1
+#define SFRICTIONROLLING 0.5
 
 void delta::forces::spring(
     iREAL normal[3],
@@ -357,8 +357,8 @@ void delta::forces::getContactsForces(
                                   rotationA, rotationB, inverseA, inverseB, f, forc);
     }
 
-    //if(conpnt[k].friction)
-    //  delta::forces::friction(conpnt[k].normal, vi, forc, friction, materialA, materialB, isSphere);
+    if(conpnt[k].friction)
+      delta::forces::friction(conpnt[k].normal, vi, forc, friction, materialA, materialB, isSphere);
 
     //accumulate force
     force[0] += f[0] + friction[0];
@@ -388,9 +388,9 @@ void delta::forces::getContactsForces(
 
       if(w>0.0)
       {
-        //torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
-        //torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
-        //torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;
+        /*torque[0] += -(vij[0]/w)*SFRICTIONROLLING*forc;
+        torque[1] += -(vij[1]/w)*SFRICTIONROLLING*forc;
+        torque[2] += -(vij[2]/w)*SFRICTIONROLLING*forc;*/
       }
     }
   }

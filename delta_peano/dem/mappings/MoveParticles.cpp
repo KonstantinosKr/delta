@@ -55,6 +55,8 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
 
     if(particle.getIsObstacle()) continue;
 
+    particle._persistentRecords._velocity(1) += timeStepSize*(1*-9.8);
+
     particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centre(2) += timeStepSize*particle._persistentRecords._velocity(2);
