@@ -559,8 +559,6 @@ void delta::geometry::properties::getInertia(
 
   iREAL rho = iREAL(delta::geometry::material::materialToDensitymap.find(material)->second);
 
-  printf("Rho: %f", rho);
-
   for (unsigned i=0;i<xCoordinates.size(); i+=3)
   {
     a[0] = xCoordinates[i];

@@ -186,10 +186,15 @@ class dem::mappings::CreateGrid {
     static std::vector<std::vector<double>> _yCoordinatesArray;
     static std::vector<std::vector<double>> _zCoordinatesArray;
 
+    static bool _deployInsitu;
+
+    bool assertCoarse();
+    bool assertFine();
+/*
     void setVScheme(
         dem::Vertex&  vertex,
         int particleNumber,
-        VScheme velocity);
+        VScheme velocity);*/
 
     void deployCoarseEnviroment(
         dem::Vertex& vertex);
@@ -272,9 +277,7 @@ class dem::mappings::CreateGrid {
     void deployParticleInsituSubGrid(
         dem::Vertex&  vertex,
         double centreAsArray[3],
-        double cellSize,
-        double epsilon,
-        bool insitu);
+        double cellSize);
 
 
   public:
