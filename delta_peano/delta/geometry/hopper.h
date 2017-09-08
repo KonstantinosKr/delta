@@ -63,7 +63,7 @@ namespace delta {
             iREAL  thickness,
             iREAL  height,
             iREAL  hatch,
-            int    meshmultiplier,
+            int    meshRefinement,
             std::vector<iREAL>&  xCoordinates,
             std::vector<iREAL>&  yCoordinates,
             std::vector<iREAL>&  zCoordinates);

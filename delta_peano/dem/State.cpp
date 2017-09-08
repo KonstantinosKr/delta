@@ -28,6 +28,7 @@ void dem::State::clearAccumulatedData() {
   _stateData.setNumberOfTriangleComparisons(0.0);
   _stateData.setNumberOfParticleComparisons(0.0);
   _stateData.setTwoParticlesAreClose(false);
+  // @todo set max velocity to zero
 }
 
 double dem::State::getNumberOfContactPoints() const {
@@ -71,6 +72,8 @@ void dem::State::merge( const State& otherState ) {
   _stateData.setNumberOfParticleReassignments( _stateData.getNumberOfParticleReassignments() + otherState._stateData.getNumberOfParticleReassignments() );
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + otherState._stateData.getNumberOfTriangleComparisons() );
   _stateData.setNumberOfParticleComparisons( _stateData.getNumberOfParticleComparisons() + otherState._stateData.getNumberOfParticleComparisons() );
+  // @merge two particles are close
+  // @merge velocity
 }
 
 double dem::State::getTimeStepSize() const {
@@ -90,28 +93,27 @@ void dem::State::informStateThatTwoParticlesAreClose() {
   _stateData.setTwoParticlesAreClose(true);
 }
 
-void dem::State::informStatePenetration(){
-  _stateData.setPenetrationOccured(true);
-}
-
-bool dem::State::getPenetrationStatus(){
-  return _stateData.getPenetrationOccured();
-}
-
 void dem::State::finishedTimeStep(double initStep) {
+  const double increaseFactor = 1.1;
   _stateData.setCurrentTime(_stateData.getCurrentTime() + _stateData.getTimeStepSize());
-  if (_stateData.getTwoParticlesAreClose())
-  {
-	  if(_stateData.getTimeStepSize() < 1E-5) return;
-	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()/2.0);
-  } else {//replace with max global step
-	  if(_stateData.getTimeStepSize() > initStep) return;
-	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()*1.01);
+  const double maxdt = _stateData.getMaxMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocity());
+
+  if (_stateData.getTwoParticlesAreClose()) {
+	  if(_stateData.getTimeStepSize() > 1E-8)  {
+  	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()/2.0);
+	  }
+  }
+  else if (_stateData.getTimeStepSize() > maxdt) {
+   _stateData.setTimeStepSize(maxdt);
+  }
+  else {//replace with max global step
+	  //if(_stateData.getTimeStepSize() > initStep) return;
+	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()*increaseFactor);
   }
 }
 
-void dem::State::setTimeStep(int delta) {
-  _stateData.setTimeStep(delta);
+void dem::State::setTimeStep(int number) {//name
+  _stateData.setTimeStep(number);
 }
 
 int dem::State::getTimeStep() {

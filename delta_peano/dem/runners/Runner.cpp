@@ -139,28 +139,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     dem::mappings::Plot::_maxi = maxRange;
   }
 
-  /////////////////////PRE-STEP
-  /*dem::mappings::Collision::CollisionModel model = dem::mappings::Collision::_collisionModel;
-  dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
-  if (gridType==mappings::CreateGrid::AdaptiveGrid)
-  {
-    repository.switchToTimeStepOnDynamicGrid();
-    repository.switchToTimeStepOnDynamicGrid();
-  }
-  else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
-  {
-    repository.switchToTimeStepOnReluctantDynamicGrid();
-    repository.switchToTimeStepOnReluctantDynamicGrid();
-  } else {
-    repository.switchToTimeStep();
-    repository.switchToTimeStep();
-  }
-  repository.iterate();
-  repository.iterate();
-
-  dem::mappings::Collision::_collisionModel = model;*/
-  ///////////////////////////////////////////////////////////////////////////////////////////
-
+  //PLOT TIME ZERO
+  ////////////////////////////////////////////////////////////////////////////////////////
   if((plot == EveryIteration) ||  (plot == Track) ||
       (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
                               !repository.getState().isGridStationary() || 0%50==0 ||
@@ -177,6 +157,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     elapsed = repository.getState().getTime() - timestamp;
     repository.getState().finishedTimeStep(initialStepSize);
   }
+  ///////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////
 
   for (int i=1; i<iterations; i++)
   {
@@ -240,16 +222,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     repository.getState().clearAccumulatedData();
 
-    /*repository.switchToCollision();
     repository.iterate();
-    repository.switchToMoveParticles();
-    repository.iterate();
-    repository.switchToAdopt();
-    repository.iterate();
-    repository.switchToPlotData();*/
-    repository.iterate();
-
-
   }
 
   repository.logIterationStatistics(false);

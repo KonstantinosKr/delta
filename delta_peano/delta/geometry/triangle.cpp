@@ -222,14 +222,94 @@ void delta::geometry::triangle::fiveSectTriangle(
   zCoordinates.push_back(AB[2]);
 }
 
+void delta::geometry::triangle::biSideSectTriangle(
+    iREAL A[3],
+    iREAL B[3],
+    iREAL C[3],
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
+{
+  iREAL O[3] = {A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0,  A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0, A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0};
+
+  iREAL alpha[3], beta[3], gamma[3];
+  alpha[0] = (A[0] + B[0])/2.0;
+  alpha[1] = (A[1] + B[1])/2.0;
+  alpha[2] = (A[2] + B[2])/2.0;
+
+  beta[0] = (A[0] + C[0])/2.0;
+  beta[1] = (A[1] + C[1])/2.0;
+  beta[2] = (A[2] + C[2])/2.0;
+
+  gamma[0] = (B[0] + C[0])/2.0;
+  gamma[1] = (B[1] + C[1])/2.0;
+  gamma[2] = (B[2] + C[2])/2.0;
+
+  //////////ONE////////////////
+  //beta A alpha
+  xCoordinates.push_back(beta[0]);
+  xCoordinates.push_back(A[0]);
+  xCoordinates.push_back(alpha[0]);
+
+  yCoordinates.push_back(beta[1]);
+  yCoordinates.push_back(A[1]);
+  yCoordinates.push_back(alpha[1]);
+
+  zCoordinates.push_back(beta[2]);
+  zCoordinates.push_back(A[2]);
+  zCoordinates.push_back(alpha[2]);
+
+  /////////TWO/////////////////
+  //gamma alpha B
+  xCoordinates.push_back(gamma[0]);
+  xCoordinates.push_back(alpha[0]);
+  xCoordinates.push_back(B[0]);
+
+  yCoordinates.push_back(gamma[1]);
+  yCoordinates.push_back(alpha[1]);
+  yCoordinates.push_back(B[1]);
+
+  zCoordinates.push_back(gamma[2]);
+  zCoordinates.push_back(alpha[2]);
+  zCoordinates.push_back(B[2]);
+
+  ////////THREE////////////////
+  //gamma beta alpha
+  xCoordinates.push_back(gamma[0]);
+  xCoordinates.push_back(beta[0]);
+  xCoordinates.push_back(alpha[0]);
+
+  yCoordinates.push_back(gamma[1]);
+  yCoordinates.push_back(beta[1]);
+  yCoordinates.push_back(alpha[1]);
+
+  zCoordinates.push_back(gamma[2]);
+  zCoordinates.push_back(beta[2]);
+  zCoordinates.push_back(alpha[2]);
+
+  ////////FOUR/////////////////
+  //C beta gamma
+  xCoordinates.push_back(C[0]);
+  xCoordinates.push_back(beta[0]);
+  xCoordinates.push_back(gamma[0]);
+
+  yCoordinates.push_back(C[1]);
+  yCoordinates.push_back(beta[1]);
+  yCoordinates.push_back(gamma[1]);
+
+  zCoordinates.push_back(C[2]);
+  zCoordinates.push_back(beta[2]);
+  zCoordinates.push_back(gamma[2]);
+}
+
 void delta::geometry::triangle::meshDenser(
-		int multiplier,
+		int meshRefinement,
 		std::vector<iREAL>&  xCoordinates,
 		std::vector<iREAL>&  yCoordinates,
 		std::vector<iREAL>&  zCoordinates)
 {
 
-  if(multiplier < 1) return;
+  if(meshRefinement < 1) return;
 	std::vector<iREAL>  xNewCoordinates;
 	std::vector<iREAL>  yNewCoordinates;
 	std::vector<iREAL>  zNewCoordinates;
@@ -249,29 +329,30 @@ void delta::geometry::triangle::meshDenser(
 		C[1] = yCoordinates[i+2];
 		C[2] = zCoordinates[i+2];
 
-		fiveSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
+		biSideSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
 		//triSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
-		//bisectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
 	}
 
 	xCoordinates = xNewCoordinates;
 	yCoordinates = yNewCoordinates;
 	zCoordinates = zNewCoordinates;
-	meshDenser(multiplier-1, xCoordinates, yCoordinates, zCoordinates);
+	meshDenser(meshRefinement-1, xCoordinates, yCoordinates, zCoordinates);
 }
 
-int delta::geometry::triangle::meshOctSect(
-    int quadsectTimes,
-    std::vector<std::vector<iREAL>>&  xCoordinatesVec,
-    std::vector<std::vector<iREAL>>&  yCoordinatesVec,
-    std::vector<std::vector<iREAL>>&  zCoordinatesVec, std::vector<std::array<iREAL, 3>>& centroid)
+int delta::geometry::triangle::octSectParticle(
+    int octSectTimes,
+    std::vector<std::vector<iREAL>>&  xCoordinatesMultiLevel,
+    std::vector<std::vector<iREAL>>&  yCoordinatesMultiLevel,
+    std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel, std::vector<std::array<iREAL, 3>>& centroid)
 {
-  std::array<iREAL, 3> minpoint = delta::geometry::properties::getMinBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
-  std::array<iREAL, 3> maxpoint = delta::geometry::properties::getMaxBoundaryVertex(xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0]);
+  std::array<iREAL, 3> minpoint = delta::geometry::properties::getMinBoundaryVertex(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]);
+  std::array<iREAL, 3> maxpoint = delta::geometry::properties::getMaxBoundaryVertex(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]);
 
   iREAL xw = maxpoint[0]-minpoint[0]; iREAL yw = maxpoint[1]-minpoint[1]; iREAL zw = maxpoint[2]-minpoint[2];
   std::array<iREAL, 3> midpoint = {minpoint[0]+xw/2, minpoint[1]+yw/2, minpoint[2]+zw/2};
 
+  ///////////VISUALISATION OF ROOT OCT-section CUBE///////////////////////
+  /////////////////////////////////////////////////////////////////////////
   /*std::vector<iREAL> xCoordinatesBox, yCoordinatesBox, zCoordinatesBox;
   iREAL centre[3] = {midpoint[0], midpoint[1], midpoint[2]};
   delta::geometry::surface::generateBoundBox(centre, minpoint, maxpoint, xCoordinatesBox, yCoordinatesBox, zCoordinatesBox);
@@ -282,10 +363,10 @@ int delta::geometry::triangle::meshOctSect(
     yCoordinatesVec[0].push_back(yCoordinatesBox[i]);
     zCoordinatesVec[0].push_back(zCoordinatesBox[i]);
   }*/
-
+  ///////////END VISUALISATION/////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////
 
-  return octSect(quadsectTimes, 0, minpoint, midpoint, maxpoint, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);;
+  return octSect(octSectTimes, 0, minpoint, midpoint, maxpoint, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);;
 }
 
 int delta::geometry::triangle::octSect(
@@ -294,18 +375,18 @@ int delta::geometry::triangle::octSect(
     std::array<iREAL, 3> minpoint,
     std::array<iREAL, 3> midpoint,
     std::array<iREAL, 3> maxpoint,
-    std::vector<std::vector<iREAL>>&  xCoordinatesVec,
-    std::vector<std::vector<iREAL>>&  yCoordinatesVec,
-    std::vector<std::vector<iREAL>>&  zCoordinatesVec,
+    std::vector<std::vector<iREAL>>&  xCoordinatesMultiLevel,
+    std::vector<std::vector<iREAL>>&  yCoordinatesMultiLevel,
+    std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel,
     std::vector<std::array<iREAL, 3>>& centroid)
 {
 
   if(level < 1) return index;
   level--;
 
-  xCoordinatesVec.resize(xCoordinatesVec.size()+8);
-  yCoordinatesVec.resize(yCoordinatesVec.size()+8);
-  zCoordinatesVec.resize(zCoordinatesVec.size()+8);
+  xCoordinatesMultiLevel.resize(xCoordinatesMultiLevel.size()+8);
+  yCoordinatesMultiLevel.resize(yCoordinatesMultiLevel.size()+8);
+  zCoordinatesMultiLevel.resize(zCoordinatesMultiLevel.size()+8);
   centroid.resize(centroid.size()+8);
 
   index++;
@@ -360,36 +441,36 @@ int delta::geometry::triangle::octSect(
 
   ////////////////////////////////////////////////////////////////////////////////
   getTrianglesInBoundingBox(minpointA, maxpointA,
-                            xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0],
-                            xCoordinatesVec[indexA], yCoordinatesVec[indexA], zCoordinatesVec[indexA]);
+                            xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0],
+                            xCoordinatesMultiLevel[indexA], yCoordinatesMultiLevel[indexA], zCoordinatesMultiLevel[indexA]);
 
   getTrianglesInBoundingBox(minpointAA, maxpointAA,
-                            xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0],
-                            xCoordinatesVec[indexAA], yCoordinatesVec[indexAA], zCoordinatesVec[indexAA]);
+                            xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0],
+                            xCoordinatesMultiLevel[indexAA], yCoordinatesMultiLevel[indexAA], zCoordinatesMultiLevel[indexAA]);
 
   getTrianglesInBoundingBox(minpointB, maxpointB,
-                            xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0],
-                            xCoordinatesVec[indexB], yCoordinatesVec[indexB], zCoordinatesVec[indexB]);
+                            xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0],
+                            xCoordinatesMultiLevel[indexB], yCoordinatesMultiLevel[indexB], zCoordinatesMultiLevel[indexB]);
 
   getTrianglesInBoundingBox(minpointBB, maxpointBB,
-                            xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0],
-                            xCoordinatesVec[indexBB], yCoordinatesVec[indexBB], zCoordinatesVec[indexBB]);
+                            xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0],
+                            xCoordinatesMultiLevel[indexBB], yCoordinatesMultiLevel[indexBB], zCoordinatesMultiLevel[indexBB]);
 
   getTrianglesInBoundingBox(minpointC, maxpointC,
-                            xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0],
-                            xCoordinatesVec[indexC], yCoordinatesVec[indexC], zCoordinatesVec[indexC]);
+                            xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0],
+                            xCoordinatesMultiLevel[indexC], yCoordinatesMultiLevel[indexC], zCoordinatesMultiLevel[indexC]);
 
   getTrianglesInBoundingBox(minpointCC, maxpointCC,
-                            xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0],
-                            xCoordinatesVec[indexCC], yCoordinatesVec[indexCC], zCoordinatesVec[indexCC]);
+                            xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0],
+                            xCoordinatesMultiLevel[indexCC], yCoordinatesMultiLevel[indexCC], zCoordinatesMultiLevel[indexCC]);
 
   getTrianglesInBoundingBox(minpointD, maxpointD,
-                            xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0],
-                            xCoordinatesVec[indexD], yCoordinatesVec[indexD], zCoordinatesVec[indexD]);
+                            xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0],
+                            xCoordinatesMultiLevel[indexD], yCoordinatesMultiLevel[indexD], zCoordinatesMultiLevel[indexD]);
 
   getTrianglesInBoundingBox(minpointDD, maxpointDD,
-                            xCoordinatesVec[0], yCoordinatesVec[0], zCoordinatesVec[0],
-                            xCoordinatesVec[indexDD], yCoordinatesVec[indexDD], zCoordinatesVec[indexDD]);
+                            xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0],
+                            xCoordinatesMultiLevel[indexDD], yCoordinatesMultiLevel[indexDD], zCoordinatesMultiLevel[indexDD]);
   ////////////////////////////////////////////////////////////////////////////////
 
   centroid[indexA][0] = minpointA[0]+(maxpointA[0]-minpointA[0])/2;
@@ -424,8 +505,8 @@ int delta::geometry::triangle::octSect(
   centroid[indexDD][1] = minpointDD[1]+((maxpointDD[1]-minpointDD[1])/2);
   centroid[indexDD][2] = minpointDD[2]+((maxpointDD[2]-minpointDD[2])/2);
 
-  /////////////////////////////////////////////////////////////////////////////////////
-/*
+  //////////////BOUNDING BOX VISUALISATION///////////////////////////////////////////////
+  /*
   iREAL centreA[3], centreAA[3], centreB[3], centreBB[3], centreC[3], centreCC[3], centreD[3], centreDD[3];
 
   centreA[0] = centroid[indexA][0];
@@ -478,6 +559,7 @@ int delta::geometry::triangle::octSect(
   delta::geometry::surface::generateBoundBox(centreD, minpointD, maxpointD, xCoordinatesD, yCoordinatesD, zCoordinatesD);
   delta::geometry::surface::generateBoundBox(centreDD, minpointDD, maxpointDD, xCoordinatesDD, yCoordinatesDD, zCoordinatesDD);
 
+
   for(int i=0; i<xCoordinatesA.size(); i++)
   {
     xCoordinatesVec[indexA].push_back(xCoordinatesA[i]);
@@ -512,15 +594,17 @@ int delta::geometry::triangle::octSect(
     yCoordinatesVec[indexDD].push_back(yCoordinatesDD[i]);
     zCoordinatesVec[indexDD].push_back(zCoordinatesDD[i]);
   }*/
+  //////////////END BOUNDING BOX VISUALISATION///////////////////////////////////////////////
 
-  index = octSect(level, index, minpointA, centroid[indexA], maxpointA, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octSect(level, index, minpointAA, centroid[indexAA], maxpointAA, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octSect(level, index, minpointB, centroid[indexB], maxpointB, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octSect(level, index, minpointBB, centroid[indexBB], maxpointBB, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octSect(level, index, minpointC, centroid[indexC], maxpointC, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octSect(level, index, minpointCC, centroid[indexCC], maxpointCC, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octSect(level, index, minpointD, centroid[indexD], maxpointD, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
-  index = octSect(level, index, minpointDD, centroid[indexDD], maxpointDD, xCoordinatesVec, yCoordinatesVec, zCoordinatesVec, centroid);
+
+  index = octSect(level, index, minpointA, centroid[indexA], maxpointA, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
+  index = octSect(level, index, minpointAA, centroid[indexAA], maxpointAA, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
+  index = octSect(level, index, minpointB, centroid[indexB], maxpointB, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
+  index = octSect(level, index, minpointBB, centroid[indexBB], maxpointBB, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
+  index = octSect(level, index, minpointC, centroid[indexC], maxpointC, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
+  index = octSect(level, index, minpointCC, centroid[indexCC], maxpointCC, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
+  index = octSect(level, index, minpointD, centroid[indexD], maxpointD, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
+  index = octSect(level, index, minpointDD, centroid[indexDD], maxpointDD, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
 
   return index;
 }

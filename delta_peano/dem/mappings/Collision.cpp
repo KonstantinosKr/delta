@@ -12,7 +12,6 @@
 
 #include "peano/utils/Loop.h"
 
-
 peano::CommunicationSpecification   dem::mappings::Collision::communicationSpecification() const {
 	return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
@@ -184,6 +183,11 @@ void dem::mappings::Collision::addCollision(
     //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 	}
 
+//determine min distance
+/*	for(int i=0; i<newContactPoints.size(); i++) {
+
+	}*/
+
 	/*
 	 * Problem here was:
 	 * Although all normals were pointing to opposite direction for each particle due to how we loop particles
@@ -222,12 +226,12 @@ void dem::mappings::Collision::touchVertexFirstTime(
 
 	double timeStepSize = _state.getTimeStepSize();
 
-	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) //No need to loop over virtual particles here
+	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
 	{
 		records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
 		//if value doesn't exist in map - no collision - skip particle
-		//if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
+		if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
 
     //double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
 		double force[3]  = {0.0,0.0,0.0};
@@ -239,7 +243,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
 
-			//for each partner contact get force
 			delta::forces::getContactsForces(p->_contactPoints,
                                        &(currentParticle._persistentRecords._centreOfMass(0)),
                                        &(currentParticle._persistentRecords._referentialCentreOfMass(0)),
@@ -289,18 +292,15 @@ void dem::mappings::Collision::touchVertexFirstTime(
 
 	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
 
-	dfor2(k)
-		fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)]);
-	enddforx
+  dfor2(k)
+    fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)]);
+  enddforx
 
 	#ifdef ompParticle
 		#pragma omp parallel for
 	#endif
-	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) // No need to loop over virtual particles here as well
+	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
 	{
-		//printf("Number in the grid master:%d\n", fineGridVertex.getNumberOfParticles());
-    //printf("Number in the grid slave:%d\n", fineGridVertex.getNumberOfRealAndVirtualParticles());
-
 		for(int j=0; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
 		{
       if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
@@ -537,11 +537,11 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			#endif
 			{
 			  _state.incNumberOfTriangleComparisons(fineGridVertex.getNumberOfTriangles(i) * fineGridVertex.getNumberOfTriangles(j));
+			  _state.incNumberOfParticleComparisons(1);
 			}
 		}
 	}
 
-	_state.incNumberOfParticleComparisons(fineGridVertex.getNumberOfParticles() * fineGridVertex.getNumberOfRealAndVirtualParticles());
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
@@ -562,6 +562,8 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			if((vertexA.getParticle(i).getIsObstacle() && vertexB.getParticle(j).getIsObstacle()) ||
 			   (vertexA.getParticle(i).getGlobalParticleId() == vertexB.getParticle(j).getGlobalParticleId()))
 			  continue;
+
+			//printf("%i %i\n", vertexA.getParticle(i).getGlobalParticleId(), vertexB.getParticle(j).getGlobalParticleId());
 
 			if(_enableOverlapCheck)
 				if(!delta::collision::isSphereOverlayInContact(
@@ -755,16 +757,17 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
           lock.free();
         }
 			}
-			//printf("DifferentVertexContact:%d\n", newContactPoints.size());
 			//printf("VertexANoParticles:%d VertexBNoParticles:%d\n", vertexA.getNumberOfRealAndVirtualParticles(), vertexB.getNumberOfRealAndVirtualParticles());
 			//printf("VertexA:%d VertexB:%d\n", vertexA.getParticle(i).getGlobalParticleNumber(), vertexB.getParticle(j).getGlobalParticleNumber());
 			#ifdef ompParticle
 				#pragma omp critical
 			#endif
-			_state.incNumberOfTriangleComparisons(vertexA.getNumberOfTriangles(i) * vertexB.getNumberOfTriangles(j));
+			{
+			  _state.incNumberOfTriangleComparisons(vertexA.getNumberOfTriangles(i) * vertexB.getNumberOfTriangles(j));
+			  _state.incNumberOfParticleComparisons(1);
+			}
 		}
 	}
-	_state.incNumberOfParticleComparisons(vertexA.getNumberOfRealAndVirtualParticles() * vertexB.getNumberOfRealAndVirtualParticles());
 }
 
 void dem::mappings::Collision::enterCell(
@@ -778,7 +781,7 @@ void dem::mappings::Collision::enterCell(
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-	/*
+
 	if(
     fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() == 0 &&
@@ -787,7 +790,20 @@ void dem::mappings::Collision::enterCell(
     fineGridVertices[fineGridVerticesEnumerator(4)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(5)].getNumberOfParticles() == 0 &&
     fineGridVertices[fineGridVerticesEnumerator(6)].getNumberOfParticles() == 0 &&
-    fineGridVertices[fineGridVerticesEnumerator(7)].getNumberOfParticles() == 0)return;*/
+    fineGridVertices[fineGridVerticesEnumerator(7)].getNumberOfParticles() == 0)return;
+
+	std::vector<Vertex> list;
+
+	list.push_back(fineGridVertices[fineGridVerticesEnumerator(0)]);
+  list.push_back(fineGridVertices[fineGridVerticesEnumerator(1)]);
+  list.push_back(fineGridVertices[fineGridVerticesEnumerator(2)]);
+  list.push_back(fineGridVertices[fineGridVerticesEnumerator(3)]);
+
+  list.push_back(fineGridVertices[fineGridVerticesEnumerator(4)]);
+  list.push_back(fineGridVertices[fineGridVerticesEnumerator(5)]);
+  list.push_back(fineGridVertices[fineGridVerticesEnumerator(6)]);
+  list.push_back(fineGridVertices[fineGridVerticesEnumerator(7)]);
+
 
     //phase A
   #ifdef ompParticle
@@ -827,7 +843,7 @@ void dem::mappings::Collision::enterCell(
       }
     }
   #else
-    //if(fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfParticles() > 0)
+    if(fineGridVertices[fineGridVerticesEnumerator(0)].getNumberOfRealAndVirtualParticles() > 0)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(1)]);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(2)]);
@@ -838,14 +854,14 @@ void dem::mappings::Collision::enterCell(
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(0)], fineGridVertices[fineGridVerticesEnumerator(7)]);
     }
 
-    //if(fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfParticles() > 0)
+    if(fineGridVertices[fineGridVerticesEnumerator(1)].getNumberOfRealAndVirtualParticles() > 0)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(2)]);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(4)]);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(1)], fineGridVertices[fineGridVerticesEnumerator(6)]);
     }
 
-    //if(fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfParticles() > 0)
+    if(fineGridVertices[fineGridVerticesEnumerator(2)].getNumberOfRealAndVirtualParticles() > 0)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(5)]);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(2)], fineGridVertices[fineGridVerticesEnumerator(4)]);

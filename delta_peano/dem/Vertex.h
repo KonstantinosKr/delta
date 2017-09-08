@@ -128,9 +128,13 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
     int getNumberOfTriangles( int particleNumber ) const;
 
     records::Particle& getParticle( int particleNumber );
+
     const records::Particle& getParticle( int particleNumber ) const;
 
     int getNumberOfRealAndVirtualParticles() const;
+
+    int getNumberOfVirtualParticles() const;
+
 
     /**
      * Appends this particle to the vertex's particle list.

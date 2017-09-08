@@ -7,12 +7,12 @@ class dem::records::State {
   parallelise persistent double  numberOfTriangleComparisons; 
   parallelise persistent double  numberOfParticleComparisons;
   parallelise persistent double  timeStepSize;
-  parallelise persistent int	 timeStep;
+  parallelise persistent int	   timeStep;
   parallelise persistent double  currentTime;
   parallelise persistent bool    twoParticlesAreClose;
-  parallelise persistent bool    penetrationOccured;
   parallelise persistent int     numberOfParticles;
-  parallelise persistent int	 numberOfObstacles;
+  parallelise persistent int	   numberOfObstacles;
   parallelise persistent double	 prescribedMinimumMeshWidth;
   parallelise persistent double	 prescribedMaximumMeshWidth;
+  parallelise persistent double  maxVelocity;   
 };

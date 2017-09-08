@@ -53,6 +53,14 @@ namespace delta {
           std::vector<iREAL>&  yCoordinates,
           std::vector<iREAL>&  zCoordinates);
 
+      void biSideSectTriangle(
+          iREAL A[3],
+          iREAL B[3],
+          iREAL C[3],
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
+
       void fiveSectTriangle(
           iREAL A[3],
           iREAL B[3],
@@ -62,16 +70,16 @@ namespace delta {
           std::vector<iREAL>&  zCoordinates);
 
       void meshDenser(
-          int multiplier,
+          int meshRefinement,
           std::vector<iREAL>&  xCoordinates,
           std::vector<iREAL>&  yCoordinates,
           std::vector<iREAL>&  zCoordinates);
 
-      int meshOctSect(
+      int octSectParticle(
           int quadsectTimes,
-          std::vector<std::vector<iREAL>>&  xCoordinates,
-          std::vector<std::vector<iREAL>>&  yCoordinates,
-          std::vector<std::vector<iREAL>>&  zCoordinates,
+          std::vector<std::vector<iREAL>>&  xCoordinatesMultiLevel,
+          std::vector<std::vector<iREAL>>&  yCoordinatesMultiLevel,
+          std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel,
           std::vector<std::array<iREAL, 3>>& centroid);
 
       int octSect(
@@ -80,9 +88,9 @@ namespace delta {
           std::array<iREAL, 3> minpoint,
           std::array<iREAL, 3> midpoint,
           std::array<iREAL, 3> maxpoint,
-          std::vector<std::vector<iREAL>>&  xCoordinatesVec,
-          std::vector<std::vector<iREAL>>&  yCoordinatesVec,
-          std::vector<std::vector<iREAL>>&  zCoordinatesVec,
+          std::vector<std::vector<iREAL>>&  xCoordinatesMultiLevel,
+          std::vector<std::vector<iREAL>>&  yCoordinatesMultiLevel,
+          std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel,
           std::vector<std::array<iREAL, 3>>& centroid);
 
       void getTrianglesInBoundingBox(

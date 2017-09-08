@@ -171,7 +171,6 @@ class dem::mappings::CreateGrid {
     static std::vector<bool> _isFrictionArray;
     static std::vector<delta::geometry::material::MaterialType> _materialArray;
 
-
     static std::vector<std::array<double, 3>> _coarsePositionArray;
     static std::vector<double> _coarseisFrictionArray;
     static std::vector<double> _coarseisObstacleArray;
@@ -204,7 +203,7 @@ class dem::mappings::CreateGrid {
         double cellSize);
 
     int createParticleObject(
-        int quadsect, dem::Vertex& vertex,
+        int octSectTimes, dem::Vertex& vertex,
         double position[3],
         double eps,
         delta::geometry::material::MaterialType material,
@@ -221,7 +220,9 @@ class dem::mappings::CreateGrid {
         bool isObstacle);
 
     int deployHopper(
-        dem::Vertex&  vertex, int quadsect, int meshmultiplier,
+        dem::Vertex&  vertex,
+        int octSectTimes,
+        int meshRefinement,
         double position[3],
         double _hopperWidth,
         double _hopperHeight,
@@ -278,6 +279,16 @@ class dem::mappings::CreateGrid {
         dem::Vertex&  vertex,
         double centreAsArray[3],
         double cellSize);
+
+    void decomposeMeshIntoParticles(
+        dem::Vertex&  vertex,
+        std::vector<double> xCoordinates,
+        std::vector<double> yCoordinates,
+        std::vector<double> zCoordinates,
+        double eps,
+        delta::geometry::material::MaterialType material,
+        bool friction,
+        bool isObstacle);
 
 
   public:
