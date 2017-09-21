@@ -304,6 +304,7 @@ void delta::geometry::triangle::biSideSectTriangle(
 
 void delta::geometry::triangle::meshDenser(
 		int meshRefinement,
+		double gridH,
 		std::vector<iREAL>&  xCoordinates,
 		std::vector<iREAL>&  yCoordinates,
 		std::vector<iREAL>&  zCoordinates)
@@ -329,14 +330,65 @@ void delta::geometry::triangle::meshDenser(
 		C[1] = yCoordinates[i+2];
 		C[2] = zCoordinates[i+2];
 
-		biSideSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
-		//triSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
+		if(getTriangleLength(A,B,C) > 0.01) {
+	    biSideSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
+		} else
+		{
+		  xNewCoordinates.push_back(A[0]);
+      xNewCoordinates.push_back(B[0]);
+      xNewCoordinates.push_back(C[0]);
+
+      yNewCoordinates.push_back(A[1]);
+      yNewCoordinates.push_back(B[1]);
+      yNewCoordinates.push_back(C[1]);
+
+      zNewCoordinates.push_back(A[2]);
+      zNewCoordinates.push_back(B[2]);
+      zNewCoordinates.push_back(C[2]);
+		}
 	}
 
 	xCoordinates = xNewCoordinates;
 	yCoordinates = yNewCoordinates;
 	zCoordinates = zNewCoordinates;
-	meshDenser(meshRefinement-1, xCoordinates, yCoordinates, zCoordinates);
+	meshDenser(meshRefinement-1, gridH, xCoordinates, yCoordinates, zCoordinates);
+}
+
+void delta::geometry::triangle::meshDenser(
+    int meshRefinement,
+    std::vector<iREAL>&  xCoordinates,
+    std::vector<iREAL>&  yCoordinates,
+    std::vector<iREAL>&  zCoordinates)
+{
+
+  if(meshRefinement < 1) return;
+  std::vector<iREAL>  xNewCoordinates;
+  std::vector<iREAL>  yNewCoordinates;
+  std::vector<iREAL>  zNewCoordinates;
+
+  for(unsigned i=0;i<xCoordinates.size();i+=3)
+  {
+    iREAL A[3], B[3], C[3];
+    A[0] = xCoordinates[i];
+    A[1] = yCoordinates[i];
+    A[2] = zCoordinates[i];
+
+    B[0] = xCoordinates[i+1];
+    B[1] = yCoordinates[i+1];
+    B[2] = zCoordinates[i+1];
+
+    C[0] = xCoordinates[i+2];
+    C[1] = yCoordinates[i+2];
+    C[2] = zCoordinates[i+2];
+
+    biSideSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
+    //triSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
+  }
+
+  xCoordinates = xNewCoordinates;
+  yCoordinates = yNewCoordinates;
+  zCoordinates = zNewCoordinates;
+  meshDenser(meshRefinement-1, xCoordinates, yCoordinates, zCoordinates);
 }
 
 int delta::geometry::triangle::octSectParticle(
@@ -607,6 +659,28 @@ int delta::geometry::triangle::octSect(
   index = octSect(level, index, minpointDD, centroid[indexDD], maxpointDD, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
 
   return index;
+}
+
+double delta::geometry::triangle::getTriangleLength(iREAL A[3], iREAL B[3], iREAL C[3])
+{
+  double length = 0;
+  std::vector<iREAL>  xCoordinates;
+  std::vector<iREAL>  yCoordinates;
+  std::vector<iREAL>  zCoordinates;
+
+  xCoordinates.push_back(A[0]);
+  xCoordinates.push_back(B[0]);
+  xCoordinates.push_back(C[0]);
+
+  yCoordinates.push_back(A[1]);
+  yCoordinates.push_back(B[1]);
+  yCoordinates.push_back(C[1]);
+
+  zCoordinates.push_back(A[2]);
+  zCoordinates.push_back(B[2]);
+  zCoordinates.push_back(C[2]);
+
+  return delta::geometry::properties::getXYZWidth(xCoordinates, yCoordinates, zCoordinates);
 }
 
 void delta::geometry::triangle::getTrianglesInBoundingBox(

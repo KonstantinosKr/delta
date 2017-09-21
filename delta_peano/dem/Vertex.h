@@ -148,6 +148,8 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      */
     void releaseParticle(int particleNumber);
 
+    void releaseCoarseParticle(int particleNumber);
+
     double* getXCoordinates( int particleNumber );
     double* getYCoordinates( int particleNumber );
     double* getZCoordinates( int particleNumber );

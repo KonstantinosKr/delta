@@ -218,7 +218,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
     elapsed = repository.getState().getTime() - timestamp;
 
-    repository.getState().finishedTimeStep(initialStepSize);
+    //repository.getState().finishedTimeStep(initialStepSize);
 
     repository.getState().clearAccumulatedData();
 

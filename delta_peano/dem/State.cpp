@@ -28,6 +28,7 @@ void dem::State::clearAccumulatedData() {
   _stateData.setNumberOfTriangleComparisons(0.0);
   _stateData.setNumberOfParticleComparisons(0.0);
   _stateData.setTwoParticlesAreClose(false);
+  _stateData.setMaxVelocity(0.0);
   // @todo set max velocity to zero
 }
 
@@ -71,7 +72,14 @@ void dem::State::merge( const State& otherState ) {
   _stateData.setNumberOfContactPoints( _stateData.getNumberOfContactPoints() + otherState._stateData.getNumberOfContactPoints() );
   _stateData.setNumberOfParticleReassignments( _stateData.getNumberOfParticleReassignments() + otherState._stateData.getNumberOfParticleReassignments() );
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + otherState._stateData.getNumberOfTriangleComparisons() );
-  _stateData.setNumberOfParticleComparisons( _stateData.getNumberOfParticleComparisons() + otherState._stateData.getNumberOfParticleComparisons() );
+  _stateData.setTwoParticlesAreClose( _stateData.getTwoParticlesAreClose() || otherState._stateData.getTwoParticlesAreClose() );
+
+  if(_stateData.getMaxVelocity() > otherState._stateData.getMaxVelocity())
+  {
+    _stateData.setMaxVelocity( _stateData.getMaxVelocity());
+  } else {
+    _stateData.setMaxVelocity( otherState._stateData.getMaxVelocity());
+  }
   // @merge two particles are close
   // @merge velocity
 }

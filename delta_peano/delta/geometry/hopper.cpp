@@ -1061,6 +1061,7 @@ void delta::geometry::hopper::generateHopper(
     iREAL  height,
     iREAL  hatch,
     int    meshRefinement,
+    double gridH,
     std::vector<iREAL>&  xCoordinates,
     std::vector<iREAL>&  yCoordinates,
     std::vector<iREAL>&  zCoordinates
@@ -1068,6 +1069,6 @@ void delta::geometry::hopper::generateHopper(
 {
   delta::geometry::hopper::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
   delta::geometry::hopper::generateOuterHopper(center, width+thickness, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
-  delta::geometry::triangle::meshDenser(meshRefinement, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::triangle::meshDenser(meshRefinement, gridH, xCoordinates, yCoordinates, zCoordinates);
 }
 

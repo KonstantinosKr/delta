@@ -134,10 +134,10 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._hMin 				    = hMin;
 
   newParticle._persistentRecords._numberOfTriangles = xCoordinates.size()/DIMENSIONS;
-  newParticle._persistentRecords._isObstacle 		    = isObstacle;
-  newParticle._persistentRecords._material 			    = int(material);
+  newParticle._persistentRecords._isObstacle 		   = isObstacle;
+  newParticle._persistentRecords._material 			   = int(material);
   newParticle._persistentRecords._globalParticleId  = particleId;
-  newParticle._persistentRecords._localParticleId  = localparticleId;
+  newParticle._persistentRecords._localParticleId   = localparticleId;
 
   newParticle._persistentRecords._velocity    = tarch::la::Vector<DIMENSIONS,double>(0.0);
   newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,double>(0.0);
@@ -185,6 +185,7 @@ int dem::Vertex::createSubParticle(
     int particleId,
     int localparticleId)
 {
+
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
@@ -434,6 +435,11 @@ void dem::Vertex::releaseParticle(int particleNumber) {
 
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticles() ).begin()+particleNumber );
 }
+
+void dem::Vertex::releaseCoarseParticle(int particleNumber) {
+  ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).begin()+particleNumber );
+}
+
 
 double* dem::Vertex::getXCoordinates( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);

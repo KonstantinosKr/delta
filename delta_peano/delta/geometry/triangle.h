@@ -71,6 +71,13 @@ namespace delta {
 
       void meshDenser(
           int meshRefinement,
+          double gridH,
+          std::vector<iREAL>&  xCoordinates,
+          std::vector<iREAL>&  yCoordinates,
+          std::vector<iREAL>&  zCoordinates);
+
+      void meshDenser(
+          int meshRefinement,
           std::vector<iREAL>&  xCoordinates,
           std::vector<iREAL>&  yCoordinates,
           std::vector<iREAL>&  zCoordinates);
@@ -92,6 +99,11 @@ namespace delta {
           std::vector<std::vector<iREAL>>&  yCoordinatesMultiLevel,
           std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel,
           std::vector<std::array<iREAL, 3>>& centroid);
+
+      double getTriangleLength(
+          iREAL A[3],
+          iREAL B[3],
+          iREAL C[3]);
 
       void getTrianglesInBoundingBox(
           std::array<iREAL, 3> minpoint,

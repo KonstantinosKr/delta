@@ -180,10 +180,16 @@ class dem::mappings::CreateGrid {
     static std::vector<std::array<double, 3>> _coarseLinearVelocityArray;
     static std::vector<std::array<double, 3>> _coarseAngularVelocityArray;
     static std::vector<std::string> _coarseComponentArray;
+    static std::vector<int> _coarseParticleID;
 
     static std::vector<std::vector<double>> _xCoordinatesArray;
     static std::vector<std::vector<double>> _yCoordinatesArray;
     static std::vector<std::vector<double>> _zCoordinatesArray;
+
+    static std::vector<std::vector<double>> _centreOfMass;
+    static std::vector<std::vector<double>> _inertia;
+    static std::vector<std::vector<double>> _inverse;
+    static std::vector<double>              _mass;
 
     static bool _deployInsitu;
 
@@ -280,15 +286,10 @@ class dem::mappings::CreateGrid {
         double centreAsArray[3],
         double cellSize);
 
-    void decomposeMeshIntoParticles(
-        dem::Vertex&  vertex,
+    int decomposeMeshIntoParticles(
         std::vector<double> xCoordinates,
         std::vector<double> yCoordinates,
-        std::vector<double> zCoordinates,
-        double eps,
-        delta::geometry::material::MaterialType material,
-        bool friction,
-        bool isObstacle);
+        std::vector<double> zCoordinates);
 
 
   public:

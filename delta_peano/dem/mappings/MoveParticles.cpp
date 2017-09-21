@@ -55,7 +55,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
 
     if(particle.getIsObstacle()) continue;
 
-    particle._persistentRecords._velocity(1) += timeStepSize*(1*-9.8);
+    particle._persistentRecords._velocity(1) += timeStepSize*(dem::mappings::Collision::gravity*-9.8); //pass as gravity gxgygz vector
 
     particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
@@ -77,7 +77,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     double* refy = fineGridVertex.getYRefCoordinates(i);
     double* refz = fineGridVertex.getZRefCoordinates(i);
 
-    //#pragma simd
+    //#pragma simd - vectorizes
     for(int j=0; j<particle.getNumberOfTriangles()*DIMENSIONS; j++)
     {
       delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],

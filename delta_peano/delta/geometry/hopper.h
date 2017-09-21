@@ -64,6 +64,7 @@ namespace delta {
             iREAL  height,
             iREAL  hatch,
             int    meshRefinement,
+            double gridH,
             std::vector<iREAL>&  xCoordinates,
             std::vector<iREAL>&  yCoordinates,
             std::vector<iREAL>&  zCoordinates);
