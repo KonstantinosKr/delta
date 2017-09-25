@@ -41,56 +41,56 @@ namespace delta {
       iREAL   yCoordinatesOfPointsOfGeometryA,
       iREAL   zCoordinatesOfPointsOfGeometryA,
       iREAL   diameterA,
-	  iREAL   epsilonA,
-	  bool     frictionA,
-	  int 	   particleA,
+      iREAL   epsilonA,
+      bool    frictionA,
+      int 	   particleA,
 
       iREAL   xCoordinatesOfPointsOfGeometryB,
       iREAL   yCoordinatesOfPointsOfGeometryB,
       iREAL   zCoordinatesOfPointsOfGeometryB,
       iREAL   diameterB,
       iREAL   epsilonB,
-	  bool     frictionB,
-	  int 	   particleB,
-	  bool&    penetration
-    );
+      bool    frictionB,
+      int 	   particleB,
+      bool&   penetration
+      );
 
     std::vector<contactpoint> sphereWithBarrierAB(
       iREAL   xCoordinatesOfPointsOfGeometryA,
       iREAL   yCoordinatesOfPointsOfGeometryA,
       iREAL   zCoordinatesOfPointsOfGeometryA,
       iREAL   diameterA,
-	  iREAL   epsilonA,
-	  bool     frictionA,
-	  int	   particleA,
+      iREAL   epsilonA,
+      bool    frictionA,
+      int	   particleA,
 
       iREAL   *xCoordinatesOfPointsOfGeometryB,
       iREAL   *yCoordinatesOfPointsOfGeometryB,
       iREAL   *zCoordinatesOfPointsOfGeometryB,
-	  int   	numberOfTrianglesOfGeometryB,
-      iREAL   epsilonB,
-	  bool 	   frictionB,
-	  int 	   particleB,
-	  bool&    penetration
-    );
+      int   	  numberOfTrianglesOfGeometryB,
+      iREAL    epsilonB,
+      bool 	  frictionB,
+      int 	    particleB,
+      bool&    penetration
+      );
 
     std::vector<contactpoint> sphereWithBarrierBA(
           iREAL   xCoordinatesOfPointsOfGeometryA,
           iREAL   yCoordinatesOfPointsOfGeometryA,
           iREAL   zCoordinatesOfPointsOfGeometryA,
           iREAL   diameterA,
-    	  iREAL   epsilonA,
-		  bool     frictionA,
-		  int 	   particleA,
+          iREAL   epsilonA,
+          bool    frictionA,
+          int 	   particleA,
 
           iREAL   *xCoordinatesOfPointsOfGeometryB,
           iREAL   *yCoordinatesOfPointsOfGeometryB,
           iREAL   *zCoordinatesOfPointsOfGeometryB,
-    	  int      numberOfTrianglesOfGeometryB,
-          iREAL   epsilonB,
-		  bool     frictionB,
-		  int 	   particleB,
-		  bool&    penetration
+          int      numberOfTrianglesOfGeometryB,
+          iREAL    epsilonB,
+          bool     frictionB,
+          int 	    particleB,
+          bool&    penetration
         );
 
     bool isSphereOverlayInContact(

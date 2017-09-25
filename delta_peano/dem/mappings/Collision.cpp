@@ -184,11 +184,6 @@ void dem::mappings::Collision::addCollision(
     //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
 	}
 
-//determine min distance
-/*	for(int i=0; i<newContactPoints.size(); i++) {
-
-	}*/
-
 	/*
 	 * Problem here was:
 	 * Although all normals were pointing to opposite direction for each particle due to how we loop particles
@@ -213,6 +208,55 @@ void dem::mappings::Collision::addCollision(
 }
 
 double                dem::mappings::Collision::gravity = 0.0;
+
+void dem::mappings::Collision::triggerParticleTooClose(
+    const records::Particle& particleA,
+    const records::Particle& particleB)
+{
+  iREAL dBA[3];
+  dBA[0] = particleB.getCentre(0) - particleA.getCentre(0);
+  dBA[1] = particleB.getCentre(1) - particleA.getCentre(1);
+  dBA[2] = particleB.getCentre(2) - particleA.getCentre(2);
+
+  iREAL vA[3], vB[3];
+  vA[0] = particleA.getVelocity(0);
+  vA[1] = particleA.getVelocity(1);
+  vA[2] = particleA.getVelocity(2);
+
+  vB[0] = particleB.getVelocity(0);
+  vB[1] = particleB.getVelocity(1);
+  vB[2] = particleB.getVelocity(2);
+
+  iREAL d = sqrt((dBA[0] * dBA[0]) + (dBA[1] * dBA[1]) + (dBA[2] * dBA[2]));
+
+  iREAL vAB = ((vB[0] * dBA[0]) + (vB[1] * dBA[1]) + (vB[2] * dBA[2])) - ((vA[0] * dBA[0]) + (vA[1] * dBA[1]) + (vA[2] * dBA[2]));
+
+  //particles approach
+  if(-vAB > _state.getMaximumVelocity())
+  {
+    printf("approach rvelocity: %f\n", -vAB);
+    _state.setMaximumVelocity(-vAB);
+  }
+
+  //particles separate
+  if (vAB > 0) {
+    printf("separation rvelocity: %f\n", vAB);
+    return;
+  }
+
+  double rA = particleA._persistentRecords._diameter/2.0;
+  double rB = particleB._persistentRecords._diameter/2.0;
+
+  iREAL mind = (d - rA - rB);
+  printf("min distance: %f | dt: %f\n", mind, _state.getTimeStepSize());
+
+  iREAL dt = _state.getTimeStepSize();
+  if(vAB >= (d - rA - rB)/dt)
+  {
+    printf("TRIGGERED STEP HALFING\n");
+    _state.informStateThatTwoParticlesAreClose();
+  }
+}
 
 void dem::mappings::Collision::touchVertexFirstTime(
 		dem::Vertex&                                 fineGridVertex,
@@ -239,7 +283,9 @@ void dem::mappings::Collision::touchVertexFirstTime(
     double torque[3] = {0.0,0.0,0.0};
 
 		//collisions with partner particles
-		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin(); p != _activeCollisions[currentParticle.getGlobalParticleId()].end(); p++)
+		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin();
+		                                      p != _activeCollisions[currentParticle.getGlobalParticleId()].end();
+		                                      p++)
 		{
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
@@ -308,17 +354,22 @@ void dem::mappings::Collision::touchVertexFirstTime(
         continue;
 
       if(_enableOverlapCheck)
-        if (delta::collision::isSphereOverlayInContact(
-            fineGridVertex.getParticle(i).getCentre(0),
-            fineGridVertex.getParticle(i).getCentre(1),
-            fineGridVertex.getParticle(i).getCentre(2),
-            fineGridVertex.getParticle(i).getInfluenceRadius(),
+      {
+        bool overlap = delta::collision::isSphereOverlayInContact(
+          fineGridVertex.getParticle(i).getCentre(0),
+          fineGridVertex.getParticle(i).getCentre(1),
+          fineGridVertex.getParticle(i).getCentre(2),
+          fineGridVertex.getParticle(i).getInfluenceRadius(),
 
-            fineGridVertex.getParticle(j).getCentre(0),
-            fineGridVertex.getParticle(j).getCentre(1),
-            fineGridVertex.getParticle(j).getCentre(2),
-            fineGridVertex.getParticle(j).getInfluenceRadius()))
-          continue;
+          fineGridVertex.getParticle(j).getCentre(0),
+          fineGridVertex.getParticle(j).getCentre(1),
+          fineGridVertex.getParticle(j).getCentre(2),
+          fineGridVertex.getParticle(j).getInfluenceRadius());
+
+        if(!overlap) continue;
+      }
+
+      triggerParticleTooClose(fineGridVertex.getParticle(i), fineGridVertex.getParticle(j));
 
       std::vector<delta::collision::contactpoint> newContactPoints;
 
@@ -563,20 +614,23 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			   (vertexA.getParticle(i).getGlobalParticleId() == vertexB.getParticle(j).getGlobalParticleId()))
 			  continue;
 
-			//printf("%i %i\n", vertexA.getParticle(i).getGlobalParticleId(), vertexB.getParticle(j).getGlobalParticleId());
+      if(_enableOverlapCheck)
+      {
+        bool overlap = delta::collision::isSphereOverlayInContact(
+            vertexA.getParticle(i).getCentre(0),
+            vertexA.getParticle(i).getCentre(1),
+            vertexA.getParticle(i).getCentre(2),
+            vertexA.getParticle(i).getInfluenceRadius(),
 
-			if(_enableOverlapCheck)
-				if(!delta::collision::isSphereOverlayInContact(
-						vertexA.getParticle(i).getCentre(0),
-						vertexA.getParticle(i).getCentre(1),
-						vertexA.getParticle(i).getCentre(2),
-						vertexA.getParticle(i).getInfluenceRadius(),
+            vertexB.getParticle(j).getCentre(0),
+            vertexB.getParticle(j).getCentre(1),
+            vertexB.getParticle(j).getCentre(2),
+            vertexB.getParticle(j).getInfluenceRadius());
 
-						vertexB.getParticle(j).getCentre(0),
-						vertexB.getParticle(j).getCentre(1),
-						vertexB.getParticle(j).getCentre(2),
-						vertexB.getParticle(j).getInfluenceRadius()))
-				  continue;
+        if(!overlap) continue;
+      }
+
+      triggerParticleTooClose(vertexA.getParticle(i), vertexB.getParticle(j));
 
 			std::vector<delta::collision::contactpoint> newContactPoints;
 			switch (_collisionModel)

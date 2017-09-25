@@ -102,8 +102,9 @@ void dem::State::informStateThatTwoParticlesAreClose() {
 }
 
 void dem::State::finishedTimeStep(double initStep) {
-  const double increaseFactor = 1.1;
   _stateData.setCurrentTime(_stateData.getCurrentTime() + _stateData.getTimeStepSize());
+
+  const double increaseFactor = 1.1;
   const double maxdt = _stateData.getMaxMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocity());
 
   if (_stateData.getTwoParticlesAreClose()) {
@@ -135,6 +136,17 @@ void dem::State::incNumberOfParticles(int delta) {
 void dem::State::incNumberOfObstacles(int delta) {
 	_stateData.setNumberOfObstacles(_stateData.getNumberOfObstacles()+delta);
 }
+
+void dem::State::setMaximumVelocity(double v)
+{
+  _stateData.setMaxVelocity(v);
+}
+
+double dem::State::getMaximumVelocity()
+{
+  return _stateData.getMaxVelocity();
+}
+
 
 int dem::State::getNumberOfParticles() const {
 	return _stateData.getNumberOfParticles();

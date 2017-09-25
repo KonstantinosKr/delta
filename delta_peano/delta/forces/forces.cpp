@@ -379,10 +379,10 @@ void delta::forces::getContactsForces(
     if(isSphere)
     {
       //relative angular velocities
-      vij[0] = angularA[0] - angularB[0];
+      /*vij[0] = angularA[0] - angularB[0];
       vij[1] = angularA[1] - angularB[1];
       vij[2] = angularA[2] - angularB[2];
-
+       */
       iREAL w = std::abs(sqrt(vij[0]*vij[0]+vij[1]*vij[1]+vij[2]*vij[2]));
       //printf("W:%f | wij: %f %f %f\n", w, vij[0], vij[1], vij[2]);
 

@@ -200,6 +200,10 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       }
     }
 
+    repository.iterate();
+
+    elapsed = repository.getState().getTime() - timestamp;
+
     logInfo("runAsMaster(...)", "i=" << i
       << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
       << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
@@ -208,6 +212,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", v=" << repository.getState().getNumberOfInnerVertices()
       << ", t=" << repository.getState().getTime()
       << ", dt=" << repository.getState().getTimeStepSize()
+      << ", mvij=" << repository.getState().getMaximumVelocity()
       << ", plot=" << plotThisTraversal);
     logInfo("runAsMaster(...)",
           "h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
@@ -216,13 +221,9 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
            "h_min(real)=" << repository.getState().getMinimumMeshWidth()
       << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
 
-    elapsed = repository.getState().getTime() - timestamp;
-
-    //repository.getState().finishedTimeStep(initialStepSize);
+    repository.getState().finishedTimeStep(initialStepSize);
 
     repository.getState().clearAccumulatedData();
-
-    repository.iterate();
   }
 
   repository.logIterationStatistics(false);

@@ -97,6 +97,9 @@ class dem::State: public peano::grid::State< dem::records::State > {
     void informStateThatTwoParticlesAreClose();
     void finishedTimeStep(double initStep);
 
+    void setMaximumVelocity(double v);
+    double getMaximumVelocity();
+
     void incNumberOfParticles(int delta);
     int getNumberOfParticles() const;
 

@@ -63,6 +63,9 @@ class dem::mappings::Collision {
       bool sphere
     );
   
+    void triggerParticleTooClose(
+        const records::Particle& particleA,
+        const records::Particle& particleB);
   
   static tarch::multicore::BooleanSemaphore        _mySemaphore;
 
