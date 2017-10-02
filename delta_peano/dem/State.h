@@ -94,7 +94,7 @@ class dem::State: public peano::grid::State< dem::records::State > {
     double getTime() const;
     void setInitialTimeStepSize(double value);
 
-    void informStateThatTwoParticlesAreClose();
+    void informStateThatTwoParticlesAreClose(double decrementFactor);
     void finishedTimeStep(double initStep);
 
     void setMaximumVelocity(double v);

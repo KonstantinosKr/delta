@@ -5,7 +5,7 @@ dem::records::Particle::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::Particle::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+dem::records::Particle::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
 _vertices(vertices),
 _orientation(orientation),
 _inertia(inertia),
@@ -17,7 +17,7 @@ _velocity(velocity),
 _angular(angular),
 _referentialAngular(referentialAngular),
 _diameter(diameter),
-_influenceRadius(influenceRadius),
+_haloDiameter(haloDiameter),
 _epsilon(epsilon),
 _mass(mass),
 _hMin(hMin),
@@ -36,13 +36,13 @@ dem::records::Particle::Particle() {
 
 
 dem::records::Particle::Particle(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._influenceRadius, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
+_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._haloDiameter, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
    
 }
 
 
-dem::records::Particle::Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
-_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, influenceRadius, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
+dem::records::Particle::Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, haloDiameter, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
    
 }
 
@@ -121,7 +121,7 @@ void dem::records::Particle::toString (std::ostream& out) const {
    out << ",";
    out << "diameter:" << getDiameter();
    out << ",";
-   out << "influenceRadius:" << getInfluenceRadius();
+   out << "haloDiameter:" << getHaloDiameter();
    out << ",";
    out << "epsilon:" << getEpsilon();
    out << ",";
@@ -161,7 +161,7 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
       getAngular(),
       getReferentialAngular(),
       getDiameter(),
-      getInfluenceRadius(),
+      getHaloDiameter(),
       getEpsilon(),
       getMass(),
       getHMin(),
@@ -264,7 +264,7 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
             , MPI_DOUBLE		 //angular
             , MPI_DOUBLE		 //referentialAngular
             , MPI_DOUBLE		 //diameter
-            , MPI_DOUBLE		 //influenceRadius
+            , MPI_DOUBLE		 //haloDiameter
             , MPI_DOUBLE		 //epsilon
             , MPI_DOUBLE		 //mass
             , MPI_DOUBLE		 //hMin
@@ -292,7 +292,7 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
             , DIMENSIONS		 //angular
             , DIMENSIONS		 //referentialAngular
             , 1		 //diameter
-            , 1		 //influenceRadius
+            , 1		 //haloDiameter
             , 1		 //epsilon
             , 1		 //mass
             , 1		 //hMin
@@ -371,9 +371,9 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._diameter))), 		&disp[10] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._influenceRadius))), 		&disp[11] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._haloDiameter))), 		&disp[11] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._influenceRadius))), 		&disp[11] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._haloDiameter))), 		&disp[11] );
          #endif
          #ifdef MPI2
          MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._epsilon))), 		&disp[12] );
@@ -688,7 +688,7 @@ dem::records::ParticlePacked::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::ParticlePacked::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+dem::records::ParticlePacked::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
 _vertices(vertices),
 _orientation(orientation),
 _inertia(inertia),
@@ -700,7 +700,7 @@ _velocity(velocity),
 _angular(angular),
 _referentialAngular(referentialAngular),
 _diameter(diameter),
-_influenceRadius(influenceRadius),
+_haloDiameter(haloDiameter),
 _epsilon(epsilon),
 _mass(mass),
 _hMin(hMin),
@@ -719,13 +719,13 @@ dem::records::ParticlePacked::ParticlePacked() {
 
 
 dem::records::ParticlePacked::ParticlePacked(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._influenceRadius, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
+_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._haloDiameter, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
    
 }
 
 
-dem::records::ParticlePacked::ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
-_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, influenceRadius, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
+dem::records::ParticlePacked::ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, haloDiameter, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
    
 }
 
@@ -804,7 +804,7 @@ void dem::records::ParticlePacked::toString (std::ostream& out) const {
    out << ",";
    out << "diameter:" << getDiameter();
    out << ",";
-   out << "influenceRadius:" << getInfluenceRadius();
+   out << "haloDiameter:" << getHaloDiameter();
    out << ",";
    out << "epsilon:" << getEpsilon();
    out << ",";
@@ -844,7 +844,7 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
       getAngular(),
       getReferentialAngular(),
       getDiameter(),
-      getInfluenceRadius(),
+      getHaloDiameter(),
       getEpsilon(),
       getMass(),
       getHMin(),
@@ -947,7 +947,7 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
             , MPI_DOUBLE		 //angular
             , MPI_DOUBLE		 //referentialAngular
             , MPI_DOUBLE		 //diameter
-            , MPI_DOUBLE		 //influenceRadius
+            , MPI_DOUBLE		 //haloDiameter
             , MPI_DOUBLE		 //epsilon
             , MPI_DOUBLE		 //mass
             , MPI_DOUBLE		 //hMin
@@ -975,7 +975,7 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
             , DIMENSIONS		 //angular
             , DIMENSIONS		 //referentialAngular
             , 1		 //diameter
-            , 1		 //influenceRadius
+            , 1		 //haloDiameter
             , 1		 //epsilon
             , 1		 //mass
             , 1		 //hMin
@@ -1054,9 +1054,9 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._diameter))), 		&disp[10] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._influenceRadius))), 		&disp[11] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._haloDiameter))), 		&disp[11] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._influenceRadius))), 		&disp[11] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._haloDiameter))), 		&disp[11] );
          #endif
          #ifdef MPI2
          MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._epsilon))), 		&disp[12] );

@@ -1,4 +1,4 @@
-#include <delta/core/sys.h>
+  #include <delta/core/sys.h>
 #include "dem/runners/Runner.h"
 
 #include "dem/repositories/Repository.h"
@@ -139,6 +139,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     dem::mappings::Plot::_maxi = maxRange;
   }
 
+  /*
   //PLOT TIME ZERO
   ////////////////////////////////////////////////////////////////////////////////////////
   if((plot == EveryIteration) ||  (plot == Track) ||
@@ -154,13 +155,30 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     repository.switchToPlotData();
     repository.iterate();
 
+    logInfo("runAsMaster(...)", "i=" << 0
+      << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+      << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
+      << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
+      << ", cnpt=" << repository.getState().getNumberOfContactPoints()
+      << ", v=" << repository.getState().getNumberOfInnerVertices()
+      << ", t=" << repository.getState().getTime()
+      << ", dt=" << repository.getState().getTimeStepSize()
+      << ", mvij=" << repository.getState().getMaximumVelocity()
+      << ", plot=" << 1);
+    logInfo("runAsMaster(...)",
+          "h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
+      <<", h_max(prescribed)=" << repository.getState().getPrescribedMaximumMeshWidth());
+    logInfo("runAsMaster(...)",
+           "h_min(real)=" << repository.getState().getMinimumMeshWidth()
+      << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
+
     elapsed = repository.getState().getTime() - timestamp;
     repository.getState().finishedTimeStep(initialStepSize);
-  }
+  }*/
   ///////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////
 
-  for (int i=1; i<iterations; i++)
+  for (int i=0; i<iterations; i++)
   {
     timestamp = repository.getState().getTime();
     repository.getState().setTimeStep(i);

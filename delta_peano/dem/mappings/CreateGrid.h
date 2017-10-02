@@ -195,11 +195,6 @@ class dem::mappings::CreateGrid {
 
     bool assertCoarse();
     bool assertFine();
-/*
-    void setVScheme(
-        dem::Vertex&  vertex,
-        int particleNumber,
-        VScheme velocity);*/
 
     void deployCoarseEnviroment(
         dem::Vertex& vertex);

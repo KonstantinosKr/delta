@@ -376,7 +376,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 
         _particleDiameter->plotVertex(particleVertexLink[1], particle.getDiameter());
         _particleEpsilon->plotVertex(particleVertexLink[1], particle.getDiameter()+(particle.getEpsilon()*2));
-        _particleInfluence->plotVertex(particleVertexLink[1], particle.getInfluenceRadius()*2);
+        _particleInfluence->plotVertex(particleVertexLink[1], particle.getHaloDiameter());
       } else {
         _velocitiesAndNormals->plotVertex(particleVertexLink[1],0);
         _particleVelocity->plotVertex(particleVertexLink[1],0);

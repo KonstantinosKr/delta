@@ -27,7 +27,7 @@ class dem::records::Particle {
   persistent expose double referentialAngular[DIMENSIONS];
   
   persistent expose double diameter;
-  persistent expose double influenceRadius;
+  persistent expose double haloDiameter;
   persistent expose double epsilon;
   persistent expose double mass;
   persistent expose double hMin;

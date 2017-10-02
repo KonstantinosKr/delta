@@ -6,7 +6,7 @@
    }
    
    
-   dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
    _numberOfContactPoints(numberOfContactPoints),
    _numberOfParticleReassignments(numberOfParticleReassignments),
    _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -41,7 +41,7 @@
    }
    
    
-   dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
    _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, timeStep, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, maxVelocity, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
       
    }
@@ -155,7 +155,7 @@
                , MPI_DOUBLE		 //timeStepSize
                , MPI_INT		 //timeStep
                , MPI_DOUBLE		 //currentTime
-               , MPI_CXX_BOOL		 //twoParticlesAreClose
+               , MPI_DOUBLE		 //twoParticlesAreClose
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
                , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -357,7 +357,7 @@
                , MPI_DOUBLE		 //timeStepSize
                , MPI_INT		 //timeStep
                , MPI_DOUBLE		 //currentTime
-               , MPI_CXX_BOOL		 //twoParticlesAreClose
+               , MPI_DOUBLE		 //twoParticlesAreClose
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
                , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -792,7 +792,7 @@
    }
    
    
-   dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
    _numberOfContactPoints(numberOfContactPoints),
    _numberOfParticleReassignments(numberOfParticleReassignments),
    _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -845,7 +845,7 @@
    }
    
    
-   dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+   dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
    _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, timeStep, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, maxVelocity, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
       if ((6 >= (8 * sizeof(short int)))) {
          std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -965,7 +965,7 @@
                , MPI_DOUBLE		 //timeStepSize
                , MPI_INT		 //timeStep
                , MPI_DOUBLE		 //currentTime
-               , MPI_CXX_BOOL		 //twoParticlesAreClose
+               , MPI_DOUBLE		 //twoParticlesAreClose
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
                , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -1132,7 +1132,7 @@
                , MPI_DOUBLE		 //timeStepSize
                , MPI_INT		 //timeStep
                , MPI_DOUBLE		 //currentTime
-               , MPI_CXX_BOOL		 //twoParticlesAreClose
+               , MPI_DOUBLE		 //twoParticlesAreClose
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
                , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -1527,7 +1527,7 @@
       }
       
       
-      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -1578,7 +1578,7 @@
       }
       
       
-      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, timeStep, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, maxVelocity, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
          
       }
@@ -1748,7 +1748,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -2062,7 +2062,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -2609,7 +2609,7 @@
       }
       
       
-      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -2678,7 +2678,7 @@
       }
       
       
-      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, timeStep, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, maxVelocity, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
          if ((9 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -2854,7 +2854,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -3112,7 +3112,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -3599,7 +3599,7 @@
       }
       
       
-      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -3647,7 +3647,7 @@
       }
       
       
-      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
       _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, timeStep, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, maxVelocity, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
          
       }
@@ -3808,7 +3808,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -4101,7 +4101,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -4627,7 +4627,7 @@
       }
       
       
-      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -4693,7 +4693,7 @@
       }
       
       
-      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
+      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted):
       _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, timeStep, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, maxVelocity, minMeshWidth, maxMeshWidth, numberOfInnerVertices, numberOfBoundaryVertices, numberOfOuterVertices, numberOfInnerCells, numberOfOuterCells, numberOfInnerLeafVertices, numberOfBoundaryLeafVertices, numberOfOuterLeafVertices, numberOfInnerLeafCells, numberOfOuterLeafCells, maxLevel, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted) {
          if ((6 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -4860,7 +4860,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -5118,7 +5118,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -5605,7 +5605,7 @@
       }
       
       
-      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::State::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -5643,7 +5643,7 @@
       }
       
       
-      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::State::State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, timeStep, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, maxVelocity, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
          
       }
@@ -5766,7 +5766,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -5989,7 +5989,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -6445,7 +6445,7 @@
       }
       
       
-      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::StatePacked::PersistentRecords::PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _numberOfContactPoints(numberOfContactPoints),
       _numberOfParticleReassignments(numberOfParticleReassignments),
       _numberOfTriangleComparisons(numberOfTriangleComparisons),
@@ -6501,7 +6501,7 @@
       }
       
       
-      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
+      dem::records::StatePacked::StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork):
       _persistentRecords(numberOfContactPoints, numberOfParticleReassignments, numberOfTriangleComparisons, numberOfParticleComparisons, timeStepSize, timeStep, currentTime, twoParticlesAreClose, numberOfParticles, numberOfObstacles, prescribedMinimumMeshWidth, prescribedMaximumMeshWidth, maxVelocity, hasRefined, hasTriggeredRefinementForNextIteration, hasErased, hasTriggeredEraseForNextIteration, hasChangedVertexOrCellState, hasModifiedGridInPreviousIteration, isTraversalInverted, reduceStateAndCell, couldNotEraseDueToDecompositionFlag, subWorkerIsInvolvedInJoinOrFork) {
          if ((9 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -6630,7 +6630,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth
@@ -6797,7 +6797,7 @@
                   , MPI_DOUBLE		 //timeStepSize
                   , MPI_INT		 //timeStep
                   , MPI_DOUBLE		 //currentTime
-                  , MPI_CXX_BOOL		 //twoParticlesAreClose
+                  , MPI_DOUBLE		 //twoParticlesAreClose
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
                   , MPI_DOUBLE		 //prescribedMinimumMeshWidth

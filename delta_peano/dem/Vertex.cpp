@@ -129,7 +129,7 @@ int dem::Vertex::createParticle(
 
   newParticle._persistentRecords._mass            = mass;
   newParticle._persistentRecords._friction			  = friction;
-  newParticle._persistentRecords._influenceRadius = (newParticle.getDiameter()+epsilon) * 1.1;
+  newParticle._persistentRecords._haloDiameter = (newParticle.getDiameter()+epsilon*2) * 1.1;
   newParticle._persistentRecords._epsilon			    = epsilon;
   newParticle._persistentRecords._hMin 				    = hMin;
 
@@ -236,7 +236,7 @@ int dem::Vertex::createSubParticle(
 
   newParticle._persistentRecords._mass            = mass;
   newParticle._persistentRecords._friction        = friction;
-  newParticle._persistentRecords._influenceRadius = (newParticle._persistentRecords._diameter+epsilon) * 1.1;
+  newParticle._persistentRecords._haloDiameter = (newParticle._persistentRecords._diameter+epsilon*2) * 1.1;
   newParticle._persistentRecords._epsilon         = epsilon;
   newParticle._persistentRecords._hMin            = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);;
 
@@ -349,7 +349,7 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._mass				      = mass;
   newParticle._persistentRecords._friction			    = friction;
   newParticle._persistentRecords._diameter			    = radius*2;
-  newParticle._persistentRecords._influenceRadius 	= (radius*2+epsilon) * 1.1;
+  newParticle._persistentRecords._haloDiameter 	= (radius*2+epsilon*2) * 1.1;
   newParticle._persistentRecords._epsilon			      = epsilon;
   newParticle._persistentRecords._hMin 				      = 0;
 

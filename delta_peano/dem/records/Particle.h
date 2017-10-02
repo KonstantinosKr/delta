@@ -32,7 +32,7 @@ namespace dem {
  *
  * 		   build date: 09-02-2014 14:40
  *
- * @date   08/09/2017 14:33
+ * @date   30/09/2017 15:25
  */
 class dem::records::Particle { 
    
@@ -92,7 +92,7 @@ class dem::records::Particle {
          tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
          #endif
          double _diameter;
-         double _influenceRadius;
+         double _haloDiameter;
          double _epsilon;
          double _mass;
          double _hMin;
@@ -110,7 +110,7 @@ class dem::records::Particle {
          /**
           * Generated
           */
-         PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction);
+         PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction);
          
          
          /**
@@ -713,22 +713,22 @@ class dem::records::Particle {
          
          
          
-         inline double getInfluenceRadius() const 
+         inline double getHaloDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            return _influenceRadius;
+            return _haloDiameter;
          }
          
          
          
-         inline void setInfluenceRadius(const double& influenceRadius) 
+         inline void setHaloDiameter(const double& haloDiameter) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            _influenceRadius = influenceRadius;
+            _haloDiameter = haloDiameter;
          }
          
          
@@ -935,7 +935,7 @@ class dem::records::Particle {
          /**
           * Generated
           */
-         Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction);
+         Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction);
          
          /**
           * Generated
@@ -1803,22 +1803,22 @@ class dem::records::Particle {
          
          
          
-         inline double getInfluenceRadius() const 
+         inline double getHaloDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            return _persistentRecords._influenceRadius;
+            return _persistentRecords._haloDiameter;
          }
          
          
          
-         inline void setInfluenceRadius(const double& influenceRadius) 
+         inline void setHaloDiameter(const double& haloDiameter) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            _persistentRecords._influenceRadius = influenceRadius;
+            _persistentRecords._haloDiameter = haloDiameter;
          }
          
          
@@ -2075,7 +2075,7 @@ class dem::records::Particle {
  *
  * 		   build date: 09-02-2014 14:40
  *
- * @date   08/09/2017 14:33
+ * @date   30/09/2017 15:25
  */
 class dem::records::ParticlePacked { 
    
@@ -2093,7 +2093,7 @@ class dem::records::ParticlePacked {
          tarch::la::Vector<DIMENSIONS,double> _angular;
          tarch::la::Vector<DIMENSIONS,double> _referentialAngular;
          double _diameter;
-         double _influenceRadius;
+         double _haloDiameter;
          double _epsilon;
          double _mass;
          double _hMin;
@@ -2111,7 +2111,7 @@ class dem::records::ParticlePacked {
          /**
           * Generated
           */
-         PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction);
+         PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction);
          
          
          /**
@@ -2714,22 +2714,22 @@ class dem::records::ParticlePacked {
          
          
          
-         inline double getInfluenceRadius() const 
+         inline double getHaloDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            return _influenceRadius;
+            return _haloDiameter;
          }
          
          
          
-         inline void setInfluenceRadius(const double& influenceRadius) 
+         inline void setHaloDiameter(const double& haloDiameter) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            _influenceRadius = influenceRadius;
+            _haloDiameter = haloDiameter;
          }
          
          
@@ -2932,7 +2932,7 @@ class dem::records::ParticlePacked {
          /**
           * Generated
           */
-         ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& influenceRadius, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction);
+         ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction);
          
          /**
           * Generated
@@ -3800,22 +3800,22 @@ class dem::records::ParticlePacked {
          
          
          
-         inline double getInfluenceRadius() const 
+         inline double getHaloDiameter() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            return _persistentRecords._influenceRadius;
+            return _persistentRecords._haloDiameter;
          }
          
          
          
-         inline void setInfluenceRadius(const double& influenceRadius) 
+         inline void setHaloDiameter(const double& haloDiameter) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-            _persistentRecords._influenceRadius = influenceRadius;
+            _persistentRecords._haloDiameter = haloDiameter;
          }
          
          

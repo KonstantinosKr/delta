@@ -57,6 +57,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
 
     particle._persistentRecords._velocity(1) += timeStepSize*(dem::mappings::Collision::gravity*-9.8); //pass as gravity gxgygz vector
 
+
     particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centre(2) += timeStepSize*particle._persistentRecords._velocity(2);

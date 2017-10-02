@@ -397,7 +397,6 @@ int main(int argc, char** argv)
 
   if (collisionModel=="sphere" || collisionModel=="sphere-sphere") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::Sphere;
-    //dem::mappings::Collision::_enableOverlapCheck = true;
     if(collisionModel=="sphere-sphere") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
   else if((collisionModel=="bf") || (collisionModel=="sphere-bf"))

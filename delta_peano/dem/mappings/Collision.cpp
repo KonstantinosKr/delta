@@ -207,16 +207,38 @@ void dem::mappings::Collision::addCollision(
 	_state.incNumberOfContactPoints(newContactPoints.size());
 }
 
-double                dem::mappings::Collision::gravity = 0.0;
+double  dem::mappings::Collision::gravity = 0.0;
 
 void dem::mappings::Collision::triggerParticleTooClose(
     const records::Particle& particleA,
     const records::Particle& particleB)
 {
-  iREAL dBA[3];
-  dBA[0] = particleB.getCentre(0) - particleA.getCentre(0);
-  dBA[1] = particleB.getCentre(1) - particleA.getCentre(1);
-  dBA[2] = particleB.getCentre(2) - particleA.getCentre(2);
+
+  iREAL dt = _state.getTimeStepSize();
+  iREAL pdt = dt + dt * 1.1;
+
+  iREAL cA[3], cB[3];
+
+  cA[0] = particleA.getCentre(0) + pdt*particleA.getVelocity(0);
+  cA[1] = particleA.getCentre(1) + pdt*particleA.getVelocity(1);
+  cA[2] = particleA.getCentre(2) + pdt*particleA.getVelocity(2);
+
+  cB[0] = particleB.getCentre(0) + pdt*particleB.getVelocity(0);
+  cB[1] = particleB.getCentre(1) + pdt*particleB.getVelocity(1);
+  cB[2] = particleB.getCentre(2) + pdt*particleB.getVelocity(2);
+
+  iREAL dAB[3], pdAB[3];
+
+  pdAB[0] = cB[0] - cA[0];
+  pdAB[1] = cB[1] - cA[1];
+  pdAB[2] = cB[2] - cA[2];
+
+  dAB[0] = particleB.getCentre(0) - particleA.getCentre(0);
+  dAB[1] = particleB.getCentre(1) - particleA.getCentre(1);
+  dAB[2] = particleB.getCentre(2) - particleA.getCentre(2);
+
+  //printf("position A: %f %f %f\n", particleA.getCentre(0), particleA.getCentre(1), particleA.getCentre(2));
+  //printf("position B: %f %f %f\n", particleB.getCentre(0), particleB.getCentre(1), particleB.getCentre(2));
 
   iREAL vA[3], vB[3];
   vA[0] = particleA.getVelocity(0);
@@ -227,35 +249,95 @@ void dem::mappings::Collision::triggerParticleTooClose(
   vB[1] = particleB.getVelocity(1);
   vB[2] = particleB.getVelocity(2);
 
-  iREAL d = sqrt((dBA[0] * dBA[0]) + (dBA[1] * dBA[1]) + (dBA[2] * dBA[2]));
+  iREAL d = sqrt((dAB[0] * dAB[0]) + (dAB[1] * dAB[1]) + (dAB[2] * dAB[2]));
 
-  iREAL vAB = ((vB[0] * dBA[0]) + (vB[1] * dBA[1]) + (vB[2] * dBA[2])) - ((vA[0] * dBA[0]) + (vA[1] * dBA[1]) + (vA[2] * dBA[2]));
+  iREAL pd = sqrt((pdAB[0] * pdAB[0]) + (pdAB[1] * pdAB[1]) + (pdAB[2] * pdAB[2]));
 
-  //particles approach
-  if(-vAB > _state.getMaximumVelocity())
-  {
-    printf("approach rvelocity: %f\n", -vAB);
-    _state.setMaximumVelocity(-vAB);
-  }
+  //velocity of B relative to A
+  iREAL vBA = ((vB[0] * dAB[0]) + (vB[1] * dAB[1]) + (vB[2] * dAB[2])) -
+              ((vA[0] * dAB[0]) + (vA[1] * dAB[1]) + (vA[2] * dAB[2]));
+
+  iREAL pvBA = ((vB[0] * pdAB[0]) + (vB[1] * pdAB[1]) + (vB[2] * pdAB[2])) -
+               ((vA[0] * pdAB[0]) + (vA[1] * pdAB[1]) + (vA[2] * pdAB[2]));
 
   //particles separate
-  if (vAB > 0) {
-    printf("separation rvelocity: %f\n", vAB);
+  if (vBA > 0 && pvBA > 0) {
+    //printf("separation: %f\n", vBA);
     return;
   }
 
-  double rA = particleA._persistentRecords._diameter/2.0;
-  double rB = particleB._persistentRecords._diameter/2.0;
+  //particles approach
+  if(-pvBA > _state.getMaximumVelocity())
+  {
+    //printf("approach: %f\n", vBA);
+    _state.setMaximumVelocity(vBA);
+  }
+
+  double rA = particleA.getHaloDiameter();
+  double rB = particleB.getHaloDiameter();
 
   iREAL mind = (d - rA - rB);
-  printf("min distance: %f | dt: %f\n", mind, _state.getTimeStepSize());
+  iREAL pmind = (pd - rA - rB);
 
-  iREAL dt = _state.getTimeStepSize();
-  if(vAB >= (d - rA - rB)/dt)
+  iREAL distancePerStep = mind/dt;
+  iREAL pdistancePerStep = pmind/pdt;
+  pdt = dt * 1.1 * 1.1;
+
+  if(-pvBA >= pdistancePerStep || pvBA > 0)
   {
-    printf("TRIGGERED STEP HALFING\n");
-    _state.informStateThatTwoParticlesAreClose();
+
+    double rrA = particleA.getDiameter()/2.0;
+    double rrB = particleB.getDiameter()/2.0;
+
+    double epsilonA = particleA.getEpsilon();
+    double epsilonB = particleB.getEpsilon();
+
+    iREAL localMaxdt = (d -rrA -rrB -epsilonA -epsilonB) / 2*vBA;
+
+    /*
+    pdt = dt/4.0; - required for predicted step reduction
+    iREAL displacementA[3], displacementB[3];
+
+    //Original position
+    iREAL OdiplacementA[3], OdiplacementB[3];
+    OdiplacementA[0] = particleA.getCentre(0) + dt*particleA.getVelocity(0);
+    OdiplacementA[1] = particleA.getCentre(1) + dt*particleA.getVelocity(1);
+    OdiplacementA[2] = particleA.getCentre(2) + dt*particleA.getVelocity(2);
+
+    OdiplacementB[0] = particleB.getCentre(0) + dt*particleB.getVelocity(0);
+    OdiplacementB[1] = particleB.getCentre(1) + dt*particleB.getVelocity(1);
+    OdiplacementB[2] = particleB.getCentre(2) + dt*particleB.getVelocity(2);
+
+    //diplacement at timestep ahead
+    displacementA[0] = OdiplacementA[0] + particleA.getVelocity(0);
+    displacementA[1] = OdiplacementA[1] + particleA.getVelocity(1);
+    displacementA[2] = OdiplacementA[2] + particleA.getVelocity(2);
+
+    displacementB[0] = OdiplacementB[0] + particleB.getVelocity(0);
+    displacementB[1] = OdiplacementB[1] + particleB.getVelocity(1);
+    displacementB[2] = OdiplacementB[2] + particleB.getVelocity(2);
+
+    iREAL lineA[3], lineB[3];
+    iREAL a, b;
+
+    //A + t * (B-A)
+    lineA[0] = OdiplacementA[0] + a * (displacementA[0] - OdiplacementA[0]);
+    lineA[1] = OdiplacementA[1] + a * (displacementA[1] - OdiplacementA[1]);
+    lineA[2] = OdiplacementA[2] + a * (displacementA[2] - OdiplacementA[2]);
+
+    //C + t * (D-C)
+    lineB[0] = OdiplacementB[0] + b * (displacementB[0] - OdiplacementB[0]);
+    lineB[1] = OdiplacementB[1] + b * (displacementB[1] - OdiplacementB[1]);
+    lineB[2] = OdiplacementB[2] + b * (displacementB[2] - OdiplacementB[2]);*/
+
+    if(localMaxdt < 0.0) localMaxdt = -1*localMaxdt;
+
+    _state.informStateThatTwoParticlesAreClose(localMaxdt);
   }
+  /*printf("pvBA: %f  pdt: %f | pmd: %f pdt: %f pd: %f\n",
+         pvBA,    pdistancePerStep, pmind, pdt, pd);
+  printf(" vBA: %f  ddt: %f |  md: %f dt: %f  d: %f\n",
+         vBA,     distancePerStep,  mind, dt, d);*/
 }
 
 void dem::mappings::Collision::touchVertexFirstTime(
@@ -359,12 +441,12 @@ void dem::mappings::Collision::touchVertexFirstTime(
           fineGridVertex.getParticle(i).getCentre(0),
           fineGridVertex.getParticle(i).getCentre(1),
           fineGridVertex.getParticle(i).getCentre(2),
-          fineGridVertex.getParticle(i).getInfluenceRadius(),
+          fineGridVertex.getParticle(i).getHaloDiameter(),
 
           fineGridVertex.getParticle(j).getCentre(0),
           fineGridVertex.getParticle(j).getCentre(1),
           fineGridVertex.getParticle(j).getCentre(2),
-          fineGridVertex.getParticle(j).getInfluenceRadius());
+          fineGridVertex.getParticle(j).getHaloDiameter());
 
         if(!overlap) continue;
       }
@@ -620,12 +702,12 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
             vertexA.getParticle(i).getCentre(0),
             vertexA.getParticle(i).getCentre(1),
             vertexA.getParticle(i).getCentre(2),
-            vertexA.getParticle(i).getInfluenceRadius(),
+            vertexA.getParticle(i).getHaloDiameter(),
 
             vertexB.getParticle(j).getCentre(0),
             vertexB.getParticle(j).getCentre(1),
             vertexB.getParticle(j).getCentre(2),
-            vertexB.getParticle(j).getInfluenceRadius());
+            vertexB.getParticle(j).getHaloDiameter());
 
         if(!overlap) continue;
       }

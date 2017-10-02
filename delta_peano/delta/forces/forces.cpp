@@ -210,7 +210,7 @@ void delta::forces::spring(
 
 	iREAL velocity = (vij[0]*normal[0]) + (vij[1]*normal[1]) + (vij[2]*normal[2]);
 
-	iREAL damp = DAMPER; //* 2.0 * sqrt(ma*SPRING)*velocity;
+	iREAL damp = DAMPER * 2.0 * sqrt(ma*SPRING)*velocity;
 
 	iREAL force = SPRING*depth+damp;
 

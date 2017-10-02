@@ -27,8 +27,9 @@ void dem::State::clearAccumulatedData() {
   _stateData.setNumberOfParticleReassignments(0.0);
   _stateData.setNumberOfTriangleComparisons(0.0);
   _stateData.setNumberOfParticleComparisons(0.0);
-  _stateData.setTwoParticlesAreClose(false);
+  _stateData.setTwoParticlesAreClose(0.0);
   _stateData.setMaxVelocity(0.0);
+  //_stateData.setMaxVelocity(-std::numeric_limits<double>::max());
   // @todo set max velocity to zero
 }
 
@@ -72,7 +73,14 @@ void dem::State::merge( const State& otherState ) {
   _stateData.setNumberOfContactPoints( _stateData.getNumberOfContactPoints() + otherState._stateData.getNumberOfContactPoints() );
   _stateData.setNumberOfParticleReassignments( _stateData.getNumberOfParticleReassignments() + otherState._stateData.getNumberOfParticleReassignments() );
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + otherState._stateData.getNumberOfTriangleComparisons() );
-  _stateData.setTwoParticlesAreClose( _stateData.getTwoParticlesAreClose() || otherState._stateData.getTwoParticlesAreClose() );
+  //_stateData.setTwoParticlesAreClose( _stateData.getTwoParticlesAreClose() || otherState._stateData.getTwoParticlesAreClose() );
+
+  if(_stateData.getTwoParticlesAreClose() > otherState._stateData.getTwoParticlesAreClose())
+  {
+    _stateData.setTwoParticlesAreClose( _stateData.getTwoParticlesAreClose());
+  } else {
+    _stateData.setTwoParticlesAreClose( otherState._stateData.getTwoParticlesAreClose());
+  }
 
   if(_stateData.getMaxVelocity() > otherState._stateData.getMaxVelocity())
   {
@@ -97,8 +105,8 @@ void dem::State::setInitialTimeStepSize(double value) {
   _stateData.setCurrentTime(0.0);
 }
 
-void dem::State::informStateThatTwoParticlesAreClose() {
-  _stateData.setTwoParticlesAreClose(true);
+void dem::State::informStateThatTwoParticlesAreClose(double decrementFactor) {
+  _stateData.setTwoParticlesAreClose(decrementFactor);
 }
 
 void dem::State::finishedTimeStep(double initStep) {
@@ -107,9 +115,14 @@ void dem::State::finishedTimeStep(double initStep) {
   const double increaseFactor = 1.1;
   const double maxdt = _stateData.getMaxMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocity());
 
-  if (_stateData.getTwoParticlesAreClose()) {
-	  if(_stateData.getTimeStepSize() > 1E-8)  {
-  	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()/2.0);
+  if (_stateData.getTwoParticlesAreClose() > 0.0) {
+    //printf("TRIGGERED HALVING\n");
+	  if(_stateData.getTimeStepSize() > 1E-4)
+	  {
+	    double decrementFactor = _stateData.getTwoParticlesAreClose();
+	    //printf("Decrease Factor: %f\n", decrementFactor);
+  	    //_stateData.setTimeStepSize(_stateData.getTimeStepSize()/4.0);
+	    _stateData.setTimeStepSize(decrementFactor);
 	  }
   }
   else if (_stateData.getTimeStepSize() > maxdt) {

@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   08/09/2017 14:33
+    * @date   30/09/2017 15:25
     */
    class dem::records::State { 
       
@@ -49,7 +49,7 @@ namespace dem {
             double _timeStepSize;
             int _timeStep;
             double _currentTime;
-            bool _twoParticlesAreClose;
+            double _twoParticlesAreClose;
             int _numberOfParticles;
             int _numberOfObstacles;
             double _prescribedMinimumMeshWidth;
@@ -70,7 +70,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             
             inline double getNumberOfContactPoints() const 
@@ -213,7 +213,7 @@ namespace dem {
             
             
             
-            inline bool getTwoParticlesAreClose() const 
+            inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -223,7 +223,7 @@ namespace dem {
             
             
             
-            inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+            inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -491,7 +491,7 @@ namespace dem {
             /**
              * Generated
              */
-            State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             /**
              * Generated
@@ -639,7 +639,7 @@ namespace dem {
             
             
             
-            inline bool getTwoParticlesAreClose() const 
+            inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -649,7 +649,7 @@ namespace dem {
             
             
             
-            inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+            inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -974,7 +974,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   08/09/2017 14:33
+    * @date   30/09/2017 15:25
     */
    class dem::records::StatePacked { 
       
@@ -988,7 +988,7 @@ namespace dem {
             double _timeStepSize;
             int _timeStep;
             double _currentTime;
-            bool _twoParticlesAreClose;
+            double _twoParticlesAreClose;
             int _numberOfParticles;
             int _numberOfObstacles;
             double _prescribedMinimumMeshWidth;
@@ -1015,7 +1015,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             
             inline double getNumberOfContactPoints() const 
@@ -1158,7 +1158,7 @@ namespace dem {
             
             
             
-            inline bool getTwoParticlesAreClose() const 
+            inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -1168,7 +1168,7 @@ namespace dem {
             
             
             
-            inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+            inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -1454,7 +1454,7 @@ namespace dem {
             /**
              * Generated
              */
-            StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             /**
              * Generated
@@ -1602,7 +1602,7 @@ namespace dem {
             
             
             
-            inline bool getTwoParticlesAreClose() const 
+            inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -1612,7 +1612,7 @@ namespace dem {
             
             
             
-            inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+            inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -1951,7 +1951,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   08/09/2017 14:33
+       * @date   30/09/2017 15:25
        */
       class dem::records::State { 
          
@@ -1967,7 +1967,7 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
-               bool _twoParticlesAreClose;
+               double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
@@ -2012,7 +2012,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -2155,7 +2155,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -2165,7 +2165,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -2829,7 +2829,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -2977,7 +2977,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -2987,7 +2987,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -3760,7 +3760,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   08/09/2017 14:33
+       * @date   30/09/2017 15:25
        */
       class dem::records::StatePacked { 
          
@@ -3774,7 +3774,7 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
-               bool _twoParticlesAreClose;
+               double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
@@ -3817,7 +3817,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -3960,7 +3960,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -3970,7 +3970,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -4661,7 +4661,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -4809,7 +4809,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -4819,7 +4819,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -5616,7 +5616,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   08/09/2017 14:33
+       * @date   30/09/2017 15:25
        */
       class dem::records::State { 
          
@@ -5632,7 +5632,7 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
-               bool _twoParticlesAreClose;
+               double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
@@ -5674,7 +5674,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                
                inline double getNumberOfContactPoints() const 
@@ -5817,7 +5817,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -5827,7 +5827,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -6431,7 +6431,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                /**
                 * Generated
@@ -6579,7 +6579,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -6589,7 +6589,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -7302,7 +7302,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   08/09/2017 14:33
+       * @date   30/09/2017 15:25
        */
       class dem::records::StatePacked { 
          
@@ -7316,7 +7316,7 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
-               bool _twoParticlesAreClose;
+               double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
@@ -7356,7 +7356,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                
                inline double getNumberOfContactPoints() const 
@@ -7499,7 +7499,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -7509,7 +7509,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -8131,7 +8131,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                /**
                 * Generated
@@ -8279,7 +8279,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -8289,7 +8289,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -9017,7 +9017,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   08/09/2017 14:33
+       * @date   30/09/2017 15:25
        */
       class dem::records::State { 
          
@@ -9033,7 +9033,7 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
-               bool _twoParticlesAreClose;
+               double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
@@ -9057,7 +9057,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -9200,7 +9200,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -9210,7 +9210,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -9538,7 +9538,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -9686,7 +9686,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -9696,7 +9696,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10081,7 +10081,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   08/09/2017 14:33
+       * @date   30/09/2017 15:25
        */
       class dem::records::StatePacked { 
          
@@ -10095,7 +10095,7 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
-               bool _twoParticlesAreClose;
+               double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
@@ -10125,7 +10125,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -10268,7 +10268,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10278,7 +10278,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10633,7 +10633,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const bool& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -10781,7 +10781,7 @@ namespace dem {
                
                
                
-               inline bool getTwoParticlesAreClose() const 
+               inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10791,7 +10791,7 @@ namespace dem {
                
                
                
-               inline void setTwoParticlesAreClose(const bool& twoParticlesAreClose) 
+               inline void setTwoParticlesAreClose(const double& twoParticlesAreClose) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 

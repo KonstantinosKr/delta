@@ -16,11 +16,8 @@
 #include <cmath>
 #include <ctime>
 
-#define epsilon 0.001
+#define epsilon 0.002
 
-/**
- * @todo Please tailor the parameters to your mapping's properties.
- */
 peano::CommunicationSpecification   dem::mappings::CreateGrid::communicationSpecification() const {
 	return peano::CommunicationSpecification(
 	    peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,
@@ -829,70 +826,60 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
 
-/*void dem::mappings::CreateGrid::setVScheme(
-    dem::Vertex&  vertex,
-    int particleNumber,
-    VScheme velocity)
+void dem::mappings::CreateGrid::createCell(
+		dem::Cell&                                fineGridCell,
+		dem::Vertex * const                       fineGridVertices,
+		const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
+		dem::Vertex * const                       coarseGridVertices,
+		const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
+		dem::Cell&                                coarseGridCell,
+		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell)
 {
-  switch (velocity)
-  {
-    case none:
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(0) = 0;
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(1) = 0;
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(2) = 0;
+	logTraceInWith4Arguments( "createCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-      vertex.getParticle(particleNumber)._persistentRecords._angular(0) = 0;
-      vertex.getParticle(particleNumber)._persistentRecords._angular(1) = 0;
-      vertex.getParticle(particleNumber)._persistentRecords._angular(2) = 0;
-      break;
-    case moveLeft:
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(0) = -1.0;
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(1) = 0;
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(2) = 0;
+  dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];
 
-      vertex.getParticle(particleNumber)._persistentRecords._angular(0) = 0;
-      vertex.getParticle(particleNumber)._persistentRecords._angular(1) = 0;
-      vertex.getParticle(particleNumber)._persistentRecords._angular(2) = 0;
-      break;
-    case randomLinear:
-      vertex.getParticle(particleNumber)._persistentRecords._velocity =
-        2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0,
-        2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0,
-        2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0;
-      break;
-    case randomLinearAngular:
-      vertex.getParticle(particleNumber)._persistentRecords._velocity =
-        2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0,
-        2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0,
-        2.0 * static_cast<double>( rand() ) / static_cast<double>(RAND_MAX) - 1.0;
+	if(_scenario[0] == nonescenario) return;
 
-      vertex.getParticle(particleNumber)._persistentRecords._angular =
-        static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
-        static_cast<double>( rand() ) / static_cast<double>(RAND_MAX),
-        static_cast<double>( rand() ) / static_cast<double>(RAND_MAX);
-      break;
-    case crashY:
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(1) = -0.5;
-      break;
-    case crashXY:
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(0) = 0.5;
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(1) = -0.5;
-      break;
-    case crashXYRotation:
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(0) = 0.5;
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(1) = -0.5;
+  _centreAsArray[0] = fineGridVerticesEnumerator.getCellCenter()(0);
+  _centreAsArray[1] = fineGridVerticesEnumerator.getCellCenter()(1),
+  _centreAsArray[2] = fineGridVerticesEnumerator.getCellCenter()(2);
 
-      vertex.getParticle(particleNumber)._persistentRecords._angular(0) = 5.0;
-      vertex.getParticle(particleNumber)._persistentRecords._angular(1) = 5.0;
-      break;
-    case slideX:
-      vertex.getParticle(particleNumber)._persistentRecords._velocity(0) = 0.5;
-      break;
-    case slideXRotation:
-      vertex.getParticle(particleNumber)._persistentRecords._angular(0) = 5.0;
-      break;
-  }
-}*/
+	if (coarseGridCell.isRoot())
+	{
+		deployCoarseEnviroment(vertex);
+	}
+
+	if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(
+	    fineGridVertices,
+	    fineGridVerticesEnumerator,
+	    Vertex::Records::Unrefined) &&
+	  !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices, fineGridVerticesEnumerator))
+	{
+
+	  deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0));
+
+    dfor2(k) //size 2, dimension 3
+      for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
+      {
+        records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
+        tarch::la::Vector<DIMENSIONS,int> correctVertex;
+
+        for(int d=0; d<DIMENSIONS; d++)
+        {
+          correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
+        }
+
+        if(correctVertex != k)
+        {
+          fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
+          fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
+        }
+      }
+    enddforx
+	}
+	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
+}
 
 void dem::mappings::CreateGrid::deployCoarseEnviroment(
     dem::Vertex& vertex)
@@ -984,60 +971,6 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
   #endif
 }
 
-void dem::mappings::CreateGrid::createCell(
-		dem::Cell&                                fineGridCell,
-		dem::Vertex * const                       fineGridVertices,
-		const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
-		dem::Vertex * const                       coarseGridVertices,
-		const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
-		dem::Cell&                                coarseGridCell,
-		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell)
-{
-	logTraceInWith4Arguments( "createCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-
-  dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];
-
-	if(_scenario[0] == nonescenario) return;
-
-  _centreAsArray[0] = fineGridVerticesEnumerator.getCellCenter()(0);
-  _centreAsArray[1] = fineGridVerticesEnumerator.getCellCenter()(1),
-  _centreAsArray[2] = fineGridVerticesEnumerator.getCellCenter()(2);
-
-	if (coarseGridCell.isRoot())
-	{
-		deployCoarseEnviroment(vertex);
-	}
-
-	if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(
-	    fineGridVertices,
-	    fineGridVerticesEnumerator,
-	    Vertex::Records::Unrefined) &&
-	  !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices, fineGridVerticesEnumerator))
-	{
-
-	  deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0));
-
-    dfor2(k) //size 2, dimension 3
-      for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
-      {
-        records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
-        tarch::la::Vector<DIMENSIONS,int> correctVertex;
-
-        for(int d=0; d<DIMENSIONS; d++)
-        {
-          correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
-        }
-
-        if(correctVertex != k)
-        {
-          fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
-          fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
-        }
-      }
-    enddforx
-	}
-	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
-}
 
 void dem::mappings::CreateGrid::addParticleToState(
     std::vector<double>&  xCoordinates,

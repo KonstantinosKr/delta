@@ -9,7 +9,7 @@ class dem::records::State {
   parallelise persistent double  timeStepSize;
   parallelise persistent int	   timeStep;
   parallelise persistent double  currentTime;
-  parallelise persistent bool    twoParticlesAreClose;
+  parallelise persistent double    twoParticlesAreClose;
   parallelise persistent int     numberOfParticles;
   parallelise persistent int	   numberOfObstacles;
   parallelise persistent double	 prescribedMinimumMeshWidth;
