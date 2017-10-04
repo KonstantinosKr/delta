@@ -167,8 +167,8 @@ void dem::mappings::CreateGrid::setScenario(
 }
 
 void dem::mappings::CreateGrid::beginIteration(
-		dem::State&  solverState
-) {
+		dem::State&  solverState)
+{
 	logTraceInWith1Argument( "beginIteration(State)", solverState );
 
   dem::ParticleHeap::getInstance().setName( "particle-heap" );
@@ -295,7 +295,8 @@ void dem::mappings::CreateGrid::beginIteration(
     delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, delta::geometry::material::MaterialType::WOOD, mass, centerOfMass, inertia);
     delta::geometry::properties::getInverseInertia(inertia, inverse, true);
 
-    int particles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates);
+    int particles = 0;
+    particles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates);
 
     for(int j=0; j<particles; j++)
     {
@@ -600,11 +601,13 @@ return;
     std::array<double, 3> angular = {0, 0, 0};
     _coarseLinearVelocityArray.push_back(linear);
     _coarseAngularVelocityArray.push_back(angular);
+
     if(_isSphere){
       _coarseComponentArray.push_back("sphere");
     } else {
       _coarseComponentArray.push_back("granulate");
     }
+
 
     _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
     _coarseisFrictionArray.push_back(false);
@@ -615,13 +618,13 @@ return;
     linear[1] = 1;
     _coarseLinearVelocityArray.push_back(linear);
     _coarseAngularVelocityArray.push_back(angular);
+
     if(_isSphere){
       _coarseComponentArray.push_back("sphere");
     } else {
       _coarseComponentArray.push_back("granulate");
     }
 
-    _componentGrid.push_back("nothing");
 
     //////////////////////////////////////////////////////
     /// END | TWO PARTICLES CRASH SCENARIO
@@ -647,8 +650,10 @@ return;
     _radArray.push_back(0.1);
     std::array<double, 3> position = {centre[0], 0.8, centre[2]};
     _particleGrid.push_back(position);
+
     std::array<double, 3> angular = {0, 0, 0};
     _angularVelocityArray.push_back(angular);
+
     if(_isSphere){
       _componentGrid.push_back("sphere");
     } else {
@@ -842,15 +847,22 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
       dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _coarseisObstacleArray[i]);
     }
 
-    if(newParticleNumber != -1)
+    if(newParticleNumber > -1)
     {
+
+      if(!_coarseLinearVelocityArray.size() > 0) return;
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _coarseLinearVelocityArray[i][0];
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _coarseLinearVelocityArray[i][1];
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = _coarseLinearVelocityArray[i][2];
 
+      if(!_coarseAngularVelocityArray.size() > 0) return;
       vertex.getParticle(newParticleNumber)._persistentRecords._angular(0) = _coarseAngularVelocityArray[i][0];
       vertex.getParticle(newParticleNumber)._persistentRecords._angular(1) = _coarseAngularVelocityArray[i][1];
       vertex.getParticle(newParticleNumber)._persistentRecords._angular(2) = _coarseAngularVelocityArray[i][2];
+
+      vertex.getParticle(newParticleNumber)._persistentRecords._referentialAngular(0) = _coarseAngularVelocityArray[i][0];
+      vertex.getParticle(newParticleNumber)._persistentRecords._referentialAngular(1) = _coarseAngularVelocityArray[i][1];
+      vertex.getParticle(newParticleNumber)._persistentRecords._referentialAngular(2) = _coarseAngularVelocityArray[i][2];
     }
   }
 }
@@ -863,11 +875,9 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
   {
     dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, _centreAsArray, cellSize);
   } else {
-    printf("ETNRED 1\n");
-    if(_componentGrid.size() == 0)
-      return;
+    if(_componentGrid.size() == 0) return;
+
     int newParticleNumber = -1;
-    printf("ETNRED 1.5\n");
 
     if(_componentGrid[0] == "sphere")
     {
@@ -876,7 +886,6 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
       dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[0]);
     } else if(_componentGrid[0] == "cube")
     {
-      printf("ENTERED\n");
       newParticleNumber = dem::mappings::CreateGrid::deployBox(vertex, 0, 0, _centreAsArray, _xyzDimensionsArray[0][0], _xyzDimensionsArray[0][1], 0, 1.0/8.0, 1.0/8.0, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
       std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
       dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[0]);
@@ -888,13 +897,15 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
     } else {
       return;
     }
-    printf("ETNRED3\n");
-    if(newParticleNumber != -1)
+
+    if(newParticleNumber > -1)
     {
+      if(!_linearVelocityArray.size() > 0) return;
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _linearVelocityArray[0][0];
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _linearVelocityArray[0][1];
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = _linearVelocityArray[0][2];
 
+      if(!_angularVelocityArray.size() > 0) return;
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _angularVelocityArray[0][0];
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _angularVelocityArray[0][1];
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = _angularVelocityArray[0][2];
@@ -904,7 +915,6 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
     logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
   #endif
 }
-
 
 void dem::mappings::CreateGrid::addParticleToState(
     std::vector<double>&  xCoordinates,

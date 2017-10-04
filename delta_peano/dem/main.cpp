@@ -211,17 +211,17 @@ int main(int argc, char** argv)
     scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
 
-  } else if (scenario=="blackholeWithRandomlyOrientedCubes") {
+  } else if (scenario=="blackHoleWithRandomlyOrientedCubes") {
     scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithRandomOrientedCubes,
     scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
-  else if (scenario=="blackholeWithCubes") {
+  else if (scenario=="blackHoleWithCubes") {
     scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithCubes;
     scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
-  else if (scenario=="blackholeWithGranulates") {
+  else if (scenario=="blackHoleWithGranulates") {
     scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithGranulates;
     scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;

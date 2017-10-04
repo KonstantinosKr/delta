@@ -359,7 +359,7 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._globalParticleId  = particleId;
   newParticle._persistentRecords._localParticleId   = 0;
 
-  newParticle._persistentRecords._velocity          = tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._velocity           = tarch::la::Vector<DIMENSIONS,double>(0.0);
   newParticle._persistentRecords._angular		 	      = tarch::la::Vector<DIMENSIONS,double>(0.0);
   newParticle._persistentRecords._referentialAngular= tarch::la::Vector<DIMENSIONS,double>(0.0);
 

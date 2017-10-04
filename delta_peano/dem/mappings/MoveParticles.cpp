@@ -53,10 +53,9 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
   {
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
-    if(particle.getIsObstacle()) continue;
+   // if(particle.getIsObstacle()) continue;
 
     particle._persistentRecords._velocity(1) += timeStepSize*(dem::mappings::Collision::gravity*-9.8); //pass as gravity gxgygz vector
-
 
     particle._persistentRecords._centre(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centre(1) += timeStepSize*particle._persistentRecords._velocity(1);
@@ -65,11 +64,11 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     particle._persistentRecords._centreOfMass(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
-
+/*
     delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
                                           &particle._persistentRecords._referentialAngular(0),
                                           &particle._persistentRecords._orientation(0), timeStepSize);
-
+*/
     double* x = fineGridVertex.getXCoordinates(i);
     double* y = fineGridVertex.getYCoordinates(i);
     double* z = fineGridVertex.getZCoordinates(i);
@@ -328,7 +327,6 @@ void dem::mappings::MoveParticles::createCell(
   logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
 
-
 void dem::mappings::MoveParticles::destroyCell(
       const dem::Cell&           fineGridCell,
       dem::Vertex * const        fineGridVertices,
@@ -449,7 +447,6 @@ void dem::mappings::MoveParticles::prepareSendToMaster(
   logTraceOut( "prepareSendToMaster(...)" );
 }
 
-
 void dem::mappings::MoveParticles::mergeWithMaster(
   const dem::Cell&           workerGridCell,
   dem::Vertex * const        workerGridVertices,
@@ -470,7 +467,6 @@ void dem::mappings::MoveParticles::mergeWithMaster(
   logTraceOut( "mergeWithMaster(...)" );
 }
 
-
 void dem::mappings::MoveParticles::receiveDataFromMaster(
       dem::Cell&                        receivedCell, 
       dem::Vertex *                     receivedVertices,
@@ -488,7 +484,6 @@ void dem::mappings::MoveParticles::receiveDataFromMaster(
   logTraceOut( "receiveDataFromMaster(...)" );
 }
 
-
 void dem::mappings::MoveParticles::mergeWithWorker(
   dem::Cell&           localCell, 
   const dem::Cell&     receivedMasterCell,
@@ -500,7 +495,6 @@ void dem::mappings::MoveParticles::mergeWithWorker(
   // @todo Insert your code here
   logTraceOutWith1Argument( "mergeWithWorker(...)", localCell.toString() );
 }
-
 
 void dem::mappings::MoveParticles::mergeWithWorker(
   dem::Vertex&        localVertex,
@@ -514,7 +508,6 @@ void dem::mappings::MoveParticles::mergeWithWorker(
   logTraceOutWith1Argument( "mergeWithWorker(...)", localVertex.toString() );
 }
 #endif
-
 
 void dem::mappings::MoveParticles::leaveCell(
       dem::Cell&           fineGridCell,
@@ -530,7 +523,6 @@ void dem::mappings::MoveParticles::leaveCell(
   logTraceOutWith1Argument( "leaveCell(...)", fineGridCell );
 }
 
-
 void dem::mappings::MoveParticles::descend(
   dem::Cell * const          fineGridCells,
   dem::Vertex * const        fineGridVertices,
@@ -543,7 +535,6 @@ void dem::mappings::MoveParticles::descend(
   // @todo Insert your code here
   logTraceOut( "descend(...)" );
 }
-
 
 void dem::mappings::MoveParticles::ascend(
   dem::Cell * const    fineGridCells,
