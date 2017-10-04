@@ -146,7 +146,6 @@ std::vector<bool>                                     dem::mappings::CreateGrid:
   return false;
 }
 
-
 void dem::mappings::CreateGrid::setScenario(
     Scenario scenario[4],
     double maxH,
@@ -494,7 +493,7 @@ return;
     _coarsePositionArray.push_back(position);
     _coarseComponentArray.push_back("cube");
     ////////////////////////////////////////////////////////////////////////////////
-    if(!assertCoarse()) return;
+    //if(!assertCoarse()) return;
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -647,7 +646,7 @@ return;
     if(_isSphere){
       _componentGrid.push_back("sphere");
     } else {
-      _componentGrid.push_back("cubes");
+      _componentGrid.push_back("cube");
     }
 
     std::array<double, 3> xyz = {_radArray[0], _radArray[0], _radArray[0]};
@@ -686,7 +685,7 @@ return;
     if(_isSphere){
       _componentGrid.push_back("sphere");
     } else {
-      _componentGrid.push_back("cubes");
+      _componentGrid.push_back("cube");
     }
 
     std::array<double, 3> xyz = {_radArray[0], _radArray[0], _radArray[0]};
@@ -935,36 +934,42 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
   {
     dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, _centreAsArray, cellSize);
   } else {
-      int newParticleNumber = -1;
-      if(_componentGrid[0] == "sphere")
-      {
-        newParticleNumber = dem::mappings::CreateGrid::deploySphere(vertex, _centreAsArray, _radArray[0], _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
-        std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[0]);
-      } else if(_componentGrid[0] == "cube")
-      {
-        newParticleNumber = dem::mappings::CreateGrid::deployBox(vertex, 0, 0, _centreAsArray, _xyzDimensionsArray[0][0], _xyzDimensionsArray[0][1], 0, 1.0/8.0, 1.0/8.0, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
-        std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[0]);
-      } else if(_componentGrid[0] == "granulate")
-      {
-        newParticleNumber = dem::mappings::CreateGrid::deployGranulate(vertex, _centreAsArray, _radArray[0], _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
-        std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
-        dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[0]);
-      } else {
-        return;
-      }
+    printf("ETNRED 1\n");
+    if(_componentGrid.size() == 0)
+      return;
+    int newParticleNumber = -1;
+    printf("ETNRED 1.5\n");
 
-      if(newParticleNumber != -1)
-      {
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _linearVelocityArray[0][0];
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _linearVelocityArray[0][1];
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = _linearVelocityArray[0][2];
+    if(_componentGrid[0] == "sphere")
+    {
+      newParticleNumber = dem::mappings::CreateGrid::deploySphere(vertex, _centreAsArray, _radArray[0], _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+      std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
+      dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[0]);
+    } else if(_componentGrid[0] == "cube")
+    {
+      printf("ENTERED\n");
+      newParticleNumber = dem::mappings::CreateGrid::deployBox(vertex, 0, 0, _centreAsArray, _xyzDimensionsArray[0][0], _xyzDimensionsArray[0][1], 0, 1.0/8.0, 1.0/8.0, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+      std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
+      dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[0]);
+    } else if(_componentGrid[0] == "granulate")
+    {
+      newParticleNumber = dem::mappings::CreateGrid::deployGranulate(vertex, _centreAsArray, _radArray[0], _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+      std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
+      dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[0]);
+    } else {
+      return;
+    }
+    printf("ETNRED3\n");
+    if(newParticleNumber != -1)
+    {
+      vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _linearVelocityArray[0][0];
+      vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _linearVelocityArray[0][1];
+      vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = _linearVelocityArray[0][2];
 
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _angularVelocityArray[0][0];
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _angularVelocityArray[0][1];
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = _angularVelocityArray[0][2];
-      }
+      vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _angularVelocityArray[0][0];
+      vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _angularVelocityArray[0][1];
+      vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = _angularVelocityArray[0][2];
+    }
   }
   #ifdef STATSPARTICLE
     logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
