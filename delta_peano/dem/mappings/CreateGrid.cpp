@@ -621,51 +621,18 @@ return;
       _coarseComponentArray.push_back("granulate");
     }
 
-    ///---------------------------------------------------
-
     _componentGrid.push_back("nothing");
 
     //////////////////////////////////////////////////////
     /// END | TWO PARTICLES CRASH SCENARIO
     //////////////////////////////////////////////////////
-  } else if(_scenario[0] == blackHoleWithRandomOrientedCubes ||
-            _scenario[0] == freefallWithRandomOrientedCubes)
-  {
-    //////////////////////////////////////////////////////
-    /// FREEFALL AND BLACKHOLE SCENARIO
-    //////////////////////////////////////////////////////
-
-    _materialArray.push_back(delta::geometry::material::MaterialType::WOOD);
-    _isFrictionArray.push_back(false);
-    _isObstacleArray.push_back(false);
-    _radArray.push_back(0.1);
-    std::array<double, 3> position = {centre[0], 0.8, centre[2]};
-    _particleGrid.push_back(position);
-    std::array<double, 3> angular = {0, 0, 0};
-    _angularVelocityArray.push_back(angular);
-    if(_isSphere){
-      _componentGrid.push_back("sphere");
-    } else {
-      _componentGrid.push_back("cube");
-    }
-
-    std::array<double, 3> xyz = {_radArray[0], _radArray[0], _radArray[0]};
-    _xyzDimensionsArray.push_back(xyz);
-
-    if(_scenario[0] == blackHoleWithRandomOrientedCubes)
-    {
-      std::array<double, 3> linear = {static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX)};
-    } else
-    {
-      std::array<double, 3> linear = {0, 0, 0};
-      _linearVelocityArray.push_back(linear);
-    }
-    //////////////////////////////////////////////////////
-    /// END | FREEFALL AND BLACKHOLE SCENARIO
-    //////////////////////////////////////////////////////
   }
   else if(_scenario[0] == blackHoleWithCubes ||
-          _scenario[0] == freefallWithCubes)
+          _scenario[0] == freefallWithCubes ||
+          _scenario[0] == blackHoleWithGranulates ||
+          _scenario[0] == freefallWithGranulates  ||
+          _scenario[0] == blackHoleWithRandomOrientedCubes ||
+          _scenario[0] == freefallWithRandomOrientedCubes)
   {
     //////////////////////////////////////////////////////
     /// FREEFALL AND BLACKHOLE WITH ALIGNED CUBES SCENARIO
@@ -691,7 +658,9 @@ return;
     std::array<double, 3> xyz = {_radArray[0], _radArray[0], _radArray[0]};
     _xyzDimensionsArray.push_back(xyz);
 
-    if(_scenario[0] == blackHoleWithCubes)
+    if(_scenario[0] == blackHoleWithCubes ||
+       _scenario[0] == blackHoleWithGranulates  ||
+       _scenario[0] == blackHoleWithRandomOrientedCubes)
     {
       std::array<double, 3> linear = {static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX)};
     } else
@@ -701,46 +670,6 @@ return;
     }
     //////////////////////////////////////////////////////
     /// END | FREEFALL AND BLACKHOLE WITH ALIGNED CUBES SCENARIO
-    //////////////////////////////////////////////////////
-  }
-  else if(_scenario[0] == blackHoleWithGranulates ||
-          _scenario[0] == freefallWithGranulates)
-  {
-    //////////////////////////////////////////////////////
-    /// FREEFALL AND BLACKHOLE WITH GRANULATES SCENARIO
-    //////////////////////////////////////////////////////
-
-    //double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
-    //int particleid = dem::mappings::CreateGrid::deployGranulate(vertex, _centreAsArray, particleDiameter/2, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
-
-    _materialArray.push_back(delta::geometry::material::MaterialType::WOOD);
-    _isFrictionArray.push_back(false);
-    _isObstacleArray.push_back(false);
-    _radArray.push_back(0.1);
-    std::array<double, 3> position = {centre[0], 0.8, centre[2]};
-    _particleGrid.push_back(position);
-    std::array<double, 3> angular = {0, 0, 0};
-    _angularVelocityArray.push_back(angular);
-
-    if(_isSphere){
-      _componentGrid.push_back("sphere");
-    } else {
-      _componentGrid.push_back("granulates");
-    }
-
-    std::array<double, 3> xyz = {_radArray[0], _radArray[0], _radArray[0]};
-    _xyzDimensionsArray.push_back(xyz);
-
-    if(_scenario[0] == blackHoleWithGranulates)
-    {
-      std::array<double, 3> linear = {static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX)};
-    } else
-    {
-      std::array<double, 3> linear = {0, 0, 0};
-      _linearVelocityArray.push_back(linear);
-    }
-    //////////////////////////////////////////////////////
-    /// END | FREEFALL AND BLACKHOLE WITH GRANULATES SCENARIO
     //////////////////////////////////////////////////////
   }
 

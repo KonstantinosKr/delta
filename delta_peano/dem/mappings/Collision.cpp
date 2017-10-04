@@ -267,7 +267,7 @@ void dem::mappings::Collision::triggerParticleTooClose(
   }
 
   //particles approach
-  if(-pvBA > _state.getMaximumVelocity())
+  if(-vBA > _state.getMaximumVelocity())
   {
     //printf("approach: %f\n", vBA);
     _state.setMaximumVelocity(vBA);
