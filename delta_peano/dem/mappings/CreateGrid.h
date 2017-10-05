@@ -132,8 +132,10 @@ class dem::mappings::CreateGrid {
     static void setScenario(
         Scenario scenario[4],
         double maxH,
-        double particleDiamMin, double particleDiamMax,
-        GridType gridType, int noPointsPerGranulate);
+        double particleDiamMin,
+		double particleDiamMax,
+        GridType gridType,
+		int noPointsPerGranulate);
 
     static bool     _isSphere;
   private:
@@ -284,7 +286,13 @@ class dem::mappings::CreateGrid {
     int decomposeMeshIntoParticles(
         std::vector<double> xCoordinates,
         std::vector<double> yCoordinates,
-        std::vector<double> zCoordinates);
+        std::vector<double> zCoordinates,
+		delta::geometry::material::MaterialType material,
+		bool isObstacle,
+		double &mass,
+		double centerOfMass[3],
+		double inertia[9],
+		double inverse[9]);
 
 
   public:

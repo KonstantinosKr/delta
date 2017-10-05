@@ -286,14 +286,14 @@ void dem::mappings::CreateGrid::beginIteration(
     std::array<double, 3> angular = {0, 0, 0};
     std::array<double, 3> position = {centre[0], centre[1], centre[2]};
 
-    /*
-     *
-     */
+    bool isObstacle = true;
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
 
+/*
     _coarseXYZDimensionsArray.push_back(xyzDimensions);
-    _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
+    _coarseMaterialArray.push_back(material);
     _coarseisFrictionArray.push_back(true);
-    _coarseisObstacleArray.push_back(true);
+    _coarseisObstacleArray.push_back(isObstacle);
     _coarseRadiusArray.push_back(0);
 
     _coarseLinearVelocityArray.push_back(linear);
@@ -301,6 +301,7 @@ void dem::mappings::CreateGrid::beginIteration(
 
     _coarsePositionArray.push_back(position);
     _coarseComponentArray.push_back("hopper");//hopper creations
+*/
 
     /*
     int refinement = 5;
@@ -310,12 +311,8 @@ void dem::mappings::CreateGrid::beginIteration(
 
     //decompose hopper into triangle particles
     double centerOfMass[3], inertia[9], inverse[9], mass;
-    delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, delta::geometry::material::MaterialType::WOOD, mass, centerOfMass, inertia);
-    delta::geometry::properties::getInverseInertia(inertia, inverse, true);
 
-    int particles = 0;
-
-    //particles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates);
+    int particles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, mass, centerOfMass, inertia, inverse);
 
     for(int j=0; j<particles; j++)
     {
@@ -325,15 +322,16 @@ void dem::mappings::CreateGrid::beginIteration(
       _mass.push_back(mass);
 
       _componentGrid.push_back("partialmesh");
-      _isObstacleArray.push_back(true);
+      _isObstacleArray.push_back(isObstacle);
       _isFrictionArray.push_back(false);
-      _materialArray.push_back(delta::geometry::material::MaterialType::WOOD);
+      _materialArray.push_back(material);
       _coarseParticleID.push_back(_numberOfParticles);
 
-      std::array<iREAL,3> a = {0,0,0};
-      _linearVelocityArray.push_back(a);
-      _angularVelocityArray.push_back(a);
-    }*/
+      std::array<iREAL,3> velocity = {0,0,0};
+      _linearVelocityArray.push_back(velocity);
+      _angularVelocityArray.push_back(velocity);
+    }
+	*/
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -342,11 +340,11 @@ void dem::mappings::CreateGrid::beginIteration(
 
     _minComputeDomain[0] = centre[0] - xyzDimensions[0]/2;
     _minComputeDomain[1] = centre[1];
-    _minComputeDomain[2] = centre[2] - xyzDimensions[0]/2;
+    _minComputeDomain[2] = centre[2] - xyzDimensions[2]/2;
 
     _maxComputeDomain[0] = centre[0] + xyzDimensions[0]/2;
-    _maxComputeDomain[1] = centre[1] + xyzDimensions[0]*2.5;
-    _maxComputeDomain[2] = centre[2] + xyzDimensions[0]/2;
+    _maxComputeDomain[1] = centre[1] + xyzDimensions[1]*2.5;
+    _maxComputeDomain[2] = centre[2] + xyzDimensions[2]/2;
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     ////////FLOOR//////////////////////////////////////////////////////////////////////////////
@@ -376,8 +374,8 @@ void dem::mappings::CreateGrid::beginIteration(
 
 	////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////
-    //////////PARTICLE GRID////////////////////////////////////////////////////////////////////
-	//////////PARTICLE GRID////////////////////////////////////////////////////////////////////
+    //////////PARTICLE GRID/////////////////////////////////////////////
+	//////////PARTICLE GRID/////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////
 
@@ -403,7 +401,7 @@ void dem::mappings::CreateGrid::beginIteration(
       xzcuts = 100.0; ycuts = 50;
     }
 
-    double totalMass = 0.05; delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
+    double totalMass = 0.05; material = delta::geometry::material::MaterialType::WOOD;
 
     iREAL margin = (_hopperThickness + _epsilon) * 4;
     iREAL subGridLength = _hopperWidth-margin/2;
@@ -475,6 +473,7 @@ void dem::mappings::CreateGrid::beginIteration(
     double minRad = 1.00;
     for(int i=0; i<_radArray.size(); i++)
     {
+    	printf("%f\n", _radArray[i]);
       if(maxRad <= _radArray[i]) maxRad = _radArray[i];
       if(minRad >= _radArray[i]) minRad = _radArray[i];
     }
@@ -1116,7 +1115,13 @@ int dem::mappings::CreateGrid::deployGranulate(
 int dem::mappings::CreateGrid::decomposeMeshIntoParticles(
     std::vector<double> xCoordinates,
     std::vector<double> yCoordinates,
-    std::vector<double> zCoordinates)
+    std::vector<double> zCoordinates,
+	delta::geometry::material::MaterialType material,
+	bool isObstacle,
+	double &mass,
+	double centerOfMass[3],
+	double inertia[9],
+	double inverse[9])
 {
 
   for(int i=0; i<xCoordinates.size(); i+=3)
@@ -1150,6 +1155,10 @@ int dem::mappings::CreateGrid::decomposeMeshIntoParticles(
     std::array<iREAL, 3> Oarray = {O[0], O[1], O[2]};
     _particleGrid.push_back(Oarray);
   }
+
+  delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
+  delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
+
   return xCoordinates.size()/3;
 }
 
