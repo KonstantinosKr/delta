@@ -53,7 +53,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
   {
     records::Particle&  particle = fineGridVertex.getParticle(i);
 
-   // if(particle.getIsObstacle()) continue;
+    if(particle.getIsObstacle()) continue;
 
     particle._persistentRecords._velocity(1) += timeStepSize*(dem::mappings::Collision::gravity*-9.8); //pass as gravity gxgygz vector
 

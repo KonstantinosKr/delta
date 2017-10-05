@@ -371,7 +371,6 @@ void dem::mappings::CreateGrid::beginIteration(
     ///////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
 
-return;
 
 	_deployInsitu = true;
 
@@ -902,7 +901,7 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
     dem::Vertex& vertex,
     double cellSize)
 {
-	return;
+
   if(_deployInsitu)
   {
     dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, _centreAsArray, cellSize);
