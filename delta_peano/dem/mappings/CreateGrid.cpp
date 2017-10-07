@@ -302,8 +302,7 @@ void dem::mappings::CreateGrid::beginIteration(
     _coarseComponentArray.push_back("hopper");//hopper creations
 */
 
-
-    int refinement = 5;
+    int refinement = 4;
 
     std::vector<double> xCoordinates, yCoordinates, zCoordinates;
     delta::geometry::hopper::generateHopper(centre, xyzDimensions[0], _hopperThickness, xyzDimensions[1], _hopperHatch, refinement, _maxH, xCoordinates, yCoordinates, zCoordinates);
@@ -326,15 +325,12 @@ void dem::mappings::CreateGrid::beginIteration(
       _materialArray.push_back(material);
       _radArray.push_back(0.0);
 
-      std::array<iREAL, 3> position = {0.0, 0.0, 0.0};
-      _particleGridArray.push_back(position);
       _particleIDArray.push_back(_numberOfParticles);
 
       std::array<iREAL,3> velocity = {0,0,0};
       _linearVelocityArray.push_back(velocity);
       _angularVelocityArray.push_back(velocity);
     }
-
 
     int index = particles;
 
@@ -374,14 +370,10 @@ void dem::mappings::CreateGrid::beginIteration(
     ///////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
 
-
 	_deployInsitu = true;
 
 	////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////
-    //////////PARTICLE GRID/////////////////////////////////////////////
 	//////////PARTICLE GRID/////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////
 
     iREAL xzcuts = 0; iREAL ycuts = 0;
@@ -407,6 +399,7 @@ void dem::mappings::CreateGrid::beginIteration(
     }
 
     double totalMass = 0.05; material = delta::geometry::material::MaterialType::WOOD;
+    isObstacle = false;
 
     iREAL margin = (_hopperThickness + _epsilon) * 4;
     iREAL subGridLength = _hopperWidth-margin/2;
@@ -417,9 +410,7 @@ void dem::mappings::CreateGrid::beginIteration(
     //create xzy cuts above hopper, position starts at left lower inner corner
     std::vector<std::array<iREAL, 3>> grid = delta::world::assembly::getGridArrayList(pos, xzcuts, ycuts, subGridLength);
 
-    printf("SIZE BEFORE: %i\n", _particleGridArray.size());
     _particleGridArray.insert(_particleGridArray.end(), grid.begin(), grid.end());
-    printf("SIZE AFTER: %i\n", _particleGridArray.size());
 
     //measure real length
     iREAL xmin = 1; iREAL xmax = 0;
@@ -431,8 +422,8 @@ void dem::mappings::CreateGrid::beginIteration(
 
     subGridLength = xmax - xmin;
     iREAL dx = (_hopperWidth - subGridLength)/2;
-    printf("length1:%f\n", subGridLength);
-    printf("length2:%f\n", _hopperWidth-margin*2);
+    //printf("length1:%f\n", subGridLength);
+    //printf("length2:%f\n", _hopperWidth-margin*2);
 
     for(int i=index; i<_particleGridArray.size(); i++)
     {
@@ -453,7 +444,7 @@ void dem::mappings::CreateGrid::beginIteration(
           _xCoordinatesArray,
           _yCoordinatesArray,
           _zCoordinatesArray,
-		  index);
+          index);
     }
     else if(_scenario[2] == nonuniform)
     {
@@ -470,7 +461,7 @@ void dem::mappings::CreateGrid::beginIteration(
           _xCoordinatesArray,
           _yCoordinatesArray,
           _zCoordinatesArray,
-		  index);
+          index);
     }
 
     //////////////////////////////////////////////////////
@@ -499,7 +490,6 @@ void dem::mappings::CreateGrid::beginIteration(
     {
       _particleGridArray[i][1] += maxRad+epsilon;
 
-      printf("passed\n");
       _materialArray.push_back(material);
       _isFrictionArray.push_back(true);
       _isObstacleArray.push_back(isObstacle);
@@ -511,20 +501,17 @@ void dem::mappings::CreateGrid::beginIteration(
       _linearVelocityArray.push_back(linear);
     }
 
-    if(_yCoordinatesArray.size() > 0)
+    if(_yCoordinatesArray.size() >= index)
     {
-/*
-        for(int i=0; i<_particleGridArray.size(); i++)
+        for(int i=index; i<_yCoordinatesArray.size(); i++)
         {
-        	printf("passed2 :%i\n", i);
-          for(int j=0; j<_yCoordinatesArray[i].size(); j++)
-		  {
-			_yCoordinatesArray[i][j] += maxRad+epsilon;
-		  }
+          for(int j=index; j<_yCoordinatesArray[i].size(); j++)
+          {
+            _yCoordinatesArray[i][j] += maxRad+epsilon;
+          }
+    	    }
     	}
-    	*/
-    }
-    printf("passed3\n");
+
 
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
@@ -1223,8 +1210,6 @@ void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
         dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, _isObstacleArray[i]);
       } else if(_componentGridArray[i] == "partialmesh")
       {
-
-    	  return;
         iREAL centreOfMass[3] = {_centreOfMassArray[i][0], _centreOfMassArray[i][1], _centreOfMassArray[i][2]};
         iREAL inertia[9] = {_inertiaArray[i][0], _inertiaArray[i][1], _inertiaArray[i][2], _inertiaArray[i][3], _inertiaArray[i][4], _inertiaArray[i][5], _inertiaArray[i][6], _inertiaArray[i][7], _inertiaArray[i][8]};
         iREAL inverse[9] = {_inverseArray[i][0], _inverseArray[i][1], _inverseArray[i][2], _inverseArray[i][3], _inverseArray[i][4], _inverseArray[i][5], _inverseArray[i][6], _inverseArray[i][7], _inverseArray[i][8]};

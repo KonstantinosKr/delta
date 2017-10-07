@@ -262,7 +262,7 @@ void delta::world::assembly::nonuniform (
         xCoordinatesArray,
         yCoordinatesArray,
         zCoordinatesArray,
-		index);
+        index);
      }
 }
 
@@ -272,7 +272,7 @@ void delta::world::assembly::uniSphereRadius(
     std::vector<iREAL>  &rad,
     std::vector<std::array<iREAL, 3>> &particleGrid,
     std::vector<std::string> &componentGrid,
-	int index)
+    int index)
 {
   iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
   iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
