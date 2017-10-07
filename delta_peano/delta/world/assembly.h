@@ -57,11 +57,10 @@ namespace delta {
   	      std::vector<iREAL>  &rad,
   	      std::vector<std::array<iREAL, 3>> &particleGrid,
   	      std::vector<std::string> &componentGrid,
-  	      iREAL &minParticleDiam,
-  	      iREAL &maxParticleDiam,
   	      std::vector<std::vector<iREAL>>  &xCoordinatesArray,
   	      std::vector<std::vector<iREAL>>  &yCoordinatesArray,
-  	      std::vector<std::vector<iREAL>>  &zCoordinatesArray);
+  	      std::vector<std::vector<iREAL>>  &zCoordinatesArray,
+		  int index);
 
   	  void nonuniform (
   	      iREAL totalMass,
@@ -72,10 +71,10 @@ namespace delta {
   	      std::vector<iREAL>  &rad,
   	      std::vector<std::array<iREAL, 3>> &particleGrid,
   	      std::vector<std::string> &componentGrid,
-  	      iREAL &minParticleDiam, iREAL &maxParticleDiam,
   	      std::vector<std::vector<iREAL>>  &xCoordinatesArray,
   	      std::vector<std::vector<iREAL>>  &yCoordinatesArray,
-  	      std::vector<std::vector<iREAL>>  &zCoordinatesArray);
+  	      std::vector<std::vector<iREAL>>  &zCoordinatesArray,
+		  int index);
 
   	  void uniSphereRadius(
   	      iREAL totalMass,
@@ -83,7 +82,7 @@ namespace delta {
           std::vector<iREAL>  &rad,
           std::vector<std::array<iREAL, 3>> &particleGrid,
           std::vector<std::string> &componentGrid,
-          iREAL &minParticleDiam, iREAL &maxParticleDiam);
+  	  	  int index);
 
   	  void uniMeshGeometry(
   	      iREAL totalMass,
@@ -92,10 +91,10 @@ namespace delta {
           std::vector<iREAL>  &rad,
           std::vector<std::array<iREAL, 3>> &particleGrid,
           std::vector<std::string> &componentGrid,
-          iREAL &minParticleDiam, iREAL &maxParticleDiam,
           std::vector<std::vector<iREAL>>  &xCoordinatesArray,
           std::vector<std::vector<iREAL>>  &yCoordinatesArray,
-          std::vector<std::vector<iREAL>>  &zCoordinatesArray);
+          std::vector<std::vector<iREAL>>  &zCoordinatesArray,
+		  int index);
 
       void uniCubeGeometry(
           iREAL totalMass,
@@ -104,10 +103,10 @@ namespace delta {
           std::vector<iREAL>  &rad,
           std::vector<std::array<iREAL, 3>> &particleGrid,
           std::vector<std::string> &componentGrid,
-          iREAL &minParticleDiam, iREAL &maxParticleDiam,
           std::vector<std::vector<iREAL>>  &xCoordinatesArray,
           std::vector<std::vector<iREAL>>  &yCoordinatesArray,
-          std::vector<std::vector<iREAL>>  &zCoordinatesArray);
+          std::vector<std::vector<iREAL>>  &zCoordinatesArray,
+		  int index);
 
   	  void nonUniSphereRadius(
   	      iREAL totalMass,
@@ -116,7 +115,7 @@ namespace delta {
           std::vector<iREAL>  &rad,
           std::vector<std::array<iREAL, 3>> &particleGrid,
           std::vector<std::string> &componentGrid,
-          iREAL &minParticleDiam, iREAL &maxParticleDiam);
+		  int index);
 
 
   	  void nonUniMeshGeometry(
@@ -127,10 +126,10 @@ namespace delta {
           std::vector<iREAL>  &rad,
           std::vector<std::array<iREAL, 3>> &particleGrid,
           std::vector<std::string> &componentGrid,
-          iREAL &minParticleDiam, iREAL &maxParticleDiam,
           std::vector<std::vector<iREAL>>  &xCoordinatesArray,
           std::vector<std::vector<iREAL>>  &yCoordinatesArray,
-          std::vector<std::vector<iREAL>>  &zCoordinatesArray);
+          std::vector<std::vector<iREAL>>  &zCoordinatesArray,
+		  int index);
 
   	  void loadNuclearGeometry(iREAL position[3],
   	      iREAL width,

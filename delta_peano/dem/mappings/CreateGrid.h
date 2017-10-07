@@ -161,18 +161,6 @@ class dem::mappings::CreateGrid {
 
     static double _centreAsArray[3];
 
-    static std::vector<std::array<double, 3>> _particleGrid;
-    static std::vector<std::string> _componentGrid;
-
-    static std::vector<std::array<double, 3>> _xyzDimensionsArray;
-    static std::vector<std::array<double, 3>> _linearVelocityArray;
-    static std::vector<std::array<double, 3>> _angularVelocityArray;
-
-    static std::vector<double> _radArray;
-    static std::vector<bool> _isObstacleArray;
-    static std::vector<bool> _isFrictionArray;
-    static std::vector<delta::geometry::material::MaterialType> _materialArray;
-
     static std::vector<std::array<double, 3>> _coarsePositionArray;
     static std::vector<double> _coarseisFrictionArray;
     static std::vector<double> _coarseisObstacleArray;
@@ -182,16 +170,28 @@ class dem::mappings::CreateGrid {
     static std::vector<std::array<double, 3>> _coarseLinearVelocityArray;
     static std::vector<std::array<double, 3>> _coarseAngularVelocityArray;
     static std::vector<std::string> _coarseComponentArray;
-    static std::vector<int> _coarseParticleID;
+
 
     static std::vector<std::vector<double>> _xCoordinatesArray;
     static std::vector<std::vector<double>> _yCoordinatesArray;
     static std::vector<std::vector<double>> _zCoordinatesArray;
 
-    static std::vector<std::vector<double>> _centreOfMass;
-    static std::vector<std::vector<double>> _inertia;
-    static std::vector<std::vector<double>> _inverse;
-    static std::vector<double>              _mass;
+    static std::vector<std::vector<double>> _centreOfMassArray;
+    static std::vector<std::vector<double>> _inertiaArray;
+    static std::vector<std::vector<double>> _inverseArray;
+    static std::vector<double>              _massArray;
+    static std::vector<std::array<double, 3>> _particleGridArray;
+    static std::vector<std::string> _componentGridArray;
+    static std::vector<int> _particleIDArray;
+
+    static std::vector<std::array<double, 3>> _xyzDimensionsArray;
+    static std::vector<std::array<double, 3>> _linearVelocityArray;
+    static std::vector<std::array<double, 3>> _angularVelocityArray;
+
+    static std::vector<double> _radArray;
+    static std::vector<bool> _isObstacleArray;
+    static std::vector<bool> _isFrictionArray;
+    static std::vector<delta::geometry::material::MaterialType> _materialArray;
 
     static bool _deployInsitu;
 
