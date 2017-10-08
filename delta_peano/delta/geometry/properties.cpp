@@ -131,8 +131,8 @@ iREAL delta::geometry::properties::getXYZWidth(
     std::vector<iREAL>&  zCoordinates)
 {
 	iREAL xw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
-	iREAL yw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
-	iREAL zw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	iREAL yw = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
+	iREAL zw = delta::geometry::properties::getZw(xCoordinates, yCoordinates, zCoordinates);
 
 	iREAL tmp = xw > yw ? xw : yw;
 	iREAL width = tmp>zw ? tmp : zw;
@@ -146,7 +146,7 @@ iREAL delta::geometry::properties::getXZWidth(
     std::vector<iREAL>&  zCoordinates)
 {
 	iREAL xw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
-	iREAL zw = delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates);
+	iREAL zw = delta::geometry::properties::getZw(xCoordinates, yCoordinates, zCoordinates);
 	iREAL width = xw>zw ? xw : zw;
 
 	return width;

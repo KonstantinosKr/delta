@@ -33,6 +33,7 @@
 #include "delta/geometry/triangle.h"
 #include "delta/geometry/material.h"
 
+#include "delta/world/object.h"
 
 namespace dem {
   namespace mappings {
@@ -159,6 +160,10 @@ class dem::mappings::CreateGrid {
     int   _numberOfObstacles;
     int   _numberOfTriangles;
 
+    static std::vector<delta::world::object> _coarseObjects;
+    static std::vector<delta::world::object> _fineObjects;
+
+
     static double _centreAsArray[3];
 
     static std::vector<std::array<double, 3>> _coarsePositionArray;
@@ -195,9 +200,6 @@ class dem::mappings::CreateGrid {
 
     static bool _deployInsitu;
 
-    bool assertCoarse();
-    bool assertFine();
-
     void deployCoarseEnviroment(
         dem::Vertex& vertex);
   
@@ -221,6 +223,10 @@ class dem::mappings::CreateGrid {
         std::vector<double>&  yCoordinates,
         std::vector<double>&  zCoordinates,
         bool isObstacle);
+
+    int deployObject(
+        dem::Vertex&  vertex,
+        delta::world::object object);
 
     int deployHopper(
         dem::Vertex&  vertex,

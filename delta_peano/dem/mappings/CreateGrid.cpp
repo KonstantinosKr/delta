@@ -53,10 +53,13 @@ double                               dem::mappings::CreateGrid::_maxParticleDiam
 dem::mappings::CreateGrid::GridType  dem::mappings::CreateGrid::_gridType;
 double                               dem::mappings::CreateGrid::_centreAsArray[3];
 
-double								 dem::mappings::CreateGrid::_epsilon;
-int 								 dem::mappings::CreateGrid::_noPointsPerParticle;
+double								                dem::mappings::CreateGrid::_epsilon;
+int 								                  dem::mappings::CreateGrid::_noPointsPerParticle;
 bool                                 dem::mappings::CreateGrid::_isSphere;
 bool                                 dem::mappings::CreateGrid::_deployInsitu;
+
+std::vector<delta::world::object>   dem::mappings::CreateGrid::_coarseObjects;
+std::vector<delta::world::object>   dem::mappings::CreateGrid::_fineObjects;
 
 std::vector<std::array<double, 3>>                    dem::mappings::CreateGrid::_coarsePositionArray;
 std::vector<std::string>                              dem::mappings::CreateGrid::_coarseComponentArray;
@@ -87,63 +90,6 @@ std::vector<std::vector<double>>     dem::mappings::CreateGrid::_inertiaArray;
 std::vector<std::vector<double>>     dem::mappings::CreateGrid::_inverseArray;
 std::vector<double>                  dem::mappings::CreateGrid::_massArray;
 
-bool dem::mappings::CreateGrid::assertCoarse()
-{
-  /*std::vector<std::array<double, 3>>                    dem::mappings::CreateGrid::_coarsePositionArray;
-  std::vector<std::string>                              dem::mappings::CreateGrid::_coarseComponentArray;
-  std::vector<delta::geometry::material::MaterialType>  dem::mappings::CreateGrid::_coarseMaterialArray;
-  std::vector<double>                                   dem::mappings::CreateGrid::_coarseRadiusArray;
-  std::vector<std::array<double, 3>>                    dem::mappings::CreateGrid::_coarseXYZDimensionsArray;
-  std::vector<std::array<double, 3>>                    dem::mappings::CreateGrid::_coarseLinearVelocityArray;
-  std::vector<std::array<double, 3>>                    dem::mappings::CreateGrid::_coarseAngularVelocityArray;
-  std::vector<double>                                   dem::mappings::CreateGrid::_coarseisFrictionArray;
-  std::vector<double>                                   dem::mappings::CreateGrid::_coarseisObstacleArray;*/
-
-  int c1 = _coarsePositionArray.size();
-  int c2 = _coarseComponentArray.size();
-  int c3 = _coarseMaterialArray.size();
-  int c4 = _coarseRadiusArray.size();
-  int c5 = _coarseXYZDimensionsArray.size();
-  int c6 = _coarseLinearVelocityArray.size();
-  int c7 = _coarseAngularVelocityArray.size();
-  int c8 = _coarseisFrictionArray.size();
-  int c9 = _coarseisObstacleArray.size();
-
-  if(c1 == c2 == c3 == c4 == c5 == c6 == c7 == c8 == c9)
-  {
-    return true;
-  }
-  return false;
-}
-
-bool dem::mappings::CreateGrid::assertFine()
-{
-  /*std::vector<std::array<double, 3>>                    dem::mappings::CreateGrid::_particleGrid;
-std::vector<std::string>                              dem::mappings::CreateGrid::_componentGrid;
-std::vector<delta::geometry::material::MaterialType>  dem::mappings::CreateGrid::_materialArray;
-std::vector<double>                                   dem::mappings::CreateGrid::_radArray;
-std::vector<std::array<double, 3>>                    dem::mappings::CreateGrid::_xyzDimensionsArray;
-std::vector<std::array<double, 3>>                    dem::mappings::CreateGrid::_linearVelocityArray;
-std::vector<std::array<double, 3>>                    dem::mappings::CreateGrid::_angularVelocityArray;
-std::vector<bool>                                     dem::mappings::CreateGrid::_isFrictionArray;
-std::vector<bool>                                     dem::mappings::CreateGrid::_isObstacleArray;*/
-
-  int c1 = _particleGridArray.size();
-  int c2 = _componentGridArray.size();
-  int c3 = _materialArray.size();
-  int c4 = _radArray.size();
-  int c5 = _xyzDimensionsArray.size();
-  int c6 = _linearVelocityArray.size();
-  int c7 = _angularVelocityArray.size();
-  int c8 = _isFrictionArray.size();
-  int c9 = _isObstacleArray.size();
-
-  if(c1 == c2 == c3 == c4 == c5 == c6 == c7 == c8 == c9)
-  {
-    return true;
-  }
-  return false;
-}
 
 void dem::mappings::CreateGrid::setScenario(
     Scenario scenario[4],
@@ -154,9 +100,9 @@ void dem::mappings::CreateGrid::setScenario(
     int noPointsPerGranulate)
 {
 	_scenario[0]        	= scenario[0];
-    _scenario[1]          = scenario[1];
-    _scenario[2]          = scenario[2];
-    _scenario[3]          = scenario[3];
+  _scenario[1]          = scenario[1];
+  _scenario[2]          = scenario[2];
+  _scenario[3]          = scenario[3];
 	_maxH            		  = maxH;
 	_minParticleDiam 		  = particleDiamMin;
 	_maxParticleDiam 		  = particleDiamMax;
@@ -180,15 +126,17 @@ void dem::mappings::CreateGrid::beginIteration(
   _numberOfTriangles = 0;
   _numberOfObstacles = 0;
 
+  //delta::world::object object;
+
   _isSphere = (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
                dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none);
 
 
   iREAL centre[3] = {0.5, 0.5, 0.5};
 
-  ///CREATE COARSE WORLD
 
   _deployInsitu = false;
+
   //////////////////////////////////////////////////////
   /// NUCLEAR ARRAY
   //////////////////////////////////////////////////////
@@ -196,18 +144,21 @@ void dem::mappings::CreateGrid::beginIteration(
   {
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
     double height = 0.05; double width = 0.30;
-
     std::array<double, 3> xyzDimensions = {width, height, width};
-    _coarseXYZDimensionsArray.push_back(xyzDimensions);
-    _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::GOLD);
-    _coarseisFrictionArray.push_back(true);
-    _coarseisObstacleArray.push_back(true);
-    _coarseRadiusArray.push_back(0);
+    std::array<double, 3> position = {centre[0], centre[1], centre[2]};
     std::array<double, 3> linear = {-1.0, 0, 0};
     std::array<double, 3> angular = {0, 0, 0};
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::GOLD;
+    bool isFriction = true;
+    bool isObstacle = true;
+
+    _coarseXYZDimensionsArray.push_back(xyzDimensions);
+    _coarseMaterialArray.push_back(material);
+    _coarseisFrictionArray.push_back(isFriction);
+    _coarseisObstacleArray.push_back(isObstacle);
+    _coarseRadiusArray.push_back(0);
     _coarseLinearVelocityArray.push_back(linear);
     _coarseAngularVelocityArray.push_back(angular);
-    std::array<double, 3> position = {centre[0], centre[1], centre[2]};
     _coarsePositionArray.push_back(position);
     _coarseComponentArray.push_back("cube");
 
@@ -286,9 +237,9 @@ void dem::mappings::CreateGrid::beginIteration(
     std::array<double, 3> position = {centre[0], centre[1], centre[2]};
 
     bool isObstacle = true;
-    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
+    auto material = delta::geometry::material::MaterialType::WOOD;
 
-/*
+    /*
     _coarseXYZDimensionsArray.push_back(xyzDimensions);
     _coarseMaterialArray.push_back(material);
     _coarseisFrictionArray.push_back(true);
@@ -300,9 +251,9 @@ void dem::mappings::CreateGrid::beginIteration(
 
     _coarsePositionArray.push_back(position);
     _coarseComponentArray.push_back("hopper");//hopper creations
-*/
+    */
 
-    int refinement = 4;
+    int refinement = 1;
 
     std::vector<double> xCoordinates, yCoordinates, zCoordinates;
     delta::geometry::hopper::generateHopper(centre, xyzDimensions[0], _hopperThickness, xyzDimensions[1], _hopperHatch, refinement, _maxH, xCoordinates, yCoordinates, zCoordinates);
@@ -351,21 +302,34 @@ void dem::mappings::CreateGrid::beginIteration(
     ////////FLOOR//////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
     double height = 0.05; double width = 0.32;
-
-    xyzDimensions = {width, height, width};
-    _coarseXYZDimensionsArray.push_back(xyzDimensions);
-    _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
-    _coarseisFrictionArray.push_back(true);
-    _coarseisObstacleArray.push_back(true);
-    _coarseRadiusArray.push_back(0);
     linear = {0, 0, 0};
     angular = {0, 0, 0};
+    position = {centre[0], 0.35, centre[2]};
+    material = delta::geometry::material::MaterialType::WOOD;
+    bool isFriction = true;
+    bool isObstacle = true;
+
+    xyzDimensions = {width, height, width};
+
+    /*
+    _coarseXYZDimensionsArray.push_back(xyzDimensions);
+    _coarseMaterialArray.push_back(material);
+    _coarseisFrictionArray.push_back(isFriction);
+    _coarseisObstacleArray.push_back(isObstacle);
+    _coarseRadiusArray.push_back(0);
     _coarseLinearVelocityArray.push_back(linear);
     _coarseAngularVelocityArray.push_back(angular);
-
-    position = {centre[0], 0.35, centre[2]};
     _coarsePositionArray.push_back(position);
     _coarseComponentArray.push_back("cube");//floor creations
+    */
+
+    delta::world::object objectFloor(
+        "cube", 0, position, linear, angular, material, isObstacle, isFriction);
+
+    objectFloor.generateMesh(width, height, width, 0, 0, 0, width, _noPointsPerParticle);
+
+    _coarseObjects.push_back(objectFloor);
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -512,7 +476,6 @@ void dem::mappings::CreateGrid::beginIteration(
     	    }
     	}
 
-
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
@@ -530,104 +493,149 @@ void dem::mappings::CreateGrid::beginIteration(
     double height = 0.05; double width = 0.35;
 
     std::array<double, 3> xyzDimensions = {width, height, width};
-    _coarseXYZDimensionsArray.push_back(xyzDimensions);
-    _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
-    _coarseisFrictionArray.push_back(true);
-    _coarseisObstacleArray.push_back(true);
-    _coarseRadiusArray.push_back(0);
+    double rad = 0.0;
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
+    bool isFriction = true;
+    bool isObstacle = true;
     std::array<double, 3> linear = {0, 0, 0};
     std::array<double, 3> angular = {0, 0, 0};
+    std::array<double, 3> position = {centre[0], centre[1], centre[2]};
+
+    /*
+    _coarseXYZDimensionsArray.push_back(xyzDimensions);
+    _coarseMaterialArray.push_back(material);
+    _coarseisFrictionArray.push_back(isFriction);
+    _coarseisObstacleArray.push_back(isObstacle);
+    _coarseRadiusArray.push_back(rad);
     _coarseLinearVelocityArray.push_back(linear);
     _coarseAngularVelocityArray.push_back(angular);
-
-    std::array<double, 3> position = {centre[0], centre[1], centre[2]};
     _coarsePositionArray.push_back(position);
-    _coarseComponentArray.push_back("cube");
+    _coarseComponentArray.push_back("cube");*/
     ////////////////////////////////////////////////////////////////////////////////
 
-    ////////////////////////////////////////////////////////////////////////////////
+    delta::world::object objectFloor(
+        "cube", 0, position, linear, angular, material, isObstacle, isFriction);
 
+    objectFloor.generateMesh(width, height, width, 0, 0, 0, rad, _noPointsPerParticle);
+
+    _coarseObjects.push_back(objectFloor);
+
+    ////////////////////////////////////////////////////////////////////////////////
     if(_scenario[2] == sstatic)
     {
     ///////////////////////
-    //create particle
-    _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
 
-    _coarseisFrictionArray.push_back(true);
-
-    _coarseisObstacleArray.push_back(false);
-    _coarseRadiusArray.push_back(0.02);
-
-    std::array<double, 3> xyzDimensions = {_coarseRadiusArray[0], _coarseRadiusArray[0], _coarseRadiusArray[0]};
-    _coarseXYZDimensionsArray.push_back(xyzDimensions);
-    //Y: 0.55-0.011547/2
+    bool isFriction = true;
+    bool isObstacle = false;
+    double rad = 0.02;
     std::array<double, 3> position = {centre[0]+0.05, centre[1] + height, centre[2]};
-
-    _coarsePositionArray.push_back(position);
-
     std::array<double, 3> linear = {0, 0, 0};
     std::array<double, 3> angular = {0, 0, 0};
 
+    std::array<double, 3> xyzDimensions = {_coarseRadiusArray[0], _coarseRadiusArray[0], _coarseRadiusArray[0]};
+
+    /*
+    _coarseMaterialArray.push_back(material);
+    _coarseisFrictionArray.push_back(isFriction);
+    _coarseisObstacleArray.push_back(isObstacle);
+    _coarseRadiusArray.push_back(rad);
+    _coarseXYZDimensionsArray.push_back(xyzDimensions);
+    _coarsePositionArray.push_back(position);
     _coarseLinearVelocityArray.push_back(linear);
-    _coarseAngularVelocityArray.push_back(angular);
+    _coarseAngularVelocityArray.push_back(angular);*/
 
     if(_isSphere){
-      _coarseComponentArray.push_back("sphere");
+      //_coarseComponentArray.push_back("sphere");
+      delta::world::object objectA(
+          "cube", 1, position, linear, angular, material, isObstacle, isFriction);
+
+      objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
+      _coarseObjects.push_back(objectA);
     } else {
-      _coarseComponentArray.push_back("cube");
+      //_coarseComponentArray.push_back("cube");
+      delta::world::object objectA(
+          "sphere", 1, position, linear, angular, material, isObstacle, isFriction);
+
+      objectA.generateSphere(rad);
+      _coarseObjects.push_back(objectA);
     }
 
     } else if(_scenario[2] == slide)
     {
-      _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
-
-      _coarseisFrictionArray.push_back(true);
-      _coarseisObstacleArray.push_back(false);
-
-      _coarseRadiusArray.push_back(0.02);
+      delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
+      bool isFriction = true;
+      bool isObstacle = false;
+      double rad = 0.02;
 
       std::array<double, 3> linear = {0.5, 0.0, 0.0};
       std::array<double, 3> angular = {0.0, 0.0, 0.0};
+      std::array<double, 3> position = {_centreAsArray[0], _centreAsArray[1] + height/2 + _coarseRadiusArray[0] + _epsilon, _centreAsArray[2]};
+      std::array<double, 3> xyzDimensions = {_coarseRadiusArray[0], _coarseRadiusArray[0], _coarseRadiusArray[0]};
 
+      /*
+      _coarseMaterialArray.push_back(material);
+      _coarseisFrictionArray.push_back(isFriction);
+      _coarseisObstacleArray.push_back(isObstacle);
+      _coarseRadiusArray.push_back(rad);
       _coarseLinearVelocityArray.push_back(linear);
       _coarseAngularVelocityArray.push_back(angular);
-      if(_isSphere){
-        _coarseComponentArray.push_back("sphere");
-      } else {
-        _coarseComponentArray.push_back("cube");
-      }
-
-      std::array<double, 3> xyzDimensions = {_coarseRadiusArray[0], _coarseRadiusArray[0], _coarseRadiusArray[0]};
-      _coarseXYZDimensionsArray.push_back(xyzDimensions);
-
-      std::array<double, 3> position = {_centreAsArray[0], _centreAsArray[1] + height/2 + _coarseRadiusArray[0] + _epsilon, _centreAsArray[2]};
       _coarsePositionArray.push_back(position);
+      _coarseXYZDimensionsArray.push_back(xyzDimensions);*/
 
+      if(_isSphere){
+        //_coarseComponentArray.push_back("sphere");
+        delta::world::object objectA(
+            "cube", 1, position, linear, angular, material, isObstacle, isFriction);
+
+        objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
+        _coarseObjects.push_back(objectA);
+      } else {
+        //_coarseComponentArray.push_back("cube");
+        delta::world::object objectA(
+            "sphere", 1, position, linear, angular, material, isObstacle, isFriction);
+        objectA.generateSphere(rad);
+
+        _coarseObjects.push_back(objectA);
+      }
     } else if(_scenario[2] == roll)
     {
-      _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
-
-      _coarseisFrictionArray.push_back(true);
-      _coarseisObstacleArray.push_back(false);
-
-      _coarseRadiusArray.push_back(0.02);
-
+      delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
       std::array<double, 3> linear = {0, 0, 0};
       std::array<double, 3> angular = {5.0, 0, 0};
+      std::array<double, 3> xyzDimensions = {_coarseRadiusArray[0], _coarseRadiusArray[0], _coarseRadiusArray[0]};
+      std::array<double, 3> position = {centre[0], centre[1] + height/2 + centre[0] + _epsilon, _centreAsArray[2]};
+      double rad = 0.02;
 
+      bool isFriction = true;
+      bool isObstacle = false;
+
+      /*
+      _coarseMaterialArray.push_back(material);
+      _coarseisFrictionArray.push_back(isFriction);
+      _coarseisObstacleArray.push_back(isObstacle);
+      _coarseRadiusArray.push_back(rad);
       _coarseLinearVelocityArray.push_back(linear);
       _coarseAngularVelocityArray.push_back(angular);
-
-      std::array<double, 3> xyzDimensions = {_coarseRadiusArray[0], _coarseRadiusArray[0], _coarseRadiusArray[0]};
       _coarseXYZDimensionsArray.push_back(xyzDimensions);
-
-      std::array<double, 3> position = {centre[0], centre[1] + height/2 + centre[0] + _epsilon, _centreAsArray[2]};
-      _coarsePositionArray.push_back(position);
+      _coarsePositionArray.push_back(position);*/
 
       if(_isSphere){
-        _coarseComponentArray.push_back("sphere");
+        //_coarseComponentArray.push_back("sphere");
+
+        delta::world::object objectA(
+            "cube", 1, position, linear, angular, material, isObstacle, isFriction);
+
+        objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
+        _coarseObjects.push_back(objectA);
       } else {
-        _coarseComponentArray.push_back("cube");
+        //_coarseComponentArray.push_back("cube");
+
+        delta::world::object objectA(
+            "sphere", 1, position, linear, angular, material, isObstacle, isFriction);
+        objectA.generateSphere(rad);
+
+        _coarseObjects.push_back(objectA);
       }
     }
     //////////////////////////////////////////////////////
@@ -639,41 +647,45 @@ void dem::mappings::CreateGrid::beginIteration(
     /// TWO PARTICLES CRASH SCENARIO
     //////////////////////////////////////////////////////
 
-    //create two particles
-    _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
-    _coarseisFrictionArray.push_back(false);
-    _coarseisObstacleArray.push_back(false);
-    _coarseRadiusArray.push_back(0.01);
-    std::array<double, 3> position = {centre[0], 0.9, centre[2]};
-    _coarsePositionArray.push_back(position);
+    auto material = delta::geometry::material::MaterialType::WOOD;
+    double rad = 0.01;
+    std::array<double, 3> centreArray = {centre[0], 0.9, centre[2]};
     std::array<double, 3> linear = {0, -1, 0};
     std::array<double, 3> angular = {0, 0, 0};
-    _coarseLinearVelocityArray.push_back(linear);
-    _coarseAngularVelocityArray.push_back(angular);
 
     if(_isSphere){
-      _coarseComponentArray.push_back("sphere");
+      delta::world::object objectA(
+          "sphere", 0, centreArray, linear, angular, material, false, false);
+
+      objectA.generateSphere(rad);
+
+      centreArray[1] = 0.1;
+      linear[1] = 1;
+
+      delta::world::object objectB(
+          "sphere", 1, centreArray, linear, angular, material, false, false);
+
+      objectB.generateSphere(rad);
+
+      _coarseObjects.push_back(objectA);
+      _coarseObjects.push_back(objectB);
     } else {
-      _coarseComponentArray.push_back("granulate");
+      delta::world::object objectA(
+          "granulate", 0, centreArray, linear, angular, material, false, false);
+
+      objectA.generateMesh(0,0,0,0,0,0,rad,_noPointsPerParticle);
+
+      centreArray[1] = 0.1;
+      linear[1] = 1;
+
+      delta::world::object objectB(
+          "granulate", 1, centreArray, linear, angular, material, false, false);
+
+      objectB.generateMesh(0,0,0,0,0,0,rad,_noPointsPerParticle);
+
+      _coarseObjects.push_back(objectA);
+      _coarseObjects.push_back(objectB);
     }
-
-
-    _coarseMaterialArray.push_back(delta::geometry::material::MaterialType::WOOD);
-    _coarseisFrictionArray.push_back(false);
-    _coarseisObstacleArray.push_back(false);
-    _coarseRadiusArray.push_back(0.01);
-    position[1] = 0.1;
-    _coarsePositionArray.push_back(position);
-    linear[1] = 1;
-    _coarseLinearVelocityArray.push_back(linear);
-    _coarseAngularVelocityArray.push_back(angular);
-
-    if(_isSphere){
-      _coarseComponentArray.push_back("sphere");
-    } else {
-      _coarseComponentArray.push_back("granulate");
-    }
-
 
     //////////////////////////////////////////////////////
     /// END | TWO PARTICLES CRASH SCENARIO
@@ -693,14 +705,30 @@ void dem::mappings::CreateGrid::beginIteration(
     //double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
     //int particleid = deployBox(vertex, 0, 0, _centreAsArray, particleDiameter/2, particleDiameter/2, 0, 1.0/8.0, 1.0/8.0, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
 
-    _materialArray.push_back(delta::geometry::material::MaterialType::WOOD);
-    _isFrictionArray.push_back(false);
-    _isObstacleArray.push_back(false);
-    _radArray.push_back(0.1);
-    std::array<double, 3> position = {centre[0], 0.8, centre[2]};
-    _particleGridArray.push_back(position);
+    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
 
+    bool isFriction = false;
+    bool isObstacle = false;
+    double rad = 0.1;
+    std::array<double, 3> linear = {0, 0, 0};
     std::array<double, 3> angular = {0, 0, 0};
+    std::array<double, 3> position = {centre[0], 0.8, centre[2]};
+
+    if(_scenario[0] == blackHoleWithCubes ||
+       _scenario[0] == blackHoleWithGranulates  ||
+       _scenario[0] == blackHoleWithRandomOrientedCubes)
+    {
+      linear[0] = static_cast<double>( rand() ) / static_cast<double>(RAND_MAX);
+      linear[1] = static_cast<double>( rand() ) / static_cast<double>(RAND_MAX);
+      linear[2] = static_cast<double>( rand() ) / static_cast<double>(RAND_MAX);
+    }
+
+    /*
+    _materialArray.push_back(material);
+    _isFrictionArray.push_back(isFriction);
+    _isObstacleArray.push_back(isObstacle);
+    _radArray.push_back(rad);
+    _particleGridArray.push_back(position);
     _angularVelocityArray.push_back(angular);
 
     if(_isSphere){
@@ -712,15 +740,20 @@ void dem::mappings::CreateGrid::beginIteration(
     std::array<double, 3> xyz = {_radArray[0], _radArray[0], _radArray[0]};
     _xyzDimensionsArray.push_back(xyz);
 
-    if(_scenario[0] == blackHoleWithCubes ||
-       _scenario[0] == blackHoleWithGranulates  ||
-       _scenario[0] == blackHoleWithRandomOrientedCubes)
-    {
-      std::array<double, 3> linear = {static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX), static_cast<double>( rand() ) / static_cast<double>(RAND_MAX)};
-    } else
-    {
-      std::array<double, 3> linear = {0, 0, 0};
-      _linearVelocityArray.push_back(linear);
+    _linearVelocityArray.push_back(linear);
+    */
+
+    //OBJECT ISSUE: here object particles number has to be incremental with deployment in non-insitu enviroment
+    if(_isSphere){
+      delta::world::object objectA(
+          "cube", -1, position, linear, angular, material, false, false);
+
+      _coarseObjects.push_back(objectA);
+    } else {
+      delta::world::object objectA(
+          "cube", -1, position, linear, angular, material, false, false);
+
+      _coarseObjects.push_back(objectA);
     }
     //////////////////////////////////////////////////////
     /// END | FREEFALL AND BLACKHOLE SCENARIO
@@ -866,6 +899,29 @@ void dem::mappings::CreateGrid::createCell(
 void dem::mappings::CreateGrid::deployCoarseEnviroment(
     dem::Vertex& vertex)
 {
+  for(int i=0; i<_coarseObjects.size(); i++)
+  {
+    delta::world::object obj = _coarseObjects[i];
+
+    iREAL position[3] = {obj.getCentre()[0], obj.getCentre()[1], obj.getCentre()[2]};
+    int newParticleNumber = dem::mappings::CreateGrid::deployObject(vertex, obj);
+
+    if(newParticleNumber > -1)
+    {
+      vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = obj.getLinearVelocity()[0];
+      vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = obj.getLinearVelocity()[1];
+      vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = obj.getLinearVelocity()[2];
+
+      vertex.getParticle(newParticleNumber)._persistentRecords._angular(0) = obj.getAngularVelocity()[0];
+      vertex.getParticle(newParticleNumber)._persistentRecords._angular(1) = obj.getAngularVelocity()[1];
+      vertex.getParticle(newParticleNumber)._persistentRecords._angular(2) = obj.getAngularVelocity()[2];
+
+      vertex.getParticle(newParticleNumber)._persistentRecords._referentialAngular(0) = obj.getAngularVelocity()[0];
+      vertex.getParticle(newParticleNumber)._persistentRecords._referentialAngular(1) = obj.getAngularVelocity()[1];
+      vertex.getParticle(newParticleNumber)._persistentRecords._referentialAngular(2) = obj.getAngularVelocity()[2];
+    }
+  }
+return;
   for(int i=0; i<_coarsePositionArray.size(); i++)
   {
     iREAL position[3] = {_coarsePositionArray[i][0], _coarsePositionArray[i][1], _coarsePositionArray[i][2]};
@@ -890,7 +946,6 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
 
     if(newParticleNumber > -1)
     {
-
       if(!_coarseLinearVelocityArray.size() > 0) return;
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = _coarseLinearVelocityArray[i][0];
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = _coarseLinearVelocityArray[i][1];
@@ -1088,6 +1143,27 @@ int dem::mappings::CreateGrid::deploySphere(
   int particleNumber = vertex.createSphereParticle(position, radius, eps, friction, material, isObstacle, _numberOfParticles);
   _numberOfParticles++;
   if(isObstacle) _numberOfObstacles++;
+  return particleNumber;
+}
+
+int dem::mappings::CreateGrid::deployObject(
+    dem::Vertex&  vertex,
+    delta::world::object object)
+{
+  int particleNumber = -1;
+
+  if(object.getComponent() == "sphere")
+  {
+    iREAL position[3] = {object.getCentre()[0], object.getCentre()[1], object.getCentre()[2]};
+    particleNumber = vertex.createSphereParticle(position, object.getRad(), _epsilon, object.getIsFriction(), object.getMaterial(), object.getIsObstacle(), _numberOfParticles);
+  } else {
+    std::vector<double> xCoordinates = object.getxCoordinates();
+    std::vector<double> yCoordinates = object.getyCoordinates();
+    std::vector<double> zCoordinates = object.getzCoordinates();
+    particleNumber = vertex.createParticle(xCoordinates, yCoordinates, zCoordinates, _epsilon, object.getIsFriction(), object.getMaterial(), object.getIsObstacle(), _numberOfParticles, 0);
+  }
+  _numberOfParticles++;
+  if(object.getIsObstacle()) _numberOfObstacles++;
   return particleNumber;
 }
 
