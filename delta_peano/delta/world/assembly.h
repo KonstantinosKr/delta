@@ -69,7 +69,7 @@ namespace delta {
           int index,
           bool isSphereOrNone,
           int noPointsPerParticle,
-          std::vector<delta::world::object> _insitufineObjects);
+          std::vector<delta::world::object>& _insitufineObjects);
 
   	  void nonuniform (
   	      iREAL totalMass,
@@ -91,7 +91,7 @@ namespace delta {
   	            iREAL isSphereOrNone,
   	            iREAL subcellx,
   	            int _noPointsPerParticle,
-  	            std::vector<delta::world::object> _insitufineObjects);
+  	            std::vector<delta::world::object>& _insitufineObjects);
 
   	  void uniSphereRadius(
   	      iREAL totalMass,
@@ -104,7 +104,7 @@ namespace delta {
   	  void uniSphereRadius(
   	      iREAL totalMass,
         int index,
-  	      std::vector<delta::world::object> _insitufineObjects);
+  	      std::vector<delta::world::object>& _insitufineObjects);
 
   	  void uniMeshGeometry(
   	      iREAL totalMass,
@@ -143,7 +143,7 @@ namespace delta {
           iREAL totalMass,
           int index,
           iREAL subcellx,
-          std::vector<delta::world::object> _insitufineObjects);
+          std::vector<delta::world::object>& _insitufineObjects);
 
   	  void nonUniMeshGeometry(
   	      iREAL totalMass,
@@ -161,7 +161,7 @@ namespace delta {
   	  void loadNuclearGeometry(iREAL position[3],
   	      iREAL width,
   	      int layers,
-  	      std::vector<delta::world::object> _insitufineObjects);
+  	      std::vector<delta::world::object>& _insitufineObjects);
 
   	  void makeBrickGrid(
   	      iREAL position[3],
@@ -169,7 +169,7 @@ namespace delta {
   	      int   xzElements,
   	      iREAL arrayYlength,
   	      int   yElements,
-  	      std::vector<delta::world::object> _insitufineObjects);
+  	      std::vector<delta::world::object>& _insitufineObjects);
     }
   }
 }

@@ -204,11 +204,6 @@ class dem::mappings::CreateGrid {
         bool friction,
         bool isObstacle);
 
-    void deployParticleInsituSubGrid(
-        dem::Vertex&  vertex,
-        double centreAsArray[3],
-        double cellSize);
-
     int decomposeMeshIntoParticles(
         std::vector<double> xCoordinates,
         std::vector<double> yCoordinates,

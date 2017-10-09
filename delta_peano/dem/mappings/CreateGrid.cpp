@@ -171,7 +171,7 @@ void dem::mappings::CreateGrid::beginIteration(
     bool isObstacle = true;
     bool isFriction = false;
     auto material = delta::geometry::material::MaterialType::WOOD;
-    /*
+
     int refinement = 1;
     std::vector<double> xCoordinates, yCoordinates, zCoordinates;
     delta::geometry::hopper::generateHopper(centre, xyzDimensions[0], _hopperThickness, xyzDimensions[1], _hopperHatch, refinement, _maxH, xCoordinates, yCoordinates, zCoordinates);
@@ -209,8 +209,8 @@ void dem::mappings::CreateGrid::beginIteration(
     ///////////////////////////////////////////////////////////////////////////////////////////
     /////////FLOOR/////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
-*/
-    int hopperParticles = 0;
+
+    //int hopperParticles = 0;
 
 	  ////////////////////////////////////////////////////////////////////
 	  //////////PARTICLE GRID/////////////////////////////////////////////
@@ -256,9 +256,8 @@ void dem::mappings::CreateGrid::beginIteration(
     for(int i=0; i<grid.size(); i++)
     {
       std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
-      delta::world::object objectA(
-        "sphere", 1, p, linear, angular, material, isObstacle, isFriction);
-      _insitufineObjects.push_back(objectA);
+      delta::world::object particles("sphere", i, p, linear, angular, material, isObstacle, isFriction);
+      _insitufineObjects.push_back(particles);
 
       if(p[0] < xmin) xmin = p[0];
       if(p[0] > xmax) xmax = p[0];
@@ -546,8 +545,6 @@ void dem::mappings::CreateGrid::beginIteration(
     //////////////////////////////////////////////////////
   }
 
-  //if(dem::mappings::CreateGrid::_gridType == NoGrid) _deployInsitu = false;
-
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -589,6 +586,7 @@ void dem::mappings::CreateGrid::createInnerVertex(
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
 
+
 void dem::mappings::CreateGrid::createBoundaryVertex(
 		dem::Vertex&                                 fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
@@ -626,6 +624,7 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
+
 
 void dem::mappings::CreateGrid::createCell(
 		dem::Cell&                                fineGridCell,
@@ -682,6 +681,7 @@ void dem::mappings::CreateGrid::createCell(
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
 
+
 void dem::mappings::CreateGrid::deployCoarseEnviroment(
     dem::Vertex& vertex)
 {
@@ -712,9 +712,37 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
     dem::Vertex& vertex,
     double cellSize)
 {
+  iREAL cellXLeftBoundary = _centreAsArray[0] - cellSize/2, cellZLeftBoundary = _centreAsArray[2] - cellSize/2;
+  iREAL cellXRightBoundary= _centreAsArray[0] + cellSize/2, cellZRightBoundary = _centreAsArray[2] + cellSize/2;
 
-  dem::mappings::CreateGrid::deployParticleInsituSubGrid(vertex, _centreAsArray, cellSize);
+  iREAL cellYUPBoundary = _centreAsArray[1] + cellSize/2;
+  iREAL cellYDWBoundary = _centreAsArray[1] - cellSize/2;
 
+  if((_numberOfParticles-_numberOfObstacles) <= _insitufineObjects.size())
+  for(unsigned i=0; i<_insitufineObjects.size(); i++)
+  {
+    delta::world::object object = _insitufineObjects[i];
+    if((object.getCentre()[0] >= cellXLeftBoundary && object.getCentre()[0] <= cellXRightBoundary) &&
+       (object.getCentre()[1] >= cellYDWBoundary && object.getCentre()[1] <= cellYUPBoundary) &&
+       (object.getCentre()[2] >= cellZLeftBoundary && object.getCentre()[2] <= cellZRightBoundary))
+    {
+      int newParticleNumber = dem::mappings::CreateGrid::deployObject(vertex, object);
+      if(newParticleNumber > -1)
+      {
+        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = object.getLinearVelocity()[0];
+        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = object.getLinearVelocity()[1];
+        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = object.getLinearVelocity()[2];
+
+        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = object.getAngularVelocity()[0];
+        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = object.getAngularVelocity()[1];
+        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = object.getAngularVelocity()[2];
+      }
+    }
+  }
+
+  //////////////////////////////////////////////////////////////
+  //////////////PER CELL CENTER DEPLOYMENT//////////////////////
+  //////////////////////////////////////////////////////////////
   for(int i=0; i<_fineObjects.size(); i++)
   {
     delta::world::object obj = _fineObjects[i];
@@ -723,7 +751,6 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
     obj.setCentre(position);
 
     int newParticleNumber = dem::mappings::CreateGrid::deployObject(vertex, obj);
-
     if(newParticleNumber > -1)
     {
       vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = obj.getLinearVelocity()[0];
@@ -739,7 +766,9 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
       vertex.getParticle(newParticleNumber)._persistentRecords._referentialAngular(2) = obj.getAngularVelocity()[2];
     }
   }
-
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
   #ifdef STATSPARTICLE
     logWarning( "createCell", "create particle at "<< centre << " with diameter " << particleDiameter << " and id: " << particleId);
   #endif
@@ -969,43 +998,6 @@ int dem::mappings::CreateGrid::decomposeMeshIntoParticles(
   }
 
   return xCoordinates.size()/3;
-}
-
-void dem::mappings::CreateGrid::deployParticleInsituSubGrid(
-    dem::Vertex&  vertex,
-    double centreAsArray[3],
-    double cellSize)
-{
-  iREAL cellXLeftBoundary = centreAsArray[0] - cellSize/2, cellZLeftBoundary = centreAsArray[2] - cellSize/2;
-  iREAL cellXRightBoundary= centreAsArray[0] + cellSize/2, cellZRightBoundary = centreAsArray[2] + cellSize/2;
-
-  iREAL cellYUPBoundary = centreAsArray[1] + cellSize/2;
-  iREAL cellYDWBoundary = centreAsArray[1] - cellSize/2;
-
-  if((_numberOfParticles-_numberOfObstacles) <= _insitufineObjects.size())
-  for(unsigned i=0; i<_insitufineObjects.size(); i++)
-  {
-    delta::world::object object = _insitufineObjects[i];
-    if((object.getCentre()[0] >= cellXLeftBoundary && object.getCentre()[0] <= cellXRightBoundary) &&
-       (object.getCentre()[1] >= cellYDWBoundary && object.getCentre()[1] <= cellYUPBoundary) &&
-       (object.getCentre()[2] >= cellZLeftBoundary && object.getCentre()[2] <= cellZRightBoundary))
-    {
-      delta::world::object obj = _insitufineObjects[i];
-
-      int newParticleNumber = dem::mappings::CreateGrid::deployObject(vertex, obj);
-
-      if(newParticleNumber > -1)
-      {
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = object.getLinearVelocity()[0];
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = object.getLinearVelocity()[1];
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = object.getLinearVelocity()[2];
-
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(0) = object.getAngularVelocity()[0];
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(1) = object.getAngularVelocity()[1];
-        vertex.getParticle(newParticleNumber)._persistentRecords._velocity(2) = object.getAngularVelocity()[2];
-      }
-    }
-  }
 }
 
 void dem::mappings::CreateGrid::endIteration(

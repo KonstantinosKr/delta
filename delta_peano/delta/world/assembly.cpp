@@ -231,7 +231,7 @@ void delta::world::assembly::uniform(
       int index,
       bool isSphereOrNone,
       int noPointsPerParticle,
-      std::vector<delta::world::object> _insitufineObjects)
+      std::vector<delta::world::object> &_insitufineObjects)
 {
 
   if(isSphereOrNone)
@@ -312,7 +312,7 @@ void delta::world::assembly::nonuniform(
           iREAL isSphereOrNone,
           iREAL subcellx,
           int _noPointsPerParticle,
-          std::vector<delta::world::object> _insitufineObjects)
+          std::vector<delta::world::object> &_insitufineObjects)
 {
   if(isSphereOrNone)
   {
@@ -348,7 +348,7 @@ void delta::world::assembly::uniSphereRadius(
 void delta::world::assembly::uniSphereRadius(
     iREAL totalMass,
     int index,
-    std::vector<delta::world::object> _insitufineObjects)
+    std::vector<delta::world::object> &_insitufineObjects)
 {
 
   if(!_insitufineObjects.size() > 0) return;
@@ -530,7 +530,7 @@ void delta::world::assembly::nonUniSphereRadius(
     iREAL totalMass,
     int index,
     iREAL subcellx,
-    std::vector<delta::world::object> _insitufineObjects)
+    std::vector<delta::world::object> &_insitufineObjects)
 {
   if(!_insitufineObjects.size() > 0) return;
 
@@ -655,7 +655,7 @@ void delta::world::assembly::loadNuclearGeometry(
     iREAL position[3],
     iREAL width,
     int layers,
-    std::vector<delta::world::object> _insitufineObjects)
+    std::vector<delta::world::object>& _insitufineObjects)
 {
 
   //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
@@ -716,7 +716,7 @@ void delta::world::assembly::makeBrickGrid(
     int   xzElements,
     iREAL arrayYlength,
     int   yElements,
-    std::vector<delta::world::object> _insitufineObjects)
+    std::vector<delta::world::object>& _insitufineObjects)
 {
   std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
 
