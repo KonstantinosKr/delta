@@ -853,7 +853,7 @@ int dem::mappings::CreateGrid::deployObject(
   if(object.getComponent() == "sphere")
   {
     iREAL position[3] = {object.getCentre()[0], object.getCentre()[1], object.getCentre()[2]};
-    printf("OO: %f %f %f\n", position[0], position[1], position[2]);
+
     particleNumber = vertex.createSphereParticle(position, object.getRad(), _epsilon, object.getIsFriction(), object.getMaterial(), object.getIsObstacle(), _numberOfParticles);
   } else if(object.getComponent() == "mesh")
   {
