@@ -28,9 +28,7 @@ void dem::State::clearAccumulatedData() {
   _stateData.setNumberOfTriangleComparisons(0.0);
   _stateData.setNumberOfParticleComparisons(0.0);
   _stateData.setTwoParticlesAreClose(0.0);
-  _stateData.setMaxVelocity(0.0);
-  //_stateData.setMaxVelocity(-std::numeric_limits<double>::max());
-  // @todo set max velocity to zero
+  _stateData.setMaxVelocity(1.0);
 }
 
 double dem::State::getNumberOfContactPoints() const {
@@ -115,6 +113,8 @@ void dem::State::finishedTimeStep(double initStep) {
   const double increaseFactor = 1.1;
   const double maxdt = _stateData.getMaxMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocity());
 
+  printf("maxdt:%f\n", maxdt);
+  printf("maxwidth:%f\n", _stateData.getMaxVelocity());
   if (_stateData.getTwoParticlesAreClose() > 0.0) {
     //printf("TRIGGERED HALVING\n");
 	  if(_stateData.getTimeStepSize() > 1E-4)

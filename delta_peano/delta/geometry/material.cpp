@@ -11,7 +11,6 @@
 
 void delta::geometry::material::materialInit()
 {
-  printf("init material\n");
 
 /*
   InterfaceTri woodwoodTri = {0.8, 400};

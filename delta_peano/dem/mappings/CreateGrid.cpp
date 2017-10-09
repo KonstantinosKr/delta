@@ -172,11 +172,17 @@ void dem::mappings::CreateGrid::beginIteration(
     bool isFriction = false;
     auto material = delta::geometry::material::MaterialType::WOOD;
 
+    delta::world::object objectHopper(
+        "hopper", 0, position, linear, angular, material, isObstacle, isFriction);
+    //objectHopper.generateMesh(_hopperWidth, _hopperHeight, _hopperWidth, 0, 0, 0, width, _noPointsPerParticle);
+    _coarseObjects.push_back(objectHopper);
+
+    /*
     int refinement = 1;
     std::vector<double> xCoordinates, yCoordinates, zCoordinates;
     delta::geometry::hopper::generateHopper(centre, xyzDimensions[0], _hopperThickness, xyzDimensions[1], _hopperHatch, refinement, _maxH, xCoordinates, yCoordinates, zCoordinates);
     int hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
-
+    */
     ///////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +216,7 @@ void dem::mappings::CreateGrid::beginIteration(
     /////////FLOOR/////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
 
-    //int hopperParticles = 0;
+    int hopperParticles = 0;
 
 	  ////////////////////////////////////////////////////////////////////
 	  //////////PARTICLE GRID/////////////////////////////////////////////
@@ -252,7 +258,6 @@ void dem::mappings::CreateGrid::beginIteration(
     std::vector<std::array<iREAL, 3>> grid = delta::world::assembly::getGridArrayList(pos, xzcuts, ycuts, subGridLength);
 
     iREAL xmin = 1; iREAL xmax = 0;
-
     for(int i=0; i<grid.size(); i++)
     {
       std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
@@ -271,11 +276,8 @@ void dem::mappings::CreateGrid::beginIteration(
     for(int i=hopperParticles; i<_insitufineObjects.size(); i++)
     {
       std::array<double, 3> position = _insitufineObjects[i].getCentre();
-      position[0] += dx;
-      position[2] += dx;
-
+      position[0] += dx;  position[2] += dx;
       iREAL tmp[3] = {position[0], position[1], position[2]};
-
       _insitufineObjects[i].setCentre(tmp);
     }
 
@@ -316,20 +318,17 @@ void dem::mappings::CreateGrid::beginIteration(
       iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
 
       _insitufineObjects[i].setCentre(p);
+      std::vector<double> yCoordinates = _insitufineObjects[i].getyCoordinates();
+
+      if(yCoordinates.size() >= 0)
+      {
+        for(int i=0; i<yCoordinates.size(); i++)
+        {
+          yCoordinates[i] += maxRad+epsilon;
+        }
+      }
     }
 
-    /*
-    if(_yCoordinatesArray.size() >= 0)
-    {
-        for(int i=index; i<_yCoordinatesArray.size(); i++)
-        {
-          for(int j=index; j<_yCoordinatesArray[i].size(); j++)
-          {
-            _yCoordinatesArray[i][j] += maxRad+epsilon;
-          }
-    	    }
-    	}
-    */
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////

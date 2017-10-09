@@ -11,7 +11,6 @@
 #define SPRING 1E3
 #define DAMPER 0.5
 
-
 #define FRICTION 0.5
 
 //sphere parameters for piling simulation

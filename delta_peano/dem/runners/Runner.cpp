@@ -221,7 +221,6 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     }
 
     repository.iterate();
-
     elapsed = repository.getState().getTime() - timestamp;
 
     logInfo("runAsMaster(...)", "i=" << i
@@ -242,7 +241,6 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
 
     repository.getState().finishedTimeStep(initialStepSize);
-
     repository.getState().clearAccumulatedData();
   }
 
