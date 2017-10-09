@@ -33,7 +33,14 @@
 #include "delta/geometry/triangle.h"
 #include "delta/geometry/material.h"
 
-#include "delta/world/object.h"
+#include "delta/geometry/cubes.h"
+#include "delta/geometry/granulates.h"
+#include "delta/geometry/properties.h"
+#include "delta/geometry/hopper.h"
+#include "delta/geometry/blender.h"
+#include <delta/geometry/graphite.h>
+#include <delta/geometry/surface.h>
+#include <delta/world/assembly.h>
 
 namespace dem {
   namespace mappings {
@@ -162,43 +169,9 @@ class dem::mappings::CreateGrid {
 
     static std::vector<delta::world::object> _coarseObjects;
     static std::vector<delta::world::object> _fineObjects;
-
+    static std::vector<delta::world::object> _insitufineObjects;
 
     static double _centreAsArray[3];
-
-    static std::vector<std::array<double, 3>> _coarsePositionArray;
-    static std::vector<double> _coarseisFrictionArray;
-    static std::vector<double> _coarseisObstacleArray;
-    static std::vector<delta::geometry::material::MaterialType> _coarseMaterialArray;
-    static std::vector<std::array<double, 3>> _coarseXYZDimensionsArray;
-    static std::vector<double> _coarseRadiusArray;
-    static std::vector<std::array<double, 3>> _coarseLinearVelocityArray;
-    static std::vector<std::array<double, 3>> _coarseAngularVelocityArray;
-    static std::vector<std::string> _coarseComponentArray;
-
-
-    static std::vector<std::vector<double>> _xCoordinatesArray;
-    static std::vector<std::vector<double>> _yCoordinatesArray;
-    static std::vector<std::vector<double>> _zCoordinatesArray;
-
-    static std::vector<std::vector<double>> _centreOfMassArray;
-    static std::vector<std::vector<double>> _inertiaArray;
-    static std::vector<std::vector<double>> _inverseArray;
-    static std::vector<double>              _massArray;
-    static std::vector<std::array<double, 3>> _particleGridArray;
-    static std::vector<std::string> _componentGridArray;
-    static std::vector<int> _particleIDArray;
-
-    static std::vector<std::array<double, 3>> _xyzDimensionsArray;
-    static std::vector<std::array<double, 3>> _linearVelocityArray;
-    static std::vector<std::array<double, 3>> _angularVelocityArray;
-
-    static std::vector<double> _radArray;
-    static std::vector<bool> _isObstacleArray;
-    static std::vector<bool> _isFrictionArray;
-    static std::vector<delta::geometry::material::MaterialType> _materialArray;
-
-    static bool _deployInsitu;
 
     void deployCoarseEnviroment(
         dem::Vertex& vertex);
@@ -218,64 +191,11 @@ class dem::mappings::CreateGrid {
         std::vector<double> yCoordinates,
         std::vector<double> zCoordinates);
 
-    void addParticleToState(
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates,
-        bool isObstacle);
-
     int deployObject(
         dem::Vertex&  vertex,
         delta::world::object object);
 
-    int deployHopper(
-        dem::Vertex&  vertex,
-        int octSectTimes,
-        int meshRefinement,
-        double position[3],
-        double _hopperWidth,
-        double _hopperHeight,
-        double _hopperThickness,
-        double _hopperHatch,
-        double eps,
-        delta::geometry::material::MaterialType material,
-        bool friction,
-        bool isObstacle);
-  
-    int deployBox(
-        dem::Vertex&  vertex,
-        int quadsect,
-        int meshmultiplier,
-        double position[3],
-        double width,
-        double height,
-        double rx,
-        double ry,
-        double rz,
-        double eps,
-        delta::geometry::material::MaterialType material,
-        bool friction,
-        bool isObstacle);
-
-    int deploySphere(
-        dem::Vertex&  vertex,
-        double position[3],
-        double radius,
-        double eps,
-        delta::geometry::material::MaterialType material,
-        bool friction,
-        bool isObstacle);
-
     int deployGranulateFromFile(
-        dem::Vertex&  vertex,
-        double position[3],
-        double radius,
-        double eps,
-        delta::geometry::material::MaterialType material,
-        bool friction,
-        bool isObstacle);
-
-    int deployGranulate(
         dem::Vertex&  vertex,
         double position[3],
         double radius,
@@ -293,12 +213,11 @@ class dem::mappings::CreateGrid {
         std::vector<double> xCoordinates,
         std::vector<double> yCoordinates,
         std::vector<double> zCoordinates,
-		delta::geometry::material::MaterialType material,
-		bool isObstacle,
-		double &mass,
-		double centerOfMass[3],
-		double inertia[9],
-		double inverse[9]);
+        delta::geometry::material::MaterialType material,
+        bool isObstacle,
+        bool isFriction,
+        std::vector<delta::world::object> &_insitufineObjects
+		);
 
 
   public:

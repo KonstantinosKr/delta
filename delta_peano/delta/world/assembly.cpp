@@ -199,7 +199,7 @@ void delta::world::assembly::uniform (
          rad,
          particleGrid,
          componentGrid,
-		 index);
+         index);
   } else {
     /*delta::world::assembly::uniMeshGeometry(
         totalMass,
@@ -226,6 +226,45 @@ void delta::world::assembly::uniform (
   }
 }
 
+void delta::world::assembly::uniform(
+      iREAL totalMass,
+      int index,
+      bool isSphereOrNone,
+      int noPointsPerParticle,
+      std::vector<delta::world::object> _insitufineObjects)
+{
+
+  if(isSphereOrNone)
+  {
+    delta::world::assembly::uniSphereRadius(totalMass, index, _insitufineObjects);
+  } else {
+    /*delta::world::assembly::uniMeshGeometry(
+        totalMass,
+        material,
+        noPointsPerParticle,
+        rad,
+        particleGrid,
+        componentGrid,
+        xCoordinatesArray,
+        yCoordinatesArray,
+        zCoordinatesArray);*/
+
+    /*
+    delta::world::assembly::uniCubeGeometry(
+        totalMass,
+        material,
+        noPointsPerParticle,
+        rad,
+        particleGrid,
+        componentGrid,
+        xCoordinatesArray,
+        yCoordinatesArray,
+        zCoordinatesArray,
+        index);
+    */
+  }
+}
+
 void delta::world::assembly::nonuniform (
     iREAL totalMass,
     delta::geometry::material::MaterialType material,
@@ -249,7 +288,7 @@ void delta::world::assembly::nonuniform (
         rad,
         particleGrid,
         componentGrid,
-		index);
+        index);
   } else {
     delta::world::assembly::nonUniMeshGeometry(
         totalMass,
@@ -263,6 +302,27 @@ void delta::world::assembly::nonuniform (
         yCoordinatesArray,
         zCoordinatesArray,
         index);
+     }
+}
+
+
+void delta::world::assembly::nonuniform(
+          iREAL totalMass,
+          int index,
+          iREAL isSphereOrNone,
+          iREAL subcellx,
+          int _noPointsPerParticle,
+          std::vector<delta::world::object> _insitufineObjects)
+{
+  if(isSphereOrNone)
+  {
+    delta::world::assembly::nonUniSphereRadius(totalMass, index, subcellx, _insitufineObjects);
+  } else {
+    /*
+    delta::world::assembly::nonUniMeshGeometry(
+        totalMass,
+        subcellx,
+        noPointsPerParticle);*/
      }
 }
 
@@ -281,6 +341,26 @@ void delta::world::assembly::uniSphereRadius(
   {
     rad.push_back(radius);
     componentGrid.push_back("sphere");
+  }
+}
+
+
+void delta::world::assembly::uniSphereRadius(
+    iREAL totalMass,
+    int index,
+    std::vector<delta::world::object> _insitufineObjects)
+{
+
+  if(!_insitufineObjects.size() > 0) return;
+
+  delta::geometry::material::MaterialType material = _insitufineObjects[0].getMaterial();
+
+  iREAL massPerParticle = totalMass/(iREAL)_insitufineObjects.size();
+  iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+
+  for(int i=index; i<_insitufineObjects.size(); i++)
+  {
+    _insitufineObjects[i].generateSphere(radius);
   }
 }
 
@@ -445,6 +525,54 @@ void delta::world::assembly::nonUniSphereRadius(
   //printf("TOTAL REREMASS:%f\n", reMassTotal);
 }
 
+
+void delta::world::assembly::nonUniSphereRadius(
+    iREAL totalMass,
+    int index,
+    iREAL subcellx,
+    std::vector<delta::world::object> _insitufineObjects)
+{
+  if(!_insitufineObjects.size() > 0) return;
+
+  delta::geometry::material::MaterialType material = _insitufineObjects[0].getMaterial();
+
+  iREAL massPerParticle = totalMass/(iREAL)_insitufineObjects.size();
+  iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+
+  iREAL reMassTotal = 0;
+
+  iREAL mindiam = radius;
+  iREAL maxdiam = radius*2;
+
+  if(radius*2 > subcellx)
+    printf("ERROR:radius bigger than subcellx\n");
+
+  std::vector<double> rad;
+  for(int i=index; i<_insitufineObjects.size(); i++)
+  {
+    iREAL particleDiameter = mindiam + static_cast <iREAL>(rand()) / (static_cast <iREAL> (RAND_MAX/(maxdiam-mindiam)));
+    rad.push_back(particleDiameter/2);
+
+    reMassTotal += (4.0/3.0) * 3.14 * std::pow(particleDiameter/2,3) * int(delta::geometry::material::materialToDensitymap.find(material)->second); //volume * mass
+  }
+
+  //get total mass
+  //printf("TOTAL REMASS:%f\n", reMassTotal);
+
+  iREAL rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+
+  reMassTotal=0;
+  for(int i=0; i<rad.size(); i++)
+  {
+    rad[i] = rad[i] * rescale;
+    _insitufineObjects[index+i].generateSphere(rad[i]);
+
+    reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::geometry::material::materialToDensitymap.find(material)->second); //volume * mass
+  }
+  //printf("RESCALE:%f\n", rescale);
+  //printf("TOTAL REREMASS:%f\n", reMassTotal);
+}
+
 void delta::world::assembly::nonUniMeshGeometry(
     iREAL totalMass,
     delta::geometry::material::MaterialType material,
@@ -527,11 +655,7 @@ void delta::world::assembly::loadNuclearGeometry(
     iREAL position[3],
     iREAL width,
     int layers,
-    std::vector<std::array<iREAL, 3>> &particleGrid,
-    std::vector<std::string>& componentGrid,
-    std::vector<iREAL> &radius,
-    iREAL &minParticleDiam,
-    iREAL &maxParticleDiam)
+    std::vector<delta::world::object> _insitufineObjects)
 {
 
   //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
@@ -544,8 +668,8 @@ void delta::world::assembly::loadNuclearGeometry(
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
   //read nuclear graphite schematics
-  std::vector<std::vector<std::string>> compoGrid;
-  delta::core::parseModelGridSchematics("input/nuclear_core", compoGrid, componentGrid);
+  //std::vector<std::vector<std::string>> compoGrid;
+  //delta::core::parseModelGridSchematics("input/nuclear_core", compoGrid, componentGrid);
 
   ///place components of 2d array structure
   int elements = 46;
@@ -568,17 +692,21 @@ void delta::world::assembly::loadNuclearGeometry(
   {
     position[1] += (h*scalePercentage)*i;
     std::vector<std::array<iREAL, 3>> tmp = delta::world::assembly::array2d(position, arrayXZlength, elements);
-    //particleGrid.insert(particleGrid.end(), tmp.begin(), tmp.end());
+
     for(int j=0; j<tmp.size(); j++)
     {
-        particleGrid.push_back(tmp[i]);
+      std::array<double, 3> linear = {0.0, 0.0, 0.0};
+      std::array<double, 3> angular = {0.0, 0.0, 0.0};
+      auto material = delta::geometry::material::MaterialType::GRAPHITE;
+
+      delta::world::object obj("FB", 0, tmp[i], linear, angular, material, false, false);
+      _insitufineObjects.push_back(obj);
     }
-    std::cout << tmp.size() << " " << particleGrid.size() << std::endl;
+    //std::cout << tmp.size() << " " << particleGrid.size() << std::endl;
   }
 
-  for(unsigned i=0; i<particleGrid.size(); i++) {
-    radius.push_back(scalePercentage);
-    componentGrid.push_back("FB");
+  for(unsigned i=0; i<_insitufineObjects.size(); i++) {
+    _insitufineObjects[i].setRad(scalePercentage);
   }
 }
 
@@ -588,11 +716,7 @@ void delta::world::assembly::makeBrickGrid(
     int   xzElements,
     iREAL arrayYlength,
     int   yElements,
-    std::vector<std::array<iREAL, 3>> &particleGrid,
-    std::vector<std::string> &componentGrid,
-    std::vector<iREAL> &radius,
-    iREAL &minParticleDiam,
-    iREAL &maxParticleDiam)
+    std::vector<delta::world::object> _insitufineObjects)
 {
   std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
 
@@ -637,12 +761,18 @@ void delta::world::assembly::makeBrickGrid(
   position[1] = position[1]+(height/2);
   position[2] = (position[2]-arrayXZlength/2)+xzWCell/2;
 
-  particleGrid = delta::world::assembly::array3d(position, arrayXZlength, xzElements, arrayYlength, yElements);
+  std::vector<std::array<iREAL, 3>> particleGrid = delta::world::assembly::array3d(position, arrayXZlength, xzElements, arrayYlength, yElements);
 
   collapseUniformGrid(position, particleGrid, xzElements, yElements, width, height, 0);
 
-  for(unsigned i=0; i<particleGrid.size(); i++) {
-    radius.push_back(scalePercentage);
-    componentGrid.push_back("FB");
+  for(unsigned i=0; i<particleGrid.size(); i++)
+  {
+    std::array<double, 3> linear = {0.0, 0.0, 0.0};
+    std::array<double, 3> angular = {0.0, 0.0, 0.0};
+    auto material = delta::geometry::material::MaterialType::GRAPHITE;
+
+    delta::world::object obj("FB", i, particleGrid[i], linear, angular, material, false, false);
+    obj.setRad(scalePercentage);
+    _insitufineObjects.push_back(obj);
   }
 }

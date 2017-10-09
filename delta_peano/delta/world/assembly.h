@@ -29,6 +29,8 @@
 #include "delta/geometry/granulates.h"
 #include "delta/geometry/graphite.h"
 #include "delta/geometry/cubes.h"
+#include "delta/world/object.h"
+
 #include "stdlib.h"
 #include <string>
 
@@ -60,7 +62,14 @@ namespace delta {
   	      std::vector<std::vector<iREAL>>  &xCoordinatesArray,
   	      std::vector<std::vector<iREAL>>  &yCoordinatesArray,
   	      std::vector<std::vector<iREAL>>  &zCoordinatesArray,
-		  int index);
+  	      int index);
+
+    void uniform(
+          iREAL totalMass,
+          int index,
+          bool isSphereOrNone,
+          int noPointsPerParticle,
+          std::vector<delta::world::object> _insitufineObjects);
 
   	  void nonuniform (
   	      iREAL totalMass,
@@ -76,13 +85,26 @@ namespace delta {
   	      std::vector<std::vector<iREAL>>  &zCoordinatesArray,
 		  int index);
 
+  	  void nonuniform(
+  	            iREAL totalMass,
+              int index,
+  	            iREAL isSphereOrNone,
+  	            iREAL subcellx,
+  	            int _noPointsPerParticle,
+  	            std::vector<delta::world::object> _insitufineObjects);
+
   	  void uniSphereRadius(
   	      iREAL totalMass,
           delta::geometry::material::MaterialType material,
           std::vector<iREAL>  &rad,
           std::vector<std::array<iREAL, 3>> &particleGrid,
           std::vector<std::string> &componentGrid,
-  	  	  int index);
+          int index);
+
+  	  void uniSphereRadius(
+  	      iREAL totalMass,
+        int index,
+  	      std::vector<delta::world::object> _insitufineObjects);
 
   	  void uniMeshGeometry(
   	      iREAL totalMass,
@@ -115,8 +137,13 @@ namespace delta {
           std::vector<iREAL>  &rad,
           std::vector<std::array<iREAL, 3>> &particleGrid,
           std::vector<std::string> &componentGrid,
-		  int index);
+          int index);
 
+      void nonUniSphereRadius(
+          iREAL totalMass,
+          int index,
+          iREAL subcellx,
+          std::vector<delta::world::object> _insitufineObjects);
 
   	  void nonUniMeshGeometry(
   	      iREAL totalMass,
@@ -134,10 +161,7 @@ namespace delta {
   	  void loadNuclearGeometry(iREAL position[3],
   	      iREAL width,
   	      int layers,
-  	      std::vector<std::array<iREAL, 3>> &particleGrid,
-  	      std::vector<std::string> &componentGrid,
-  	      std::vector<iREAL> &radius,
-  	      iREAL &minParticleDiam, iREAL &maxParticleDiam);
+  	      std::vector<delta::world::object> _insitufineObjects);
 
   	  void makeBrickGrid(
   	      iREAL position[3],
@@ -145,11 +169,7 @@ namespace delta {
   	      int   xzElements,
   	      iREAL arrayYlength,
   	      int   yElements,
-  	      std::vector<std::array<iREAL, 3>> &particleGrid,
-  	      std::vector<std::string> &componentGrid,
-  	      std::vector<iREAL> &radius,
-  	      iREAL &minParticleDiam,
-  	      iREAL &maxParticleDiam);
+  	      std::vector<delta::world::object> _insitufineObjects);
     }
   }
 }

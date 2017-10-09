@@ -29,6 +29,8 @@
 #include <delta/geometry/properties.h>
 #include <delta/geometry/granulates.h>
 #include <delta/geometry/cubes.h>
+#include <delta/geometry/hopper.h>
+#include <delta/geometry/graphite.h>
 
 
 namespace delta {
@@ -65,31 +67,45 @@ class delta::world::object
         double rad);
 
     std::string getComponent();
+    void setParticleID(int id);
+
     std::vector<double> getxCoordinates();
     std::vector<double> getyCoordinates();
     std::vector<double> getzCoordinates();
+
+    void setxyzCoordinates(
+        std::vector<double> xCoordinates,
+        std::vector<double> yCoordinates,
+        std::vector<double> zCoordinates);
+
     int getParticleID();
+
     std::array<double, 3> getCentre();
+    void setCentre(double centre[3]);
     double getRad();
+    void setRad(double rad);
+
     double getMass();
+    void setMass(double mass);
 
     delta::geometry::material::MaterialType getMaterial();
     bool getIsObstacle();
     bool getIsFriction();
 
     std::array<double, 9> getInertia();
+    void setInertia(double inertia[9]);
+
     std::array<double, 9> getInverse();
+    void setInverse(double inverse[9]);
+
     std::array<double, 3> getxyzDimensions();
     std::array<double, 3> getCentreOfMass();
+    void setCentreOfMass(double centreOfMass[3]);
 
     std::array<double, 3> getLinearVelocity();
     std::array<double, 3> getAngularVelocity();
 
     virtual ~object();
-
-    //std::vector<double> getXcoordinates();
-    //std::vector<double> getYcoordinates();
-    //std::vector<double> getZcoordinates();
 
   private:
     std::string           _component;
