@@ -270,14 +270,13 @@ void dem::mappings::CreateGrid::beginIteration(
 
     for(int i=hopperParticles; i<_insitufineObjects.size(); i++)
     {
-      delta::world::object obj = _insitufineObjects[i];
-      std::array<double, 3> position = obj.getCentre();
+      std::array<double, 3> position = _insitufineObjects[i].getCentre();
       position[0] += dx;
       position[2] += dx;
 
       iREAL tmp[3] = {position[0], position[1], position[2]};
 
-      obj.setCentre(tmp);
+      _insitufineObjects[i].setCentre(tmp);
     }
 
     if(_scenario[2] == uniform)
@@ -854,6 +853,7 @@ int dem::mappings::CreateGrid::deployObject(
   if(object.getComponent() == "sphere")
   {
     iREAL position[3] = {object.getCentre()[0], object.getCentre()[1], object.getCentre()[2]};
+    printf("OO: %f %f %f\n", position[0], position[1], position[2]);
     particleNumber = vertex.createSphereParticle(position, object.getRad(), _epsilon, object.getIsFriction(), object.getMaterial(), object.getIsObstacle(), _numberOfParticles);
   } else if(object.getComponent() == "mesh")
   {
