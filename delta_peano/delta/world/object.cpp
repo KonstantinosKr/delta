@@ -73,7 +73,7 @@ void delta::world::object::generateMesh(
   } else if(_component == "hopper")
   {
     double _hopperHatch = 0.05; double _hopperThickness = 0.005; int refinement = 0;
-    delta::geometry::hopper::generateHopper(position, wx, _hopperThickness, wx, _hopperHatch, refinement, 0.01, xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::hopper::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01, xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "FB")
   {
     delta::geometry::graphite::generateBrickFB(position, rad, xCoordinates, yCoordinates, zCoordinates);
@@ -279,7 +279,98 @@ std::array<double, 3> delta::world::object::getAngularVelocity()
   return _angularVelocity;
 }
 
+double delta::world::object::getMinX()
+{
+  iREAL minx = std::numeric_limits<double>::max();
+  if(_xCoordinates.size() > 0)
+  {
+    for(int i=0; i<_xCoordinates.size(); i++)
+    {
+      if(_xCoordinates[i] < minx) minx = _xCoordinates[i];
+    }
+  } else {
+    minx = _centreOfMass[0] - _rad;
+  }
+  return minx;
+}
+
+double delta::world::object::getMaxX()
+{
+  iREAL maxx = std::numeric_limits<double>::min();
+  if(_xCoordinates.size() > 0)
+  {
+    for(int i=0; i<_xCoordinates.size(); i++)
+    {
+      if(_xCoordinates[i] > maxx) maxx = _xCoordinates[i];
+    }
+  } else {
+    maxx = _centreOfMass[0] + _rad;
+  }
+  return maxx;
+}
+
+double delta::world::object::getMinY()
+{
+  iREAL miny = std::numeric_limits<double>::max();
+  if(_yCoordinates.size() > 0)
+  {
+    for(int i=0; i<_yCoordinates.size(); i++)
+    {
+      if(_yCoordinates[i] < miny) miny = _yCoordinates[i];
+    }
+  } else {
+    miny = _centreOfMass[0] - _rad;
+  }
+  return miny;
+}
+
+double delta::world::object::getMaxY()
+{
+  iREAL maxy = std::numeric_limits<double>::min();
+  if(_yCoordinates.size() > 0)
+  {
+    for(int i=0; i<_yCoordinates.size(); i++)
+    {
+      if(_xCoordinates[i] > maxy) maxy = _xCoordinates[i];
+    }
+  } else {
+    maxy = _centreOfMass[0] + _rad;
+  }
+  return maxy;
+}
+
+double delta::world::object::getMinZ()
+{
+  iREAL minz = std::numeric_limits<double>::max();
+  if(_xCoordinates.size() > 0)
+  {
+    for(int i=0; i<_xCoordinates.size(); i++)
+    {
+      if(_xCoordinates[i] < minz) minz = _zCoordinates[i];
+    }
+  } else {
+    minz = _centreOfMass[0] - _rad;
+  }
+  return minz;
+}
+
+double delta::world::object::getMaxZ()
+{
+  iREAL maxz = std::numeric_limits<double>::min();
+  if(_zCoordinates.size() > 0)
+  {
+    for(int i=0; i<_yCoordinates.size(); i++)
+    {
+      if(_xCoordinates[i] > maxz) maxz = _xCoordinates[i];
+    }
+  } else {
+    maxz = _centreOfMass[0] + _rad;
+  }
+  return maxz;
+}
+
 delta::world::object::~object() {
 
 }
+
 

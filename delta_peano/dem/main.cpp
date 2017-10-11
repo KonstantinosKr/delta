@@ -113,9 +113,9 @@ int main(int argc, char** argv)
   }
 
   #ifdef SharedMemoryParallelisation
-  	  const int NumberOfArguments = 14;
+  	  const int NumberOfArguments = 12;
   #else
-  	  const int NumberOfArguments = 13;
+  	  const int NumberOfArguments = 11;
   #endif
 
   	std::cout << "required arguments: " <<  NumberOfArguments << ", actual arguments: " <<  argc << std::endl;
@@ -127,17 +127,15 @@ int main(int argc, char** argv)
   }
 
   const double       gridHMax            = atof(argv[1]);
-  const double       particleDiamMin     = atof(argv[2]);
-  const double       particleDiamMax     = atof(argv[3]);
-  const std::string  scenario            = argv[4];
-  const int          iterations          = atoi(argv[5]);
-  const std::string  gridTypeIdentifier  = argv[6];
-  const double       stepSize         	 = atof(argv[7]);
-  const std::string  plotIdentifier      = argv[8];
-  const double		 realSnapshot		 = atof(argv[9]);
-  const std::string  gravity             = argv[10];
-  const std::string  collisionModel      = argv[11];
-  const int			 meshMultiplier  = atof(argv[12]);
+  const std::string  scenario            = argv[2];
+  const int          iterations          = atoi(argv[3]);
+  const std::string  gridTypeIdentifier  = argv[4];
+  const double       stepSize         	 = atof(argv[5]);
+  const std::string  plotIdentifier      = argv[6];
+  const double		 realSnapshot		 = atof(argv[7]);
+  const std::string  gravity             = argv[8];
+  const std::string  collisionModel      = argv[9];
+  const int			 meshMultiplier  = atof(argv[10]);
 
   #ifdef SharedMemoryParallelisation
   	  const int          numberOfCores       = atoi(argv[13]);
@@ -148,14 +146,6 @@ int main(int argc, char** argv)
   int programExitCode = 0;
   if (gridHMax>0.5) {
     logError( "main()", "gridHMax has to be smaller than or equal to 0.5" );
-    programExitCode = 1;
-  }
-  if (gridHMax<particleDiamMax) {
-    logError( "main()", "grid_h_max has to be smaller or equal to particles' maximum diameter" );
-    programExitCode = 1;
-  }
-  if (particleDiamMax<particleDiamMin) {
-    logError( "main()", "grid_h_max has to be greater or equal to grid_h_min" );
     programExitCode = 1;
   }
 
@@ -363,7 +353,7 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  dem::mappings::CreateGrid::setScenario(scenarioArray, gridHMax, particleDiamMin, particleDiamMax, gridType, meshMultiplier);
+  dem::mappings::CreateGrid::setScenario(scenarioArray, gridHMax, gridType, meshMultiplier);
 
   dem::runners::Runner::Plot plot;
   int trackID = -1;
@@ -440,8 +430,8 @@ int main(int argc, char** argv)
 
   dem::mappings::Collision::gravity	= (gravity=="true") ? 9.81 : 0.0;
 
-  logInfo( "run(...)", "scenario:" << (scenario)                                 << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)       << std::endl
-                    << "stepSize:" << (stepSize)                                 << ", plot:"     << (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)   << std::endl
+  logInfo( "run(...)", "scenario:" << (scenario)                             << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)       << std::endl
+                    << "stepSize:" << (stepSize)                             << ", plot:"     << (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)   << std::endl
                     << "gravity:"  << (dem::mappings::Collision::gravity)    << ", model:"    << (collisionModel)      << ", triangleNumber:"  << (meshMultiplier));
 
   // Configure the output

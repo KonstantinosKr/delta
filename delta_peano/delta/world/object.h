@@ -105,6 +105,15 @@ class delta::world::object
     std::array<double, 3> getLinearVelocity();
     std::array<double, 3> getAngularVelocity();
 
+    double getMinX();
+    double getMaxX();
+
+    double getMinY();
+    double getMaxY();
+
+    double getMinZ();
+    double getMaxZ();
+
     virtual ~object();
 
   private:

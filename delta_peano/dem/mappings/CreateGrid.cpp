@@ -37,10 +37,12 @@ peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification(in
 tarch::logging::Log                  dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
 dem::mappings::CreateGrid::Scenario  dem::mappings::CreateGrid::_scenario[4];
 double                               dem::mappings::CreateGrid::_maxH;
+
 double                               dem::mappings::CreateGrid::_minComputeDomain[3];
 double                               dem::mappings::CreateGrid::_maxComputeDomain[3];
 double                               dem::mappings::CreateGrid::_minParticleDiam;
 double                               dem::mappings::CreateGrid::_maxParticleDiam;
+
 dem::mappings::CreateGrid::GridType  dem::mappings::CreateGrid::_gridType;
 double                               dem::mappings::CreateGrid::_centreAsArray[3];
 
@@ -55,8 +57,6 @@ std::vector<delta::world::object>   dem::mappings::CreateGrid::_fineObjects;
 void dem::mappings::CreateGrid::setScenario(
     Scenario scenario[4],
     double maxH,
-    double particleDiamMin,
-    double particleDiamMax,
     GridType gridType,
     int noPointsPerGranulate)
 {
@@ -65,11 +65,95 @@ void dem::mappings::CreateGrid::setScenario(
   _scenario[2]          = scenario[2];
   _scenario[3]          = scenario[3];
 	_maxH            		  = maxH;
-	_minParticleDiam 		  = particleDiamMin;
-	_maxParticleDiam 		  = particleDiamMax;
+	_minParticleDiam 		  = _maxH;
+	_maxParticleDiam 		  = _maxH;
 	_gridType        		  = gridType;
-	_epsilon 		 		      = epsilon;
+	_epsilon 		 		    = epsilon;
 	_noPointsPerParticle	= noPointsPerGranulate;
+}
+
+void dem::mappings::CreateGrid::computeBoundary()
+{
+  //COMPUTE MIN/MAX XYZ DOMAIN
+  iREAL minx = std::numeric_limits<double>::max(), miny = std::numeric_limits<double>::max(), minz = std::numeric_limits<double>::max();
+  iREAL maxx = std::numeric_limits<double>::min(), maxy = std::numeric_limits<double>::min(), maxz = std::numeric_limits<double>::min();
+
+  iREAL minDiameter = std::numeric_limits<double>::max();
+  iREAL maxDiameter = std::numeric_limits<double>::min();
+
+  for(int i=0; i<_coarseObjects.size(); i++)
+  {
+    iREAL ominx = _coarseObjects[i].getMinX();
+    iREAL ominy = _coarseObjects[i].getMinY();
+    iREAL ominz = _coarseObjects[i].getMinZ();
+    if(ominx < minx) minx = ominx;
+    if(ominy < miny) miny = ominy;
+    if(ominz < minz) minz = ominz;
+
+    iREAL omaxx = _coarseObjects[i].getMaxX();
+    iREAL omaxy = _coarseObjects[i].getMaxY();
+    iREAL omaxz = _coarseObjects[i].getMaxZ();
+    if(omaxx > maxx) maxx = omaxx;
+    if(omaxy > maxy) maxy = omaxy;
+    if(omaxz > maxz) maxz = omaxz;
+
+    if(_coarseObjects[i].getRad() * 2.0 < minDiameter)
+    minDiameter = _coarseObjects[i].getRad() * 2.0;
+    if(_coarseObjects[i].getRad() * 2.0 > maxDiameter)
+    maxDiameter = _coarseObjects[i].getRad() * 2.0;
+  }
+
+  for(int i=0; i<_insitufineObjects.size(); i++)
+  {
+    iREAL ominx = _insitufineObjects[i].getMinX();
+    iREAL ominy = _insitufineObjects[i].getMinY();
+    iREAL ominz = _insitufineObjects[i].getMinZ();
+    if(ominx < minx) minx = ominx;
+    if(ominy < miny) miny = ominy;
+    if(ominz < minz) minz = ominz;
+
+    iREAL omaxx = _insitufineObjects[i].getMaxX();
+    iREAL omaxy = _insitufineObjects[i].getMaxY();
+    iREAL omaxz = _insitufineObjects[i].getMaxZ();
+    if(omaxx > maxx) maxx = omaxx;
+    if(omaxy > maxy) maxy = omaxy;
+    if(omaxz > maxz) maxz = omaxz;
+
+    if(_insitufineObjects[i].getRad() * 2.0 < minDiameter)
+    minDiameter = _insitufineObjects[i].getRad() * 2.0;
+    if(_insitufineObjects[i].getRad() * 2.0 > maxDiameter)
+    maxDiameter = _insitufineObjects[i].getRad() * 2.0;
+  }
+
+  for(int i=0; i<_fineObjects.size(); i++)
+  {
+   iREAL ominx = _fineObjects[i].getMinX();
+   iREAL ominy = _fineObjects[i].getMinY();
+   iREAL ominz = _fineObjects[i].getMinZ();
+   if(ominx < minx) minx = ominx;
+   if(ominy < miny) miny = ominy;
+   if(ominz < minz) minz = ominz;
+
+   iREAL omaxx = _fineObjects[i].getMaxX();
+   iREAL omaxy = _fineObjects[i].getMaxY();
+   iREAL omaxz = _fineObjects[i].getMaxZ();
+   if(omaxx > maxx) maxx = omaxx;
+   if(omaxy > maxy) maxy = omaxy;
+   if(omaxz > maxz) maxz = omaxz;
+
+   if(_fineObjects[i].getRad() * 2.0 < minDiameter)
+   minDiameter = _fineObjects[i].getRad() * 2.0;
+   if(_fineObjects[i].getRad() * 2.0 > maxDiameter)
+   maxDiameter = _fineObjects[i].getRad() * 2.0;
+  }
+
+  _minComputeDomain[0] = minx;
+  _minComputeDomain[1] = miny;
+  _minComputeDomain[2] = minz;
+
+  _maxComputeDomain[0] = maxx;
+  _maxComputeDomain[1] = maxy;
+  _maxComputeDomain[2] = maxz;
 }
 
 void dem::mappings::CreateGrid::beginIteration(
@@ -90,9 +174,7 @@ void dem::mappings::CreateGrid::beginIteration(
   _isSphere = (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
                dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none);
 
-
   iREAL centre[3] = {0.5, 0.5, 0.5};
-
 
   //////////////////////////////////////////////////////
   /// NUCLEAR ARRAY
@@ -101,11 +183,10 @@ void dem::mappings::CreateGrid::beginIteration(
   {
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
     double height = 0.05; double width = 0.30;
-    std::array<double, 3> xyzDimensions = {width, height, width};
     std::array<double, 3> position = {centre[0], centre[1], centre[2]};
     std::array<double, 3> linear = {-1.0, 0, 0};
     std::array<double, 3> angular = {0, 0, 0};
-    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::GOLD;
+    auto material = delta::geometry::material::MaterialType::GOLD;
     bool isFriction = true;
     bool isObstacle = true;
 
@@ -162,7 +243,6 @@ void dem::mappings::CreateGrid::beginIteration(
     ///////////////////////////////////////////////////////////////////////////////
     double _hopperHatch = 0.05; double _hopperThickness = 0.005;
     double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5;
-    std::array<double, 3> xyzDimensions = {_hopperWidth, _hopperHeight, _hopperWidth};
 
     std::array<double, 3> linear = {0, 0, 0};
     std::array<double, 3> angular = {0, 0, 0};
@@ -172,29 +252,29 @@ void dem::mappings::CreateGrid::beginIteration(
     bool isFriction = false;
     auto material = delta::geometry::material::MaterialType::WOOD;
 
+    /*
     delta::world::object objectHopper(
         "hopper", 0, position, linear, angular, material, isObstacle, isFriction);
-    //objectHopper.generateMesh(_hopperWidth, _hopperHeight, _hopperWidth, 0, 0, 0, width, _noPointsPerParticle);
+    objectHopper.generateMesh(_hopperWidth, _hopperHeight, _hopperWidth, 0, 0, 0, _hopperWidth, _noPointsPerParticle);
     _coarseObjects.push_back(objectHopper);
+     */
+
+    int refinement = 0;
+    std::vector<double> xCoordinates, yCoordinates, zCoordinates;
+    delta::geometry::hopper::generateHopper(centre, _hopperWidth, _hopperThickness, _hopperHeight, _hopperHatch, refinement, _maxH, xCoordinates, yCoordinates, zCoordinates);
+    int hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
+    ///////////////////////////////////////////////////////////////////////////////
+    ////////HOPPER/////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
     /*
-    int refinement = 1;
-    std::vector<double> xCoordinates, yCoordinates, zCoordinates;
-    delta::geometry::hopper::generateHopper(centre, xyzDimensions[0], _hopperThickness, xyzDimensions[1], _hopperHatch, refinement, _maxH, xCoordinates, yCoordinates, zCoordinates);
-    int hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
-    */
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////
-
-    _minComputeDomain[0] = centre[0] - xyzDimensions[0]/2;
+    _minComputeDomain[0] = centre[0] - _hopperWidth/2;
     _minComputeDomain[1] = centre[1];
-    _minComputeDomain[2] = centre[2] - xyzDimensions[2]/2;
+    _minComputeDomain[2] = centre[2] - _hopperWidth/2;
 
-    _maxComputeDomain[0] = centre[0] + xyzDimensions[0]/2;
-    _maxComputeDomain[1] = centre[1] + xyzDimensions[1]*2.5;
-    _maxComputeDomain[2] = centre[2] + xyzDimensions[2]/2;
+    _maxComputeDomain[0] = centre[0] + _hopperWidth/2;
+    _maxComputeDomain[1] = centre[1] + _hopperHeight*2.5;
+    _maxComputeDomain[2] = centre[2] + _hopperWidth/2;*/
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     ////////FLOOR//////////////////////////////////////////////////////////////////////////////
@@ -206,7 +286,6 @@ void dem::mappings::CreateGrid::beginIteration(
     material = delta::geometry::material::MaterialType::WOOD;
     isFriction = true;
     isObstacle = true;
-    xyzDimensions = {width, height, width};
 
     delta::world::object objectFloor(
         "cube", 0, position, linear, angular, material, isObstacle, isFriction);
@@ -216,7 +295,7 @@ void dem::mappings::CreateGrid::beginIteration(
     /////////FLOOR/////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
 
-    int hopperParticles = 0;
+    //int hopperParticles = 0;
 
 	  ////////////////////////////////////////////////////////////////////
 	  //////////PARTICLE GRID/////////////////////////////////////////////
@@ -316,9 +395,9 @@ void dem::mappings::CreateGrid::beginIteration(
     {
       std::array<double, 3> pos = _insitufineObjects[i].getCentre();
       iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
-
       _insitufineObjects[i].setCentre(p);
-      std::vector<double> yCoordinates = _insitufineObjects[i].getyCoordinates();
+
+      auto yCoordinates = _insitufineObjects[i].getyCoordinates();
 
       if(yCoordinates.size() >= 0)
       {
@@ -344,8 +423,6 @@ void dem::mappings::CreateGrid::beginIteration(
 
     //////FLOOR///////////////////////////////////////////////////////////////////
     double height = 0.05; double width = 0.35;
-
-    std::array<double, 3> xyzDimensions = {width, height, width};
     double rad = 0.0;
     auto material = delta::geometry::material::MaterialType::WOOD;
     bool isFriction = true;
@@ -357,7 +434,6 @@ void dem::mappings::CreateGrid::beginIteration(
     ////////////////////////////////////////////////////////////////////////////////
     delta::world::object objectFloor(
         "cube", 0, position, linear, angular, material, isObstacle, isFriction);
-
     objectFloor.generateMesh(width, height, width, 0, 0, 0, rad, _noPointsPerParticle);
     _coarseObjects.push_back(objectFloor);
     ////////////////////////////////////////////////////////////////////////////////
@@ -377,13 +453,11 @@ void dem::mappings::CreateGrid::beginIteration(
     if(_isSphere){
       delta::world::object objectA(
           "cube", 1, position, linear, angular, material, isObstacle, isFriction);
-
       objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
       _coarseObjects.push_back(objectA);
     } else {
       delta::world::object objectA(
           "sphere", 1, position, linear, angular, material, isObstacle, isFriction);
-
       objectA.generateSphere(rad);
       _coarseObjects.push_back(objectA);
     }
@@ -402,14 +476,12 @@ void dem::mappings::CreateGrid::beginIteration(
       if(_isSphere){
         delta::world::object objectA(
             "cube", 1, position, linear, angular, material, isObstacle, isFriction);
-
         objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
         _coarseObjects.push_back(objectA);
       } else {
         delta::world::object objectA(
             "sphere", 1, position, linear, angular, material, isObstacle, isFriction);
         objectA.generateSphere(rad);
-
         _coarseObjects.push_back(objectA);
       }
     } else if(_scenario[2] == roll)
@@ -423,18 +495,15 @@ void dem::mappings::CreateGrid::beginIteration(
       bool isFriction = true;
       bool isObstacle = false;
 
-
       if(_isSphere){
         delta::world::object objectA(
             "cube", 1, position, linear, angular, material, isObstacle, isFriction);
-
         objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
         _coarseObjects.push_back(objectA);
       } else {
         delta::world::object objectA(
             "sphere", 1, position, linear, angular, material, isObstacle, isFriction);
         objectA.generateSphere(rad);
-
         _coarseObjects.push_back(objectA);
       }
     }
@@ -456,7 +525,6 @@ void dem::mappings::CreateGrid::beginIteration(
     if(_isSphere){
       delta::world::object objectA(
           "sphere", 0, centreArray, linear, angular, material, false, false);
-
       objectA.generateSphere(rad);
 
       centreArray[1] = 0.1;
@@ -464,7 +532,6 @@ void dem::mappings::CreateGrid::beginIteration(
 
       delta::world::object objectB(
           "sphere", 1, centreArray, linear, angular, material, false, false);
-
       objectB.generateSphere(rad);
 
       _coarseObjects.push_back(objectA);
@@ -472,7 +539,6 @@ void dem::mappings::CreateGrid::beginIteration(
     } else {
       delta::world::object objectA(
           "granulate", 0, centreArray, linear, angular, material, false, false);
-
       objectA.generateMesh(0,0,0,0,0,0,rad,_noPointsPerParticle);
 
       centreArray[1] = 0.1;
@@ -480,7 +546,6 @@ void dem::mappings::CreateGrid::beginIteration(
 
       delta::world::object objectB(
           "granulate", 1, centreArray, linear, angular, material, false, false);
-
       objectB.generateMesh(0,0,0,0,0,0,rad,_noPointsPerParticle);
 
       _coarseObjects.push_back(objectA);
@@ -503,10 +568,9 @@ void dem::mappings::CreateGrid::beginIteration(
     //////////////////////////////////////////////////////
 
     //double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
-    //int particleid = deployBox(vertex, 0, 0, _centreAsArray, particleDiameter/2, particleDiameter/2, 0, 1.0/8.0, 1.0/8.0, _epsilon, _materialArray[0], _isFrictionArray[0], _isObstacleArray[0]);
+    //int particleid = deployBox(vertex, 0, 0, _centreAsArray, particleDiameter/2, particleDiameter/2, 0, 1.0/8.0, 1.0/8.0, _epsilon, material, isFriction, isObstacle);
 
-    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
-
+    auto material = delta::geometry::material::MaterialType::WOOD;
     bool isFriction = false;
     bool isObstacle = false;
     double rad = 0.01;
@@ -527,14 +591,11 @@ void dem::mappings::CreateGrid::beginIteration(
     if(_isSphere){
       delta::world::object objectA(
           "sphere", 0, position, linear, angular, material, false, false);
-
       objectA.generateSphere(rad);
-
       _fineObjects.push_back(objectA);
     } else {
       delta::world::object objectA(
           "cube", 0, position, linear, angular, material, false, false);
-
       objectA.generateMesh(rad,rad,rad,0,0,0,rad,_noPointsPerParticle);
       _fineObjects.push_back(objectA);
     }
@@ -542,6 +603,8 @@ void dem::mappings::CreateGrid::beginIteration(
     /// END | FREEFALL AND BLACKHOLE SCENARIO
     //////////////////////////////////////////////////////
   }
+
+  computeBoundary();
 
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
@@ -919,9 +982,7 @@ int dem::mappings::CreateGrid::deployGranulateFromFile(
 {
   std::vector<double>  xCoordinates, yCoordinates, zCoordinates;
   delta::geometry::granulates::loadParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates);
-  int newParticleNumber = vertex.createParticle(xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, 0);
-  //dem::mappings::CreateGrid::addParticleToState(xCoordinates, yCoordinates, zCoordinates, isObstacle);
-  return newParticleNumber;
+  return vertex.createParticle(xCoordinates, yCoordinates, zCoordinates, eps, friction, material, isObstacle, _numberOfParticles, 0);
 }
 
 int dem::mappings::CreateGrid::decomposeMeshIntoParticles(
@@ -1003,6 +1064,8 @@ void dem::mappings::CreateGrid::endIteration(
 		dem::State&  solverState
 ) {
 	logTraceInWith1Argument( "endIteration(State)", solverState );
+
+	computeBoundary();
 
 	solverState.incNumberOfParticles(_numberOfParticles);
 	solverState.incNumberOfObstacles(_numberOfObstacles);

@@ -112,9 +112,6 @@ void dem::State::finishedTimeStep(double initStep) {
 
   const double increaseFactor = 1.1;
   const double maxdt = _stateData.getMaxMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocity());
-
-  printf("maxdt:%f\n", maxdt);
-  printf("maxwidth:%f\n", _stateData.getMaxVelocity());
   if (_stateData.getTwoParticlesAreClose() > 0.0) {
     //printf("TRIGGERED HALVING\n");
 	  if(_stateData.getTimeStepSize() > 1E-4)

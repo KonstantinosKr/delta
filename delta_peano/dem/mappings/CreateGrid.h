@@ -140,10 +140,8 @@ class dem::mappings::CreateGrid {
     static void setScenario(
         Scenario scenario[4],
         double maxH,
-        double particleDiamMin,
-		double particleDiamMax,
         GridType gridType,
-		int noPointsPerGranulate);
+        int noPointsPerGranulate);
 
     static bool     _isSphere;
   private:
@@ -173,8 +171,9 @@ class dem::mappings::CreateGrid {
 
     static double _centreAsArray[3];
 
-    void deployCoarseEnviroment(
-        dem::Vertex& vertex);
+    void computeBoundary();
+
+    void deployCoarseEnviroment(dem::Vertex& vertex);
   
     void deployFineEnviroment(
         dem::Vertex& vertex,
@@ -211,8 +210,7 @@ class dem::mappings::CreateGrid {
         delta::geometry::material::MaterialType material,
         bool isObstacle,
         bool isFriction,
-        std::vector<delta::world::object> &_insitufineObjects
-		);
+        std::vector<delta::world::object> &_insitufineObjects);
 
 
   public:
