@@ -47,8 +47,6 @@ class delta::world::object
         std::string                   component,
         int                           particleID,
         std::array<double, 3>         centre,
-        std::array<double, 3>         linearVelocity,
-        std::array<double, 3>         angularVelocity,
         delta::geometry::material::MaterialType material,
         bool                          isObstacle,
         bool                          isFriction
@@ -101,6 +99,9 @@ class delta::world::object
     std::array<double, 3> getxyzDimensions();
     std::array<double, 3> getCentreOfMass();
     void setCentreOfMass(double centreOfMass[3]);
+
+    void setLinearVelocity(std::array<double, 3>  linearVelocity);
+    void setAngularVelocity(std::array<double, 3>  angularVelocity);
 
     std::array<double, 3> getLinearVelocity();
     std::array<double, 3> getAngularVelocity();

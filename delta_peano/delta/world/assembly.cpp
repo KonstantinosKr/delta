@@ -695,11 +695,9 @@ void delta::world::assembly::loadNuclearGeometry(
 
     for(int j=0; j<tmp.size(); j++)
     {
-      std::array<double, 3> linear = {0.0, 0.0, 0.0};
-      std::array<double, 3> angular = {0.0, 0.0, 0.0};
       auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-      delta::world::object obj("FB", 0, tmp[i], linear, angular, material, false, false);
+      delta::world::object obj("FB", 0, tmp[i], material, false, false);
       _insitufineObjects.push_back(obj);
     }
     //std::cout << tmp.size() << " " << particleGrid.size() << std::endl;
@@ -767,11 +765,9 @@ void delta::world::assembly::makeBrickGrid(
 
   for(unsigned i=0; i<particleGrid.size(); i++)
   {
-    std::array<double, 3> linear = {0.0, 0.0, 0.0};
-    std::array<double, 3> angular = {0.0, 0.0, 0.0};
     auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-    delta::world::object obj("FB", i, particleGrid[i], linear, angular, material, false, false);
+    delta::world::object obj("FB", i, particleGrid[i], material, false, false);
     obj.setRad(scalePercentage);
     _insitufineObjects.push_back(obj);
   }

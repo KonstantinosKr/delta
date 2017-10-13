@@ -175,33 +175,19 @@ class dem::mappings::CreateGrid {
 
     void deployCoarseEnviroment(dem::Vertex& vertex);
   
-    void deployFineEnviroment(
-        dem::Vertex& vertex,
-        double cellSize);
+    void deployFineEnviroment(dem::Vertex& vertex, double cellSize);
 
-    int createParticleObject(
-        int octSectTimes, dem::Vertex& vertex,
-        double position[3],
-        double eps,
-        delta::geometry::material::MaterialType material,
-        bool friction,
-        bool isObstacle,
+    int deployObject(dem::Vertex&  vertex, delta::world::object object);
+
+    void decomposeMeshByOctsection(
+        int octSectTimes,
         std::vector<double> xCoordinates,
         std::vector<double> yCoordinates,
-        std::vector<double> zCoordinates);
-
-    int deployObject(
-        dem::Vertex&  vertex,
-        delta::world::object object);
-
-    int deployGranulateFromFile(
-        dem::Vertex&  vertex,
-        double position[3],
-        double radius,
-        double eps,
+        std::vector<double> zCoordinates,
         delta::geometry::material::MaterialType material,
-        bool friction,
-        bool isObstacle);
+        bool isFriction,
+        bool isObstacle,
+        std::vector<delta::world::object> &fineObjects);
 
     int decomposeMeshIntoParticles(
         std::vector<double> xCoordinates,
@@ -210,8 +196,7 @@ class dem::mappings::CreateGrid {
         delta::geometry::material::MaterialType material,
         bool isObstacle,
         bool isFriction,
-        std::vector<delta::world::object> &_insitufineObjects);
-
+        std::vector<delta::world::object> &fineObjects);
 
   public:
   /**
