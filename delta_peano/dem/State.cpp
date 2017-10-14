@@ -70,8 +70,8 @@ void dem::State::incNumberOfParticleComparisons(int delta) {
 void dem::State::merge( const State& otherState ) {
   _stateData.setNumberOfContactPoints( _stateData.getNumberOfContactPoints() + otherState._stateData.getNumberOfContactPoints() );
   _stateData.setNumberOfParticleReassignments( _stateData.getNumberOfParticleReassignments() + otherState._stateData.getNumberOfParticleReassignments() );
+  _stateData.setNumberOfParticleComparisons( _stateData.getNumberOfParticleComparisons() + otherState._stateData.getNumberOfParticleComparisons() );
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + otherState._stateData.getNumberOfTriangleComparisons() );
-  //_stateData.setTwoParticlesAreClose( _stateData.getTwoParticlesAreClose() || otherState._stateData.getTwoParticlesAreClose() );
 
   if(_stateData.getTwoParticlesAreClose() > otherState._stateData.getTwoParticlesAreClose())
   {
@@ -86,8 +86,6 @@ void dem::State::merge( const State& otherState ) {
   } else {
     _stateData.setMaxVelocity( otherState._stateData.getMaxVelocity());
   }
-  // @merge two particles are close
-  // @merge velocity
 }
 
 double dem::State::getTimeStepSize() const {
@@ -117,7 +115,7 @@ void dem::State::finishedTimeStep(double initStep) {
 	  if(_stateData.getTimeStepSize() > 1E-4)
 	  {
 	    double decrementFactor = _stateData.getTwoParticlesAreClose();
-	    //printf("Decrease Factor: %f\n", decrementFactor);
+	   // printf("Decrease Factor: %f\n", decrementFactor);
   	    //_stateData.setTimeStepSize(_stateData.getTimeStepSize()/4.0);
 	    _stateData.setTimeStepSize(decrementFactor);
 	  }
@@ -128,6 +126,7 @@ void dem::State::finishedTimeStep(double initStep) {
   else {//replace with max global step
 	  //if(_stateData.getTimeStepSize() > initStep) return;
 	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()*increaseFactor);
+	   //printf("entered :%f\n", maxdt);
   }
 }
 
@@ -156,7 +155,6 @@ double dem::State::getMaximumVelocity()
 {
   return _stateData.getMaxVelocity();
 }
-
 
 int dem::State::getNumberOfParticles() const {
 	return _stateData.getNumberOfParticles();

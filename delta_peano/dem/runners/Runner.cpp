@@ -240,7 +240,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
            "h_min(real)=" << repository.getState().getMinimumMeshWidth()
       << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
 
-    //repository.getState().finishedTimeStep(initialStepSize);
+    repository.getState().finishedTimeStep(initialStepSize);
     repository.getState().clearAccumulatedData();
   }
 

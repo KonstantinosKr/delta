@@ -330,7 +330,7 @@ void delta::geometry::triangle::meshDenser(
 		C[1] = yCoordinates[i+2];
 		C[2] = zCoordinates[i+2];
 
-		if(getTriangleLength(A,B,C) > gridH) {
+		if(getTriangleLength(A,B,C) >= gridH) {
 	    biSideSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
 		} else
 		{

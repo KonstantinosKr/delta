@@ -51,8 +51,7 @@ namespace delta {
       iREAL   diameterB,
       iREAL   epsilonB,
       bool    frictionB,
-      int 	   particleB,
-      bool&   penetration
+      int 	   particleB
       );
 
     std::vector<contactpoint> sphereWithBarrierAB(
@@ -70,8 +69,7 @@ namespace delta {
       int   	  numberOfTrianglesOfGeometryB,
       iREAL    epsilonB,
       bool 	  frictionB,
-      int 	    particleB,
-      bool&    penetration
+      int 	    particleB
       );
 
     std::vector<contactpoint> sphereWithBarrierBA(
@@ -89,8 +87,7 @@ namespace delta {
           int      numberOfTrianglesOfGeometryB,
           iREAL    epsilonB,
           bool     frictionB,
-          int 	    particleB,
-          bool&    penetration
+          int 	    particleB
         );
 
     bool isSphereOverlayInContact(

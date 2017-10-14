@@ -40,8 +40,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphere(
   iREAL   diameterB,
   iREAL   epsilonB,
   bool     frictionB,
-  int 	   particleB,
-  bool&    penetration)
+  int 	   particleB)
 {
 	std::vector<contactpoint> result;
 
@@ -67,12 +66,6 @@ std::vector<delta::collision::contactpoint> delta::collision::sphere(
 	if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
 	{
 		result.push_back( newContactPoint );
-	}
-
-	if(distance <= (diameterA/2.0)+(diameterB/2.0))
-	{
-		//printf("PENETRATED Sphere:%f\n", distance);
-		penetration = true;
 	}
   
 	return result;
@@ -294,8 +287,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
   int   	numberOfTrianglesOfGeometryB,
   iREAL   epsilonB,
   bool    frictionB,
-  int 		particleB,
-  bool&   penetration)
+  int 		particleB)
 {
 	std::vector<contactpoint> result;
 
@@ -341,12 +333,6 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierA
 		{
 			result.push_back( newContactPoint );
 		}
-
-		if(distance <= 0)
-		{
-			//printf("PENETRATED AB\n");
-			penetration = true;
-		}
 	}
 
 	return result;
@@ -367,8 +353,7 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
   int   	numberOfTrianglesOfGeometryA,
   iREAL   epsilonA,
   bool    frictionA,
-  int 	  particleA,
-  bool&   penetration)
+  int 	  particleA)
 {
 	std::vector<contactpoint> result;
 
@@ -412,12 +397,6 @@ std::vector<delta::collision::contactpoint> delta::collision::sphereWithBarrierB
 		if (newContactPoint.getDistance() <= (epsilonA+epsilonB))
 		{
 			result.push_back( newContactPoint );
-		}
-
-		if(distance <= 0)
-		{
-			//printf("PENETRATED BA\n");
-			penetration = true;
 		}
 	}
 

@@ -458,7 +458,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
       switch (_collisionModel)
       {
         case CollisionModel::Sphere: {
-          bool penetration = false;
           if(fineGridVertex.getParticle(i).getIsObstacle() &&
             !fineGridVertex.getParticle(j).getIsObstacle()) {
             newContactPoints = delta::collision::sphereWithBarrierBA(
@@ -476,7 +475,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
                 fineGridVertex.getNumberOfTriangles(i),
                 fineGridVertex.getParticle(i).getEpsilon(),
                 fineGridVertex.getParticle(i).getFriction(),
-                fineGridVertex.getParticle(i).getGlobalParticleId(), penetration);
+                fineGridVertex.getParticle(i).getGlobalParticleId());
 
           } else if (!fineGridVertex.getParticle(i).getIsObstacle() &&
                       fineGridVertex.getParticle(j).getIsObstacle()) {
@@ -495,7 +494,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
                 fineGridVertex.getNumberOfTriangles(j),
                 fineGridVertex.getParticle(j).getEpsilon(),
                 fineGridVertex.getParticle(j).getFriction(),
-                fineGridVertex.getParticle(j).getGlobalParticleId(), penetration);
+                fineGridVertex.getParticle(j).getGlobalParticleId());
           } else {
             newContactPoints = delta::collision::sphere(
                 fineGridVertex.getParticle(i).getCentre(0),
@@ -512,7 +511,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
                 fineGridVertex.getParticle(j).getDiameter(),
                 fineGridVertex.getParticle(j).getEpsilon(),
                 fineGridVertex.getParticle(j).getFriction(),
-                fineGridVertex.getParticle(j).getGlobalParticleId(), penetration);
+                fineGridVertex.getParticle(j).getGlobalParticleId());
           }
           break;
         }
@@ -718,7 +717,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			switch (_collisionModel)
 			{
         case CollisionModel::Sphere: {
-          bool penetration = false;
           if(vertexA.getParticle(i).getIsObstacle()
               && !vertexB.getParticle(j).getIsObstacle()) {
             //printf("ENTERED neighbor grid sphere BA\n");
@@ -735,7 +733,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
                 vertexA.getZCoordinates(i), vertexA.getNumberOfTriangles(i),
                 vertexA.getParticle(i).getEpsilon(),
                 vertexA.getParticle(i).getFriction(),
-                vertexA.getParticle(i).getGlobalParticleId(), penetration);
+                vertexA.getParticle(i).getGlobalParticleId());
           } else if(!vertexA.getParticle(i).getIsObstacle()
               && vertexB.getParticle(j).getIsObstacle()) {
             //printf("ENTERED neighbor grid sphere AB\n");
@@ -752,7 +750,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
                 vertexB.getZCoordinates(j), vertexB.getNumberOfTriangles(j),
                 vertexB.getParticle(j).getEpsilon(),
                 vertexB.getParticle(j).getFriction(),
-                vertexB.getParticle(j).getGlobalParticleId(), penetration);
+                vertexB.getParticle(j).getGlobalParticleId());
           } else {
             newContactPoints = delta::collision::sphere(
                 vertexA.getParticle(i).getCentre(0),
@@ -769,7 +767,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
                 vertexB.getParticle(j).getDiameter(),
                 vertexB.getParticle(j).getEpsilon(),
                 vertexB.getParticle(j).getFriction(),
-                vertexB.getParticle(j).getGlobalParticleId(), penetration);
+                vertexB.getParticle(j).getGlobalParticleId());
           }
           break;
         }
@@ -935,7 +933,8 @@ void dem::mappings::Collision::enterCell(
     v5.getNumberOfParticles() == 0 &&
     v6.getNumberOfParticles() == 0 &&
     v7.getNumberOfParticles() == 0)return;
-  
+
+
   std::unordered_map<int, int> virtualGlobalIDCount;
   std::unordered_map<int, int> v0GlobalIDtoLocalVertexID;
   std::unordered_map<int, int> v1GlobalIDtoLocalVertexID;
