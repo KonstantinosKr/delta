@@ -259,10 +259,10 @@ void dem::mappings::CreateGrid::beginIteration(
     auto isFriction = true;
     auto isObstacle = true;
 
-    delta::world::object objectFloor(
-        "cube", 0, position, material, isObstacle, isFriction);
-    objectFloor.generateMesh(width, height, width, 0, 0, 0, width, _noPointsPerParticle);
-    _coarseObjects.push_back(objectFloor);
+    //delta::world::object objectFloor(
+    //    "cube", 0, position, material, isObstacle, isFriction);
+    //objectFloor.generateMesh(width, height, width, 0, 0, 0, width, _noPointsPerParticle);
+    //_coarseObjects.push_back(objectFloor);
     ///////////////////////////////////////////////////////////////////////////////////////////
     /////////FLOOR/////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -390,19 +390,19 @@ void dem::mappings::CreateGrid::beginIteration(
     isFriction = false;
     material = delta::geometry::material::MaterialType::WOOD;
 
-    /*
+
     delta::world::object objectHopper(
         "hopper", 0, position, material, isObstacle, isFriction);
     objectHopper.generateMesh(_hopperWidth, _hopperHeight, _hopperWidth, 0, 0, 0, _hopperWidth, _noPointsPerParticle);
     _coarseObjects.push_back(objectHopper);
-     */
 
+/*
     int refinement = 3;
     std::vector<double> xCoordinates, yCoordinates, zCoordinates;
     delta::geometry::hopper::generateHopper(centre, _hopperWidth, _hopperThickness, _hopperHeight, _hopperHatch, refinement, _minParticleDiam, xCoordinates, yCoordinates, zCoordinates);
     hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
 
-
+*/
     //////////////////////////////////////////////////////
     /// HOPPER FLOW SCENARIO /////////////////////////////
     //////////////////////////////////////////////////////
@@ -503,7 +503,6 @@ void dem::mappings::CreateGrid::beginIteration(
     //////////////////////////////////////////////////////
 
     auto material = delta::geometry::material::MaterialType::WOOD;
-    double rad = 0.01;
     std::array<double, 3> centreArray = {0.2, 0.2, 0.2};
     std::array<double, 3> linear = {0.1, 0.1, 0.1};
 
@@ -512,18 +511,23 @@ void dem::mappings::CreateGrid::beginIteration(
           "sphere", 0, centreArray, material, false, false);
       objectA.generateSphere(0.01);
       objectA.setLinearVelocity(linear);
+      _coarseObjects.push_back(objectA);
 
-      centreArray = {0.8, 0.8, 0.8};
-      linear = {-0.1, -0.1, -0.1};
+      centreArray[0] = 0.8;
+      centreArray[1] = 0.8;
+      centreArray[2] = 0.8;
+
+      linear[0] = -0.1;
+      linear[1] = -0.1;
+      linear[2] = -0.1;
 
       delta::world::object objectB(
           "sphere", 1, centreArray, material, false, false);
       objectB.generateSphere(0.1);
       objectB.setLinearVelocity(linear);
-
-      _coarseObjects.push_back(objectA);
       _coarseObjects.push_back(objectB);
     } else {
+      double rad = 0.01;
       delta::world::object objectA(
           "granulate", 0, centreArray, material, false, false);
       objectA.generateMesh(0,0,0,0,0,0,rad,_noPointsPerParticle);

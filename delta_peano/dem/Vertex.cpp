@@ -554,39 +554,114 @@ void dem::Vertex::clearInheritedCoarseGridParticles() {
   ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).clear();
 }
 
-void dem::Vertex::inheritCoarseGridParticles(const Vertex&  vertex)
+void dem::Vertex::inheritCoarseGridParticles(
+    const Vertex&  coarseVertex,
+    const tarch::la::Vector<DIMENSIONS,double>& fineGridX,
+    double fineGridH)
 {
-  if(!vertex.isOutside())
+  if(!coarseVertex.isOutside())
   {
+
+    iREAL v[3] = {fineGridX(0), fineGridX(1), fineGridX(2)};
+
+    /*
+    This bounding sphere has to have the radius =
+    particle sphere radius + 2*epsilon + sqrt(diameter*h)*/
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////VIRTUAL PARTICLE INHERITANCE//////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
 	  //inherit unique virtual particles from coarse level
-    for(auto &particleCoarse:
-        ParticleHeap::getInstance().getData(
-            vertex._vertexData.getParticlesOnCoarserLevels())) //loop coarse grid vertex real and virtual particles
+    //loop coarse grid vertex virtual particles
+    for(auto &virtualParticleCoarse: ParticleHeap::getInstance().getData(coarseVertex._vertexData.getParticlesOnCoarserLevels()))
     {
       bool found = false;
-      for(auto &particleLocal:
-          ParticleHeap::getInstance().getData(
-              _vertexData.getParticlesOnCoarserLevels()))//loop local grid vertex real and virtual particles
+
+      //loop local grid vertex virtual particles
+      for(auto &virtualParticleLocal: ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()))
       {
-        if(particleCoarse.getGlobalParticleId() == particleLocal.getGlobalParticleId() &&
-           particleCoarse.getLocalParticleId() == particleLocal.getLocalParticleId())
+        if(virtualParticleCoarse.getGlobalParticleId() == virtualParticleLocal.getGlobalParticleId() &&
+           virtualParticleCoarse.getLocalParticleId() == virtualParticleLocal.getLocalParticleId())
         {
-          found = true;
+          found = true; //if found ignore and look up next coarse particle
           break;
         }
       }
-      if(!found)
+
+      if(!found) //add to local list
       {
-        ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
-            ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), particleCoarse);
+        iREAL p[3] = {virtualParticleCoarse.getCentre(0), virtualParticleCoarse.getCentre(1), virtualParticleCoarse.getCentre(2)};
+
+        iREAL dd[3];
+
+        dd[0] = p[0] - v[0];
+        dd[1] = p[1] - v[1];
+        dd[2] = p[2] - v[2];
+
+        iREAL d = sqrt(dd[0]*dd[0] + dd[1]*dd[1] + dd[2]*dd[2]);
+
+        iREAL radius = virtualParticleCoarse.getDiameter()/2.0 + 4.0*virtualParticleCoarse.getEpsilon() + sqrt(fineGridH * fineGridH * d);
+
+        if(d <= radius)
+        {
+          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
+              ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), virtualParticleCoarse);
+        }
       }
     }
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
+
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////REAL PARTICLE INHERITANCE/////////////////////////////
+    //////////////////////////////////////////////////////////////////////
     //inherit real particles from coarse level
+    for(auto &realParticleCoarse: ParticleHeap::getInstance().getData(coarseVertex._vertexData.getParticles()))
+    {
+      bool found = false;
+
+      //loop local grid vertex virtual particles
+      for(auto &realParticleLocal: ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()))
+      {
+        if(realParticleCoarse.getGlobalParticleId() == realParticleLocal.getGlobalParticleId() &&
+            realParticleCoarse.getLocalParticleId() == realParticleLocal.getLocalParticleId())
+        {
+          found = true; //if found ignore and look up next coarse particle
+          break;
+        }
+      }
+
+      if(!found) //add to local list
+      {
+        iREAL p[3] = {realParticleCoarse.getCentre(0), realParticleCoarse.getCentre(1), realParticleCoarse.getCentre(2)};
+
+        iREAL dd[3];
+
+        dd[0] = p[0] - v[0];
+        dd[1] = p[1] - v[1];
+        dd[2] = p[2] - v[2];
+
+        iREAL d = sqrt(dd[0]*dd[0] + dd[1]*dd[1] + dd[2]*dd[2]);
+
+        iREAL radius = realParticleCoarse.getDiameter()/2.0 + 4.0*realParticleCoarse.getEpsilon() + sqrt(fineGridH * fineGridH * d);
+
+        if(d <= radius)
+        {
+          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
+              ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), realParticleCoarse);
+        }
+      }
+    }
+    /*
     ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
     ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
-    ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).begin(),
-    ParticleHeap::getInstance().getData(vertex._vertexData.getParticles()).end());
+    ParticleHeap::getInstance().getData(coarseVertex._vertexData.getParticles()).begin(),
+    ParticleHeap::getInstance().getData(coarseVertex._vertexData.getParticles()).end());
+    */
+    //////////////////////////////////////////////////////////////////////
   }
 }
 

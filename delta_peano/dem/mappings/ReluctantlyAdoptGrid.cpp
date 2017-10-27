@@ -2,6 +2,7 @@
 #include "dem/mappings/AdoptGrid.h"
 
 #include "peano/utils/Loop.h"
+#include <unordered_map>
 
 
 /**
@@ -173,6 +174,76 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
 
+bool dem::mappings::ReluctantlyAdoptGrid::isApproach(
+    const records::Particle& particleA,
+    const records::Particle& particleB)
+{
+  iREAL dt = _state.getTimeStepSize();
+  iREAL pdt = dt + dt * 1.1;
+
+  iREAL cA[3], cB[3];
+
+  cA[0] = particleA.getCentre(0) + pdt*particleA.getVelocity(0);
+  cA[1] = particleA.getCentre(1) + pdt*particleA.getVelocity(1);
+  cA[2] = particleA.getCentre(2) + pdt*particleA.getVelocity(2);
+
+  cB[0] = particleB.getCentre(0) + pdt*particleB.getVelocity(0);
+  cB[1] = particleB.getCentre(1) + pdt*particleB.getVelocity(1);
+  cB[2] = particleB.getCentre(2) + pdt*particleB.getVelocity(2);
+
+  iREAL dAB[3], pdAB[3];
+
+  pdAB[0] = cB[0] - cA[0];
+  pdAB[1] = cB[1] - cA[1];
+  pdAB[2] = cB[2] - cA[2];
+
+  dAB[0] = particleB.getCentre(0) - particleA.getCentre(0);
+  dAB[1] = particleB.getCentre(1) - particleA.getCentre(1);
+  dAB[2] = particleB.getCentre(2) - particleA.getCentre(2);
+
+  iREAL vA[3], vB[3];
+  vA[0] = particleA.getVelocity(0);
+  vA[1] = particleA.getVelocity(1);
+  vA[2] = particleA.getVelocity(2);
+
+  vB[0] = particleB.getVelocity(0);
+  vB[1] = particleB.getVelocity(1);
+  vB[2] = particleB.getVelocity(2);
+
+  //velocity of B relative to A
+  iREAL vBA = ((vB[0] * dAB[0]) + (vB[1] * dAB[1]) + (vB[2] * dAB[2])) -
+              ((vA[0] * dAB[0]) + (vA[1] * dAB[1]) + (vA[2] * dAB[2]));
+
+  iREAL pvBA = ((vB[0] * pdAB[0]) + (vB[1] * pdAB[1]) + (vB[2] * pdAB[2])) -
+               ((vA[0] * pdAB[0]) + (vA[1] * pdAB[1]) + (vA[2] * pdAB[2]));
+
+  //particles separate
+  if (vBA > 0 && pvBA > 0) {
+    return false;
+  }
+
+  return true;
+}
+
+bool dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(
+    dem::Vertex&  vertexA,
+    dem::Vertex&  vertexB)
+{
+  bool approach = false;
+  for(int i=0; i<vertexA.getNumberOfParticles(); i++)
+  {
+    for(int j=0; j<vertexB.getNumberOfParticles(); j++)
+    {
+      if((vertexA.getParticle(i).getIsObstacle() && vertexB.getParticle(j).getIsObstacle()) ||
+         (vertexA.getParticle(i).getGlobalParticleId() == vertexB.getParticle(j).getGlobalParticleId()))
+        continue;
+
+      approach = isApproach(vertexA.getParticle(i), vertexB.getParticle(j));
+    }
+  }
+  return approach;
+}
+
 void dem::mappings::ReluctantlyAdoptGrid::enterCell(
   dem::Cell&                                 fineGridCell,
   dem::Vertex * const                        fineGridVertices,
@@ -184,18 +255,311 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
 ) {
   logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
+  Vertex &v0 = fineGridVertices[fineGridVerticesEnumerator(0)];
+  Vertex &v1 = fineGridVertices[fineGridVerticesEnumerator(1)];
+  Vertex &v2 = fineGridVertices[fineGridVerticesEnumerator(2)];
+  Vertex &v3 = fineGridVertices[fineGridVerticesEnumerator(3)];
+  Vertex &v4 = fineGridVertices[fineGridVerticesEnumerator(4)];
+  Vertex &v5 = fineGridVertices[fineGridVerticesEnumerator(5)];
+  Vertex &v6 = fineGridVertices[fineGridVerticesEnumerator(6)];
+  Vertex &v7 = fineGridVertices[fineGridVerticesEnumerator(7)];
+
+  if(
+    v0.getNumberOfParticles() == 0 &&
+    v1.getNumberOfParticles() == 0 &&
+    v2.getNumberOfParticles() == 0 &&
+    v3.getNumberOfParticles() == 0 &&
+    v4.getNumberOfParticles() == 0 &&
+    v5.getNumberOfParticles() == 0 &&
+    v6.getNumberOfParticles() == 0 &&
+    v7.getNumberOfParticles() == 0)return;
+
+  std::unordered_map<int, int> virtualGlobalIDCount;
+
+  dem::Vertex vcentre;
+  vcentre.init();
+
+  //if all vertices have same virtual particle, then remove from all.
+  //*already check in intra-vertex stage
+
+  for(int i=0; i<v0.getNumberOfVirtualParticles(); i++)
+  {
+    int virtualGlobalParticleID = v0.getParticle(i).getGlobalParticleId();
+
+    if(virtualGlobalIDCount[virtualGlobalParticleID] != -1)
+    {
+      virtualGlobalIDCount[virtualGlobalParticleID]++;
+    }
+
+    if(virtualGlobalIDCount[virtualGlobalParticleID] > 1)
+    {
+      records::Particle&  particle = v0.getParticle(i);
+      vcentre.appendParticle(particle);
+      virtualGlobalIDCount[virtualGlobalParticleID] = -1;
+    }
+  }
+
+  for(int i=0; i<v1.getNumberOfVirtualParticles(); i++)
+  {
+    int virtualGlobalParticleID = v1.getParticle(i).getGlobalParticleId();
+    if(virtualGlobalIDCount[virtualGlobalParticleID] != -1)
+    {
+      virtualGlobalIDCount[virtualGlobalParticleID]++;
+    }
+
+    if(virtualGlobalIDCount[virtualGlobalParticleID] > 1)
+    {
+      records::Particle&  particle = v1.getParticle(i);
+      vcentre.appendParticle(particle);
+      virtualGlobalIDCount[virtualGlobalParticleID] = -1;
+    }
+  }
+
+  for(int i=0; i<v2.getNumberOfVirtualParticles(); i++)
+  {
+    int virtualGlobalParticleID = v2.getParticle(i).getGlobalParticleId();
+    if(virtualGlobalIDCount[virtualGlobalParticleID] != -1)
+    {
+      virtualGlobalIDCount[virtualGlobalParticleID]++;
+    }
+
+    if(virtualGlobalIDCount[virtualGlobalParticleID] > 1)
+    {
+      records::Particle&  particle = v2.getParticle(i);
+      vcentre.appendParticle(particle);
+      virtualGlobalIDCount[virtualGlobalParticleID] = -1;
+    }
+  }
+
+  for(int i=0; i<v3.getNumberOfVirtualParticles(); i++)
+  {
+    int virtualGlobalParticleID = v3.getParticle(i).getGlobalParticleId();
+    if(virtualGlobalIDCount[virtualGlobalParticleID] != -1)
+    {
+      virtualGlobalIDCount[virtualGlobalParticleID]++;
+    }
+
+    if(virtualGlobalIDCount[virtualGlobalParticleID] > 1)
+    {
+      records::Particle&  particle = v3.getParticle(i);
+      vcentre.appendParticle(particle);
+      virtualGlobalIDCount[virtualGlobalParticleID] = -1;
+    }
+  }
+
+  for(int i=0; i<v4.getNumberOfVirtualParticles(); i++)
+  {
+    int virtualGlobalParticleID = v4.getParticle(i).getGlobalParticleId();
+    if(virtualGlobalIDCount[virtualGlobalParticleID] != -1)
+    {
+      virtualGlobalIDCount[virtualGlobalParticleID]++;
+    }
+
+    if(virtualGlobalIDCount[virtualGlobalParticleID] > 1)
+    {
+      records::Particle&  particle = v4.getParticle(i);
+      vcentre.appendParticle(particle);
+      virtualGlobalIDCount[virtualGlobalParticleID] = -1;
+    }
+  }
+
+  for(int i=0; i<v5.getNumberOfVirtualParticles(); i++)
+  {
+    int virtualGlobalParticleID = v5.getParticle(i).getGlobalParticleId();
+    if(virtualGlobalIDCount[virtualGlobalParticleID] != -1)
+    {
+      virtualGlobalIDCount[virtualGlobalParticleID]++;
+    }
+
+    if(virtualGlobalIDCount[virtualGlobalParticleID] > 1)
+    {
+      records::Particle&  particle = v5.getParticle(i);
+      vcentre.appendParticle(particle);
+      virtualGlobalIDCount[virtualGlobalParticleID] = -1;
+    }
+  }
+
+  for(int i=0; i<v6.getNumberOfVirtualParticles(); i++)
+  {
+    int virtualGlobalParticleID = v6.getParticle(i).getGlobalParticleId();
+    if(virtualGlobalIDCount[virtualGlobalParticleID] != -1)
+    {
+      virtualGlobalIDCount[virtualGlobalParticleID]++;
+    }
+
+    if(virtualGlobalIDCount[virtualGlobalParticleID] > 1)
+    {
+      records::Particle&  particle = v6.getParticle(i);
+      vcentre.appendParticle(particle);
+      virtualGlobalIDCount[virtualGlobalParticleID] = -1;
+    }
+  }
+
+  for(int i=0; i<v7.getNumberOfVirtualParticles(); i++)
+  {
+    int virtualGlobalParticleID = v7.getParticle(i).getGlobalParticleId();
+    if(virtualGlobalIDCount[virtualGlobalParticleID] != -1)
+    {
+      virtualGlobalIDCount[virtualGlobalParticleID]++;
+    }
+
+    if(virtualGlobalIDCount[virtualGlobalParticleID] > 1)
+    {
+      records::Particle&  particle = v7.getParticle(i);
+      vcentre.appendParticle(particle);
+      virtualGlobalIDCount[virtualGlobalParticleID] = -1;
+    }
+  }
+
+
+  bool approach = false;
+
+  //phase A
+
+  //full coarse inheritance check
+  approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(vcentre, v1);
+  approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(vcentre, v2);
+  approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(vcentre, v3);
+  approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(vcentre, v4);
+  approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(vcentre, v5);
+  approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(vcentre, v6);
+  approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(vcentre, v7);
+  ///
+
+
+  //REST is partial coarse inheritance check
+  //if(v0.getNumberOfParticles() > 0)
+  {
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v0, v1);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v0, v2);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v0, v3);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v0, v4);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v0, v5);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v0, v6);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v0, v7);
+  }
+
+  //if(v1.getNumberOfParticles() > 0)
+  {
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v1, v2);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v1, v4);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v1, v6);
+  }
+
+  //if(v2.getNumberOfParticles() > 0)
+  {
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v2, v5);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v2, v4);
+  }
+  approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v3, v4);
+
+  //phase B
+  //back face is boundary
+  bool backface = (v4.isBoundary() && v5.isBoundary()) &&
+                  (v6.isBoundary() && v7.isBoundary()) &&
+
+                  ((!v0.isBoundary() && !v1.isBoundary()) &&
+                   (!v2.isBoundary() && !v3.isBoundary()));
+
+  bool backfaceLRUDHalo = ((v4.isBoundary() && v5.isBoundary()) &&
+                           (v6.isBoundary() && v7.isBoundary()));  //down halo
+
+  bool topface = (v2.isBoundary() && v3.isBoundary()) &&
+                 (v6.isBoundary() && v7.isBoundary()) &&
+
+                 ((!v0.isBoundary() && !v1.isBoundary()) &&
+                  (!v4.isBoundary() && !v5.isBoundary()));
+
+  bool topfaceLRUDHalo = ((v2.isBoundary() && v3.isBoundary()) &&
+                          (v6.isBoundary() && v7.isBoundary()));  //down halo
+
+  bool rightface = (v1.isBoundary() && v3.isBoundary()) &&
+                   (v5.isBoundary() && v7.isBoundary()) &&
+
+                   (!v0.isBoundary() && !v2.isBoundary()) &&
+                   (!v4.isBoundary() && !v6.isBoundary());
+
+  bool rightfaceLRUDHalo = ((v1.isBoundary() && v3.isBoundary() &&
+                            (v5.isBoundary() && v7.isBoundary())) &&
+
+                           ((v4.isBoundary() && v6.isBoundary())));  //down halo
+
+  //if(backface || backfaceLRUDHalo)
+  {
+    //face X
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v4, v7);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v5, v6);
+    //face L
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v4, v5);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v4, v6);
+  }
+
+  //face top vertex is boundary
+  //if(topface || topfaceLRUDHalo)
+  {
+    //face X
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v2, v7);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v3, v6);
+    //face L
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v2, v6);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v2, v3);
+  }
+
+  //right face is boundary
+  //if(rightface || rightfaceLRUDHalo)
+  {
+    //face X
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v1, v7);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v3, v5);
+    //face L
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v1, v3);
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v1, v5);
+  }
+
+  bool backtopEdge = ((v4.isBoundary() && v5.isBoundary()) &&
+                      (v6.isBoundary() && v7.isBoundary()) &&
+                      (v2.isBoundary() && v3.isBoundary()));
+
+  bool backrightEdge = ((v4.isBoundary() && v5.isBoundary()) &&
+                        (v6.isBoundary() && v7.isBoundary()) &&
+                        (v1.isBoundary() && v3.isBoundary()));
+
+  bool toprightEdge = ((v2.isBoundary() && v3.isBoundary()) &&
+                       (v6.isBoundary() && v7.isBoundary()) &&
+                       (v1.isBoundary() && v5.isBoundary()));
+
+  //if(backtopEdge)
+  {
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v6, v7);
+  }
+
+  //if(backrightEdge)
+  {
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v5, v7);
+  }
+
+  //if(toprightEdge)
+  {
+    approach = dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(v3, v7);
+  }
+
+
+
   double minDiameter  = std::numeric_limits<double>::max();
   int numberOfParticles = 0;
 
-  dfor2(k) //get min diameter particle
+  dfor2(k) //get min diameter particle and count number of real particles
     numberOfParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles();
+
     for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
     {
       minDiameter = std::min(minDiameter, fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getDiameter());
     }
   enddforx
 
-  if(numberOfParticles>=2 && minDiameter<fineGridVerticesEnumerator.getCellSize()(0)/3.0 )
+  //bool approach = isApproach();
+
+  if(numberOfParticles >= 2 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && approach)
   {
     dfor2(k)
       if (!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
@@ -451,6 +815,7 @@ void dem::mappings::ReluctantlyAdoptGrid::beginIteration(
 ) {
   logTraceInWith1Argument( "beginIteration(State)", solverState );
   // @todo Insert your code here
+  _state = solverState;
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 

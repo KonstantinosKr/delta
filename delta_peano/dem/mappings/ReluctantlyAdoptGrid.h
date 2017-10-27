@@ -44,6 +44,17 @@ class dem::mappings::ReluctantlyAdoptGrid {
      */
     static tarch::logging::Log  _log;
     static tarch::multicore::BooleanSemaphore        _ReluctantSemaphore;
+
+    State   _state;
+
+    bool isApproach(
+        const records::Particle& particleA,
+        const records::Particle& particleB);
+
+    bool ParticlesOfTwoDifferentVertices(
+        dem::Vertex&  vertexA,
+        dem::Vertex&  vertexB);
+
   public:
   /**
    * These flags are used to inform Peano about your operation. It tells the

@@ -117,12 +117,12 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
 
     int createSphereParticle(
         const tarch::la::Vector<DIMENSIONS,double>&  center,
-    		double radius,
-    		double epsilon,
-    		bool friction,
-    		delta::geometry::material::MaterialType material,
-    		bool isObstacle,
-    		int particleId);
+    		  double radius,
+    		  double epsilon,
+    		  bool friction,
+    		  delta::geometry::material::MaterialType material,
+    		  bool isObstacle,
+    		  int particleId);
 
     int getNumberOfParticles() const;
     int getNumberOfTriangles( int particleNumber ) const;
@@ -232,7 +232,10 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      * where the grid really changes dramatically. We cannot afford to have 10
      * or 100 times the original number of comparisons in this sweep.
      */
-    void inheritCoarseGridParticles( const Vertex&  vertex );
+    void inheritCoarseGridParticles(
+        const Vertex&  coarseVertex,
+        const tarch::la::Vector<DIMENSIONS, double>& fineGridX,
+        double fineGridH);
 };
 
 

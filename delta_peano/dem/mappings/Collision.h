@@ -14,6 +14,7 @@
 #include "tarch/logging/CommandLineLogger.h"
 
 #include "peano/grid/VertexEnumerator.h"
+#include "peano/grid/aspects/VertexStateAnalysis.h"
 #include "peano/MappingSpecification.h"
 #include "peano/CommunicationSpecification.h"
 
@@ -55,6 +56,10 @@ class dem::mappings::Collision {
       dem::Vertex&  vertexA,
       dem::Vertex&  vertexB
     );
+
+    bool onApproach(
+        const records::Particle& particleA,
+        const records::Particle& particleB);
 
     void addCollision(
       std::vector<delta::collision::contactpoint> newContactPoints,
