@@ -32,6 +32,17 @@
 namespace dem {
   namespace mappings {
     class Collision;
+
+    dem::Vertex reduceVirtuals(
+        dem::Vertex& v0,
+        dem::Vertex &v1,
+        dem::Vertex &v2,
+        dem::Vertex &v3,
+        dem::Vertex &v4,
+        dem::Vertex &v5,
+        dem::Vertex &v6,
+        dem::Vertex &v7
+        );
   }
 }
 
@@ -56,10 +67,6 @@ class dem::mappings::Collision {
       dem::Vertex&  vertexA,
       dem::Vertex&  vertexB
     );
-
-    bool onApproach(
-        const records::Particle& particleA,
-        const records::Particle& particleB);
 
     void addCollision(
       std::vector<delta::collision::contactpoint> newContactPoints,

@@ -396,13 +396,13 @@ void dem::mappings::CreateGrid::beginIteration(
     objectHopper.generateMesh(_hopperWidth, _hopperHeight, _hopperWidth, 0, 0, 0, _hopperWidth, _noPointsPerParticle);
     _coarseObjects.push_back(objectHopper);
 
-/*
+
+    /*
     int refinement = 3;
     std::vector<double> xCoordinates, yCoordinates, zCoordinates;
     delta::geometry::hopper::generateHopper(centre, _hopperWidth, _hopperThickness, _hopperHeight, _hopperHatch, refinement, _minParticleDiam, xCoordinates, yCoordinates, zCoordinates);
     hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
-
-*/
+    */
     //////////////////////////////////////////////////////
     /// HOPPER FLOW SCENARIO /////////////////////////////
     //////////////////////////////////////////////////////

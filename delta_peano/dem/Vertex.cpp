@@ -559,6 +559,7 @@ void dem::Vertex::inheritCoarseGridParticles(
     const tarch::la::Vector<DIMENSIONS,double>& fineGridX,
     double fineGridH)
 {
+  //return;
   if(!coarseVertex.isOutside())
   {
 
@@ -655,12 +656,6 @@ void dem::Vertex::inheritCoarseGridParticles(
         }
       }
     }
-    /*
-    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
-    ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(),
-    ParticleHeap::getInstance().getData(coarseVertex._vertexData.getParticles()).begin(),
-    ParticleHeap::getInstance().getData(coarseVertex._vertexData.getParticles()).end());
-    */
     //////////////////////////////////////////////////////////////////////
   }
 }

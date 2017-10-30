@@ -64,11 +64,11 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     particle._persistentRecords._centreOfMass(0) += timeStepSize*particle._persistentRecords._velocity(0);
     particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
-/*
+
     delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
                                           &particle._persistentRecords._referentialAngular(0),
                                           &particle._persistentRecords._orientation(0), timeStepSize);
-*/
+
     double* x = fineGridVertex.getXCoordinates(i);
     double* y = fineGridVertex.getYCoordinates(i);
     double* z = fineGridVertex.getZCoordinates(i);
