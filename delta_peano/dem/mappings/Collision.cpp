@@ -213,7 +213,6 @@ void dem::mappings::Collision::triggerParticleTooClose(
     const records::Particle& particleA,
     const records::Particle& particleB)
 {
-
   iREAL dt = _state.getTimeStepSize();
   iREAL pdt = dt + dt * 1.1;
 
@@ -250,7 +249,6 @@ void dem::mappings::Collision::triggerParticleTooClose(
   vB[2] = particleB.getVelocity(2);
 
   iREAL d = sqrt((dAB[0] * dAB[0]) + (dAB[1] * dAB[1]) + (dAB[2] * dAB[2]));
-
   iREAL pd = sqrt((pdAB[0] * pdAB[0]) + (pdAB[1] * pdAB[1]) + (pdAB[2] * pdAB[2]));
 
   //velocity of B relative to A
@@ -285,7 +283,6 @@ void dem::mappings::Collision::triggerParticleTooClose(
 
   if(-pvBA >= pdistancePerStep || pvBA > 0)
   {
-
     double rrA = particleA.getDiameter()/2.0;
     double rrB = particleB.getDiameter()/2.0;
 
@@ -294,44 +291,7 @@ void dem::mappings::Collision::triggerParticleTooClose(
 
     iREAL localMaxdt = (d -rrA -rrB -epsilonA -epsilonB) / 2*vBA;
 
-    /*
-    pdt = dt/4.0; - required for predicted step reduction
-    iREAL displacementA[3], displacementB[3];
-
-    //Original position
-    iREAL OdiplacementA[3], OdiplacementB[3];
-    OdiplacementA[0] = particleA.getCentre(0) + dt*particleA.getVelocity(0);
-    OdiplacementA[1] = particleA.getCentre(1) + dt*particleA.getVelocity(1);
-    OdiplacementA[2] = particleA.getCentre(2) + dt*particleA.getVelocity(2);
-
-    OdiplacementB[0] = particleB.getCentre(0) + dt*particleB.getVelocity(0);
-    OdiplacementB[1] = particleB.getCentre(1) + dt*particleB.getVelocity(1);
-    OdiplacementB[2] = particleB.getCentre(2) + dt*particleB.getVelocity(2);
-
-    //diplacement at timestep ahead
-    displacementA[0] = OdiplacementA[0] + particleA.getVelocity(0);
-    displacementA[1] = OdiplacementA[1] + particleA.getVelocity(1);
-    displacementA[2] = OdiplacementA[2] + particleA.getVelocity(2);
-
-    displacementB[0] = OdiplacementB[0] + particleB.getVelocity(0);
-    displacementB[1] = OdiplacementB[1] + particleB.getVelocity(1);
-    displacementB[2] = OdiplacementB[2] + particleB.getVelocity(2);
-
-    iREAL lineA[3], lineB[3];
-    iREAL a, b;
-
-    //A + t * (B-A)
-    lineA[0] = OdiplacementA[0] + a * (displacementA[0] - OdiplacementA[0]);
-    lineA[1] = OdiplacementA[1] + a * (displacementA[1] - OdiplacementA[1]);
-    lineA[2] = OdiplacementA[2] + a * (displacementA[2] - OdiplacementA[2]);
-
-    //C + t * (D-C)
-    lineB[0] = OdiplacementB[0] + b * (displacementB[0] - OdiplacementB[0]);
-    lineB[1] = OdiplacementB[1] + b * (displacementB[1] - OdiplacementB[1]);
-    lineB[2] = OdiplacementB[2] + b * (displacementB[2] - OdiplacementB[2]);*/
-
     if(localMaxdt < 0.0) localMaxdt = -1*localMaxdt;
-
     _state.informStateThatTwoParticlesAreClose(localMaxdt);
   }
   /*printf("pvBA: %f  pdt: %f | pmd: %f pdt: %f pd: %f\n",
@@ -904,36 +864,16 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 	}
 }
 
-void dem::mappings::Collision::enterCell(
-		dem::Cell&                                fineGridCell,
-		dem::Vertex * const                       fineGridVertices,
-		const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
-		dem::Vertex * const                       coarseGridVertices,
-		const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
-		dem::Cell&                                coarseGridCell,
-		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
-) {
-	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-
-  Vertex &v0 = fineGridVertices[fineGridVerticesEnumerator(0)];
-  Vertex &v1 = fineGridVertices[fineGridVerticesEnumerator(1)];
-  Vertex &v2 = fineGridVertices[fineGridVerticesEnumerator(2)];
-  Vertex &v3 = fineGridVertices[fineGridVerticesEnumerator(3)];
-  Vertex &v4 = fineGridVertices[fineGridVerticesEnumerator(4)];
-  Vertex &v5 = fineGridVertices[fineGridVerticesEnumerator(5)];
-  Vertex &v6 = fineGridVertices[fineGridVerticesEnumerator(6)];
-  Vertex &v7 = fineGridVertices[fineGridVerticesEnumerator(7)];
-
-	if(
-    v0.getNumberOfParticles() == 0 &&
-    v1.getNumberOfParticles() == 0 &&
-    v2.getNumberOfParticles() == 0 &&
-    v3.getNumberOfParticles() == 0 &&
-    v4.getNumberOfParticles() == 0 &&
-    v5.getNumberOfParticles() == 0 &&
-    v6.getNumberOfParticles() == 0 &&
-    v7.getNumberOfParticles() == 0)return;
-
+dem::Vertex dem::mappings::reduceVirtuals(
+    dem::Vertex &v0,
+    dem::Vertex &v1,
+    dem::Vertex &v2,
+    dem::Vertex &v3,
+    dem::Vertex &v4,
+    dem::Vertex &v5,
+    dem::Vertex &v6,
+    dem::Vertex &v7)
+{
   std::unordered_map<int, int> virtualGlobalIDCount;
 
   dem::Vertex vcentre;
@@ -1006,7 +946,7 @@ void dem::mappings::Collision::enterCell(
       virtualGlobalIDCount[virtualGlobalParticleID] = -1;
     }
   }
-   
+
   for(int i=0; i<v4.getNumberOfVirtualParticles(); i++)
   {
     int virtualGlobalParticleID = v4.getParticle(i).getGlobalParticleId();
@@ -1022,7 +962,7 @@ void dem::mappings::Collision::enterCell(
       virtualGlobalIDCount[virtualGlobalParticleID] = -1;
     }
   }
- 
+
   for(int i=0; i<v5.getNumberOfVirtualParticles(); i++)
   {
     int virtualGlobalParticleID = v5.getParticle(i).getGlobalParticleId();
@@ -1054,7 +994,7 @@ void dem::mappings::Collision::enterCell(
       virtualGlobalIDCount[virtualGlobalParticleID] = -1;
     }
   }
- 
+
   for(int i=0; i<v7.getNumberOfVirtualParticles(); i++)
   {
     int virtualGlobalParticleID = v7.getParticle(i).getGlobalParticleId();
@@ -1077,6 +1017,53 @@ void dem::mappings::Collision::enterCell(
     printf("counter[%i]: %i\n", it->first, it->second);
   }*/
 
+  return vcentre;
+}
+
+void dem::mappings::Collision::enterCell(
+		dem::Cell&                                fineGridCell,
+		dem::Vertex * const                       fineGridVertices,
+		const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
+		dem::Vertex * const                       coarseGridVertices,
+		const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
+		dem::Cell&                                coarseGridCell,
+		const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
+) {
+	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+
+  Vertex &v0 = fineGridVertices[fineGridVerticesEnumerator(0)];
+  Vertex &v1 = fineGridVertices[fineGridVerticesEnumerator(1)];
+  Vertex &v2 = fineGridVertices[fineGridVerticesEnumerator(2)];
+  Vertex &v3 = fineGridVertices[fineGridVerticesEnumerator(3)];
+  Vertex &v4 = fineGridVertices[fineGridVerticesEnumerator(4)];
+  Vertex &v5 = fineGridVertices[fineGridVerticesEnumerator(5)];
+  Vertex &v6 = fineGridVertices[fineGridVerticesEnumerator(6)];
+  Vertex &v7 = fineGridVertices[fineGridVerticesEnumerator(7)];
+
+	if(
+    v0.getNumberOfParticles() == 0 &&
+    v1.getNumberOfParticles() == 0 &&
+    v2.getNumberOfParticles() == 0 &&
+    v3.getNumberOfParticles() == 0 &&
+    v4.getNumberOfParticles() == 0 &&
+    v5.getNumberOfParticles() == 0 &&
+    v6.getNumberOfParticles() == 0 &&
+    v7.getNumberOfParticles() == 0)return;
+
+  dem::Vertex vcentre = reduceVirtuals(v0, v1, v2, v3, v4, v5, v6, v7);
+
+  //printf("ENTERED\n");
+  for(int i=0; i<8; i++)
+  {
+    for(int j=i+1; j<8; j++)
+    {
+      //printf("index: %d, %d\n", i, j);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(i)], fineGridVertices[fineGridVerticesEnumerator(j)]);
+    }
+  }
+
+  //printf("EXITED\n");
+  /*
   //phase A
   #ifdef ompParticle
     #pragma omp parallel
@@ -1085,19 +1072,19 @@ void dem::mappings::Collision::enterCell(
       {
         //full coarse inheritance check
         #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(uniqueVirtualIDs, v1);
+        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v1);
         #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(uniqueVirtualIDs, v2);
+        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v2);
         #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(uniqueVirtualIDs, v3);
+        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v3);
         #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(uniqueVirtualIDs, v4);
+        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v4);
         #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(uniqueVirtualIDs, v5);
+        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v5);
         #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(uniqueVirtualIDs, v6);
+        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v6);
         #pragma omp task
-        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(uniqueVirtualIDs, v7);
+        dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v7);
         ///
         #pragma omp task
           dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v0, v1);
@@ -1132,102 +1119,76 @@ void dem::mappings::Collision::enterCell(
     }
   #else
 
-    //full coarse inheritance check
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v1);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v2);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v3);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v4);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v5);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v6);
-    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v7);
-    ///
-
-
     //REST is partial coarse inheritance check
-    //if(v0.getNumberOfParticles() > 0)
+    if(v0.getNumberOfParticles() > 0)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v0, v1);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v0, v2);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v0, v3);
+
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v0, v4);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v0, v5);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v0, v6);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v0, v7);
     }
 
-    //if(v1.getNumberOfParticles() > 0)
+    if(v1.getNumberOfParticles() > 0)
     {
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v1, v2);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v1, v4);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v1, v6);
     }
 
-    //if(v2.getNumberOfParticles() > 0)
+    if(v2.getNumberOfParticles() > 0)
     {
-      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v2, v5);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v2, v4);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v2, v5);
     }
+
     dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v3, v4);
+
   #endif
 
     //phase B
-    //back face is boundary
-    bool backface = (v4.isBoundary() && v5.isBoundary()) &&
-                    (v6.isBoundary() && v7.isBoundary()) &&
-
-                    ((!v0.isBoundary() && !v1.isBoundary()) &&
-                     (!v2.isBoundary() && !v3.isBoundary()));
-
     bool backfaceLRUDHalo = ((v4.isBoundary() && v5.isBoundary()) &&
-                             (v6.isBoundary() && v7.isBoundary()));  //down halo
-
-    bool topface = (v2.isBoundary() && v3.isBoundary()) &&
-                   (v6.isBoundary() && v7.isBoundary()) &&
-
-                   ((!v0.isBoundary() && !v1.isBoundary()) &&
-                    (!v4.isBoundary() && !v5.isBoundary()));
+                             (v6.isBoundary() && v7.isBoundary()));
 
     bool topfaceLRUDHalo = ((v2.isBoundary() && v3.isBoundary()) &&
-                            (v6.isBoundary() && v7.isBoundary()));  //down halo
-
-    bool rightface = (v1.isBoundary() && v3.isBoundary()) &&
-                     (v5.isBoundary() && v7.isBoundary()) &&
-
-                     (!v0.isBoundary() && !v2.isBoundary()) &&
-                     (!v4.isBoundary() && !v6.isBoundary());
+                            (v6.isBoundary() && v7.isBoundary()));
 
     bool rightfaceLRUDHalo = ((v1.isBoundary() && v3.isBoundary() &&
-                              (v5.isBoundary() && v7.isBoundary())) &&
+                              (v5.isBoundary() && v7.isBoundary())));  //down halo
 
-                             ((v4.isBoundary() && v6.isBoundary())));  //down halo
-
-    //if(backface || backfaceLRUDHalo)
+    if(backfaceLRUDHalo)
     {
       //face X
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v4, v7);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v5, v6);
+
       //face L
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v4, v5);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v4, v6);
     }
 
     //face top vertex is boundary
-    //if(topface || topfaceLRUDHalo)
+    //if(topfaceLRUDHalo)
     {
       //face X
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v2, v7);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v3, v6);
+
       //face L
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v2, v6);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v2, v3);
     }
 
     //right face is boundary
-    //if(rightface || rightfaceLRUDHalo)
+    if(rightfaceLRUDHalo)
     {
       //face X
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v1, v7);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v3, v5);
+
       //face L
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v1, v3);
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v1, v5);
@@ -1245,9 +1206,9 @@ void dem::mappings::Collision::enterCell(
                          (v6.isBoundary() && v7.isBoundary()) &&
                          (v1.isBoundary() && v5.isBoundary()));
 
-    //if(backtopEdge)
+    //if(toprightEdge)
     {
-      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v6, v7);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v3, v7);
     }
 
     //if(backrightEdge)
@@ -1255,10 +1216,21 @@ void dem::mappings::Collision::enterCell(
       dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v5, v7);
     }
 
-    //if(toprightEdge)
+    //if(backtopEdge)
     {
-      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v3, v7);
-    }
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(v6, v7);
+    }*/
+
+    //full coarse inheritance check
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v0);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v1);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v2);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v3);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v4);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v5);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v6);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v7);
+    ///
 
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
