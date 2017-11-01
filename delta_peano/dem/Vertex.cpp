@@ -540,6 +540,9 @@ void dem::Vertex::clearGridRefinementAnalysisData() {
 }
 
 void dem::Vertex::restrictParticleResponsibilityData(const Vertex& fineGridVertex) {
+  // @Konstantinos: I think we should set the flag if and only if
+  //     - there are more than two real or virtual particles and
+  //     - there is at least one real particle
   _vertexData.setVetoCoarsening( _vertexData.getVetoCoarsening() || fineGridVertex._vertexData.getVetoCoarsening() ||  fineGridVertex.getNumberOfParticles()>0);
 }
 

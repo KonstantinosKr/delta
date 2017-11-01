@@ -52,7 +52,10 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-
+  // @Konstantinos: Refine only if there are more than one particles
+  //     and at least one of the particle pairs approach each other.
+  //     If all particles move away from each other, there's not need
+  //     to refine.
   if (fineGridVertex.getNumberOfParticles()>1)
   {
     for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
@@ -296,6 +299,15 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
       minDiameter = std::min(minDiameter, fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getDiameter());
     }
   enddforx
+
+  // @todo Konstantinos: I think we should refine if more than one
+   //       virtual or real particle are in the cell and if at least
+   //       one particle is real
+   // @todo Konstantinos: We should furthermore refine if and only if
+   //       at least one real particles approaches any other particles,
+   //i.e.
+   //       if all particles move away from each other, we should not
+   //
 
   if(numberOfParticles >= 2 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && approach)
   {
