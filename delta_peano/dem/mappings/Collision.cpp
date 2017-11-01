@@ -213,6 +213,7 @@ void dem::mappings::Collision::triggerParticleTooClose(
     const records::Particle& particleA,
     const records::Particle& particleB)
 {
+  //printf("Particle A:%d Particle B:%d\n", particleA.getGlobalParticleId(), particleB.getGlobalParticleId());
   iREAL dt = _state.getTimeStepSize();
   iREAL pdt = dt + dt * 1.1;
 
@@ -283,6 +284,7 @@ void dem::mappings::Collision::triggerParticleTooClose(
 
   if(-pvBA >= pdistancePerStep || pvBA > 0)
   {
+    //printf("entered\n");
     double rrA = particleA.getDiameter()/2.0;
     double rrB = particleB.getDiameter()/2.0;
 
@@ -291,6 +293,7 @@ void dem::mappings::Collision::triggerParticleTooClose(
 
     iREAL localMaxdt = (d -rrA -rrB -epsilonA -epsilonB) / 2*vBA;
 
+    //printf("localMax:%f\n", localMaxdt);
     if(localMaxdt < 0.0) localMaxdt = -1*localMaxdt;
     _state.informStateThatTwoParticlesAreClose(localMaxdt);
   }

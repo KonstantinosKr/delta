@@ -277,6 +277,13 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
   dem::Vertex vcentre = reduceVirtuals(v0, v1, v2, v3, v4, v5, v6, v7);
 
   bool approach = false;
+  for(int i=0; i<8 ;i++)
+  {
+    for(int j=i+1; j<8; j++)
+    {
+      approach = ParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(i)], fineGridVertices[fineGridVerticesEnumerator(j)]);
+    }
+  }
 
   double minDiameter  = std::numeric_limits<double>::max();
   int numberOfParticles = 0;
@@ -289,8 +296,6 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
       minDiameter = std::min(minDiameter, fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getDiameter());
     }
   enddforx
-
-  //approach = isApproach();
 
   if(numberOfParticles >= 2 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && approach)
   {

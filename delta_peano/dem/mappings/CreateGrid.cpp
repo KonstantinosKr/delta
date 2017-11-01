@@ -275,7 +275,7 @@ void dem::mappings::CreateGrid::beginIteration(
     iREAL xzcuts = 0; iREAL ycuts = 0;
     if(_scenario[3] == n100)
     {
-      xzcuts = 10; ycuts = 1;
+      xzcuts = 3; ycuts = 1;
     }
     else if(_scenario[3] == n1k)
     {
@@ -303,7 +303,7 @@ void dem::mappings::CreateGrid::beginIteration(
     iREAL subGridLength = _hopperWidth-margin/2;
 
     //position is top of hopper
-    iREAL pos[3] = {(centre[0] - _hopperWidth/2), centre[1] + _hopperHeight/2, (centre[2] - _hopperWidth/2)};
+    iREAL pos[3] = {(centre[0] - _hopperWidth/2), centre[1] + 5*_hopperHeight/2, (centre[2] - _hopperWidth/2)};
 
     //create xzy cuts above hopper, position starts at left lower inner corner
     std::vector<std::array<iREAL, 3>> grid = delta::world::assembly::getGridArrayList(pos, xzcuts, ycuts, subGridLength);
@@ -390,19 +390,18 @@ void dem::mappings::CreateGrid::beginIteration(
     isFriction = false;
     material = delta::geometry::material::MaterialType::WOOD;
 
-
+    /*
     delta::world::object objectHopper(
         "hopper", 0, position, material, isObstacle, isFriction);
     objectHopper.generateMesh(_hopperWidth, _hopperHeight, _hopperWidth, 0, 0, 0, _hopperWidth, _noPointsPerParticle);
     _coarseObjects.push_back(objectHopper);
+    */
 
-
-    /*
     int refinement = 3;
     std::vector<double> xCoordinates, yCoordinates, zCoordinates;
     delta::geometry::hopper::generateHopper(centre, _hopperWidth, _hopperThickness, _hopperHeight, _hopperHatch, refinement, _minParticleDiam, xCoordinates, yCoordinates, zCoordinates);
     hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
-    */
+
     //////////////////////////////////////////////////////
     /// HOPPER FLOW SCENARIO /////////////////////////////
     //////////////////////////////////////////////////////
