@@ -55,6 +55,9 @@ class dem::mappings::ReluctantlyAdoptGrid {
         dem::Vertex&  vertexA,
         dem::Vertex&  vertexB);
 
+    bool ParticlesOfOneVertex(
+        dem::Vertex&  vertexA);
+
   public:
   /**
    * These flags are used to inform Peano about your operation. It tells the

@@ -56,7 +56,12 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   //     and at least one of the particle pairs approach each other.
   //     If all particles move away from each other, there's not need
   //     to refine.
-  if (fineGridVertex.getNumberOfParticles()>1)
+
+  bool approach = false;
+
+  approach = ParticlesOfOneVertex(fineGridVertex);
+
+  if (fineGridVertex.getNumberOfParticles()>1 && approach)
   {
     for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
     {
@@ -228,6 +233,23 @@ bool dem::mappings::ReluctantlyAdoptGrid::isApproach(
   return true;
 }
 
+
+bool dem::mappings::ReluctantlyAdoptGrid::ParticlesOfOneVertex(
+    dem::Vertex&  vertexA)
+{
+  bool approach = false;
+  for(int i=0; i<vertexA.getNumberOfParticles(); i++)
+  {
+    for(int j=i+1; j<vertexA.getNumberOfParticles(); j++)
+    {
+      approach = isApproach(vertexA.getParticle(i), vertexA.getParticle(j));
+      if(approach)
+        return true;
+    }
+  }
+  return approach;
+}
+
 bool dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(
     dem::Vertex&  vertexA,
     dem::Vertex&  vertexB)
@@ -242,6 +264,8 @@ bool dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(
         continue;
 
       approach = isApproach(vertexA.getParticle(i), vertexB.getParticle(j));
+      if(approach)
+        true;
     }
   }
   return approach;
@@ -285,14 +309,25 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
     for(int j=i+1; j<8; j++)
     {
       approach = ParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(i)], fineGridVertices[fineGridVerticesEnumerator(j)]);
+      if(approach)
+        break;
     }
   }
 
+  for(int i=0; i<8; i++)
+  {
+    approach = ParticlesOfTwoDifferentVertices(vcentre, fineGridVertices[fineGridVerticesEnumerator(i)]);
+    if(approach)
+      break;
+  }
+
   double minDiameter  = std::numeric_limits<double>::max();
-  int numberOfParticles = 0;
+  int numberOfRealParticles = 0;
+  int numberOfVirtualAndRealParticles = 0;
 
   dfor2(k) //get min diameter particle and count number of real particles
-    numberOfParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles();
+    numberOfRealParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles();
+    numberOfVirtualAndRealParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfRealAndVirtualParticles();
 
     for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
     {
@@ -300,16 +335,18 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
     }
   enddforx
 
+
   // @todo Konstantinos: I think we should refine if more than one
    //       virtual or real particle are in the cell and if at least
    //       one particle is real
-   // @todo Konstantinos: We should furthermore refine if and only if
+  //
+   // @todo Konstantinos: We should furthermore refine if and only if the
    //       at least one real particles approaches any other particles,
-   //i.e.
+   //
+   //       i.e.
    //       if all particles move away from each other, we should not
    //
-
-  if(numberOfParticles >= 2 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && approach)
+  if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && approach)
   {
     dfor2(k)
       if (!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
