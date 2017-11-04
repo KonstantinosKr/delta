@@ -87,13 +87,11 @@ adapter:
 adapter:
   name: TimeStepOnReluctantDynamicGrid
   merge-with-user-defined-mapping: ReluctantlyAdoptGrid
-  merge-with-user-defined-mapping: Collision
   merge-with-user-defined-mapping: MoveParticles
 
 adapter:
   name: TimeStepAndPlotOnReluctantDynamicGrid
   merge-with-user-defined-mapping: ReluctantlyAdoptGrid
-  merge-with-user-defined-mapping: Collision
   merge-with-user-defined-mapping: MoveParticles
   merge-with-user-defined-mapping: Plot
   merge-with-predefined-mapping: VTKGridVisualiser(grid)

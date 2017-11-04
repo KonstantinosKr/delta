@@ -1,6 +1,14 @@
 #include "dem/mappings/ReluctantlyAdoptGrid.h"
 #include "dem/mappings/AdoptGrid.h"
 
+#include "delta/collision/hybrid.h"
+#include "delta/collision/sphere.h"
+#include "delta/collision/bf.h"
+#include "delta/collision/penalty.h"
+#include "delta/collision/gjk.h"
+#include "delta/collision/filter.h"
+#include "delta/forces/forces.h"
+#include "delta/dynamics/dynamics.h"
 #include "peano/utils/Loop.h"
 #include <unordered_map>
 
@@ -42,6 +50,65 @@ peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::descendSpecif
 tarch::logging::Log                   dem::mappings::ReluctantlyAdoptGrid::_log( "dem::mappings::ReluctantlyAdoptGrid" );
 tarch::multicore::BooleanSemaphore    dem::mappings::ReluctantlyAdoptGrid::_ReluctantSemaphore;
 
+void dem::mappings::ReluctantlyAdoptGrid::beginIteration(
+  dem::State&  solverState
+) {
+  logTraceInWith1Argument( "beginIteration(State)", solverState );
+
+  _state = solverState;
+  _state.clearAccumulatedData();
+
+  assertion( _collisionsOfNextTraversal.empty() );
+
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
+  delta::collision::cleanPenaltyStatistics();
+
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+  delta::collision::cleanHybridStatistics();
+
+
+  logTraceOutWith1Argument( "beginIteration(State)", solverState);
+}
+
+
+void dem::mappings::ReluctantlyAdoptGrid::endIteration(
+  dem::State&  solverState
+) {
+  logTraceInWith1Argument( "endIteration(State)", solverState );
+
+  solverState.merge(_state);
+
+  dem::mappings::Collision::_activeCollisions.clear();
+
+  assertion( _activeCollisions.empty() );
+  assertion( _state.getNumberOfContactPoints()==0 || !_collisionsOfNextTraversal.empty() );
+
+  dem::mappings::Collision::_activeCollisions.insert(dem::mappings::Collision::_collisionsOfNextTraversal.begin(), dem::mappings::Collision::_collisionsOfNextTraversal.end());
+
+  assertion( _state.getNumberOfContactPoints()==0 || !_activeCollisions.empty() );
+  dem::mappings::Collision::_collisionsOfNextTraversal.clear();
+
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
+  {
+    std::vector<int> penaltyStatistics = delta::collision::getPenaltyStatistics();
+    for (int i=0; i<static_cast<int>(penaltyStatistics.size()); i++)
+    {
+      logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
+    }
+  }
+
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+  {
+    logInfo( "endIteration(State)", std::endl
+                                 << "Penalty Fails: " << delta::collision::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::collision::getPenaltyFails()/(double)delta::collision::getBatchSize() << std::endl
+                                 << "Batch Size: " << delta::collision::getBatchSize() << std::endl
+                                 << "Batch Fails: " << delta::collision::getBatchFails() << " BatchFail avg: " << (double)delta::collision::getBatchFails()/(double)delta::collision::getBatchSize() << std::endl
+                                 << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
+  }
+
+  logTraceOutWith1Argument( "endIteration(State)", solverState);
+}
+
 void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   dem::Vertex&                                 fineGridVertex,
   const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
@@ -52,16 +119,103 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
+  double timeStepSize = _state.getTimeStepSize();
+
+  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  {
+    records::Particle& currentParticle = fineGridVertex.getParticle(i);
+
+    //if value doesn't exist in map - no collision - skip particle
+    if(dem::mappings::Collision::_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
+
+    //double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
+    double force[3]  = {0.0,0.0,0.0};
+    double torque[3] = {0.0,0.0,0.0};
+
+    //collisions with partner particles
+    for(std::vector<dem::mappings::Collision::Collisions>::iterator p = dem::mappings::Collision::_activeCollisions[currentParticle.getGlobalParticleId()].begin();
+                                          p != dem::mappings::Collision::_activeCollisions[currentParticle.getGlobalParticleId()].end();
+                                          p++)
+    {
+      double rforce[3]  = {0.0,0.0,0.0};
+      double rtorque[3] = {0.0,0.0,0.0};
+
+      delta::forces::getContactsForces(p->_contactPoints,
+                                       &(currentParticle._persistentRecords._centreOfMass(0)),
+                                       &(currentParticle._persistentRecords._referentialCentreOfMass(0)),
+                                       &(currentParticle._persistentRecords._angular(0)),
+                                       &(currentParticle._persistentRecords._referentialAngular(0)),
+                                       &(currentParticle._persistentRecords._velocity(0)),
+                                       currentParticle.getMass(),
+                                       &(currentParticle._persistentRecords._inverse(0)),
+                                       &(currentParticle._persistentRecords._orientation(0)),
+                                       currentParticle.getMaterial(),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._angular(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._referentialAngular(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._velocity(0)),
+                                       p->_copyOfPartnerParticle.getMass(),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._inverse(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._orientation(0)),
+                                       p->_copyOfPartnerParticle.getMaterial(),
+                                       rforce, rtorque,
+                                       (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
+
+      force[0] += rforce[0];
+      force[1] += rforce[1];
+      force[2] += rforce[2];
+
+      torque[0] += rtorque[0];
+      torque[1] += rtorque[1];
+      torque[2] += rtorque[2];
+    }
+
+    if(!currentParticle.getIsObstacle())
+    {
+      currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle.getMass());
+      currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle.getMass());
+      currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle.getMass());
+
+      delta::dynamics::updateAngular(&currentParticle._persistentRecords._referentialAngular(0),
+                                      &currentParticle._persistentRecords._orientation(0),
+                                      &currentParticle._persistentRecords._inertia(0),
+                                      &currentParticle._persistentRecords._inverse(0),
+                                      currentParticle.getMass(), //why mass is passed here, remove if not used
+                                      torque, timeStepSize);
+    }
+  }
+
+  fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
+
+  dfor2(k)
+    fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
+  enddforx
+
+  int approach = 0;
+
+  #ifdef ompParticle
+    #pragma omp parallel for reduction(+:approach)
+  #endif
+  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  {
+    for(int j=i+1; j<fineGridVertex.getNumberOfRealAndVirtualParticles(); j++)
+    {
+      if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
+         (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
+        continue;
+
+      approach += dem::mappings::Collision::collisionDetection(fineGridVertex, fineGridVertex, i, j, _state);
+    }
+  }
+
   // @Konstantinos: Refine only if there are more than one particles
   //     and at least one of the particle pairs approach each other.
   //     If all particles move away from each other, there's not need
   //     to refine.
 
-  bool approach = false;
-
-  approach = ParticlesOfOneVertex(fineGridVertex);
-
-  if (fineGridVertex.getNumberOfParticles()>1 && approach)
+  if (fineGridVertex.getNumberOfParticles()>1 && approach > 0)
   {
     for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
     {
@@ -182,95 +336,6 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
 
-bool dem::mappings::ReluctantlyAdoptGrid::isApproach(
-    const records::Particle& particleA,
-    const records::Particle& particleB)
-{
-  iREAL dt = _state.getTimeStepSize();
-  iREAL pdt = dt + dt * 1.1;
-
-  iREAL cA[3], cB[3];
-
-  cA[0] = particleA.getCentre(0) + pdt*particleA.getVelocity(0);
-  cA[1] = particleA.getCentre(1) + pdt*particleA.getVelocity(1);
-  cA[2] = particleA.getCentre(2) + pdt*particleA.getVelocity(2);
-
-  cB[0] = particleB.getCentre(0) + pdt*particleB.getVelocity(0);
-  cB[1] = particleB.getCentre(1) + pdt*particleB.getVelocity(1);
-  cB[2] = particleB.getCentre(2) + pdt*particleB.getVelocity(2);
-
-  iREAL dAB[3], pdAB[3];
-
-  pdAB[0] = cB[0] - cA[0];
-  pdAB[1] = cB[1] - cA[1];
-  pdAB[2] = cB[2] - cA[2];
-
-  dAB[0] = particleB.getCentre(0) - particleA.getCentre(0);
-  dAB[1] = particleB.getCentre(1) - particleA.getCentre(1);
-  dAB[2] = particleB.getCentre(2) - particleA.getCentre(2);
-
-  iREAL vA[3], vB[3];
-  vA[0] = particleA.getVelocity(0);
-  vA[1] = particleA.getVelocity(1);
-  vA[2] = particleA.getVelocity(2);
-
-  vB[0] = particleB.getVelocity(0);
-  vB[1] = particleB.getVelocity(1);
-  vB[2] = particleB.getVelocity(2);
-
-  //velocity of B relative to A
-  iREAL vBA = ((vB[0] * dAB[0]) + (vB[1] * dAB[1]) + (vB[2] * dAB[2])) -
-              ((vA[0] * dAB[0]) + (vA[1] * dAB[1]) + (vA[2] * dAB[2]));
-
-  iREAL pvBA = ((vB[0] * pdAB[0]) + (vB[1] * pdAB[1]) + (vB[2] * pdAB[2])) -
-               ((vA[0] * pdAB[0]) + (vA[1] * pdAB[1]) + (vA[2] * pdAB[2]));
-
-  //particles separate
-  if (vBA > 0 && pvBA > 0) {
-    return false;
-  }
-
-  return true;
-}
-
-
-bool dem::mappings::ReluctantlyAdoptGrid::ParticlesOfOneVertex(
-    dem::Vertex&  vertexA)
-{
-  bool approach = false;
-  for(int i=0; i<vertexA.getNumberOfParticles(); i++)
-  {
-    for(int j=i+1; j<vertexA.getNumberOfParticles(); j++)
-    {
-      approach = isApproach(vertexA.getParticle(i), vertexA.getParticle(j));
-      if(approach)
-        return true;
-    }
-  }
-  return approach;
-}
-
-bool dem::mappings::ReluctantlyAdoptGrid::ParticlesOfTwoDifferentVertices(
-    dem::Vertex&  vertexA,
-    dem::Vertex&  vertexB)
-{
-  bool approach = false;
-  for(int i=0; i<vertexA.getNumberOfParticles(); i++)
-  {
-    for(int j=0; j<vertexB.getNumberOfParticles(); j++)
-    {
-      if((vertexA.getParticle(i).getIsObstacle() && vertexB.getParticle(j).getIsObstacle()) ||
-         (vertexA.getParticle(i).getGlobalParticleId() == vertexB.getParticle(j).getGlobalParticleId()))
-        continue;
-
-      approach = isApproach(vertexA.getParticle(i), vertexB.getParticle(j));
-      if(approach)
-        true;
-    }
-  }
-  return approach;
-}
-
 void dem::mappings::ReluctantlyAdoptGrid::enterCell(
   dem::Cell&                                 fineGridCell,
   dem::Vertex * const                        fineGridVertices,
@@ -282,44 +347,7 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
 ) {
   logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-  Vertex &v0 = fineGridVertices[fineGridVerticesEnumerator(0)];
-  Vertex &v1 = fineGridVertices[fineGridVerticesEnumerator(1)];
-  Vertex &v2 = fineGridVertices[fineGridVerticesEnumerator(2)];
-  Vertex &v3 = fineGridVertices[fineGridVerticesEnumerator(3)];
-  Vertex &v4 = fineGridVertices[fineGridVerticesEnumerator(4)];
-  Vertex &v5 = fineGridVertices[fineGridVerticesEnumerator(5)];
-  Vertex &v6 = fineGridVertices[fineGridVerticesEnumerator(6)];
-  Vertex &v7 = fineGridVertices[fineGridVerticesEnumerator(7)];
-
-  if(
-    v0.getNumberOfParticles() == 0 &&
-    v1.getNumberOfParticles() == 0 &&
-    v2.getNumberOfParticles() == 0 &&
-    v3.getNumberOfParticles() == 0 &&
-    v4.getNumberOfParticles() == 0 &&
-    v5.getNumberOfParticles() == 0 &&
-    v6.getNumberOfParticles() == 0 &&
-    v7.getNumberOfParticles() == 0)return;
-
-  dem::Vertex vcentre = reduceVirtuals(v0, v1, v2, v3, v4, v5, v6, v7);
-
-  bool approach = false;
-  for(int i=0; i<8 ;i++)
-  {
-    for(int j=i+1; j<8; j++)
-    {
-      approach = ParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(i)], fineGridVertices[fineGridVerticesEnumerator(j)]);
-      if(approach)
-        break;
-    }
-  }
-
-  for(int i=0; i<8; i++)
-  {
-    approach = ParticlesOfTwoDifferentVertices(vcentre, fineGridVertices[fineGridVerticesEnumerator(i)]);
-    if(approach)
-      break;
-  }
+  int approach = dem::mappings::Collision::all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
 
   double minDiameter  = std::numeric_limits<double>::max();
   int numberOfRealParticles = 0;
@@ -346,7 +374,7 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
    //       i.e.
    //       if all particles move away from each other, we should not
    //
-  if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && approach)
+  if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && approach > 0)
   {
     dfor2(k)
       if (!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
@@ -595,26 +623,6 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
       const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
 }
-
-
-void dem::mappings::ReluctantlyAdoptGrid::beginIteration(
-  dem::State&  solverState
-) {
-  logTraceInWith1Argument( "beginIteration(State)", solverState );
-  // @todo Insert your code here
-  _state = solverState;
-  logTraceOutWith1Argument( "beginIteration(State)", solverState);
-}
-
-
-void dem::mappings::ReluctantlyAdoptGrid::endIteration(
-  dem::State&  solverState
-) {
-  logTraceInWith1Argument( "endIteration(State)", solverState );
-  // @todo Insert your code here
-  logTraceOutWith1Argument( "endIteration(State)", solverState);
-}
-
 
 
 void dem::mappings::ReluctantlyAdoptGrid::descend(

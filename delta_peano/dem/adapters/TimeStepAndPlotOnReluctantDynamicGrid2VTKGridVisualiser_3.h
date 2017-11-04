@@ -1,7 +1,7 @@
 // This file is part of the Peano project. For conditions of distribution and 
 // use, please see the copyright notice at www.peano-framework.org
-#ifndef DEM_ADAPTERS_TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4_H_
-#define DEM_ADAPTERS_TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4_H_
+#ifndef DEM_ADAPTERS_TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3_H_
+#define DEM_ADAPTERS_TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3_H_
 
 
 #include "tarch/la/Vector.h"
@@ -24,7 +24,7 @@
 
 namespace dem {
       namespace adapters {
-        class TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4;
+        class TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3;
       } 
 }
 
@@ -37,7 +37,7 @@ namespace dem {
  * @author Tobias Weinzierl
  * @version $Revision: 1.10 $
  */
-class dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4 {
+class dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3 {
   private:
     /**
      * One big map mapping vertices to indices. The procedure using this map is 
@@ -81,16 +81,16 @@ class dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4 {
 
     peano::CommunicationSpecification   communicationSpecification() const;
 
-    TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4();
+    TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3();
 
     #if defined(SharedMemoryParallelisation)
-    TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4(const TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4& masterThread);
+    TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3(const TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3& masterThread);
     #endif
 
-    virtual ~TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4();
+    virtual ~TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3();
   
     #if defined(SharedMemoryParallelisation)
-    void mergeWithWorkerThread(const TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4& workerThread);
+    void mergeWithWorkerThread(const TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3& workerThread);
     #endif
 
     void createInnerVertex(

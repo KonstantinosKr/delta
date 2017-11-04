@@ -1,4 +1,4 @@
-#include "dem/adapters/TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4.h"
+#include "dem/adapters/TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.h"
 
 #include <sstream>
 
@@ -10,49 +10,49 @@
 #endif
 
 
-int dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::_snapshotCounter = 0;
+int dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::_snapshotCounter = 0;
 
 
 
-peano::CommunicationSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::communicationSpecification() const {
+peano::CommunicationSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::communicationSpecification() const {
   return peano::CommunicationSpecification::getPessimisticSpecification();
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::touchVertexLastTimeSpecification(int level) const {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::touchVertexLastTimeSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::touchVertexFirstTimeSpecification(int level) const { 
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::touchVertexFirstTimeSpecification(int level) const { 
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::enterCellSpecification(int level) const {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::leaveCellSpecification(int level) const {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::leaveCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::ascendSpecification(int level) const {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::ascendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
-peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::descendSpecification(int level) const {
+peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::descendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 
-std::map<tarch::la::Vector<DIMENSIONS,double> , int, tarch::la::VectorCompare<DIMENSIONS> >  dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::_vertex2IndexMap;
+std::map<tarch::la::Vector<DIMENSIONS,double> , int, tarch::la::VectorCompare<DIMENSIONS> >  dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::_vertex2IndexMap;
 
 
-dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4():
+dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3():
   _vtkWriter(0),
   _vertexWriter(0),
   _cellWriter(0),
@@ -63,12 +63,12 @@ dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::TimeSt
 }
 
 
-dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::~TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4() {
+dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::~TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3() {
 }
 
 
 #if defined(SharedMemoryParallelisation)
-dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4(const TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4&  masterThread):
+dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3(const TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3&  masterThread):
   _vtkWriter(masterThread._vtkWriter),
   _vertexWriter(masterThread._vertexWriter),
   _cellWriter(masterThread._cellWriter),
@@ -80,7 +80,7 @@ dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::TimeSt
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::mergeWithWorkerThread(const TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4& workerThread) {
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::mergeWithWorkerThread(const TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3& workerThread) {
 }
 #endif
 
@@ -88,7 +88,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::m
 
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::plotVertex(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::plotVertex(
   const dem::Vertex&                 fineGridVertex,
   const tarch::la::Vector<DIMENSIONS,double>&  fineGridX
 ) {
@@ -111,7 +111,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::p
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::createHangingVertex(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::createHangingVertex(
       dem::Vertex&     fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,
       const tarch::la::Vector<DIMENSIONS,double>&                fineGridH,
@@ -125,7 +125,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::c
 
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::destroyHangingVertex(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::destroyHangingVertex(
       const dem::Vertex&   fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
       const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
@@ -137,7 +137,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::d
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::createInnerVertex(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::createInnerVertex(
       dem::Vertex&               fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
       const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
@@ -149,7 +149,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::c
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::createBoundaryVertex(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::createBoundaryVertex(
       dem::Vertex&               fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
       const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
@@ -161,7 +161,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::c
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::destroyVertex(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::destroyVertex(
       const dem::Vertex&   fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
       const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
@@ -173,7 +173,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::d
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::createCell(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::createCell(
       dem::Cell&                 fineGridCell,
       dem::Vertex * const        fineGridVertices,
       const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
@@ -185,7 +185,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::c
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::destroyCell(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::destroyCell(
       const dem::Cell&           fineGridCell,
       dem::Vertex * const        fineGridVertices,
       const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
@@ -198,7 +198,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::d
 
 
 #ifdef Parallel
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::mergeWithNeighbour(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::mergeWithNeighbour(
   dem::Vertex&  vertex,
   const dem::Vertex&  neighbour,
   int                                           fromRank,
@@ -209,7 +209,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::m
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::prepareSendToNeighbour(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::prepareSendToNeighbour(
       dem::Vertex&  vertex,
       int                                           toRank,
       const tarch::la::Vector<DIMENSIONS,double>&   x,
@@ -219,7 +219,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::p
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::prepareCopyToRemoteNode(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::prepareCopyToRemoteNode(
       dem::Vertex&  localVertex,
       int                                           toRank,
       const tarch::la::Vector<DIMENSIONS,double>&   x,
@@ -229,7 +229,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::p
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::prepareCopyToRemoteNode(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::prepareCopyToRemoteNode(
       dem::Cell&  localCell,
       int                                           toRank,
       const tarch::la::Vector<DIMENSIONS,double>&   cellCentre,
@@ -239,7 +239,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::p
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::mergeWithRemoteDataDueToForkOrJoin(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::mergeWithRemoteDataDueToForkOrJoin(
   dem::Vertex&  localVertex,
   const dem::Vertex&  masterOrWorkerVertex,
   int                                       fromRank,
@@ -250,7 +250,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::m
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::mergeWithRemoteDataDueToForkOrJoin(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::mergeWithRemoteDataDueToForkOrJoin(
   dem::Cell&  localCell,
   const dem::Cell&  masterOrWorkerCell,
   int                                       fromRank,
@@ -261,7 +261,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::m
 }
 
 
-bool dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::prepareSendToWorker(
+bool dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::prepareSendToWorker(
   dem::Cell&                 fineGridCell,
   dem::Vertex * const        fineGridVertices,
   const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
@@ -275,7 +275,7 @@ bool dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::p
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::prepareSendToMaster(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::prepareSendToMaster(
       dem::Cell&                       localCell,
       dem::Vertex *                    vertices,
       const peano::grid::VertexEnumerator&       verticesEnumerator, 
@@ -287,7 +287,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::p
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::mergeWithMaster(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::mergeWithMaster(
   const dem::Cell&           workerGridCell,
   dem::Vertex * const        workerGridVertices,
   const peano::grid::VertexEnumerator& workerEnumerator,
@@ -305,7 +305,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::m
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::receiveDataFromMaster(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::receiveDataFromMaster(
       dem::Cell&                        receivedCell, 
       dem::Vertex *                     receivedVertices,
       const peano::grid::VertexEnumerator&        receivedVerticesEnumerator,
@@ -320,7 +320,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::r
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::mergeWithWorker(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::mergeWithWorker(
       dem::Cell&           localCell, 
       const dem::Cell&     receivedMasterCell,
       const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
@@ -330,7 +330,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::m
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::mergeWithWorker(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::mergeWithWorker(
       dem::Vertex&        localVertex,
       const dem::Vertex&  receivedMasterVertex,
       const tarch::la::Vector<DIMENSIONS,double>&   x,
@@ -341,7 +341,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::m
 #endif
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::touchVertexFirstTime(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::touchVertexFirstTime(
       dem::Vertex&               fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
       const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
@@ -360,7 +360,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::t
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::touchVertexLastTime(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::touchVertexLastTime(
       dem::Vertex&         fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
       const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
@@ -372,7 +372,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::t
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::enterCell(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::enterCell(
       dem::Cell&                 fineGridCell,
       dem::Vertex * const        fineGridVertices,
       const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
@@ -384,7 +384,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::e
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::leaveCell(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::leaveCell(
       dem::Cell&           fineGridCell,
       dem::Vertex * const  fineGridVertices,
       const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
@@ -419,7 +419,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::l
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::beginIteration(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::beginIteration(
   dem::State&  solverState
 ) {
   assertion( _vtkWriter==0 );
@@ -437,7 +437,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::b
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::endIteration(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::endIteration(
   dem::State&  solverState
 ) {
   _vertexWriter->close();
@@ -478,7 +478,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::e
 
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::descend(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::descend(
   dem::Cell * const          fineGridCells,
   dem::Vertex * const        fineGridVertices,
   const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
@@ -489,7 +489,7 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::d
 }
 
 
-void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_4::ascend(
+void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3::ascend(
   dem::Cell * const    fineGridCells,
   dem::Vertex * const  fineGridVertices,
   const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,

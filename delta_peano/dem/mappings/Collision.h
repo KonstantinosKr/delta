@@ -63,26 +63,40 @@ class dem::mappings::Collision {
 
     State   _state;
 
-    void collideParticlesOfTwoDifferentVertices(
+  public:
+
+    static int all_to_all(
+        dem::Vertex * const                       fineGridVertices,
+        const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
+        State& state);
+
+    static int collisionDetection(
+        dem::Vertex&  vertexA,
+        dem::Vertex&  vertexB,
+        int i, int j,
+        State& state);
+
+    static int collideParticlesOfTwoDifferentVertices(
       dem::Vertex&  vertexA,
-      dem::Vertex&  vertexB
+      dem::Vertex&  vertexB,
+      State& state
     );
 
-    void addCollision(
+    static void addCollision(
       std::vector<delta::collision::contactpoint> newContactPoints,
       const records::Particle&                    particleA,
       const records::Particle&                    particleB,
       bool sphere
     );
   
-    void triggerParticleTooClose(
+    static int triggerParticleTooClose(
         const records::Particle& particleA,
-        const records::Particle& particleB);
+        const records::Particle& particleB,
+        State& state);
   
-  static tarch::multicore::BooleanSemaphore        _mySemaphore;
+    static tarch::multicore::BooleanSemaphore        _mySemaphore;
 
-  public:
-  static double    gravity;
+    static double    gravity;
 
     enum class CollisionModel {
     	Sphere,
