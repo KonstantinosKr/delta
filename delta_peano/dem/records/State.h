@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   04/11/2017 21:15
+    * @date   09/11/2017 02:30
     */
    class dem::records::State { 
       
@@ -49,12 +49,14 @@ namespace dem {
             double _timeStepSize;
             int _timeStep;
             double _currentTime;
+            double _stepIncrement;
             double _twoParticlesAreClose;
             int _numberOfParticles;
             int _numberOfObstacles;
             double _prescribedMinimumMeshWidth;
             double _prescribedMaximumMeshWidth;
-            double _maxVelocity;
+            double _maxVelocityApproach;
+            double _maxVelocityTravel;
             bool _hasRefined;
             bool _hasTriggeredRefinementForNextIteration;
             bool _hasErased;
@@ -70,7 +72,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             
             inline double getNumberOfContactPoints() const 
@@ -213,6 +215,26 @@ namespace dem {
             
             
             
+            inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _stepIncrement;
+            }
+            
+            
+            
+            inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _stepIncrement = stepIncrement;
+            }
+            
+            
+            
             inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -313,22 +335,42 @@ namespace dem {
             
             
             
-            inline double getMaxVelocity() const 
+            inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               return _maxVelocity;
+               return _maxVelocityApproach;
             }
             
             
             
-            inline void setMaxVelocity(const double& maxVelocity) 
+            inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               _maxVelocity = maxVelocity;
+               _maxVelocityApproach = maxVelocityApproach;
+            }
+            
+            
+            
+            inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _maxVelocityTravel;
+            }
+            
+            
+            
+            inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _maxVelocityTravel = maxVelocityTravel;
             }
             
             
@@ -491,7 +533,7 @@ namespace dem {
             /**
              * Generated
              */
-            State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             /**
              * Generated
@@ -639,6 +681,26 @@ namespace dem {
             
             
             
+            inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._stepIncrement;
+            }
+            
+            
+            
+            inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._stepIncrement = stepIncrement;
+            }
+            
+            
+            
             inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -739,22 +801,42 @@ namespace dem {
             
             
             
-            inline double getMaxVelocity() const 
+            inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               return _persistentRecords._maxVelocity;
+               return _persistentRecords._maxVelocityApproach;
             }
             
             
             
-            inline void setMaxVelocity(const double& maxVelocity) 
+            inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               _persistentRecords._maxVelocity = maxVelocity;
+               _persistentRecords._maxVelocityApproach = maxVelocityApproach;
+            }
+            
+            
+            
+            inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._maxVelocityTravel;
+            }
+            
+            
+            
+            inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._maxVelocityTravel = maxVelocityTravel;
             }
             
             
@@ -974,7 +1056,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   04/11/2017 21:15
+    * @date   09/11/2017 02:30
     */
    class dem::records::StatePacked { 
       
@@ -988,12 +1070,14 @@ namespace dem {
             double _timeStepSize;
             int _timeStep;
             double _currentTime;
+            double _stepIncrement;
             double _twoParticlesAreClose;
             int _numberOfParticles;
             int _numberOfObstacles;
             double _prescribedMinimumMeshWidth;
             double _prescribedMaximumMeshWidth;
-            double _maxVelocity;
+            double _maxVelocityApproach;
+            double _maxVelocityTravel;
             bool _isTraversalInverted;
             
             /** mapping of records:
@@ -1015,7 +1099,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             
             inline double getNumberOfContactPoints() const 
@@ -1158,6 +1242,26 @@ namespace dem {
             
             
             
+            inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _stepIncrement;
+            }
+            
+            
+            
+            inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _stepIncrement = stepIncrement;
+            }
+            
+            
+            
             inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1258,22 +1362,42 @@ namespace dem {
             
             
             
-            inline double getMaxVelocity() const 
+            inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               return _maxVelocity;
+               return _maxVelocityApproach;
             }
             
             
             
-            inline void setMaxVelocity(const double& maxVelocity) 
+            inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               _maxVelocity = maxVelocity;
+               _maxVelocityApproach = maxVelocityApproach;
+            }
+            
+            
+            
+            inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _maxVelocityTravel;
+            }
+            
+            
+            
+            inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _maxVelocityTravel = maxVelocityTravel;
             }
             
             
@@ -1454,7 +1578,7 @@ namespace dem {
             /**
              * Generated
              */
-            StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
             
             /**
              * Generated
@@ -1602,6 +1726,26 @@ namespace dem {
             
             
             
+            inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._stepIncrement;
+            }
+            
+            
+            
+            inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._stepIncrement = stepIncrement;
+            }
+            
+            
+            
             inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -1702,22 +1846,42 @@ namespace dem {
             
             
             
-            inline double getMaxVelocity() const 
+            inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               return _persistentRecords._maxVelocity;
+               return _persistentRecords._maxVelocityApproach;
             }
             
             
             
-            inline void setMaxVelocity(const double& maxVelocity) 
+            inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-               _persistentRecords._maxVelocity = maxVelocity;
+               _persistentRecords._maxVelocityApproach = maxVelocityApproach;
+            }
+            
+            
+            
+            inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._maxVelocityTravel;
+            }
+            
+            
+            
+            inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._maxVelocityTravel = maxVelocityTravel;
             }
             
             
@@ -1951,7 +2115,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   04/11/2017 21:15
+       * @date   09/11/2017 02:30
        */
       class dem::records::State { 
          
@@ -1967,12 +2131,14 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
+               double _stepIncrement;
                double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
                double _prescribedMaximumMeshWidth;
-               double _maxVelocity;
+               double _maxVelocityApproach;
+               double _maxVelocityTravel;
                #ifdef UseManualAlignment
                tarch::la::Vector<DIMENSIONS,double> _minMeshWidth __attribute__((aligned(VectorisationAlignment)));
                #else
@@ -2012,7 +2178,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -2155,6 +2321,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -2255,22 +2441,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _maxVelocity;
+                  return _maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _maxVelocity = maxVelocity;
+                  _maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -2829,7 +3035,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -2977,6 +3183,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -3077,22 +3303,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _persistentRecords._maxVelocity;
+                  return _persistentRecords._maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _persistentRecords._maxVelocity = maxVelocity;
+                  _persistentRecords._maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -3760,7 +4006,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   04/11/2017 21:15
+       * @date   09/11/2017 02:30
        */
       class dem::records::StatePacked { 
          
@@ -3774,12 +4020,14 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
+               double _stepIncrement;
                double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
                double _prescribedMaximumMeshWidth;
-               double _maxVelocity;
+               double _maxVelocityApproach;
+               double _maxVelocityTravel;
                tarch::la::Vector<DIMENSIONS,double> _minMeshWidth;
                tarch::la::Vector<DIMENSIONS,double> _maxMeshWidth;
                double _numberOfInnerVertices;
@@ -3817,7 +4065,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -3960,6 +4208,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -4060,22 +4328,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _maxVelocity;
+                  return _maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _maxVelocity = maxVelocity;
+                  _maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -4661,7 +4949,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -4809,6 +5097,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -4909,22 +5217,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _persistentRecords._maxVelocity;
+                  return _persistentRecords._maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _persistentRecords._maxVelocity = maxVelocity;
+                  _persistentRecords._maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -5616,7 +5944,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   04/11/2017 21:15
+       * @date   09/11/2017 02:30
        */
       class dem::records::State { 
          
@@ -5632,12 +5960,14 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
+               double _stepIncrement;
                double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
                double _prescribedMaximumMeshWidth;
-               double _maxVelocity;
+               double _maxVelocityApproach;
+               double _maxVelocityTravel;
                #ifdef UseManualAlignment
                tarch::la::Vector<DIMENSIONS,double> _minMeshWidth __attribute__((aligned(VectorisationAlignment)));
                #else
@@ -5674,7 +6004,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                
                inline double getNumberOfContactPoints() const 
@@ -5817,6 +6147,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -5917,22 +6267,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _maxVelocity;
+                  return _maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _maxVelocity = maxVelocity;
+                  _maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -6431,7 +6801,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                /**
                 * Generated
@@ -6579,6 +6949,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -6679,22 +7069,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _persistentRecords._maxVelocity;
+                  return _persistentRecords._maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _persistentRecords._maxVelocity = maxVelocity;
+                  _persistentRecords._maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -7302,7 +7712,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   04/11/2017 21:15
+       * @date   09/11/2017 02:30
        */
       class dem::records::StatePacked { 
          
@@ -7316,12 +7726,14 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
+               double _stepIncrement;
                double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
                double _prescribedMaximumMeshWidth;
-               double _maxVelocity;
+               double _maxVelocityApproach;
+               double _maxVelocityTravel;
                tarch::la::Vector<DIMENSIONS,double> _minMeshWidth;
                tarch::la::Vector<DIMENSIONS,double> _maxMeshWidth;
                double _numberOfInnerVertices;
@@ -7356,7 +7768,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                
                inline double getNumberOfContactPoints() const 
@@ -7499,6 +7911,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -7599,22 +8031,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _maxVelocity;
+                  return _maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _maxVelocity = maxVelocity;
+                  _maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -8131,7 +8583,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
                
                /**
                 * Generated
@@ -8279,6 +8731,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -8379,22 +8851,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _persistentRecords._maxVelocity;
+                  return _persistentRecords._maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _persistentRecords._maxVelocity = maxVelocity;
+                  _persistentRecords._maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -9017,7 +9509,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   04/11/2017 21:15
+       * @date   09/11/2017 02:30
        */
       class dem::records::State { 
          
@@ -9033,12 +9525,14 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
+               double _stepIncrement;
                double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
                double _prescribedMaximumMeshWidth;
-               double _maxVelocity;
+               double _maxVelocityApproach;
+               double _maxVelocityTravel;
                bool _hasRefined;
                bool _hasTriggeredRefinementForNextIteration;
                bool _hasErased;
@@ -9057,7 +9551,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -9200,6 +9694,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -9300,22 +9814,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _maxVelocity;
+                  return _maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _maxVelocity = maxVelocity;
+                  _maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -9538,7 +10072,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -9686,6 +10220,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -9786,22 +10340,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _persistentRecords._maxVelocity;
+                  return _persistentRecords._maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _persistentRecords._maxVelocity = maxVelocity;
+                  _persistentRecords._maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -10081,7 +10655,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   04/11/2017 21:15
+       * @date   09/11/2017 02:30
        */
       class dem::records::StatePacked { 
          
@@ -10095,12 +10669,14 @@ namespace dem {
                double _timeStepSize;
                int _timeStep;
                double _currentTime;
+               double _stepIncrement;
                double _twoParticlesAreClose;
                int _numberOfParticles;
                int _numberOfObstacles;
                double _prescribedMinimumMeshWidth;
                double _prescribedMaximumMeshWidth;
-               double _maxVelocity;
+               double _maxVelocityApproach;
+               double _maxVelocityTravel;
                bool _isTraversalInverted;
                
                /** mapping of records:
@@ -10125,7 +10701,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                
                inline double getNumberOfContactPoints() const 
@@ -10268,6 +10844,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -10368,22 +10964,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _maxVelocity;
+                  return _maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _maxVelocity = maxVelocity;
+                  _maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _maxVelocityTravel = maxVelocityTravel;
                }
                
                
@@ -10633,7 +11249,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocity, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
                
                /**
                 * Generated
@@ -10781,6 +11397,26 @@ namespace dem {
                
                
                
+               inline double getStepIncrement() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._stepIncrement;
+               }
+               
+               
+               
+               inline void setStepIncrement(const double& stepIncrement) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._stepIncrement = stepIncrement;
+               }
+               
+               
+               
                inline double getTwoParticlesAreClose() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
@@ -10881,22 +11517,42 @@ namespace dem {
                
                
                
-               inline double getMaxVelocity() const 
+               inline double getMaxVelocityApproach() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  return _persistentRecords._maxVelocity;
+                  return _persistentRecords._maxVelocityApproach;
                }
                
                
                
-               inline void setMaxVelocity(const double& maxVelocity) 
+               inline void setMaxVelocityApproach(const double& maxVelocityApproach) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
  {
-                  _persistentRecords._maxVelocity = maxVelocity;
+                  _persistentRecords._maxVelocityApproach = maxVelocityApproach;
+               }
+               
+               
+               
+               inline double getMaxVelocityTravel() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._maxVelocityTravel;
+               }
+               
+               
+               
+               inline void setMaxVelocityTravel(const double& maxVelocityTravel) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._maxVelocityTravel = maxVelocityTravel;
                }
                
                

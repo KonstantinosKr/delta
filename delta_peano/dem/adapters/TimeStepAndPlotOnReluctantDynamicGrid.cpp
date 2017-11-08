@@ -91,7 +91,7 @@ dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::TimeStepAndPlotOnReluctant
   _map2ReluctantlyAdoptGrid(masterThread._map2ReluctantlyAdoptGrid) , 
   _map2MoveParticles(masterThread._map2MoveParticles) , 
   _map2Plot(masterThread._map2Plot) , 
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3(masterThread._map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3)
+  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3(masterThread._map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3) 
 
 {
 }

@@ -118,7 +118,7 @@ int main(int argc, char** argv)
   	  const int NumberOfArguments = 11;
   #endif
 
-  	std::cout << "required arguments: " <<  NumberOfArguments << ", actual arguments: " <<  argc << std::endl;
+  	logInfo( "main(...)", "required arguments: " <<  NumberOfArguments << ", actual arguments: " <<  argc);
 
   if(argc!=NumberOfArguments || (NumberOfArguments == NumberOfArguments+2 && argv[8] != "range"))
   {
@@ -430,9 +430,9 @@ int main(int argc, char** argv)
 
   dem::mappings::Collision::gravity	= (gravity=="true") ? 9.81 : 0.0;
 
-  logInfo( "run(...)", "scenario:" << (scenario)                             << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)       << std::endl
-                    << "stepSize:" << (stepSize)                             << ", plot:"     << (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)   << std::endl
-                    << "gravity:"  << (dem::mappings::Collision::gravity)    << ", model:"    << (collisionModel)      << ", triangleNumber:"  << (meshMultiplier));
+  logInfo( "main(...)", "scenario:" << (scenario)                             << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)
+                    << ", stepSize:" << (stepSize)                             << ", plot:"     << (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)
+                    << ", gravity:"  << (dem::mappings::Collision::gravity)    << ", model:"    << (collisionModel)      << ", triangleNumber:"  << (meshMultiplier));
 
   // Configure the output
   tarch::logging::CommandLineLogger::getInstance().clearFilterList();

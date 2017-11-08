@@ -28,7 +28,8 @@ void dem::State::clearAccumulatedData() {
   _stateData.setNumberOfTriangleComparisons(0.0);
   _stateData.setNumberOfParticleComparisons(0.0);
   _stateData.setTwoParticlesAreClose(0.0);
-  _stateData.setMaxVelocity(1.0);
+  _stateData.setMaxVelocityApproach(_stateData.getMaxVelocityTravel());
+  _stateData.setMaxVelocityTravel(0.0);
 }
 
 double dem::State::getNumberOfContactPoints() const {
@@ -80,11 +81,18 @@ void dem::State::merge( const State& otherState ) {
     _stateData.setTwoParticlesAreClose( otherState._stateData.getTwoParticlesAreClose());
   }
 
-  if(_stateData.getMaxVelocity() > otherState._stateData.getMaxVelocity())
+  if(_stateData.getMaxVelocityApproach() > otherState._stateData.getMaxVelocityApproach())
   {
-    _stateData.setMaxVelocity( _stateData.getMaxVelocity());
+    _stateData.setMaxVelocityApproach( _stateData.getMaxVelocityApproach());
   } else {
-    _stateData.setMaxVelocity( otherState._stateData.getMaxVelocity());
+    _stateData.setMaxVelocityApproach( otherState._stateData.getMaxVelocityApproach());
+  }
+
+  if(_stateData.getMaxVelocityTravel() > otherState._stateData.getMaxVelocityTravel())
+  {
+    _stateData.setMaxVelocityTravel( _stateData.getMaxVelocityTravel());
+  } else {
+    _stateData.setMaxVelocityTravel( otherState._stateData.getMaxVelocityTravel());
   }
 }
 
@@ -105,30 +113,39 @@ void dem::State::informStateThatTwoParticlesAreClose(double decrementFactor) {
   _stateData.setTwoParticlesAreClose(decrementFactor);
 }
 
-void dem::State::finishedTimeStep(double initStep) {
+void dem::State::finishedTimeStep() {
   _stateData.setCurrentTime(_stateData.getCurrentTime() + _stateData.getTimeStepSize());
 
   const double increaseFactor = 1.1;
-  const double maxdt = _stateData.getMaxMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocity());
+  _stateData.setStepIncrement(increaseFactor);
 
-  if (_stateData.getTwoParticlesAreClose() > 0.0) {
-    //printf("TRIGGERED HALVING\n");
-	  if(_stateData.getTimeStepSize() > 1E-4)
+  const double mindt = 1E-4;
+  double maxdt = _stateData.getMinMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocityApproach());
+
+  if(_stateData.getTwoParticlesAreClose() > 0.0) { //approach
+
+	  if(_stateData.getTimeStepSize() > mindt) //critical approach
 	  {
 	    double decrementFactor = _stateData.getTwoParticlesAreClose();
-	   // printf("Decrease Factor: %f\n", decrementFactor);
-  	    //_stateData.setTimeStepSize(_stateData.getTimeStepSize()/4.0);
+	    //printf("Decrease Factor: %f\n", decrementFactor);
 	    _stateData.setTimeStepSize(decrementFactor);
 	  }
+  } else {
+    if(_stateData.getTimeStep() > 2)
+    _stateData.setTimeStepSize(increaseFactor * _stateData.getTimeStepSize());
   }
-  else if (_stateData.getTimeStepSize() > maxdt) {
+
+  if(_stateData.getTimeStepSize() > maxdt) {
    _stateData.setTimeStepSize(maxdt);
   }
-  else {//replace with max global step
-	  //if(_stateData.getTimeStepSize() > initStep) return;
-	  _stateData.setTimeStepSize(_stateData.getTimeStepSize()*increaseFactor);
-	   //printf("entered :%f\n", maxdt);
-  }
+
+
+
+
+
+
+  if(maxdt > 1E10)
+    maxdt = 1E10;
 }
 
 void dem::State::setTimeStep(int number) {//name
@@ -139,6 +156,14 @@ int dem::State::getTimeStep() {
   return _stateData.getTimeStep();
 }
 
+void dem::State::setStepIncrement(int number) {//name
+  _stateData.setStepIncrement(number);
+}
+
+int dem::State::getStepIncrement() {
+  return _stateData.getStepIncrement();
+}
+
 void dem::State::incNumberOfParticles(int delta) {
 	_stateData.setNumberOfParticles(_stateData.getNumberOfParticles()+delta);
 }
@@ -147,14 +172,24 @@ void dem::State::incNumberOfObstacles(int delta) {
 	_stateData.setNumberOfObstacles(_stateData.getNumberOfObstacles()+delta);
 }
 
-void dem::State::setMaximumVelocity(double v)
+void dem::State::setMaximumVelocityApproach(double v)
 {
-  _stateData.setMaxVelocity(v);
+  _stateData.setMaxVelocityApproach(v);
 }
 
-double dem::State::getMaximumVelocity()
+double dem::State::getMaximumVelocityApproach()
 {
-  return _stateData.getMaxVelocity();
+  return _stateData.getMaxVelocityApproach();
+}
+
+void dem::State::setMaximumVelocityTravel(double v)
+{
+  _stateData.setMaxVelocityTravel(v);
+}
+
+double dem::State::getMaximumVelocityTravel()
+{
+  return _stateData.getMaxVelocityTravel();
 }
 
 int dem::State::getNumberOfParticles() const {

@@ -141,6 +141,8 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     dem::mappings::Plot::_maxi = maxRange;
   }
 
+  repository.getState().setMaximumVelocityApproach(0.1);
+
   /*
   //PLOT TIME ZERO
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -231,16 +233,13 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", v=" << repository.getState().getNumberOfInnerVertices()
       << ", t=" << repository.getState().getTime()
       << ", dt=" << repository.getState().getTimeStepSize()
-      << ", mvij=" << repository.getState().getMaximumVelocity()
+      << ", mvij=" << repository.getState().getMaximumVelocityApproach()
       << ", plot=" << plotThisTraversal);
-    logInfo("runAsMaster(...)",
-          "h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
-      <<", h_max(prescribed)=" << repository.getState().getPrescribedMaximumMeshWidth());
     logInfo("runAsMaster(...)",
            "h_min(real)=" << repository.getState().getMinimumMeshWidth()
       << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
 
-    repository.getState().finishedTimeStep(initialStepSize);
+    repository.getState().finishedTimeStep();
     repository.getState().clearAccumulatedData();
   }
 

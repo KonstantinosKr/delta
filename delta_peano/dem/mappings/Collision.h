@@ -83,7 +83,7 @@ class dem::mappings::Collision {
     );
 
     static void addCollision(
-      std::vector<delta::collision::contactpoint> newContactPoints,
+      std::vector<delta::collision::contactpoint>& newContactPoints,
       const records::Particle&                    particleA,
       const records::Particle&                    particleB,
       bool sphere

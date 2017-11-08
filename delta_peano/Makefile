@@ -89,7 +89,7 @@ dim3-gcc-release-novec: LFLAGS=
 dim3-gcc-release-novec: EXECUTABLE=dem-3d-release-novec
 dim3-gcc-release-novec: header build
 
-dim3-gcc-release-vec: CC=g++ --std=c++0x
+dim3-gcc-release-vec: CC=g++ --std=c++11
 dim3-gcc-release-vec: DIM=-DDim3
 dim3-gcc-release-vec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
 dim3-gcc-release-vec: CFLAGS=$(GCCRUN) 

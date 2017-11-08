@@ -177,7 +177,7 @@ class dem::mappings::CreateGrid {
   
     void deployFineEnviroment(dem::Vertex& vertex, double cellSize);
 
-    int deployObject(dem::Vertex&  vertex, delta::world::object object);
+    void deployObject(dem::Vertex& vertex, delta::world::object object);
 
     void decomposeMeshByOctsection(
         int octSectTimes,

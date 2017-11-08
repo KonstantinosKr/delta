@@ -107,7 +107,7 @@ void dem::mappings::Collision::endIteration(
 }
 
 void dem::mappings::Collision::addCollision(
-		std::vector<delta::collision::contactpoint> newContactPoints,
+		std::vector<delta::collision::contactpoint> & newContactPoints,
 		const records::Particle&                    particleA,
 		const records::Particle&                    particleB,
 		bool sphere
@@ -150,7 +150,7 @@ void dem::mappings::Collision::addCollision(
 	//////////////END
 
 	if((dataSetA!=nullptr && dataSetB!=nullptr)) {
-	  newContactPoints.empty();
+	  newContactPoints.clear();
 	  return;
 	}
 
@@ -215,8 +215,9 @@ int dem::mappings::Collision::triggerParticleTooClose(
     State& state)
 {
   //printf("Particle A:%d Particle B:%d\n", particleA.getGlobalParticleId(), particleB.getGlobalParticleId());
+  iREAL increments = state.getStepIncrement();
   iREAL dt = state.getTimeStepSize();
-  iREAL pdt = dt + dt * 1.1;
+  iREAL pdt = dt + dt * increments;
 
   iREAL cA[3], cB[3];
 
@@ -257,6 +258,7 @@ int dem::mappings::Collision::triggerParticleTooClose(
   iREAL vBA = ((vB[0] * dAB[0]) + (vB[1] * dAB[1]) + (vB[2] * dAB[2])) -
               ((vA[0] * dAB[0]) + (vA[1] * dAB[1]) + (vA[2] * dAB[2]));
 
+  //predicted velocity of B relative to A
   iREAL pvBA = ((vB[0] * pdAB[0]) + (vB[1] * pdAB[1]) + (vB[2] * pdAB[2])) -
                ((vA[0] * pdAB[0]) + (vA[1] * pdAB[1]) + (vA[2] * pdAB[2]));
 
@@ -267,10 +269,10 @@ int dem::mappings::Collision::triggerParticleTooClose(
   }
 
   //particles approach
-  if(-vBA > state.getMaximumVelocity())
+  if(-vBA > state.getMaximumVelocityApproach())
   {
     //printf("approach: %f\n", vBA);
-    state.setMaximumVelocity(vBA);
+    state.setMaximumVelocityApproach(vBA);
   }
 
   double rA = particleA.getHaloDiameter();
@@ -281,11 +283,11 @@ int dem::mappings::Collision::triggerParticleTooClose(
 
   iREAL distancePerStep = mind/dt;
   iREAL pdistancePerStep = pmind/pdt;
-  pdt = dt * 1.1 * 1.1;
+  pdt = dt * increments * increments;
 
   if(-pvBA >= pdistancePerStep || pvBA > 0)
   {
-    //printf("entered\n");
+    //printf("entered TRIGER\n");
     double rrA = particleA.getDiameter()/2.0;
     double rrB = particleB.getDiameter()/2.0;
 
@@ -298,6 +300,7 @@ int dem::mappings::Collision::triggerParticleTooClose(
     if(localMaxdt < 0.0) localMaxdt = -1*localMaxdt;
     state.informStateThatTwoParticlesAreClose(localMaxdt);
   }
+
   /*printf("pvBA: %f  pdt: %f | pmd: %f pdt: %f pd: %f\n",
          pvBA,    pdistancePerStep, pmind, pdt, pd);
   printf(" vBA: %f  ddt: %f |  md: %f dt: %f  d: %f\n",
@@ -616,6 +619,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			torque[2] += rtorque[2];
 		}
 
+		printf("%f %f %f\n", force[0], force[1], force[2]);
 		if(!currentParticle.getIsObstacle())
 		{
 			currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle.getMass());

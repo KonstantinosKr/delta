@@ -589,6 +589,7 @@ void delta::geometry::properties::getInertia(
   }
 
   mass = me;
+  //printf("mass:%f\n", mass);
 //#ifdef STATS
   //printf("sx:%f sy:%f sz:%f\n", sx, sy, sz);
 //#endif
@@ -600,7 +601,7 @@ void delta::geometry::properties::getInertia(
 //#endif
 
 #ifdef STATS
-  printf("euler %f %f %f %f %f %f %f %f %f\n", euler[0], euler[1], euler[2], euler[3], euler[4], euler[5], euler[6], euler[7], euler[8]);
+  //printf("euler %f %f %f %f %f %f %f %f %f\n", euler[0], euler[1], euler[2], euler[3], euler[4], euler[5], euler[6], euler[7], euler[8]);
 #endif
   euler[0] -= (2*sx - center[0]*me)*center[0];
   euler[4] -= (2*sy - center[1]*me)*center[1];
