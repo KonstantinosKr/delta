@@ -7,11 +7,13 @@
 #include "tarch/parallel/NodePool.h"
 #include "peano/parallel/messages/ForkMessage.h"
 #include "dem/repositories/Repository.h"
-
+#include "peano/utils/UserInterface.h"
+#include "tarch/parallel/NodePool.h"
 
 int dem::runners::Runner::runAsWorker(dem::repositories::Repository& repository) {
   int newMasterNode = tarch::parallel::NodePool::getInstance().waitForJob(); 
   while ( newMasterNode != tarch::parallel::NodePool::JobRequestMessageAnswerValues::Terminate ) {
+
     if ( newMasterNode >= tarch::parallel::NodePool::JobRequestMessageAnswerValues::NewMaster ) {
       peano::parallel::messages::ForkMessage forkMessage;
       forkMessage.receive(tarch::parallel::NodePool::getInstance().getMasterRank(),tarch::parallel::NodePool::getInstance().getTagForForkMessages(), true, ReceiveIterationControlMessagesBlocking);
@@ -28,6 +30,14 @@ int dem::runners::Runner::runAsWorker(dem::repositories::Repository& repository)
         switch (repository.continueToIterate()) {
           case dem::repositories::Repository::Continue:
             repository.iterate();  
+            logInfo("runAsWorker(...)",
+                            "\tmemoryUsage    =" << peano::utils::UserInterface::getMemoryUsageMB() << " MB");
+            #if  defined(SharedMemoryParallelisation) && defined(PerformanceAnalysis)
+            if (sharedmemoryoracles::OracleForOnePhaseWithShrinkingGrainSize::hasLearnedSinceLastQuery()) {
+              static int dumpCounter = -1;
+              dumpCounter++;
+            }
+            #endif
             break;
           case dem::repositories::Repository::Terminate:
             continueToIterate = false;  

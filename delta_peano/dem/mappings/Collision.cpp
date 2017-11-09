@@ -264,7 +264,7 @@ int dem::mappings::Collision::triggerParticleTooClose(
 
   //particles separate
   if (vBA > 0 && pvBA > 0) {
-    //printf("separation: %f\n", vBA);
+    printf("separation: %f\n", vBA);
     return 0;
   }
 

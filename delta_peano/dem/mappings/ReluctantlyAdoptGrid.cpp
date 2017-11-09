@@ -58,7 +58,7 @@ void dem::mappings::ReluctantlyAdoptGrid::beginIteration(
   _state = solverState;
   _state.clearAccumulatedData();
 
-  assertion( _collisionsOfNextTraversal.empty() );
+  assertion( dem::mappings::Collision::_collisionsOfNextTraversal.empty() );
 
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
   delta::collision::cleanPenaltyStatistics();
@@ -80,12 +80,12 @@ void dem::mappings::ReluctantlyAdoptGrid::endIteration(
 
   dem::mappings::Collision::_activeCollisions.clear();
 
-  assertion( _activeCollisions.empty() );
-  assertion( _state.getNumberOfContactPoints()==0 || !_collisionsOfNextTraversal.empty() );
+  assertion( dem::mappings::Collision::_activeCollisions.empty() );
+  assertion( _state.getNumberOfContactPoints()==0 || ! dem::mappings::Collision::_collisionsOfNextTraversal.empty() );
 
   dem::mappings::Collision::_activeCollisions.insert(dem::mappings::Collision::_collisionsOfNextTraversal.begin(), dem::mappings::Collision::_collisionsOfNextTraversal.end());
 
-  assertion( _state.getNumberOfContactPoints()==0 || !_activeCollisions.empty() );
+  assertion( _state.getNumberOfContactPoints()==0 || ! dem::mappings::Collision::_activeCollisions.empty() );
   dem::mappings::Collision::_collisionsOfNextTraversal.clear();
 
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)

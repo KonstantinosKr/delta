@@ -33,10 +33,10 @@ class dem::runners::Runner {
       EveryIteration,
       Never,
       UponChange,
-	  EveryBatch,
-	  Adaptive,
-	  Range,
-	  Track
+      EveryBatch,
+      Adaptive,
+      Range,
+      Track
     };
   private:
     static tarch::logging::Log _log;

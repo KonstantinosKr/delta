@@ -113,9 +113,17 @@ void dem::State::informStateThatTwoParticlesAreClose(double decrementFactor) {
   _stateData.setTwoParticlesAreClose(decrementFactor);
 }
 
-void dem::State::finishedTimeStep() {
+void dem::State::finishedTimeStep(double initialTimestep) {
   _stateData.setCurrentTime(_stateData.getCurrentTime() + _stateData.getTimeStepSize());
 
+  if(initialTimestep <= 0)
+  {
+    adaptiveTimeStep();
+  }
+}
+
+void dem::State::adaptiveTimeStep()
+{
   const double increaseFactor = 1.1;
   _stateData.setStepIncrement(increaseFactor);
 
@@ -124,12 +132,12 @@ void dem::State::finishedTimeStep() {
 
   if(_stateData.getTwoParticlesAreClose() > 0.0) { //approach
 
-	  if(_stateData.getTimeStepSize() > mindt) //critical approach
-	  {
-	    double decrementFactor = _stateData.getTwoParticlesAreClose();
-	    //printf("Decrease Factor: %f\n", decrementFactor);
-	    _stateData.setTimeStepSize(decrementFactor);
-	  }
+    if(_stateData.getTimeStepSize() > mindt) //critical approach
+    {
+      double decrementFactor = _stateData.getTwoParticlesAreClose();
+      //printf("Decrease Factor: %f\n", decrementFactor);
+      _stateData.setTimeStepSize(decrementFactor);
+    }
   } else {
     if(_stateData.getTimeStep() > 2)
     _stateData.setTimeStepSize(increaseFactor * _stateData.getTimeStepSize());
@@ -138,11 +146,6 @@ void dem::State::finishedTimeStep() {
   if(_stateData.getTimeStepSize() > maxdt) {
    _stateData.setTimeStepSize(maxdt);
   }
-
-
-
-
-
 
   if(maxdt > 1E10)
     maxdt = 1E10;

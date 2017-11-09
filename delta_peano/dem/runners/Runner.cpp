@@ -34,16 +34,13 @@ dem::runners::Runner::Runner() {
 dem::runners::Runner::~Runner() {
 }
 
-int dem::runners::Runner::run(int numberOfTimeSteps,
-    Plot plot, dem::mappings::CreateGrid::GridType gridType,
-    int tbbThreads,
-		double stepSize, double realSnapshot, bool useAutotuning)
-{
-  peano::geometry::Hexahedron geometry(tarch::la::Vector<DIMENSIONS,double>(1.0), tarch::la::Vector<DIMENSIONS,double>(0.0));
-  dem::repositories::Repository* repository = dem::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(geometry,
-                                                tarch::la::Vector<DIMENSIONS,double>(1.0),  // domainSize
-                                                tarch::la::Vector<DIMENSIONS,double>(0.0)); // computationalDomainOffset
 
+void initHPCEnvironment() {
+  peano::performanceanalysis::Analysis::getInstance().enable(false);
+}
+
+void initSharedMemory()
+{
   #ifdef SharedMemoryParallelisation
     tarch::multicore::Core::getInstance().configure(tbbThreads);
 
@@ -81,6 +78,45 @@ int dem::runners::Runner::run(int numberOfTimeSteps,
         new peano::datatraversal::autotuning::OracleForOnePhaseDummy(true, false));
     }
   #endif
+}
+
+void shutSharedMemory()
+{
+  #ifdef SharedMemoryParallelisation
+    peano::datatraversal::autotuning::Oracle::getInstance().plotStatistics(sharedMemoryPropertiesFileName);
+  #endif
+}
+
+void initDistributedMemory()
+{
+  #ifdef Parallel
+
+  #endif
+}
+
+void shutDistributedMemory()
+{
+  #ifdef Parallel
+    tarch::parallel::NodePool::getInstance().terminate();
+    dem::repositories::RepositoryFactory::getInstance().shutdownAllParallelDatatypes();
+  #endif
+}
+
+int dem::runners::Runner::run(int numberOfTimeSteps,
+    Plot plot,
+    dem::mappings::CreateGrid::GridType gridType,
+    int tbbThreads,
+		double stepSize,
+		double realSnapshot,
+		bool useAutotuning)
+{
+  peano::geometry::Hexahedron geometry(tarch::la::Vector<DIMENSIONS,double>(1.0), tarch::la::Vector<DIMENSIONS,double>(0.0));
+  dem::repositories::Repository* repository = dem::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(geometry,
+                                                tarch::la::Vector<DIMENSIONS,double>(1.0),  // domainSize
+                                                tarch::la::Vector<DIMENSIONS,double>(0.0)); // computationalDomainOffset
+  //initHPCEnvironment();
+  initSharedMemory();
+  initDistributedMemory();
 
   int result = 0;
   if (tarch::parallel::Node::getInstance().isGlobalMaster())
@@ -94,9 +130,8 @@ int dem::runners::Runner::run(int numberOfTimeSteps,
   #endif
   
 
-  #ifdef SharedMemoryParallelisation
-    peano::datatraversal::autotuning::Oracle::getInstance().plotStatistics(sharedMemoryPropertiesFileName);
-  #endif
+  shutSharedMemory();
+  shutDistributedMemory();
 
   delete repository;
   
@@ -143,9 +178,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
   repository.getState().setMaximumVelocityApproach(0.1);
 
-  /*
-  //PLOT TIME ZERO
-  ////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////PLOT TIME ZERO//////////////////////////////////////////////////////
   if((plot == EveryIteration) ||  (plot == Track) ||
       (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
                               !repository.getState().isGridStationary() || 0%50==0 ||
@@ -167,18 +200,15 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", v=" << repository.getState().getNumberOfInnerVertices()
       << ", t=" << repository.getState().getTime()
       << ", dt=" << repository.getState().getTimeStepSize()
-      << ", mvij=" << repository.getState().getMaximumVelocity()
+      << ", mvij=" << repository.getState().getMaximumVelocityApproach()
       << ", plot=" << 1);
-    logInfo("runAsMaster(...)",
-          "h_min(prescribed)=" << repository.getState().getPrescribedMinimumMeshWidth()
-      <<", h_max(prescribed)=" << repository.getState().getPrescribedMaximumMeshWidth());
     logInfo("runAsMaster(...)",
            "h_min(real)=" << repository.getState().getMinimumMeshWidth()
       << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
 
     elapsed = repository.getState().getTime() - timestamp;
     repository.getState().finishedTimeStep(initialStepSize);
-  }*/
+  }
   ///////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -239,7 +269,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
            "h_min(real)=" << repository.getState().getMinimumMeshWidth()
       << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
 
-    repository.getState().finishedTimeStep();
+    repository.getState().finishedTimeStep(initialStepSize);
     repository.getState().clearAccumulatedData();
   }
 
