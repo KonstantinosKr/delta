@@ -34,12 +34,17 @@ dem::runners::Runner::Runner() {
 dem::runners::Runner::~Runner() {
 }
 
-
 void initHPCEnvironment() {
   peano::performanceanalysis::Analysis::getInstance().enable(false);
 }
 
-void initSharedMemory()
+std::string initSharedMemory(
+    int tbbThreads,
+    dem::mappings::CreateGrid::GridType gridType,
+    int numberOfTimeSteps,
+    double stepSize,
+    double realSnapshot,
+    bool useAutotuning)
 {
   #ifdef SharedMemoryParallelisation
     tarch::multicore::Core::getInstance().configure(tbbThreads);
@@ -51,7 +56,8 @@ void initSharedMemory()
         + std::to_string( stepSize ) + "-dt-"
         + std::to_string( realSnapshot );
 
-    switch (gridType) {
+    switch (gridType)
+    {
       case dem::mappings::CreateGrid::NoGrid:
         sharedMemoryPropertiesFileName += "-no-grid";
         break;
@@ -77,10 +83,11 @@ void initSharedMemory()
       peano::datatraversal::autotuning::Oracle::getInstance().setOracle(
         new peano::datatraversal::autotuning::OracleForOnePhaseDummy(true, false));
     }
+    return sharedMemoryPropertiesFileName;
   #endif
 }
 
-void shutSharedMemory()
+void shutSharedMemory(std::string sharedMemoryPropertiesFileName)
 {
   #ifdef SharedMemoryParallelisation
     peano::datatraversal::autotuning::Oracle::getInstance().plotStatistics(sharedMemoryPropertiesFileName);
@@ -115,7 +122,7 @@ int dem::runners::Runner::run(int numberOfTimeSteps,
                                                 tarch::la::Vector<DIMENSIONS,double>(1.0),  // domainSize
                                                 tarch::la::Vector<DIMENSIONS,double>(0.0)); // computationalDomainOffset
   //initHPCEnvironment();
-  initSharedMemory();
+  std::string sharedMemoryPropertiesFileName = initSharedMemory(tbbThreads, gridType, numberOfTimeSteps, stepSize, realSnapshot, useAutotuning);
   initDistributedMemory();
 
   int result = 0;
@@ -129,8 +136,7 @@ int dem::runners::Runner::run(int numberOfTimeSteps,
   }
   #endif
   
-
-  shutSharedMemory();
+  shutSharedMemory(sharedMemoryPropertiesFileName);
   shutDistributedMemory();
 
   delete repository;
