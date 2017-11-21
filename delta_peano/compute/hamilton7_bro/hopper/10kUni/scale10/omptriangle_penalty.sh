@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE12_10_10khopper
 exp7o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE16_10_10khopper
 exp8o=/ddn/data/rfmw74/h7reluctantpenaltyOMPTRIANGLE24_10_10khopper
 
-exp0="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
-exp1="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
-exp2="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
-exp3="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
-exp4="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
-exp5="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
-exp6="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
-exp7="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
-exp8="./dem-3d-release-omp-triangle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
+exp0="./dem-3d-release-omp-triangle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
+exp1="./dem-3d-release-omp-triangle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
+exp2="./dem-3d-release-omp-triangle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
+exp3="./dem-3d-release-omp-triangle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
+exp4="./dem-3d-release-omp-triangle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
+exp5="./dem-3d-release-omp-triangle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
+exp6="./dem-3d-release-omp-triangle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
+exp7="./dem-3d-release-omp-triangle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
+exp8="./dem-3d-release-omp-triangle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true penalty 10"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

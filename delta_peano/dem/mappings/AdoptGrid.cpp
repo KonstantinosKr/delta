@@ -170,7 +170,7 @@ void dem::mappings::liftAllParticles(
     tarch::la::Vector<DIMENSIONS,int> destinationVertex;
     for (int d=0; d<DIMENSIONS; d++)
     {
-      destinationVertex(d) = fineGridVertex.getParticle(i)._persistentRecords._centre(d) < coarseGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
+      destinationVertex(d) = fineGridVertex.getParticle(i).getCentre(d) < coarseGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
     }
     coarseGridVertices[ coarseGridVerticesEnumerator(destinationVertex) ].appendParticle( fineGridVertex.getParticle(i) );
 

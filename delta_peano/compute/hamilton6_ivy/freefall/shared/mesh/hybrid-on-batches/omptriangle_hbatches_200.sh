@@ -21,13 +21,13 @@ exp4o=/scratch/rfmw74/reluctanthybrid-on-batchesOMPTRIANGLE6_200
 exp5o=/scratch/rfmw74/reluctanthybrid-on-batchesOMPTRIANGLE8_200
 exp6o=/scratch/rfmw74/reluctanthybrid-on-batchesOMPTRIANGLE16_200
 
-exp0="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 1"
-exp1="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 2"
-exp2="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 3"
-exp3="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 4"
-exp4="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 6"
-exp5="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 8"
-exp6="./dem-3d-release-omp-triangle 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 16"
+exp0="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 1"
+exp1="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 2"
+exp2="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 3"
+exp3="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 4"
+exp4="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 6"
+exp5="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 8"
+exp6="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200 16"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

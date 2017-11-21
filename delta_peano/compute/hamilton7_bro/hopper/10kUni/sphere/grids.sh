@@ -33,20 +33,20 @@ exp9o=/ddn/data/rfmw74/h7X21hopperUni10k-regular-sphere-tbb12omp2
 exp10o=/ddn/data/rfmw74/h7X22hopperUni10k-adaptive-sphere-tbb12omp2
 exp11o=/ddn/data/rfmw74/h7X23hopperUni10k-reluctant-sphere-tbb12omp2
 
-exp0="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10 24"
-exp1="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10 24"
-exp2="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10 24"
-exp3="./dem-3d-release-tbb 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 24"
+exp0="./dem-3d-release-tbb 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10 24"
+exp1="./dem-3d-release-tbb 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10 24"
+exp2="./dem-3d-release-tbb 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10 24"
+exp3="./dem-3d-release-tbb 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 24"
 
-exp4="./dem-3d-release-omp-particle 0.1 0.001 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10"
-exp5="./dem-3d-release-omp-particle 0.1 0.001 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10"
-exp6="./dem-3d-release-omp-particle 0.1 0.001 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10"
-exp7="./dem-3d-release-omp-particle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10"
+exp4="./dem-3d-release-omp-particle 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10"
+exp5="./dem-3d-release-omp-particle 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10"
+exp6="./dem-3d-release-omp-particle 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10"
+exp7="./dem-3d-release-omp-particle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10"
 
-exp8="./dem-3d-release-tbb-omp-particle 0.1 0.001 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10 12"
-exp9="./dem-3d-release-tbb-omp-particle 0.1 0.001 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10 12"
-exp10="./dem-3d-release-tbb-omp-particle 0.1 0.001 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10 12"
-exp11="./dem-3d-release-tbb-omp-particle 0.1 0.001 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 12"
+exp8="./dem-3d-release-tbb-omp-particle 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10 12"
+exp9="./dem-3d-release-tbb-omp-particle 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10 12"
+exp10="./dem-3d-release-tbb-omp-particle 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10 12"
+exp11="./dem-3d-release-tbb-omp-particle 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 12"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

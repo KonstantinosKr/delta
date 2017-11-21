@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7reluctantbfOMPPARTICLE8_2000
 exp6o=/ddn/data/rfmw74/h7reluctantbfOMPPARTICLE16_2000
 exp7o=/ddn/data/rfmw74/h7reluctantbfOMPPARTICLE24_2000
 
-exp0="./dem-3d-release-omp-particle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
-exp1="./dem-3d-release-omp-particle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
-exp2="./dem-3d-release-omp-particle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
-exp3="./dem-3d-release-omp-particle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
-exp4="./dem-3d-release-omp-particle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
-exp5="./dem-3d-release-omp-particle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
-exp6="./dem-3d-release-omp-particle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
-exp7="./dem-3d-release-omp-particle 0.1 0.001 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
+exp0="./dem-3d-release-omp-particle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
+exp1="./dem-3d-release-omp-particle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
+exp2="./dem-3d-release-omp-particle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
+exp3="./dem-3d-release-omp-particle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
+exp4="./dem-3d-release-omp-particle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
+exp5="./dem-3d-release-omp-particle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
+exp6="./dem-3d-release-omp-particle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
+exp7="./dem-3d-release-omp-particle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 2000"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

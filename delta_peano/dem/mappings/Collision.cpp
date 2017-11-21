@@ -18,7 +18,7 @@ peano::CommunicationSpecification   dem::mappings::Collision::communicationSpeci
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexFirstTimeSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces, true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification(int level) const {
@@ -641,6 +641,8 @@ void dem::mappings::Collision::touchVertexFirstTime(
     fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
   enddforx
 
+  return;
+
 	#ifdef ompParticle
 		#pragma omp parallel for
 	#endif
@@ -1064,6 +1066,7 @@ void dem::mappings::Collision::enterCell(
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
+  return;
 	all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
 
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );

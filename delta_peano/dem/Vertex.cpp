@@ -544,6 +544,7 @@ void dem::Vertex::restrictParticleResponsibilityData(const Vertex& fineGridVerte
   //     - there are more than two real or virtual particles and
   //     - there is at least one real particle
   _vertexData.setVetoCoarsening( _vertexData.getVetoCoarsening() || fineGridVertex._vertexData.getVetoCoarsening() || fineGridVertex.getNumberOfRealAndVirtualParticles() > 2 || fineGridVertex.getNumberOfParticles()>0);
+
 }
 
 void dem::Vertex::eraseIfParticleDistributionPermits() {
@@ -568,8 +569,7 @@ void dem::Vertex::inheritCoarseGridParticles(
 
     iREAL v[3] = {fineGridX(0), fineGridX(1), fineGridX(2)};
 
-    /*
-    This bounding sphere has to have the radius =
+    /* This bounding sphere has to have the radius =
     particle sphere radius + 2*epsilon + sqrt(diameter*h)*/
 
     //////////////////////////////////////////////////////////////////////
@@ -609,8 +609,7 @@ void dem::Vertex::inheritCoarseGridParticles(
 
         if(d <= radius)
         {
-          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
-              ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), virtualParticleCoarse);
+          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).push_back(virtualParticleCoarse);
         }
       }
     }
@@ -631,7 +630,7 @@ void dem::Vertex::inheritCoarseGridParticles(
       for(auto &realParticleLocal: ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()))
       {
         if(realParticleCoarse.getGlobalParticleId() == realParticleLocal.getGlobalParticleId() &&
-            realParticleCoarse.getLocalParticleId() == realParticleLocal.getLocalParticleId())
+           realParticleCoarse.getLocalParticleId() == realParticleLocal.getLocalParticleId())
         {
           found = true; //if found ignore and look up next coarse particle
           break;
@@ -654,8 +653,7 @@ void dem::Vertex::inheritCoarseGridParticles(
 
         if(d <= radius)
         {
-          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).insert(
-              ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).end(), realParticleCoarse);
+          ParticleHeap::getInstance().getData(_vertexData.getParticlesOnCoarserLevels()).push_back(realParticleCoarse);
         }
       }
     }

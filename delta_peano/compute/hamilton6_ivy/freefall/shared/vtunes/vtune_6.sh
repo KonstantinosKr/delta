@@ -13,11 +13,11 @@ exp2o=/scratch/rfmw74/reluctantPenalty-6THREADS
 exp3o=/scratch/rfmw74/reluctantHtriangles-6THREADS
 exp4o=/scratch/rfmw74/reluctantHbatches-6THREADS
 
-exp0="amplxe-cl -r /scratch/rfmw74/proreluctantSphere-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true sphere 200"
-exp1="amplxe-cl -r /scratch/rfmw74/proReluctantBf-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true bf 200"
-exp2="amplxe-cl -r /scratch/rfmw74/proReluctantPenalty-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true penalty 200"
-exp3="amplxe-cl -r /scratch/rfmw74/proReluctantHtriangles-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200"
-exp4="amplxe-cl -r /scratch/rfmw74/proReluctantHbatches-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 0.001 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200"
+exp0="amplxe-cl -r /scratch/rfmw74/proreluctantSphere-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true sphere 200"
+exp1="amplxe-cl -r /scratch/rfmw74/proReluctantBf-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true bf 200"
+exp2="amplxe-cl -r /scratch/rfmw74/proReluctantPenalty-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true penalty 200"
+exp3="amplxe-cl -r /scratch/rfmw74/proReluctantHtriangles-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200"
+exp4="amplxe-cl -r /scratch/rfmw74/proReluctantHbatches-6THREADS -collect general-exploration -no-auto-finalize -- ./dem-3d-release-omp-triangle-ampl 0.1 freefallWithGranulates 5000 reluctant-grid 0.0001 never 10 true hybrid-on-batches 200"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT} > ${JOB_SCRIPT}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT}_tmp > ${JOB_SCRIPT}_tmp1
