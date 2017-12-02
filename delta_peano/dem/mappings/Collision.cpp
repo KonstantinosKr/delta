@@ -264,7 +264,7 @@ int dem::mappings::Collision::triggerParticleTooClose(
 
   //particles separate
   if (vBA > 0 && pvBA > 0) {
-    printf("separation: %f\n", vBA);
+    //printf("separation: %f\n", vBA);
     return 0;
   }
 
@@ -619,7 +619,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			torque[2] += rtorque[2];
 		}
 
-		printf("%f %f %f\n", force[0], force[1], force[2]);
+		//printf("%f %f %f\n", force[0], force[1], force[2]);
 		if(!currentParticle.getIsObstacle())
 		{
 			currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle.getMass());
