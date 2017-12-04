@@ -138,7 +138,7 @@ int main(int argc, char** argv)
   const int			 meshMultiplier  = atof(argv[10]);
 
   #ifdef SharedMemoryParallelisation
-  	  const int          numberOfCores       = atoi(argv[13]);
+  	  const int          numberOfCores       = atoi(argv[11]);
   #else
   	  const int          numberOfCores       = 0;
   #endif
