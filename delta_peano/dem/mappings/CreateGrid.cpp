@@ -703,15 +703,15 @@ void dem::mappings::CreateGrid::createCell(
 	    fineGridVertices, fineGridVerticesEnumerator, Vertex::Records::Unrefined) &&
 	  !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices, fineGridVerticesEnumerator))
 	{
-	  if(!coarseGridCell.isRoot())
+	  //if(!coarseGridCell.isRoot())
 	  deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0));
-
+/*
 	  dfor2(k) //size 2, dimension 3
 	    for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
 	    {
 	      printf("particles :%i\n", fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getGlobalParticleId());
 	    }
-	  enddforx
+	  enddforx*/
 	}
 /*
   dfor2(k) //size 2, dimension 3

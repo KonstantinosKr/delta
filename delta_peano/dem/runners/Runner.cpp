@@ -158,11 +158,11 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   delta::core::Delta();
 
   logInfo( "runAsMaster(...)", "create grid" );
-  repository.switchToCreateGridAndPlot();
+  repository.switchToCreateGrid();
 
-  //repository.iterate();
+  repository.iterate();
 
-  do { repository.iterate(); } while ( !repository.getState().isGridStationary() );
+  //do { repository.iterate(); } while ( !repository.getState().isGridStationary() );
 
   logInfo( "runAsMaster(...)", "start time stepping" );
 

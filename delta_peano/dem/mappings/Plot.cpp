@@ -357,7 +357,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     {
       _particleCounter++;
       records::Particle&  particle = fineGridVertex.getParticle(i);
-      printf("particle plot: %i\n", particle.getGlobalParticleId());
+      //printf("particle plot: %i\n", particle.getGlobalParticleId());
 
       particleVertexLink[1] = _vertexWriter->plotVertex( particle.getCentre() );
 
