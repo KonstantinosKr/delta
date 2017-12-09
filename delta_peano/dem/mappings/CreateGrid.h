@@ -173,7 +173,7 @@ class dem::mappings::CreateGrid {
 
     void computeBoundary();
 
-    void deployCoarseEnviroment(dem::Vertex& vertex);
+    void deployCoarseEnviroment(dem::Vertex& vertex, double cellSize);
   
     void deployFineEnviroment(dem::Vertex& vertex, double cellSize);
 

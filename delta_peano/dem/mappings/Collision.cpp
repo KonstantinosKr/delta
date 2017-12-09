@@ -619,7 +619,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			torque[2] += rtorque[2];
 		}
 
-		//printf("%f %f %f\n", force[0], force[1], force[2]);
 		if(!currentParticle.getIsObstacle())
 		{
 			currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle.getMass());
@@ -640,8 +639,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
   dfor2(k)
     fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
   enddforx
-
-  return;
 
 	#ifdef ompParticle
 		#pragma omp parallel for
@@ -1066,7 +1063,6 @@ void dem::mappings::Collision::enterCell(
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-  return;
 	all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
 
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );

@@ -85,10 +85,12 @@ std::string initSharedMemory(
     }
     return sharedMemoryPropertiesFileName;
   #endif
+  return "";
 }
 
 void shutSharedMemory(std::string sharedMemoryPropertiesFileName)
 {
+  if("" == sharedMemoryPropertiesFileName) {return;}
   #ifdef SharedMemoryParallelisation
     peano::datatraversal::autotuning::Oracle::getInstance().plotStatistics(sharedMemoryPropertiesFileName);
   #endif
@@ -123,7 +125,7 @@ int dem::runners::Runner::run(int numberOfTimeSteps,
                                                 tarch::la::Vector<DIMENSIONS,double>(0.0)); // computationalDomainOffset
   //initHPCEnvironment();
   std::string sharedMemoryPropertiesFileName = initSharedMemory(tbbThreads, gridType, numberOfTimeSteps, stepSize, realSnapshot, useAutotuning);
-  initDistributedMemory();
+  //initDistributedMemory();
 
   int result = 0;
   if (tarch::parallel::Node::getInstance().isGlobalMaster())
@@ -156,11 +158,11 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   delta::core::Delta();
 
   logInfo( "runAsMaster(...)", "create grid" );
-  repository.switchToCreateGrid();
+  repository.switchToCreateGridAndPlot();
 
-  repository.iterate();
+  //repository.iterate();
 
-  //do { repository.iterate(); } while ( !repository.getState().isGridStationary() );
+  do { repository.iterate(); } while ( !repository.getState().isGridStationary() );
 
   logInfo( "runAsMaster(...)", "start time stepping" );
 
@@ -184,6 +186,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
   repository.getState().setMaximumVelocityApproach(0.1);
 
+  /*
   //////////////////PLOT TIME ZERO//////////////////////////////////////////////////////
   if((plot == EveryIteration) ||  (plot == Track) ||
       (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
@@ -215,6 +218,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     elapsed = repository.getState().getTime() - timestamp;
     repository.getState().finishedTimeStep(initialStepSize);
   }
+  */
   ///////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////
 

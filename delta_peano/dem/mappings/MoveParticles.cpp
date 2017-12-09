@@ -70,11 +70,11 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     {
       _state.setMaximumVelocityTravel(v);
     }
-
+    /*
     delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
                                           &particle._persistentRecords._referentialAngular(0),
                                           &particle._persistentRecords._orientation(0), timeStepSize);
-
+     */
     double* x = fineGridVertex.getXCoordinates(i);
     double* y = fineGridVertex.getYCoordinates(i);
     double* z = fineGridVertex.getZCoordinates(i);

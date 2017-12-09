@@ -78,6 +78,8 @@ int dem::Vertex::createParticle(
 
   newParticle._persistentRecords._diameter	= delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
 
+  //printf("diameter: %f\n", delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates));
+
   //printf("WIDTH%f\n", delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates));
   hMin = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);
 
@@ -166,18 +168,19 @@ int dem::Vertex::createParticle(
               << "partiId=" << std::fixed << std::setprecision(10) << newParticle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << newParticle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << newParticle.getDiameter() << std::endl
               << "influRa=" << std::fixed << std::setprecision(10) << newParticle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << newParticle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << newParticle.getHMin() << std::endl;
   #endif
+
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 
 int dem::Vertex::createSubParticle(
     const tarch::la::Vector<DIMENSIONS,double>& center,
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates,
     double centerOfMass[3],
     double inertia[9],
     double inverse[9],
     double mass,
+    std::vector<double>&  xCoordinates,
+    std::vector<double>&  yCoordinates,
+    std::vector<double>&  zCoordinates,
     double epsilon,
     bool friction,
     delta::geometry::material::MaterialType material,

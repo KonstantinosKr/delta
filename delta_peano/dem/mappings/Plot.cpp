@@ -10,14 +10,14 @@ peano::CommunicationSpecification   dem::mappings::Plot::communicationSpecificat
 }
 
 peano::MappingSpecification   dem::mappings::Plot::touchVertexFirstTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 /**
  * This is the only routine that we actually use.
  */
 peano::MappingSpecification   dem::mappings::Plot::touchVertexLastTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 peano::MappingSpecification   dem::mappings::Plot::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
@@ -357,6 +357,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     {
       _particleCounter++;
       records::Particle&  particle = fineGridVertex.getParticle(i);
+      printf("particle plot: %i\n", particle.getGlobalParticleId());
 
       particleVertexLink[1] = _vertexWriter->plotVertex( particle.getCentre() );
 
@@ -744,7 +745,13 @@ void dem::mappings::Plot::createInnerVertex(
       const tarch::la::Vector<DIMENSIONS,int>&            fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-  // @todo Insert your code here
+
+
+  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  {
+    printf("Particle MT:%d\n", fineGridVertex.getParticle(i).getGlobalParticleId());
+  }
+
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
 

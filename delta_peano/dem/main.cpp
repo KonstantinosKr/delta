@@ -145,8 +145,8 @@ int main(int argc, char** argv)
 
   int programExitCode = 0;
   if (gridHMax>0.5) {
-    logError( "main()", "gridHMax has to be smaller than or equal to 0.5" );
-    programExitCode = 1;
+    //logError( "main()", "gridHMax has to be smaller than or equal to 0.5" );
+    //programExitCode = 1;
   }
 
   dem::mappings::CreateGrid::GridType gridType;

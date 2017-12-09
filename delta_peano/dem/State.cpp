@@ -116,7 +116,7 @@ void dem::State::informStateThatTwoParticlesAreClose(double decrementFactor) {
 void dem::State::finishedTimeStep(double initialTimestep) {
   _stateData.setCurrentTime(_stateData.getCurrentTime() + _stateData.getTimeStepSize());
 
-  if(initialTimestep <= 0)
+  //if(initialTimestep <= 0)
   {
     adaptiveTimeStep();
   }
@@ -147,8 +147,8 @@ void dem::State::adaptiveTimeStep()
    _stateData.setTimeStepSize(maxdt);
   }
 
-  if(maxdt > 1E10)
-    maxdt = 1E10;
+  if(maxdt > 1.0)
+    maxdt = 1.0;
 }
 
 void dem::State::setTimeStep(int number) {//name

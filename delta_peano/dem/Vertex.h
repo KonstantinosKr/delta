@@ -101,13 +101,13 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
 
     int createSubParticle(
         const tarch::la::Vector<DIMENSIONS,double>& center,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates,
         double centerOfMass[3],
         double inertia[9],
         double inverse[9],
         double mass,
+        std::vector<double>&  xCoordinates,
+        std::vector<double>&  yCoordinates,
+        std::vector<double>&  zCoordinates,
         double epsilon,
         bool friction,
         delta::geometry::material::MaterialType material,
