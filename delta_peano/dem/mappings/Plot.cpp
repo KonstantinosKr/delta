@@ -43,7 +43,7 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
 
   _iterationNumber       = solverState.getTimeStep();
 
-  //if(_mini < _iterationNumber && _iterationNumber < _maxi)
+  //if(_mini < _iterationNumber && _iterationNumber < _maxi)//issue with multithreading, have to fix this
   {
     //printf("ENTERED %i %i %i\n", _mini, _maxi, _iterationNumber);
 
@@ -261,7 +261,6 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
       //loop every contact point
       for (auto ppp:pp._contactPoints)
       {
-
         #ifdef CONTACTSTATS
         /*
         if(_trackParticle)

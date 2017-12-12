@@ -22,7 +22,7 @@ peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexLastTimeSpec
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::CreateGrid::enterCellSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 peano::MappingSpecification   dem::mappings::CreateGrid::leaveCellSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
@@ -254,18 +254,19 @@ void dem::mappings::CreateGrid::beginIteration(
     auto isObstacle = true;
     auto isFriction = false;
     auto material = delta::geometry::material::MaterialType::WOOD;
+    int hopperParticles = 0;
 
+#if true
     delta::world::object objectHopper("hopper", 0, position, material, isObstacle, isFriction);
     objectHopper.generateMesh(hopperWidth, hopperHeight, hopperWidth, 0, 0, 0, hopperWidth, _noPointsPerParticle);
     _coarseObjects.push_back(objectHopper);
-    int hopperParticles = 0;
-
-    /*
+    hopperParticles = 0;
+#else
     int refinement = 3;
     std::vector<double> xCoordinates, yCoordinates, zCoordinates;
-    delta::geometry::hopper::generateHopper(centre, _hopperWidth, _hopperThickness, _hopperHeight, _hopperHatch, refinement, _minParticleDiam, xCoordinates, yCoordinates, zCoordinates);
-    int hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
-     */
+    delta::geometry::hopper::generateHopper(centre, hopperWidth, hopperThickness, hopperHeight, hopperHatch, refinement, _minParticleDiam, xCoordinates, yCoordinates, zCoordinates);
+    hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
+#endif
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     ////////FLOOR//////////////////////////////////////////////////////////////////////////////
@@ -675,7 +676,6 @@ void dem::mappings::CreateGrid::createCell(
 	logTraceInWith4Arguments( "createCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
   dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];
-
   //printf("length: %f\n", fineGridVerticesEnumerator.getCellSize()(0));
 
   if(_scenario[0] == nonescenario) return;
@@ -701,29 +701,8 @@ void dem::mappings::CreateGrid::createCell(
       }
     enddforx
     */
-
-    /*
-    dfor2(k) //size 2, dimension 3
-      for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
-      {
-
-        records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
-        tarch::la::Vector<DIMENSIONS,int> correctVertex;
-
-        for(int d=0; d<DIMENSIONS; d++)
-        {
-          correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
-        }
-
-        if(correctVertex != k)
-        {
-          fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
-          fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
-        }
-      }
-    enddforx
-    */
   }
+
 
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
@@ -1375,7 +1354,7 @@ void dem::mappings::CreateGrid::touchVertexLastTime(
 ) {
 	logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-	//dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex, fineGridH(0));
+	dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex, fineGridH(0));
 
 	logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
@@ -1390,6 +1369,25 @@ void dem::mappings::CreateGrid::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+
+  dfor2(k) //size 2, dimension 3
+    for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
+    {
+      records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
+
+      tarch::la::Vector<DIMENSIONS,int> correctVertex;
+      for(int d=0; d<DIMENSIONS; d++)
+      {
+        correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
+      }
+
+      if(correctVertex != k)
+      {
+        fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
+        fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
+      }
+    }
+  enddforx
 
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }

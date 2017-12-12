@@ -100,9 +100,6 @@ void dem::mappings::MoveParticles::reassignParticles(
 {
   int numberOfReassignments = 0;
   dfor2(k) //size 2, dimension 3
-    //Vertex a = fineGridVertices[fineGridVerticesEnumerator(k)];
-    //std::cout << a.toString() << std::endl;
-
     if(!fineGridVertices[fineGridVerticesEnumerator(k)].isHangingNode())
     for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
     {
@@ -190,7 +187,7 @@ void dem::mappings::MoveParticles::enterCell(
 ) {
   logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-  reassignParticles(fineGridVertices, fineGridVerticesEnumerator);
+  //reassignParticles(fineGridVertices, fineGridVerticesEnumerator);
 
   logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
@@ -206,7 +203,8 @@ void dem::mappings::MoveParticles::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  if (fineGridVertex.isBoundary()) {
+  if (fineGridVertex.isBoundary())
+  {
     reflectParticles(fineGridVertex);
   }
 

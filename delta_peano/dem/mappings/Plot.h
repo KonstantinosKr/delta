@@ -89,6 +89,7 @@ class dem::mappings::Plot {
     //static int _trackID;
     static int _mini;
     static int _maxi;
+
   public:
   /**
    * These flags are used to inform Peano about your operation. It tells the

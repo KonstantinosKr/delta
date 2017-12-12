@@ -26,11 +26,11 @@ peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpeci
 }
 
 peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
+	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::leaveCellSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::ascendSpecification(int level) const {
@@ -1063,8 +1063,6 @@ void dem::mappings::Collision::enterCell(
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-	all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
-
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
 
@@ -1379,7 +1377,7 @@ void dem::mappings::Collision::leaveCell(
 		dem::Cell&           coarseGridCell,
 		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
-
+    all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
 }
 
 void dem::mappings::Collision::descend(
