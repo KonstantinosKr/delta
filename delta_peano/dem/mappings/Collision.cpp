@@ -18,11 +18,11 @@ peano::CommunicationSpecification   dem::mappings::Collision::communicationSpeci
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexFirstTimeSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces, true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid, true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::touchVertexLastTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification(int level) const {
@@ -30,7 +30,7 @@ peano::MappingSpecification   dem::mappings::Collision::enterCellSpecification(i
 }
 
 peano::MappingSpecification   dem::mappings::Collision::leaveCellSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 peano::MappingSpecification   dem::mappings::Collision::ascendSpecification(int level) const {
@@ -639,21 +639,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
   dfor2(k)
     fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
   enddforx
-
-	#ifdef ompParticle
-		#pragma omp parallel for
-	#endif
-	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
-	{
-		for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
-		{
-		  if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
-		     (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
-		      continue;
-
-		  collisionDetection(fineGridVertex, fineGridVertex, i, j, _state);
-		}
-	}
 
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
@@ -1366,6 +1351,22 @@ void dem::mappings::Collision::touchVertexLastTime(
 		dem::Cell&           coarseGridCell,
 		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
+
+#ifdef ompParticle
+  #pragma omp parallel for
+#endif
+for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+{
+  for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
+  {
+    if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
+       (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
+        continue;
+
+    collisionDetection(fineGridVertex, fineGridVertex, i, j, _state);
+  }
+}
+
 }
 
 void dem::mappings::Collision::leaveCell(
