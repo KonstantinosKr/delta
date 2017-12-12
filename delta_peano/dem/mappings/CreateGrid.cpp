@@ -15,11 +15,11 @@ peano::CommunicationSpecification   dem::mappings::CreateGrid::communicationSpec
 	    peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
 
-peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexLastTimeSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
-}
 peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexFirstTimeSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+}
+peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexLastTimeSpecification(int level) const {
+	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::CreateGrid::enterCellSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
@@ -36,15 +36,13 @@ peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification(in
 
 tarch::logging::Log                  dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
 dem::mappings::CreateGrid::Scenario  dem::mappings::CreateGrid::_scenario[4];
+dem::mappings::CreateGrid::GridType  dem::mappings::CreateGrid::_gridType;
 double                               dem::mappings::CreateGrid::_maxH;
 
 double                               dem::mappings::CreateGrid::_minComputeDomain[3];
 double                               dem::mappings::CreateGrid::_maxComputeDomain[3];
 double                               dem::mappings::CreateGrid::_minParticleDiam;
 double                               dem::mappings::CreateGrid::_maxParticleDiam;
-
-dem::mappings::CreateGrid::GridType  dem::mappings::CreateGrid::_gridType;
-double                               dem::mappings::CreateGrid::_centreAsArray[3];
 
 double								                dem::mappings::CreateGrid::_epsilon;
 int 								                  dem::mappings::CreateGrid::_noPointsPerParticle;
@@ -53,6 +51,10 @@ bool                                 dem::mappings::CreateGrid::_isSphere;
 std::vector<delta::world::object>   dem::mappings::CreateGrid::_coarseObjects;
 std::vector<delta::world::object>   dem::mappings::CreateGrid::_insitufineObjects;
 std::vector<delta::world::object>   dem::mappings::CreateGrid::_fineObjects;
+
+int                                 dem::mappings::CreateGrid::_numberOfParticles;
+int                                 dem::mappings::CreateGrid::_numberOfTriangles;
+int                                 dem::mappings::CreateGrid::_numberOfObstacles;
 
 void dem::mappings::CreateGrid::setScenario(
     Scenario scenario[4],
@@ -160,6 +162,7 @@ void dem::mappings::CreateGrid::beginIteration(
 		dem::State&  solverState)
 {
   logTraceInWith1Argument( "beginIteration(State)", solverState );
+
   dem::ParticleHeap::getInstance().setName( "particle-heap" );
   dem::DEMDoubleHeap::getInstance().setName( "geometry-heap" );
 
@@ -189,8 +192,7 @@ void dem::mappings::CreateGrid::beginIteration(
     bool isFriction = true;
     bool isObstacle = true;
 
-    delta::world::object objectFloor(
-        "cube", 0, position, material, isObstacle, isFriction);
+    delta::world::object objectFloor("cube", 0, position, material, isObstacle, isFriction);
     objectFloor.generateMesh(width, height, width, 0, 0, 0, width, _noPointsPerParticle);
     objectFloor.setLinearVelocity(linear);
     _coarseObjects.push_back(objectFloor);
@@ -241,8 +243,8 @@ void dem::mappings::CreateGrid::beginIteration(
     ///////////////////////////////////////////////////////////////////////////////
     ////////HOPPER/////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////
-    double _hopperHatch = 0.05; double _hopperThickness = 0.005;
-    double _hopperWidth = 0.20; double _hopperHeight = _hopperWidth/1.5;
+    double hopperHatch = 0.05; double hopperThickness = 0.005;
+    double hopperWidth = 0.20; double hopperHeight = hopperWidth/1.5;
 
     std::array<double, 3> position = {centre[0], centre[1], centre[2]};
     ///////////////////////////////////////////////////////////////////////////////
@@ -253,9 +255,8 @@ void dem::mappings::CreateGrid::beginIteration(
     auto isFriction = false;
     auto material = delta::geometry::material::MaterialType::WOOD;
 
-    delta::world::object objectHopper(
-        "hopper", 0, position, material, isObstacle, isFriction);
-    objectHopper.generateMesh(_hopperWidth, _hopperHeight, _hopperWidth, 0, 0, 0, _hopperWidth, _noPointsPerParticle);
+    delta::world::object objectHopper("hopper", 0, position, material, isObstacle, isFriction);
+    objectHopper.generateMesh(hopperWidth, hopperHeight, hopperWidth, 0, 0, 0, hopperWidth, _noPointsPerParticle);
     _coarseObjects.push_back(objectHopper);
     int hopperParticles = 0;
 
@@ -313,11 +314,11 @@ void dem::mappings::CreateGrid::beginIteration(
     isObstacle = false;
     isFriction = false;
 
-    iREAL margin = (_hopperThickness + _epsilon) * 4;
-    iREAL subGridLength = _hopperWidth-margin/2;
+    iREAL margin = (hopperThickness + _epsilon) * 4;
+    iREAL subGridLength = hopperWidth-margin/2;
 
     //position is top of hopper
-    iREAL pos[3] = {(centre[0] - _hopperWidth/2), centre[1] + _hopperHeight/2+0.2, (centre[2] - _hopperWidth/2)};
+    iREAL pos[3] = {(centre[0] - hopperWidth/2), centre[1] + hopperHeight/2+0.2, (centre[2] - hopperWidth/2)};
 
     //create xzy cuts above hopper, position starts at left lower inner corner
     std::vector<std::array<iREAL, 3>> grid = delta::world::assembly::getGridArrayList(pos, xzcuts, ycuts, subGridLength);
@@ -337,7 +338,7 @@ void dem::mappings::CreateGrid::beginIteration(
     }
 
     subGridLength = xmax - xmin;
-    iREAL dx = (_hopperWidth - subGridLength)/2;
+    iREAL dx = (hopperWidth - subGridLength)/2;
     //printf("length1:%f\n", subGridLength);
     //printf("length2:%f\n", _hopperWidth-margin*2);
 
@@ -415,8 +416,7 @@ void dem::mappings::CreateGrid::beginIteration(
     std::array<double, 3> position = {centre[0], centre[1], centre[2]};
 
     ////////////////////////////////////////////////////////////////////////////////
-    delta::world::object objectFloor(
-        "cube", 0, position, material, isObstacle, isFriction);
+    delta::world::object objectFloor("cube", 0, position, material, isObstacle, isFriction);
     objectFloor.generateMesh(width, height, width, 0, 0, 0, rad, _noPointsPerParticle);
     _coarseObjects.push_back(objectFloor);
     ////////////////////////////////////////////////////////////////////////////////
@@ -430,13 +430,11 @@ void dem::mappings::CreateGrid::beginIteration(
     std::array<double, 3> position = {centre[0]+0.05, centre[1] + height, centre[2]};
 
     if(_isSphere){
-      delta::world::object objectA(
-          "cube", 1, position, material, isObstacle, isFriction);
+      delta::world::object objectA("cube", 1, position, material, isObstacle, isFriction);
       objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
       _coarseObjects.push_back(objectA);
     } else {
-      delta::world::object objectA(
-          "sphere", 1, position, material, isObstacle, isFriction);
+      delta::world::object objectA("sphere", 1, position, material, isObstacle, isFriction);
       objectA.generateSphere(rad);
       _coarseObjects.push_back(objectA);
     }
@@ -448,17 +446,15 @@ void dem::mappings::CreateGrid::beginIteration(
       bool isObstacle = false;
       double rad = 0.02;
       std::array<double, 3> linear = {0.5, 0.0, 0.0};
-      std::array<double, 3> position = {_centreAsArray[0], _centreAsArray[1] + height/2 + _epsilon, _centreAsArray[2]};
+      std::array<double, 3> position = {centre[0], centre[1] + height/2 + _epsilon, centre[2]};
 
       if(_isSphere){
-        delta::world::object objectA(
-            "cube", 1, position, material, isObstacle, isFriction);
+        delta::world::object objectA("cube", 1, position, material, isObstacle, isFriction);
         objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
         objectA.setLinearVelocity(linear);
         _coarseObjects.push_back(objectA);
       } else {
-        delta::world::object objectA(
-            "sphere", 1, position, material, isObstacle, isFriction);
+        delta::world::object objectA("sphere", 1, position, material, isObstacle, isFriction);
         objectA.generateSphere(rad);
         objectA.setLinearVelocity(linear);
         _coarseObjects.push_back(objectA);
@@ -467,21 +463,19 @@ void dem::mappings::CreateGrid::beginIteration(
     {
       auto material = delta::geometry::material::MaterialType::WOOD;
       std::array<double, 3> angular = {5.0, 0, 0};
-      std::array<double, 3> position = {centre[0], centre[1] + height/2 + centre[0] + _epsilon, _centreAsArray[2]};
+      std::array<double, 3> position = {centre[0], centre[1] + height/2 + centre[0] + _epsilon, centre[2]};
       double rad = 0.02;
 
       bool isFriction = true;
       bool isObstacle = false;
 
       if(_isSphere){
-        delta::world::object objectA(
-            "cube", 1, position, material, isObstacle, isFriction);
+        delta::world::object objectA("cube", 1, position, material, isObstacle, isFriction);
         objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
         objectA.setAngularVelocity(angular);
         _coarseObjects.push_back(objectA);
       } else {
-        delta::world::object objectA(
-            "sphere", 1, position, material, isObstacle, isFriction);
+        delta::world::object objectA("sphere", 1, position, material, isObstacle, isFriction);
         objectA.generateSphere(rad);
         objectA.setAngularVelocity(angular);
         _coarseObjects.push_back(objectA);
@@ -501,8 +495,7 @@ void dem::mappings::CreateGrid::beginIteration(
     std::array<double, 3> linear = {0.1, 0.1, 0.1};
 
     if(_isSphere){
-      delta::world::object objectA(
-          "sphere", 0, centreArray, material, false, false);
+      delta::world::object objectA("sphere", 0, centreArray, material, false, false);
       objectA.generateSphere(0.01);
       objectA.setLinearVelocity(linear);
       _coarseObjects.push_back(objectA);
@@ -515,23 +508,20 @@ void dem::mappings::CreateGrid::beginIteration(
       linear[1] = -0.1;
       linear[2] = -0.1;
 
-      delta::world::object objectB(
-          "sphere", 1, centreArray, material, false, false);
+      delta::world::object objectB("sphere", 1, centreArray, material, false, false);
       objectB.generateSphere(0.1);
       objectB.setLinearVelocity(linear);
       _coarseObjects.push_back(objectB);
     } else {
       double rad = 0.01;
-      delta::world::object objectA(
-          "granulate", 0, centreArray, material, false, false);
+      delta::world::object objectA("granulate", 0, centreArray, material, false, false);
       objectA.generateMesh(0,0,0,0,0,0,rad,_noPointsPerParticle);
       objectA.setLinearVelocity(linear);
 
       centreArray[1] = 0.1;
       linear[1] = 1;
 
-      delta::world::object objectB(
-          "granulate", 1, centreArray, material, false, false);
+      delta::world::object objectB("granulate", 1, centreArray, material, false, false);
       objectB.generateMesh(0,0,0,0,0,0,rad,_noPointsPerParticle);
       objectB.setLinearVelocity(linear);
 
@@ -575,14 +565,12 @@ void dem::mappings::CreateGrid::beginIteration(
 
     //OBJECT ISSUE: here object particles number has to be incremental with deployment in non-insitu enviroment
     if(_isSphere){
-      delta::world::object objectA(
-          "sphere", 0, position, material, false, false);
+      delta::world::object objectA("sphere", 0, position, material, false, false);
       objectA.generateSphere(rad);
       objectA.setLinearVelocity(linear);
       _fineObjects.push_back(objectA);
     } else {
-      delta::world::object objectA(
-          "cube", 0, position, material, false, false);
+      delta::world::object objectA("cube", 0, position, material, false, false);
       objectA.generateMesh(rad,rad,rad,0,0,0,rad,_noPointsPerParticle);
       _fineObjects.push_back(objectA);
       objectA.setLinearVelocity(linear);
@@ -610,9 +598,9 @@ void dem::mappings::CreateGrid::createInnerVertex(
 
 	fineGridVertex.init();
 
-  //dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
+  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
 
-  if(_gridType != NoGrid && fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+  if(_gridType != NoGrid && fineGridH(0) > _maxH && fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
   {
     if(_gridType == RegularGrid)
     {
@@ -649,9 +637,9 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 
 	fineGridVertex.init();
 
-  //dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
+  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
 
-  if(_gridType != NoGrid && fineGridH(0)>_maxH && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+  if(_gridType != NoGrid && fineGridH(0) > _maxH && fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
   {
     if(_gridType == RegularGrid)
     {
@@ -686,69 +674,75 @@ void dem::mappings::CreateGrid::createCell(
 {
 	logTraceInWith4Arguments( "createCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
-  dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(5)];
+  dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];
+
+  //printf("length: %f\n", fineGridVerticesEnumerator.getCellSize()(0));
 
   if(_scenario[0] == nonescenario) return;
 
-  _centreAsArray[0] = fineGridVerticesEnumerator.getCellCenter()(0);
-  _centreAsArray[1] = fineGridVerticesEnumerator.getCellCenter()(1),
-  _centreAsArray[2] = fineGridVerticesEnumerator.getCellCenter()(2);
+  iREAL centreAsArray[3] = {fineGridVerticesEnumerator.getCellCenter()(0),
+                            fineGridVerticesEnumerator.getCellCenter()(1),
+                            fineGridVerticesEnumerator.getCellCenter()(2)};
 
-	if(coarseGridCell.isRoot())
-	{
-		deployCoarseEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0));
-	}
+  if(coarseGridCell.isRoot())
+  {
+    deployCoarseEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0), centreAsArray);
+  }
 
-	if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(
-	    fineGridVertices, fineGridVerticesEnumerator, Vertex::Records::Unrefined) &&
-	  !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices, fineGridVerticesEnumerator))
-	{
-	  //if(!coarseGridCell.isRoot())
-	  deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0));
-/*
-	  dfor2(k) //size 2, dimension 3
-	    for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
-	    {
-	      printf("particles :%i\n", fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getGlobalParticleId());
-	    }
-	  enddforx*/
-	}
-/*
-  dfor2(k) //size 2, dimension 3
-    for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
-    {
-
-      records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
-      tarch::la::Vector<DIMENSIONS,int> correctVertex;
-
-      for(int d=0; d<DIMENSIONS; d++)
+  if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(fineGridVertices, fineGridVerticesEnumerator, Vertex::Records::Unrefined) &&
+      !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices, fineGridVerticesEnumerator))
+  {
+    deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0), centreAsArray);
+    /*
+    dfor2(k) //size 2, dimension 3
+      for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
       {
-        correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
+        printf("particles :%i\n", fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getGlobalParticleId());
       }
+    enddforx
+    */
 
-      if(correctVertex != k)
+    /*
+    dfor2(k) //size 2, dimension 3
+      for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
       {
-        fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
-        fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
+
+        records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
+        tarch::la::Vector<DIMENSIONS,int> correctVertex;
+
+        for(int d=0; d<DIMENSIONS; d++)
+        {
+          correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
+        }
+
+        if(correctVertex != k)
+        {
+          fineGridVertices[fineGridVerticesEnumerator(correctVertex)].appendParticle(particle);
+          fineGridVertices[fineGridVerticesEnumerator(k)].releaseParticle(i);
+        }
       }
-    }
-  enddforx*/
+    enddforx
+    */
+  }
 
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
 
 void dem::mappings::CreateGrid::deployCoarseEnviroment(
     dem::Vertex& vertex,
-    double cellSize)
+    double cellSize,
+    iREAL centreAsArray[3])
 {
 
-  iREAL cellXLeftBoundary = _centreAsArray[0] - cellSize/2, cellZLeftBoundary = _centreAsArray[2] - cellSize/2;
-  iREAL cellXRightBoundary= _centreAsArray[0] + cellSize/2, cellZRightBoundary = _centreAsArray[2] + cellSize/2;
+  iREAL cellXLeftBoundary = centreAsArray[0] - cellSize/2, cellZLeftBoundary = centreAsArray[2] - cellSize/2;
+  iREAL cellXRightBoundary= centreAsArray[0] + cellSize/2, cellZRightBoundary = centreAsArray[2] + cellSize/2;
 
-  iREAL cellYUPBoundary = _centreAsArray[1] + cellSize/2;
-  iREAL cellYDWBoundary = _centreAsArray[1] - cellSize/2;
+  iREAL cellYUPBoundary = centreAsArray[1] + cellSize/2;
+  iREAL cellYDWBoundary = centreAsArray[1] - cellSize/2;
 
-  if((_numberOfParticles) <= _coarseObjects.size())
+  std::vector<int> deleteCoarseObjects;
+
+  //if(_numberOfParticles <= _coarseObjects.size())
   for(unsigned i=0; i<_coarseObjects.size(); i++)
   {
     delta::world::object object = _coarseObjects[i];
@@ -757,19 +751,27 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
        (object.getCentre()[2] >= cellZLeftBoundary && object.getCentre()[2] <= cellZRightBoundary))
     {
       dem::mappings::CreateGrid::deployObject(vertex, object);
+      //printf("particle coarse: %i\n", _numberOfParticles);
+      //deleteCoarseObjects.push_back(i);
     }
   }
+  /*
+  for(int i=0; i<deleteCoarseObjects.size(); i++)
+  {
+    _coarseObjects.erase(_coarseObjects.begin()+deleteCoarseObjects[i]);
+  }*/
 }
 
 void dem::mappings::CreateGrid::deployFineEnviroment(
     dem::Vertex& vertex,
-    double cellSize)
+    double cellSize,
+    iREAL centreAsArray[3])
 {
-  iREAL cellXLeftBoundary = _centreAsArray[0] - cellSize/2, cellZLeftBoundary = _centreAsArray[2] - cellSize/2;
-  iREAL cellXRightBoundary= _centreAsArray[0] + cellSize/2, cellZRightBoundary = _centreAsArray[2] + cellSize/2;
+  iREAL cellXLeftBoundary = centreAsArray[0] - cellSize/2, cellZLeftBoundary = centreAsArray[2] - cellSize/2;
+  iREAL cellXRightBoundary= centreAsArray[0] + cellSize/2, cellZRightBoundary = centreAsArray[2] + cellSize/2;
 
-  iREAL cellYUPBoundary = _centreAsArray[1] + cellSize/2;
-  iREAL cellYDWBoundary = _centreAsArray[1] - cellSize/2;
+  iREAL cellYUPBoundary = centreAsArray[1] + cellSize/2;
+  iREAL cellYDWBoundary = centreAsArray[1] - cellSize/2;
 
   if((_numberOfParticles-_numberOfObstacles) <= _insitufineObjects.size())
   for(unsigned i=0; i<_insitufineObjects.size(); i++)
@@ -779,19 +781,21 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
        (object.getCentre()[1] >= cellYDWBoundary && object.getCentre()[1] <= cellYUPBoundary) &&
        (object.getCentre()[2] >= cellZLeftBoundary && object.getCentre()[2] <= cellZRightBoundary))
     {
+      //std::cout << vertex.toString();
       dem::mappings::CreateGrid::deployObject(vertex, object);
+      //printf("particle fine: %i\n", _numberOfParticles);
     }
   }
 
   //////////////////////////////////////////////////////////////
   //////////////PER CELL CENTER DEPLOYMENT//////////////////////
   //////////////////////////////////////////////////////////////
-  if((_numberOfParticles-_numberOfObstacles) <= _fineObjects.size())
+  //if((_numberOfParticles-_numberOfObstacles) <= _fineObjects.size())
   for(int i=0; i<_fineObjects.size(); i++)
   {
     delta::world::object obj = _fineObjects[i];
 
-    iREAL position[3] = {_centreAsArray[0], _centreAsArray[1], _centreAsArray[2]};
+    iREAL position[3] = {centreAsArray[0], centreAsArray[1], centreAsArray[2]};
     obj.setCentre(position);
     dem::mappings::CreateGrid::deployObject(vertex, obj);
   }
@@ -1090,6 +1094,7 @@ void dem::mappings::CreateGrid::endIteration(
 
 dem::mappings::CreateGrid::CreateGrid() {
 	logTraceIn( "CreateGrid()" );
+
 	logTraceOut( "CreateGrid()" );
 }
 
@@ -1370,7 +1375,7 @@ void dem::mappings::CreateGrid::touchVertexLastTime(
 ) {
 	logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  //dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex, fineGridH(0));
+	//dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex, fineGridH(0));
 
 	logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
@@ -1385,7 +1390,7 @@ void dem::mappings::CreateGrid::enterCell(
 		const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-	// @todo Insert your code here
+
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
 

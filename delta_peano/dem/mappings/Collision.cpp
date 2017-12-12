@@ -55,7 +55,7 @@ void dem::mappings::Collision::beginIteration(
 	logTraceInWith1Argument( "beginIteration(State)", solverState );
 
 	_state = solverState;
-	_state.clearAccumulatedData();
+	_state.clearAccumulatedData();//redundant
 
 	assertion( _collisionsOfNextTraversal.empty() );
 
@@ -1071,7 +1071,7 @@ void dem::mappings::Collision::enterCell(
 dem::mappings::Collision::Collision() {
 	logTraceIn( "Collision()" );
 
-    _enableOverlapCheck = false;
+  _enableOverlapCheck = false;
 
 	logTraceOut( "Collision()" );
 }

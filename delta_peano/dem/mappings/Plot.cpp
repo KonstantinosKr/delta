@@ -43,7 +43,7 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
 
   _iterationNumber       = solverState.getTimeStep();
 
-  if(_mini < _iterationNumber && _iterationNumber < _maxi)
+  //if(_mini < _iterationNumber && _iterationNumber < _maxi)
   {
     //printf("ENTERED %i %i %i\n", _mini, _maxi, _iterationNumber);
 
@@ -82,9 +82,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   assertion( Collision::_collisionsOfNextTraversal.empty() );
   assertion( solverState.getNumberOfContactPoints()==0 || !Collision::_activeCollisions.empty() );
 
-  _iterationNumber       = solverState.getTimeStep();
-
-  if(_mini < _iterationNumber && _iterationNumber < _maxi)
+  //if(_mini < _iterationNumber && _iterationNumber < _maxi)
   {
     //printf("ENTERED %i %i %i\n", _mini, _maxi, _iterationNumber);
 
@@ -231,13 +229,13 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
     delete _vertexColoring;
   }
 
-
   for(auto p:Collision::_activeCollisions)
   {
     for(auto pp:p.second)
     {
       int masterID = p.first, slaveID = pp._copyOfPartnerParticle.getGlobalParticleId();
       iREAL *centreOfMass, *referentialCentreOfMass, *angular, *referentialAngular, *velocity, *inverse, *orientation, mass, material;
+
       //find master data in collision data as slave
       for(auto iCollision:Collision::_activeCollisions)
       {
@@ -333,7 +331,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  if(_mini < _iterationNumber && _iterationNumber < _maxi)
+  //if(_mini < _iterationNumber && _iterationNumber < _maxi)
   {
     //printf("ENTERED %i %i %i\n", _mini, _maxi, _iterationNumber);
 
@@ -671,29 +669,28 @@ dem::mappings::Plot::Plot(const Plot&  masterThread):
   _writer(masterThread._writer),
   _vertexWriter(masterThread._vertexWriter),
   _cellWriter(masterThread._cellWriter),
-
+  _faceVertexAssociation(masterThread._faceVertexAssociation),
   _type(masterThread._type),
   _level(masterThread._level),
-  _faceVertexAssociation(masterThread._faceVertexAssociation),
 
   _velocitiesAndNormals(masterThread._velocitiesAndNormals),
   _frictionNormals(masterThread._frictionNormals),
   _particleVelocity(masterThread._particleVelocity),
   _particleAngular(masterThread._particleAngular),
-  _particleEpsilon(masterThread._particleEpsilon),
   _particleDiameter(masterThread._particleDiameter),
+  _particleEpsilon(masterThread._particleEpsilon),
   _particleInfluence(masterThread._particleInfluence),
   _vertexColoring(masterThread._vertexColoring),
-
   _vertexCounter(masterThread._vertexCounter),
+
   _particleCounter(masterThread._particleCounter),
-  _collisionPointCounter(masterThread._collisionPointCounter)
+  _collisionPointCounter(masterThread._collisionPointCounter),
+  _iterationNumber(masterThread._collisionPointCounter)
 {}
 
 
 void dem::mappings::Plot::mergeWithWorkerThread(const Plot& workerThread) {}
 #endif
-
 
 dem::mappings::Plot::Plot() {
   logTraceIn( "Plot()" );
@@ -917,7 +914,6 @@ void dem::mappings::Plot::prepareSendToMaster(
   logTraceOut( "prepareSendToMaster(...)" );
 }
 
-
 void dem::mappings::Plot::mergeWithMaster(
   const dem::Cell&           workerGridCell,
   dem::Vertex * const        workerGridVertices,
@@ -938,7 +934,6 @@ void dem::mappings::Plot::mergeWithMaster(
   logTraceOut( "mergeWithMaster(...)" );
 }
 
-
 void dem::mappings::Plot::receiveDataFromMaster(
       dem::Cell&                        receivedCell, 
       dem::Vertex *                     receivedVertices,
@@ -956,7 +951,6 @@ void dem::mappings::Plot::receiveDataFromMaster(
   logTraceOut( "receiveDataFromMaster(...)" );
 }
 
-
 void dem::mappings::Plot::mergeWithWorker(
   dem::Cell&           localCell, 
   const dem::Cell&     receivedMasterCell,
@@ -968,7 +962,6 @@ void dem::mappings::Plot::mergeWithWorker(
   // @todo Insert your code here
   logTraceOutWith1Argument( "mergeWithWorker(...)", localCell.toString() );
 }
-
 
 void dem::mappings::Plot::mergeWithWorker(
   dem::Vertex&        localVertex,

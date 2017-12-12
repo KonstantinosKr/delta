@@ -151,31 +151,32 @@ class dem::mappings::CreateGrid {
     static tarch::logging::Log  _log;
 
     static Scenario _scenario[4];
+    static GridType _gridType;
     static double   _maxH;
+
     static double   _minComputeDomain[3];
     static double   _maxComputeDomain[3];
     static double   _minParticleDiam;
     static double   _maxParticleDiam;
+
     static int      _noPointsPerParticle;
     static double   _epsilon;
 
-    static GridType _gridType;
-
-    int   _numberOfParticles;
-    int   _numberOfObstacles;
-    int   _numberOfTriangles;
+    static int   _numberOfParticles;
+    static int   _numberOfObstacles;
+    static int   _numberOfTriangles;
 
     static std::vector<delta::world::object> _coarseObjects;
     static std::vector<delta::world::object> _fineObjects;
     static std::vector<delta::world::object> _insitufineObjects;
 
-    static double _centreAsArray[3];
-
     void computeBoundary();
 
-    void deployCoarseEnviroment(dem::Vertex& vertex, double cellSize);
+    void deployCoarseEnviroment(dem::Vertex& vertex, double cellSize,
+        iREAL centreAsArray[3]);
   
-    void deployFineEnviroment(dem::Vertex& vertex, double cellSize);
+    void deployFineEnviroment(dem::Vertex& vertex, double cellSize,
+        iREAL centreAsArray[3]);
 
     void deployObject(dem::Vertex& vertex, delta::world::object object);
 
