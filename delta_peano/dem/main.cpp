@@ -19,73 +19,122 @@ tarch::logging::Log _log("");
 
 void printManual()
 {
-	std::cerr << "Delta - Peano | Grid-based Non-Spherical Particle Dynamics" << std::endl << std::endl
-				  << "Usage: ./dem-xxx grid_h_max(double) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(double in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl
-          << std::endl
-          << " grid_h_max          maximum mesh width of grid" << std::endl
-          << " scenario            which scenario to use. See list below for valid configurations " << std::endl
-          << " iterations          number of iterations or time steps depending on scheme" << std::endl
-          << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
-          << " step-size           floating point number" << std::endl
-          << " plot                see plot variants below" << std::endl
-          << " gravity             boolean true/false" << std::endl
-          << " collision-model     choose from none, sphere, bf, penalty, hybrid-on-triangle-pairs, hybrid-on-batches, gjk, add sphere- for sphere check" << std::endl
-				  << " max-step-size       adaptive max step" << std::endl
-				  << " tri-per-particle    triangles used to represent one particle" << std::endl
-				  << " [core-count]        only required in TBB shared memory" << std::endl
-          << std::endl << std::endl << std::endl << std::endl
-          << "Scenarios" << std::endl
-          << "=========" << std::endl
-          << "  none" << std::endl
-          << "  blackholeWithRandomlyOrientedCubes" << std::endl
-          << "  blackholeWithCubes" << std::endl
-          << "  blackholeWithGranulates" << std::endl
+	std::cerr
+	  << "##################################################################################################" << std::endl
+	  << "#  Delta Library - Peano" << std::endl
+	  << "##################################################################################################" << std::endl
+	  << "#  A Grid-based Non-Spherical Particle Dynamics Library" << std::endl
+	  << "##################################################################################################" << std::endl
+	  << " Usage: ./dem-xxx grid_h_max(double) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(double in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl  << std::endl
+	  << " Option Type---------Short Description" << std::endl
+	  << " grid_h_max          maximum mesh width of grid" << std::endl
+	  << " scenario            which scenario to use. See list below for valid configurations " << std::endl
+	  << " iterations          number of iterations or time steps depending on scheme" << std::endl
+	  << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
+	  << " step-size           floating point number" << std::endl
+	  << " plot                see plot variants below" << std::endl
+	  << " gravity             boolean true/false" << std::endl
+	  << " collision-model     choose from none, sphere, bf, penalty, hybrid-on-triangle-pairs, hybrid-on-batches, gjk, add sphere- for sphere check" << std::endl
+	  << " max-step-size       adaptive max step" << std::endl
+	  << " triangles-per-particle    triangles used to represent one particle" << std::endl
+	  << " [core-count]        only required in TBB shared memory" << std::endl
+	  << std::endl << std::endl << std::endl << std::endl
 
-          << "  freefallWithRandomlyOrientedCubes" << std::endl
-          << "  freefallWithCubes" << std::endl
-          << "  freefallWiithGranulates" << std::endl
+	  << " OPTIONS: "  << std::endl << std::endl
+	  << " Grid H max (double)" << std::endl
+	  << " =========" << std::endl
+	  << " 0.0 - 0.5" << std::endl
 
-          << "  two-particles-crash" << std::endl
+	  << " Scenarios (string)" << std::endl
+	  << " =========" << std::endl
+	  << "  none" << std::endl
+	  << "  blackholeWithRandomlyOrientedCubes" << std::endl
+	  << "  blackholeWithCubes" << std::endl
+	  << "  blackholeWithGranulates" << std::endl
 
-          << "  SLA"<< std::endl
-          << "  DLA"<< std::endl
-          << "  nuclearDeck4" << std::endl
-          << "  nuclearDeck32" << std::endl
-          << "  nuclearDeck64" << std::endl
-          << "  nuclearDeck256" << std::endl
+	  << "  freefallWithRandomlyOrientedCubes" << std::endl
+	  << "  freefallWithCubes" << std::endl
+	  << "  freefallWiithGranulates" << std::endl
 
-          << "  hopperUniform" << std::endl
-          << "  hopperUniform1k" << std::endl
-          << "  hopperUniform10k" << std::endl
-          << "  hopperUniform100k" << std::endl
-          << "  hopperUniform500k" << std::endl
+	  << "  two-particles-crash" << std::endl
 
-          << "  hopperNonUniform" << std::endl
-          << "  hopperNonUniform1k" << std::endl
-          << "  hopperNonUniform10k" << std::endl
-          << "  hopperNonUniform100k" << std::endl
-          << "  hopperNonUniform500k" << std::endl
+	  << "  SLA"<< std::endl
+	  << "  DLA"<< std::endl
+	  << "  nuclearDeck4" << std::endl
+	  << "  nuclearDeck32" << std::endl
+	  << "  nuclearDeck64" << std::endl
+	  << "  nuclearDeck256" << std::endl
 
-				  << "  frictionStatic" << std::endl
-				  << "  frictionSlide" << std::endl
-          << "  frictionRoll" << std::endl
+	  << "  hopperUniform" << std::endl
+	  << "  hopperUniform1k" << std::endl
+	  << "  hopperUniform10k" << std::endl
+	  << "  hopperUniform100k" << std::endl
+	  << "  hopperUniform500k" << std::endl
 
-          << "Grid types" << std::endl
-          << "==========" << std::endl
-          << "  no-grid" << std::endl
-          << "  regular-grid" << std::endl
-          << "  adaptive-grid" << std::endl
-          << "  reluctant-grid" << std::endl
-          << "Plot variants" << std::endl
-          << "=============" << std::endl
-          << "  never" << std::endl
-          << "  every-iteration" << std::endl
-          << "  upon-change" << std::endl
-          << "  every-batch" << std::endl
-				  << "  every-checkpoint" << std::endl
-				  << "  range" << std::endl << std::endl
-          << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario iterations grid-type step-size plot real-time-snapshot(sec) gravity(boolean) collision-model mesh-multiplier [tbb-core-count]" << std::endl
-				  << "eg: ./dem-xxx 0.5 0.5 0.5 hopperUniform 10000 regular-grid 0.00001 every-batch 10 true bf 50 2" << std::endl;
+	  << "  hopperNonUniform" << std::endl
+	  << "  hopperNonUniform1k" << std::endl
+	  << "  hopperNonUniform10k" << std::endl
+	  << "  hopperNonUniform100k" << std::endl
+	  << "  hopperNonUniform500k" << std::endl
+
+	  << "  frictionStatic" << std::endl
+	  << "  frictionSlide" << std::endl
+	  << "  frictionRoll" << std::endl << std::endl
+
+    << " Iterations (int)" << std::endl
+    << " =========" << std::endl
+    << " 0 - infinity" << std::endl << std::endl
+
+	  << " Grid types (string)" << std::endl
+	  << " ==========" << std::endl
+	  << "  no-grid" << std::endl
+	  << "  regular-grid" << std::endl
+	  << "  adaptive-grid" << std::endl
+	  << "  reluctant-grid" << std::endl << std::endl
+
+    << " Step-size (double)" << std::endl
+    << " =========" << std::endl
+    << " 0.0 - infinity | negative value trigger adaptive step size" << std::endl << std::endl
+
+	  << " Plot variants (string)" << std::endl
+	  << " =============" << std::endl
+	  << "  never" << std::endl
+	  << "  every-iteration" << std::endl
+	  << "  upon-change" << std::endl
+	  << "  every-batch" << std::endl
+	  << "  every-checkpoint" << std::endl
+	  << "  range" << std::endl << std::endl
+
+    << " snapshot-frequency (double)" << std::endl
+    << " =========" << std::endl
+    << " 0.0 - infinity" << std::endl << std::endl
+
+    << " Gravity (boolean)" << std::endl
+    << " =========" << std::endl
+    << " true/false" << std::endl << std::endl
+
+    << " Collision-model (string)" << std::endl
+    << " =========" << std::endl
+    << " sphere" << std::endl
+    << " bf" << std::endl
+    << " penalty" << std::endl
+    << " penaltyStat" << std::endl
+    << " hybrid-on-triangle-pairs" << std::endl
+    << " hybrid-on-batches" << std::endl
+    << " hybridStat" << std::endl
+    << " gjk" << std::endl
+    << " none" << std::endl << std::endl
+
+    << " Mesh-density [if mesh is used] (int)" << std::endl
+    << " =========" << std::endl
+    << " 0 - infinity" << std::endl << std::endl
+
+    << " tbb-core-count (int)" << std::endl
+    << " =========" << std::endl
+    << " 0 - infinity" << std::endl << std::endl
+
+	  << " Usage: ./dem-xxx grid_h_max(double) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(double in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl
+	  << " eg: ./dem-xxx 0.5 0.5 0.5 hopperUniform 10000 regular-grid 0.00001 every-batch 10 true bf 50 2" << std::endl;
 }
 
 int main(int argc, char** argv)
