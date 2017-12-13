@@ -6,6 +6,7 @@ class dem::records::State {
   parallelise persistent double  numberOfParticleReassignments; 
   parallelise persistent double  numberOfTriangleComparisons; 
   parallelise persistent double  numberOfParticleComparisons;
+  parallelise persistent bool adaptiveStepSize;
   parallelise persistent double  timeStepSize;
   parallelise persistent int	   timeStep;
   parallelise persistent double  currentTime;

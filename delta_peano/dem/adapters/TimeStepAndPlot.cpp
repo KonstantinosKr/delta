@@ -88,10 +88,10 @@ dem::adapters::TimeStepAndPlot::~TimeStepAndPlot() {
 
 #if defined(SharedMemoryParallelisation)
 dem::adapters::TimeStepAndPlot::TimeStepAndPlot(const TimeStepAndPlot&  masterThread):
-  _map2Collision(masterThread._map2Collision) ,
-  _map2MoveParticles(masterThread._map2MoveParticles) ,
-  _map2Plot(masterThread._map2Plot) ,
-  _map2TimeStepAndPlot2VTKGridVisualiser_3(masterThread._map2TimeStepAndPlot2VTKGridVisualiser_3)
+  _map2Collision(masterThread._map2Collision) , 
+  _map2MoveParticles(masterThread._map2MoveParticles) , 
+  _map2Plot(masterThread._map2Plot) , 
+  _map2TimeStepAndPlot2VTKGridVisualiser_3(masterThread._map2TimeStepAndPlot2VTKGridVisualiser_3) 
 
 {
 }

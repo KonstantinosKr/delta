@@ -31,7 +31,7 @@ void printManual()
 	  << " scenario            which scenario to use. See list below for valid configurations " << std::endl
 	  << " iterations          number of iterations or time steps depending on scheme" << std::endl
 	  << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
-	  << " step-size           floating point number" << std::endl
+	  << " step-size           negative value trigger adaptive step size with a positive initial step size | positive value triggers static step size" << std::endl
 	  << " plot                see plot variants below" << std::endl
 	  << " gravity             boolean true/false" << std::endl
 	  << " collision-model     choose from none, sphere, bf, penalty, hybrid-on-triangle-pairs, hybrid-on-batches, gjk, add sphere- for sphere check" << std::endl
@@ -94,7 +94,7 @@ void printManual()
 
     << " Step-size (double)" << std::endl
     << " =========" << std::endl
-    << " 0.0 - infinity | negative value trigger adaptive step size" << std::endl << std::endl
+    << " -infinity - infinity" << std::endl << std::endl
 
 	  << " Plot variants (string)" << std::endl
 	  << " =============" << std::endl

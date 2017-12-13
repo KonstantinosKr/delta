@@ -73,6 +73,7 @@ void dem::State::merge( const State& otherState ) {
   _stateData.setNumberOfParticleReassignments( _stateData.getNumberOfParticleReassignments() + otherState._stateData.getNumberOfParticleReassignments() );
   _stateData.setNumberOfParticleComparisons( _stateData.getNumberOfParticleComparisons() + otherState._stateData.getNumberOfParticleComparisons() );
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + otherState._stateData.getNumberOfTriangleComparisons() );
+  _stateData.setAdaptiveStepSize(_stateData.getAdaptiveStepSize() || otherState._stateData.getNumberOfTriangleComparisons());
 
   if(_stateData.getTwoParticlesAreClose() > otherState._stateData.getTwoParticlesAreClose())
   {
@@ -105,6 +106,10 @@ double dem::State::getTime() const {
 }
 
 void dem::State::setInitialTimeStepSize(double value) {
+  if(value < 0.0) {
+   _stateData.setAdaptiveStepSize(true);
+    value = value * -1;
+  }
   _stateData.setTimeStepSize(value);
   _stateData.setCurrentTime(0.0);
 }
@@ -116,7 +121,7 @@ void dem::State::informStateThatTwoParticlesAreClose(double decrementFactor) {
 void dem::State::finishedTimeStep(double initialTimestep) {
   _stateData.setCurrentTime(_stateData.getCurrentTime() + _stateData.getTimeStepSize());
 
-  //if(initialTimestep <= 0)
+  if(_stateData.getAdaptiveStepSize())
   {
     adaptiveTimeStep();
   }
