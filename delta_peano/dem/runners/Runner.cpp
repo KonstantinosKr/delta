@@ -202,7 +202,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
   repository.getState().setMaximumVelocityApproach(0.1);
 
-  /*
+
   //////////////////PLOT TIME ZERO//////////////////////////////////////////////////////
   if((plot == EveryIteration) ||  (plot == Track) ||
       (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
@@ -227,6 +227,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
       << ", dt=" << repository.getState().getTimeStepSize()
       << ", mvij=" << repository.getState().getMaximumVelocityApproach()
       << ", plot=" << 1);
+
     logInfo("runAsMaster(...)",
            "h_min(real)=" << repository.getState().getMinimumMeshWidth()
       << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
@@ -234,8 +235,6 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     elapsed = repository.getState().getTime() - timestamp;
     repository.getState().finishedTimeStep(initialStepSize);
   }
-  */
-  ///////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////
 
   for (int i=0; i<iterations; i++)

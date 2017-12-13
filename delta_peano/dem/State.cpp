@@ -73,7 +73,6 @@ void dem::State::merge( const State& otherState ) {
   _stateData.setNumberOfParticleReassignments( _stateData.getNumberOfParticleReassignments() + otherState._stateData.getNumberOfParticleReassignments() );
   _stateData.setNumberOfParticleComparisons( _stateData.getNumberOfParticleComparisons() + otherState._stateData.getNumberOfParticleComparisons() );
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + otherState._stateData.getNumberOfTriangleComparisons() );
-  _stateData.setAdaptiveStepSize(_stateData.getAdaptiveStepSize() || otherState._stateData.getNumberOfTriangleComparisons());
 
   if(_stateData.getTwoParticlesAreClose() > otherState._stateData.getTwoParticlesAreClose())
   {
