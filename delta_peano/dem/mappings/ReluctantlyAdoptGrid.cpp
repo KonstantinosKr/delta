@@ -587,7 +587,7 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
       const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
 
- int approach = dem::mappings::Collision::all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
+ dem::mappings::Collision::all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
 
  double minDiameter  = std::numeric_limits<double>::max();
  int numberOfRealParticles = 0;
@@ -614,7 +614,7 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
   //       i.e.
   //       if all particles move away from each other, we should not
   //
- if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && approach > 0)
+ if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && _state.getTwoParticlesAreClose() > 0)
  {
    dfor2(k)
      if (!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)

@@ -20,11 +20,9 @@ tarch::logging::Log _log("");
 void printManual()
 {
 	std::cerr << "Delta - Peano | Grid-based Non-Spherical Particle Dynamics" << std::endl << std::endl
-				  << "Usage: ./dem-xxx grid_h_max particle_diam_min particle_diam_max scenario iterations grid-type step-size plot real-time-snapshot(sec) gravity(boolean) collision-model tri-per-particle [tbb-core-count]" << std::endl
+				  << "Usage: ./dem-xxx grid_h_max(double) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(double in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl
           << std::endl
           << " grid_h_max          maximum mesh width of grid" << std::endl
-          << " particle_diam_min   minimal diameter of particles" << std::endl
-          << " particle_diam_max   maximal diameter of particles" << std::endl
           << " scenario            which scenario to use. See list below for valid configurations " << std::endl
           << " iterations          number of iterations or time steps depending on scheme" << std::endl
           << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
@@ -145,8 +143,8 @@ int main(int argc, char** argv)
 
   int programExitCode = 0;
   if (gridHMax>0.5) {
-    //logError( "main()", "gridHMax has to be smaller than or equal to 0.5" );
-    //programExitCode = 1;
+    logError( "main()", "gridHMax has to be smaller than or equal to 0.5" );
+    programExitCode = 1;
   }
 
   dem::mappings::CreateGrid::GridType gridType;
