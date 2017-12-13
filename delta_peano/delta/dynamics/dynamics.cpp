@@ -126,7 +126,7 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
      iREAL *rotation,
      iREAL step)
  {
-	iREAL DL[9], rot0[0];
+	iREAL DL[9], rot0[9];
  	expmap (step*refAngular[0], step*refAngular[1], step*refAngular[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
 
  	rot0[0] = rotation[0];
