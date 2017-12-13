@@ -337,6 +337,7 @@ void dem::mappings::Collision::collisionDetection(
     _collisionModel==CollisionModel::Sphere
   ) {
     triggerParticleTooClose(vertexA.getParticle(i), vertexB.getParticle(j), state);
+
     std::vector<delta::collision::contactpoint> newContactPoints
       = delta::collision::sphereWithBarrierBA(
         vertexB.getParticle(j).getCentre(0),
@@ -371,12 +372,13 @@ void dem::mappings::Collision::collisionDetection(
      vertexB.getParticle(j).getIsObstacle() &&
      _collisionModel==CollisionModel::Sphere
   ) {
-    triggerParticleTooClose(vertexA.getParticle(i), vertexB.getParticle(j), state);
-    std::vector<delta::collision::contactpoint> newContactPoints
-      = delta::collision::sphereWithBarrierAB(
-        vertexA.getParticle(i).getCentre(0),
-        vertexA.getParticle(i).getCentre(1),
-        vertexA.getParticle(i).getCentre(2),
+	  triggerParticleTooClose(vertexA.getParticle(i), vertexB.getParticle(j), state);
+
+	  std::vector<delta::collision::contactpoint> newContactPoints
+	    = delta::collision::sphereWithBarrierAB(
+	      vertexA.getParticle(i).getCentre(0),
+	      vertexA.getParticle(i).getCentre(1),
+	      vertexA.getParticle(i).getCentre(2),
         vertexA.getParticle(i).getDiameter(),
         vertexA.getParticle(i).getEpsilon(),
         vertexA.getParticle(i).getFriction(),
@@ -581,7 +583,6 @@ void dem::mappings::Collision::collisionDetection(
   }
 }
 
-
 void dem::mappings::Collision::touchVertexFirstTime(
 		dem::Vertex&                                 fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
@@ -602,9 +603,9 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		//if value doesn't exist in map - no collision - skip particle
 		if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
 
-    //double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
+		//double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
 		double force[3]  = {0.0,0.0,0.0};
-    double torque[3] = {0.0,0.0,0.0};
+		double torque[3] = {0.0,0.0,0.0};
 
 		//collisions with partner particles
 		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin();
@@ -660,11 +661,11 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		}
 	}
 
-	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
+    	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
 
-  dfor2(k)
-    fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
-  enddforx
+	dfor2(k)
+	fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
+	enddforx
 
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
@@ -689,11 +690,10 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			   (vertexA.getParticle(i).getGlobalParticleId() == vertexB.getParticle(j).getGlobalParticleId()))
 			  continue;
 
-      collisionDetection(vertexA, vertexB, i, j, state);
+			collisionDetection(vertexA, vertexB, i, j, state);
 		}
 	}
 }
-
 
 dem::Vertex dem::mappings::reduceVirtuals(
     dem::Vertex &v0,
@@ -856,7 +856,6 @@ void dem::mappings::Collision::all_to_all(
     const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
     State& state)
 {
-
   Vertex &v0 = fineGridVertices[fineGridVerticesEnumerator(0)];
   Vertex &v1 = fineGridVertices[fineGridVerticesEnumerator(1)];
   Vertex &v2 = fineGridVertices[fineGridVerticesEnumerator(2)];
@@ -1057,7 +1056,6 @@ void dem::mappings::Collision::all_to_all(
     dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v7, state);
     ///
 }
-
 
 void dem::mappings::Collision::enterCell(
 		dem::Cell&                                fineGridCell,
@@ -1374,20 +1372,20 @@ void dem::mappings::Collision::touchVertexLastTime(
 		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
 
-#ifdef ompParticle
-  #pragma omp parallel for
-#endif
-for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
-{
-  for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
-  {
-    if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
-       (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
-        continue;
+	#ifdef ompParticle
+	  #pragma omp parallel for
+	#endif
+	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+	{
+	  for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
+	  {
+		if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
+		   (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
+			continue;
 
-    collisionDetection(fineGridVertex, fineGridVertex, i, j, _state);
-  }
-}
+		collisionDetection(fineGridVertex, fineGridVertex, i, j, _state);
+	  }
+	}
 
 }
 

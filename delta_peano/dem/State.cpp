@@ -151,6 +151,10 @@ void dem::State::adaptiveTimeStep()
     maxdt = 1.0;
 }
 
+double dem::State::getTwoParticlesAreClose() {
+  return _stateData.getTwoParticlesAreClose();
+}
+
 void dem::State::setTimeStep(int number) {//name
   _stateData.setTimeStep(number);
 }

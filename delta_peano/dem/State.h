@@ -101,6 +101,8 @@ class dem::State: public peano::grid::State< dem::records::State > {
     void finishedTimeStep(double initialTimestep);
     void adaptiveTimeStep();
 
+    double getTwoParticlesAreClose();
+
     void setMaximumVelocityApproach(double v);
     double getMaximumVelocityApproach();
 

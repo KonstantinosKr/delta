@@ -16,7 +16,7 @@ peano::CommunicationSpecification   dem::mappings::AdoptGrid::communicationSpeci
  * Just invokes refine if necessary. It also deletes the accumulated attributes.
  */
 peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexFirstTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 /**
@@ -40,6 +40,7 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::descendSpecification(int
 }
 
 tarch::logging::Log dem::mappings::AdoptGrid::_log( "dem::mappings::AdoptGrid" );
+tarch::multicore::BooleanSemaphore  dem::mappings::AdoptGrid::_AdoptSemaphore;
 
 void dem::mappings::dropParticles(
   dem::Vertex&                                 fineGridVertex,
@@ -140,8 +141,6 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
-
-tarch::multicore::BooleanSemaphore  dem::mappings::AdoptGrid::_AdoptSemaphore;
 
 void dem::mappings::AdoptGrid::createHangingVertex(
       dem::Vertex&     fineGridVertex,
@@ -484,7 +483,6 @@ void dem::mappings::AdoptGrid::enterCell(
       dem::Cell&                 coarseGridCell,
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
-
 }
 
 void dem::mappings::AdoptGrid::leaveCell(
