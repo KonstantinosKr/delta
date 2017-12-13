@@ -65,18 +65,18 @@ class dem::mappings::Collision {
 
   public:
 
-    static int all_to_all(
+    static void all_to_all(
         dem::Vertex * const                       fineGridVertices,
         const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
         State& state);
 
-    static int collisionDetection(
+    static void collisionDetection(
         dem::Vertex&  vertexA,
         dem::Vertex&  vertexB,
         int i, int j,
         State& state);
 
-    static int collideParticlesOfTwoDifferentVertices(
+    static void collideParticlesOfTwoDifferentVertices(
       dem::Vertex&  vertexA,
       dem::Vertex&  vertexB,
       State& state
@@ -89,6 +89,11 @@ class dem::mappings::Collision {
       bool sphere
     );
   
+    /**
+     * There has been a race condition here. Multiple particles might be
+     * compared to each other at the same time. So multiple might trigger
+     * particles-to-close. We therefore have to protected the state.
+     */
     static int triggerParticleTooClose(
         const records::Particle& particleA,
         const records::Particle& particleB,

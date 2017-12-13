@@ -271,7 +271,7 @@ int dem::mappings::Collision::triggerParticleTooClose(
   //particles approach
   if(-vBA > state.getMaximumVelocityApproach())
   {
-    //printf("approach: %f\n", vBA);
+    tarch::multicore::Lock lock(_mySemaphore);
     state.setMaximumVelocityApproach(vBA);
   }
 
@@ -308,13 +308,12 @@ int dem::mappings::Collision::triggerParticleTooClose(
   return 1;
 }
 
-int dem::mappings::Collision::collisionDetection(
+void dem::mappings::Collision::collisionDetection(
     dem::Vertex&  vertexA,
     dem::Vertex&  vertexB,
     int i, int j,
     State& state)
 {
-
   if(_enableOverlapCheck)
   {
     bool overlap = delta::collision::isSphereOverlayInContact(
@@ -328,54 +327,91 @@ int dem::mappings::Collision::collisionDetection(
       vertexB.getParticle(j).getCentre(2),
       vertexB.getParticle(j).getHaloDiameter());
 
-      //if(!overlap) continue;
+    if (!overlap) return;
   }
 
-  int x = triggerParticleTooClose(vertexA.getParticle(i), vertexB.getParticle(j), state);
 
-  std::vector<delta::collision::contactpoint> newContactPoints;
+  if(
+    vertexA.getParticle(i).getIsObstacle() &&
+    !vertexB.getParticle(j).getIsObstacle() &&
+    _collisionModel==CollisionModel::Sphere
+  ) {
+    triggerParticleTooClose(vertexA.getParticle(i), vertexB.getParticle(j), state);
+    std::vector<delta::collision::contactpoint> newContactPoints
+      = delta::collision::sphereWithBarrierBA(
+        vertexB.getParticle(j).getCentre(0),
+        vertexB.getParticle(j).getCentre(1),
+        vertexB.getParticle(j).getCentre(2),
+        vertexB.getParticle(j).getDiameter(),
+        vertexB.getParticle(j).getEpsilon(),
+        vertexB.getParticle(j).getFriction(),
+        vertexB.getParticle(j).getGlobalParticleId(),
 
-  switch (_collisionModel)
-  {
-    case CollisionModel::Sphere: {
-      if(vertexA.getParticle(i).getIsObstacle() &&
-        !vertexB.getParticle(j).getIsObstacle()) {
-        newContactPoints = delta::collision::sphereWithBarrierBA(
-            vertexB.getParticle(j).getCentre(0),
-            vertexB.getParticle(j).getCentre(1),
-            vertexB.getParticle(j).getCentre(2),
-            vertexB.getParticle(j).getDiameter(),
-            vertexB.getParticle(j).getEpsilon(),
-            vertexB.getParticle(j).getFriction(),
-            vertexB.getParticle(j).getGlobalParticleId(),
+        vertexA.getXCoordinates(i),
+        vertexA.getYCoordinates(i),
+        vertexA.getZCoordinates(i),
+        vertexA.getNumberOfTriangles(i),
+        vertexA.getParticle(i).getEpsilon(),
+        vertexA.getParticle(i).getFriction(),
+        vertexA.getParticle(i).getGlobalParticleId());
+    if(!newContactPoints.empty())
+    {
+      #ifdef ompParticle
+        #pragma omp critical(collision)
+      #endif
+      {//TODO deadlock two locks
+        tarch::multicore::Lock lock(_mySemaphore);
+        addCollision(newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
+        state.incNumberOfContactPoints(newContactPoints.size());
+        lock.free();
+      }
+    }
+  } else if (
+    !vertexA.getParticle(i).getIsObstacle() &&
+     vertexB.getParticle(j).getIsObstacle() &&
+     _collisionModel==CollisionModel::Sphere
+  ) {
+    triggerParticleTooClose(vertexA.getParticle(i), vertexB.getParticle(j), state);
+    std::vector<delta::collision::contactpoint> newContactPoints
+      = delta::collision::sphereWithBarrierAB(
+        vertexA.getParticle(i).getCentre(0),
+        vertexA.getParticle(i).getCentre(1),
+        vertexA.getParticle(i).getCentre(2),
+        vertexA.getParticle(i).getDiameter(),
+        vertexA.getParticle(i).getEpsilon(),
+        vertexA.getParticle(i).getFriction(),
+        vertexA.getParticle(i).getGlobalParticleId(),
 
-            vertexA.getXCoordinates(i),
-            vertexA.getYCoordinates(i),
-            vertexA.getZCoordinates(i),
-            vertexA.getNumberOfTriangles(i),
-            vertexA.getParticle(i).getEpsilon(),
-            vertexA.getParticle(i).getFriction(),
-            vertexA.getParticle(i).getGlobalParticleId());
+        vertexB.getXCoordinates(j),
+        vertexB.getYCoordinates(j),
+        vertexB.getZCoordinates(j),
+        vertexB.getNumberOfTriangles(j),
+        vertexB.getParticle(j).getEpsilon(),
+        vertexB.getParticle(j).getFriction(),
+        vertexB.getParticle(j).getGlobalParticleId());
+    if(!newContactPoints.empty())
+    {
+      #ifdef ompParticle
+        #pragma omp critical(collision)
+      #endif
+      {//TODO deadlock two locks
+        tarch::multicore::Lock lock(_mySemaphore);
+        addCollision(newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
+        state.incNumberOfContactPoints(newContactPoints.size());
+        lock.free();
+      }
+    }
+  }
+  //
+  // either we don't do spheres only in the collision model or there are no
+  // boundaries involved.
+  //
+  else {
+    triggerParticleTooClose(vertexA.getParticle(i), vertexB.getParticle(j), state);
+    std::vector<delta::collision::contactpoint> newContactPoints;
 
-      } else if (!vertexA.getParticle(i).getIsObstacle() &&
-                  vertexB.getParticle(j).getIsObstacle()) {
-        newContactPoints = delta::collision::sphereWithBarrierAB(
-            vertexA.getParticle(i).getCentre(0),
-            vertexA.getParticle(i).getCentre(1),
-            vertexA.getParticle(i).getCentre(2),
-            vertexA.getParticle(i).getDiameter(),
-            vertexA.getParticle(i).getEpsilon(),
-            vertexA.getParticle(i).getFriction(),
-            vertexA.getParticle(i).getGlobalParticleId(),
-
-            vertexB.getXCoordinates(j),
-            vertexB.getYCoordinates(j),
-            vertexB.getZCoordinates(j),
-            vertexB.getNumberOfTriangles(j),
-            vertexB.getParticle(j).getEpsilon(),
-            vertexB.getParticle(j).getFriction(),
-            vertexB.getParticle(j).getGlobalParticleId());
-      } else {
+    switch (_collisionModel) {
+      case CollisionModel::Sphere:
         newContactPoints = delta::collision::sphere(
             vertexA.getParticle(i).getCentre(0),
             vertexA.getParticle(i).getCentre(1),
@@ -392,11 +428,9 @@ int dem::mappings::Collision::collisionDetection(
             vertexB.getParticle(j).getEpsilon(),
             vertexB.getParticle(j).getFriction(),
             vertexB.getParticle(j).getGlobalParticleId());
-      }
-      break;
-    }
-    case CollisionModel::BruteForce: {
-      newContactPoints = delta::collision::bf(
+        break;
+      case CollisionModel::BruteForce:
+        newContactPoints = delta::collision::bf(
           vertexA.getNumberOfTriangles(i),
           vertexA.getXCoordinates(i),
           vertexA.getYCoordinates(i),
@@ -412,10 +446,9 @@ int dem::mappings::Collision::collisionDetection(
           vertexB.getParticle(j).getEpsilon(),
           vertexB.getParticle(j).getFriction(),
           vertexB.getParticle(j).getGlobalParticleId());
-      break;
-    }
-    case CollisionModel::Penalty: {
-      newContactPoints = delta::collision::penalty(
+        break;
+      case CollisionModel::Penalty:
+        newContactPoints = delta::collision::penalty(
           vertexA.getNumberOfTriangles(i),
           vertexA.getXCoordinates(i),
           vertexA.getYCoordinates(i),
@@ -431,10 +464,9 @@ int dem::mappings::Collision::collisionDetection(
           vertexB.getParticle(j).getEpsilon(),
           vertexB.getParticle(j).getFriction(),
           vertexB.getParticle(j).getGlobalParticleId());
-      break;
-    }
-    case CollisionModel::PenaltyStat: {
-      newContactPoints = delta::collision::penaltyStat(
+        break;
+      case CollisionModel::PenaltyStat:
+        newContactPoints = delta::collision::penaltyStat(
           vertexA.getNumberOfTriangles(i),
           vertexA.getXCoordinates(i),
           vertexA.getYCoordinates(i),
@@ -450,10 +482,9 @@ int dem::mappings::Collision::collisionDetection(
           vertexB.getParticle(j).getEpsilon(),
           vertexB.getParticle(j).getFriction(),
           vertexB.getParticle(j).getGlobalParticleId());
-      break;
-    }
-    case CollisionModel::HybridOnBatches: {
-      newContactPoints = delta::collision::hybridWithPerBatchFallBack(
+        break;
+      case CollisionModel::HybridOnBatches:
+        newContactPoints = delta::collision::hybridWithPerBatchFallBack(
           vertexA.getNumberOfTriangles(i),
           vertexA.getXCoordinates(i),
           vertexA.getYCoordinates(i),
@@ -469,10 +500,9 @@ int dem::mappings::Collision::collisionDetection(
           vertexB.getParticle(j).getEpsilon(),
           vertexB.getParticle(j).getFriction(),
           vertexB.getParticle(j).getGlobalParticleId());
-      break;
-    }
-    case CollisionModel::HybridOnTrianglePairs: {
-      newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
+        break;
+      case CollisionModel::HybridOnTrianglePairs:
+        newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
           vertexA.getNumberOfTriangles(i),
           vertexA.getXCoordinates(i),
           vertexA.getYCoordinates(i),
@@ -488,10 +518,9 @@ int dem::mappings::Collision::collisionDetection(
           vertexB.getParticle(j).getEpsilon(),
           vertexB.getParticle(j).getFriction(),
           vertexB.getParticle(j).getGlobalParticleId());
-      break;
-    }
-    case CollisionModel::HybridStat: {
-      newContactPoints = delta::collision::hybridTriangleStat(
+        break;
+      case CollisionModel::HybridStat:
+        newContactPoints = delta::collision::hybridTriangleStat(
           vertexA.getNumberOfTriangles(i),
           vertexA.getXCoordinates(i),
           vertexA.getYCoordinates(i),
@@ -507,10 +536,9 @@ int dem::mappings::Collision::collisionDetection(
           vertexB.getParticle(j).getEpsilon(),
           vertexB.getParticle(j).getFriction(),
           vertexB.getParticle(j).getGlobalParticleId());
-      break;
-    }
-    case CollisionModel::GJK: {
-      newContactPoints = delta::collision::gjk(
+        break;
+      case CollisionModel::GJK:
+        newContactPoints = delta::collision::gjk(
           vertexA.getNumberOfTriangles(i),
           vertexA.getXCoordinates(i),
           vertexA.getYCoordinates(i),
@@ -526,25 +554,24 @@ int dem::mappings::Collision::collisionDetection(
           vertexB.getParticle(j).getEpsilon(),
           vertexB.getParticle(j).getFriction(),
           vertexB.getParticle(j).getGlobalParticleId());
-      break;
+        break;
+      case CollisionModel::none:
+        break;
     }
-    case CollisionModel::none: {
-      break;
-    }
-  }
 
-  if(!newContactPoints.empty())
-  {
-    #ifdef ompParticle
-      #pragma omp critical
-    #endif
-    {//TODO deadlock two locks
+    if(!newContactPoints.empty()) {
+      #ifdef ompParticle
+        #pragma omp critical(collision)
+      #endif
+      {
       tarch::multicore::Lock lock(_mySemaphore);
       addCollision(newContactPoints, vertexA.getParticle(i), vertexB.getParticle(j) , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
       state.incNumberOfContactPoints(newContactPoints.size());
       lock.free();
+      }
     }
   }
+
   #ifdef ompParticle
     #pragma omp critical
   #endif
@@ -552,9 +579,8 @@ int dem::mappings::Collision::collisionDetection(
     state.incNumberOfTriangleComparisons(vertexA.getNumberOfTriangles(i) * vertexB.getNumberOfTriangles(j));
     state.incNumberOfParticleComparisons(1);
   }
-
-  return x;
 }
+
 
 void dem::mappings::Collision::touchVertexFirstTime(
 		dem::Vertex&                                 fineGridVertex,
@@ -643,7 +669,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
-int dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
+void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 		dem::Vertex&  vertexA,
 		dem::Vertex&  vertexB,
 		State& state
@@ -651,7 +677,7 @@ int dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 	logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexA.toString() << ", " << vertexA.getNumberOfRealAndVirtualParticles() );
 	logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexB.toString() << ", " << vertexB.getNumberOfRealAndVirtualParticles() );
 
-	int approach = 0;
+
 	#ifdef ompParticle
 		#pragma omp parallel for reduction(+:approach)
 	#endif
@@ -663,11 +689,11 @@ int dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			   (vertexA.getParticle(i).getGlobalParticleId() == vertexB.getParticle(j).getGlobalParticleId()))
 			  continue;
 
-      approach += collisionDetection(vertexA, vertexB, i, j, state);
+      collisionDetection(vertexA, vertexB, i, j, state);
 		}
 	}
-	return approach;
 }
+
 
 dem::Vertex dem::mappings::reduceVirtuals(
     dem::Vertex &v0,
@@ -825,7 +851,7 @@ dem::Vertex dem::mappings::reduceVirtuals(
   return vcentre;
 }
 
-int dem::mappings::Collision::all_to_all(
+void dem::mappings::Collision::all_to_all(
     dem::Vertex * const                       fineGridVertices,
     const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
     State& state)
@@ -848,19 +874,16 @@ int dem::mappings::Collision::all_to_all(
     v4.getNumberOfParticles() == 0 &&
     v5.getNumberOfParticles() == 0 &&
     v6.getNumberOfParticles() == 0 &&
-    v7.getNumberOfParticles() == 0) return 0;
+    v7.getNumberOfParticles() == 0) return;
 
   dem::Vertex vcentre = reduceVirtuals(v0, v1, v2, v3, v4, v5, v6, v7);
-
-  int approach = 0;
 
   //printf("ENTERED\n");
   for(int i=0; i<8; i++)
   {
     for(int j=i+1; j<8; j++)
     {
-      //printf("index: %d, %d\n", i, j);
-      approach += dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(i)], fineGridVertices[fineGridVerticesEnumerator(j)], state);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(i)], fineGridVertices[fineGridVerticesEnumerator(j)], state);
     }
   }
 
@@ -1024,18 +1047,17 @@ int dem::mappings::Collision::all_to_all(
     }*/
 
     //full coarse inheritance check
-    approach += dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v0, state);
-    approach += dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v1, state);
-    approach += dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v2, state);
-    approach += dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v3, state);
-    approach += dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v4, state);
-    approach += dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v5, state);
-    approach += dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v6, state);
-    approach += dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v7, state);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v0, state);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v1, state);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v2, state);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v3, state);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v4, state);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v5, state);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v6, state);
+    dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v7, state);
     ///
-
-    return approach;
 }
+
 
 void dem::mappings::Collision::enterCell(
 		dem::Cell&                                fineGridCell,

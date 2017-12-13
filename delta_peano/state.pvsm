@@ -11334,254 +11334,6 @@
         <Domain name="bool" id="7102.ScalarRangeInitialized.bool"/>
       </Property>
     </Proxy>
-    <Proxy group="misc" type="RepresentationAnimationHelper" id="8442" servers="16">
-      <Property name="Source" id="8442.Source" number_of_elements="1">
-        <Proxy value="8431"/>
-      </Property>
-    </Proxy>
-    <Proxy group="sources" type="ArrowSource" id="8443" servers="1">
-      <Property name="Invert" id="8443.Invert" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8443.Invert.bool"/>
-      </Property>
-      <Property name="ShaftRadius" id="8443.ShaftRadius" number_of_elements="1">
-        <Element index="0" value="0.03"/>
-        <Domain name="range" id="8443.ShaftRadius.range"/>
-      </Property>
-      <Property name="ShaftResolution" id="8443.ShaftResolution" number_of_elements="1">
-        <Element index="0" value="6"/>
-        <Domain name="range" id="8443.ShaftResolution.range"/>
-      </Property>
-      <Property name="TipLength" id="8443.TipLength" number_of_elements="1">
-        <Element index="0" value="0.35"/>
-        <Domain name="range" id="8443.TipLength.range"/>
-      </Property>
-      <Property name="TipRadius" id="8443.TipRadius" number_of_elements="1">
-        <Element index="0" value="0.1"/>
-        <Domain name="range" id="8443.TipRadius.range"/>
-      </Property>
-      <Property name="TipResolution" id="8443.TipResolution" number_of_elements="1">
-        <Element index="0" value="6"/>
-        <Domain name="range" id="8443.TipResolution.range"/>
-      </Property>
-    </Proxy>
-    <Proxy group="sources" type="ConeSource" id="8454" servers="1">
-      <Property name="Capping" id="8454.Capping" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8454.Capping.bool"/>
-      </Property>
-      <Property name="Center" id="8454.Center" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8454.Center.range"/>
-      </Property>
-      <Property name="Direction" id="8454.Direction" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8454.Direction.range"/>
-      </Property>
-      <Property name="Height" id="8454.Height" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8454.Height.range"/>
-      </Property>
-      <Property name="Radius" id="8454.Radius" number_of_elements="1">
-        <Element index="0" value="0.5"/>
-        <Domain name="range" id="8454.Radius.range"/>
-      </Property>
-      <Property name="Resolution" id="8454.Resolution" number_of_elements="1">
-        <Element index="0" value="6"/>
-        <Domain name="range" id="8454.Resolution.range"/>
-      </Property>
-    </Proxy>
-    <Proxy group="sources" type="CubeSource" id="8465" servers="1">
-      <Property name="Center" id="8465.Center" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8465.Center.range"/>
-      </Property>
-      <Property name="XLength" id="8465.XLength" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8465.XLength.range"/>
-      </Property>
-      <Property name="YLength" id="8465.YLength" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8465.YLength.range"/>
-      </Property>
-      <Property name="ZLength" id="8465.ZLength" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8465.ZLength.range"/>
-      </Property>
-    </Proxy>
-    <Proxy group="sources" type="CylinderSource" id="8476" servers="1">
-      <Property name="Capping" id="8476.Capping" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8476.Capping.bool"/>
-      </Property>
-      <Property name="Center" id="8476.Center" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8476.Center.range"/>
-      </Property>
-      <Property name="Height" id="8476.Height" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8476.Height.range"/>
-      </Property>
-      <Property name="Radius" id="8476.Radius" number_of_elements="1">
-        <Element index="0" value="0.5"/>
-        <Domain name="range" id="8476.Radius.range"/>
-      </Property>
-      <Property name="Resolution" id="8476.Resolution" number_of_elements="1">
-        <Element index="0" value="6"/>
-        <Domain name="range" id="8476.Resolution.range"/>
-      </Property>
-    </Proxy>
-    <Proxy group="sources" type="LineSource" id="8487" servers="1">
-      <Property name="Point1" id="8487.Point1" number_of_elements="3">
-        <Element index="0" value="-0.5"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8487.Point1.range"/>
-      </Property>
-      <Property name="Point2" id="8487.Point2" number_of_elements="3">
-        <Element index="0" value="0.5"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8487.Point2.range"/>
-      </Property>
-      <Property name="Resolution" id="8487.Resolution" number_of_elements="1">
-        <Element index="0" value="6"/>
-        <Domain name="range" id="8487.Resolution.range"/>
-      </Property>
-    </Proxy>
-    <Proxy group="sources" type="SphereSource" id="8498" servers="1">
-      <Property name="Center" id="8498.Center" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8498.Center.range"/>
-      </Property>
-      <Property name="EndPhi" id="8498.EndPhi" number_of_elements="1">
-        <Element index="0" value="180"/>
-        <Domain name="range" id="8498.EndPhi.range"/>
-      </Property>
-      <Property name="EndTheta" id="8498.EndTheta" number_of_elements="1">
-        <Element index="0" value="360"/>
-        <Domain name="range" id="8498.EndTheta.range"/>
-      </Property>
-      <Property name="PhiResolution" id="8498.PhiResolution" number_of_elements="1">
-        <Element index="0" value="8"/>
-        <Domain name="range" id="8498.PhiResolution.range"/>
-      </Property>
-      <Property name="Radius" id="8498.Radius" number_of_elements="1">
-        <Element index="0" value="0.5"/>
-        <Domain name="range" id="8498.Radius.range"/>
-      </Property>
-      <Property name="StartPhi" id="8498.StartPhi" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="range" id="8498.StartPhi.range"/>
-      </Property>
-      <Property name="StartTheta" id="8498.StartTheta" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="range" id="8498.StartTheta.range"/>
-      </Property>
-      <Property name="ThetaResolution" id="8498.ThetaResolution" number_of_elements="1">
-        <Element index="0" value="8"/>
-        <Domain name="range" id="8498.ThetaResolution.range"/>
-      </Property>
-    </Proxy>
-    <Proxy group="sources" type="GlyphSource2D" id="8509" servers="1">
-      <Property name="Center" id="8509.Center" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8509.Center.range"/>
-      </Property>
-      <Property name="Filled" id="8509.Filled" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8509.Filled.bool"/>
-      </Property>
-      <Property name="GlyphType" id="8509.GlyphType" number_of_elements="1">
-        <Element index="0" value="9"/>
-        <Domain name="enum" id="8509.GlyphType.enum">
-          <Entry value="1" text="Vertex"/>
-          <Entry value="2" text="Dash"/>
-          <Entry value="3" text="Cross"/>
-          <Entry value="4" text="ThickCross"/>
-          <Entry value="5" text="Triangle"/>
-          <Entry value="6" text="Square"/>
-          <Entry value="7" text="Circle"/>
-          <Entry value="8" text="Diamond"/>
-          <Entry value="9" text="Arrow"/>
-          <Entry value="10" text="ThickArrow"/>
-          <Entry value="11" text="HookedArrow"/>
-          <Entry value="12" text="EdgeArrow"/>
-        </Domain>
-      </Property>
-    </Proxy>
-    <Proxy group="piecewise_functions" type="PiecewiseFunction" id="8520" servers="21">
-      <Property name="AllowDuplicateScalars" id="8520.AllowDuplicateScalars" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8520.AllowDuplicateScalars.bool"/>
-      </Property>
-      <Property name="Points" id="8520.Points" number_of_elements="8">
-        <Element index="0" value="-1"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0.5"/>
-        <Element index="3" value="0"/>
-        <Element index="4" value="1"/>
-        <Element index="5" value="1"/>
-        <Element index="6" value="0.5"/>
-        <Element index="7" value="0"/>
-      </Property>
-      <Property name="ScalarRangeInitialized" id="8520.ScalarRangeInitialized" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8520.ScalarRangeInitialized.bool"/>
-      </Property>
-    </Proxy>
-    <Proxy group="piecewise_functions" type="PiecewiseFunction" id="8543" servers="21">
-      <Property name="AllowDuplicateScalars" id="8543.AllowDuplicateScalars" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8543.AllowDuplicateScalars.bool"/>
-      </Property>
-      <Property name="Points" id="8543.Points" number_of_elements="8">
-        <Element index="0" value="-1"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0.5"/>
-        <Element index="3" value="0"/>
-        <Element index="4" value="1"/>
-        <Element index="5" value="1"/>
-        <Element index="6" value="0.5"/>
-        <Element index="7" value="0"/>
-      </Property>
-      <Property name="ScalarRangeInitialized" id="8543.ScalarRangeInitialized" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8543.ScalarRangeInitialized.bool"/>
-      </Property>
-    </Proxy>
-    <Proxy group="piecewise_functions" type="PiecewiseFunction" id="8544" servers="21">
-      <Property name="AllowDuplicateScalars" id="8544.AllowDuplicateScalars" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8544.AllowDuplicateScalars.bool"/>
-      </Property>
-      <Property name="Points" id="8544.Points" number_of_elements="8">
-        <Element index="0" value="-1"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0.5"/>
-        <Element index="3" value="0"/>
-        <Element index="4" value="1"/>
-        <Element index="5" value="1"/>
-        <Element index="6" value="0.5"/>
-        <Element index="7" value="0"/>
-      </Property>
-      <Property name="ScalarRangeInitialized" id="8544.ScalarRangeInitialized" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8544.ScalarRangeInitialized.bool"/>
-      </Property>
-    </Proxy>
     <Proxy group="misc" type="RepresentationAnimationHelper" id="8085" servers="16">
       <Property name="Source" id="8085.Source"/>
     </Proxy>
@@ -12542,7 +12294,7 @@
         <Domain name="bool" id="5885.SelectionVisibility.bool"/>
       </Property>
       <Property name="Visibility" id="5885.Visibility" number_of_elements="1">
-        <Element index="0" value="1"/>
+        <Element index="0" value="0"/>
         <Domain name="bool" id="5885.Visibility.bool"/>
       </Property>
       <Property name="Ambient" id="5885.Ambient" number_of_elements="1">
@@ -13047,23 +12799,14 @@
       </Property>
       <Property name="SelectionPointFieldDataArrayName" id="6054.SelectionPointFieldDataArrayName" number_of_elements="1">
         <Element index="0" value="particle-radius"/>
-        <Domain name="array_list" id="6054.SelectionPointFieldDataArrayName.array_list">
-          <String text="Normals"/>
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6054.SelectionPointFieldDataArrayName.array_list"/>
       </Property>
       <Property name="SelectionVisibility" id="6054.SelectionVisibility" number_of_elements="1">
         <Element index="0" value="1"/>
         <Domain name="bool" id="6054.SelectionVisibility.bool"/>
       </Property>
       <Property name="Visibility" id="6054.Visibility" number_of_elements="1">
-        <Element index="0" value="1"/>
+        <Element index="0" value="0"/>
         <Domain name="bool" id="6054.Visibility.bool"/>
       </Property>
       <Property name="Ambient" id="6054.Ambient" number_of_elements="1">
@@ -13123,16 +12866,7 @@
         <Element index="2" value=""/>
         <Element index="3" value="0"/>
         <Element index="4" value=""/>
-        <Domain name="array_list" id="6054.ColorArrayName.array_list">
-          <String text="Normals"/>
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6054.ColorArrayName.array_list"/>
         <Domain name="field_list" id="6054.ColorArrayName.field_list">
           <Entry value="0" text="Point Data"/>
           <Entry value="1" text="Cell Data"/>
@@ -13209,16 +12943,7 @@
       </Property>
       <Property name="OSPRayScaleArray" id="6054.OSPRayScaleArray" number_of_elements="1">
         <Element index="0" value="Normals"/>
-        <Domain name="array_list" id="6054.OSPRayScaleArray.array_list">
-          <String text="Normals"/>
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6054.OSPRayScaleArray.array_list"/>
       </Property>
       <Property name="OSPRayScaleFunction" id="6054.OSPRayScaleFunction">
         <Domain name="groups" id="6054.OSPRayScaleFunction.groups"/>
@@ -13238,13 +12963,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6054.OpacityArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6054.OpacityArray.array_list"/>
       </Property>
       <Property name="OpacityByArray" id="6054.OpacityByArray" number_of_elements="1">
         <Element index="0" value="0"/>
@@ -13466,13 +13185,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6054.SetScaleArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6054.SetScaleArray.array_list"/>
       </Property>
       <Property name="ShaderPreset" id="6054.ShaderPreset" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -13567,16 +13280,7 @@
       </Property>
       <Property name="SelectionPointFieldDataArrayName" id="6131.SelectionPointFieldDataArrayName" number_of_elements="1">
         <Element index="0" value="particle-radius"/>
-        <Domain name="array_list" id="6131.SelectionPointFieldDataArrayName.array_list">
-          <String text="Normals"/>
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6131.SelectionPointFieldDataArrayName.array_list"/>
       </Property>
       <Property name="SelectionVisibility" id="6131.SelectionVisibility" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -13643,16 +13347,7 @@
         <Element index="2" value=""/>
         <Element index="3" value="0"/>
         <Element index="4" value=""/>
-        <Domain name="array_list" id="6131.ColorArrayName.array_list">
-          <String text="Normals"/>
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6131.ColorArrayName.array_list"/>
         <Domain name="field_list" id="6131.ColorArrayName.field_list">
           <Entry value="0" text="Point Data"/>
           <Entry value="1" text="Cell Data"/>
@@ -13728,17 +13423,8 @@
         <Domain name="range" id="6131.NonlinearSubdivisionLevel.range"/>
       </Property>
       <Property name="OSPRayScaleArray" id="6131.OSPRayScaleArray" number_of_elements="1">
-        <Element index="0" value="Normals"/>
-        <Domain name="array_list" id="6131.OSPRayScaleArray.array_list">
-          <String text="Normals"/>
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Element index="0" value="GlyphVector"/>
+        <Domain name="array_list" id="6131.OSPRayScaleArray.array_list"/>
       </Property>
       <Property name="OSPRayScaleFunction" id="6131.OSPRayScaleFunction">
         <Domain name="groups" id="6131.OSPRayScaleFunction.groups"/>
@@ -13758,13 +13444,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6131.OpacityArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6131.OpacityArray.array_list"/>
       </Property>
       <Property name="OpacityByArray" id="6131.OpacityByArray" number_of_elements="1">
         <Element index="0" value="0"/>
@@ -13986,13 +13666,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6131.SetScaleArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6131.SetScaleArray.array_list"/>
       </Property>
       <Property name="ShaderPreset" id="6131.ShaderPreset" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -14569,7 +14243,15 @@
       </Property>
       <Property name="SelectionPointFieldDataArrayName" id="6583.SelectionPointFieldDataArrayName" number_of_elements="1">
         <Element index="0" value="particle-radius"/>
-        <Domain name="array_list" id="6583.SelectionPointFieldDataArrayName.array_list"/>
+        <Domain name="array_list" id="6583.SelectionPointFieldDataArrayName.array_list">
+          <String text="friction-normals"/>
+          <String text="particle-angular"/>
+          <String text="particle-coloring"/>
+          <String text="particle-epsilon"/>
+          <String text="particle-influence"/>
+          <String text="particle-radius"/>
+          <String text="particle-velocity"/>
+        </Domain>
       </Property>
       <Property name="SelectionVisibility" id="6583.SelectionVisibility" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -14636,7 +14318,15 @@
         <Element index="2" value=""/>
         <Element index="3" value="0"/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6583.ColorArrayName.array_list"/>
+        <Domain name="array_list" id="6583.ColorArrayName.array_list">
+          <String text="friction-normals"/>
+          <String text="particle-angular"/>
+          <String text="particle-coloring"/>
+          <String text="particle-epsilon"/>
+          <String text="particle-influence"/>
+          <String text="particle-radius"/>
+          <String text="particle-velocity"/>
+        </Domain>
         <Domain name="field_list" id="6583.ColorArrayName.field_list">
           <Entry value="0" text="Point Data"/>
           <Entry value="1" text="Cell Data"/>
@@ -14714,7 +14404,15 @@
       </Property>
       <Property name="OSPRayScaleArray" id="6583.OSPRayScaleArray" number_of_elements="1">
         <Element index="0" value="friction-normals"/>
-        <Domain name="array_list" id="6583.OSPRayScaleArray.array_list"/>
+        <Domain name="array_list" id="6583.OSPRayScaleArray.array_list">
+          <String text="friction-normals"/>
+          <String text="particle-angular"/>
+          <String text="particle-coloring"/>
+          <String text="particle-epsilon"/>
+          <String text="particle-influence"/>
+          <String text="particle-radius"/>
+          <String text="particle-velocity"/>
+        </Domain>
       </Property>
       <Property name="OSPRayScaleFunction" id="6583.OSPRayScaleFunction">
         <Domain name="groups" id="6583.OSPRayScaleFunction.groups"/>
@@ -14734,7 +14432,13 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6583.OpacityArray.array_list"/>
+        <Domain name="array_list" id="6583.OpacityArray.array_list">
+          <String text="particle-coloring"/>
+          <String text="particle-epsilon"/>
+          <String text="particle-influence"/>
+          <String text="particle-radius"/>
+          <String text="particle-velocity"/>
+        </Domain>
       </Property>
       <Property name="OpacityByArray" id="6583.OpacityByArray" number_of_elements="1">
         <Element index="0" value="0"/>
@@ -14956,7 +14660,13 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6583.SetScaleArray.array_list"/>
+        <Domain name="array_list" id="6583.SetScaleArray.array_list">
+          <String text="particle-coloring"/>
+          <String text="particle-epsilon"/>
+          <String text="particle-influence"/>
+          <String text="particle-radius"/>
+          <String text="particle-velocity"/>
+        </Domain>
       </Property>
       <Property name="ShaderPreset" id="6583.ShaderPreset" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -16072,7 +15782,7 @@
         <Domain name="array_list" id="5678.SelectionCellFieldDataArrayName.array_list">
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
       </Property>
       <Property name="SelectionPointFieldDataArrayName" id="5678.SelectionPointFieldDataArrayName" number_of_elements="1">
@@ -16164,7 +15874,7 @@
           <String text="velocities-and-contact-normals"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5678.ColorArrayName.field_list">
           <Entry value="0" text="Point Data"/>
@@ -16257,7 +15967,7 @@
           <String text="velocities-and-contact-normals"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
       </Property>
       <Property name="OSPRayScaleFunction" id="5678.OSPRayScaleFunction">
@@ -16623,7 +16333,7 @@
         <Domain name="array_list" id="5806.SelectionCellFieldDataArrayName.array_list">
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
       </Property>
       <Property name="SelectionPointFieldDataArrayName" id="5806.SelectionPointFieldDataArrayName" number_of_elements="1">
@@ -16715,7 +16425,7 @@
           <String text="velocities-and-contact-normals"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5806.ColorArrayName.field_list">
           <Entry value="0" text="Point Data"/>
@@ -16808,7 +16518,7 @@
           <String text="velocities-and-contact-normals"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
       </Property>
       <Property name="OSPRayScaleFunction" id="5806.OSPRayScaleFunction">
@@ -17675,31 +17385,18 @@
       </Property>
       <Property name="SelectionCellFieldDataArrayName" id="6499.SelectionCellFieldDataArrayName" number_of_elements="1">
         <Element index="0" value="vtkOriginalCellIds"/>
-        <Domain name="array_list" id="6499.SelectionCellFieldDataArrayName.array_list">
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
+        <Domain name="array_list" id="6499.SelectionCellFieldDataArrayName.array_list"/>
       </Property>
       <Property name="SelectionPointFieldDataArrayName" id="6499.SelectionPointFieldDataArrayName" number_of_elements="1">
         <Element index="0" value="vtkOriginalPointIds"/>
-        <Domain name="array_list" id="6499.SelectionPointFieldDataArrayName.array_list">
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="velocities-and-contact-normals"/>
-        </Domain>
+        <Domain name="array_list" id="6499.SelectionPointFieldDataArrayName.array_list"/>
       </Property>
       <Property name="SelectionVisibility" id="6499.SelectionVisibility" number_of_elements="1">
         <Element index="0" value="1"/>
         <Domain name="bool" id="6499.SelectionVisibility.bool"/>
       </Property>
       <Property name="Visibility" id="6499.Visibility" number_of_elements="1">
-        <Element index="0" value="1"/>
+        <Element index="0" value="0"/>
         <Domain name="bool" id="6499.Visibility.bool"/>
       </Property>
       <Property name="Ambient" id="6499.Ambient" number_of_elements="1">
@@ -17759,19 +17456,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value=""/>
-        <Domain name="array_list" id="6499.ColorArrayName.array_list">
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="velocities-and-contact-normals"/>
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
+        <Domain name="array_list" id="6499.ColorArrayName.array_list"/>
         <Domain name="field_list" id="6499.ColorArrayName.field_list">
           <Entry value="0" text="Point Data"/>
           <Entry value="1" text="Cell Data"/>
@@ -17852,19 +17537,7 @@
       </Property>
       <Property name="OSPRayScaleArray" id="6499.OSPRayScaleArray" number_of_elements="1">
         <Element index="0" value="friction-normals"/>
-        <Domain name="array_list" id="6499.OSPRayScaleArray.array_list">
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="velocities-and-contact-normals"/>
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
+        <Domain name="array_list" id="6499.OSPRayScaleArray.array_list"/>
       </Property>
       <Property name="OSPRayScaleFunction" id="6499.OSPRayScaleFunction">
         <Domain name="groups" id="6499.OSPRayScaleFunction.groups"/>
@@ -17884,13 +17557,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6499.OpacityArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6499.OpacityArray.array_list"/>
       </Property>
       <Property name="OpacityByArray" id="6499.OpacityByArray" number_of_elements="1">
         <Element index="0" value="0"/>
@@ -18127,13 +17794,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6499.SetScaleArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6499.SetScaleArray.array_list"/>
       </Property>
       <Property name="ShaderPreset" id="6499.ShaderPreset" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -18229,7 +17890,7 @@
         <Domain name="array_list" id="6223.SelectionCellFieldDataArrayName.array_list">
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
       </Property>
       <Property name="SelectionPointFieldDataArrayName" id="6223.SelectionPointFieldDataArrayName" number_of_elements="1">
@@ -18321,7 +17982,7 @@
           <String text="velocities-and-contact-normals"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="6223.ColorArrayName.field_list">
           <Entry value="0" text="Point Data"/>
@@ -18414,7 +18075,7 @@
           <String text="velocities-and-contact-normals"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
       </Property>
       <Property name="OSPRayScaleFunction" id="6223.OSPRayScaleFunction">
@@ -19281,24 +18942,11 @@
       </Property>
       <Property name="SelectionCellFieldDataArrayName" id="6407.SelectionCellFieldDataArrayName" number_of_elements="1">
         <Element index="0" value="vtkOriginalCellIds"/>
-        <Domain name="array_list" id="6407.SelectionCellFieldDataArrayName.array_list">
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
+        <Domain name="array_list" id="6407.SelectionCellFieldDataArrayName.array_list"/>
       </Property>
       <Property name="SelectionPointFieldDataArrayName" id="6407.SelectionPointFieldDataArrayName" number_of_elements="1">
         <Element index="0" value="vtkOriginalPointIds"/>
-        <Domain name="array_list" id="6407.SelectionPointFieldDataArrayName.array_list">
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="velocities-and-contact-normals"/>
-        </Domain>
+        <Domain name="array_list" id="6407.SelectionPointFieldDataArrayName.array_list"/>
       </Property>
       <Property name="SelectionVisibility" id="6407.SelectionVisibility" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -19365,19 +19013,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value=""/>
-        <Domain name="array_list" id="6407.ColorArrayName.array_list">
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="velocities-and-contact-normals"/>
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
+        <Domain name="array_list" id="6407.ColorArrayName.array_list"/>
         <Domain name="field_list" id="6407.ColorArrayName.field_list">
           <Entry value="0" text="Point Data"/>
           <Entry value="1" text="Cell Data"/>
@@ -19458,19 +19094,7 @@
       </Property>
       <Property name="OSPRayScaleArray" id="6407.OSPRayScaleArray" number_of_elements="1">
         <Element index="0" value="friction-normals"/>
-        <Domain name="array_list" id="6407.OSPRayScaleArray.array_list">
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="velocities-and-contact-normals"/>
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
+        <Domain name="array_list" id="6407.OSPRayScaleArray.array_list"/>
       </Property>
       <Property name="OSPRayScaleFunction" id="6407.OSPRayScaleFunction">
         <Domain name="groups" id="6407.OSPRayScaleFunction.groups"/>
@@ -19490,13 +19114,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6407.OpacityArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6407.OpacityArray.array_list"/>
       </Property>
       <Property name="OpacityByArray" id="6407.OpacityByArray" number_of_elements="1">
         <Element index="0" value="0"/>
@@ -19733,13 +19351,7 @@
         <Element index="2" value=""/>
         <Element index="3" value=""/>
         <Element index="4" value="particle-coloring"/>
-        <Domain name="array_list" id="6407.SetScaleArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
+        <Domain name="array_list" id="6407.SetScaleArray.array_list"/>
       </Property>
       <Property name="ShaderPreset" id="6407.ShaderPreset" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -19835,7 +19447,7 @@
         <Domain name="array_list" id="6990.SelectionCellFieldDataArrayName.array_list">
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
       </Property>
       <Property name="SelectionPointFieldDataArrayName" id="6990.SelectionPointFieldDataArrayName" number_of_elements="1">
@@ -19927,7 +19539,7 @@
           <String text="velocities-and-contact-normals"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="6990.ColorArrayName.field_list">
           <Entry value="0" text="Point Data"/>
@@ -20029,7 +19641,7 @@
           <String text="velocities-and-contact-normals"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
       </Property>
       <Property name="OSPRayScaleFunction" id="6990.OSPRayScaleFunction" number_of_elements="1">
@@ -20369,577 +19981,6 @@
         <Element index="15" value="1"/>
       </Property>
     </Proxy>
-    <Proxy group="representations" type="UnstructuredGridRepresentation" id="8604" servers="21">
-      <Property name="Input" id="8604.Input" number_of_elements="1">
-        <Proxy value="8431" output_port="0"/>
-        <Domain name="input_array_cell" id="8604.Input.input_array_cell"/>
-        <Domain name="input_array_point" id="8604.Input.input_array_point"/>
-        <Domain name="input_type" id="8604.Input.input_type"/>
-      </Property>
-      <Property name="Representation" id="8604.Representation" number_of_elements="1">
-        <Element index="0" value="Surface"/>
-        <Domain name="list" id="8604.Representation.list">
-          <String text="3D Glyphs"/>
-          <String text="Outline"/>
-          <String text="Point Gaussian"/>
-          <String text="Points"/>
-          <String text="Surface"/>
-          <String text="Surface With Edges"/>
-          <String text="Volume"/>
-          <String text="Wireframe"/>
-        </Domain>
-      </Property>
-      <Property name="RepresentationTypesInfo" id="8604.RepresentationTypesInfo" number_of_elements="8">
-        <Element index="0" value="3D Glyphs"/>
-        <Element index="1" value="Outline"/>
-        <Element index="2" value="Point Gaussian"/>
-        <Element index="3" value="Points"/>
-        <Element index="4" value="Surface"/>
-        <Element index="5" value="Surface With Edges"/>
-        <Element index="6" value="Volume"/>
-        <Element index="7" value="Wireframe"/>
-      </Property>
-      <Property name="SelectionCellFieldDataArrayName" id="8604.SelectionCellFieldDataArrayName" number_of_elements="1">
-        <Element index="0" value="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        <Domain name="array_list" id="8604.SelectionCellFieldDataArrayName.array_list">
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
-      </Property>
-      <Property name="SelectionPointFieldDataArrayName" id="8604.SelectionPointFieldDataArrayName" number_of_elements="1">
-        <Element index="0" value="particle-velocity"/>
-        <Domain name="array_list" id="8604.SelectionPointFieldDataArrayName.array_list">
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="velocities-and-contact-normals"/>
-        </Domain>
-      </Property>
-      <Property name="SelectionVisibility" id="8604.SelectionVisibility" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8604.SelectionVisibility.bool"/>
-      </Property>
-      <Property name="Visibility" id="8604.Visibility" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8604.Visibility.bool"/>
-      </Property>
-      <Property name="Ambient" id="8604.Ambient" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="range" id="8604.Ambient.range"/>
-      </Property>
-      <Property name="AmbientColor" id="8604.AmbientColor" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="1"/>
-        <Domain name="range" id="8604.AmbientColor.range"/>
-      </Property>
-      <Property name="BackfaceAmbientColor" id="8604.BackfaceAmbientColor" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="1"/>
-        <Domain name="range" id="8604.BackfaceAmbientColor.range"/>
-      </Property>
-      <Property name="BackfaceDiffuseColor" id="8604.BackfaceDiffuseColor" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="1"/>
-        <Domain name="range" id="8604.BackfaceDiffuseColor.range"/>
-      </Property>
-      <Property name="BackfaceOpacity" id="8604.BackfaceOpacity" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8604.BackfaceOpacity.range"/>
-      </Property>
-      <Property name="BackfaceRepresentation" id="8604.BackfaceRepresentation" number_of_elements="1">
-        <Element index="0" value="400"/>
-        <Domain name="enum" id="8604.BackfaceRepresentation.enum">
-          <Entry value="400" text="Follow Frontface"/>
-          <Entry value="401" text="Cull Backface"/>
-          <Entry value="402" text="Cull Frontface"/>
-          <Entry value="0" text="Points"/>
-          <Entry value="1" text="Wireframe"/>
-          <Entry value="2" text="Surface"/>
-          <Entry value="3" text="Surface With Edges"/>
-        </Domain>
-      </Property>
-      <Property name="BlockColor" id="8604.BlockColor"/>
-      <Property name="BlockColorsDistinctValues" id="8604.BlockColorsDistinctValues" number_of_elements="1">
-        <Element index="0" value="12"/>
-        <Domain name="range" id="8604.BlockColorsDistinctValues.range"/>
-      </Property>
-      <Property name="BlockOpacity" id="8604.BlockOpacity"/>
-      <Property name="BlockVisibility" id="8604.BlockVisibility"/>
-      <Property name="Color" id="8604.Color" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="1"/>
-        <Domain name="range" id="8604.Color.range"/>
-      </Property>
-      <Property name="ColorArrayName" id="8604.ColorArrayName" number_of_elements="5">
-        <Element index="0" value=""/>
-        <Element index="1" value=""/>
-        <Element index="2" value=""/>
-        <Element index="3" value="0"/>
-        <Element index="4" value="particle-velocity"/>
-        <Domain name="array_list" id="8604.ColorArrayName.array_list">
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="velocities-and-contact-normals"/>
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
-        <Domain name="field_list" id="8604.ColorArrayName.field_list">
-          <Entry value="0" text="Point Data"/>
-          <Entry value="1" text="Cell Data"/>
-          <Entry value="2" text="Field Data"/>
-          <Entry value="4" text="Vertex Data"/>
-          <Entry value="5" text="Edge Data"/>
-          <Entry value="6" text="Row Data"/>
-        </Domain>
-      </Property>
-      <Property name="CustomShader" id="8604.CustomShader" number_of_elements="1">
-        <Element index="0" value=""/>
-      </Property>
-      <Property name="Diffuse" id="8604.Diffuse" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8604.Diffuse.range"/>
-      </Property>
-      <Property name="DiffuseColor" id="8604.DiffuseColor" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="1"/>
-        <Domain name="range" id="8604.DiffuseColor.range"/>
-      </Property>
-      <Property name="EdgeColor" id="8604.EdgeColor" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0.5"/>
-        <Domain name="range" id="8604.EdgeColor.range"/>
-      </Property>
-      <Property name="Emissive" id="8604.Emissive" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.Emissive.bool"/>
-      </Property>
-      <Property name="ExtractedBlockIndex" id="8604.ExtractedBlockIndex" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="tree" id="8604.ExtractedBlockIndex.tree"/>
-      </Property>
-      <Property name="GaussianRadius" id="8604.GaussianRadius" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="range" id="8604.GaussianRadius.range"/>
-      </Property>
-      <Property name="GlyphType" id="8604.GlyphType" number_of_elements="1">
-        <Proxy value="8443" output_port="0"/>
-        <Domain name="input_type" id="8604.GlyphType.input_type"/>
-        <Domain name="proxy_list" id="8604.GlyphType.proxy_list">
-          <Proxy value="8443"/>
-          <Proxy value="8454"/>
-          <Proxy value="8465"/>
-          <Proxy value="8476"/>
-          <Proxy value="8487"/>
-          <Proxy value="8498"/>
-          <Proxy value="8509"/>
-        </Domain>
-      </Property>
-      <Property name="InterpolateScalarsBeforeMapping" id="8604.InterpolateScalarsBeforeMapping" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8604.InterpolateScalarsBeforeMapping.bool"/>
-      </Property>
-      <Property name="Interpolation" id="8604.Interpolation" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="enum" id="8604.Interpolation.enum">
-          <Entry value="0" text="Flat"/>
-          <Entry value="1" text="Gouraud"/>
-        </Domain>
-      </Property>
-      <Property name="LineWidth" id="8604.LineWidth" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8604.LineWidth.range"/>
-      </Property>
-      <Property name="LookupTable" id="8604.LookupTable" number_of_elements="1">
-        <Proxy value="6767"/>
-        <Domain name="groups" id="8604.LookupTable.groups"/>
-      </Property>
-      <Property name="MapScalars" id="8604.MapScalars" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8604.MapScalars.bool"/>
-      </Property>
-      <Property name="Masking" id="8604.Masking" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.Masking.bool"/>
-      </Property>
-      <Property name="MeshVisibility" id="8604.MeshVisibility" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.MeshVisibility.bool"/>
-      </Property>
-      <Property name="NonlinearSubdivisionLevel" id="8604.NonlinearSubdivisionLevel" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8604.NonlinearSubdivisionLevel.range"/>
-      </Property>
-      <Property name="OSPRayScaleArray" id="8604.OSPRayScaleArray" number_of_elements="1">
-        <Element index="0" value="particle-velocity"/>
-        <Domain name="array_list" id="8604.OSPRayScaleArray.array_list">
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="velocities-and-contact-normals"/>
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
-      </Property>
-      <Property name="OSPRayScaleFunction" id="8604.OSPRayScaleFunction" number_of_elements="1">
-        <Proxy value="8520"/>
-        <Domain name="groups" id="8604.OSPRayScaleFunction.groups"/>
-        <Domain name="proxy_list" id="8604.OSPRayScaleFunction.proxy_list">
-          <Proxy value="8520"/>
-        </Domain>
-      </Property>
-      <Property name="OSPRayUseScaleArray" id="8604.OSPRayUseScaleArray" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.OSPRayUseScaleArray.bool"/>
-      </Property>
-      <Property name="Opacity" id="8604.Opacity" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8604.Opacity.range"/>
-      </Property>
-      <Property name="OpacityArray" id="8604.OpacityArray" number_of_elements="5">
-        <Element index="0" value=""/>
-        <Element index="1" value=""/>
-        <Element index="2" value=""/>
-        <Element index="3" value="0"/>
-        <Element index="4" value="particle-velocity"/>
-        <Domain name="array_list" id="8604.OpacityArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
-      </Property>
-      <Property name="OpacityByArray" id="8604.OpacityByArray" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.OpacityByArray.bool"/>
-      </Property>
-      <Property name="OpacityTransferFunction" id="8604.OpacityTransferFunction" number_of_elements="1">
-        <Proxy value="8543"/>
-        <Domain name="groups" id="8604.OpacityTransferFunction.groups"/>
-        <Domain name="proxy_list" id="8604.OpacityTransferFunction.proxy_list">
-          <Proxy value="8543"/>
-        </Domain>
-      </Property>
-      <Property name="Orient" id="8604.Orient" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.Orient.bool"/>
-      </Property>
-      <Property name="Orientation" id="8604.Orientation" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8604.Orientation.range"/>
-      </Property>
-      <Property name="OrientationMode" id="8604.OrientationMode" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="enum" id="8604.OrientationMode.enum">
-          <Entry value="0" text="Direction"/>
-          <Entry value="1" text="Rotation"/>
-        </Domain>
-      </Property>
-      <Property name="Origin" id="8604.Origin" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8604.Origin.range"/>
-      </Property>
-      <Property name="Pickable" id="8604.Pickable" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8604.Pickable.bool"/>
-      </Property>
-      <Property name="PointSize" id="8604.PointSize" number_of_elements="1">
-        <Element index="0" value="2"/>
-        <Domain name="range" id="8604.PointSize.range"/>
-      </Property>
-      <Property name="Position" id="8604.Position" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8604.Position.range"/>
-      </Property>
-      <Property name="ScalarOpacityFunction" id="8604.ScalarOpacityFunction" number_of_elements="1">
-        <Proxy value="6766"/>
-        <Domain name="groups" id="8604.ScalarOpacityFunction.groups"/>
-      </Property>
-      <Property name="ScalarOpacityUnitDistance" id="8604.ScalarOpacityUnitDistance" number_of_elements="1">
-        <Element index="0" value="0.103503951811684"/>
-        <Domain name="bounds" id="8604.ScalarOpacityUnitDistance.bounds"/>
-      </Property>
-      <Property name="Scale" id="8604.Scale" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="1"/>
-        <Domain name="range" id="8604.Scale.range"/>
-      </Property>
-      <Property name="ScaleByArray" id="8604.ScaleByArray" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.ScaleByArray.bool"/>
-      </Property>
-      <Property name="ScaleFactor" id="8604.ScaleFactor" number_of_elements="1">
-        <Element index="0" value="0.0281533002853394"/>
-        <Domain name="bounds" id="8604.ScaleFactor.bounds"/>
-        <Domain name="scalar_range" id="8604.ScaleFactor.scalar_range"/>
-        <Domain name="vector_range" id="8604.ScaleFactor.vector_range"/>
-      </Property>
-      <Property name="ScaleMode" id="8604.ScaleMode" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="enum" id="8604.ScaleMode.enum">
-          <Entry value="0" text="No Data Scaling Off"/>
-          <Entry value="1" text="Magnitude"/>
-          <Entry value="2" text="Vector Components"/>
-        </Domain>
-      </Property>
-      <Property name="ScaleTransferFunction" id="8604.ScaleTransferFunction" number_of_elements="1">
-        <Proxy value="8544"/>
-        <Domain name="groups" id="8604.ScaleTransferFunction.groups"/>
-        <Domain name="proxy_list" id="8604.ScaleTransferFunction.proxy_list">
-          <Proxy value="8544"/>
-        </Domain>
-      </Property>
-      <Property name="Scaling" id="8604.Scaling" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.Scaling.bool"/>
-      </Property>
-      <Property name="SelectMapper" id="8604.SelectMapper" number_of_elements="1">
-        <Element index="0" value="Projected tetra"/>
-        <Domain name="list" id="8604.SelectMapper.list">
-          <String text="Projected tetra"/>
-          <String text="Z sweep"/>
-          <String text="Bunyk ray cast"/>
-        </Domain>
-      </Property>
-      <Property name="SelectMaskArray" id="8604.SelectMaskArray" number_of_elements="1">
-        <Element index="0" value=""/>
-      </Property>
-      <Property name="SelectOrientationVectors" id="8604.SelectOrientationVectors" number_of_elements="1">
-        <Element index="0" value=""/>
-      </Property>
-      <Property name="SelectScaleArray" id="8604.SelectScaleArray" number_of_elements="1">
-        <Element index="0" value=""/>
-      </Property>
-      <Property name="SelectionCellLabelBold" id="8604.SelectionCellLabelBold" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SelectionCellLabelBold.bool"/>
-      </Property>
-      <Property name="SelectionCellLabelColor" id="8604.SelectionCellLabelColor" number_of_elements="3">
-        <Element index="0" value="0"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8604.SelectionCellLabelColor.range"/>
-      </Property>
-      <Property name="SelectionCellLabelFontFamily" id="8604.SelectionCellLabelFontFamily" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="enum" id="8604.SelectionCellLabelFontFamily.enum">
-          <Entry value="0" text="Arial"/>
-          <Entry value="1" text="Courier"/>
-          <Entry value="2" text="Times"/>
-        </Domain>
-      </Property>
-      <Property name="SelectionCellLabelFontSize" id="8604.SelectionCellLabelFontSize" number_of_elements="1">
-        <Element index="0" value="18"/>
-        <Domain name="range" id="8604.SelectionCellLabelFontSize.range"/>
-      </Property>
-      <Property name="SelectionCellLabelFormat" id="8604.SelectionCellLabelFormat" number_of_elements="1">
-        <Element index="0" value=""/>
-      </Property>
-      <Property name="SelectionCellLabelItalic" id="8604.SelectionCellLabelItalic" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SelectionCellLabelItalic.bool"/>
-      </Property>
-      <Property name="SelectionCellLabelJustification" id="8604.SelectionCellLabelJustification" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="enum" id="8604.SelectionCellLabelJustification.enum">
-          <Entry value="0" text="Left"/>
-          <Entry value="1" text="Center"/>
-          <Entry value="2" text="Right"/>
-        </Domain>
-      </Property>
-      <Property name="SelectionCellLabelOpacity" id="8604.SelectionCellLabelOpacity" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8604.SelectionCellLabelOpacity.range"/>
-      </Property>
-      <Property name="SelectionCellLabelShadow" id="8604.SelectionCellLabelShadow" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SelectionCellLabelShadow.bool"/>
-      </Property>
-      <Property name="SelectionCellLabelVisibility" id="8604.SelectionCellLabelVisibility" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SelectionCellLabelVisibility.bool"/>
-      </Property>
-      <Property name="SelectionColor" id="8604.SelectionColor" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="1"/>
-        <Domain name="range" id="8604.SelectionColor.range"/>
-      </Property>
-      <Property name="SelectionLineWidth" id="8604.SelectionLineWidth" number_of_elements="1">
-        <Element index="0" value="2"/>
-        <Domain name="range" id="8604.SelectionLineWidth.range"/>
-      </Property>
-      <Property name="SelectionOpacity" id="8604.SelectionOpacity" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8604.SelectionOpacity.range"/>
-      </Property>
-      <Property name="SelectionPointLabelBold" id="8604.SelectionPointLabelBold" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SelectionPointLabelBold.bool"/>
-      </Property>
-      <Property name="SelectionPointLabelColor" id="8604.SelectionPointLabelColor" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="0"/>
-        <Domain name="range" id="8604.SelectionPointLabelColor.range"/>
-      </Property>
-      <Property name="SelectionPointLabelFontFamily" id="8604.SelectionPointLabelFontFamily" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="enum" id="8604.SelectionPointLabelFontFamily.enum">
-          <Entry value="0" text="Arial"/>
-          <Entry value="1" text="Courier"/>
-          <Entry value="2" text="Times"/>
-        </Domain>
-      </Property>
-      <Property name="SelectionPointLabelFontSize" id="8604.SelectionPointLabelFontSize" number_of_elements="1">
-        <Element index="0" value="18"/>
-        <Domain name="range" id="8604.SelectionPointLabelFontSize.range"/>
-      </Property>
-      <Property name="SelectionPointLabelFormat" id="8604.SelectionPointLabelFormat" number_of_elements="1">
-        <Element index="0" value=""/>
-      </Property>
-      <Property name="SelectionPointLabelItalic" id="8604.SelectionPointLabelItalic" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SelectionPointLabelItalic.bool"/>
-      </Property>
-      <Property name="SelectionPointLabelJustification" id="8604.SelectionPointLabelJustification" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="enum" id="8604.SelectionPointLabelJustification.enum">
-          <Entry value="0" text="Left"/>
-          <Entry value="1" text="Center"/>
-          <Entry value="2" text="Right"/>
-        </Domain>
-      </Property>
-      <Property name="SelectionPointLabelOpacity" id="8604.SelectionPointLabelOpacity" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="range" id="8604.SelectionPointLabelOpacity.range"/>
-      </Property>
-      <Property name="SelectionPointLabelShadow" id="8604.SelectionPointLabelShadow" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SelectionPointLabelShadow.bool"/>
-      </Property>
-      <Property name="SelectionPointLabelVisibility" id="8604.SelectionPointLabelVisibility" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SelectionPointLabelVisibility.bool"/>
-      </Property>
-      <Property name="SelectionPointSize" id="8604.SelectionPointSize" number_of_elements="1">
-        <Element index="0" value="5"/>
-        <Domain name="range" id="8604.SelectionPointSize.range"/>
-      </Property>
-      <Property name="SelectionRepresentation" id="8604.SelectionRepresentation" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="enum" id="8604.SelectionRepresentation.enum">
-          <Entry value="0" text="Points"/>
-          <Entry value="1" text="Wireframe"/>
-          <Entry value="2" text="Surface"/>
-        </Domain>
-      </Property>
-      <Property name="SelectionUseOutline" id="8604.SelectionUseOutline" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SelectionUseOutline.bool"/>
-      </Property>
-      <Property name="SetScaleArray" id="8604.SetScaleArray" number_of_elements="5">
-        <Element index="0" value=""/>
-        <Element index="1" value=""/>
-        <Element index="2" value=""/>
-        <Element index="3" value="0"/>
-        <Element index="4" value="particle-velocity"/>
-        <Domain name="array_list" id="8604.SetScaleArray.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-        </Domain>
-      </Property>
-      <Property name="ShaderPreset" id="8604.ShaderPreset" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="enum" id="8604.ShaderPreset.enum">
-          <Entry value="0" text="Gaussian Blur (Default)"/>
-          <Entry value="1" text="Sphere"/>
-          <Entry value="2" text="Black-edged circle"/>
-          <Entry value="3" text="Plain circle"/>
-          <Entry value="4" text="Triangle"/>
-          <Entry value="5" text="Square Outline"/>
-        </Domain>
-      </Property>
-      <Property name="Specular" id="8604.Specular" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="range" id="8604.Specular.range"/>
-      </Property>
-      <Property name="SpecularColor" id="8604.SpecularColor" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="1"/>
-        <Domain name="range" id="8604.SpecularColor.range"/>
-      </Property>
-      <Property name="SpecularPower" id="8604.SpecularPower" number_of_elements="1">
-        <Element index="0" value="100"/>
-        <Domain name="range" id="8604.SpecularPower.range"/>
-      </Property>
-      <Property name="StaticMode" id="8604.StaticMode" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.StaticMode.bool"/>
-      </Property>
-      <Property name="SuppressLOD" id="8604.SuppressLOD" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.SuppressLOD.bool"/>
-      </Property>
-      <Property name="Texture" id="8604.Texture">
-        <Domain name="groups" id="8604.Texture.groups"/>
-      </Property>
-      <Property name="Triangulate" id="8604.Triangulate" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8604.Triangulate.bool"/>
-      </Property>
-      <Property name="UserTransform" id="8604.UserTransform" number_of_elements="16">
-        <Element index="0" value="1"/>
-        <Element index="1" value="0"/>
-        <Element index="2" value="0"/>
-        <Element index="3" value="0"/>
-        <Element index="4" value="0"/>
-        <Element index="5" value="1"/>
-        <Element index="6" value="0"/>
-        <Element index="7" value="0"/>
-        <Element index="8" value="0"/>
-        <Element index="9" value="0"/>
-        <Element index="10" value="1"/>
-        <Element index="11" value="0"/>
-        <Element index="12" value="0"/>
-        <Element index="13" value="0"/>
-        <Element index="14" value="0"/>
-        <Element index="15" value="1"/>
-      </Property>
-    </Proxy>
     <Proxy group="representations" type="ScalarBarWidgetRepresentation" id="5560" servers="21">
       <Property name="Enabled" id="5560.Enabled" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -21153,7 +20194,7 @@
     </Proxy>
     <Proxy group="representations" type="ScalarBarWidgetRepresentation" id="6516" servers="21">
       <Property name="Enabled" id="6516.Enabled" number_of_elements="1">
-        <Element index="0" value="0"/>
+        <Element index="0" value="1"/>
         <Domain name="bool" id="6516.Enabled.bool"/>
       </Property>
       <Property name="LockPosition" id="6516.LockPosition" number_of_elements="1">
@@ -24965,7 +24006,7 @@
         <Element index="1" value=""/>
         <Element index="2" value=""/>
         <Element index="3" value="1"/>
-        <Element index="4" value="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+        <Element index="4" value="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         <Domain name="array_list" id="5452.SelectInputScalars.array_list">
           <String text="particle-coloring"/>
           <String text="particle-epsilon"/>
@@ -24974,7 +24015,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5452.SelectInputScalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -24982,55 +24023,13 @@
         </Domain>
       </Property>
       <Property name="ThresholdBetween" id="5452.ThresholdBetween" number_of_elements="2">
-        <Element index="0" value="6"/>
-        <Element index="1" value="6"/>
+        <Element index="0" value="5"/>
+        <Element index="1" value="5"/>
         <Domain name="range" id="5452.ThresholdBetween.range"/>
       </Property>
       <Property name="UseContinuousCellRange" id="5452.UseContinuousCellRange" number_of_elements="1">
         <Element index="0" value="0"/>
         <Domain name="bool" id="5452.UseContinuousCellRange.bool"/>
-      </Property>
-    </Proxy>
-    <Proxy group="filters" type="Threshold" id="8431" servers="1">
-      <Property name="AllScalars" id="8431.AllScalars" number_of_elements="1">
-        <Element index="0" value="1"/>
-        <Domain name="bool" id="8431.AllScalars.bool"/>
-      </Property>
-      <Property name="Input" id="8431.Input" number_of_elements="1">
-        <Proxy value="4830" output_port="0"/>
-        <Domain name="groups" id="8431.Input.groups"/>
-        <Domain name="input_array" id="8431.Input.input_array"/>
-        <Domain name="input_type" id="8431.Input.input_type"/>
-      </Property>
-      <Property name="SelectInputScalars" id="8431.SelectInputScalars" number_of_elements="5">
-        <Element index="0" value=""/>
-        <Element index="1" value=""/>
-        <Element index="2" value=""/>
-        <Element index="3" value="1"/>
-        <Element index="4" value="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        <Domain name="array_list" id="8431.SelectInputScalars.array_list">
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
-        </Domain>
-        <Domain name="field_list" id="8431.SelectInputScalars.field_list">
-          <Entry value="0" text="Point Data"/>
-          <Entry value="1" text="Cell Data"/>
-        </Domain>
-      </Property>
-      <Property name="ThresholdBetween" id="8431.ThresholdBetween" number_of_elements="2">
-        <Element index="0" value="3"/>
-        <Element index="1" value="3"/>
-        <Domain name="range" id="8431.ThresholdBetween.range"/>
-      </Property>
-      <Property name="UseContinuousCellRange" id="8431.UseContinuousCellRange" number_of_elements="1">
-        <Element index="0" value="0"/>
-        <Domain name="bool" id="8431.UseContinuousCellRange.bool"/>
       </Property>
     </Proxy>
     <Proxy group="filters" type="Glyph" id="5352" servers="1">
@@ -25071,22 +24070,11 @@
         <Element index="4" value="None"/>
         <Domain name="array_list" id="5352.Scalars.array_list">
           <String text="None"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
         </Domain>
-        <Domain name="field_list" id="5352.Scalars.field_list">
-          <Entry value="0" text="Point Data"/>
-          <Entry value="1" text="Cell Data"/>
-        </Domain>
+        <Domain name="field_list" id="5352.Scalars.field_list"/>
       </Property>
       <Property name="ScaleFactor" id="5352.ScaleFactor" number_of_elements="1">
-        <Element index="0" value="0.01"/>
+        <Element index="0" value="0.1"/>
         <Domain name="bounds" id="5352.ScaleFactor.bounds"/>
         <Domain name="scalar_range" id="5352.ScaleFactor.scalar_range"/>
         <Domain name="vector_range" id="5352.ScaleFactor.vector_range"/>
@@ -25127,17 +24115,11 @@
         <Element index="1" value=""/>
         <Element index="2" value=""/>
         <Element index="3" value="0"/>
-        <Element index="4" value="velocities-and-contact-normals"/>
+        <Element index="4" value="None"/>
         <Domain name="array_list" id="5352.Vectors.array_list">
           <String text="None"/>
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="velocities-and-contact-normals"/>
         </Domain>
-        <Domain name="field_list" id="5352.Vectors.field_list">
-          <Entry value="0" text="Point Data"/>
-          <Entry value="1" text="Cell Data"/>
-        </Domain>
+        <Domain name="field_list" id="5352.Vectors.field_list"/>
       </Property>
     </Proxy>
     <Proxy group="filters" type="Threshold" id="5163" servers="1">
@@ -25155,8 +24137,8 @@
         <Element index="0" value=""/>
         <Element index="1" value=""/>
         <Element index="2" value=""/>
-        <Element index="3" value="1"/>
-        <Element index="4" value="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+        <Element index="3" value="0"/>
+        <Element index="4" value="particle-coloring"/>
         <Domain name="array_list" id="5163.SelectInputScalars.array_list">
           <String text="particle-coloring"/>
           <String text="particle-epsilon"/>
@@ -25165,7 +24147,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5163.SelectInputScalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -25173,8 +24155,8 @@
         </Domain>
       </Property>
       <Property name="ThresholdBetween" id="5163.ThresholdBetween" number_of_elements="2">
-        <Element index="0" value="5"/>
-        <Element index="1" value="5"/>
+        <Element index="0" value="4"/>
+        <Element index="1" value="4"/>
         <Domain name="range" id="5163.ThresholdBetween.range"/>
       </Property>
       <Property name="UseContinuousCellRange" id="5163.UseContinuousCellRange" number_of_elements="1">
@@ -25197,8 +24179,8 @@
         <Element index="0" value=""/>
         <Element index="1" value=""/>
         <Element index="2" value=""/>
-        <Element index="3" value="1"/>
-        <Element index="4" value="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+        <Element index="3" value="0"/>
+        <Element index="4" value="particle-coloring"/>
         <Domain name="array_list" id="5174.SelectInputScalars.array_list">
           <String text="particle-coloring"/>
           <String text="particle-epsilon"/>
@@ -25207,7 +24189,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5174.SelectInputScalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -25215,8 +24197,8 @@
         </Domain>
       </Property>
       <Property name="ThresholdBetween" id="5174.ThresholdBetween" number_of_elements="2">
-        <Element index="0" value="4"/>
-        <Element index="1" value="4"/>
+        <Element index="0" value="2"/>
+        <Element index="1" value="2"/>
         <Domain name="range" id="5174.ThresholdBetween.range"/>
       </Property>
       <Property name="UseContinuousCellRange" id="5174.UseContinuousCellRange" number_of_elements="1">
@@ -25259,25 +24241,14 @@
         <Element index="1" value=""/>
         <Element index="2" value=""/>
         <Element index="3" value="0"/>
-        <Element index="4" value="None"/>
+        <Element index="4" value="particle-radius"/>
         <Domain name="array_list" id="5441.Scalars.array_list">
           <String text="None"/>
-          <String text="particle-coloring"/>
-          <String text="particle-epsilon"/>
-          <String text="particle-influence"/>
-          <String text="particle-radius"/>
-          <String text="particle-velocity"/>
-          <String text="face-vertex-association"/>
-          <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
         </Domain>
-        <Domain name="field_list" id="5441.Scalars.field_list">
-          <Entry value="0" text="Point Data"/>
-          <Entry value="1" text="Cell Data"/>
-        </Domain>
+        <Domain name="field_list" id="5441.Scalars.field_list"/>
       </Property>
       <Property name="ScaleFactor" id="5441.ScaleFactor" number_of_elements="1">
-        <Element index="0" value="0.01"/>
+        <Element index="0" value="0.1"/>
         <Domain name="bounds" id="5441.ScaleFactor.bounds"/>
         <Domain name="scalar_range" id="5441.ScaleFactor.scalar_range"/>
         <Domain name="vector_range" id="5441.ScaleFactor.vector_range"/>
@@ -25321,14 +24292,8 @@
         <Element index="4" value="friction-normals"/>
         <Domain name="array_list" id="5441.Vectors.array_list">
           <String text="None"/>
-          <String text="friction-normals"/>
-          <String text="particle-angular"/>
-          <String text="velocities-and-contact-normals"/>
         </Domain>
-        <Domain name="field_list" id="5441.Vectors.field_list">
-          <Entry value="0" text="Point Data"/>
-          <Entry value="1" text="Cell Data"/>
-        </Domain>
+        <Domain name="field_list" id="5441.Vectors.field_list"/>
       </Property>
     </Proxy>
     <Proxy group="sources" type="LegacyVTKFileReader" id="4830" servers="1">
@@ -33367,7 +32332,7 @@
         <Element index="1" value=""/>
         <Element index="2" value=""/>
         <Element index="3" value="1"/>
-        <Element index="4" value="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+        <Element index="4" value="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         <Domain name="array_list" id="5141.SelectInputScalars.array_list">
           <String text="particle-coloring"/>
           <String text="particle-epsilon"/>
@@ -33376,7 +32341,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5141.SelectInputScalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -33384,8 +32349,8 @@
         </Domain>
       </Property>
       <Property name="ThresholdBetween" id="5141.ThresholdBetween" number_of_elements="2">
-        <Element index="0" value="2"/>
-        <Element index="1" value="2"/>
+        <Element index="0" value="1"/>
+        <Element index="1" value="1"/>
         <Domain name="range" id="5141.ThresholdBetween.range"/>
       </Property>
       <Property name="UseContinuousCellRange" id="5141.UseContinuousCellRange" number_of_elements="1">
@@ -33409,7 +32374,7 @@
         <Element index="1" value=""/>
         <Element index="2" value=""/>
         <Element index="3" value="1"/>
-        <Element index="4" value="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+        <Element index="4" value="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         <Domain name="array_list" id="4841.SelectInputScalars.array_list">
           <String text="particle-coloring"/>
           <String text="particle-epsilon"/>
@@ -33418,7 +32383,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="4841.SelectInputScalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -33480,7 +32445,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5041.Scalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -33529,7 +32494,7 @@
         <Element index="1" value=""/>
         <Element index="2" value=""/>
         <Element index="3" value="0"/>
-        <Element index="4" value="None"/>
+        <Element index="4" value="velocities-and-contact-normals"/>
         <Domain name="array_list" id="5041.Vectors.array_list">
           <String text="None"/>
           <String text="friction-normals"/>
@@ -33577,7 +32542,7 @@
         <Element index="1" value=""/>
         <Element index="2" value=""/>
         <Element index="3" value="0"/>
-        <Element index="4" value="particle-influence"/>
+        <Element index="4" value="None"/>
         <Domain name="array_list" id="5130.Scalars.array_list">
           <String text="None"/>
           <String text="particle-coloring"/>
@@ -33587,7 +32552,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5130.Scalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -33694,7 +32659,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="4930.Scalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -33791,7 +32756,7 @@
         <Element index="1" value=""/>
         <Element index="2" value=""/>
         <Element index="3" value="0"/>
-        <Element index="4" value="particle-velocity"/>
+        <Element index="4" value="None"/>
         <Domain name="array_list" id="5263.Scalars.array_list">
           <String text="None"/>
           <String text="particle-coloring"/>
@@ -33801,7 +32766,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5263.Scalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -33908,7 +32873,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5541.Scalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -33985,8 +32950,8 @@
         <Element index="0" value=""/>
         <Element index="1" value=""/>
         <Element index="2" value=""/>
-        <Element index="3" value="1"/>
-        <Element index="4" value="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+        <Element index="3" value="0"/>
+        <Element index="4" value="particle-coloring"/>
         <Domain name="array_list" id="5152.SelectInputScalars.array_list">
           <String text="particle-coloring"/>
           <String text="particle-epsilon"/>
@@ -33995,7 +32960,7 @@
           <String text="particle-velocity"/>
           <String text="face-vertex-association"/>
           <String text="level"/>
-          <String text="type(particle-centre=0,link=1,triangle=2,triangleEpsilon=3,collision-point=4,collision-distancePQ=5,triangle-normal=6)"/>
+          <String text="type(particle-centre=0,triangle=1,collision-point=2,link=3,collision-distance=4,triangle-normal=5)"/>
         </Domain>
         <Domain name="field_list" id="5152.SelectInputScalars.field_list">
           <Entry value="0" text="Point Data"/>
@@ -34003,8 +32968,8 @@
         </Domain>
       </Property>
       <Property name="ThresholdBetween" id="5152.ThresholdBetween" number_of_elements="2">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
+        <Element index="0" value="3"/>
+        <Element index="1" value="3"/>
         <Domain name="range" id="5152.ThresholdBetween.range"/>
       </Property>
       <Property name="UseContinuousCellRange" id="5152.UseContinuousCellRange" number_of_elements="1">
@@ -34025,7 +32990,7 @@
         <Element index="0" value="0"/>
         <Element index="1" value="1999"/>
       </Property>
-      <Property name="TimeSources" id="259.TimeSources" number_of_elements="16">
+      <Property name="TimeSources" id="259.TimeSources" number_of_elements="15">
         <Proxy value="4830"/>
         <Proxy value="4841"/>
         <Proxy value="4930"/>
@@ -34041,7 +33006,6 @@
         <Proxy value="5441"/>
         <Proxy value="5452"/>
         <Proxy value="5541"/>
-        <Proxy value="8431"/>
       </Property>
       <Property name="TimestepValues" id="259.TimestepValues" number_of_elements="2000">
         <Element index="0" value="0"/>
@@ -36089,9 +35053,9 @@
         <Domain name="range" id="7159.BackLightWarmth.range"/>
       </Property>
       <Property name="Background" id="7159.Background" number_of_elements="3">
-        <Element index="0" value="1"/>
-        <Element index="1" value="1"/>
-        <Element index="2" value="1"/>
+        <Element index="0" value="0.32"/>
+        <Element index="1" value="0.34"/>
+        <Element index="2" value="0.43"/>
         <Domain name="range" id="7159.Background.range"/>
       </Property>
       <Property name="Background2" id="7159.Background2" number_of_elements="3">
@@ -36324,7 +35288,7 @@
         <Element index="0" value="20"/>
         <Domain name="range" id="7159.RemoteRenderThreshold.range"/>
       </Property>
-      <Property name="Representations" id="7159.Representations" number_of_elements="35">
+      <Property name="Representations" id="7159.Representations" number_of_elements="34">
         <Proxy value="5560"/>
         <Proxy value="5569"/>
         <Proxy value="5578"/>
@@ -36359,7 +35323,6 @@
         <Proxy value="6828"/>
         <Proxy value="6990"/>
         <Proxy value="7147"/>
-        <Proxy value="8604"/>
       </Property>
       <Property name="RotationFactor" id="7159.RotationFactor" number_of_elements="1">
         <Element index="0" value="1"/>
@@ -36461,7 +35424,7 @@
         <Domain name="bool" id="7159.UseTexturedBackground.bool"/>
       </Property>
       <Property name="ViewSize" id="7159.ViewSize" number_of_elements="2">
-        <Element index="0" value="1000"/>
+        <Element index="0" value="1039"/>
         <Element index="1" value="907"/>
       </Property>
       <Property name="ViewTime" id="7159.ViewTime" number_of_elements="1">
@@ -36847,21 +35810,6 @@
       <Item id="7101" name="OpacityTransferFunction"/>
       <Item id="7102" name="ScaleTransferFunction"/>
     </ProxyCollection>
-    <ProxyCollection name="pq_helper_proxies.8431">
-      <Item id="8442" name="RepresentationAnimationHelper"/>
-    </ProxyCollection>
-    <ProxyCollection name="pq_helper_proxies.8604">
-      <Item id="8443" name="GlyphType"/>
-      <Item id="8454" name="GlyphType"/>
-      <Item id="8465" name="GlyphType"/>
-      <Item id="8476" name="GlyphType"/>
-      <Item id="8487" name="GlyphType"/>
-      <Item id="8498" name="GlyphType"/>
-      <Item id="8509" name="GlyphType"/>
-      <Item id="8520" name="OSPRayScaleFunction"/>
-      <Item id="8543" name="OpacityTransferFunction"/>
-      <Item id="8544" name="ScaleTransferFunction"/>
-    </ProxyCollection>
     <ProxyCollection name="pq_helper_proxies.8766">
       <Item id="8085" name="RepresentationAnimationHelper"/>
       <Item id="8086" name="RepresentationAnimationHelper"/>
@@ -36928,7 +35876,6 @@
       <Item id="6315" name="UnstructuredGridRepresentation6"/>
       <Item id="6407" name="UnstructuredGridRepresentation7"/>
       <Item id="6990" name="UnstructuredGridRepresentation8"/>
-      <Item id="8604" name="UnstructuredGridRepresentation9"/>
     </ProxyCollection>
     <ProxyCollection name="scalar_bars">
       <Item id="5560" name="ScalarBarWidgetRepresentation1"/>
@@ -36953,7 +35900,6 @@
     </ProxyCollection>
     <ProxyCollection name="sources">
       <Item id="5452" name="TesselationNormal"/>
-      <Item id="8431" name="TriangleEpsilon"/>
       <Item id="5352" name="contact"/>
       <Item id="5163" name="contact-distance"/>
       <Item id="5174" name="contact-point"/>
@@ -37182,7 +36128,6 @@
       <GlobalPropertyLink global_name="EdgeColor" proxy="6755" property="EdgeColor"/>
       <GlobalPropertyLink global_name="EdgeColor" proxy="6990" property="EdgeColor"/>
       <GlobalPropertyLink global_name="EdgeColor" proxy="7147" property="EdgeColor"/>
-      <GlobalPropertyLink global_name="EdgeColor" proxy="8604" property="EdgeColor"/>
       <GlobalPropertyLink global_name="ForegroundColor" proxy="7159" property="OrientationAxesOutlineColor"/>
       <GlobalPropertyLink global_name="ForegroundColor" proxy="5678" property="AmbientColor"/>
       <GlobalPropertyLink global_name="ForegroundColor" proxy="5885" property="AmbientColor"/>
@@ -37200,8 +36145,6 @@
       <GlobalPropertyLink global_name="ForegroundColor" proxy="6990" property="Color"/>
       <GlobalPropertyLink global_name="ForegroundColor" proxy="7147" property="AmbientColor"/>
       <GlobalPropertyLink global_name="ForegroundColor" proxy="7147" property="Color"/>
-      <GlobalPropertyLink global_name="ForegroundColor" proxy="8604" property="AmbientColor"/>
-      <GlobalPropertyLink global_name="ForegroundColor" proxy="8604" property="Color"/>
       <GlobalPropertyLink global_name="SelectionColor" proxy="5678" property="SelectionColor"/>
       <GlobalPropertyLink global_name="SelectionColor" proxy="5806" property="SelectionColor"/>
       <GlobalPropertyLink global_name="SelectionColor" proxy="5885" property="SelectionColor"/>
@@ -37217,7 +36160,6 @@
       <GlobalPropertyLink global_name="SelectionColor" proxy="6755" property="SelectionColor"/>
       <GlobalPropertyLink global_name="SelectionColor" proxy="6990" property="SelectionColor"/>
       <GlobalPropertyLink global_name="SelectionColor" proxy="7147" property="SelectionColor"/>
-      <GlobalPropertyLink global_name="SelectionColor" proxy="8604" property="SelectionColor"/>
       <GlobalPropertyLink global_name="SurfaceColor" proxy="5678" property="BackfaceDiffuseColor"/>
       <GlobalPropertyLink global_name="SurfaceColor" proxy="5678" property="DiffuseColor"/>
       <GlobalPropertyLink global_name="SurfaceColor" proxy="5806" property="BackfaceDiffuseColor"/>
@@ -37247,8 +36189,6 @@
       <GlobalPropertyLink global_name="SurfaceColor" proxy="6990" property="DiffuseColor"/>
       <GlobalPropertyLink global_name="SurfaceColor" proxy="7147" property="BackfaceDiffuseColor"/>
       <GlobalPropertyLink global_name="SurfaceColor" proxy="7147" property="DiffuseColor"/>
-      <GlobalPropertyLink global_name="SurfaceColor" proxy="8604" property="BackfaceDiffuseColor"/>
-      <GlobalPropertyLink global_name="SurfaceColor" proxy="8604" property="DiffuseColor"/>
       <GlobalPropertyLink global_name="TextAnnotationColor" proxy="7159" property="OrientationAxesLabelColor"/>
       <GlobalPropertyLink global_name="TextAnnotationColor" proxy="5560" property="LabelColor"/>
       <GlobalPropertyLink global_name="TextAnnotationColor" proxy="5560" property="TitleColor"/>

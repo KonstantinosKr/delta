@@ -54,6 +54,7 @@ default: header
 	@echo dim3-gcc-release-omp-triangle-phi
 	@echo dim3-gcc-release-omp-triangle-ampl
 	@echo dim3-gcc-release-omp-particle
+	@echo dim3-gcc-asserts-tbb
 	@echo dim3-gcc-release-tbb
 	@echo dim3-gcc-release-mpi-tbb
 	@echo dim3-gcc-release-tbb-omp-triangle
@@ -128,6 +129,14 @@ dim3-gcc-release-omp-particle: CFLAGS=$(GCCRUN) $(GCC_SHAREDMEMORY)
 dim3-gcc-release-omp-particle: LFLAGS=$(LINK_OMP)
 dim3-gcc-release-omp-particle: EXECUTABLE=dem-3d-release-omp-particle
 dim3-gcc-release-omp-particle: header build
+
+dim3-gcc-asserts-tbb: CC=g++ -std=c++0x
+dim3-gcc-asserts-tbb: DIM=-DDim3
+dim3-gcc-asserts-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DAsserts -DSharedTBB -DTBB_USE_THREADING_TOOLS -DTBB_USE_ASSERT
+dim3-gcc-asserts-tbb: CFLAGS=$(INCLUDE_TBB) -g3
+dim3-gcc-asserts-tbb: LFLAGS= $(LINK_TBB) 
+dim3-gcc-asserts-tbb: EXECUTABLE=dem-3d-asserts-tbb
+dim3-gcc-asserts-tbb: header build
 
 dim3-gcc-release-tbb: CC=g++ -std=c++0x
 dim3-gcc-release-tbb: DIM=-DDim3

@@ -24,20 +24,12 @@ void dem::Vertex::init() {
 #if defined(SharedMemoryParallelisation)
 
   tarch::multicore::Lock lock(_VertexSemaphore);
-  int returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseOnlyRecycledEntries);
-
-  if (returnedHeapIndex<0) {
-    returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
-  }
+  int returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   _vertexData.setParticles(returnedHeapIndex);
 
-  returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseOnlyRecycledEntries);
-
-  if (returnedHeapIndex<0) {
-    returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
-  }
-
+  returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   _vertexData.setParticlesOnCoarserLevels(returnedHeapIndex);
+
   _vertexData.setVetoCoarsening(false);
   lock.free();
 #else
