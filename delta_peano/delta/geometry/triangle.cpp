@@ -230,7 +230,7 @@ void delta::geometry::triangle::biSideSectTriangle(
     std::vector<iREAL>&  yCoordinates,
     std::vector<iREAL>&  zCoordinates)
 {
-  iREAL O[3] = {A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0,  A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0, A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0};
+  //iREAL O[3] = {A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0,  A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0, A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0};
 
   iREAL alpha[3], beta[3], gamma[3];
   alpha[0] = (A[0] + B[0])/2.0;
@@ -663,7 +663,6 @@ int delta::geometry::triangle::octSect(
 
 double delta::geometry::triangle::getTriangleLength(iREAL A[3], iREAL B[3], iREAL C[3])
 {
-  double length = 0;
   std::vector<iREAL>  xCoordinates;
   std::vector<iREAL>  yCoordinates;
   std::vector<iREAL>  zCoordinates;
@@ -693,7 +692,7 @@ void delta::geometry::triangle::getTrianglesInBoundingBox(
     std::vector<iREAL>&  yCoordinatesBounded,
     std::vector<iREAL>&  zCoordinatesBounded)
 {
-  for(int i=0; i<xCoordinatesRoot.size(); i+=3)
+  for(unsigned i=0; i<xCoordinatesRoot.size(); i+=3)
   {
     iREAL A[3], B[3], C[3];
 

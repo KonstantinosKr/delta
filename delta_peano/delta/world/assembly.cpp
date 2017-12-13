@@ -126,7 +126,7 @@ void delta::world::assembly::collapseUniformGrid(iREAL position[3], std::vector<
   elementHeight += epsilon*2;
 
   double dx = (grid[1][0] - grid[0][0]) - elementWidth;
-  double dy = (grid[xzcuts*xzcuts][1] - grid[xzcuts*xzcuts-1][1]) - elementHeight;
+  //double dy = (grid[xzcuts*xzcuts][1] - grid[xzcuts*xzcuts-1][1]) - elementHeight;
   double dz = dx;
 
   ////////////////////////////////////////
@@ -337,7 +337,7 @@ void delta::world::assembly::uniSphereRadius(
   iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
   iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
-  for(int i=index; i<particleGrid.size(); i++)
+  for(unsigned i=index; i<particleGrid.size(); i++)
   {
     rad.push_back(radius);
     componentGrid.push_back("sphere");
@@ -351,14 +351,14 @@ void delta::world::assembly::uniSphereRadius(
     std::vector<delta::world::object> &_insitufineObjects)
 {
 
-  if(!_insitufineObjects.size() > 0) return;
+  if((!_insitufineObjects.size()) > 0) return;
 
   delta::geometry::material::MaterialType material = _insitufineObjects[0].getMaterial();
 
   iREAL massPerParticle = totalMass/(iREAL)_insitufineObjects.size();
   iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
-  for(int i=index; i<_insitufineObjects.size(); i++)
+  for(unsigned i=index; i<_insitufineObjects.size(); i++)
   {
     _insitufineObjects[i].generateSphere(radius);
   }
@@ -499,7 +499,7 @@ void delta::world::assembly::nonUniSphereRadius(
   if(radius*2 > subcellx)
     printf("ERROR:radius bigger than subcellx\n");
 
-  for(int i=0; i<particleGrid.size(); i++)
+  for(unsigned i=0; i<particleGrid.size(); i++)
   {
     iREAL particleDiameter = mindiam + static_cast <iREAL>(rand()) / (static_cast <iREAL> (RAND_MAX/(maxdiam-mindiam)));
     rad.push_back(particleDiameter/2);
@@ -532,7 +532,7 @@ void delta::world::assembly::nonUniSphereRadius(
     iREAL subcellx,
     std::vector<delta::world::object> &_insitufineObjects)
 {
-  if(!_insitufineObjects.size() > 0) return;
+  if((!_insitufineObjects.size()) > 0) return;
 
   delta::geometry::material::MaterialType material = _insitufineObjects[0].getMaterial();
 
@@ -548,7 +548,7 @@ void delta::world::assembly::nonUniSphereRadius(
     printf("ERROR:radius bigger than subcellx\n");
 
   std::vector<double> rad;
-  for(int i=index; i<_insitufineObjects.size(); i++)
+  for(unsigned i=index; i<_insitufineObjects.size(); i++)
   {
     iREAL particleDiameter = mindiam + static_cast <iREAL>(rand()) / (static_cast <iREAL> (RAND_MAX/(maxdiam-mindiam)));
     rad.push_back(particleDiameter/2);
@@ -562,7 +562,7 @@ void delta::world::assembly::nonUniSphereRadius(
   iREAL rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
 
   reMassTotal=0;
-  for(int i=0; i<rad.size(); i++)
+  for(unsigned i=0; i<rad.size(); i++)
   {
     rad[i] = rad[i] * rescale;
     _insitufineObjects[index+i].generateSphere(rad[i]);
@@ -589,7 +589,7 @@ void delta::world::assembly::nonUniMeshGeometry(
   iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
   iREAL reMassTotal = 0;
-  iREAL masssphere = 0;
+  //iREAL masssphere = 0;
 
   iREAL position[3];
   //std::vector<iREAL> rad;
@@ -693,7 +693,7 @@ void delta::world::assembly::loadNuclearGeometry(
     position[1] += (h*scalePercentage)*i;
     std::vector<std::array<iREAL, 3>> tmp = delta::world::assembly::array2d(position, arrayXZlength, elements);
 
-    for(int j=0; j<tmp.size(); j++)
+    for(unsigned j=0; j<tmp.size(); j++)
     {
       auto material = delta::geometry::material::MaterialType::GRAPHITE;
 

@@ -88,7 +88,7 @@ void delta::world::object::generateMesh(
   delta::geometry::properties::getInverseInertia(inertia, inverse, _isObstacle);
 
 
-  for(int i=0;i<xCoordinates.size(); i++)
+  for(unsigned i=0;i<xCoordinates.size(); i++)
   {
     this->_xCoordinates.push_back(xCoordinates[i]);
     this->_yCoordinates.push_back(yCoordinates[i]);
@@ -153,7 +153,7 @@ void delta::world::object::setxyzCoordinates(
     std::vector<double> yCoordinates,
     std::vector<double> zCoordinates)
 {
-  for(int i=0; i< xCoordinates.size(); i++)
+  for(unsigned i=0; i< xCoordinates.size(); i++)
   {
     _xCoordinates.push_back(xCoordinates[i]);
     _yCoordinates.push_back(yCoordinates[i]);
@@ -299,7 +299,7 @@ double delta::world::object::getMinX()
   iREAL minx = std::numeric_limits<double>::max();
   if(_xCoordinates.size() > 0)
   {
-    for(int i=0; i<_xCoordinates.size(); i++)
+    for(unsigned i=0; i<_xCoordinates.size(); i++)
     {
       if(_xCoordinates[i] < minx) minx = _xCoordinates[i];
     }
@@ -314,7 +314,7 @@ double delta::world::object::getMaxX()
   iREAL maxx = std::numeric_limits<double>::min();
   if(_xCoordinates.size() > 0)
   {
-    for(int i=0; i<_xCoordinates.size(); i++)
+    for(unsigned i=0; i<_xCoordinates.size(); i++)
     {
       if(_xCoordinates[i] > maxx) maxx = _xCoordinates[i];
     }
@@ -329,7 +329,7 @@ double delta::world::object::getMinY()
   iREAL miny = std::numeric_limits<double>::max();
   if(_yCoordinates.size() > 0)
   {
-    for(int i=0; i<_yCoordinates.size(); i++)
+    for(unsigned i=0; i<_yCoordinates.size(); i++)
     {
       if(_yCoordinates[i] < miny) miny = _yCoordinates[i];
     }
@@ -344,7 +344,7 @@ double delta::world::object::getMaxY()
   iREAL maxy = std::numeric_limits<double>::min();
   if(_yCoordinates.size() > 0)
   {
-    for(int i=0; i<_yCoordinates.size(); i++)
+    for(unsigned i=0; i<_yCoordinates.size(); i++)
     {
       if(_xCoordinates[i] > maxy) maxy = _xCoordinates[i];
     }
@@ -359,7 +359,7 @@ double delta::world::object::getMinZ()
   iREAL minz = std::numeric_limits<double>::max();
   if(_xCoordinates.size() > 0)
   {
-    for(int i=0; i<_xCoordinates.size(); i++)
+    for(unsigned i=0; i<_xCoordinates.size(); i++)
     {
       if(_xCoordinates[i] < minz) minz = _zCoordinates[i];
     }
@@ -374,7 +374,7 @@ double delta::world::object::getMaxZ()
   iREAL maxz = std::numeric_limits<double>::min();
   if(_zCoordinates.size() > 0)
   {
-    for(int i=0; i<_yCoordinates.size(); i++)
+    for(unsigned i=0; i<_yCoordinates.size(); i++)
     {
       if(_xCoordinates[i] > maxz) maxz = _xCoordinates[i];
     }

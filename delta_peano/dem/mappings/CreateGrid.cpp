@@ -83,7 +83,7 @@ void dem::mappings::CreateGrid::computeBoundary()
   iREAL minDiameter = std::numeric_limits<double>::max();
   iREAL maxDiameter = std::numeric_limits<double>::min();
 
-  for(int i=0; i<_coarseObjects.size(); i++)
+  for(unsigned i=0; i<_coarseObjects.size(); i++)
   {
     iREAL ominx = _coarseObjects[i].getMinX();
     iREAL ominy = _coarseObjects[i].getMinY();
@@ -105,7 +105,7 @@ void dem::mappings::CreateGrid::computeBoundary()
     maxDiameter = _coarseObjects[i].getRad() * 2.0;
   }
 
-  for(int i=0; i<_insitufineObjects.size(); i++)
+  for(unsigned i=0; i<_insitufineObjects.size(); i++)
   {
     iREAL ominx = _insitufineObjects[i].getMinX();
     iREAL ominy = _insitufineObjects[i].getMinY();
@@ -127,7 +127,7 @@ void dem::mappings::CreateGrid::computeBoundary()
     maxDiameter = _insitufineObjects[i].getRad() * 2.0;
   }
 
-  for(int i=0; i<_fineObjects.size(); i++)
+  for(unsigned i=0; i<_fineObjects.size(); i++)
   {
    iREAL ominx = _fineObjects[i].getMinX();
    iREAL ominy = _fineObjects[i].getMinY();
@@ -325,7 +325,7 @@ void dem::mappings::CreateGrid::beginIteration(
     std::vector<std::array<iREAL, 3>> grid = delta::world::assembly::getGridArrayList(pos, xzcuts, ycuts, subGridLength);
 
     iREAL xmin = 1; iREAL xmax = 0;
-    for(int i=0; i<grid.size(); i++)
+    for(unsigned i=0; i<grid.size(); i++)
     {
       std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
       delta::world::object particles("sphere", i, p, material, isObstacle, isFriction);
@@ -343,7 +343,7 @@ void dem::mappings::CreateGrid::beginIteration(
     //printf("length1:%f\n", subGridLength);
     //printf("length2:%f\n", _hopperWidth-margin*2);
 
-    for(int i=hopperParticles; i<_insitufineObjects.size(); i++)
+    for(unsigned i=hopperParticles; i<_insitufineObjects.size(); i++)
     {
       std::array<double, 3> position = _insitufineObjects[i].getCentre();
       position[0] += dx;  position[2] += dx;
@@ -368,7 +368,7 @@ void dem::mappings::CreateGrid::beginIteration(
     double maxRad = 0.0;
     double minRad = 1.00;
 
-    for(int i=hopperParticles; i<_insitufineObjects.size(); i++)
+    for(unsigned i=hopperParticles; i<_insitufineObjects.size(); i++)
     {
       if(maxRad <= _insitufineObjects[i].getRad()) maxRad = _insitufineObjects[i].getRad();
       if(minRad >= _insitufineObjects[i].getRad()) minRad = _insitufineObjects[i].getRad();
@@ -379,7 +379,7 @@ void dem::mappings::CreateGrid::beginIteration(
 
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
-    for(int i=hopperParticles; i<_insitufineObjects.size(); i++)
+    for(unsigned i=hopperParticles; i<_insitufineObjects.size(); i++)
     {
       std::array<double, 3> pos = _insitufineObjects[i].getCentre();
       iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
@@ -389,7 +389,7 @@ void dem::mappings::CreateGrid::beginIteration(
 
       if(yCoordinates.size() >= 0)
       {
-        for(int i=0; i<yCoordinates.size(); i++)
+        for(unsigned i=0; i<yCoordinates.size(); i++)
         {
           yCoordinates[i] += maxRad+epsilon;
         }
@@ -695,7 +695,7 @@ void dem::mappings::CreateGrid::createCell(
     deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0), centreAsArray);
     /*
     dfor2(k) //size 2, dimension 3
-      for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
+      for(unsigned i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
       {
         printf("particles :%i\n", fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getGlobalParticleId());
       }
@@ -735,7 +735,7 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     }
   }
   /*
-  for(int i=0; i<deleteCoarseObjects.size(); i++)
+  for(unsigned i=0; i<deleteCoarseObjects.size(); i++)
   {
     _coarseObjects.erase(_coarseObjects.begin()+deleteCoarseObjects[i]);
   }*/
@@ -770,7 +770,7 @@ void dem::mappings::CreateGrid::deployFineEnviroment(
   //////////////PER CELL CENTER DEPLOYMENT//////////////////////
   //////////////////////////////////////////////////////////////
   //if((_numberOfParticles-_numberOfObstacles) <= _fineObjects.size())
-  for(int i=0; i<_fineObjects.size(); i++)
+  for(unsigned i=0; i<_fineObjects.size(); i++)
   {
     delta::world::object obj = _fineObjects[i];
 
@@ -919,7 +919,7 @@ void dem::mappings::CreateGrid::decomposeMeshByOctsection(
     centroid[0][2] = centerOfMass[2];
 
 
-    for(int i=0; i<xCoordinates.size(); i++)
+    for(unsigned i=0; i<xCoordinates.size(); i++)
     {//coarse triangle push
       xCoordinatesMultiLevel[0].push_back(xCoordinates[i]);
       yCoordinatesMultiLevel[0].push_back(yCoordinates[i]);
@@ -930,9 +930,9 @@ void dem::mappings::CreateGrid::decomposeMeshByOctsection(
     int numOfSubParticles = delta::geometry::triangle::octSectParticle(octSectTimes, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
 
     ////////LOOP ALL subdivisions of quadtree and create particles
-    for(int i=numOfSubParticles; i>(octSectTimes-1)*8; i--)
+    for(unsigned i=numOfSubParticles; i>(octSectTimes-1)*8; i--)
     {
-      for(int j=0; j<xCoordinatesMultiLevel[i].size(); j++)
+      for(unsigned j=0; j<xCoordinatesMultiLevel[i].size(); j++)
       {
         xCoordinates.push_back(xCoordinatesMultiLevel[i][j]);
         yCoordinates.push_back(yCoordinatesMultiLevel[i][j]);
@@ -998,7 +998,7 @@ int dem::mappings::CreateGrid::decomposeMeshIntoParticles(
   delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
   delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
 
-  for(int i=0; i<xCoordinates.size(); i+=3)
+  for(unsigned i=0; i<xCoordinates.size(); i+=3)
   {
     iREAL A[3] = {xCoordinates[i], yCoordinates[i], zCoordinates[i]};
     iREAL B[3] = {xCoordinates[i+1], yCoordinates[i+1], zCoordinates[i+1]};
@@ -1371,7 +1371,7 @@ void dem::mappings::CreateGrid::enterCell(
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
   dfor2(k) //size 2, dimension 3
-    for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
+    for(unsigned i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
     {
       records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
 

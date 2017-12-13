@@ -403,7 +403,7 @@ int main(int argc, char** argv)
   dem::mappings::CreateGrid::setScenario(scenarioArray, gridHMax, gridType, meshMultiplier);
 
   dem::runners::Runner::Plot plot;
-  int trackID = -1;
+  //int trackID = -1;
   if (plotIdentifier=="never") {
     plot = dem::runners::Runner::Never;
   }
