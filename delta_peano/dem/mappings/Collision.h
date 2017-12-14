@@ -63,18 +63,41 @@ class dem::mappings::Collision {
 
     State   _state;
 
+    /**
+     * I always keep a pointer to the original state as well. Is not
+     * beautiful, but I use it for the background tasks.
+     */
+    static State  _backgroundTaskState;
+
   public:
+    static bool RunGridTraversalInParallel;
+    static bool RunParticleLoopInParallel;
+    static bool RunParticleComparisionsInBackground;
 
     static void all_to_all(
         dem::Vertex * const                       fineGridVertices,
         const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
         State& state);
 
+    /**
+     * Either call it for the local state. Then nothing has to be protected.
+     * Or call it on the background state. Then all accesses have to be
+     * protected.
+     */
     static void collisionDetection(
-        dem::Vertex&  vertexA,
-        dem::Vertex&  vertexB,
-        int i, int j,
-        State& state);
+      dem::records::Particle   particleA,
+      int                      numberOfTrianglesA,
+      const double*            xCoordinatesA,
+      const double*            yCoordinatesA,
+      const double*            zCoordinatesA,
+      dem::records::Particle   particleB,
+      int                      numberOfTrianglesB,
+      const double*            xCoordinatesB,
+      const double*            yCoordinatesB,
+      const double*            zCoordinatesB,
+      State*                   state,
+      bool                     protectStateAccess
+    );
 
     static void collideParticlesOfTwoDifferentVertices(
       dem::Vertex&  vertexA,

@@ -2,6 +2,8 @@
 #include "tarch/tests/TestCaseRegistry.h"
 #include "tarch/logging/CommandLineLogger.h"
 #include "tarch/parallel/Node.h"
+#include "tarch/multicore/BackgroundTasks.h"
+
 
 #include "peano/peano.h"
 
@@ -38,6 +40,9 @@ void printManual()
 	  << " max-step-size       adaptive max step" << std::endl
 	  << " triangles-per-particle    triangles used to represent one particle" << std::endl
 	  << " [core-count]        only required in TBB shared memory" << std::endl
+    << " [run-grid-parallel] only required in TBB shared memory" << std::endl
+    << " [run-particles-parallel] only required in TBB shared memory" << std::endl
+    << " [run-comparisons-in-background] only required in TBB shared memory. Either off or a positive number" << std::endl
 	  << std::endl << std::endl << std::endl << std::endl
 
 	  << " OPTIONS: "  << std::endl << std::endl
@@ -160,7 +165,7 @@ int main(int argc, char** argv)
   }
 
   #ifdef SharedMemoryParallelisation
-  	  const int NumberOfArguments = 12;
+  	  const int NumberOfArguments = 15;
   #else
   	  const int NumberOfArguments = 11;
   #endif
@@ -185,9 +190,44 @@ int main(int argc, char** argv)
   const int			 meshMultiplier  = atof(argv[10]);
 
   #ifdef SharedMemoryParallelisation
-  	  const int          numberOfCores       = atoi(argv[11]);
+	  const int          numberOfCores       = atoi(argv[11]);
+    if (std::string(argv[12])=="true") {
+      dem::mappings::Collision::RunGridTraversalInParallel = true;
+    }
+    else if (std::string(argv[12])=="false") {
+      dem::mappings::Collision::RunGridTraversalInParallel = false;
+    }
+    else {
+      logError( "main()", "grid parallelisation either has to be true or false" );
+      return -1;
+    }
+    if (std::string(argv[13])=="true") {
+      dem::mappings::Collision::RunParticleLoopInParallel = true;
+    }
+    else if (std::string(argv[13])=="false") {
+      dem::mappings::Collision::RunParticleLoopInParallel = false;
+    }
+    else {
+      logError( "main()", "particle parallelisation either has to be true or false" );
+      return -1;
+    }
+    if (std::string(argv[14])=="off") {
+      dem::mappings::Collision::RunParticleComparisionsInBackground = false;
+    }
+    else {
+      const int  numberOfBackgroundTasks = atoi(argv[14]);
+      if (numberOfBackgroundTasks>=1) {
+        logError( "main()", "max number of background tasks is set to " << numberOfBackgroundTasks );
+        dem::mappings::Collision::RunParticleComparisionsInBackground = true;
+        tarch::multicore::setMaxNumberOfRunningBackgroundThreads( numberOfBackgroundTasks );
+      }
+      else {
+        logError( "main()", "run in background either has to be true or false" );
+        return -1;
+      }
+    }
   #else
-  	  const int          numberOfCores       = 0;
+	  const int          numberOfCores       = 0;
   #endif
 
   int programExitCode = 0;

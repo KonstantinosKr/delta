@@ -451,6 +451,21 @@ double* dem::Vertex::getZCoordinates( int particleNumber ) {
   return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) ).data();
 }
 
+const double * const dem::Vertex::getXCoordinates( int particleNumber ) const {
+  const records::Particle& particle = getParticle(particleNumber);
+  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) ).data();
+}
+
+const double * const  dem::Vertex::getYCoordinates( int particleNumber ) const {
+  const records::Particle& particle = getParticle(particleNumber);
+  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) ).data();
+}
+
+const double * const  dem::Vertex::getZCoordinates( int particleNumber ) const {
+  const records::Particle& particle = getParticle(particleNumber);
+  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) ).data();
+}
+
 double* dem::Vertex::getXRefCoordinates( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
   return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(3) ).data();

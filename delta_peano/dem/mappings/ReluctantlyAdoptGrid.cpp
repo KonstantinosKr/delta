@@ -212,9 +212,6 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  #ifdef ompParticle
-    #pragma omp parallel for reduction(+:approach)
-  #endif
   for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
     for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
@@ -223,7 +220,20 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
          (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
         continue;
 
-       dem::mappings::Collision::collisionDetection(fineGridVertex, fineGridVertex, i, j, _state);
+       dem::mappings::Collision::collisionDetection(
+          fineGridVertex.getParticle(i),
+          fineGridVertex.getNumberOfTriangles(i),
+          fineGridVertex.getXCoordinates(i),
+          fineGridVertex.getYCoordinates(i),
+          fineGridVertex.getZCoordinates(i),
+          fineGridVertex.getParticle(j),
+          fineGridVertex.getNumberOfTriangles(j),
+          fineGridVertex.getXCoordinates(j),
+          fineGridVertex.getYCoordinates(j),
+          fineGridVertex.getZCoordinates(j),
+          &_state,
+          false
+       );
     }
   }
 

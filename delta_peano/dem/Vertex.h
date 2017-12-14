@@ -154,6 +154,10 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
     double* getYCoordinates( int particleNumber );
     double* getZCoordinates( int particleNumber );
 
+    const double * const getXCoordinates( int particleNumber ) const;
+    const double * const getYCoordinates( int particleNumber ) const;
+    const double * const getZCoordinates( int particleNumber ) const;
+
     double* getXRefCoordinates( int particleNumber );
     double* getYRefCoordinates( int particleNumber );
     double* getZRefCoordinates( int particleNumber );

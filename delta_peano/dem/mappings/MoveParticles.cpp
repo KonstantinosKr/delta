@@ -18,7 +18,13 @@ peano::CommunicationSpecification   dem::mappings::MoveParticles::communicationS
  * Move
  */
 peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexFirstTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+  return peano::MappingSpecification(
+    peano::MappingSpecification::WholeTree,
+    dem::mappings::Collision::RunGridTraversalInParallel ?
+      peano::MappingSpecification::RunConcurrentlyOnFineGrid :
+      peano::MappingSpecification::Serial,
+    true
+  );
 }
 /**
  * Reflect
@@ -30,7 +36,12 @@ peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexLastTimeS
  * Reassign
  */
 peano::MappingSpecification   dem::mappings::MoveParticles::enterCellSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
+  return peano::MappingSpecification(
+    peano::MappingSpecification::WholeTree,
+    dem::mappings::Collision::RunGridTraversalInParallel ?
+      peano::MappingSpecification::AvoidFineGridRaces :
+      peano::MappingSpecification::Serial,
+    true);
 }
 
 peano::MappingSpecification   dem::mappings::MoveParticles::leaveCellSpecification(int level) const {
