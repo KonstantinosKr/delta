@@ -540,8 +540,6 @@ void dem::mappings::CreateGrid::beginIteration(
       _coarseObjects.push_back(objectA);
       _coarseObjects.push_back(objectB);
 
-      printf("points per particle %i\n", _noPointsPerParticle);
-
     }
 
     //////////////////////////////////////////////////////
@@ -745,7 +743,6 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
     {
 
       dem::mappings::CreateGrid::deployObject(vertex, object);
-      printf("particle coarse: %i\n", _numberOfParticles);
       //deleteCoarseObjects.push_back(i);
     }
   }
@@ -867,7 +864,6 @@ void dem::mappings::CreateGrid::deployObject(
     std::vector<double> xCoordinates = object.getxCoordinates();
     std::vector<double> yCoordinates = object.getyCoordinates();
     std::vector<double> zCoordinates = object.getzCoordinates();
-    printf("length:%i\n", xCoordinates.size());
     particleNumber = vertex.createParticle(
                                           xCoordinates,
                                           yCoordinates,

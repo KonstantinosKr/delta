@@ -5,35 +5,35 @@
 # Is invoked with the following arguments
 # $1 path to the output file
 
-JOB_SCRIPT0=t1
-JOB_SCRIPT1=t2
-JOB_SCRIPT2=t3
-JOB_SCRIPT3=t4
-JOB_SCRIPT4=t6
-JOB_SCRIPT5=t8
-JOB_SCRIPT6=t12
-JOB_SCRIPT7=t16
-JOB_SCRIPT8=t24
+JOB_SCRIPT0=../t1
+JOB_SCRIPT1=../t2
+JOB_SCRIPT2=../t3
+JOB_SCRIPT3=../t4
+JOB_SCRIPT4=../t6
+JOB_SCRIPT5=../t8
+JOB_SCRIPT6=../t12
+JOB_SCRIPT7=../t16
+JOB_SCRIPT8=../t24
 
-exp0o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB1
-exp1o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB2
-exp2o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB3
-exp3o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB4
-exp4o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB6
-exp5o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB8
-exp6o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB12
-exp7o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB16
-exp8o=/ddn/data/rfmw74/h7X3-hopperUni1k-reluctant-spheres-TBB24
+exp0o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE1_10
+exp1o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE2_10
+exp2o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE3_10
+exp3o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE4_10
+exp4o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE6_10
+exp5o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE8_10
+exp6o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE12_10
+exp7o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE16_10
+exp8o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE24_10
 
-exp0="./dem-3d-release-tbb 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 1"
-exp1="./dem-3d-release-tbb 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 2"
-exp2="./dem-3d-release-tbb 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 3"
-exp3="./dem-3d-release-tbb 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 4"
-exp4="./dem-3d-release-tbb 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 6"
-exp5="./dem-3d-release-tbb 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 8"
-exp6="./dem-3d-release-tbb 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 12"
-exp7="./dem-3d-release-tbb 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 16"
-exp8="./dem-3d-release-tbb 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true sphere 10 24"
+exp0="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 10"
+exp1="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 10"
+exp2="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 10"
+exp3="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 10"
+exp4="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 10"
+exp5="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 10"
+exp6="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 10"
+exp7="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 10"
+exp8="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 10"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
