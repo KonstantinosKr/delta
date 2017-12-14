@@ -48,17 +48,17 @@ std::vector<int> delta::collision::getPenaltyStatistics() {
 
 std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
   int       numberOfTrianglesOfGeometryA,
-  iREAL*   xCoordinatesOfPointsOfGeometryA,
-  iREAL*   yCoordinatesOfPointsOfGeometryA,
-  iREAL*   zCoordinatesOfPointsOfGeometryA,
+  const iREAL*   xCoordinatesOfPointsOfGeometryA,
+  const iREAL*   yCoordinatesOfPointsOfGeometryA,
+  const iREAL*   zCoordinatesOfPointsOfGeometryA,
   iREAL    epsilonA,
   bool      frictionA,
   int 		  particleA,
 
   int       numberOfTrianglesOfGeometryB,
-  iREAL*   xCoordinatesOfPointsOfGeometryB,
-  iREAL*   yCoordinatesOfPointsOfGeometryB,
-  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  const iREAL*   xCoordinatesOfPointsOfGeometryB,
+  const iREAL*   yCoordinatesOfPointsOfGeometryB,
+  const iREAL*   zCoordinatesOfPointsOfGeometryB,
   iREAL    epsilonB,
   bool      frictionB,
   int 		  particleB)
@@ -135,18 +135,18 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
 
 std::vector<delta::collision::contactpoint> delta::collision::penalty(
   int       numberOfTrianglesOfGeometryA,
-  iREAL*   xCoordinatesOfPointsOfGeometryA,
-  iREAL*   yCoordinatesOfPointsOfGeometryA,
-  iREAL*   zCoordinatesOfPointsOfGeometryA,
-  iREAL    epsilonA,
+  const iREAL*   xCoordinatesOfPointsOfGeometryA,
+  const iREAL*   yCoordinatesOfPointsOfGeometryA,
+  const iREAL*   zCoordinatesOfPointsOfGeometryA,
+  const iREAL    epsilonA,
   bool      frictionA,
   int	  	  particleA,
 
   int       numberOfTrianglesOfGeometryB,
-  iREAL*   xCoordinatesOfPointsOfGeometryB,
-  iREAL*   yCoordinatesOfPointsOfGeometryB,
-  iREAL*   zCoordinatesOfPointsOfGeometryB,
-  iREAL    epsilonB,
+  const iREAL*   xCoordinatesOfPointsOfGeometryB,
+  const iREAL*   yCoordinatesOfPointsOfGeometryB,
+  const iREAL*   zCoordinatesOfPointsOfGeometryB,
+  const iREAL    epsilonB,
   bool      frictionB,
   int		    particleB
 ) {
@@ -253,12 +253,12 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   #endif
 #endif
 extern void delta::collision::penalty(
-  iREAL   xCoordinatesOfTriangleA[3],
-  iREAL   yCoordinatesOfTriangleA[3],
-  iREAL   zCoordinatesOfTriangleA[3],
-  iREAL   xCoordinatesOfTriangleB[3],
-  iREAL   yCoordinatesOfTriangleB[3],
-  iREAL   zCoordinatesOfTriangleB[3],
+  const iREAL   xCoordinatesOfTriangleA[],
+  const iREAL   yCoordinatesOfTriangleA[],
+  const iREAL   zCoordinatesOfTriangleA[],
+  const iREAL   xCoordinatesOfTriangleB[],
+  const iREAL   yCoordinatesOfTriangleB[],
+  const iREAL   zCoordinatesOfTriangleB[],
   iREAL&  xPA,
   iREAL&  yPA,
   iREAL&  zPA,
@@ -400,12 +400,12 @@ extern void delta::collision::penalty(
  
 //statistics
 void delta::collision::penalty(
-	  iREAL   xCoordinatesOfTriangleA[3],
-	  iREAL   yCoordinatesOfTriangleA[3],
-	  iREAL   zCoordinatesOfTriangleA[3],
-	  iREAL   xCoordinatesOfTriangleB[3],
-	  iREAL   yCoordinatesOfTriangleB[3],
-	  iREAL   zCoordinatesOfTriangleB[3],
+  const iREAL   xCoordinatesOfTriangleA[],
+  const iREAL   yCoordinatesOfTriangleA[],
+  const iREAL   zCoordinatesOfTriangleA[],
+  const iREAL   xCoordinatesOfTriangleB[],
+  const iREAL   yCoordinatesOfTriangleB[],
+  const iREAL   zCoordinatesOfTriangleB[],
     iREAL&  xPA,
     iREAL&  yPA,
     iREAL&  zPA,

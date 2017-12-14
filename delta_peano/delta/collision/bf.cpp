@@ -27,17 +27,17 @@
 
 std::vector<delta::collision::contactpoint> delta::collision::bf(
     int       numberOfTrianglesOfGeometryA,
-    iREAL*   xCoordinatesOfPointsOfGeometryA,
-    iREAL*   yCoordinatesOfPointsOfGeometryA,
-    iREAL*   zCoordinatesOfPointsOfGeometryA,
+    const iREAL*   xCoordinatesOfPointsOfGeometryA,
+    const iREAL*   yCoordinatesOfPointsOfGeometryA,
+    const iREAL*   zCoordinatesOfPointsOfGeometryA,
     iREAL    epsilonA,
     bool      frictionA,
     int 	    particleA,
 
     int       numberOfTrianglesOfGeometryB,
-    iREAL*   xCoordinatesOfPointsOfGeometryB,
-    iREAL*   yCoordinatesOfPointsOfGeometryB,
-    iREAL*   zCoordinatesOfPointsOfGeometryB,
+    const iREAL*   xCoordinatesOfPointsOfGeometryB,
+    const iREAL*   yCoordinatesOfPointsOfGeometryB,
+    const iREAL*   zCoordinatesOfPointsOfGeometryB,
     iREAL    epsilonB,
     bool      frictionB,
     int 	    particleB)
@@ -62,6 +62,7 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
   #endif
   for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   {
+
     __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
@@ -183,12 +184,12 @@ int NoDivTriTriIsect(
 //#pragma omp declare simd
 #endif
 void delta::collision::bf(
-    iREAL   xxCoordinatesOfPointsOfGeometryA[3],
-    iREAL   yyCoordinatesOfPointsOfGeometryA[3],
-    iREAL   zzCoordinatesOfPointsOfGeometryA[3],
-    iREAL   xxCoordinatesOfPointsOfGeometryB[3],
-    iREAL   yyCoordinatesOfPointsOfGeometryB[3],
-    iREAL   zzCoordinatesOfPointsOfGeometryB[3],
+  const iREAL   *xxCoordinatesOfPointsOfGeometryA,
+  const iREAL   *yyCoordinatesOfPointsOfGeometryA,
+  const iREAL   *zzCoordinatesOfPointsOfGeometryA,
+  const iREAL   *xxCoordinatesOfPointsOfGeometryB,
+  const iREAL   *yyCoordinatesOfPointsOfGeometryB,
+  const iREAL   *zzCoordinatesOfPointsOfGeometryB,
     iREAL&  xPA,
     iREAL&  yPA,
     iREAL&  zPA,

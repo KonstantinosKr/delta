@@ -15,25 +15,25 @@ JOB_SCRIPT6=../t12
 JOB_SCRIPT7=../t16
 JOB_SCRIPT8=../t24
 
-exp0o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsOMPTRIANGLE1_40_1000hopper
-exp1o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsOMPTRIANGLE2_40_1000hopper
-exp2o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsOMPTRIANGLE3_40_1000hopper
-exp3o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsOMPTRIANGLE4_40_1000hopper
-exp4o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsOMPTRIANGLE6_40_1000hopper
-exp5o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsOMPTRIANGLE8_40_1000hopper
-exp6o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsOMPTRIANGLE12_40_1000hopper
-exp7o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsOMPTRIANGLE16_40_1000hopper
-exp8o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsOMPTRIANGLE24_40_1000hopper
+exp0o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE1_20
+exp1o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE2_20
+exp2o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE3_20
+exp3o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE4_20
+exp4o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE6_20
+exp5o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE8_20
+exp6o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE12_20
+exp7o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE16_20
+exp8o=/ddn/data/rfmw74/h7two-particles-crash_nohybrid-on-triangle-pairsTRIANGLE24_20
 
-exp0="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp1="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp2="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp3="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp4="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp5="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp6="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp7="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp8="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
+exp0="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp1="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp2="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp3="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp4="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp5="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp6="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp7="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp8="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

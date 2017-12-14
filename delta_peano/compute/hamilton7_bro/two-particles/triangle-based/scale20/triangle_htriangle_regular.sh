@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIA
 exp7o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE16_20
 exp8o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE24_20
 
-exp0="./dem-3d-release-tbb 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20"
-exp1="./dem-3d-release-tbb 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20"
-exp2="./dem-3d-release-tbb 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20"
-exp3="./dem-3d-release-tbb 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20"
-exp4="./dem-3d-release-tbb 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20"
-exp5="./dem-3d-release-tbb 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20"
-exp6="./dem-3d-release-tbb 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20"
-exp7="./dem-3d-release-tbb 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20"
-exp8="./dem-3d-release-tbb 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20"
+exp0="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp1="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp2="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp3="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp4="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp5="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp6="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp7="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
+exp8="./dem-3d-release-omp-triangle 0.1 two-particles-crash 1000 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

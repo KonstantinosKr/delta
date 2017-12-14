@@ -64,10 +64,10 @@ void delta::world::object::generateMesh(
   iREAL position[3] = {_centre[0], _centre[1], _centre[2]};
   if(_component == "granulate")
   {
-    delta::geometry::granulates::generateParticle(position, (this->_rad*2), xCoordinates, yCoordinates, zCoordinates, mesh);
+    delta::geometry::granulates::generateParticle(position, rad*2, xCoordinates, yCoordinates, zCoordinates, mesh);
   } else if(_component == "granulate-load")
   {
-    delta::geometry::granulates::loadParticle(position, (this->_rad*2), xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::granulates::loadParticle(position, (rad*2), xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "cube")
   {
     delta::geometry::cubes::generateHullCube(position, wx, wy, wz, rx, ry, rz, mesh, xCoordinates, yCoordinates, zCoordinates);

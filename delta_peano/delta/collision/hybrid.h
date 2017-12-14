@@ -51,34 +51,34 @@ namespace delta {
      */
     std::vector<contactpoint> hybridWithPerTriangleFallBack(
       int       numberOfTrianglesOfGeometryA,
-      iREAL*   xCoordinatesOfPointsOfGeometryA,
-      iREAL*   yCoordinatesOfPointsOfGeometryA,
-      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      const iREAL*   xCoordinatesOfPointsOfGeometryA,
+      const iREAL*   yCoordinatesOfPointsOfGeometryA,
+      const iREAL*   zCoordinatesOfPointsOfGeometryA,
       iREAL    epsilonA,
       bool      frictionA,
       int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
-      iREAL*   xCoordinatesOfPointsOfGeometryB,
-      iREAL*   yCoordinatesOfPointsOfGeometryB,
-      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      const iREAL*   xCoordinatesOfPointsOfGeometryB,
+      const iREAL*   yCoordinatesOfPointsOfGeometryB,
+      const iREAL*   zCoordinatesOfPointsOfGeometryB,
       iREAL    epsilonB,
       bool      frictionB,
       int 	    particleB);
 
     std::vector<contactpoint> hybridWithPerBatchFallBack(
       int       numberOfTrianglesOfGeometryA,
-      iREAL*   xCoordinatesOfPointsOfGeometryA,
-      iREAL*   yCoordinatesOfPointsOfGeometryA,
-      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      const iREAL*   xCoordinatesOfPointsOfGeometryA,
+      const iREAL*   yCoordinatesOfPointsOfGeometryA,
+      const iREAL*   zCoordinatesOfPointsOfGeometryA,
       iREAL    epsilonA,
       bool      frictionA,
       int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
-      iREAL*   xCoordinatesOfPointsOfGeometryB,
-      iREAL*   yCoordinatesOfPointsOfGeometryB,
-      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      const iREAL*   xCoordinatesOfPointsOfGeometryB,
+      const iREAL*   yCoordinatesOfPointsOfGeometryB,
+      const iREAL*   zCoordinatesOfPointsOfGeometryB,
       iREAL    epsilonB,
       bool      frictionB,
       int 	    particleB);
@@ -86,34 +86,34 @@ namespace delta {
 
     std::vector<contactpoint> hybridBatchStat(
       int      numberOfTrianglesOfGeometryA,
-      iREAL*   xCoordinatesOfPointsOfGeometryA,
-      iREAL*   yCoordinatesOfPointsOfGeometryA,
-      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      const iREAL*   xCoordinatesOfPointsOfGeometryA,
+      const iREAL*   yCoordinatesOfPointsOfGeometryA,
+      const iREAL*   zCoordinatesOfPointsOfGeometryA,
       iREAL    epsilonA,
       bool     frictionA,
       int      particleA,
 
       int      numberOfTrianglesOfGeometryB,
-      iREAL*   xCoordinatesOfPointsOfGeometryB,
-      iREAL*   yCoordinatesOfPointsOfGeometryB,
-      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      const iREAL*   xCoordinatesOfPointsOfGeometryB,
+      const iREAL*   yCoordinatesOfPointsOfGeometryB,
+      const iREAL*   zCoordinatesOfPointsOfGeometryB,
       iREAL    epsilonB,
       bool     frictionB,
       int      particleB);
 
     std::vector<contactpoint> hybridTriangleStat(
       int      numberOfTrianglesOfGeometryA,
-      iREAL*   xCoordinatesOfPointsOfGeometryA,
-      iREAL*   yCoordinatesOfPointsOfGeometryA,
-      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      const iREAL*   xCoordinatesOfPointsOfGeometryA,
+      const iREAL*   yCoordinatesOfPointsOfGeometryA,
+      const iREAL*   zCoordinatesOfPointsOfGeometryA,
       iREAL    epsilonA,
       bool     frictionA,
       int      particleA,
 
       int      numberOfTrianglesOfGeometryB,
-      iREAL*   xCoordinatesOfPointsOfGeometryB,
-      iREAL*   yCoordinatesOfPointsOfGeometryB,
-      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      const iREAL*   xCoordinatesOfPointsOfGeometryB,
+      const iREAL*   yCoordinatesOfPointsOfGeometryB,
+      const iREAL*   zCoordinatesOfPointsOfGeometryB,
       iREAL    epsilonB,
       bool     frictionB,
       int      particleB);

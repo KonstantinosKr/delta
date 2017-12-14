@@ -49,17 +49,17 @@ iREAL delta::collision::getBatchError() {
 
 std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTriangleFallBack(
   int      numberOfTrianglesOfGeometryA,
-  iREAL*   xCoordinatesOfPointsOfGeometryA,
-  iREAL*   yCoordinatesOfPointsOfGeometryA,
-  iREAL*   zCoordinatesOfPointsOfGeometryA,
+  const iREAL*   xCoordinatesOfPointsOfGeometryA,
+  const iREAL*   yCoordinatesOfPointsOfGeometryA,
+  const iREAL*   zCoordinatesOfPointsOfGeometryA,
   iREAL    epsilonA,
   bool     frictionA,
   int 		 particleA,
 
   int      numberOfTrianglesOfGeometryB,
-  iREAL*   xCoordinatesOfPointsOfGeometryB,
-  iREAL*   yCoordinatesOfPointsOfGeometryB,
-  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  const iREAL*   xCoordinatesOfPointsOfGeometryB,
+  const iREAL*   yCoordinatesOfPointsOfGeometryB,
+  const iREAL*   zCoordinatesOfPointsOfGeometryB,
   iREAL    epsilonB,
   bool     frictionB,
   int	     particleB)
@@ -146,17 +146,17 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
 
 std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatchFallBack(
   int      numberOfTrianglesOfGeometryA,
-  iREAL*   xCoordinatesOfPointsOfGeometryA,
-  iREAL*   yCoordinatesOfPointsOfGeometryA,
-  iREAL*   zCoordinatesOfPointsOfGeometryA,
+  const iREAL*   xCoordinatesOfPointsOfGeometryA,
+  const iREAL*   yCoordinatesOfPointsOfGeometryA,
+  const iREAL*   zCoordinatesOfPointsOfGeometryA,
   iREAL    epsilonA,
   bool     frictionA,
   int      particleA,
 
   int      numberOfTrianglesOfGeometryB,
-  iREAL*   xCoordinatesOfPointsOfGeometryB,
-  iREAL*   yCoordinatesOfPointsOfGeometryB,
-  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  const iREAL*   xCoordinatesOfPointsOfGeometryB,
+  const iREAL*   yCoordinatesOfPointsOfGeometryB,
+  const iREAL*   zCoordinatesOfPointsOfGeometryB,
   iREAL    epsilonB,
   bool     frictionB,
   int      particleB)
@@ -269,17 +269,17 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
 
 std::vector<delta::collision::contactpoint> delta::collision::hybridBatchStat(
   int      numberOfTrianglesOfGeometryA,
-  iREAL*   xCoordinatesOfPointsOfGeometryA,
-  iREAL*   yCoordinatesOfPointsOfGeometryA,
-  iREAL*   zCoordinatesOfPointsOfGeometryA,
+  const iREAL*   xCoordinatesOfPointsOfGeometryA,
+  const iREAL*   yCoordinatesOfPointsOfGeometryA,
+  const iREAL*   zCoordinatesOfPointsOfGeometryA,
   iREAL    epsilonA,
   bool     frictionA,
   int      particleA,
 
   int      numberOfTrianglesOfGeometryB,
-  iREAL*   xCoordinatesOfPointsOfGeometryB,
-  iREAL*   yCoordinatesOfPointsOfGeometryB,
-  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  const iREAL*   xCoordinatesOfPointsOfGeometryB,
+  const iREAL*   yCoordinatesOfPointsOfGeometryB,
+  const iREAL*   zCoordinatesOfPointsOfGeometryB,
   iREAL    epsilonB,
   bool     frictionB,
   int      particleB)
@@ -410,17 +410,17 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridBatchStat(
 
 std::vector<delta::collision::contactpoint> delta::collision::hybridTriangleStat(
   int      numberOfTrianglesOfGeometryA,
-  iREAL*   xCoordinatesOfPointsOfGeometryA,
-  iREAL*   yCoordinatesOfPointsOfGeometryA,
-  iREAL*   zCoordinatesOfPointsOfGeometryA,
-  iREAL    epsilonA,
+  const iREAL*   xCoordinatesOfPointsOfGeometryA,
+  const iREAL*   yCoordinatesOfPointsOfGeometryA,
+  const iREAL*   zCoordinatesOfPointsOfGeometryA,
+  const iREAL    epsilonA,
   bool     frictionA,
   int      particleA,
 
   int      numberOfTrianglesOfGeometryB,
-  iREAL*   xCoordinatesOfPointsOfGeometryB,
-  iREAL*   yCoordinatesOfPointsOfGeometryB,
-  iREAL*   zCoordinatesOfPointsOfGeometryB,
+  const iREAL*   xCoordinatesOfPointsOfGeometryB,
+  const iREAL*   yCoordinatesOfPointsOfGeometryB,
+  const iREAL*   zCoordinatesOfPointsOfGeometryB,
   iREAL    epsilonB,
   bool     frictionB,
   int      particleB)

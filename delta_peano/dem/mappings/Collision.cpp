@@ -72,12 +72,10 @@ bool																                                dem::mappings::Collision::_e
 tarch::multicore::BooleanSemaphore                                  dem::mappings::Collision::_mySemaphore;
 double                                                              dem::mappings::Collision::gravity = 0.0;
 
-
 bool dem::mappings::Collision::RunGridTraversalInParallel           = true;
 bool dem::mappings::Collision::RunParticleLoopInParallel            = true;
 bool dem::mappings::Collision::RunParticleComparisionsInBackground  = false;
-dem::State  dem::mappings::Collision::_backgroundTaskState;
-
+dem::State dem::mappings::Collision::_backgroundTaskState;
 
 void dem::mappings::Collision::beginIteration(
 		dem::State&  solverState
@@ -445,8 +443,8 @@ void dem::mappings::Collision::collisionDetection(
       }
       break;
     case CollisionModel::BruteForce:
-      assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
-/*
+      //assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
+
       newContactPoints = delta::collision::bf(
         numberOfTrianglesA,
         xCoordinatesA,
@@ -463,7 +461,7 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId());
-*/
+
       break;
     case CollisionModel::Penalty:
       assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
@@ -610,7 +608,6 @@ void dem::mappings::Collision::collisionDetection(
   state->incNumberOfParticleComparisons(1);
 }
 
-
 void dem::mappings::Collision::touchVertexFirstTime(
 		dem::Vertex&                                 fineGridVertex,
 		const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
@@ -689,7 +686,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		}
 	}
 
-    	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
+  fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
 
 	dfor2(k)
 	fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));

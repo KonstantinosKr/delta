@@ -515,19 +515,33 @@ void dem::mappings::CreateGrid::beginIteration(
       _coarseObjects.push_back(objectB);
     } else {
       double rad = 0.01;
+
+      centreArray[0] = 0.5-rad+epsilon;
+      centreArray[1] = 0.5;
+      centreArray[2] = 0.5;
       delta::world::object objectA("granulate", 0, centreArray, material, false, false);
-      objectA.generateMesh(0,0,0,0,0,0,rad,_noPointsPerParticle);
+      objectA.generateMesh(0,0,0,0,0,0,_noPointsPerParticle, rad);
       objectA.setLinearVelocity(linear);
 
-      centreArray[1] = 0.1;
-      linear[1] = 1;
+      rad = 0.1;
+
+      centreArray[0] = 0.5-rad-_epsilon;
+      centreArray[1] = 0.5;
+      centreArray[2] = 0.5;
+
+      linear[0] = -0.1;
+      linear[1] = -0.1;
+      linear[2] = -0.1;
 
       delta::world::object objectB("granulate", 1, centreArray, material, false, false);
-      objectB.generateMesh(0,0,0,0,0,0,rad,_noPointsPerParticle);
+      objectB.generateMesh(0,0,0,0,0,0,_noPointsPerParticle, rad);
       objectB.setLinearVelocity(linear);
 
       _coarseObjects.push_back(objectA);
       _coarseObjects.push_back(objectB);
+
+      printf("points per particle %i\n", _noPointsPerParticle);
+
     }
 
     //////////////////////////////////////////////////////
@@ -729,8 +743,9 @@ void dem::mappings::CreateGrid::deployCoarseEnviroment(
        (object.getCentre()[1] >= cellYDWBoundary && object.getCentre()[1] <= cellYUPBoundary) &&
        (object.getCentre()[2] >= cellZLeftBoundary && object.getCentre()[2] <= cellZRightBoundary))
     {
+
       dem::mappings::CreateGrid::deployObject(vertex, object);
-      //printf("particle coarse: %i\n", _numberOfParticles);
+      printf("particle coarse: %i\n", _numberOfParticles);
       //deleteCoarseObjects.push_back(i);
     }
   }
@@ -852,6 +867,7 @@ void dem::mappings::CreateGrid::deployObject(
     std::vector<double> xCoordinates = object.getxCoordinates();
     std::vector<double> yCoordinates = object.getyCoordinates();
     std::vector<double> zCoordinates = object.getzCoordinates();
+    printf("length:%i\n", xCoordinates.size());
     particleNumber = vertex.createParticle(
                                           xCoordinates,
                                           yCoordinates,
@@ -879,6 +895,7 @@ void dem::mappings::CreateGrid::deployObject(
     vertex.getParticle(particleNumber)._persistentRecords._referentialAngular(2) = object.getAngularVelocity()[2];
   }
 
+  _numberOfTriangles += object.getxCoordinates().size()/DIMENSIONS;
   _numberOfParticles++;
   if(object.getIsObstacle()) _numberOfObstacles++;
 }
@@ -953,7 +970,7 @@ void dem::mappings::CreateGrid::decomposeMeshByOctsection(
 
       fineObjects.push_back(obj);
 
-      _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+      //_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
       xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
     }
     ////////END LOOP
@@ -973,7 +990,7 @@ void dem::mappings::CreateGrid::decomposeMeshByOctsection(
 
     fineObjects.push_back(obj);
 
-    _numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+    //_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
   }
   _numberOfParticles++;
   if(isObstacle) _numberOfObstacles++;
@@ -1031,7 +1048,7 @@ int dem::mappings::CreateGrid::decomposeMeshIntoParticles(
         {subyCoordinates[0], subyCoordinates[1], subyCoordinates[2]},
         {subzCoordinates[0], subzCoordinates[1], subzCoordinates[2]});
 
-    _numberOfTriangles++;
+    //_numberOfTriangles++;
 
     obj.setMass(mass);
     obj.setInertia(inertia);

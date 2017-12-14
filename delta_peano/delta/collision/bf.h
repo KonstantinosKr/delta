@@ -38,17 +38,17 @@ namespace delta {
      */
     std::vector<contactpoint> bf(
       int       numberOfTrianglesOfGeometryA,
-      iREAL*   xCoordinatesOfPointsOfGeometryA,
-      iREAL*   yCoordinatesOfPointsOfGeometryA,
-      iREAL*   zCoordinatesOfPointsOfGeometryA,
+      const iREAL*   xCoordinatesOfPointsOfGeometryA,
+      const iREAL*   yCoordinatesOfPointsOfGeometryA,
+      const iREAL*   zCoordinatesOfPointsOfGeometryA,
       iREAL    epsilonA,
       bool      frictionA,
       int 	    particleA,
 
       int       numberOfTrianglesOfGeometryB,
-      iREAL*   xCoordinatesOfPointsOfGeometryB,
-      iREAL*   yCoordinatesOfPointsOfGeometryB,
-      iREAL*   zCoordinatesOfPointsOfGeometryB,
+      const iREAL*   xCoordinatesOfPointsOfGeometryB,
+      const iREAL*   yCoordinatesOfPointsOfGeometryB,
+      const iREAL*   zCoordinatesOfPointsOfGeometryB,
       iREAL    epsilonB,
       bool      frictionB,
       int 	    particleB
@@ -68,12 +68,12 @@ namespace delta {
     #pragma omp declare simd
     #endif
     void bf(
-      iREAL   xCoordinatesOfTriangleA[3],
-      iREAL   yCoordinatesOfTriangleA[3],
-      iREAL   zCoordinatesOfTriangleA[3],
-      iREAL   xCoordinatesOfTriangleB[3],
-      iREAL   yCoordinatesOfTriangleB[3],
-      iREAL   zCoordinatesOfTriangleB[3],
+      const iREAL   *xCoordinatesOfTriangleA,
+      const iREAL   *yCoordinatesOfTriangleA,
+      const iREAL   *zCoordinatesOfTriangleA,
+      const iREAL   *xCoordinatesOfTriangleB,
+      const iREAL   *yCoordinatesOfTriangleB,
+      const iREAL   *zCoordinatesOfTriangleB,
       iREAL&  xPA,
       iREAL&  yPA,
       iREAL&  zPA,

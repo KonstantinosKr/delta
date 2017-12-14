@@ -182,15 +182,16 @@ int main(int argc, char** argv)
   const std::string  scenario            = argv[2];
   const int          iterations          = atoi(argv[3]);
   const std::string  gridTypeIdentifier  = argv[4];
-  const double       stepSize         	 = atof(argv[5]);
+  const double       stepSize         	   = atof(argv[5]);
   const std::string  plotIdentifier      = argv[6];
-  const double		 realSnapshot		 = atof(argv[7]);
+  const double		 realSnapshot		       = atof(argv[7]);
   const std::string  gravity             = argv[8];
   const std::string  collisionModel      = argv[9];
-  const int			 meshMultiplier  = atof(argv[10]);
+  const int			 meshMultiplier         = atof(argv[10]);
 
   #ifdef SharedMemoryParallelisation
 	  const int          numberOfCores       = atoi(argv[11]);
+
     if (std::string(argv[12])=="true") {
       dem::mappings::Collision::RunGridTraversalInParallel = true;
     }
@@ -201,6 +202,7 @@ int main(int argc, char** argv)
       logError( "main()", "grid parallelisation either has to be true or false" );
       return -1;
     }
+
     if (std::string(argv[13])=="true") {
       dem::mappings::Collision::RunParticleLoopInParallel = true;
     }
@@ -211,11 +213,13 @@ int main(int argc, char** argv)
       logError( "main()", "particle parallelisation either has to be true or false" );
       return -1;
     }
+
     if (std::string(argv[14])=="off") {
       dem::mappings::Collision::RunParticleComparisionsInBackground = false;
     }
     else {
       const int  numberOfBackgroundTasks = atoi(argv[14]);
+
       if (numberOfBackgroundTasks>=1) {
         logError( "main()", "max number of background tasks is set to " << numberOfBackgroundTasks );
         dem::mappings::Collision::RunParticleComparisionsInBackground = true;
