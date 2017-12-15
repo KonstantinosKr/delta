@@ -19,10 +19,10 @@ peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexFirstTimeSpe
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 peano::MappingSpecification   dem::mappings::CreateGrid::touchVertexLastTimeSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::CreateGrid::enterCellSpecification(int level) const {
-	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+	return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
 peano::MappingSpecification   dem::mappings::CreateGrid::leaveCellSpecification(int level) const {
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
@@ -599,6 +599,10 @@ void dem::mappings::CreateGrid::beginIteration(
     /// END | FREEFALL AND BLACKHOLE SCENARIO
     //////////////////////////////////////////////////////
   }
+  else if(_scenario[0] == nonescenario)
+  {
+    return;
+  }
 
   computeBoundary();
 
@@ -712,16 +716,7 @@ void dem::mappings::CreateGrid::createCell(
       !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices, fineGridVerticesEnumerator))
   {
     deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0), centreAsArray);
-    /*
-    dfor2(k) //size 2, dimension 3
-      for(unsigned i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
-      {
-        printf("particles :%i\n", fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getGlobalParticleId());
-      }
-    enddforx
-    */
   }
-
 
 	logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }

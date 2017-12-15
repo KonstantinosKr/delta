@@ -174,6 +174,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   delta::core::Delta();
 
   logInfo( "runAsMaster(...)", "create grid" );
+
   repository.switchToCreateGrid();
 
   repository.iterate();
@@ -202,7 +203,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
   repository.getState().setMaximumVelocityApproach(0.1);
 
-
+/*
   //////////////////PLOT TIME ZERO//////////////////////////////////////////////////////
   if((plot == EveryIteration) ||  (plot == Track) ||
       (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
@@ -235,6 +236,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     elapsed = repository.getState().getTime() - timestamp;
     repository.getState().finishedTimeStep(initialStepSize);
   }
+  */
   ///////////////////////////////////////////////////////////////////////////////////////
 
   for (int i=0; i<iterations; i++)

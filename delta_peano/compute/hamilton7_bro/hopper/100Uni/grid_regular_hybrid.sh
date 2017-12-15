@@ -5,35 +5,35 @@
 # Is invoked with the following arguments
 # $1 path to the output file
 
-JOB_SCRIPT0=../t1
-JOB_SCRIPT1=../t2
-JOB_SCRIPT2=../t3
-JOB_SCRIPT3=../t4
-JOB_SCRIPT4=../t6
-JOB_SCRIPT5=../t8
-JOB_SCRIPT6=../t12
-JOB_SCRIPT7=../t16
-JOB_SCRIPT8=../t24
+JOB_SCRIPT0=t1
+JOB_SCRIPT1=t2
+JOB_SCRIPT2=t3
+JOB_SCRIPT3=t4
+JOB_SCRIPT4=t6
+JOB_SCRIPT5=t8
+JOB_SCRIPT6=t12
+JOB_SCRIPT7=t16
+JOB_SCRIPT8=t24
 
-exp0o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE1_40_1000hopper
-exp1o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE2_40_1000hopper
-exp2o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE3_40_1000hopper
-exp3o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE4_40_1000hopper
-exp4o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE6_40_1000hopper
-exp5o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE8_40_1000hopper
-exp6o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE12_40_1000hopper
-exp7o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE16_40_1000hopper
-exp8o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE24_40_1000hopper
+exp0o=/ddn/data/rfmw74/h7X4hopperUni-regular-hybrid-on-triangle-mesh60-TBB1
+exp1o=/ddn/data/rfmw74/h7X4hopperUni-regular-hybrid-on-triangle-mesh60-TBB2
+exp2o=/ddn/data/rfmw74/h7X4hopperUni-regular-hybrid-on-triangle-mesh60-TBB3
+exp3o=/ddn/data/rfmw74/h7X4hopperUni-regular-hybrid-on-triangle-mesh60-TBB4
+exp4o=/ddn/data/rfmw74/h7X4hopperUni-regular-hybrid-on-triangle-mesh60-TBB6
+exp5o=/ddn/data/rfmw74/h7X4hopperUni-regular-hybrid-on-triangle-mesh60-TBB8
+exp6o=/ddn/data/rfmw74/h7X4hopperUni-regular-hybrid-on-triangle-mesh60-TBB12
+exp7o=/ddn/data/rfmw74/h7X4hopperUni-regular-hybrid-on-triangle-mesh60-TBB16
+exp8o=/ddn/data/rfmw74/h7X4hopperUni-regular-hybrid-on-triangle-mesh60-TBB24
 
-exp0="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp1="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp2="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp3="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp4="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp5="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp6="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp7="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
-exp8="./dem-3d-release-omp-triangle 0.1 hopperUniform1k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40"
+exp0="./dem-3d-release-tbb 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 60 1 true off"
+exp1="./dem-3d-release-tbb 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 60 2 true off"
+exp2="./dem-3d-release-tbb 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 60 3 true off"
+exp3="./dem-3d-release-tbb 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 60 4 true off"
+exp4="./dem-3d-release-tbb 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 60 6 true off"
+exp5="./dem-3d-release-tbb 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 60 8 true off"
+exp6="./dem-3d-release-tbb 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 60 12 true off"
+exp7="./dem-3d-release-tbb 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 60 16 true off"
+exp8="./dem-3d-release-tbb 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true hybrid-on-triangle-pairs 60 24 true off"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
