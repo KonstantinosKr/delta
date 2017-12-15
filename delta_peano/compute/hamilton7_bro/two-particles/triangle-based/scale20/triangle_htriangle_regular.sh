@@ -7,23 +7,23 @@
 
 JOB_SCRIPT0=../t1
 JOB_SCRIPT1=../t2
-JOB_SCRIPT2=../t3_test
-JOB_SCRIPT3=../t4_test
-JOB_SCRIPT4=../t6_test
-JOB_SCRIPT5=../t8_test
-JOB_SCRIPT6=../t12_test
-JOB_SCRIPT7=../t16_test
-JOB_SCRIPT8=../t24_test
+JOB_SCRIPT2=../t3
+JOB_SCRIPT3=../t4
+JOB_SCRIPT4=../t6
+JOB_SCRIPT5=../t8
+JOB_SCRIPT6=../t12
+JOB_SCRIPT7=../t16
+JOB_SCRIPT8=../t24
 
-exp0o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE1_20_test
-exp1o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE2_20_test
-exp2o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE3_20_test
-exp3o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE4_20_test
-exp4o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE6_20_test
-exp5o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE8_20_test
-exp6o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE12_20_test
-exp7o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE16_20_test
-exp8o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE24_20_test
+exp0o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE1_20
+exp1o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE2_20
+exp2o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE3_20
+exp3o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE4_20
+exp4o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE6_20
+exp5o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE8_20
+exp6o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE12_20
+exp7o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE16_20
+exp8o=/ddn/data/rfmw74/h7two-particles-crash_regularhybrid-on-triangle-pairsTRIANGLE24_20
 
 exp0="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"
 exp1="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 regular-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20"

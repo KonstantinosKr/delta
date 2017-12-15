@@ -253,12 +253,12 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   #endif
 #endif
 extern void delta::collision::penalty(
-  const iREAL   xCoordinatesOfTriangleA[],
-  const iREAL   yCoordinatesOfTriangleA[],
-  const iREAL   zCoordinatesOfTriangleA[],
-  const iREAL   xCoordinatesOfTriangleB[],
-  const iREAL   yCoordinatesOfTriangleB[],
-  const iREAL   zCoordinatesOfTriangleB[],
+  const iREAL   *xCoordinatesOfTriangleA,
+  const iREAL   *yCoordinatesOfTriangleA,
+  const iREAL   *zCoordinatesOfTriangleA,
+  const iREAL   *xCoordinatesOfTriangleB,
+  const iREAL   *yCoordinatesOfTriangleB,
+  const iREAL   *zCoordinatesOfTriangleB,
   iREAL&  xPA,
   iREAL&  yPA,
   iREAL&  zPA,

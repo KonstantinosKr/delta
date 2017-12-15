@@ -88,12 +88,12 @@ namespace delta {
       #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
     #endif
     extern void penalty(
-      const iREAL   xCoordinatesOfTriangleA[],
-       const iREAL   yCoordinatesOfTriangleA[],
-       const iREAL   zCoordinatesOfTriangleA[],
-       const iREAL   xCoordinatesOfTriangleB[],
-       const iREAL   yCoordinatesOfTriangleB[],
-       const iREAL   zCoordinatesOfTriangleB[],
+      const iREAL   *xCoordinatesOfTriangleA,
+       const iREAL   *yCoordinatesOfTriangleA,
+       const iREAL   *zCoordinatesOfTriangleA,
+       const iREAL   *xCoordinatesOfTriangleB,
+       const iREAL   *yCoordinatesOfTriangleB,
+       const iREAL   *zCoordinatesOfTriangleB,
        iREAL&  xPA,
        iREAL&  yPA,
        iREAL&  zPA,

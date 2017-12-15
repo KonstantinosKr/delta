@@ -246,14 +246,6 @@ dim3-icc-release-omp-triangle-stats: LFLAGS=$(LINK_OMP)
 dim3-icc-release-omp-triangle-stats: EXECUTABLE=dem-3d-release-omp-triangle
 dim3-icc-release-omp-triangle-stats: header build
 
-dim3-icc-release-omp-particle: CC=icpc --std=c++11
-dim3-icc-release-omp-particle: DIM=-DDim3
-dim3-icc-release-omp-particle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DompParticle
-dim3-icc-release-omp-particle: CFLAGS=$(ICCRUN) $(ICC_SHAREDMEMORY)
-dim3-icc-release-omp-particle: LFLAGS=$(LINK_OMP)
-dim3-icc-release-omp-particle: EXECUTABLE=dem-3d-release-omp-particle
-dim3-icc-release-omp-particle: header build
-
 dim3-icc-release-tbb: CC=icpc --std=c++11
 dim3-icc-release-tbb: DIM=-DDim3
 dim3-icc-release-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB
@@ -285,14 +277,6 @@ dim3-icc-release-tbb-omp-triangle: CFLAGS=$(ICCRUN) $(ICC_SHAREDMEMORY) $(INCLUD
 dim3-icc-release-tbb-omp-triangle: LFLAGS=$(LINK_TBB) $(LINK_OMP)
 dim3-icc-release-tbb-omp-triangle: EXECUTABLE=dem-3d-release-tbb-omp-triangle
 dim3-icc-release-tbb-omp-triangle: header build
-
-dim3-icc-release-tbb-omp-particle: CC=icpc --std=c++11
-dim3-icc-release-tbb-omp-particle: DIM=-DDim3
-dim3-icc-release-tbb-omp-particle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompParticle
-dim3-icc-release-tbb-omp-particle: CFLAGS=$(ICCRUN) $(ICC_SHAREDMEMORY) $(INCLUDE_TBB)
-dim3-icc-release-tbb-omp-particle: LFLAGS=$(LINK_TBB) $(LINK_OMP)
-dim3-icc-release-tbb-omp-particle: EXECUTABLE=dem-3d-release-tbb-omp-particle
-dim3-icc-release-tbb-omp-particle: header build
 
 dim3-icc-release-mpi: CC=mpiicc --std=c++11
 dim3-icc-release-mpi: DIM=-DDim3

@@ -64,6 +64,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   bool     frictionB,
   int	     particleB)
 {
+
   __attribute__ ((aligned(byteAlignment))) iREAL MaxErrorOfPenalty = (epsilonA+epsilonB)/16;
   __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
   std::vector<contactpoint> result;
@@ -78,13 +79,14 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
   #endif
 
+
   #ifdef ompTriangle
     #pragma omp parallel for schedule(static)
   #endif
-  for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
-  {
-    __attribute__ ((aligned(byteAlignment))) iREAL xPA[100000], yPA[100000], zPA[100000], xPB[100000], yPB[100000], zPB[100000], d[100000];
-    __attribute__ ((aligned(byteAlignment))) bool failed[100000] = {0};
+  for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3) {
+
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
+    __attribute__ ((aligned(byteAlignment))) bool failed[10000];
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
@@ -94,7 +96,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
     #endif
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-      penalty(xCoordinatesOfPointsOfGeometryA+(iA),
+
+     penalty(xCoordinatesOfPointsOfGeometryA+(iA),
               yCoordinatesOfPointsOfGeometryA+(iA),
               zCoordinatesOfPointsOfGeometryA+(iA),
               xCoordinatesOfPointsOfGeometryB+(iB),
@@ -102,47 +105,57 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
               zCoordinatesOfPointsOfGeometryB+(iB),
               xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB], MaxErrorOfPenalty, failed[iB]);
 
-      d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
+     //d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
-    contactpoint *nearestContactPoint = nullptr;
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
+    // Now find out whether one check has failed
+    bool oneHasFailed = false;
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
+      oneHasFailed |= failed[iB];
+    }
 
-    #if defined(__INTEL_COMPILER)
-      #pragma simd
-    #else
-      #pragma omp simd
-    #endif
-    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
-    {
-      if(failed[iB])
-      {
-        bf(xCoordinatesOfPointsOfGeometryA+(iA),
+    // Rerun whole batch if necessary
+    if ( oneHasFailed ) {
+      #if defined(__INTEL_COMPILER)
+        #pragma forceinline recursive
+        #pragma simd
+      #else
+        #pragma omp simd
+      #endif
+      for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
+  /*      bf(xCoordinatesOfPointsOfGeometryA+(iA),
            yCoordinatesOfPointsOfGeometryA+(iA),
            zCoordinatesOfPointsOfGeometryA+(iA),
            xCoordinatesOfPointsOfGeometryB+(iB),
            yCoordinatesOfPointsOfGeometryB+(iB),
            zCoordinatesOfPointsOfGeometryB+(iB),
            xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB]);
-      }
-      if (d[iB] <= epsilonMargin && d[iB] <= dd)
-      {
-        nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-        dd    = d[iB];
+*/
+       // d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
       }
     }
 
-    if (nearestContactPoint != nullptr)
-    {
-      #ifdef ompTriangle
-      	#pragma omp critical
-      #endif
-      result.push_back(*nearestContactPoint);
+    // Determine minimum distance of this batch
+    __attribute__ ((aligned(byteAlignment))) iREAL minD = 1E99;
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
+      minD          = std::min( d[iB], minD );
+    }
+
+    // Grab the closest one and insert it into the result
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
+      if ( d[iB] <= minD && d[iB] < epsilonMargin) {
+        //delta::collision::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
+        #ifdef ompTriangle
+          //#pragma omp critical
+        #endif
+        //result.push_back(*nearestContactPoint);
+      }
     }
   }
 
   return result;
 }
+
 
 std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatchFallBack(
   int      numberOfTrianglesOfGeometryA,
@@ -181,8 +194,8 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
   for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
-    __attribute__ ((aligned(byteAlignment))) iREAL xPA[100000], yPA[100000], zPA[100000], xPB[100000], yPB[100000], zPB[100000], d[100000];
-    __attribute__ ((aligned(byteAlignment))) bool failed[100000] = {0};
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
+    __attribute__ ((aligned(byteAlignment))) bool failed[10000] = {0};
     __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
 
     #if defined(__INTEL_COMPILER)

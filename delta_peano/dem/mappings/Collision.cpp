@@ -443,7 +443,6 @@ void dem::mappings::Collision::collisionDetection(
       }
       break;
     case CollisionModel::BruteForce:
-      //assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
 
       newContactPoints = delta::collision::bf(
         numberOfTrianglesA,
@@ -464,8 +463,7 @@ void dem::mappings::Collision::collisionDetection(
 
       break;
     case CollisionModel::Penalty:
-      assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
-/*
+
       newContactPoints = delta::collision::penalty(
         numberOfTrianglesA,
         xCoordinatesA,
@@ -482,11 +480,10 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId());
-*/
+
       break;
     case CollisionModel::PenaltyStat:
-      assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
-/*
+
       newContactPoints = delta::collision::penaltyStat(
         numberOfTrianglesA,
         xCoordinatesA,
@@ -503,11 +500,10 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId());
-*/
+
       break;
     case CollisionModel::HybridOnBatches:
-      assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
-/*
+
       newContactPoints = delta::collision::hybridWithPerBatchFallBack(
         numberOfTrianglesA,
         xCoordinatesA,
@@ -524,11 +520,10 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId());
-*/
+
       break;
     case CollisionModel::HybridOnTrianglePairs:
-      assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
-/*
+
       newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
         numberOfTrianglesA,
         xCoordinatesA,
@@ -545,11 +540,10 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId());
-*/
+
       break;
     case CollisionModel::HybridStat:
-      assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
-/*
+
       newContactPoints = delta::collision::hybridTriangleStat(
         numberOfTrianglesA,
         xCoordinatesA,
@@ -566,7 +560,7 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId());
-*/
+
       break;
     case CollisionModel::GJK:
       assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );

@@ -7,23 +7,23 @@
 
 JOB_SCRIPT0=../t1
 JOB_SCRIPT1=../t2
-JOB_SCRIPT2=../t3_test
-JOB_SCRIPT3=../t4_test
-JOB_SCRIPT4=../t6_test
-JOB_SCRIPT5=../t8_test
-JOB_SCRIPT6=../t12_test
-JOB_SCRIPT7=../t16_test
-JOB_SCRIPT8=../t24_test
+JOB_SCRIPT2=../t3
+JOB_SCRIPT3=../t4
+JOB_SCRIPT4=../t6
+JOB_SCRIPT5=../t8
+JOB_SCRIPT6=../t12
+JOB_SCRIPT7=../t16
+JOB_SCRIPT8=../t24
 
-exp0o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE1_60_test
-exp1o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE2_60_test
-exp2o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE3_60_test
-exp3o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE4_60_test
-exp4o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE6_60_test
-exp5o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE8_60_test
-exp6o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE12_60_test
-exp7o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE16_60_test
-exp8o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE24_60_test
+exp0o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE1_60
+exp1o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE2_60
+exp2o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE3_60
+exp3o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE4_60
+exp4o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE6_60
+exp5o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE8_60
+exp6o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE12_60
+exp7o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE16_60
+exp8o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE24_60
 
 exp0="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
 exp1="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
