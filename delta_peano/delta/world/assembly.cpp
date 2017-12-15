@@ -353,7 +353,6 @@ void delta::world::assembly::uniSphereRadius(
   }
 }
 
-
 void delta::world::assembly::uniMeshGeometry(
     iREAL totalMass,
     int noPointsPerParticle,
