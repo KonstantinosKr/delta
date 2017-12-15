@@ -15,25 +15,25 @@ JOB_SCRIPT6=../t12
 JOB_SCRIPT7=../t16
 JOB_SCRIPT8=../t24
 
-exp0o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB1
-exp1o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB2
-exp2o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB3
-exp3o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB4
-exp4o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB6
-exp5o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB8
-exp6o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB12
-exp7o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB16
-exp8o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB24
+exp0o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB1P2
+exp1o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB2P2
+exp2o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB3P2
+exp3o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB4P2
+exp4o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB6P2
+exp5o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB8P2
+exp6o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB12P2
+exp7o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB16P2
+exp8o=/ddn/data/rfmw74/h7X4hopperUni-reluctant-sphere-mesh60-TBB24P2
 
-exp0="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 1 true false off"
-exp1="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 2 true false off"
-exp2="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 3 true false off"
-exp3="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 4 true false off"
-exp4="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 6 true false off"
-exp5="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 8 true false off"
-exp6="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 12 true false off"
-exp7="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 16 true false off"
-exp8="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 24 true false off"
+exp0="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 1 true true 2"
+exp1="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 2 true true 2"
+exp2="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 3 true true 2"
+exp3="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 4 true true 2"
+exp4="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 6 true true 2"
+exp5="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 8 true true 2"
+exp6="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 12 true true 2"
+exp7="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 16 true true 2"
+exp8="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 reluctant-grid 0.00003 never 10 true sphere 60 24 true true 2"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

@@ -5,15 +5,15 @@
 # Is invoked with the following arguments
 # $1 path to the output file
 
-JOB_SCRIPT0=../t1
-JOB_SCRIPT1=../t2
-JOB_SCRIPT2=../t3
-JOB_SCRIPT3=../t4
-JOB_SCRIPT4=../t6
-JOB_SCRIPT5=../t8
-JOB_SCRIPT6=../t12
-JOB_SCRIPT7=../t16
-JOB_SCRIPT8=../t24
+JOB_SCRIPT0=../tbb
+JOB_SCRIPT1=../tbb
+JOB_SCRIPT2=../tbb
+JOB_SCRIPT3=../tbb
+JOB_SCRIPT4=../tbb
+JOB_SCRIPT5=../tbb
+JOB_SCRIPT6=../tbb
+JOB_SCRIPT7=../tbb
+JOB_SCRIPT8=../tbb
 
 exp0o=/ddn/data/rfmw74/h7X4hopperUni-adaptive-hybrid-on-triangle-mesh60-TBB1
 exp1o=/ddn/data/rfmw74/h7X4hopperUni-adaptive-hybrid-on-triangle-mesh60-TBB2
