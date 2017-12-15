@@ -105,7 +105,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
               zCoordinatesOfPointsOfGeometryB+(iB),
               xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB], MaxErrorOfPenalty, failed[iB]);
 
-     //d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
+     d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
     // Now find out whether one check has failed
@@ -123,15 +123,15 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
         #pragma omp simd
       #endif
       for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
-  /*      bf(xCoordinatesOfPointsOfGeometryA+(iA),
+        bf(xCoordinatesOfPointsOfGeometryA+(iA),
            yCoordinatesOfPointsOfGeometryA+(iA),
            zCoordinatesOfPointsOfGeometryA+(iA),
            xCoordinatesOfPointsOfGeometryB+(iB),
            yCoordinatesOfPointsOfGeometryB+(iB),
            zCoordinatesOfPointsOfGeometryB+(iB),
            xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB]);
-*/
-       // d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
+
+        d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
       }
     }
 
@@ -144,11 +144,11 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
     // Grab the closest one and insert it into the result
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
       if ( d[iB] <= minD && d[iB] < epsilonMargin) {
-        //delta::collision::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
+        delta::collision::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
         #ifdef ompTriangle
-          //#pragma omp critical
+          #pragma omp critical
         #endif
-        //result.push_back(*nearestContactPoint);
+        result.push_back(*nearestContactPoint);
       }
     }
   }
