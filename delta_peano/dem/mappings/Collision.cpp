@@ -243,7 +243,7 @@ void dem::mappings::Collision::addCollision(
 	dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
 }
 
-int dem::mappings::Collision::triggerParticleTooClose(
+void dem::mappings::Collision::triggerParticleTooClose(
     const records::Particle& particleA,
     const records::Particle& particleB,
     State& state)
@@ -299,13 +299,12 @@ int dem::mappings::Collision::triggerParticleTooClose(
   //particles separate
   if (vBA > 0 && pvBA > 0) {
     //printf("separation: %f\n", vBA);
-    return 0;
+    return;
   }
 
   //particles approach
   if(-vBA > state.getMaximumVelocityApproach())
   {
-    tarch::multicore::Lock lock(_mySemaphore);
     state.setMaximumVelocityApproach(vBA);
   }
 
@@ -339,7 +338,6 @@ int dem::mappings::Collision::triggerParticleTooClose(
          pvBA,    pdistancePerStep, pmind, pdt, pd);
   printf(" vBA: %f  ddt: %f |  md: %f dt: %f  d: %f\n",
          vBA,     distancePerStep,  mind, dt, d);*/
-  return 1;
 }
 
 void dem::mappings::Collision::collisionDetection(
@@ -354,7 +352,9 @@ void dem::mappings::Collision::collisionDetection(
   const double*            yCoordinatesB,
   const double*            zCoordinatesB,
   State* state,
-  bool   protectStateAccess){
+  bool   protectStateAccess)
+{
+
   if(_enableOverlapCheck)
   {
     bool overlap = delta::collision::isSphereOverlayInContact(
