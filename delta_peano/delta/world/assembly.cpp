@@ -238,16 +238,7 @@ void delta::world::assembly::uniform(
   {
     delta::world::assembly::uniSphereRadius(totalMass, index, _insitufineObjects);
   } else {
-    /*delta::world::assembly::uniMeshGeometry(
-        totalMass,
-        material,
-        noPointsPerParticle,
-        rad,
-        particleGrid,
-        componentGrid,
-        xCoordinatesArray,
-        yCoordinatesArray,
-        zCoordinatesArray);*/
+    delta::world::assembly::uniMeshGeometry(totalMass, noPointsPerParticle, _insitufineObjects, index);
 
     /*
     delta::world::assembly::uniCubeGeometry(
@@ -305,7 +296,6 @@ void delta::world::assembly::nonuniform (
      }
 }
 
-
 void delta::world::assembly::nonuniform(
           iREAL totalMass,
           int index,
@@ -344,7 +334,6 @@ void delta::world::assembly::uniSphereRadius(
   }
 }
 
-
 void delta::world::assembly::uniSphereRadius(
     iREAL totalMass,
     int index,
@@ -363,6 +352,64 @@ void delta::world::assembly::uniSphereRadius(
     _insitufineObjects[i].generateSphere(radius);
   }
 }
+
+
+void delta::world::assembly::uniMeshGeometry(
+    iREAL totalMass,
+    int noPointsPerParticle,
+    std::vector<delta::world::object> &_insitufineObjects,
+    int index)
+{
+  iREAL massPerParticle = totalMass/(iREAL)_insitufineObjects.size();
+  delta::geometry::material::MaterialType material = _insitufineObjects[0].getMaterial();
+
+  iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
+
+  iREAL reMassTotal = 0;
+  //iREAL masssphere = 0;
+
+  iREAL position[3];
+  for(unsigned i=index; i<_insitufineObjects.size(); i++)
+  {
+    _insitufineObjects[i].setParticleID(index);
+    _insitufineObjects[i].generateMesh(0,0,0,0,0,0,noPointsPerParticle, radius);
+    iREAL mt = _insitufineObjects[i].getMass();
+
+    //iREAL vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
+    //iREAL vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    //iREAL ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(material);
+    reMassTotal += mt;
+    //masssphere += mt;
+    //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+  }
+
+  iREAL rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
+  //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
+
+  reMassTotal=0;
+  for(unsigned j=0; j<_insitufineObjects.size(); j++)
+  {
+    std::array<iREAL, 3> ar = _insitufineObjects[j].getCentre(); position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
+
+    std::vector<double> xCoordinates = _insitufineObjects[j].getxCoordinates();
+    std::vector<double> yCoordinates = _insitufineObjects[j].getyCoordinates();
+    std::vector<double> zCoordinates = _insitufineObjects[j].getzCoordinates();
+
+    delta::geometry::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
+
+    //iREAL mt = delta::geometry::properties::getMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], delta::geometry::material::MaterialType::WOOD);
+    //iREAL vt = delta::geometry::properties::getVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+    //iREAL vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
+    //iREAL ms = (4.0/3.0) * 3.14 * std::pow(radius,3) * int(delta::geometry::material::MaterialDensity::WOOD);
+
+    //reMassTotal += mt;
+    //masssphere += ms;
+
+    //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
+  }
+  //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
+}
+
 
 void delta::world::assembly::uniMeshGeometry(
     iREAL totalMass,
@@ -524,7 +571,6 @@ void delta::world::assembly::nonUniSphereRadius(
   //printf("RESCALE:%f\n", rescale);
   //printf("TOTAL REREMASS:%f\n", reMassTotal);
 }
-
 
 void delta::world::assembly::nonUniSphereRadius(
     iREAL totalMass,

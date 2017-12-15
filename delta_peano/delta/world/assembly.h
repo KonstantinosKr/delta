@@ -108,6 +108,12 @@ namespace delta {
 
   	  void uniMeshGeometry(
   	      iREAL totalMass,
+  	      int noPointsPerParticle,
+  	      std::vector<delta::world::object> &_insitufineObjects,
+  	      int index);
+
+  	  void uniMeshGeometry(
+  	      iREAL totalMass,
           delta::geometry::material::MaterialType material,
           int noPointsPerParticle,
           std::vector<iREAL>  &rad,

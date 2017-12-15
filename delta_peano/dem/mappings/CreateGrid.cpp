@@ -319,7 +319,7 @@ void dem::mappings::CreateGrid::beginIteration(
     iREAL subGridLength = hopperWidth-margin/2;
 
     //position is top of hopper
-    iREAL pos[3] = {(centre[0] - hopperWidth/2), centre[1] + hopperHeight/2+0.2, (centre[2] - hopperWidth/2)};
+    iREAL pos[3] = {(centre[0] - hopperWidth/2), centre[1] + hopperHeight/2, (centre[2] - hopperWidth/2)};
 
     //create xzy cuts above hopper, position starts at left lower inner corner
     std::vector<std::array<iREAL, 3>> grid = delta::world::assembly::getGridArrayList(pos, xzcuts, ycuts, subGridLength);
@@ -328,11 +328,18 @@ void dem::mappings::CreateGrid::beginIteration(
     for(unsigned i=0; i<grid.size(); i++)
     {
       std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
-      delta::world::object particles("sphere", i, p, material, isObstacle, isFriction);
-
-      std::array<double, 3> l = {0, -1, 0};
-      particles.setLinearVelocity(l);
-      _insitufineObjects.push_back(particles);
+      if(_isSphere)
+      {
+        delta::world::object particles("sphere", i, p, material, isObstacle, isFriction);
+        std::array<double, 3> l = {0, -1, 0};
+        particles.setLinearVelocity(l);
+        _insitufineObjects.push_back(particles);
+      } else {
+        delta::world::object particles("granulate", 0, p, material, isObstacle, isFriction);
+        std::array<double, 3> l = {0, -1, 0};
+        particles.setLinearVelocity(l);
+        _insitufineObjects.push_back(particles);
+      }
 
       if(p[0] < xmin) xmin = p[0];
       if(p[0] > xmax) xmax = p[0];
