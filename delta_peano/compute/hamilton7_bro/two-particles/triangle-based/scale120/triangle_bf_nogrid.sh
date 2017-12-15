@@ -15,25 +15,25 @@ JOB_SCRIPT6=../t12
 JOB_SCRIPT7=../t16
 JOB_SCRIPT8=../t24
 
-exp0o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE1_120
-exp1o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE2_120
-exp2o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE3_120
-exp3o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE4_120
-exp4o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE6_120
-exp5o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE8_120
-exp6o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE12_120
-exp7o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE16_120
-exp8o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE24_120
+exp0o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE1_120
+exp1o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE2_120
+exp2o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE3_120
+exp3o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE4_120
+exp4o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE6_120
+exp5o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE8_120
+exp6o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE12_120
+exp7o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE16_120
+exp8o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE24_120
 
-exp0="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 120"
-exp1="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 120"
-exp2="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 120"
-exp3="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 120"
-exp4="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 120"
-exp5="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 120"
-exp6="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 120"
-exp7="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 120"
-exp8="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 120"
+exp0="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false bf 120"
+exp1="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false bf 120"
+exp2="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false bf 120"
+exp3="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false bf 120"
+exp4="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false bf 120"
+exp5="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false bf 120"
+exp6="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false bf 120"
+exp7="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false bf 120"
+exp8="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false bf 120"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
