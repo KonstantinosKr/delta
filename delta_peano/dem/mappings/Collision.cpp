@@ -243,7 +243,7 @@ void dem::mappings::Collision::addCollision(
 	dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
 }
 
-void dem::mappings::Collision::triggerParticleTooClose(
+bool dem::mappings::Collision::triggerParticleTooClose(
     const records::Particle& particleA,
     const records::Particle& particleB,
     State& state)
@@ -299,7 +299,7 @@ void dem::mappings::Collision::triggerParticleTooClose(
   //particles separate
   if (vBA > 0 && pvBA > 0) {
     //printf("separation: %f\n", vBA);
-    return;
+    return false;
   }
 
   //particles approach
@@ -338,6 +338,7 @@ void dem::mappings::Collision::triggerParticleTooClose(
          pvBA,    pdistancePerStep, pmind, pdt, pd);
   printf(" vBA: %f  ddt: %f |  md: %f dt: %f  d: %f\n",
          vBA,     distancePerStep,  mind, dt, d);*/
+  return true;
 }
 
 void dem::mappings::Collision::collisionDetection(
@@ -374,9 +375,10 @@ void dem::mappings::Collision::collisionDetection(
   tarch::multicore::Lock lock(_mySemaphore,false);
 
   if (protectStateAccess) lock.lock();
-  triggerParticleTooClose(particleA, particleB, *state);
+  bool approach = triggerParticleTooClose(particleA, particleB, *state);
   if (protectStateAccess) lock.free();
 
+  if(!approach) return;
 
   std::vector<delta::collision::contactpoint> newContactPoints;
 
@@ -689,7 +691,6 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
-
 void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
   dem::Vertex&  vertexA,
 	dem::Vertex&  vertexB,
@@ -697,7 +698,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 ) {
 	logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexA.toString() << ", " << vertexA.getNumberOfRealAndVirtualParticles() );
 	logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexB.toString() << ", " << vertexB.getNumberOfRealAndVirtualParticles() );
-
 
   #ifdef SharedTBB
 	// Take care: grain size has to be possitive even if loop degenerates

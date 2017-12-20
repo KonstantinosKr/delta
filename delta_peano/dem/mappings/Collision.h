@@ -117,7 +117,7 @@ class dem::mappings::Collision {
      * compared to each other at the same time. So multiple might trigger
      * particles-to-close. We therefore have to protected the state.
      */
-    static void triggerParticleTooClose(
+    static bool triggerParticleTooClose(
         const records::Particle& particleA,
         const records::Particle& particleB,
         State& state);
