@@ -532,7 +532,7 @@ void dem::mappings::CreateGrid::beginIteration(
 
       rad = 0.1;
 
-      centreArray[0] = 0.5-rad-_epsilon;
+      centreArray[0] = 0.5+rad-_epsilon*2;
       centreArray[1] = 0.5;
       centreArray[2] = 0.5;
 

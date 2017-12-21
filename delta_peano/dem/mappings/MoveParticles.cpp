@@ -76,6 +76,8 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     particle._persistentRecords._centreOfMass(1) += timeStepSize*particle._persistentRecords._velocity(1);
     particle._persistentRecords._centreOfMass(2) += timeStepSize*particle._persistentRecords._velocity(2);
 
+    //printf("iteration current position A: %f %f %f\n", particle.getCentre(0), particle.getCentre(1), particle.getCentre(2));
+
     iREAL v = sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0) + particle._persistentRecords._velocity(1) * particle._persistentRecords._velocity(1) + particle._persistentRecords._velocity(2) * particle._persistentRecords._velocity(2));
     if(v > _state.getMaximumVelocityTravel())
     {
@@ -146,29 +148,36 @@ void dem::mappings::MoveParticles::reflectParticles(dem::Vertex& fineGridVertex)
   {
 	  records::Particle&  particle = fineGridVertex.getParticle(i);
 
-	  if (particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2<0.0)
+	  if (particle.getCentre()[0]-particle.getDiameter()/2.0 < 0.0)
 	  {
-		  particle._persistentRecords._velocity(0) = std::abs(particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(0));
+		  particle._persistentRecords._velocity(0) = std::abs(particle.getCentre()[0]-particle.getDiameter()/2.0) * std::abs(particle.getVelocity()[0]);
 	  }
-	  if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2<0.0)
+
+	  if (particle.getCentre()[1]-particle.getDiameter()/2.0 < 0.0)
 	  {
-		  particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(1));
+		  particle._persistentRecords._velocity(1) = std::abs(particle.getCentre()[1]-particle.getDiameter()/2.0) * std::abs(particle.getVelocity()[1]);
 	  }
-	  if (particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2<0.0)
+
+	  if (particle.getCentre()[2]-particle.getDiameter()/2.0 < 0.0)
 	  {
-		  particle._persistentRecords._velocity(2) = std::abs(particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2) * std::abs(particle._persistentRecords._velocity(2));
+		  particle._persistentRecords._velocity(2) = std::abs(particle.getCentre()[2]-particle.getDiameter()/2.0) * std::abs(particle.getVelocity()[2]);
 	  }
-	  if (particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2>1.0)
+
+	  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	  if (particle.getCentre()[0]-particle.getDiameter()/2.0 > 1.0)
 	  {
-		  particle._persistentRecords._velocity(0) = std::abs(particle._persistentRecords._centre(0)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(0));
+		  particle._persistentRecords._velocity(0) = std::abs(particle.getCentre()[0]-particle.getDiameter()/2.0) * -std::abs(particle.getVelocity()[0]);
 	  }
-	  if (particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2>1.0)
+
+	  if (particle.getCentre()[1]-particle.getDiameter()/2.0 > 1.0)
 	  {
-		  particle._persistentRecords._velocity(1) = std::abs(particle._persistentRecords._centre(1)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(1));
+		  particle._persistentRecords._velocity(1) = std::abs(particle.getCentre()[1]-particle.getDiameter()/2.0) * -std::abs(particle.getVelocity()[1]);
 	  }
-	  if (particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2>1.0)
+
+	  if (particle.getCentre()[2]-particle.getDiameter()/2.0 > 1.0)
 	  {
-		  particle._persistentRecords._velocity(2) = std::abs(particle._persistentRecords._centre(2)-particle._persistentRecords._diameter/2) * -std::abs(particle._persistentRecords._velocity(2));
+		  particle._persistentRecords._velocity(2) = std::abs(particle.getCentre()[2]-particle.getDiameter()/2.0) * -std::abs(particle.getVelocity()[2]);
 	  }
   }
 }
