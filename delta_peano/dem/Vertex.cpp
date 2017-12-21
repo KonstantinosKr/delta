@@ -615,7 +615,7 @@ void dem::Vertex::inheritCoarseGridParticles(
 
         iREAL d = sqrt(dd[0]*dd[0] + dd[1]*dd[1] + dd[2]*dd[2]);
 
-        iREAL radius = virtualParticleCoarse.getDiameter()/2.0 + 4.0*virtualParticleCoarse.getEpsilon() + sqrt(fineGridH * fineGridH * d);
+        iREAL radius = virtualParticleCoarse.getDiameter()/2.0 + 2.0*virtualParticleCoarse.getEpsilon() + sqrt(fineGridH * fineGridH * d);
 
         if(d <= radius)
         {
@@ -659,7 +659,7 @@ void dem::Vertex::inheritCoarseGridParticles(
 
         iREAL d = sqrt(dd[0]*dd[0] + dd[1]*dd[1] + dd[2]*dd[2]);
 
-        iREAL radius = realParticleCoarse.getDiameter()/2.0 + 4.0*realParticleCoarse.getEpsilon() + sqrt(fineGridH * fineGridH * d);
+        iREAL radius = realParticleCoarse.getDiameter()/2.0 + 2.0*realParticleCoarse.getEpsilon() + sqrt(fineGridH * fineGridH * d);
 
         if(d <= radius)
         {

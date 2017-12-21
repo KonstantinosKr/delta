@@ -52,7 +52,9 @@ class dem::State: public peano::grid::State< dem::records::State > {
   
     void writeToCheckpoint( peano::grid::Checkpoint<Vertex,Cell>&  checkpoint ) const;    
     void readFromCheckpoint( const peano::grid::Checkpoint<Vertex,Cell>&  checkpoint );    
-  
+
+    static double _maxdt;
+
   public:
     /**
      * Default Constructor
@@ -94,8 +96,8 @@ class dem::State: public peano::grid::State< dem::records::State > {
     double getTime() const;
     void setInitialTimeStepSize(double value);
 
-    void setStepIncrement(int number);
-    int getStepIncrement();
+    void setStepIncrement(double number);
+    double getStepIncrement();
 
     void informStateThatTwoParticlesAreClose(double decrementFactor);
     void finishedTimeStep(double initialTimestep);
@@ -120,6 +122,8 @@ class dem::State: public peano::grid::State< dem::records::State > {
 
     double getPrescribedMinimumMeshWidth() const;
     double getPrescribedMaximumMeshWidth() const;
+
+    double getMaxDt();
 
     void setTimeStep(int delta);
     int getTimeStep();

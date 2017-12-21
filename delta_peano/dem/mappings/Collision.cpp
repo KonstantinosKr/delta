@@ -250,8 +250,10 @@ bool dem::mappings::Collision::triggerParticleTooClose(
 {
   //printf("Particle A:%d Particle B:%d\n", particleA.getGlobalParticleId(), particleB.getGlobalParticleId());
   iREAL increments = state.getStepIncrement();
-  iREAL dt = state.getTimeStepSize();
-  iREAL pdt = dt + dt * increments;
+  //printf("increment:%f\n", increments);
+  iREAL dt = state.getTimeStepSize(); //current iteration/step
+  iREAL pdt = dt * increments; //next iteration/step
+  if(pdt >= state.getMaxDt()) pdt = state.getMaxDt(); //this maxDt is only valid for current iteration, so this is kind of wrong, we need to predict next iterations maxDt
 
   iREAL cA[3], cB[3];
 
@@ -265,16 +267,19 @@ bool dem::mappings::Collision::triggerParticleTooClose(
 
   iREAL dAB[3], pdAB[3];
 
-  pdAB[0] = cB[0] - cA[0];
-  pdAB[1] = cB[1] - cA[1];
-  pdAB[2] = cB[2] - cA[2];
-
   dAB[0] = particleB.getCentre(0) - particleA.getCentre(0);
   dAB[1] = particleB.getCentre(1) - particleA.getCentre(1);
   dAB[2] = particleB.getCentre(2) - particleA.getCentre(2);
 
-  //printf("position A: %f %f %f\n", particleA.getCentre(0), particleA.getCentre(1), particleA.getCentre(2));
-  //printf("position B: %f %f %f\n", particleB.getCentre(0), particleB.getCentre(1), particleB.getCentre(2));
+  pdAB[0] = cB[0] - cA[0];
+  pdAB[1] = cB[1] - cA[1];
+  pdAB[2] = cB[2] - cA[2];
+/*
+  printf("current position A: %f %f %f\n", particleA.getCentre(0), particleA.getCentre(1), particleA.getCentre(2));
+  printf("current position B: %f %f %f\n", particleB.getCentre(0), particleB.getCentre(1), particleB.getCentre(2));
+
+  printf("predicted position A: %f %f %f\n", cA[0], cA[1], cA[2]);
+  printf("predicted position B: %f %f %f\n", cB[0], cB[1], cB[2]);*/
 
   iREAL vA[3], vB[3];
   vA[0] = particleA.getVelocity(0);
@@ -296,48 +301,54 @@ bool dem::mappings::Collision::triggerParticleTooClose(
   iREAL pvBA = ((vB[0] * pdAB[0]) + (vB[1] * pdAB[1]) + (vB[2] * pdAB[2])) -
                ((vA[0] * pdAB[0]) + (vA[1] * pdAB[1]) + (vA[2] * pdAB[2]));
 
+  //if velocity of B relative to A is greater than zero and predicted relative velocity of B to A is greater than zero
   //particles separate
-  if (vBA > 0 && pvBA > 0) {
+  if (vBA > 0 && pvBA > 0) { //pvBA > 0 is redundant
     //printf("separation: %f\n", vBA);
     return false;
   }
 
-  //particles approach
+  //particles approach so save relative velocity B on A
   if(-vBA > state.getMaximumVelocityApproach())
   {
     state.setMaximumVelocityApproach(vBA);
   }
 
-  double rA = particleA.getHaloDiameter();
-  double rB = particleB.getHaloDiameter();
+  double rA = particleA.getHaloDiameter()/2.0;
+  double rB = particleB.getHaloDiameter()/2.0;
 
-  iREAL mind = (d - rA - rB);
-  iREAL pmind = (pd - rA - rB);
+  iREAL currentMinHaloDistance = (d - rA - rB);
+  iREAL predictedMinHaloDistance = (pd - rA - rB); //two steps after (current, after currect)
 
-  iREAL distancePerStep = mind/dt;
-  iREAL pdistancePerStep = pmind/pdt;
-  pdt = dt * increments * increments;
+  //printf("halo distance : %f pdt: %f\n", predictedMinHaloDistance, pdt);
 
-  if(-pvBA >= pdistancePerStep || pvBA > 0)
+  iREAL distancePerStep = currentMinHaloDistance/dt;
+  iREAL pdistancePerStep = predictedMinHaloDistance/pdt;
+
+  if(-pvBA  >= pdistancePerStep)
   {
-    //printf("entered TRIGER\n");
+    //printf("entered TRIGER %f >= %f\n", -pvBA, pdistancePerStep);
     double rrA = particleA.getDiameter()/2.0;
     double rrB = particleB.getDiameter()/2.0;
 
     double epsilonA = particleA.getEpsilon();
     double epsilonB = particleB.getEpsilon();
 
-    iREAL localMaxdt = (d -rrA -rrB -epsilonA -epsilonB) / 2*vBA;
+    double remainingDistance = d -rrA -rrB -epsilonA -epsilonB;
 
-    //printf("localMax:%f\n", localMaxdt);
+    iREAL localMaxdt = remainingDistance * 0.8;
+
     if(localMaxdt < 0.0) localMaxdt = -1*localMaxdt;
+
+    //printf("localMax:%f d:%f pd:%f min distance:%f vBA%f pvBA%f \n", localMaxdt, d, pd, remainingDistance, -vBA, -pvBA);
+
     state.informStateThatTwoParticlesAreClose(localMaxdt);
   }
 
-  /*printf("pvBA: %f  pdt: %f | pmd: %f pdt: %f pd: %f\n",
-         pvBA,    pdistancePerStep, pmind, pdt, pd);
+/*  printf("pvBA: %f  pdt: %f | pmd: %f pdt: %f pd: %f\n",
+         pvBA,    pdistancePerStep, distancePerStep, pdt, pd);
   printf(" vBA: %f  ddt: %f |  md: %f dt: %f  d: %f\n",
-         vBA,     distancePerStep,  mind, dt, d);*/
+         vBA,     distancePerStep,  pdistancePerStep, dt, d);*/
   return true;
 }
 
@@ -998,7 +1009,6 @@ dem::mappings::Collision::Collision(const Collision&  masterThread):
 		  _state(masterThread._state) {
 	_state.clearAccumulatedData();
 }
-
 
 void dem::mappings::Collision::mergeWithWorkerThread(const Collision& workerThread) {
 	_state.merge( workerThread._state );

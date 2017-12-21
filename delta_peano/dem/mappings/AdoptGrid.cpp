@@ -63,7 +63,7 @@ void dem::mappings::dropParticles(
         //if(!coarseGridVertexAtSamePosition.getParticle(i).getIsObstacle())
         if(fineGridH < coarseGridVertexAtSamePosition.getParticle(i).getDiameter() < coarseGridVerticesEnumerator.getCellSize()(0))
         {
-          //printf("ID:%i CELL SIZE:%f DIAMETER:%f\n", coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId(), coarseGridVerticesEnumerator.getCellSize()(0), coarseGridVertexAtSamePosition.getParticle(i).getDiameter());
+          //printf("ID:%i COARSE CELL SIZE:%f FINE CELL SIZE:%f DIAMETER:%f\n", coarseGridVertexAtSamePosition.getParticle(i).getGlobalParticleId(), coarseGridVerticesEnumerator.getCellSize()(0), fineGridH, coarseGridVertexAtSamePosition.getParticle(i).getDiameter());
 
           fineGridVertex.appendParticle(coarseGridVertexAtSamePosition.getParticle(i));
           coarseGridVertexAtSamePosition.releaseParticle(i);
@@ -172,6 +172,7 @@ void dem::mappings::liftAllParticles(
       destinationVertex(d) = fineGridVertex.getParticle(i).getCentre(d) < coarseGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
     }
     coarseGridVertices[ coarseGridVerticesEnumerator(destinationVertex) ].appendParticle( fineGridVertex.getParticle(i) );
+    //printf("lifted particle:%i\n", fineGridVertex.getParticle(i).getGlobalParticleId());
 
     i++;
   }
