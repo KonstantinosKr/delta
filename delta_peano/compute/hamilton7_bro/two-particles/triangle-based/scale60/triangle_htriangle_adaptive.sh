@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRI
 exp7o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE16_60
 exp8o=/ddn/data/rfmw74/h7two-particles-crash_adaptivehybrid-on-triangle-pairsTRIANGLE24_60
 
-exp0="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
-exp1="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
-exp2="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
-exp3="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
-exp4="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
-exp5="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
-exp6="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
-exp7="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
-exp8="./dem-3d-release-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
+exp0="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
+exp1="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
+exp2="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
+exp3="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
+exp4="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
+exp5="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
+exp6="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
+exp7="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
+exp8="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 adaptive-grid 0.00003 never 10 false hybrid-on-triangle-pairs 60"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

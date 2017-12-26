@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7Scalereluctanthybrid-on-triangle-pairsOMPTRIANGLE8_sla
 exp6o=/ddn/data/rfmw74/h7Scalereluctanthybrid-on-triangle-pairsOMPTRIANGLE16_sla
 exp7o=/ddn/data/rfmw74/h7Scalereluctanthybrid-on-triangle-pairsOMPTRIANGLE24_sla
 
-exp0="./dem-3d-release-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
-exp1="./dem-3d-release-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
-exp2="./dem-3d-release-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
-exp3="./dem-3d-release-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
-exp4="./dem-3d-release-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
-exp5="./dem-3d-release-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
-exp6="./dem-3d-release-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
-exp7="./dem-3d-release-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
+exp0="./dem-3d-release-tbb-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
+exp1="./dem-3d-release-tbb-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
+exp2="./dem-3d-release-tbb-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
+exp3="./dem-3d-release-tbb-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
+exp4="./dem-3d-release-tbb-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
+exp5="./dem-3d-release-tbb-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
+exp6="./dem-3d-release-tbb-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
+exp7="./dem-3d-release-tbb-omp-triangle 0.1 sla 50 reluctant-grid 0.00001 never 10 true hybrid-on-triangle-pairs 10"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

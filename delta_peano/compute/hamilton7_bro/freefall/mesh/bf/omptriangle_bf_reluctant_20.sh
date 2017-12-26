@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE8_20_freefallWithGranulates
 exp6o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE16_20_freefallWithGranulates
 exp7o=/ddn/data/rfmw74/h7reluctantbfOMPTRIANGLE24_20_freefallWithGranulates
 
-exp0="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
-exp1="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
-exp2="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
-exp3="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
-exp4="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
-exp5="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
-exp6="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
-exp7="./dem-3d-release-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
+exp0="./dem-3d-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
+exp1="./dem-3d-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
+exp2="./dem-3d-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
+exp3="./dem-3d-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
+exp4="./dem-3d-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
+exp5="./dem-3d-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
+exp6="./dem-3d-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
+exp7="./dem-3d-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true bf 20"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
