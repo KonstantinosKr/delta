@@ -50,73 +50,73 @@ namespace delta {
      * @return Set of contact points.
      */
     std::vector<contactpoint> hybridWithPerTriangleFallBack(
-      int       numberOfTrianglesOfGeometryA,
-      const iREAL*   xCoordinatesOfPointsOfGeometryA,
-      const iREAL*   yCoordinatesOfPointsOfGeometryA,
-      const iREAL*   zCoordinatesOfPointsOfGeometryA,
-      iREAL    epsilonA,
-      bool      frictionA,
-      int 	    particleA,
+      int             numberOfTrianglesOfGeometryA,
+      const iREAL*    xCoordinatesOfPointsOfGeometryA,
+      const iREAL*    yCoordinatesOfPointsOfGeometryA,
+      const iREAL*    zCoordinatesOfPointsOfGeometryA,
+      iREAL           epsilonA,
+      bool            frictionA,
+      int 	            particleA,
 
-      int       numberOfTrianglesOfGeometryB,
-      const iREAL*   xCoordinatesOfPointsOfGeometryB,
-      const iREAL*   yCoordinatesOfPointsOfGeometryB,
-      const iREAL*   zCoordinatesOfPointsOfGeometryB,
-      iREAL    epsilonB,
-      bool      frictionB,
-      int 	    particleB);
+      int             numberOfTrianglesOfGeometryB,
+      const iREAL*    xCoordinatesOfPointsOfGeometryB,
+      const iREAL*    yCoordinatesOfPointsOfGeometryB,
+      const iREAL*    zCoordinatesOfPointsOfGeometryB,
+      iREAL           epsilonB,
+      bool            frictionB,
+      int 	            particleB);
 
     std::vector<contactpoint> hybridWithPerBatchFallBack(
-      int       numberOfTrianglesOfGeometryA,
-      const iREAL*   xCoordinatesOfPointsOfGeometryA,
-      const iREAL*   yCoordinatesOfPointsOfGeometryA,
-      const iREAL*   zCoordinatesOfPointsOfGeometryA,
-      iREAL    epsilonA,
-      bool      frictionA,
-      int 	    particleA,
+      int             numberOfTrianglesOfGeometryA,
+      const iREAL*    xCoordinatesOfPointsOfGeometryA,
+      const iREAL*    yCoordinatesOfPointsOfGeometryA,
+      const iREAL*    zCoordinatesOfPointsOfGeometryA,
+      iREAL           epsilonA,
+      bool            frictionA,
+      int 	            particleA,
 
-      int       numberOfTrianglesOfGeometryB,
-      const iREAL*   xCoordinatesOfPointsOfGeometryB,
-      const iREAL*   yCoordinatesOfPointsOfGeometryB,
-      const iREAL*   zCoordinatesOfPointsOfGeometryB,
-      iREAL    epsilonB,
-      bool      frictionB,
-      int 	    particleB);
+      int             numberOfTrianglesOfGeometryB,
+      const iREAL*    xCoordinatesOfPointsOfGeometryB,
+      const iREAL*    yCoordinatesOfPointsOfGeometryB,
+      const iREAL*    zCoordinatesOfPointsOfGeometryB,
+      iREAL           epsilonB,
+      bool            frictionB,
+      int 	           particleB);
 
 
     std::vector<contactpoint> hybridBatchStat(
-      int      numberOfTrianglesOfGeometryA,
-      const iREAL*   xCoordinatesOfPointsOfGeometryA,
-      const iREAL*   yCoordinatesOfPointsOfGeometryA,
-      const iREAL*   zCoordinatesOfPointsOfGeometryA,
-      iREAL    epsilonA,
-      bool     frictionA,
-      int      particleA,
+      int             numberOfTrianglesOfGeometryA,
+      const iREAL*    xCoordinatesOfPointsOfGeometryA,
+      const iREAL*    yCoordinatesOfPointsOfGeometryA,
+      const iREAL*    zCoordinatesOfPointsOfGeometryA,
+      iREAL           epsilonA,
+      bool            frictionA,
+      int             particleA,
 
-      int      numberOfTrianglesOfGeometryB,
-      const iREAL*   xCoordinatesOfPointsOfGeometryB,
-      const iREAL*   yCoordinatesOfPointsOfGeometryB,
-      const iREAL*   zCoordinatesOfPointsOfGeometryB,
-      iREAL    epsilonB,
-      bool     frictionB,
-      int      particleB);
+      int             numberOfTrianglesOfGeometryB,
+      const iREAL*    xCoordinatesOfPointsOfGeometryB,
+      const iREAL*    yCoordinatesOfPointsOfGeometryB,
+      const iREAL*    zCoordinatesOfPointsOfGeometryB,
+      iREAL           epsilonB,
+      bool            frictionB,
+      int             particleB);
 
     std::vector<contactpoint> hybridTriangleStat(
-      int      numberOfTrianglesOfGeometryA,
-      const iREAL*   xCoordinatesOfPointsOfGeometryA,
-      const iREAL*   yCoordinatesOfPointsOfGeometryA,
-      const iREAL*   zCoordinatesOfPointsOfGeometryA,
-      iREAL    epsilonA,
-      bool     frictionA,
-      int      particleA,
+      int             numberOfTrianglesOfGeometryA,
+      const iREAL*    xCoordinatesOfPointsOfGeometryA,
+      const iREAL*    yCoordinatesOfPointsOfGeometryA,
+      const iREAL*    zCoordinatesOfPointsOfGeometryA,
+      iREAL           epsilonA,
+      bool            frictionA,
+      int             particleA,
 
-      int      numberOfTrianglesOfGeometryB,
-      const iREAL*   xCoordinatesOfPointsOfGeometryB,
-      const iREAL*   yCoordinatesOfPointsOfGeometryB,
-      const iREAL*   zCoordinatesOfPointsOfGeometryB,
-      iREAL    epsilonB,
-      bool     frictionB,
-      int      particleB);
+      int             numberOfTrianglesOfGeometryB,
+      const iREAL*    xCoordinatesOfPointsOfGeometryB,
+      const iREAL*    yCoordinatesOfPointsOfGeometryB,
+      const iREAL*    zCoordinatesOfPointsOfGeometryB,
+      iREAL           epsilonB,
+      bool            frictionB,
+      int             particleB);
 
     static int numberOfPenaltyFails;
     static int numberOfBatchFails;

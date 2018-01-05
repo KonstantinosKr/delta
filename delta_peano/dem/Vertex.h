@@ -135,7 +135,6 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
 
     int getNumberOfVirtualParticles() const;
 
-
     /**
      * Appends this particle to the vertex's particle list.
      */
@@ -178,6 +177,8 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
     const DEMDoubleHeap::HeapEntries&  getYRefCoordinatesAsVector( int particleNumber ) const;
     const DEMDoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber ) const;
 
+    void setVetoNumber(int number);
+
     /**
      * Part of the dynamic AMR.
      *
@@ -189,18 +190,26 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      * Part of the dynamic AMR.
      *
      * Is called in touchVertexLastTime() and restricts all refinement control
-     * data.
+     * data: For any vertex, it should restrict all the data from all the
+     * @f$ 7^d @f$ children. Note that I wrote @f$ 7^d @f$ and not @f$ 5^d @f$,
+     * i.e. the restriction stencil is rather wide.
      *
-     * We have a boolean veto flag per vertex that avoids that a refined vertex
-     * is erased. If it is not set, any refined vertex is unrefined, i.e. we
-     * realise a rather aggressive coarsening. The bool is set if it is set for
-     * one of the children or if one of the children holds particles. Please
-     * note that is does not matter wheather the refined vertex itself holds
-     * particles. This information is of relevance only for the next coarser
-     * level. erase() on a refined vertex does remove all finer vertices. If we
-     * would veto an erase if a refined vertex holds particles, every vertex
-     * holding any particle would yield a next finer level with grid cells even
-     * though there might be no particles held in there at all.
+     * We have an integer number per vertex that avoids that a refined vertex
+     * is erased:
+     *
+     * - For unrefined vertices, it basically tells us how many real particles
+     *   are held by this vertex.
+     * - For a refined vertex, it holds the number of real particles (on this
+     *   level) plus all the values from finer grid vertices.
+     *
+     * We use this counter to erase a refined vertex, if
+     *
+     * - the counter equals 0 (normal coarsening)
+     * - the counter equals 0 or 1 (aggressive coarsening)
+     *
+     * Note that the combination of standard refinemetn with aggressive
+     * coarsening most likely will introduce oscillations. So don't try out
+     * this combination.
      */
     void restrictParticleResponsibilityData(const Vertex& fineGridVertex);
 
@@ -211,7 +220,7 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      * i.e. invokes coarse(), if no refinement veto is set. See
      * restrictParticleResponsibilityData() for a discussion on this veto.
      */
-    void eraseIfParticleDistributionPermits();
+    void eraseIfParticleDistributionPermits(bool realiseAggressiveCoarsening);
 
 
     /**

@@ -37,21 +37,21 @@ namespace delta {
      * @see hybrid() function with the same arguments for default
      */
     std::vector<contactpoint> bf(
-      int       numberOfTrianglesOfGeometryA,
-      const iREAL*   xCoordinatesOfPointsOfGeometryA,
-      const iREAL*   yCoordinatesOfPointsOfGeometryA,
-      const iREAL*   zCoordinatesOfPointsOfGeometryA,
-      iREAL    epsilonA,
-      bool      frictionA,
-      int 	    particleA,
+      int             numberOfTrianglesOfGeometryA,
+      const iREAL*    xCoordinatesOfPointsOfGeometryA,
+      const iREAL*    yCoordinatesOfPointsOfGeometryA,
+      const iREAL*    zCoordinatesOfPointsOfGeometryA,
+      iREAL           epsilonA,
+      bool            frictionA,
+      int 	            particleA,
 
-      int       numberOfTrianglesOfGeometryB,
-      const iREAL*   xCoordinatesOfPointsOfGeometryB,
-      const iREAL*   yCoordinatesOfPointsOfGeometryB,
-      const iREAL*   zCoordinatesOfPointsOfGeometryB,
-      iREAL    epsilonB,
-      bool      frictionB,
-      int 	    particleB
+      int             numberOfTrianglesOfGeometryB,
+      const iREAL*    xCoordinatesOfPointsOfGeometryB,
+      const iREAL*    yCoordinatesOfPointsOfGeometryB,
+      const iREAL*    zCoordinatesOfPointsOfGeometryB,
+      iREAL           epsilonB,
+      bool            frictionB,
+      int 	            particleB
     );
 
 

@@ -30,12 +30,12 @@ void dem::Vertex::init() {
   returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   _vertexData.setParticlesOnCoarserLevels(returnedHeapIndex);
 
-  _vertexData.setVetoCoarsening(false);
+  _vertexData.setVetoCoarseningNumber(0);
   lock.free();
 #else
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
-  _vertexData.setVetoCoarsening(false);
+  _vertexData.setVetoCoarseningNumber(0);
 #endif
 }
 
@@ -546,21 +546,30 @@ const dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getZRefCoordinatesAsVector( 
 }
 
 void dem::Vertex::clearGridRefinementAnalysisData() {
-  _vertexData.setVetoCoarsening(false);
+  _vertexData.setVetoCoarseningNumber(0);
 }
 
 void dem::Vertex::restrictParticleResponsibilityData(const Vertex& fineGridVertex) {
-  // @Konstantinos: I think we should set the flag if and only if
-  //     - there are more than two real or virtual particles and
-  //     - there is at least one real particle
-  _vertexData.setVetoCoarsening( _vertexData.getVetoCoarsening() || fineGridVertex._vertexData.getVetoCoarsening() || fineGridVertex.getNumberOfRealAndVirtualParticles() > 2 || fineGridVertex.getNumberOfParticles()>0);
-
+  _vertexData.setVetoCoarseningNumber( _vertexData.getVetoCoarseningNumber() + fineGridVertex._vertexData.getVetoCoarseningNumber());
 }
 
-void dem::Vertex::eraseIfParticleDistributionPermits() {
-  if (!_vertexData.getVetoCoarsening() && getRefinementControl()==Records::Refined)
+void dem::Vertex::setVetoNumber(int number)
+{
+  _vertexData.setVetoCoarseningNumber(number);
+}
+
+void dem::Vertex::eraseIfParticleDistributionPermits(bool realiseAggressiveCoarsening) {
+  if(realiseAggressiveCoarsening)
   {
-    erase();
+    if (_vertexData.getVetoCoarseningNumber() > 1 && getRefinementControl()==Records::Refined)
+    {
+      erase();
+    }
+  } else {
+    if (_vertexData.getVetoCoarseningNumber() > 1 && getRefinementControl()==Records::Refined)
+    {
+      erase();
+    }
   }
 }
 

@@ -198,6 +198,11 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
 
   fineGridVertex.clearGridRefinementAnalysisData();
 
+  if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
+  {
+    fineGridVertex.setVetoNumber(fineGridVertex.getNumberOfParticles());
+  }
+
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
@@ -242,7 +247,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
   //     If all particles move away from each other, there's not need
   //     to refine.
 
-  if (fineGridVertex.getNumberOfParticles()>1 && _state.getTwoParticlesAreClose() > 0)
+  if (fineGridVertex.getNumberOfParticles() > 1 && _state.getTwoParticlesAreClose() > 0)
   {
     for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
     {
@@ -256,8 +261,8 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
 
   dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
 
-  fineGridVertex.eraseIfParticleDistributionPermits();
   restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  fineGridVertex.eraseIfParticleDistributionPermits(true);
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }

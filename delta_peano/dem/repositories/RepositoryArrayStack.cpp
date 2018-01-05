@@ -17,6 +17,8 @@
 
 #include "tarch/compiler/CompilerSpecificSettings.h"
 
+#include "peano/performanceanalysis/ScorePMacros.h"
+
 #if !defined(CompilerICC)
 #include "peano/grid/Grid.cpph"
 #endif
@@ -189,6 +191,8 @@ const dem::State& dem::repositories::RepositoryArrayStack::getState() const {
 
    
 void dem::repositories::RepositoryArrayStack::iterate(int numberOfIterations, bool exchangeBoundaryVertices) {
+  SCOREP_USER_REGION( (std::string("dem::repositories::RepositoryArrayStack::iterate() - ") + _repositoryState.toString( _repositoryState.getAction() )).c_str(), SCOREP_USER_REGION_TYPE_FUNCTION)
+
   tarch::timing::Watch watch( "dem::repositories::RepositoryArrayStack", "iterate(bool)", false);
   
   #ifdef Parallel
@@ -219,13 +223,28 @@ void dem::repositories::RepositoryArrayStack::iterate(int numberOfIterations, bo
   peano::datatraversal::autotuning::Oracle::getInstance().switchToOracle(_repositoryState.getAction());
 
   peano::parallel::loadbalancing::Oracle::getInstance().switchToOracle(_repositoryState.getAction());
-  
-  _solverState.currentlyRunsMultipleIterations(_repositoryState.getNumberOfIterations()>1);
   #else
   peano::datatraversal::autotuning::Oracle::getInstance().switchToOracle(_repositoryState.getAction());
   #endif
   
   for (int i=0; i<numberOfIterations; i++) {
+
+    #ifdef Parallel
+    if (_repositoryState.getNumberOfIterations()==1) {
+      _solverState.currentlyRunsMultipleIterations(State::BatchState::NoBatch);
+    }
+    else if (i==0) {
+      _solverState.currentlyRunsMultipleIterations(State::BatchState::FirstIterationOfBatch);
+    }
+    else if (i==numberOfIterations-1) {
+      _solverState.currentlyRunsMultipleIterations(State::BatchState::LastIterationOfBatch);
+    }
+    else {
+      _solverState.currentlyRunsMultipleIterations(State::BatchState::IntermediateIterationOfBatch);
+    }
+    #endif
+  
+  
     switch ( _repositoryState.getAction()) {
       case dem::records::RepositoryState::UseAdapterCreateGrid: watch.startTimer(); _gridWithCreateGrid.iterate(); watch.stopTimer(); _measureCreateGridCPUTime.setValue( watch.getCPUTime() ); _measureCreateGridCalendarTime.setValue( watch.getCalendarTime() ); break;
       case dem::records::RepositoryState::UseAdapterCreateGridAndPlot: watch.startTimer(); _gridWithCreateGridAndPlot.iterate(); watch.stopTimer(); _measureCreateGridAndPlotCPUTime.setValue( watch.getCPUTime() ); _measureCreateGridAndPlotCalendarTime.setValue( watch.getCalendarTime() ); break;

@@ -50,38 +50,38 @@ namespace delta {
      * @see hybrid() or bf() for a description of the remaining parameters.
      */
     std::vector<contactpoint> penaltyStat(
-      int       numberOfTrianglesOfGeometryA,
-      const iREAL*   xCoordinatesOfPointsOfGeometryA,
-      const iREAL*   yCoordinatesOfPointsOfGeometryA,
-      const iREAL*   zCoordinatesOfPointsOfGeometryA,
-      iREAL    epsilonA,
-      bool      frictionA,
-      int 	    particleA,
+      int             numberOfTrianglesOfGeometryA,
+      const iREAL*    xCoordinatesOfPointsOfGeometryA,
+      const iREAL*    yCoordinatesOfPointsOfGeometryA,
+      const iREAL*    zCoordinatesOfPointsOfGeometryA,
+      iREAL           epsilonA,
+      bool            frictionA,
+      int 	            particleA,
 
-      int       numberOfTrianglesOfGeometryB,
-      const iREAL*   xCoordinatesOfPointsOfGeometryB,
-      const iREAL*   yCoordinatesOfPointsOfGeometryB,
-      const iREAL*   zCoordinatesOfPointsOfGeometryB,
-      iREAL    epsilonB,
-      bool      frictionB,
-      int 	    particleB);
+      int             numberOfTrianglesOfGeometryB,
+      const iREAL*    xCoordinatesOfPointsOfGeometryB,
+      const iREAL*    yCoordinatesOfPointsOfGeometryB,
+      const iREAL*    zCoordinatesOfPointsOfGeometryB,
+      iREAL           epsilonB,
+      bool            frictionB,
+      int 	           particleB);
 
     std::vector<contactpoint> penalty(
-      int       numberOfTrianglesOfGeometryA,
-      const iREAL*   xCoordinatesOfPointsOfGeometryA,
-      const iREAL*   yCoordinatesOfPointsOfGeometryA,
-      const iREAL*   zCoordinatesOfPointsOfGeometryA,
-      iREAL    epsilonA,
-      bool      frictionA,
-      int 	    particleA,
+      int             numberOfTrianglesOfGeometryA,
+      const iREAL*    xCoordinatesOfPointsOfGeometryA,
+      const iREAL*    yCoordinatesOfPointsOfGeometryA,
+      const iREAL*    zCoordinatesOfPointsOfGeometryA,
+      iREAL           epsilonA,
+      bool            frictionA,
+      int 	           particleA,
 
-      int       numberOfTrianglesOfGeometryB,
-      const iREAL*   xCoordinatesOfPointsOfGeometryB,
-      const iREAL*   yCoordinatesOfPointsOfGeometryB,
-      const iREAL*   zCoordinatesOfPointsOfGeometryB,
-      iREAL    epsilonB,
-      bool      frictionB,
-      int 	    particleB);
+      int             numberOfTrianglesOfGeometryB,
+      const iREAL*    xCoordinatesOfPointsOfGeometryB,
+      const iREAL*    yCoordinatesOfPointsOfGeometryB,
+      const iREAL*    zCoordinatesOfPointsOfGeometryB,
+      iREAL           epsilonB,
+      bool            frictionB,
+      int 	            particleB);
 
     #if defined(ompParticle) || defined(ompTriangle)
       #pragma omp declare simd

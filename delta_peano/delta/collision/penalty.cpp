@@ -134,21 +134,21 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
 }
 
 std::vector<delta::collision::contactpoint> delta::collision::penalty(
-  int       numberOfTrianglesOfGeometryA,
-  const iREAL*   xCoordinatesOfPointsOfGeometryA,
-  const iREAL*   yCoordinatesOfPointsOfGeometryA,
-  const iREAL*   zCoordinatesOfPointsOfGeometryA,
-  const iREAL    epsilonA,
-  bool      frictionA,
-  int	  	  particleA,
+  int             numberOfTrianglesOfGeometryA,
+  const iREAL*    xCoordinatesOfPointsOfGeometryA,
+  const iREAL*    yCoordinatesOfPointsOfGeometryA,
+  const iREAL*    zCoordinatesOfPointsOfGeometryA,
+  const iREAL     epsilonA,
+  bool            frictionA,
+  int	  	          particleA,
 
-  int       numberOfTrianglesOfGeometryB,
-  const iREAL*   xCoordinatesOfPointsOfGeometryB,
-  const iREAL*   yCoordinatesOfPointsOfGeometryB,
-  const iREAL*   zCoordinatesOfPointsOfGeometryB,
-  const iREAL    epsilonB,
-  bool      frictionB,
-  int		    particleB
+  int             numberOfTrianglesOfGeometryB,
+  const iREAL*    xCoordinatesOfPointsOfGeometryB,
+  const iREAL*    yCoordinatesOfPointsOfGeometryB,
+  const iREAL*    zCoordinatesOfPointsOfGeometryB,
+  const iREAL     epsilonB,
+  bool            frictionB,
+  int		          particleB
 ) {
   __attribute__ ((aligned(byteAlignment)))  const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
 
@@ -196,21 +196,20 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
     contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
 
-    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
-    {
-      if(d[iB] <= epsilonMargin && d[iB] <= dd)
-      {
-        nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-        dd    = d[iB];
-      }
+    __attribute__ ((aligned(byteAlignment))) iREAL minD = 1E99;
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
+      minD          = std::min( d[iB], minD );
     }
 
-    if (nearestContactPoint != nullptr)
-    {
-      #ifdef ompTriangle
-        #pragma omp critical
-      #endif
-      result.push_back(*nearestContactPoint);
+    // Grab the closest one and insert it into the result
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
+      if ( d[iB] <= minD && d[iB] < epsilonMargin) {
+        delta::collision::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
+        #ifdef ompTriangle
+          #pragma omp critical
+        #endif
+        result.push_back(*nearestContactPoint);
+      }
     }
   }
   return result;
