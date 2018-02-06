@@ -153,9 +153,9 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
     double* getYCoordinates( int particleNumber );
     double* getZCoordinates( int particleNumber );
 
-    const double * const getXCoordinates( int particleNumber ) const;
-    const double * const getYCoordinates( int particleNumber ) const;
-    const double * const getZCoordinates( int particleNumber ) const;
+    const double * getXCoordinates( int particleNumber ) const;
+    const double * getYCoordinates( int particleNumber ) const;
+    const double * getZCoordinates( int particleNumber ) const;
 
     double* getXRefCoordinates( int particleNumber );
     double* getYRefCoordinates( int particleNumber );
@@ -177,7 +177,8 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
     const DEMDoubleHeap::HeapEntries&  getYRefCoordinatesAsVector( int particleNumber ) const;
     const DEMDoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber ) const;
 
-    void setVetoNumber(int number);
+    void setNumberOfParticlesInUnrefinedVertex(int number);
+    int getNumberOfParticlesInUnrefinedVertex();
 
     /**
      * Part of the dynamic AMR.

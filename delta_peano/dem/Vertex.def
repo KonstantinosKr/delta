@@ -4,5 +4,5 @@ Packed-Type: short int;
 class dem::dastgen::Vertex {  
   persistent int  particles;
   persistent int  particlesOnCoarserLevels;
-  persistent int vetoCoarseningNumber;
+  persistent int numberOfParticlesInUnrefinedVertex;
 };

@@ -30,12 +30,12 @@ void dem::Vertex::init() {
   returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   _vertexData.setParticlesOnCoarserLevels(returnedHeapIndex);
 
-  _vertexData.setVetoCoarseningNumber(0);
+  _vertexData.setNumberOfParticlesInUnrefinedVertex(0);
   lock.free();
 #else
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
-  _vertexData.setVetoCoarseningNumber(0);
+  _vertexData.setNumberOfParticlesInUnrefinedVertex(0);
 #endif
 }
 
@@ -435,7 +435,6 @@ void dem::Vertex::releaseCoarseParticle(int particleNumber) {
   ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).begin()+particleNumber );
 }
 
-
 double* dem::Vertex::getXCoordinates( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
   return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) ).data();
@@ -451,17 +450,17 @@ double* dem::Vertex::getZCoordinates( int particleNumber ) {
   return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) ).data();
 }
 
-const double * const dem::Vertex::getXCoordinates( int particleNumber ) const {
+const double * dem::Vertex::getXCoordinates( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
   return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) ).data();
 }
 
-const double * const  dem::Vertex::getYCoordinates( int particleNumber ) const {
+const double * dem::Vertex::getYCoordinates( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
   return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) ).data();
 }
 
-const double * const  dem::Vertex::getZCoordinates( int particleNumber ) const {
+const double * dem::Vertex::getZCoordinates( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
   return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) ).data();
 }
@@ -546,27 +545,32 @@ const dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getZRefCoordinatesAsVector( 
 }
 
 void dem::Vertex::clearGridRefinementAnalysisData() {
-  _vertexData.setVetoCoarseningNumber(0);
+  _vertexData.setNumberOfParticlesInUnrefinedVertex(0);
 }
 
 void dem::Vertex::restrictParticleResponsibilityData(const Vertex& fineGridVertex) {
-  _vertexData.setVetoCoarseningNumber( _vertexData.getVetoCoarseningNumber() + fineGridVertex._vertexData.getVetoCoarseningNumber());
+  _vertexData.setNumberOfParticlesInUnrefinedVertex( _vertexData.getNumberOfParticlesInUnrefinedVertex() + fineGridVertex._vertexData.getNumberOfParticlesInUnrefinedVertex());
 }
 
-void dem::Vertex::setVetoNumber(int number)
+void dem::Vertex::setNumberOfParticlesInUnrefinedVertex(int number)
 {
-  _vertexData.setVetoCoarseningNumber(number);
+  _vertexData.setNumberOfParticlesInUnrefinedVertex(number);
+}
+
+int dem::Vertex::getNumberOfParticlesInUnrefinedVertex()
+{
+  return _vertexData.getNumberOfParticlesInUnrefinedVertex();
 }
 
 void dem::Vertex::eraseIfParticleDistributionPermits(bool realiseAggressiveCoarsening) {
   if(realiseAggressiveCoarsening)
   {
-    if (_vertexData.getVetoCoarseningNumber() > 1 && getRefinementControl()==Records::Refined)
+    if (_vertexData.getNumberOfParticlesInUnrefinedVertex() <= 1 && getRefinementControl()==Records::Refined)
     {
       erase();
     }
   } else {
-    if (_vertexData.getVetoCoarseningNumber() > 1 && getRefinementControl()==Records::Refined)
+    if (_vertexData.getNumberOfParticlesInUnrefinedVertex() == 0 && getRefinementControl()==Records::Refined)
     {
       erase();
     }

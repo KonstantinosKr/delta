@@ -137,7 +137,7 @@ void dem::State::adaptiveTimeStep()
   _maxdt = _stateData.getMinMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocityApproach());
   if(_maxdt >= _stateData.getMaxMeshWidth()(0))
   {
-    _maxdt = _stateData.getMaxMeshWidth()(0);
+    _maxdt = _stateData.getMaxMeshWidth()(0)/4;
   }
 
   if(_stateData.getTwoParticlesAreClose() > 0.0) { //approach

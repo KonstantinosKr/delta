@@ -73,7 +73,6 @@ void dem::mappings::ReluctantlyAdoptGrid::beginIteration(
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
-
 void dem::mappings::ReluctantlyAdoptGrid::endIteration(
   dem::State&  solverState
 ) {
@@ -196,11 +195,14 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
     fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
   enddforx
 
-  fineGridVertex.clearGridRefinementAnalysisData();
+  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0)
+  {
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() - 1);
+  }
 
   if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
   {
-    fineGridVertex.setVetoNumber(fineGridVertex.getNumberOfParticles());
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles());
   }
 
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
@@ -242,7 +244,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
     }
   }
 
-  // @Konstantinos: Refine only if there are more than one particles
+  // @Refine only if there are more than one particles
   //     and at least one of the particle pairs approach each other.
   //     If all particles move away from each other, there's not need
   //     to refine.
@@ -254,6 +256,11 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
       if(fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
       {
         logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
+
+        if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
+        {
+          fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() + 2);
+        }
         fineGridVertex.refine();
       }
     }
@@ -262,7 +269,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
   dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
 
   restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
-  fineGridVertex.eraseIfParticleDistributionPermits(true);
+  fineGridVertex.eraseIfParticleDistributionPermits(true, fineGridVertex.getNumberOfParticles());
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
@@ -346,6 +353,10 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  tarch::multicore::Lock lock(_ReluctantSemaphore);
+  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+  lock.free();
+
   assertion( fineGridVertex.getNumberOfParticles()==0 );
   fineGridVertex.destroy();
 
@@ -366,10 +377,6 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
   logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
 
-//
-//   NOP
-// =======
-//
 dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid() {
   logTraceIn( "ReluctantlyAdoptGrid()" );
   // @todo Insert your code here
@@ -388,7 +395,6 @@ dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid(const ReluctantlyAdopt
   // @todo Insert your code here
   logTraceOut( "ReluctantlyAdoptGrid(ReluctantlyAdoptGrid)" );
 }
-
 
 void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorkerThread(const ReluctantlyAdoptGrid& workerThread) {
   logTraceIn( "mergeWithWorkerThread(ReluctantlyAdoptGrid)" );
@@ -525,7 +531,6 @@ void dem::mappings::ReluctantlyAdoptGrid::prepareSendToMaster(
   logTraceOut( "prepareSendToMaster(...)" );
 }
 
-
 void dem::mappings::ReluctantlyAdoptGrid::mergeWithMaster(
   const dem::Cell&           workerGridCell,
   dem::Vertex * const        workerGridVertices,
@@ -546,7 +551,6 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithMaster(
   logTraceOut( "mergeWithMaster(...)" );
 }
 
-
 void dem::mappings::ReluctantlyAdoptGrid::receiveDataFromMaster(
       dem::Cell&                        receivedCell, 
       dem::Vertex *                     receivedVertices,
@@ -564,7 +568,6 @@ void dem::mappings::ReluctantlyAdoptGrid::receiveDataFromMaster(
   logTraceOut( "receiveDataFromMaster(...)" );
 }
 
-
 void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorker(
   dem::Cell&           localCell, 
   const dem::Cell&     receivedMasterCell,
@@ -576,7 +579,6 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorker(
   // @todo Insert your code here
   logTraceOutWith1Argument( "mergeWithWorker(...)", localCell.toString() );
 }
-
 
 void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorker(
   dem::Vertex&        localVertex,
@@ -618,12 +620,11 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
    }
  enddforx
 
-
- // @done Konstantinos: I think we should refine if more than one
+  // @I think we should refine if more than one
   //       virtual or real particle are in the cell and if at least
   //       one particle is real
- //
-  // @done Konstantinos: We should furthermore refine if and only if the
+  //
+  // @We should furthermore refine if and only if the
   //       at least one real particles approaches any other particles,
   //
   //       i.e.
@@ -634,13 +635,15 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
    dfor2(k)
      if (!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
      {
+       if(fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl() == Vertex::Records::Unrefined)
+       {
+         fineGridVertices[ fineGridVerticesEnumerator(k) ].setNumberOfParticlesInUnrefinedVertex(fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() + 2);
+       }
        fineGridVertices[ fineGridVerticesEnumerator(k) ].refine();
      }
    enddforx
  }
-
 }
-
 
 void dem::mappings::ReluctantlyAdoptGrid::descend(
   dem::Cell * const          fineGridCells,
@@ -654,7 +657,6 @@ void dem::mappings::ReluctantlyAdoptGrid::descend(
   // @todo Insert your code here
   logTraceOut( "descend(...)" );
 }
-
 
 void dem::mappings::ReluctantlyAdoptGrid::ascend(
   dem::Cell * const    fineGridCells,

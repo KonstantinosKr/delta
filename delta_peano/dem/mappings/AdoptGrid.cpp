@@ -99,11 +99,14 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
     }
   }
 
-  fineGridVertex.clearGridRefinementAnalysisData();
+  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0)
+  {
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() - 1);
+  }
 
   if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
   {
-    fineGridVertex.setVetoNumber(fineGridVertex.getNumberOfParticles());
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles());
   }
 
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
@@ -143,7 +146,7 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
 
   restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
-  fineGridVertex.eraseIfParticleDistributionPermits(false);
+  fineGridVertex.eraseIfParticleDistributionPermits(false, fineGridVertex.getNumberOfParticles());
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
@@ -245,6 +248,8 @@ void dem::mappings::AdoptGrid::destroyVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
+  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
 
   assertion( fineGridVertex.getNumberOfParticles()==0 );
   fineGridVertex.destroy();
