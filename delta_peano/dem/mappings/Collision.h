@@ -67,9 +67,10 @@ class dem::mappings::Collision {
      * I always keep a pointer to the original state as well. Is not
      * beautiful, but I use it for the background tasks.
      */
-    static State  _backgroundTaskState;
+
 
   public:
+    static State  _backgroundTaskState;
     static bool RunGridTraversalInParallel;
     static bool RunParticleLoopInParallel;
     static bool RunParticleComparisionsInBackground;

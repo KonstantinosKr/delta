@@ -12,6 +12,9 @@
 #include "peano/utils/Loop.h"
 #include <unordered_map>
 
+#include "tarch/multicore/BackgroundTasks.h"
+#include "peano/datatraversal/TaskSet.h"
+
 
 /**
  * @todo Please tailor the parameters to your mapping's properties.
@@ -122,6 +125,39 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  // @Refine only if there are more than one particles
+  //     and at least one of the particle pairs approach each other.
+  //     If all particles move away from each other, there's not need
+  //     to refine.
+
+  if(fineGridVertex.getNumberOfParticles() > 1 && _state.getTwoParticlesAreClose() > 0)
+  {
+    for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+    {
+      if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+      {
+        logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
+
+        if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
+        {
+          fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() + fineGridVertex.getNumberOfParticles() * 0.5);
+        }
+        fineGridVertex.refine();
+      }
+    }
+  }
+
+  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0)
+  {
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() - fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * 0.6);
+  }
+
+  if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
+  {
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles());
+  }
+
+
   double timeStepSize = _state.getTimeStepSize();
 
   for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
@@ -195,15 +231,6 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
     fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
   enddforx
 
-  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0)
-  {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() - 1);
-  }
-
-  if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
-  {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles());
-  }
 
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
@@ -219,57 +246,74 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
-  {
-    for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
-    {
-      if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
-         (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
-        continue;
-
-       dem::mappings::Collision::collisionDetection(
-          fineGridVertex.getParticle(i),
-          fineGridVertex.getNumberOfTriangles(i),
-          fineGridVertex.getXCoordinates(i),
-          fineGridVertex.getYCoordinates(i),
-          fineGridVertex.getZCoordinates(i),
-          fineGridVertex.getParticle(j),
-          fineGridVertex.getNumberOfTriangles(j),
-          fineGridVertex.getXCoordinates(j),
-          fineGridVertex.getYCoordinates(j),
-          fineGridVertex.getZCoordinates(j),
-          &_state,
-          false
-       );
-    }
-  }
-
-  // @Refine only if there are more than one particles
-  //     and at least one of the particle pairs approach each other.
-  //     If all particles move away from each other, there's not need
-  //     to refine.
-
-  if (fineGridVertex.getNumberOfParticles() > 1 && _state.getTwoParticlesAreClose() > 0)
-  {
-    for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
-    {
-      if(fineGridVertex.getParticle(i).getDiameter()<fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
-      {
-        logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
-
-        if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
-        {
-          fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() + 2);
-        }
-        fineGridVertex.refine();
-      }
-    }
-  }
-
   dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
 
-  restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
-  fineGridVertex.eraseIfParticleDistributionPermits(true, fineGridVertex.getNumberOfParticles());
+  propagageCoarseningFlagToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+
+  fineGridVertex.eraseIfParticleDistributionPermits(true);
+
+  if (fineGridVertex.getNumberOfParticles()==0) return;
+
+  #ifdef SharedTBB
+  const int grainSize = (dem::mappings::Collision::RunParticleLoopInParallel||fineGridVertex.getNumberOfParticles()==0) ? 1 : fineGridVertex.getNumberOfParticles();
+  tbb::parallel_for(
+   tbb::blocked_range<int>(0,fineGridVertex.getNumberOfParticles(),grainSize),
+   [&](const tbb::blocked_range<int>& r) {
+    for (int i=r.begin(); i!=r.end(); i++) {
+  #else
+  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
+  #endif
+    for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
+    {
+    if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
+       (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
+      continue;
+
+    if (dem::mappings::Collision::RunParticleComparisionsInBackground) {
+      auto p0 = fineGridVertex.getParticle(i);
+      auto p1 = fineGridVertex.getNumberOfTriangles(i);
+      auto p2 = fineGridVertex.getXCoordinates(i);
+      auto p3 = fineGridVertex.getYCoordinates(i);
+      auto p4 = fineGridVertex.getZCoordinates(i);
+      auto p5 = fineGridVertex.getParticle(j);
+      auto p6 = fineGridVertex.getNumberOfTriangles(j);
+      auto p7 = fineGridVertex.getXCoordinates(j);
+      auto p8 = fineGridVertex.getYCoordinates(j);
+      auto p9 = fineGridVertex.getZCoordinates(j);
+
+      std::function<void ()> myTask = [=] () {
+        dem::mappings::Collision::collisionDetection(
+          p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
+          &dem::mappings::Collision::_backgroundTaskState,
+          true
+        );
+      };
+
+      logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
+      peano::datatraversal::TaskSet backgroundTask(myTask,false);
+    }
+    else {
+      dem::mappings::Collision::collisionDetection(
+        fineGridVertex.getParticle(i),
+        fineGridVertex.getNumberOfTriangles(i),
+        fineGridVertex.getXCoordinates(i),
+        fineGridVertex.getYCoordinates(i),
+        fineGridVertex.getZCoordinates(i),
+        fineGridVertex.getParticle(j),
+        fineGridVertex.getNumberOfTriangles(j),
+        fineGridVertex.getXCoordinates(j),
+        fineGridVertex.getYCoordinates(j),
+        fineGridVertex.getZCoordinates(j),
+        &_state,
+        false
+      );
+    }
+   }
+  #ifdef SharedTBB
+  }});
+  #else
+  }
+  #endif
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
@@ -328,12 +372,12 @@ void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
 
 void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+      const tarch::la::Vector<DIMENSIONS,double>&        fineGridX,
+      const tarch::la::Vector<DIMENSIONS,double>&        fineGridH,
       dem::Vertex * const        coarseGridVertices,
-      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
+      const peano::grid::VertexEnumerator&               coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
+      const tarch::la::Vector<DIMENSIONS,int>&           fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
@@ -344,12 +388,12 @@ void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
 
 void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
       const dem::Vertex&   fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+      const tarch::la::Vector<DIMENSIONS,double>&    fineGridX,
+      const tarch::la::Vector<DIMENSIONS,double>&    fineGridH,
       dem::Vertex * const  coarseGridVertices,
-      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+      const peano::grid::VertexEnumerator&           coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
+      const tarch::la::Vector<DIMENSIONS,int>&       fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
@@ -375,6 +419,55 @@ void dem::mappings::ReluctantlyAdoptGrid::enterCell(
   logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
   logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
+}
+
+void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
+      dem::Cell&           fineGridCell,
+      dem::Vertex * const  fineGridVertices,
+      const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
+      dem::Vertex * const  coarseGridVertices,
+      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+      dem::Cell&           coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&      fineGridPositionOfCell
+) {
+ dem::mappings::Collision::all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
+
+ if(_state.getTwoParticlesAreClose() <= 0) return;
+
+ double minDiameter  = std::numeric_limits<double>::max();
+ int numberOfRealParticles = 0;
+ int numberOfVirtualAndRealParticles = 0;
+
+ dfor2(k) //get min diameter particle and count number of real particles
+   numberOfRealParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles();
+   numberOfVirtualAndRealParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfRealAndVirtualParticles();
+
+   for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
+   {
+     minDiameter = std::min(minDiameter, fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getDiameter());
+   }
+ enddforx
+
+  // @I think we should refine if more than one virtual or real particle are in the cell and if at least one particle is real
+  //
+  // @We should furthermore refine if and only if the at least one real particles approaches any other particles,
+  //
+  //       i.e.
+  //       if all particles move away from each other, we should not
+  //
+ if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0)
+ {
+   dfor2(k)
+     if(!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
+     {
+       if(fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl() == Vertex::Records::Unrefined)
+       {
+         fineGridVertices[ fineGridVerticesEnumerator(k) ].setNumberOfParticlesInUnrefinedVertex(fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() + fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() * 0.5);
+       }
+       fineGridVertices[ fineGridVerticesEnumerator(k) ].refine();
+     }
+   enddforx
+ }
 }
 
 dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid() {
@@ -410,7 +503,7 @@ void dem::mappings::ReluctantlyAdoptGrid::createCell(
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
+      const tarch::la::Vector<DIMENSIONS,int>&            fineGridPositionOfCell
 ) {
 }
 
@@ -421,7 +514,7 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyCell(
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
+      const tarch::la::Vector<DIMENSIONS,int>&            fineGridPositionOfCell
 ) {
 }
 
@@ -592,58 +685,6 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorker(
   logTraceOutWith1Argument( "mergeWithWorker(...)", localVertex.toString() );
 }
 #endif
-
-
-void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
-      dem::Cell&           fineGridCell,
-      dem::Vertex * const  fineGridVertices,
-      const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
-      dem::Vertex * const  coarseGridVertices,
-      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-      dem::Cell&           coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
-) {
-
- dem::mappings::Collision::all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
-
- double minDiameter  = std::numeric_limits<double>::max();
- int numberOfRealParticles = 0;
- int numberOfVirtualAndRealParticles = 0;
-
- dfor2(k) //get min diameter particle and count number of real particles
-   numberOfRealParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles();
-   numberOfVirtualAndRealParticles += fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfRealAndVirtualParticles();
-
-   for(int i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
-   {
-     minDiameter = std::min(minDiameter, fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i).getDiameter());
-   }
- enddforx
-
-  // @I think we should refine if more than one
-  //       virtual or real particle are in the cell and if at least
-  //       one particle is real
-  //
-  // @We should furthermore refine if and only if the
-  //       at least one real particles approaches any other particles,
-  //
-  //       i.e.
-  //       if all particles move away from each other, we should not
-  //
- if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && _state.getTwoParticlesAreClose() > 0)
- {
-   dfor2(k)
-     if (!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
-     {
-       if(fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl() == Vertex::Records::Unrefined)
-       {
-         fineGridVertices[ fineGridVerticesEnumerator(k) ].setNumberOfParticlesInUnrefinedVertex(fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() + 2);
-       }
-       fineGridVertices[ fineGridVerticesEnumerator(k) ].refine();
-     }
-   enddforx
- }
-}
 
 void dem::mappings::ReluctantlyAdoptGrid::descend(
   dem::Cell * const          fineGridCells,

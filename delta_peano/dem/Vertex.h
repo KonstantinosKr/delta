@@ -177,7 +177,7 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
     const DEMDoubleHeap::HeapEntries&  getYRefCoordinatesAsVector( int particleNumber ) const;
     const DEMDoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber ) const;
 
-    void setNumberOfParticlesInUnrefinedVertex(int number);
+    void setNumberOfParticlesInUnrefinedVertex(double number);
     int getNumberOfParticlesInUnrefinedVertex();
 
     /**
@@ -212,7 +212,7 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      * coarsening most likely will introduce oscillations. So don't try out
      * this combination.
      */
-    void restrictParticleResponsibilityData(const Vertex& fineGridVertex);
+    void propagageCoarseningFlagToCoarseGrid(const Vertex& fineGridVertex);
 
     /**
      * Part of the dynamic AMR.

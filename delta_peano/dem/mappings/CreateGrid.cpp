@@ -630,7 +630,7 @@ void dem::mappings::CreateGrid::createInnerVertex(
     {
       fineGridVertex.refine();
     }
-    else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
+    else if((_gridType == AdaptiveGrid ))//|| _gridType == ReluctantAdaptiveGrid))
     {
       if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
@@ -669,7 +669,7 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
     {
       fineGridVertex.refine();
     }
-    else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
+    else if((_gridType == AdaptiveGrid)) //|| _gridType == ReluctantAdaptiveGrid))
     {
       if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&

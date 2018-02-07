@@ -3,6 +3,7 @@
 #include "dem/Vertex.h"
 
 #include "peano/grid/Checkpoint.h"
+#include "dem/mappings/CreateGrid.h"
 
 dem::State::State():
   Base() { 
@@ -28,6 +29,7 @@ void dem::State::clearAccumulatedData() {
   _stateData.setNumberOfTriangleComparisons(0.0);
   _stateData.setNumberOfParticleComparisons(0.0);
   _stateData.setTwoParticlesAreClose(0.0);
+  _stateData.setTwoParticlesSeparate(false);
   _stateData.setMaxVelocityApproach(_stateData.getMaxVelocityTravel());
   _stateData.setMaxVelocityTravel(0.0); //this is required to track travel velocities when there is no collision such that there is a maxdt all the time
 }
@@ -74,6 +76,8 @@ void dem::State::merge( const State& otherState ) {
   _stateData.setNumberOfParticleComparisons( _stateData.getNumberOfParticleComparisons() + otherState._stateData.getNumberOfParticleComparisons() );
   _stateData.setNumberOfTriangleComparisons( _stateData.getNumberOfTriangleComparisons() + otherState._stateData.getNumberOfTriangleComparisons() );
 
+  _stateData.setTwoParticlesSeparate(_stateData.getTwoParticlesSeparate() || otherState._stateData.getTwoParticlesSeparate() );
+
   if(_stateData.getTwoParticlesAreClose() > otherState._stateData.getTwoParticlesAreClose())
   {
     _stateData.setTwoParticlesAreClose( _stateData.getTwoParticlesAreClose());
@@ -117,6 +121,10 @@ void dem::State::informStateThatTwoParticlesAreClose(double decrementFactor) {
   _stateData.setTwoParticlesAreClose(decrementFactor);
 }
 
+void dem::State::informStateThatTwoParticlesAreSeparate() {
+  _stateData.setTwoParticlesSeparate(true);
+}
+
 void dem::State::finishedTimeStep(double initialTimestep) {
   _stateData.setCurrentTime(_stateData.getCurrentTime() + _stateData.getTimeStepSize());
 
@@ -130,34 +138,44 @@ double dem::State::_maxdt;
 
 void dem::State::adaptiveTimeStep()
 {
-  const double increaseFactor = 1.1;
+  double increaseFactor = 1.1;
   _stateData.setStepIncrement(increaseFactor);
 
   const double mindt = 1E-4;
   _maxdt = _stateData.getMinMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocityApproach());
-  if(_maxdt >= _stateData.getMaxMeshWidth()(0))
+
+  if(_maxdt > _stateData.getMaxMeshWidth()(0))
   {
-    _maxdt = _stateData.getMaxMeshWidth()(0)/4;
+    _maxdt = _stateData.getMaxMeshWidth()(0);
   }
 
-  if(_stateData.getTwoParticlesAreClose() > 0.0) { //approach
-
+  if(_stateData.getTwoParticlesAreClose() > 0.0) //approach
+  {
     if(_stateData.getTimeStepSize() > mindt) //critical approach
     {
+      //printf("triggered step decrement\n");
       double decrementFactor = _stateData.getTwoParticlesAreClose();
-      //printf("employed decrementFactor\n");
       _stateData.setTimeStepSize(decrementFactor);
       return;
     }
-  } else {
+  } else //separation or no collision
+  {
+    //printf("triggered step increment\n");
     if(_stateData.getTimeStep() > 2)
-    _stateData.setTimeStepSize(increaseFactor * _stateData.getTimeStepSize());
-    //printf("employed incrementFactor\n");
+    {
+      if(_stateData.getTwoParticlesSeparate() && _stateData.getTwoParticlesAreClose() == 0 && dem::mappings::CreateGrid::_gridType == dem::mappings::CreateGrid::ReluctantAdaptiveGrid)
+      {
+        //_stateData.setTimeStepSize(_maxdt);
+        //return;
+      }
+      _stateData.setTimeStepSize(increaseFactor * _stateData.getTimeStepSize());
+    }
   }
 
-  if(_stateData.getTimeStepSize() > _maxdt) {
+  if(_stateData.getTimeStepSize() > _maxdt) //upper bound constraint
+  {
     //printf("employed step size higher than maxdt, reduce to maxdt: %f\n", _maxdt);
-   _stateData.setTimeStepSize(_maxdt);
+    _stateData.setTimeStepSize(_maxdt);
   }
   //printf("maxdt:%f\n", maxdt);
 }

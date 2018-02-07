@@ -53,7 +53,7 @@ namespace dem {
      * Can run concurrently but no two coarse grid vertices should be accessed
      * at the same time.
      */
-    void restrictCoarseningVetoToCoarseGrid(
+    void propagageCoarseningFlagToCoarseGrid(
       dem::Vertex&                                 fineGridVertex,
       dem::Vertex * const                          coarseGridVertices,
       const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,

@@ -548,11 +548,11 @@ void dem::Vertex::clearGridRefinementAnalysisData() {
   _vertexData.setNumberOfParticlesInUnrefinedVertex(0);
 }
 
-void dem::Vertex::restrictParticleResponsibilityData(const Vertex& fineGridVertex) {
+void dem::Vertex::propagageCoarseningFlagToCoarseGrid(const Vertex& fineGridVertex) {
   _vertexData.setNumberOfParticlesInUnrefinedVertex( _vertexData.getNumberOfParticlesInUnrefinedVertex() + fineGridVertex._vertexData.getNumberOfParticlesInUnrefinedVertex());
 }
 
-void dem::Vertex::setNumberOfParticlesInUnrefinedVertex(int number)
+void dem::Vertex::setNumberOfParticlesInUnrefinedVertex(double number)
 {
   _vertexData.setNumberOfParticlesInUnrefinedVertex(number);
 }
@@ -570,7 +570,7 @@ void dem::Vertex::eraseIfParticleDistributionPermits(bool realiseAggressiveCoars
       erase();
     }
   } else {
-    if (_vertexData.getNumberOfParticlesInUnrefinedVertex() == 0 && getRefinementControl()==Records::Refined)
+    if (_vertexData.getNumberOfParticlesInUnrefinedVertex() <= 0 && getRefinementControl()==Records::Refined)
     {
       erase();
     }

@@ -18,7 +18,6 @@
 #include <unordered_map>
 
 
-
 peano::CommunicationSpecification   dem::mappings::Collision::communicationSpecification() const {
 	return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
@@ -305,6 +304,8 @@ bool dem::mappings::Collision::triggerParticleTooClose(
   //particles separate
   if (vBA > 0 && pvBA > 0) { //pvBA > 0 is redundant
     //printf("separation: %f\n", vBA);
+
+    state.informStateThatTwoParticlesAreSeparate();
     return false;
   }
 
@@ -336,7 +337,7 @@ bool dem::mappings::Collision::triggerParticleTooClose(
 
     double remainingDistance = d -rrA -rrB -epsilonA -epsilonB;
 
-    iREAL localMaxdt = remainingDistance * 0.8;
+    iREAL localMaxdt = remainingDistance * 0.82;
 
     if(localMaxdt < 0.0) localMaxdt = -1*localMaxdt;
 

@@ -6,7 +6,7 @@
    }
    
    
-   dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+   dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
    _particles(particles),
    _particlesOnCoarserLevels(particlesOnCoarserLevels),
    _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -34,13 +34,13 @@
    }
    
    
-   dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+   dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
    _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, adjacentRanks, adjacentSubtreeForksIntoOtherRank, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration) {
       
    }
    
    
-   dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+   dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
    _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, adjacentRanks, adjacentSubtreeForksIntoOtherRank, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
    _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
       
@@ -303,7 +303,7 @@
             MPI_Datatype subtypes[Attributes] = {
                  MPI_INT		 //particles
                , MPI_INT		 //particlesOnCoarserLevels
-               , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+               , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                , MPI_CXX_BOOL		 //isHangingNode
                , MPI_INT		 //refinementControl
                , MPI_INT		 //adjacentCellsHeight
@@ -708,7 +708,7 @@
    }
    
    
-   dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+   dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
    _particles(particles),
    _particlesOnCoarserLevels(particlesOnCoarserLevels),
    _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -754,7 +754,7 @@
    }
    
    
-   dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+   dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
    _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, adjacentRanks, adjacentSubtreeForksIntoOtherRank, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration) {
       if ((9 >= (8 * sizeof(short int)))) {
          std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -766,7 +766,7 @@
    }
    
    
-   dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+   dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
    _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, adjacentRanks, adjacentSubtreeForksIntoOtherRank, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
    _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
       if ((9 >= (8 * sizeof(short int)))) {
@@ -987,7 +987,7 @@
             MPI_Datatype subtypes[Attributes] = {
                  MPI_INT		 //particles
                , MPI_INT		 //particlesOnCoarserLevels
-               , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+               , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                , MPI_INT		 //adjacentCellsHeight
                , MPI_DOUBLE		 //x
                , MPI_INT		 //level
@@ -1352,7 +1352,7 @@
       }
       
       
-      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -1378,13 +1378,13 @@
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration) {
          
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          
@@ -1621,7 +1621,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -2012,7 +2012,7 @@
       }
       
       
-      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -2056,7 +2056,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration) {
          if ((8 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -2068,7 +2068,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          if ((8 >= (8 * sizeof(short int)))) {
@@ -2272,7 +2272,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_DOUBLE		 //x
                   , MPI_INT		 //level
@@ -2631,7 +2631,7 @@
       }
       
       
-      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -2657,13 +2657,13 @@
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, adjacentRanks, adjacentSubtreeForksIntoOtherRank) {
          
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, adjacentRanks, adjacentSubtreeForksIntoOtherRank),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          
@@ -2906,7 +2906,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -3297,7 +3297,7 @@
       }
       
       
-      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -3341,7 +3341,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, adjacentRanks, adjacentSubtreeForksIntoOtherRank) {
          if ((7 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -3353,7 +3353,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level, adjacentRanks, adjacentSubtreeForksIntoOtherRank),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          if ((7 >= (8 * sizeof(short int)))) {
@@ -3568,7 +3568,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_DOUBLE		 //x
                   , MPI_INT		 //level
@@ -3934,7 +3934,7 @@
       }
       
       
-      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -3960,13 +3960,13 @@
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, adjacentRanks, adjacentSubtreeForksIntoOtherRank, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration) {
          
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, adjacentRanks, adjacentSubtreeForksIntoOtherRank, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          
@@ -4198,7 +4198,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -4589,7 +4589,7 @@
       }
       
       
-      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -4633,7 +4633,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, adjacentRanks, adjacentSubtreeForksIntoOtherRank, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration) {
          if ((9 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -4645,7 +4645,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, adjacentRanks, adjacentSubtreeForksIntoOtherRank, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          if ((9 >= (8 * sizeof(short int)))) {
@@ -4842,7 +4842,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_INT		 //adjacentRanks
                   , MPI_SHORT		 //_packedRecords0
@@ -5194,7 +5194,7 @@
       }
       
       
-      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -5218,13 +5218,13 @@
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration) {
          
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          
@@ -5430,7 +5430,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -5807,7 +5807,7 @@
       }
       
       
-      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -5849,7 +5849,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration) {
          if ((8 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -5861,7 +5861,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, parentRegularPersistentSubgrid, parentRegularPersistentSubgridInPreviousIteration),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          if ((8 >= (8 * sizeof(short int)))) {
@@ -6041,7 +6041,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_SHORT		 //_packedRecords0
                   , MPI_INT		 //adjacentCellsHeightOfPreviousIteration
@@ -6386,7 +6386,7 @@
       }
       
       
-      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -6410,13 +6410,13 @@
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, adjacentRanks, adjacentSubtreeForksIntoOtherRank) {
          
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, adjacentRanks, adjacentSubtreeForksIntoOtherRank),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          
@@ -6628,7 +6628,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -7005,7 +7005,7 @@
       }
       
       
-      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -7047,7 +7047,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, adjacentRanks, adjacentSubtreeForksIntoOtherRank) {
          if ((7 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -7059,7 +7059,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, adjacentRanks, adjacentSubtreeForksIntoOtherRank),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          if ((7 >= (8 * sizeof(short int)))) {
@@ -7250,7 +7250,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_INT		 //adjacentRanks
                   , MPI_SHORT		 //_packedRecords0
@@ -7602,7 +7602,7 @@
       }
       
       
-      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
+      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -7626,13 +7626,13 @@
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level) {
          
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          
@@ -7849,7 +7849,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -8226,7 +8226,7 @@
       }
       
       
-      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
+      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -8268,7 +8268,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level) {
          if ((6 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -8280,7 +8280,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain, x, level),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          if ((6 >= (8 * sizeof(short int)))) {
@@ -8478,7 +8478,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_DOUBLE		 //x
                   , MPI_INT		 //level
@@ -8837,7 +8837,7 @@
       }
       
       
-      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain):
+      dem::records::Vertex::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -8859,13 +8859,13 @@
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain) {
          
       }
       
       
-      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain):
+      dem::records::Vertex::Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          
@@ -9051,7 +9051,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -9414,7 +9414,7 @@
       }
       
       
-      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain):
+      dem::records::VertexPacked::PersistentRecords::PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain):
       _particles(particles),
       _particlesOnCoarserLevels(particlesOnCoarserLevels),
       _numberOfParticlesInUnrefinedVertex(numberOfParticlesInUnrefinedVertex),
@@ -9454,7 +9454,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain) {
          if ((6 >= (8 * sizeof(short int)))) {
             std::cerr << "Packed-Type in " << __FILE__ << " too small. Either use bigger data type or append " << std::endl << std::endl;
@@ -9466,7 +9466,7 @@
       }
       
       
-      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain):
+      dem::records::VertexPacked::VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain):
       _persistentRecords(particles, particlesOnCoarserLevels, numberOfParticlesInUnrefinedVertex, isHangingNode, refinementControl, adjacentCellsHeight, insideOutsideDomain),_adjacentCellsHeightOfPreviousIteration(adjacentCellsHeightOfPreviousIteration),
       _numberOfAdjacentRefinedCells(numberOfAdjacentRefinedCells) {
          if ((6 >= (8 * sizeof(short int)))) {
@@ -9640,7 +9640,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_INT		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_SHORT		 //_packedRecords0
                   , MPI_INT		 //adjacentCellsHeightOfPreviousIteration

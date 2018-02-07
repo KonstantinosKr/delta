@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   05/02/2018 16:04
+    * @date   06/02/2018 18:49
     */
    class dem::records::Vertex { 
       
@@ -52,7 +52,7 @@ namespace dem {
          struct PersistentRecords {
             int _particles;
             int _particlesOnCoarserLevels;
-            int _numberOfParticlesInUnrefinedVertex;
+            double _numberOfParticlesInUnrefinedVertex;
             bool _isHangingNode;
             RefinementControl _refinementControl;
             int _adjacentCellsHeight;
@@ -79,7 +79,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+            PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
             
             
             inline int getParticles() const 
@@ -122,7 +122,7 @@ namespace dem {
             
             
             
-            inline int getNumberOfParticlesInUnrefinedVertex() const 
+            inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -132,7 +132,7 @@ namespace dem {
             
             
             
-            inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+            inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -438,12 +438,12 @@ namespace dem {
             /**
              * Generated
              */
-            Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+            Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
             
             /**
              * Generated
              */
-            Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+            Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
             
             /**
              * Generated
@@ -491,7 +491,7 @@ namespace dem {
             
             
             
-            inline int getNumberOfParticlesInUnrefinedVertex() const 
+            inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -501,7 +501,7 @@ namespace dem {
             
             
             
-            inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+            inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -974,7 +974,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   05/02/2018 16:04
+    * @date   06/02/2018 18:49
     */
    class dem::records::VertexPacked { 
       
@@ -987,7 +987,7 @@ namespace dem {
          struct PersistentRecords {
             int _particles;
             int _particlesOnCoarserLevels;
-            int _numberOfParticlesInUnrefinedVertex;
+            double _numberOfParticlesInUnrefinedVertex;
             int _adjacentCellsHeight;
             tarch::la::Vector<DIMENSIONS,double> _x;
             int _level;
@@ -1012,7 +1012,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+            PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
             
             
             inline int getParticles() const 
@@ -1055,7 +1055,7 @@ namespace dem {
             
             
             
-            inline int getNumberOfParticlesInUnrefinedVertex() const 
+            inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -1065,7 +1065,7 @@ namespace dem {
             
             
             
-            inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+            inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -1401,12 +1401,12 @@ namespace dem {
             /**
              * Generated
              */
-            VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+            VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
             
             /**
              * Generated
              */
-            VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+            VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
             
             /**
              * Generated
@@ -1454,7 +1454,7 @@ namespace dem {
             
             
             
-            inline int getNumberOfParticlesInUnrefinedVertex() const 
+            inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -1464,7 +1464,7 @@ namespace dem {
             
             
             
-            inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+            inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -1963,7 +1963,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::Vertex { 
          
@@ -1982,7 +1982,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                bool _isHangingNode;
                RefinementControl _refinementControl;
                int _adjacentCellsHeight;
@@ -2003,7 +2003,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                
                inline int getParticles() const 
@@ -2046,7 +2046,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -2056,7 +2056,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -2284,12 +2284,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
@@ -2337,7 +2337,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -2347,7 +2347,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -2716,7 +2716,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::VertexPacked { 
          
@@ -2729,7 +2729,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                int _adjacentCellsHeight;
                tarch::la::Vector<DIMENSIONS,double> _x;
                int _level;
@@ -2752,7 +2752,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                
                inline int getParticles() const 
@@ -2795,7 +2795,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -2805,7 +2805,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -3060,12 +3060,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
@@ -3113,7 +3113,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -3123,7 +3123,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -3516,7 +3516,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::Vertex { 
          
@@ -3535,7 +3535,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                bool _isHangingNode;
                RefinementControl _refinementControl;
                int _adjacentCellsHeight;
@@ -3560,7 +3560,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                
                inline int getParticles() const 
@@ -3603,7 +3603,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -3613,7 +3613,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -3879,12 +3879,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                /**
                 * Generated
@@ -3932,7 +3932,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -3942,7 +3942,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -4375,7 +4375,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::VertexPacked { 
          
@@ -4388,7 +4388,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                int _adjacentCellsHeight;
                tarch::la::Vector<DIMENSIONS,double> _x;
                int _level;
@@ -4411,7 +4411,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                
                inline int getParticles() const 
@@ -4454,7 +4454,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -4464,7 +4464,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -4754,12 +4754,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                /**
                 * Generated
@@ -4807,7 +4807,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -4817,7 +4817,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -5271,7 +5271,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::Vertex { 
          
@@ -5290,7 +5290,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                bool _isHangingNode;
                RefinementControl _refinementControl;
                int _adjacentCellsHeight;
@@ -5311,7 +5311,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                
                inline int getParticles() const 
@@ -5354,7 +5354,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -5364,7 +5364,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -5592,12 +5592,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
@@ -5645,7 +5645,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -5655,7 +5655,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -6024,7 +6024,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::VertexPacked { 
          
@@ -6037,7 +6037,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                int _adjacentCellsHeight;
                tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
                
@@ -6060,7 +6060,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                
                inline int getParticles() const 
@@ -6103,7 +6103,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -6113,7 +6113,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -6371,12 +6371,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
@@ -6424,7 +6424,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -6434,7 +6434,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -6830,7 +6830,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::Vertex { 
          
@@ -6849,7 +6849,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                bool _isHangingNode;
                RefinementControl _refinementControl;
                int _adjacentCellsHeight;
@@ -6864,7 +6864,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                
                inline int getParticles() const 
@@ -6907,7 +6907,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -6917,7 +6917,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -7067,12 +7067,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
@@ -7120,7 +7120,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -7130,7 +7130,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -7395,7 +7395,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::VertexPacked { 
          
@@ -7408,7 +7408,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                int _adjacentCellsHeight;
                
                /** mapping of records:
@@ -7429,7 +7429,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                
                inline int getParticles() const 
@@ -7472,7 +7472,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -7482,7 +7482,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -7659,12 +7659,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const bool& parentRegularPersistentSubgrid, const bool& parentRegularPersistentSubgridInPreviousIteration);
                
                /**
                 * Generated
@@ -7712,7 +7712,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -7722,7 +7722,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -8011,7 +8011,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::Vertex { 
          
@@ -8030,7 +8030,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                bool _isHangingNode;
                RefinementControl _refinementControl;
                int _adjacentCellsHeight;
@@ -8049,7 +8049,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                
                inline int getParticles() const 
@@ -8092,7 +8092,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -8102,7 +8102,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -8290,12 +8290,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                /**
                 * Generated
@@ -8343,7 +8343,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -8353,7 +8353,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -8682,7 +8682,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::VertexPacked { 
          
@@ -8695,7 +8695,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                int _adjacentCellsHeight;
                tarch::la::Vector<TWO_POWER_D,int> _adjacentRanks;
                
@@ -8716,7 +8716,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                
                inline int getParticles() const 
@@ -8759,7 +8759,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -8769,7 +8769,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -8981,12 +8981,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<TWO_POWER_D,int>& adjacentRanks, const bool& adjacentSubtreeForksIntoOtherRank);
                
                /**
                 * Generated
@@ -9034,7 +9034,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -9044,7 +9044,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -9394,7 +9394,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::Vertex { 
          
@@ -9413,7 +9413,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                bool _isHangingNode;
                RefinementControl _refinementControl;
                int _adjacentCellsHeight;
@@ -9432,7 +9432,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
                
                
                inline int getParticles() const 
@@ -9475,7 +9475,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -9485,7 +9485,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -9673,12 +9673,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
                
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
                
                /**
                 * Generated
@@ -9726,7 +9726,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -9736,7 +9736,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10065,7 +10065,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::VertexPacked { 
          
@@ -10078,7 +10078,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                int _adjacentCellsHeight;
                tarch::la::Vector<DIMENSIONS,double> _x;
                int _level;
@@ -10099,7 +10099,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
                
                
                inline int getParticles() const 
@@ -10142,7 +10142,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10152,7 +10152,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10361,12 +10361,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
                
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain, const tarch::la::Vector<DIMENSIONS,double>& x, const int& level);
                
                /**
                 * Generated
@@ -10414,7 +10414,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10424,7 +10424,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10771,7 +10771,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::Vertex { 
          
@@ -10790,7 +10790,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                bool _isHangingNode;
                RefinementControl _refinementControl;
                int _adjacentCellsHeight;
@@ -10803,7 +10803,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
                
                
                inline int getParticles() const 
@@ -10846,7 +10846,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10856,7 +10856,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -10966,12 +10966,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
                
                /**
                 * Generated
                 */
-               Vertex(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain);
+               Vertex(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain);
                
                /**
                 * Generated
@@ -11019,7 +11019,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -11029,7 +11029,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -11254,7 +11254,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   05/02/2018 16:04
+       * @date   06/02/2018 18:49
        */
       class dem::records::VertexPacked { 
          
@@ -11267,7 +11267,7 @@ namespace dem {
             struct PersistentRecords {
                int _particles;
                int _particlesOnCoarserLevels;
-               int _numberOfParticlesInUnrefinedVertex;
+               double _numberOfParticlesInUnrefinedVertex;
                int _adjacentCellsHeight;
                
                /** mapping of records:
@@ -11286,7 +11286,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
+               PersistentRecords(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
                
                
                inline int getParticles() const 
@@ -11329,7 +11329,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -11339,7 +11339,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -11470,12 +11470,12 @@ namespace dem {
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const InsideOutsideDomain& insideOutsideDomain);
                
                /**
                 * Generated
                 */
-               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const int& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain);
+               VertexPacked(const int& particles, const int& particlesOnCoarserLevels, const double& numberOfParticlesInUnrefinedVertex, const bool& isHangingNode, const RefinementControl& refinementControl, const int& adjacentCellsHeight, const int& adjacentCellsHeightOfPreviousIteration, const int& numberOfAdjacentRefinedCells, const InsideOutsideDomain& insideOutsideDomain);
                
                /**
                 * Generated
@@ -11523,7 +11523,7 @@ namespace dem {
                
                
                
-               inline int getNumberOfParticlesInUnrefinedVertex() const 
+               inline double getNumberOfParticlesInUnrefinedVertex() const 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 
@@ -11533,7 +11533,7 @@ namespace dem {
                
                
                
-               inline void setNumberOfParticlesInUnrefinedVertex(const int& numberOfParticlesInUnrefinedVertex) 
+               inline void setNumberOfParticlesInUnrefinedVertex(const double& numberOfParticlesInUnrefinedVertex) 
  #ifdef UseManualInlining
  __attribute__((always_inline))
  #endif 

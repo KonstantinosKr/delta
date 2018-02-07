@@ -94,6 +94,7 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
   {
     if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
     {
+      fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() + 3);
       //logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
     }
@@ -101,7 +102,7 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
 
   if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0)
   {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() - 1);
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() / 2);
   }
 
   if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
@@ -112,7 +113,7 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
-void dem::mappings::restrictCoarseningVetoToCoarseGrid(
+void dem::mappings::propagageCoarseningFlagToCoarseGrid(
   dem::Vertex&                                 fineGridVertex,
   dem::Vertex * const                          coarseGridVertices,
   const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
@@ -126,7 +127,7 @@ void dem::mappings::restrictCoarseningVetoToCoarseGrid(
     }
     if(influences)
     {
-      coarseGridVertices[ coarseGridVerticesEnumerator(k) ].restrictParticleResponsibilityData( fineGridVertex );
+      coarseGridVertices[ coarseGridVerticesEnumerator(k) ].propagageCoarseningFlagToCoarseGrid( fineGridVertex );
     }
   enddforx
 }
@@ -144,9 +145,9 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
 
   dropParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex, fineGridH(0));
 
-  restrictCoarseningVetoToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
+  propagageCoarseningFlagToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
-  fineGridVertex.eraseIfParticleDistributionPermits(false, fineGridVertex.getNumberOfParticles());
+  fineGridVertex.eraseIfParticleDistributionPermits(false);
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
@@ -276,14 +277,12 @@ dem::mappings::AdoptGrid::AdoptGrid(const AdoptGrid&  masterThread) {
   logTraceOut( "AdoptGrid(AdoptGrid)" );
 }
 
-
 void dem::mappings::AdoptGrid::mergeWithWorkerThread(const AdoptGrid& workerThread) {
   logTraceIn( "mergeWithWorkerThread(AdoptGrid)" );
   // @todo Insert your code here
   logTraceOut( "mergeWithWorkerThread(AdoptGrid)" );
 }
 #endif
-
 
 void dem::mappings::AdoptGrid::createCell(
       dem::Cell&                 fineGridCell,
@@ -419,7 +418,6 @@ void dem::mappings::AdoptGrid::prepareSendToMaster(
   logTraceOut( "prepareSendToMaster(...)" );
 }
 
-
 void dem::mappings::AdoptGrid::mergeWithMaster(
   const dem::Cell&           workerGridCell,
   dem::Vertex * const        workerGridVertices,
@@ -440,7 +438,6 @@ void dem::mappings::AdoptGrid::mergeWithMaster(
   logTraceOut( "mergeWithMaster(...)" );
 }
 
-
 void dem::mappings::AdoptGrid::receiveDataFromMaster(
       dem::Cell&                        receivedCell, 
       dem::Vertex *                     receivedVertices,
@@ -458,7 +455,6 @@ void dem::mappings::AdoptGrid::receiveDataFromMaster(
   logTraceOut( "receiveDataFromMaster(...)" );
 }
 
-
 void dem::mappings::AdoptGrid::mergeWithWorker(
   dem::Cell&           localCell, 
   const dem::Cell&     receivedMasterCell,
@@ -470,7 +466,6 @@ void dem::mappings::AdoptGrid::mergeWithWorker(
   // @todo Insert your code here
   logTraceOutWith1Argument( "mergeWithWorker(...)", localCell.toString() );
 }
-
 
 void dem::mappings::AdoptGrid::mergeWithWorker(
   dem::Vertex&        localVertex,
@@ -484,7 +479,6 @@ void dem::mappings::AdoptGrid::mergeWithWorker(
   logTraceOutWith1Argument( "mergeWithWorker(...)", localVertex.toString() );
 }
 #endif
-
 
 void dem::mappings::AdoptGrid::enterCell(
       dem::Cell&                 fineGridCell,
@@ -527,7 +521,6 @@ void dem::mappings::AdoptGrid::descend(
   dem::Cell&                 coarseGridCell
 ) {
 }
-
 
 void dem::mappings::AdoptGrid::ascend(
   dem::Cell * const    fineGridCells,

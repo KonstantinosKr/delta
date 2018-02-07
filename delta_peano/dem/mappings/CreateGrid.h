@@ -144,6 +144,7 @@ class dem::mappings::CreateGrid {
         int noPointsPerGranulate);
 
     static bool     _isSphere;
+    static GridType _gridType;
   private:
     /**
      * Logging device for the trace macros.
@@ -151,7 +152,6 @@ class dem::mappings::CreateGrid {
     static tarch::logging::Log  _log;
 
     static Scenario _scenario[4];
-    static GridType _gridType;
     static double   _maxH;
 
     static double   _minComputeDomain[3];
