@@ -24,7 +24,6 @@
 
 #include "bf.h"
 
-
 std::vector<delta::collision::contactpoint> delta::collision::bf(
     int             numberOfTrianglesOfGeometryA,
     const iREAL*    xCoordinatesOfPointsOfGeometryA,
