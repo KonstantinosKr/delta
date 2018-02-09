@@ -12,7 +12,7 @@
 #include "peano/utils/Loop.h"
 #include <unordered_map>
 
-#include "tarch/multicore/BackgroundTasks.h"
+#include "tarch/multicore/Jobs.h"
 #include "peano/datatraversal/TaskSet.h"
 
 
@@ -281,16 +281,26 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
       auto p8 = fineGridVertex.getYCoordinates(j);
       auto p9 = fineGridVertex.getZCoordinates(j);
 
-      std::function<void ()> myTask = [=] () {
+      /*std::function<void ()> myTask = [=] () {
         dem::mappings::Collision::collisionDetection(
           p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
           &dem::mappings::Collision::_backgroundTaskState,
           true
         );
-      };
+      };*/
 
       logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
-      peano::datatraversal::TaskSet backgroundTask(myTask,false);
+
+      peano::datatraversal::TaskSet backgroundTask(
+       [=] () {
+        dem::mappings::Collision::collisionDetection(
+          p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
+          &dem::mappings::Collision::_backgroundTaskState,
+          true
+        );
+       },
+       peano::datatraversal::TaskSet::TaskType::Background
+     );
     }
     else {
       dem::mappings::Collision::collisionDetection(
@@ -448,13 +458,8 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
    }
  enddforx
 
-  // @I think we should refine if more than one virtual or real particle are in the cell and if at least one particle is real
-  //
-  // @We should furthermore refine if and only if the at least one real particles approaches any other particles,
-  //
-  //       i.e.
-  //       if all particles move away from each other, we should not
-  //
+ // @We should refine if more than one virtual or real particle are in the cell and if at least one particle is real
+ // @We should furthermore refine if and only if the at least one real particles approaches any other particles,
  if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0)
  {
    dfor2(k)

@@ -13,7 +13,9 @@
 #include "peano/utils/Loop.h"
 #include "peano/datatraversal/TaskSet.h"
 
-#include "tarch/multicore/BackgroundTasks.h"
+#include "tarch/multicore/Jobs.h"
+
+#include "tarch/multicore/invasivetbb/BooleanSemaphore.h"
 
 #include <unordered_map>
 
@@ -101,8 +103,8 @@ void dem::mappings::Collision::endIteration(
 ) {
 	logTraceInWith1Argument( "endIteration(State)", solverState );
 
-	while (tarch::multicore::getNumberOfWaitingBackgroundTasks()>0) {
-	  tarch::multicore::BooleanSemaphore::sendTaskToBack();
+	while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
+	  tarch::multicore::jobs::processBackgroundJobs();
 	}
 
 	_state.merge(_backgroundTaskState);
@@ -367,7 +369,6 @@ void dem::mappings::Collision::collisionDetection(
   State* state,
   bool   protectStateAccess)
 {
-
   if(_enableOverlapCheck)
   {
     bool overlap = delta::collision::isSphereOverlayInContact(
@@ -603,17 +604,15 @@ void dem::mappings::Collision::collisionDetection(
 
   if(!newContactPoints.empty()) {
     lock.lock();
-    addCollision(newContactPoints, particleA, particleB , dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
+    addCollision(newContactPoints, particleA, particleB, dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
     state->incNumberOfContactPoints(newContactPoints.size());
     lock.free();
   }
 
-  if (protectStateAccess) {
-    lock.lock();
-  }
-
+  if (protectStateAccess) {lock.lock();}
   state->incNumberOfTriangleComparisons(numberOfTrianglesA * numberOfTrianglesB);
   state->incNumberOfParticleComparisons(1);
+  if (protectStateAccess) lock.free();
 }
 
 void dem::mappings::Collision::touchVertexFirstTime(
@@ -703,6 +702,82 @@ void dem::mappings::Collision::touchVertexFirstTime(
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
+void dem::mappings::Collision::touchVertexLastTime(
+    dem::Vertex&         fineGridVertex,
+    const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
+    const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+    dem::Vertex * const  coarseGridVertices,
+    const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+    dem::Cell&           coarseGridCell,
+    const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
+) {
+  if (fineGridVertex.getNumberOfParticles()==0) return;
+
+  return;
+  #ifdef SharedTBB
+  const int grainSize = (RunParticleLoopInParallel||fineGridVertex.getNumberOfParticles()==0) ? 1 : fineGridVertex.getNumberOfParticles();
+  tbb::parallel_for(
+   tbb::blocked_range<int>(0,fineGridVertex.getNumberOfParticles(),grainSize),
+   [&](const tbb::blocked_range<int>& r) {
+    for (int i=r.begin(); i!=r.end(); i++) {
+  #else
+  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
+  #endif
+    for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
+    {
+    if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
+       (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
+      continue;
+
+    if (RunParticleComparisionsInBackground) {
+      auto p0 = fineGridVertex.getParticle(i);
+      auto p1 = fineGridVertex.getNumberOfTriangles(i);
+      auto p2 = fineGridVertex.getXCoordinates(i);
+      auto p3 = fineGridVertex.getYCoordinates(i);
+      auto p4 = fineGridVertex.getZCoordinates(i);
+      auto p5 = fineGridVertex.getParticle(j);
+      auto p6 = fineGridVertex.getNumberOfTriangles(j);
+      auto p7 = fineGridVertex.getXCoordinates(j);
+      auto p8 = fineGridVertex.getYCoordinates(j);
+      auto p9 = fineGridVertex.getZCoordinates(j);
+
+      logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
+
+      peano::datatraversal::TaskSet backgroundTask(
+       [=] () {
+        dem::mappings::Collision::collisionDetection(
+          p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
+          &dem::mappings::Collision::_backgroundTaskState,
+          true
+        );
+       },
+       peano::datatraversal::TaskSet::TaskType::Background
+     );
+    }
+    else {
+      collisionDetection(
+        fineGridVertex.getParticle(i),
+        fineGridVertex.getNumberOfTriangles(i),
+        fineGridVertex.getXCoordinates(i),
+        fineGridVertex.getYCoordinates(i),
+        fineGridVertex.getZCoordinates(i),
+        fineGridVertex.getParticle(j),
+        fineGridVertex.getNumberOfTriangles(j),
+        fineGridVertex.getXCoordinates(j),
+        fineGridVertex.getYCoordinates(j),
+        fineGridVertex.getZCoordinates(j),
+        &_state,
+        false
+      );
+    }
+   }
+  #ifdef SharedTBB
+  }});
+  #else
+  }
+  #endif
+}
+
 void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
   dem::Vertex&  vertexA,
 	dem::Vertex&  vertexB,
@@ -728,7 +803,8 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			  continue;
 
 			if (RunParticleComparisionsInBackground) {
-        auto p0 = vertexA.getParticle(i);
+
+			  auto p0 = vertexA.getParticle(i);
         auto p1 = vertexA.getNumberOfTriangles(i);
         auto p2 = vertexA.getXCoordinates(i);
         auto p3 = vertexA.getYCoordinates(i);
@@ -747,8 +823,12 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
           );
         };
 
+
+
         logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
-        peano::datatraversal::TaskSet backgroundTask(myTask,false);
+        //peano::datatraversal::TaskSet backgroundTask(myTask,false);
+
+
 			}
 			else {
 	      collisionDetection(
@@ -990,6 +1070,18 @@ void dem::mappings::Collision::enterCell(
 	logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
 	logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
+}
+
+void dem::mappings::Collision::leaveCell(
+    dem::Cell&           fineGridCell,
+    dem::Vertex * const  fineGridVertices,
+    const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
+    dem::Vertex * const  coarseGridVertices,
+    const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+    dem::Cell&           coarseGridCell,
+    const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
+) {
+    all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
 }
 
 dem::mappings::Collision::Collision() {
@@ -1281,91 +1373,6 @@ void dem::mappings::Collision::mergeWithWorker(
 	logTraceOutWith1Argument( "mergeWithWorker(...)", localVertex.toString() );
 }
 #endif
-
-void dem::mappings::Collision::touchVertexLastTime(
-		dem::Vertex&         fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
-		dem::Vertex * const  coarseGridVertices,
-		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-		dem::Cell&           coarseGridCell,
-		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
-) {
-  if (fineGridVertex.getNumberOfParticles()==0) return;
-
-  #ifdef SharedTBB
-  const int grainSize = (RunParticleLoopInParallel||fineGridVertex.getNumberOfParticles()==0) ? 1 : fineGridVertex.getNumberOfParticles();
-  tbb::parallel_for(
-   tbb::blocked_range<int>(0,fineGridVertex.getNumberOfParticles(),grainSize),
-   [&](const tbb::blocked_range<int>& r) {
-    for (int i=r.begin(); i!=r.end(); i++) {
-  #else
-  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
-  #endif
-	  for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
-	  {
-		if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
-		   (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
-			continue;
-
-    if (RunParticleComparisionsInBackground) {
-      auto p0 = fineGridVertex.getParticle(i);
-      auto p1 = fineGridVertex.getNumberOfTriangles(i);
-      auto p2 = fineGridVertex.getXCoordinates(i);
-      auto p3 = fineGridVertex.getYCoordinates(i);
-      auto p4 = fineGridVertex.getZCoordinates(i);
-      auto p5 = fineGridVertex.getParticle(j);
-      auto p6 = fineGridVertex.getNumberOfTriangles(j);
-      auto p7 = fineGridVertex.getXCoordinates(j);
-      auto p8 = fineGridVertex.getYCoordinates(j);
-      auto p9 = fineGridVertex.getZCoordinates(j);
-
-      std::function<void ()> myTask = [=] () {
-        collisionDetection(
-          p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
-          &_backgroundTaskState,
-          true
-        );
-      };
-
-      logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
-      peano::datatraversal::TaskSet backgroundTask(myTask,false);
-    }
-    else {
-      collisionDetection(
-        fineGridVertex.getParticle(i),
-        fineGridVertex.getNumberOfTriangles(i),
-        fineGridVertex.getXCoordinates(i),
-        fineGridVertex.getYCoordinates(i),
-        fineGridVertex.getZCoordinates(i),
-        fineGridVertex.getParticle(j),
-        fineGridVertex.getNumberOfTriangles(j),
-        fineGridVertex.getXCoordinates(j),
-        fineGridVertex.getYCoordinates(j),
-        fineGridVertex.getZCoordinates(j),
-        &_state,
-        false
-      );
-    }
-	 }
-  #ifdef SharedTBB
-  }});
-  #else
-	}
-  #endif
-}
-
-void dem::mappings::Collision::leaveCell(
-		dem::Cell&           fineGridCell,
-		dem::Vertex * const  fineGridVertices,
-		const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
-		dem::Vertex * const  coarseGridVertices,
-		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-		dem::Cell&           coarseGridCell,
-		const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
-) {
-    all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
-}
 
 void dem::mappings::Collision::descend(
 		dem::Cell * const          fineGridCells,
