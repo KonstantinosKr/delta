@@ -2,7 +2,7 @@
 #include "tarch/tests/TestCaseRegistry.h"
 #include "tarch/logging/CommandLineLogger.h"
 #include "tarch/parallel/Node.h"
-#include "tarch/multicore/BackgroundTasks.h"
+#include "tarch/multicore/Jobs.h"
 
 
 #include "peano/peano.h"
@@ -184,10 +184,10 @@ int main(int argc, char** argv)
   const std::string  gridTypeIdentifier  = argv[4];
   const double       stepSize         	   = atof(argv[5]);
   const std::string  plotIdentifier      = argv[6];
-  const double		 realSnapshot		       = atof(argv[7]);
+  const double		    realSnapshot		       = atof(argv[7]);
   const std::string  gravity             = argv[8];
   const std::string  collisionModel      = argv[9];
-  const int			 meshMultiplier         = atof(argv[10]);
+  const int			    meshMultiplier         = atof(argv[10]);
 
   #ifdef SharedMemoryParallelisation
 	  const int          numberOfCores       = atoi(argv[11]);
@@ -223,7 +223,7 @@ int main(int argc, char** argv)
       if (numberOfBackgroundTasks>=1) {
         logError( "main()", "max number of background tasks is set to " << numberOfBackgroundTasks );
         dem::mappings::Collision::RunParticleComparisionsInBackground = true;
-        tarch::multicore::setMaxNumberOfRunningBackgroundThreads( numberOfBackgroundTasks );
+        tarch::multicore::jobs::BackgroundJob::setMaxNumberOfRunningBackgroundThreads( numberOfBackgroundTasks );
       }
       else {
         logError( "main()", "run in background either has to be true or false" );
