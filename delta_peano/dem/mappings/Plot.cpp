@@ -10,14 +10,14 @@ peano::CommunicationSpecification   dem::mappings::Plot::communicationSpecificat
 }
 
 peano::MappingSpecification   dem::mappings::Plot::touchVertexFirstTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
 /**
  * This is the only routine that we actually use.
  */
 peano::MappingSpecification   dem::mappings::Plot::touchVertexLastTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::Serial,true);
 }
 peano::MappingSpecification   dem::mappings::Plot::enterCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
@@ -329,6 +329,7 @@ void dem::mappings::Plot::touchVertexLastTime(
   const tarch::la::Vector<DIMENSIONS,int>&      fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
 
   //if(_mini < _iterationNumber && _iterationNumber < _maxi)
   {
@@ -666,11 +667,13 @@ void dem::mappings::Plot::touchVertexLastTime(
 #if defined(SharedMemoryParallelisation)
 dem::mappings::Plot::Plot(const Plot&  masterThread):
   _writer(masterThread._writer),
+
   _vertexWriter(masterThread._vertexWriter),
   _cellWriter(masterThread._cellWriter),
-  _faceVertexAssociation(masterThread._faceVertexAssociation),
+
   _type(masterThread._type),
   _level(masterThread._level),
+  _faceVertexAssociation(masterThread._faceVertexAssociation),
 
   _velocitiesAndNormals(masterThread._velocitiesAndNormals),
   _frictionNormals(masterThread._frictionNormals),
@@ -680,8 +683,8 @@ dem::mappings::Plot::Plot(const Plot&  masterThread):
   _particleEpsilon(masterThread._particleEpsilon),
   _particleInfluence(masterThread._particleInfluence),
   _vertexColoring(masterThread._vertexColoring),
-  _vertexCounter(masterThread._vertexCounter),
 
+  _vertexCounter(masterThread._vertexCounter),
   _particleCounter(masterThread._particleCounter),
   _collisionPointCounter(masterThread._collisionPointCounter),
   _iterationNumber(masterThread._collisionPointCounter)
