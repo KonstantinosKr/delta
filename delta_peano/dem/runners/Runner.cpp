@@ -49,7 +49,7 @@ std::string initSharedMemory(
     bool useAutotuning)
 {
   #ifdef SharedMemoryParallelisation
-    tarch::multicore::Core::getInstance().configure(tbbThreads);
+    tarch::multicore::Core::getInstance().configure(tbbThreads, tarch::multicore::Core::UseDefaultStackSize);
 
     std::string sharedMemoryPropertiesFileName = "shared-memory-"
         + std::to_string( DIMENSIONS ) + "d-"
