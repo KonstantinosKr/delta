@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7two-particles-crash_nosphere-hybrid-on-triangle-pairsTR
 exp7o=/ddn/data/rfmw74/h7two-particles-crash_nosphere-hybrid-on-triangle-pairsTRIANGLE16_60
 exp8o=/ddn/data/rfmw74/h7two-particles-crash_nosphere-hybrid-on-triangle-pairsTRIANGLE24_60
 
-exp0="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60"
-exp1="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60"
-exp2="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60"
-exp3="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60"
-exp4="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60"
-exp5="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60"
-exp6="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60"
-exp7="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60"
-exp8="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60"
+exp0="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60 1 false false off"
+exp1="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60 1 false false off"
+exp2="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60 1 false false off"
+exp3="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60 1 false false off"
+exp4="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60 1 false false off"
+exp5="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60 1 false false off"
+exp6="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60 1 false false off"
+exp7="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60 1 false false off"
+exp8="./dem-3d-release-tbb-omp-triangle 0.1 two-particles-crash 10 no-grid 0.00003 never 10 false sphere-hybrid-on-triangle-pairs 60 1 false false off"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
