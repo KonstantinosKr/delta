@@ -34,12 +34,12 @@ PEANO_SETTINGS=-DTrackGridStatistics
 
 GCCRUN=-O3 -Wall -ftree-vectorize -ftree-vectorizer-verbose=3 -ftree-loop-optimize -faggressive-loop-optimizations -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing 
 GCCDEBUG=-O3 -Wall -g -DDebug -DAsserts -pedantic -pedantic-errors 
-
+GCCNOVEC=-O3 -Wall -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing 
 ##############################################################################################
 
 ICCRUN=-fast -Wall -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -qopt-streaming-stores always -xHOST
 ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors 
-
+ICCNOVEC=-O3 -Wall -no-vec -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -qopt-streaming-stores always -xHOST
 ##############################################################################################
 
 #COMPILER_CFLAGS=-std=c++14 -fast -fstrict-aliasing  -DMPICH_IGNORE_CXX_SEEK -fno-rtti -no-ipo -ip -xhost -wd603,3128
@@ -75,18 +75,10 @@ dim3-gcc-asserts: header build
 dim3-gcc-release-novec: CC=g++ -std=c++14
 dim3-gcc-release-novec: DIM=-DDim3
 dim3-gcc-release-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
-dim3-gcc-release-novec: CFLAGS=$(GCCRUN) -mnovect-double
+dim3-gcc-release-novec: CFLAGS=$(GCCNOVEC)
 dim3-gcc-release-novec: LFLAGS=
 dim3-gcc-release-novec: EXECUTABLE=dem-3d-release-novec
 dim3-gcc-release-novec: header build
-
-dim3-gcc-release-vec: CC=g++ --std=c++11
-dim3-gcc-release-vec: DIM=-DDim3
-dim3-gcc-release-vec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
-dim3-gcc-release-vec: CFLAGS=$(GCCRUN) 
-dim3-gcc-release-vec: LFLAGS=
-dim3-gcc-release-vec: EXECUTABLE=dem-3d-release-vec
-dim3-gcc-release-vec: header build
 
 dim3-gcc-release-tbb-omp-triangle: CC=g++ -std=c++14
 dim3-gcc-release-tbb-omp-triangle: DIM=-DDim3
@@ -135,18 +127,10 @@ dim3-icc-asserts: header build
 dim3-icc-release-novec: CC=icpc --std=c++11
 dim3-icc-release-novec: DIM=-DDim3
 dim3-icc-release-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
-dim3-icc-release-novec: CFLAGS=$(ICCRUN) -no-vec
+dim3-icc-release-novec: CFLAGS=$(ICCNOVEC)
 dim3-icc-release-novec: LFLAGS=
 dim3-icc-release-novec: EXECUTABLE=dem-3d-release-novec
 dim3-icc-release-novec: header build
-
-dim3-icc-release-vec: CC=icpc --std=c++11
-dim3-icc-release-vec: DIM=-DDim3
-dim3-icc-release-vec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
-dim3-icc-release-vec: CFLAGS=$(ICCRUN)
-dim3-icc-release-vec: LFLAGS=
-dim3-icc-release-vec: EXECUTABLE=dem-3d-release-vec
-dim3-icc-release-vec: header build
 
 dim3-icc-release-tbb-omp-triangle: CC=icpc --std=c++11
 dim3-icc-release-tbb-omp-triangle: DIM=-DDim3
