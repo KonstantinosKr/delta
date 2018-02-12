@@ -1,0 +1,43 @@
+#!/bin/bash
+#SBATCH -t 00:10:00
+#SBATCH --exclusive
+#SBATCH -p test.q
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mail-user=dominic.e.charrier@durham.ac.uk
+#SBATCH --mail-type=ALL
+module load intel/xe_2017.2
+module load likwid/4.1
+
+
+./stream-gcc-noomp > results_gcc-noomp.out 
+./stream-icc-noomp > results_icc-noomp.out 
+
+likwid-perfctr -C 1 -g BRANCH ./stream-gcc-noomp > results_gcc-noomp-branch.out 
+likwid-perfctr -C 1 -g BRANCH ./stream-icc-noomp > results_icc-noomp-branch.out 
+
+likwid-perfctr -C 1 -g MEM ./stream-gcc-noomp > results_gcc-noomp-mem.out 
+likwid-perfctr -C 1 -g MEM ./stream-icc-noomp > results_icc-noomp-mem.out 
+
+likwid-perfctr -C 1 -g FLOPS_DP ./stream-gcc-noomp > results_gcc-noomp-flops.out 
+likwid-perfctr -C 1 -g FLOPS_DP ./stream-icc-noomp > results_icc-noomp-flops.out 
+
+likwid-perfctr -C 1 -g L2CACHE ./stream-gcc-noomp > results_gcc-noomp-l2cache.out 
+likwid-perfctr -C 1 -g L2CACHE ./stream-icc-noomp > results_icc-noomp-l2cache.out 
+
+export OMP_NUM_THREADS=24
+
+./stream-gcc-omp > results_gcc-omp.out 
+./stream-icc-omp > results_icc-omp.out 
+
+likwid-perfctr -C 0-23 -g BRANCH ./stream-gcc-omp > results_gcc-omp-branch.out 
+likwid-perfctr -C 0-23 -g BRANCH ./stream-icc-omp > results_icc-omp-branch.out 
+
+likwid-perfctr -C 0-23 -g MEM ./stream-gcc-omp > results_gcc-omp-mem.out 
+likwid-perfctr -C 0-23 -g MEM ./stream-icc-omp > results_icc-omp-mem.out 
+
+likwid-perfctr -C 0-23 -g FLOPS_DP ./stream-gcc-omp > results_gcc-omp-flops.out 
+likwid-perfctr -C 0-23 -g FLOPS_DP ./stream-icc-omp > results_icc-omp-flops.out 
+
+likwid-perfctr -C 0-23 -g L2CACHE ./stream-gcc-omp > results_gcc-omp-l2cache.out 
+likwid-perfctr -C 0-23 -g L2CACHE ./stream-icc-omp > results_icc-omp-l2cache.out 
