@@ -78,24 +78,18 @@ void dem::State::merge( const State& otherState ) {
 
   _stateData.setTwoParticlesSeparate(_stateData.getTwoParticlesSeparate() || otherState._stateData.getTwoParticlesSeparate() );
 
-  if(_stateData.getTwoParticlesAreClose() > otherState._stateData.getTwoParticlesAreClose())
+  if(_stateData.getTwoParticlesAreClose() < otherState._stateData.getTwoParticlesAreClose())
   {
-    _stateData.setTwoParticlesAreClose( _stateData.getTwoParticlesAreClose());
-  } else {
     _stateData.setTwoParticlesAreClose( otherState._stateData.getTwoParticlesAreClose());
   }
 
-  if(_stateData.getMaxVelocityApproach() > otherState._stateData.getMaxVelocityApproach())
+  if(_stateData.getMaxVelocityApproach() < otherState._stateData.getMaxVelocityApproach())
   {
-    _stateData.setMaxVelocityApproach( _stateData.getMaxVelocityApproach());
-  } else {
     _stateData.setMaxVelocityApproach( otherState._stateData.getMaxVelocityApproach());
   }
 
-  if(_stateData.getMaxVelocityTravel() > otherState._stateData.getMaxVelocityTravel())
+  if(_stateData.getMaxVelocityTravel() < otherState._stateData.getMaxVelocityTravel())
   {
-    _stateData.setMaxVelocityTravel( _stateData.getMaxVelocityTravel());
-  } else {
     _stateData.setMaxVelocityTravel( otherState._stateData.getMaxVelocityTravel());
   }
 }
@@ -163,7 +157,7 @@ void dem::State::adaptiveTimeStep()
     //printf("triggered step increment\n");
     if(_stateData.getTimeStep() > 2)
     {
-      if(_stateData.getTwoParticlesSeparate() && _stateData.getTwoParticlesAreClose() == 0 && dem::mappings::CreateGrid::_gridType == dem::mappings::CreateGrid::ReluctantAdaptiveGrid)
+      //if(_stateData.getTwoParticlesSeparate() && _stateData.getTwoParticlesAreClose() == 0 && dem::mappings::CreateGrid::_gridType == dem::mappings::CreateGrid::ReluctantAdaptiveGrid)
       {
         //_stateData.setTimeStepSize(_maxdt);
         //return;

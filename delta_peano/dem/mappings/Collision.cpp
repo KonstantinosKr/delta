@@ -84,8 +84,9 @@ void dem::mappings::Collision::beginIteration(
 	logTraceInWith1Argument( "beginIteration(State)", solverState );
 
 	_state = solverState;
-	_state.clearAccumulatedData();//redundant
-	_backgroundTaskState.clearAccumulatedData();
+	_backgroundTaskState = solverState;
+	//_state.clearAccumulatedData();//redundant
+	//_backgroundTaskState.clearAccumulatedData();
 
 	assertion( _collisionsOfNextTraversal.empty() );
 
@@ -348,7 +349,7 @@ bool dem::mappings::Collision::triggerParticleTooClose(
     state.informStateThatTwoParticlesAreClose(localMaxdt);
   }
 
-/*  printf("pvBA: %f  pdt: %f | pmd: %f pdt: %f pd: %f\n",
+  /*  printf("pvBA: %f  pdt: %f | pmd: %f pdt: %f pd: %f\n",
          pvBA,    pdistancePerStep, distancePerStep, pdt, pd);
   printf(" vBA: %f  ddt: %f |  md: %f dt: %f  d: %f\n",
          vBA,     distancePerStep,  pdistancePerStep, dt, d);*/
@@ -609,7 +610,7 @@ void dem::mappings::Collision::collisionDetection(
     lock.free();
   }
 
-  if (protectStateAccess) {lock.lock();}
+  if (protectStateAccess) lock.lock();
   state->incNumberOfTriangleComparisons(numberOfTrianglesA * numberOfTrianglesB);
   state->incNumberOfParticleComparisons(1);
   if (protectStateAccess) lock.free();
@@ -626,7 +627,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 ) {
 	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-	double timeStepSize = _state.getTimeStepSize();
+	double timeStepSize = _backgroundTaskState.getTimeStepSize();
 
 	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
 	{
@@ -713,7 +714,6 @@ void dem::mappings::Collision::touchVertexLastTime(
 ) {
   if (fineGridVertex.getNumberOfParticles()==0) return;
 
-  return;
   #ifdef SharedTBB
   const int grainSize = (RunParticleLoopInParallel||fineGridVertex.getNumberOfParticles()==0) ? 1 : fineGridVertex.getNumberOfParticles();
   tbb::parallel_for(
@@ -741,18 +741,18 @@ void dem::mappings::Collision::touchVertexLastTime(
       auto p8 = fineGridVertex.getYCoordinates(j);
       auto p9 = fineGridVertex.getZCoordinates(j);
 
-      logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
-
       peano::datatraversal::TaskSet backgroundTask(
        [=] () {
         dem::mappings::Collision::collisionDetection(
           p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
-          &dem::mappings::Collision::_backgroundTaskState,
+          &_backgroundTaskState,
           true
         );
        },
        peano::datatraversal::TaskSet::TaskType::Background
-     );
+      );
+
+      logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
     }
     else {
       collisionDetection(
@@ -781,7 +781,8 @@ void dem::mappings::Collision::touchVertexLastTime(
 void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
   dem::Vertex&  vertexA,
 	dem::Vertex&  vertexB,
-	State& state
+	State& state,
+	State& backgroundstate
 ) {
 	logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexA.toString() << ", " << vertexA.getNumberOfRealAndVirtualParticles() );
 	logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexB.toString() << ", " << vertexB.getNumberOfRealAndVirtualParticles() );
@@ -803,7 +804,6 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 			  continue;
 
 			if (RunParticleComparisionsInBackground) {
-
 			  auto p0 = vertexA.getParticle(i);
         auto p1 = vertexA.getNumberOfTriangles(i);
         auto p2 = vertexA.getXCoordinates(i);
@@ -815,20 +815,17 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
         auto p8 = vertexB.getYCoordinates(j);
         auto p9 = vertexB.getZCoordinates(j);
 
-        std::function<void ()> myTask = [=] () {
-          collisionDetection(
+        peano::datatraversal::TaskSet backgroundTask(
+         [=, &backgroundstate] () {
+          dem::mappings::Collision::collisionDetection(
             p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
-            &_backgroundTaskState,
+            &backgroundstate,
             true
           );
-        };
-
-
-
+         },
+         peano::datatraversal::TaskSet::TaskType::Background
+        );
         logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
-        //peano::datatraversal::TaskSet backgroundTask(myTask,false);
-
-
 			}
 			else {
 	      collisionDetection(
@@ -1014,7 +1011,8 @@ dem::Vertex dem::mappings::reduceVirtuals(
 void dem::mappings::Collision::all_to_all(
     dem::Vertex * const                       fineGridVertices,
     const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
-    State& state)
+    State& state,
+    State& backgroundstate)
 {
   Vertex &v0 = fineGridVertices[fineGridVerticesEnumerator(0)];
   Vertex &v1 = fineGridVertices[fineGridVerticesEnumerator(1)];
@@ -1037,24 +1035,28 @@ void dem::mappings::Collision::all_to_all(
 
   dem::Vertex vcentre = reduceVirtuals(v0, v1, v2, v3, v4, v5, v6, v7);
 
-  //printf("ENTERED\n");
   for(int i=0; i<8; i++)
   {
     for(int j=i+1; j<8; j++)
     {
-      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(fineGridVertices[fineGridVerticesEnumerator(i)], fineGridVertices[fineGridVerticesEnumerator(j)], state);
+      dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
+          fineGridVertices[fineGridVerticesEnumerator(i)],
+          fineGridVertices[fineGridVerticesEnumerator(j)],
+          state,
+          backgroundstate);
     }
   }
 
+
   //full coarse inheritance check
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v0, state);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v1, state);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v2, state);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v3, state);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v4, state);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v5, state);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v6, state);
-  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v7, state);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v0, state, backgroundstate);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v1, state, backgroundstate);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v2, state, backgroundstate);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v3, state, backgroundstate);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v4, state, backgroundstate);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v5, state, backgroundstate);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v6, state, backgroundstate);
+  dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v7, state, backgroundstate);
   ///
 }
 
@@ -1081,7 +1083,7 @@ void dem::mappings::Collision::leaveCell(
     dem::Cell&           coarseGridCell,
     const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
-    all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state);
+  all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
 }
 
 dem::mappings::Collision::Collision() {
@@ -1098,8 +1100,7 @@ dem::mappings::Collision::~Collision() {
 }
 
 #if defined(SharedMemoryParallelisation)
-dem::mappings::Collision::Collision(const Collision&  masterThread):
-		  _state(masterThread._state) {
+dem::mappings::Collision::Collision(const Collision&  masterThread): _state(masterThread._state) {
 	_state.clearAccumulatedData();
 }
 

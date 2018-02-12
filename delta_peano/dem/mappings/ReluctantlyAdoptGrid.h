@@ -47,6 +47,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
 
     State   _state;
 
+    static State _backgroundTaskState;
+
     bool isApproach(
         const records::Particle& particleA,
         const records::Particle& particleB);

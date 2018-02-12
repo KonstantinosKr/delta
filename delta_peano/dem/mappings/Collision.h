@@ -70,7 +70,7 @@ class dem::mappings::Collision {
 
 
   public:
-    static State  _backgroundTaskState;
+    static State _backgroundTaskState;
     static bool RunGridTraversalInParallel;
     static bool RunParticleLoopInParallel;
     static bool RunParticleComparisionsInBackground;
@@ -78,7 +78,8 @@ class dem::mappings::Collision {
     static void all_to_all(
         dem::Vertex * const                       fineGridVertices,
         const peano::grid::VertexEnumerator&      fineGridVerticesEnumerator,
-        State& state);
+        State& state,
+        State& backgroundstate);
 
     /**
      * Either call it for the local state. Then nothing has to be protected.
@@ -103,7 +104,8 @@ class dem::mappings::Collision {
     static void collideParticlesOfTwoDifferentVertices(
       dem::Vertex&  vertexA,
       dem::Vertex&  vertexB,
-      State& state
+      State& state,
+      State& backgroundstate
     );
 
     static void addCollision(

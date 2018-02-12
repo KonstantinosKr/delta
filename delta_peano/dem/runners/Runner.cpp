@@ -203,7 +203,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
   repository.getState().setMaximumVelocityApproach(0.1);
 
-/*
+  /*
   //////////////////PLOT TIME ZERO//////////////////////////////////////////////////////
   if((plot == EveryIteration) ||  (plot == Track) ||
       (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
