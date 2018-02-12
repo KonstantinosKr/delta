@@ -83,7 +83,7 @@ dim3-gcc-release-tbb-omp-triangle: DIM=-DDim3
 dim3-gcc-release-tbb-omp-triangle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 dim3-gcc-release-tbb-omp-triangle: CFLAGS=$(GCCNOVEC) $(GCC_SHAREDMEMORY) $(INCLUDE_TBB)
 dim3-gcc-release-tbb-omp-triangle: LFLAGS=$(LINK_TBB) $(LINK_OMP)
-dim3-gcc-release-tbb-omp-triangle: EXECUTABLE=dem-3d-release-tbb-omp-triangle-novec
+dim3-gcc-release-tbb-omp-triangle: EXECUTABLE=dem-3d-release-tbb-omp-triangle
 dim3-gcc-release-tbb-omp-triangle: header build
 
 dim3-gcc-release-tbb-omp-triangle-novec: CC=g++ -std=c++14
@@ -91,7 +91,7 @@ dim3-gcc-release-tbb-omp-triangle-novec: DIM=-DDim3
 dim3-gcc-release-tbb-omp-triangle-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 dim3-gcc-release-tbb-omp-triangle-novec: CFLAGS=$(GCCRUN) $(GCC_SHAREDMEMORY) $(INCLUDE_TBB)
 dim3-gcc-release-tbb-omp-triangle-novec: LFLAGS=$(LINK_TBB) $(LINK_OMP)
-dim3-gcc-release-tbb-omp-triangle-novec: EXECUTABLE=dem-3d-release-tbb-omp-triangle
+dim3-gcc-release-tbb-omp-triangle-novec: EXECUTABLE=dem-3d-release-tbb-omp-triangle-novec
 dim3-gcc-release-tbb-omp-triangle-novec: header build
 
 dim3-gcc-release-tbb-omp-triangle-stats: CC=g++ -std=c++14
@@ -151,7 +151,7 @@ dim3-icc-release-tbb-omp-triangle-novec: DIM=-DDim3
 dim3-icc-release-tbb-omp-triangle-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 dim3-icc-release-tbb-omp-triangle-novec: CFLAGS=$(ICCNOVEC) $(ICC_SHAREDMEMORY) $(INCLUDE_TBB)
 dim3-icc-release-tbb-omp-triangle-novec: LFLAGS=$(LINK_TBB) $(LINK_OMP)
-dim3-icc-release-tbb-omp-triangle-novec: EXECUTABLE=dem-3d-release-tbb-omp-triangle
+dim3-icc-release-tbb-omp-triangle-novec: EXECUTABLE=dem-3d-release-tbb-omp-triangle-novec
 dim3-icc-release-tbb-omp-triangle-novec: header build
 
 dim3-icc-release-tbb-omp-triangle-stats: CC=icpc --std=c++11
