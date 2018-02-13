@@ -184,10 +184,10 @@ int main(int argc, char** argv)
   const std::string  gridTypeIdentifier  = argv[4];
   const double       stepSize         	   = atof(argv[5]);
   const std::string  plotIdentifier      = argv[6];
-  const double		    realSnapshot		       = atof(argv[7]);
+  const double		    realSnapshot		     = atof(argv[7]);
   const std::string  gravity             = argv[8];
   const std::string  collisionModel      = argv[9];
-  const int			    meshMultiplier         = atof(argv[10]);
+  const int			    meshMultiplier      = atof(argv[10]);
 
   #ifdef SharedMemoryParallelisation
 	  const int          numberOfCores       = atoi(argv[11]);
