@@ -88,17 +88,17 @@ def build(buildOnlyMissing=False):
     for environmentDict in dictProduct(environmentSpace):
         for key,value in environmentDict.items():
 
-            if not firstIteration:
-                command = "make clean"
-                print(command)
-                process = subprocess.Popen([command], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-                (output, err) = process.communicate()
-                process.wait()
+            #if not firstIteration:
+                #command = "make clean"
+                #print(command)
+                #process = subprocess.Popen([command], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+                #(output, err) = process.communicate()
+                #process.wait()
 
-            oldExecutable = deltaRoot + "/" + value
-            executable = buildFolderPath + "/" + value
+            newExecutable = deltaRoot + "/" + value
+            executableLocation = buildFolderPath + "/" + value
 
-            if not os.path.exists(executable) or not buildOnlyMissing:
+            if not os.path.exists(executableLocation) or not buildOnlyMissing:
                 print("building executable for " + "environment="+str(environmentDict), file=sys.stderr)
 
                 # clean application folder only
@@ -130,7 +130,7 @@ def build(buildOnlyMissing=False):
                     print("make errors/warnings=\n"+makeErr.decode('UTF-8'),file=sys.stderr)
                     sys.exit()
 
-                moveCommand   = "mv "+oldExecutable+" "+executable
+                moveCommand   = "mv "+newExecutable+" "+executableLocation
                 print(moveCommand)
                 subprocess.call(moveCommand,shell=True)
                 print("--------------------------------------------------------------------------------")
