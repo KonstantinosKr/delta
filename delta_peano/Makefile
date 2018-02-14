@@ -37,7 +37,7 @@ GCCDEBUG=-O3 -Wall -g -DDebug -DAsserts -pedantic -pedantic-errors
 GCCNOVEC=-O3 -Wall -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing
 ##############################################################################################
 
-ICCRUN=-fast -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -fno-rtti -ipo -ip -qopt-streaming-stores=auto -xHOST
+ICCRUN=-fast -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHOST
 ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors
 ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -xHOST
 ##############################################################################################
