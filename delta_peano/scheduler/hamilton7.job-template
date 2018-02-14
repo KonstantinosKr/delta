@@ -16,7 +16,7 @@
 #SBATCH --nodes={{nodes}}
 #SBATCH --ntasks-per-node={{tasks}}
 #SBATCH --cpus-per-task={{cores}}
-#SBATCH  --mail-type=ALL
+#SBATCH --mail-type=ALL
 #SBATCH --mail-user={{mail}}
 module purge
 module load slurm
