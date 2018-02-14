@@ -318,21 +318,19 @@ def verifyAllJobScriptsExist():
         sys.exit()
 
     allJobScriptsExist = True
-    for run in runNumbers:
-        for nodes in nodeCounts:
-            for tasks in taskCounts:
-                for parsedCores in coreCounts:
-                    cores = parsedCores
-                    if parsedCores=="auto":
-                        cores=str(int(int(cpus) / int(tasks)))
-                    for environmentDict in dictProduct(environmentSpace):
-                        environmentDictHash = hashDictionary(environmentDict)
-
+    for nodes in nodeCounts:
+        for tasks in taskCounts:
+            for parsedCores in coreCounts:
+                cores = parsedCores
+                if parsedCores=="auto":
+                    cores=str(int(int(cpus) / int(tasks)))
+                for environmentDict in dictProduct(environmentSpace):
+                    for key, value in environmentDict.items():
                         for parameterDict in dictProduct(parameterSpace):
                             parameterDictHash = hashDictionary(parameterDict)
 
-                            jobName        = projectName + "-" + environmentDictHash + "-" + parameterDictHash + \
-                                             "-n" + nodes + "-t"+tasks+"-c"+cores+"-r"+run
+                            jobName        = projectName + "-" + value + "-" + parameterDictHash + \
+                                             "-n" + nodes + "-t"+tasks+"-c"+cores+"-r"
                             jobFilePrefix  = scriptsFolderPath + "/" + jobName
                             jobFilePath    = jobFilePrefix + ".job"
 
@@ -344,7 +342,6 @@ def verifyAllJobScriptsExist():
                                       ", nodes="+nodes + \
                                       ", tasks="+tasks + \
                                       ", cores="+cores + \
-                                      ", run="+run + \
                                       " does not exist! ('"+jobFilePath+"')",file=sys.stderr)
     if not allJobScriptsExist:
         print("ERROR: subprogram failed! Please adopt your sweep options file according to the error messages.\n" + \
