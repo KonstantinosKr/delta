@@ -174,7 +174,7 @@ def verifyAllExecutablesExist(justWarn=False):
 
 def renderJobScript(templateBody,environmentDict,parameterDict,jobs,
                     jobName,jobFilePath,outputFileName,appName,
-                    nodes,tasks,cores):
+                    nodes,tasks,cores,ompthread):
     """
     Render a job script.
     """
@@ -185,6 +185,7 @@ def renderJobScript(templateBody,environmentDict,parameterDict,jobs,
     context["nodes"] = nodes
     context["tasks"] = tasks
     context["cores"] = cores
+    context["ompthread"] = ompthread
     context["job_name"] = jobName
     context["output_file"] = outputFileName
 
@@ -285,25 +286,26 @@ def generateScripts():
                 cores = parsedCores
                 if parsedCores=="auto":
                     cores=str(int(int(cpus) / int(tasks)))
-                for environmentDict in dictProduct(environmentSpace):
-                    for key, value in environmentDict.items():
-                        for parameterDict in dictProduct(parameterSpace):
-                            parameterDictHash = hashDictionary(parameterDict)
+                for ompthread in ompthreadCounts:
+                    for environmentDict in dictProduct(environmentSpace):
+                        for key, value in environmentDict.items():
+                            for parameterDict in dictProduct(parameterSpace):
+                                parameterDictHash = hashDictionary(parameterDict)
 
-                            executable   = "./" + value
+                                executable   = "./" + value
 
-                            jobName        = value + "-" + parameterDictHash + "-n" + nodes + "-t"+tasks+"-c"+cores
-                            jobFilePrefix  = scriptsFolderPath + "/" + jobName
-                            jobFilePath    = jobFilePrefix + ".job"
-                            outputFileName = resultsFolderPath + "/" + projectName + "/" + jobName + ".out"
+                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + "-t"+tasks+"-c"+cores+"-o"+ompthread
+                                jobFilePrefix  = scriptsFolderPath + "/" + jobName
+                                jobFilePath    = jobFilePrefix + ".job"
+                                outputFileName = resultsFolderPath + "/" + projectName + "/" + jobName + ".out"
 
-                            jobScriptBody = renderJobScript(jobScriptTemplate,environmentDict,parameterDict,jobs,
-                                                            jobName,jobFilePath,outputFileName,executable,
-                                                            nodes,tasks,cores)
-                            with open(jobFilePath, "w") as jobFile:
-                                jobFile.write(jobScriptBody)
+                                jobScriptBody = renderJobScript(jobScriptTemplate,environmentDict,parameterDict,jobs,
+                                                                jobName,jobFilePath,outputFileName,executable,
+                                                                nodes,tasks,cores)
+                                with open(jobFilePath, "w") as jobFile:
+                                    jobFile.write(jobScriptBody)
 
-                            jobScripts+=1
+                                jobScripts+=1
 
     print("generated job scripts: "+str(jobScripts))
 
@@ -324,25 +326,27 @@ def verifyAllJobScriptsExist():
                 cores = parsedCores
                 if parsedCores=="auto":
                     cores=str(int(int(cpus) / int(tasks)))
-                for environmentDict in dictProduct(environmentSpace):
-                    for key, value in environmentDict.items():
-                        for parameterDict in dictProduct(parameterSpace):
-                            parameterDictHash = hashDictionary(parameterDict)
+                for ompthread in ompthreadCounts:
+                    for environmentDict in dictProduct(environmentSpace):
+                        for key, value in environmentDict.items():
+                            for parameterDict in dictProduct(parameterSpace):
+                                parameterDictHash = hashDictionary(parameterDict)
 
-                            jobName        = value + "-" + parameterDictHash + \
-                                             "-n" + nodes + "-t"+tasks+"-c"+cores
-                            jobFilePrefix  = scriptsFolderPath + "/" + jobName
-                            jobFilePath    = jobFilePrefix + ".job"
+                                jobName        = value + "-" + parameterDictHash + \
+                                                 "-n" + nodes + "-t"+tasks+"-c"+cores+"-o"+ompthread
+                                jobFilePrefix  = scriptsFolderPath + "/" + jobName
+                                jobFilePath    = jobFilePrefix + ".job"
 
-                            if not os.path.exists(jobFilePath):
-                                allJobScriptsExist = False
-                                print("ERROR: job script for " + \
-                                      "environment="+str(value)+ \
-                                      ", parameters="+str(parameterDict) + \
-                                      ", nodes="+nodes + \
-                                      ", tasks="+tasks + \
-                                      ", cores="+cores + \
-                                      " does not exist! ('"+jobFilePath+"')",file=sys.stderr)
+                                if not os.path.exists(jobFilePath):
+                                    allJobScriptsExist = False
+                                    print("ERROR: job script for " + \
+                                          "environment="+str(value)+ \
+                                          ", parameters="+str(parameterDict) + \
+                                          ", nodes="+nodes + \
+                                          ", tasks="+tasks + \
+                                          ", cores="+cores + \
+                                          ", ompthreads="+ompthread + \
+                                          " does not exist! ('"+jobFilePath+"')",file=sys.stderr)
     if not allJobScriptsExist:
         print("ERROR: subprogram failed! Please adopt your sweep options file according to the error messages.\n" + \
               "       Then rerun the 'scripts' subprogram.")
@@ -355,6 +359,8 @@ def hashSweep():
     for value in taskCounts:
         chain += value+";"
     for value in coreCounts:
+        chain += value+";"
+    for value in ompthreadCounts:
         chain += value+";"
 
     for environmentDict in dictProduct(environmentSpace):
@@ -399,21 +405,22 @@ def submitJobs():
                 cores = parsedCores
                 if parsedCores=="auto":
                     cores=str(int(int(cpus) / int(tasks)))
-                for environmentDict in dictProduct(environmentSpace):
-                    for key, value in environmentDict.items():
-                        for parameterDict in dictProduct(parameterSpace):
-                            parameterDictHash = hashDictionary(parameterDict)
+                for ompthread in ompthreadCounts:
+                    for environmentDict in dictProduct(environmentSpace):
+                        for key, value in environmentDict.items():
+                            for parameterDict in dictProduct(parameterSpace):
+                                parameterDictHash = hashDictionary(parameterDict)
 
-                            jobName        = value + "-" + parameterDictHash + "-n" + nodes + "-t"+tasks+"-c"+cores
-                            jobFilePrefix  = scriptsFolderPath + "/" + jobName
-                            jobFilePath    = jobFilePrefix + ".job"
+                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + "-t"+tasks+"-c"+cores+"-o"+ompthread
+                                jobFilePrefix  = scriptsFolderPath + "/" + jobName
+                                jobFilePath    = jobFilePrefix + ".job"
 
-                            command=jobSubmissionTool + " " + jobFilePath
-                            print(command)
-                            process = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
-                            (output, err) = process.communicate()
-                            process.wait()
-                            jobIds.append(extractJobId(output.decode("UTF_8")))
+                                command=jobSubmissionTool + " " + jobFilePath
+                                print(command)
+                                process = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
+                                (output, err) = process.communicate()
+                                process.wait()
+                                jobIds.append(extractJobId(output.decode("UTF_8")))
 
     if not os.path.exists(historyFolderPath):
         print("create directory "+historyFolderPath)
@@ -530,6 +537,7 @@ typical workflow:
     nodeCounts = options.nodeCounts
     taskCounts = options.taskCounts
     coreCounts = options.coreCounts
+    ompthreadCounts = options.ompthreadCounts
 
     verifySweepAgreesWithHistoricExperiments()
 

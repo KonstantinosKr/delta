@@ -3,8 +3,8 @@
 # time, nodes, tasks,
 # job_name, output_file,
 # job_file, app,
-# environment, parameters
-# 
+# environment, parameters, ompthreads
+#
 # Optional parameters are:
 # ranks, cores, mail
 
@@ -28,6 +28,8 @@ export TBB_SHLIB="-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.
 
 export I_MPI_FABRICS="tmi"
 
+export OMP_NUM_THREADS={{ompthreads}}
+
 # pipe some information into output file
 echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
 echo ""
@@ -44,14 +46,14 @@ echo "sweep/parameters={{parameters}}"
 #mpiexec -np {{ranks}} {{app}} {{parameters}}
 {{app}}
 
-# likwid measurements for single-node experiments 
+# likwid measurements for single-node experiments
 # NOTE: The following two lines are mandatory for parsing
 #echo "sweep/environment={{environment}}" >  {{output_file}}.likwid
 #echo "sweep/parameters={{parameters}}"   >> {{output_file}}.likwid
 
 #if (( {{cores}}==1 )); then
 #  likwid-pin -c 0 {{app}}
-#  
+#
 #  likwid-perfctr -f -C 0 -g MEM      {{app}} >> {{output_file}}.likwid
 #  likwid-perfctr -f -C 0 -g FLOPS_DP {{app}} >> {{output_file}}.likwid
 #  likwid-perfctr -f -C 0 -g L2CACHE  {{app}} >> {{output_file}}.likwid

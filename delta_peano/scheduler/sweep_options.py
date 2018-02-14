@@ -76,6 +76,7 @@ def parseOptionsFile(optionsFile,ignoreMetadata=False):
     nodeCounts = [x.strip() for x in jobs["nodes"].split(",")]
     taskCounts = [x.strip() for x in jobs["tasks"].split(",")]
     coreCounts = [x.strip() for x in jobs["cores"].split(",")]
+    ompthreadCounts = [x.strip() for x in jobs["ompthreads"].split(",")]
     
     Options = collections.namedtuple("options", \
            ("general jobs environmentSpace parameterSpace "
@@ -102,7 +103,8 @@ def parseOptionsFile(optionsFile,ignoreMetadata=False):
       \
       nodeCounts = nodeCounts,\
       taskCounts = taskCounts,\
-      coreCounts = coreCounts\
+      coreCounts = coreCounts, \
+      ompthreadCounts = ompthreadCounts
     )
     
     return options
