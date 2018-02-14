@@ -67,7 +67,7 @@ delta-gcc-asserts: DIM=-DDim3
 delta-gcc-asserts: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
 delta-gcc-asserts: CFLAGS=$(GCCDEBUG)
 delta-gcc-asserts: LFLAGS=
-delta-gcc-asserts: EXECUTABLE=delta-asserts
+delta-gcc-asserts: EXECUTABLE=delta-gcc-asserts
 delta-gcc-asserts: header build
 
 delta-gcc-release-novec: CC=g++ -std=c++14
@@ -75,7 +75,7 @@ delta-gcc-release-novec: DIM=-DDim3
 delta-gcc-release-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
 delta-gcc-release-novec: CFLAGS=$(GCCNOVEC)
 delta-gcc-release-novec: LFLAGS=
-delta-gcc-release-novec: EXECUTABLE=delta-release-novec
+delta-gcc-release-novec: EXECUTABLE=delta-gcc-release-novec
 delta-gcc-release-novec: header build
 
 delta-gcc-release-tbb-omp-triangle: CC=g++ -std=c++14
@@ -83,7 +83,7 @@ delta-gcc-release-tbb-omp-triangle: DIM=-DDim3
 delta-gcc-release-tbb-omp-triangle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 delta-gcc-release-tbb-omp-triangle: CFLAGS=$(GCCNOVEC) $(GCC_SHAREDMEMORY) $(INCLUDE_TBB)
 delta-gcc-release-tbb-omp-triangle: LFLAGS=$(LINK_TBB) $(LINK_OMP)
-delta-gcc-release-tbb-omp-triangle: EXECUTABLE=delta-release-tbb-omp-triangle
+delta-gcc-release-tbb-omp-triangle: EXECUTABLE=delta-gcc-release-tbb-omp-triangle
 delta-gcc-release-tbb-omp-triangle: header build
 
 delta-gcc-release-tbb-omp-triangle-novec: CC=g++ -std=c++14
@@ -91,7 +91,7 @@ delta-gcc-release-tbb-omp-triangle-novec: DIM=-DDim3
 delta-gcc-release-tbb-omp-triangle-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 delta-gcc-release-tbb-omp-triangle-novec: CFLAGS=$(GCCRUN) $(GCC_SHAREDMEMORY) $(INCLUDE_TBB)
 delta-gcc-release-tbb-omp-triangle-novec: LFLAGS=$(LINK_TBB) $(LINK_OMP)
-delta-gcc-release-tbb-omp-triangle-novec: EXECUTABLE=delta-release-tbb-omp-triangle-novec
+delta-gcc-release-tbb-omp-triangle-novec: EXECUTABLE=delta-gcc-release-tbb-omp-triangle-novec
 delta-gcc-release-tbb-omp-triangle-novec: header build
 
 delta-gcc-release-tbb-omp-triangle-stats: CC=g++ -std=c++14
@@ -99,7 +99,7 @@ delta-gcc-release-tbb-omp-triangle-stats: DIM=-DDim3
 delta-gcc-release-tbb-omp-triangle-stats: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(DELTA_STATS) -DSharedTBB -DompTriangle
 delta-gcc-release-tbb-omp-triangle-stats: CFLAGS=$(GCCRUN) $(GCC_SHAREDMEMORY)
 delta-gcc-release-tbb-omp-triangle-stats: LFLAGS=$(LINK_OMP)
-delta-gcc-release-tbb-omp-triangle-stats: EXECUTABLE=delta-release-tbb-omp-triangle
+delta-gcc-release-tbb-omp-triangle-stats: EXECUTABLE=delta-gcc-release-tbb-omp-triangle
 delta-gcc-release-tbb-omp-triangle-stats: header build
 
 delta-gcc-release-tbb-omp-triangle-phi: CC=g++ -std=c++14
@@ -107,7 +107,7 @@ delta-gcc-release-tbb-omp-triangle-phi: DIM=-DDim3
 delta-gcc-release-tbb-omp-triangle-phi: SETTINGS=$(DELTAPHI_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 delta-gcc-release-tbb-omp-triangle-phi: CFLAGS=$(GCCRUN) $(GCC_SHAREDMEMORY) $(INCLUDE_TBB)
 delta-gcc-release-tbb-omp-triangle-phi: LFLAGS=$(LINK_OMP) $(LINK_TBB) -mmic
-delta-gcc-release-tbb-omp-triangle-phi: EXECUTABLE=delta-release-tbb-omp-triangle-phi
+delta-gcc-release-tbb-omp-triangle-phi: EXECUTABLE=delta-gcc-release-tbb-omp-triangle-phi
 delta-gcc-release-tbb-omp-triangle-phi: header build
 
 delta-gcc-release-mpi-tbb: CC=mpic++ -std=c++14
@@ -115,7 +115,7 @@ delta-gcc-release-mpi-tbb: DIM=-DDim3
 delta-gcc-release-mpi-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel
 delta-gcc-release-mpi-tbb: CFLAGS=$(GCCRUN) $(INCLUDE_TBB) $(INCLUDE_MPI)
 delta-gcc-release-mpi-tbb: LFLAGS=$(LINK_TBB) $(LINK_MPI)
-delta-gcc-release-mpi-tbb: EXECUTABLE=delta-release-mpi-tbb
+delta-gcc-release-mpi-tbb: EXECUTABLE=delta-gcc-release-mpi-tbb
 delta-gcc-release-mpi-tbb: header build
 
 ################################################################################################################
@@ -127,7 +127,7 @@ delta-icc-asserts: DIM=-DDim3
 delta-icc-asserts: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
 delta-icc-asserts: CFLAGS=$(ICCDEBUG)
 delta-icc-asserts: LFLAGS=
-delta-icc-asserts: EXECUTABLE=delta-asserts
+delta-icc-asserts: EXECUTABLE=delta-icc-asserts
 delta-icc-asserts: header build
 
 delta-icc-release-novec: CC=icpc --std=c++11
@@ -135,7 +135,7 @@ delta-icc-release-novec: DIM=-DDim3
 delta-icc-release-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
 delta-icc-release-novec: CFLAGS=$(ICCNOVEC)
 delta-icc-release-novec: LFLAGS=
-delta-icc-release-novec: EXECUTABLE=delta-release-novec
+delta-icc-release-novec: EXECUTABLE=delta-icc-release-novec
 delta-icc-release-novec: header build
 
 delta-icc-release-tbb-omp-triangle: CC=icpc --std=c++11
@@ -143,7 +143,7 @@ delta-icc-release-tbb-omp-triangle: DIM=-DDim3
 delta-icc-release-tbb-omp-triangle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 delta-icc-release-tbb-omp-triangle: CFLAGS=$(ICCRUN) $(ICC_SHAREDMEMORY) $(INCLUDE_TBB)
 delta-icc-release-tbb-omp-triangle: LFLAGS=$(LINK_TBB) $(LINK_OMP)
-delta-icc-release-tbb-omp-triangle: EXECUTABLE=delta-release-tbb-omp-triangle
+delta-icc-release-tbb-omp-triangle: EXECUTABLE=delta-icc-release-tbb-omp-triangle
 delta-icc-release-tbb-omp-triangle: header build
 
 delta-icc-release-tbb-omp-triangle-novec: CC=icpc --std=c++11
@@ -151,7 +151,7 @@ delta-icc-release-tbb-omp-triangle-novec: DIM=-DDim3
 delta-icc-release-tbb-omp-triangle-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 delta-icc-release-tbb-omp-triangle-novec: CFLAGS=$(ICCNOVEC) $(ICC_SHAREDMEMORY) $(INCLUDE_TBB)
 delta-icc-release-tbb-omp-triangle-novec: LFLAGS=$(LINK_TBB) $(LINK_OMP)
-delta-icc-release-tbb-omp-triangle-novec: EXECUTABLE=delta-release-tbb-omp-triangle-novec
+delta-icc-release-tbb-omp-triangle-novec: EXECUTABLE=delta-icc-release-tbb-omp-triangle-novec
 delta-icc-release-tbb-omp-triangle-novec: header build
 
 delta-icc-release-tbb-omp-triangle-stats: CC=icpc --std=c++11
@@ -159,7 +159,7 @@ delta-icc-release-tbb-omp-triangle-stats: DIM=-DDim3
 delta-icc-release-tbb-omp-triangle-stats: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(DELTA_STATS) -DSharedTBB -DompTriangle
 delta-icc-release-tbb-omp-triangle-stats: CFLAGS=$(ICCRUN) $(ICC_SHAREDMEMORY)
 delta-icc-release-tbb-omp-triangle-stats: LFLAGS=$(LINK_OMP)
-delta-icc-release-tbb-omp-triangle-stats: EXECUTABLE=delta-release-tbb-omp-triangle
+delta-icc-release-tbb-omp-triangle-stats: EXECUTABLE=delta-icc-release-tbb-omp-triangle
 delta-icc-release-tbb-omp-triangle-stats: header build
 
 delta-icc-release-mpi-tbb: CC=mpiicc --std=c++11
@@ -167,7 +167,7 @@ delta-icc-release-mpi-tbb: DIM=-DDim3
 delta-icc-release-mpi-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel
 delta-icc-release-mpi-tbb: CFLAGS=$(ICCRUN) $(INCLUDE_MPI) $(INCLUDE_TBB)
 delta-icc-release-mpi-tbb: LFLAGS=$(LINK_MPI) $(LINK_TBB)
-delta-icc-release-mpi-tbb: EXECUTABLE=delta-release-mpi-tbb
+delta-icc-release-mpi-tbb: EXECUTABLE=delta-icc-release-mpi-tbb
 delta-icc-release-mpi-tbb: header build
 
 ################################################################################################################
