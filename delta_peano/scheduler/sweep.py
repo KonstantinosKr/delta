@@ -295,7 +295,7 @@ def generateScripts():
                             jobName        = value + "-" + parameterDictHash + "-n" + nodes + "-t"+tasks+"-c"+cores
                             jobFilePrefix  = scriptsFolderPath + "/" + jobName
                             jobFilePath    = jobFilePrefix + ".job"
-                            outputFileName = resultsFolderPath + "/" + jobName + ".out"
+                            outputFileName = resultsFolderPath + "/" + projectName + "/" + jobName + ".out"
 
                             jobScriptBody = renderJobScript(jobScriptTemplate,environmentDict,parameterDict,jobs,
                                                             jobName,jobFilePath,outputFileName,executable,
@@ -454,7 +454,6 @@ def cancelJobs():
         subprocess.call(command,shell=True)
     print("cancelled "+str(len(jobIds))+" jobs")
 
-    command = "rm "+submittedJobsPath
     command = "rm "+submittedJobsPath.replace(".submitted",".ini")
     print(command)
     subprocess.call(command,shell=True)
