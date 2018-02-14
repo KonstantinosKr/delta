@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7_1kparticles__nohybrid-on-triangle-pairsTRIANGLE12_20
 exp7o=/ddn/data/rfmw74/h7_1kparticles__nohybrid-on-triangle-pairsTRIANGLE16_20
 exp8o=/ddn/data/rfmw74/h7_1kparticles__nohybrid-on-triangle-pairsTRIANGLE24_20
 
-exp0="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
-exp1="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
-exp2="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
-exp3="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
-exp4="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
-exp5="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
-exp6="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
-exp7="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
-exp8="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 10 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
+exp0="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 5 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
+exp1="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 5 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
+exp2="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 5 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
+exp3="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 5 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
+exp4="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 5 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
+exp5="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 5 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
+exp6="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 5 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
+exp7="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 5 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
+exp8="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 5 no-grid 0.00003 never 10 false hybrid-on-triangle-pairs 20 1 false false off"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
