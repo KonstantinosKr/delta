@@ -329,7 +329,7 @@ def verifyAllJobScriptsExist():
                         for parameterDict in dictProduct(parameterSpace):
                             parameterDictHash = hashDictionary(parameterDict)
 
-                            jobName        = projectName + "-" + value + "-" + parameterDictHash + \
+                            jobName        = value + "-" + parameterDictHash + \
                                              "-n" + nodes + "-t"+tasks+"-c"+cores+"-r"
                             jobFilePrefix  = scriptsFolderPath + "/" + jobName
                             jobFilePath    = jobFilePrefix + ".job"
@@ -337,7 +337,7 @@ def verifyAllJobScriptsExist():
                             if not os.path.exists(jobFilePath):
                                 allJobScriptsExist = False
                                 print("ERROR: job script for " + \
-                                      "environment="+str(environmentDict)+ \
+                                      "environment="+str(value)+ \
                                       ", parameters="+str(parameterDict) + \
                                       ", nodes="+nodes + \
                                       ", tasks="+tasks + \
