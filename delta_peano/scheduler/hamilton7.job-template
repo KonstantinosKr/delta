@@ -28,7 +28,7 @@ export TBB_SHLIB="-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.
 
 export I_MPI_FABRICS="tmi"
 
-export OMP_NUM_THREADS={{ompthreads}}
+export OMP_NUM_THREADS={{ompthread}}
 
 # pipe some information into output file
 echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"

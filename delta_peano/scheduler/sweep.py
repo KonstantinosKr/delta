@@ -301,7 +301,7 @@ def generateScripts():
 
                                 jobScriptBody = renderJobScript(jobScriptTemplate,environmentDict,parameterDict,jobs,
                                                                 jobName,jobFilePath,outputFileName,executable,
-                                                                nodes,tasks,cores)
+                                                                nodes,tasks,cores,ompthread)
                                 with open(jobFilePath, "w") as jobFile:
                                     jobFile.write(jobScriptBody)
 
