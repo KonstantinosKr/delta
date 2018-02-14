@@ -37,7 +37,7 @@ GCCDEBUG=-O3 -Wall -g -DDebug -DAsserts -pedantic -pedantic-errors
 GCCNOVEC=-O3 -Wall -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing
 ##############################################################################################
 
-ICCRUN=-fast -Wall -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -unroll-aggressive -fstrict-aliasing -restrict -fno-rtti -ipo -ip -qopt-streaming-stores=auto -xHOST
+ICCRUN=-fast -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -fno-rtti -ipo -ip -qopt-streaming-stores=auto -xHOST
 ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors
 ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -xHOST
 ##############################################################################################
@@ -122,7 +122,7 @@ delta-gcc-release-mpi-tbb: header build
 ######## INTEL COMPILERS #######################################################################################
 ################################################################################################################
 
-delta-icc-asserts: CC=icpc --std=c++11
+delta-icc-asserts: CC=icpc -std=c++14
 delta-icc-asserts: DIM=-DDim3
 delta-icc-asserts: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
 delta-icc-asserts: CFLAGS=$(ICCDEBUG)
@@ -130,7 +130,7 @@ delta-icc-asserts: LFLAGS=
 delta-icc-asserts: EXECUTABLE=delta-icc-asserts
 delta-icc-asserts: header build
 
-delta-icc-release-novec: CC=icpc --std=c++11
+delta-icc-release-novec: CC=icpc -std=c++14
 delta-icc-release-novec: DIM=-DDim3
 delta-icc-release-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
 delta-icc-release-novec: CFLAGS=$(ICCNOVEC)
@@ -138,7 +138,7 @@ delta-icc-release-novec: LFLAGS=
 delta-icc-release-novec: EXECUTABLE=delta-icc-release-novec
 delta-icc-release-novec: header build
 
-delta-icc-release-tbb-omp-triangle: CC=icpc --std=c++11
+delta-icc-release-tbb-omp-triangle: CC=icpc -std=c++14
 delta-icc-release-tbb-omp-triangle: DIM=-DDim3
 delta-icc-release-tbb-omp-triangle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 delta-icc-release-tbb-omp-triangle: CFLAGS=$(ICCRUN) $(ICC_SHAREDMEMORY) $(INCLUDE_TBB)
@@ -146,7 +146,7 @@ delta-icc-release-tbb-omp-triangle: LFLAGS=$(LINK_TBB) $(LINK_OMP)
 delta-icc-release-tbb-omp-triangle: EXECUTABLE=delta-icc-release-tbb-omp-triangle
 delta-icc-release-tbb-omp-triangle: header build
 
-delta-icc-release-tbb-omp-triangle-novec: CC=icpc --std=c++11
+delta-icc-release-tbb-omp-triangle-novec: CC=icpc -std=c++14
 delta-icc-release-tbb-omp-triangle-novec: DIM=-DDim3
 delta-icc-release-tbb-omp-triangle-novec: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
 delta-icc-release-tbb-omp-triangle-novec: CFLAGS=$(ICCNOVEC) $(ICC_SHAREDMEMORY) $(INCLUDE_TBB)
@@ -154,7 +154,7 @@ delta-icc-release-tbb-omp-triangle-novec: LFLAGS=$(LINK_TBB) $(LINK_OMP)
 delta-icc-release-tbb-omp-triangle-novec: EXECUTABLE=delta-icc-release-tbb-omp-triangle-novec
 delta-icc-release-tbb-omp-triangle-novec: header build
 
-delta-icc-release-tbb-omp-triangle-stats: CC=icpc --std=c++11
+delta-icc-release-tbb-omp-triangle-stats: CC=icpc -std=c++14
 delta-icc-release-tbb-omp-triangle-stats: DIM=-DDim3
 delta-icc-release-tbb-omp-triangle-stats: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(DELTA_STATS) -DSharedTBB -DompTriangle
 delta-icc-release-tbb-omp-triangle-stats: CFLAGS=$(ICCRUN) $(ICC_SHAREDMEMORY)
@@ -162,7 +162,7 @@ delta-icc-release-tbb-omp-triangle-stats: LFLAGS=$(LINK_OMP)
 delta-icc-release-tbb-omp-triangle-stats: EXECUTABLE=delta-icc-release-tbb-omp-triangle
 delta-icc-release-tbb-omp-triangle-stats: header build
 
-delta-icc-release-mpi-tbb: CC=mpiicc --std=c++11
+delta-icc-release-mpi-tbb: CC=mpiicc -std=c++14
 delta-icc-release-mpi-tbb: DIM=-DDim3
 delta-icc-release-mpi-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel
 delta-icc-release-mpi-tbb: CFLAGS=$(ICCRUN) $(INCLUDE_MPI) $(INCLUDE_TBB)
