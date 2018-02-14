@@ -1,9 +1,9 @@
 """
 .. module:: sweep_analysis
   :platform: Unix, Windows, Mac
-  :synopsis: Submodule containing modules for analysing 
-   
-.. moduleauthor:: Dominic Etienne Charrier <dominic.e.charrier@durham.ac.uk>, 
+  :synopsis: Submodule containing modules for analysing
+
+.. moduleauthor:: Dominic Etienne Charrier <dominic.e.charrier@durham.ac.uk>,
 
 :synopsis: Generate benchmark suites for ExaHyPE.
 """
@@ -43,21 +43,21 @@ def parseParameters(config):
     if "parameters" in config and len(config["parameters"].keys()):
         for key, value in config["parameters"].items():
             parameterSpace[key] = parseList(value)
-            
+
         if "time-steps" not in parameterSpace:
             print("ERROR: 'order' missing in section 'parameters'.",file=sys.stderr)
             sys.exit()
     else:
         print("ERROR: Section 'parameters' is missing or empty! (Must contain at least 'dimension' and 'order'.)",file=sys.stderr)
         sys.exit()
-    
+
     return parameterSpace
 
 def parseOptionsFile(optionsFile,ignoreMetadata=False):
     configParser = configparser.ConfigParser()
     configParser.optionxform=str
     configParser.read(optionsFile)
-    
+
     general          = dict(configParser["general"])
     deltaRoot        = general["delta_root"]
     outputPath       = general["output_path"]
@@ -68,7 +68,7 @@ def parseOptionsFile(optionsFile,ignoreMetadata=False):
     scriptsFolderPath = deltaRoot+"/"+outputPath+"/" + "scripts"
     resultsFolderPath = "results"
     historyFolderPath = "history"
-    
+
     jobs             = dict(configParser["jobs"])
     environmentSpace = parseEnvironment(configParser)
     parameterSpace   = parseParameters(configParser)
@@ -77,14 +77,14 @@ def parseOptionsFile(optionsFile,ignoreMetadata=False):
     taskCounts = [x.strip() for x in jobs["tasks"].split(",")]
     coreCounts = [x.strip() for x in jobs["cores"].split(",")]
     ompthreadCounts = [x.strip() for x in jobs["ompthreads"].split(",")]
-    
+
     Options = collections.namedtuple("options", \
            ("general jobs environmentSpace parameterSpace "
             "deltaRoot outputPath projectPath projectName "
             "buildFolderPath scriptsFolderPath "
             "resultsFolderPath historyFolderPath "
-            "nodeCounts taskCounts coreCounts"))
-    
+            "nodeCounts taskCounts coreCounts ompthreadCounts"))
+
     options = Options(
       general          = general,
       jobs             = jobs,\
@@ -104,7 +104,7 @@ def parseOptionsFile(optionsFile,ignoreMetadata=False):
       nodeCounts = nodeCounts,\
       taskCounts = taskCounts,\
       coreCounts = coreCounts, \
-      ompthreadCounts = ompthreadCounts
+      ompthreadCounts = ompthreadCounts \
     )
-    
+
     return options
