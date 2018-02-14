@@ -15,25 +15,25 @@ JOB_SCRIPT6=t12
 JOB_SCRIPT7=t16
 JOB_SCRIPT8=t24
 
-exp0o=/ddn/data/rfmw74/h7two-particles-crash_nopenaltyTRIANGLE1_60
-exp1o=/ddn/data/rfmw74/h7two-particles-crash_nopenaltyTRIANGLE2_60
-exp2o=/ddn/data/rfmw74/h7two-particles-crash_nopenaltyTRIANGLE3_60
-exp3o=/ddn/data/rfmw74/h7two-particles-crash_nopenaltyTRIANGLE4_60
-exp4o=/ddn/data/rfmw74/h7two-particles-crash_nopenaltyTRIANGLE6_60
-exp5o=/ddn/data/rfmw74/h7two-particles-crash_nopenaltyTRIANGLE8_60
-exp6o=/ddn/data/rfmw74/h7two-particles-crash_nopenaltyTRIANGLE12_60
-exp7o=/ddn/data/rfmw74/h7two-particles-crash_nopenaltyTRIANGLE16_60
-exp8o=/ddn/data/rfmw74/h7two-particles-crash_nopenaltyTRIANGLE24_60
+exp0o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE1_60
+exp1o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE2_60
+exp2o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE3_60
+exp3o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE4_60
+exp4o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE6_60
+exp5o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE8_60
+exp6o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE12_60
+exp7o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE16_60
+exp8o=/ddn/data/rfmw74/h7two-particles-crash_nobfTRIANGLE24_60
 
-exp0="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false penalty 60 1 false false off"
-exp1="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false penalty 60 1 false false off"
-exp2="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false penalty 60 1 false false off"
-exp3="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false penalty 60 1 false false off"
-exp4="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false penalty 60 1 false false off"
-exp5="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false penalty 60 1 false false off"
-exp6="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false penalty 60 1 false false off"
-exp7="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false penalty 60 1 false false off"
-exp8="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false penalty 60 1 false false off"
+exp0="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false bf 60 1 false false off"
+exp1="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false bf 60 1 false false off"
+exp2="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false bf 60 1 false false off"
+exp3="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false bf 60 1 false false off"
+exp4="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false bf 60 1 false false off"
+exp5="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false bf 60 1 false false off"
+exp6="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false bf 60 1 false false off"
+exp7="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false bf 60 1 false false off"
+exp8="./delta-icc-release-tbb-omp-triangle 0.1 two-particles-crash 1000 no-grid 0.00003 never 10 false bf 60 1 false false off"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
