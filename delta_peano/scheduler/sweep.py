@@ -330,7 +330,7 @@ def verifyAllJobScriptsExist():
                             parameterDictHash = hashDictionary(parameterDict)
 
                             jobName        = value + "-" + parameterDictHash + \
-                                             "-n" + nodes + "-t"+tasks+"-c"+cores+"-r"
+                                             "-n" + nodes + "-t"+tasks+"-c"+cores
                             jobFilePrefix  = scriptsFolderPath + "/" + jobName
                             jobFilePath    = jobFilePrefix + ".job"
 
@@ -404,7 +404,7 @@ def submitJobs():
                         for parameterDict in dictProduct(parameterSpace):
                             parameterDictHash = hashDictionary(parameterDict)
 
-                            jobName        = value + "-" + parameterDictHash + "-n" + nodes + "-t"+tasks+"-c"+cores+"-r"
+                            jobName        = value + "-" + parameterDictHash + "-n" + nodes + "-t"+tasks+"-c"+cores
                             jobFilePrefix  = scriptsFolderPath + "/" + jobName
                             jobFilePath    = jobFilePrefix + ".job"
 

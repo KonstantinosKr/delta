@@ -48,23 +48,24 @@ echo "sweep/parameters={{parameters}}"
 # NOTE: The following two lines are mandatory for parsing
 #echo "sweep/environment={{environment}}" >  {{output_file}}.likwid
 #echo "sweep/parameters={{parameters}}"   >> {{output_file}}.likwid
+
 #if (( {{cores}}==1 )); then
-#  likwid-pin -c 0 {{app}} {{parameters}}
+#  likwid-pin -c 0 {{app}}
 #  
-#  likwid-perfctr -f -C 0 -g MEM      {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0 -g FLOPS_DP {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0 -g L2CACHE  {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0 -g L3CACHE  {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0 -g L3       {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0 -g BRANCH   {{app}} {{parameters}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0 -g MEM      {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0 -g FLOPS_DP {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0 -g L2CACHE  {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0 -g L3CACHE  {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0 -g L3       {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0 -g BRANCH   {{app}} >> {{output_file}}.likwid
 #else
 #  let maxCore={{cores}}-1
 #
-#  likwid-pin -c 0-$maxCore {{app}} {{parameters}}
-#  likwid-perfctr -f -C 0-$maxCore -g MEM      {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0-$maxCore -g FLOPS_DP {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0-$maxCore -g L2CACHE  {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0-$maxCore -g L3CACHE  {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0-$maxCore -g L3       {{app}} {{parameters}} >> {{output_file}}.likwid
-#  likwid-perfctr -f -C 0-$maxCore -g BRANCH   {{app}} {{parameters}} >> {{output_file}}.likwid
+#  likwid-pin -c 0-$maxCore {{app}}
+#  likwid-perfctr -f -C 0-$maxCore -g MEM      {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0-$maxCore -g FLOPS_DP {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0-$maxCore -g L2CACHE  {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0-$maxCore -g L3CACHE  {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0-$maxCore -g L3       {{app}} >> {{output_file}}.likwid
+#  likwid-perfctr -f -C 0-$maxCore -g BRANCH   {{app}} >> {{output_file}}.likwid
 #fi
