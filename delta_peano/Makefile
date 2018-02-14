@@ -37,7 +37,7 @@ GCCDEBUG=-O3 -Wall -g -DDebug -DAsserts -pedantic -pedantic-errors
 GCCNOVEC=-O3 -Wall -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing
 ##############################################################################################
 
-ICCRUN=-fast -Wall -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -unroll-aggressive -fstrict-aliasing -restrict -fno-rtti -ipo -ip -qopt-streaming-stores -xHOST
+ICCRUN=-fast -Wall -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -unroll-aggressive -fstrict-aliasing -restrict -fno-rtti -ipo -ip -qopt-streaming-stores=auto -xHOST
 ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors
 ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -xHOST
 ##############################################################################################
@@ -47,16 +47,16 @@ ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-alia
 default: header
 	@echo Please specify build target. Available targets are:
 	@echo clean
-	@echo delta-gcc-asserts
-	@echo delta-gcc-release-novec
+	@echo delta-gcc-asserts-tbb-omp-triangle
 	@echo delta-gcc-release-tbb-omp-triangle
+	@echo delta-gcc-release-tbb-omp-triangle-novec
 	@echo delta-gcc-release-tbb-omp-triangle-stats
-	@echo delta-gcc-release-mpi-tbb
-	@echo delta-icc-asserts
-	@echo delta-icc-release-novec
+	@echo delta-gcc-release-mpi-tbb-omp
+	@echo delta-icc-asserts-tbb-omp-triangle
 	@echo delta-icc-release-tbb-omp-triangle
+	@echo delta-icc-release-tbb-omp-triangle-novec
 	@echo delta-icc-release-tbb-omp-triangle-stats
-	@echo delta-icc-release-mpi-tbb
+	@echo delta-icc-release-mpi-tbb-omp
 
 ################################################################################################################
 ######## GNU COMPILERS #########################################################################################
