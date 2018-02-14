@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE12_20_100kh
 exp7o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE16_20_100khopper
 exp8o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsOMPTRIANGLE24_20_100khopper
 
-exp0="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
-exp1="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
-exp2="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
-exp3="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
-exp4="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
-exp5="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
-exp6="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
-exp7="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
-exp8="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
+exp0="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
+exp1="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
+exp2="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
+exp3="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
+exp4="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
+exp5="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
+exp6="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
+exp7="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
+exp8="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 1 false false off"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

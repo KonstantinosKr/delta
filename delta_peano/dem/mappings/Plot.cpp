@@ -56,14 +56,14 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
     _level                 = _writer->createCellDataWriter( "level", 1 );
     _faceVertexAssociation = _writer->createCellDataWriter( "face-vertex-association", 1 );
 
-    _velocitiesAndNormals   = _writer->createVertexDataWriter( "velocities-and-contact-normals", DIMENSIONS );
+    _velocitiesAndNormals  = _writer->createVertexDataWriter( "velocities-and-contact-normals", DIMENSIONS );
     _frictionNormals 		    = _writer->createVertexDataWriter( "friction-normals", DIMENSIONS );
-    _particleVelocity		 = _writer->createVertexDataWriter( "particle-velocity", 1);
-    _particleAngular		 = _writer->createVertexDataWriter( "particle-angular", DIMENSIONS);
-    _particleDiameter  	 = _writer->createVertexDataWriter( "particle-radius", 1);
-    _particleEpsilon  	 = _writer->createVertexDataWriter( "particle-epsilon", 1);
-    _particleInfluence   = _writer->createVertexDataWriter( "particle-influence", 1);
-    _vertexColoring 		 = _writer->createVertexDataWriter( "particle-coloring", 1);
+    _particleVelocity		    = _writer->createVertexDataWriter( "particle-velocity", 1);
+    _particleAngular		    = _writer->createVertexDataWriter( "particle-angular", DIMENSIONS);
+    _particleDiameter  	    = _writer->createVertexDataWriter( "particle-radius", 1);
+    _particleEpsilon  	    = _writer->createVertexDataWriter( "particle-epsilon", 1);
+    _particleInfluence      = _writer->createVertexDataWriter( "particle-influence", 1);
+    _vertexColoring 		    = _writer->createVertexDataWriter( "particle-coloring", 1);
 
     _vertexCounter         = 0;
     _particleCounter       = 0;

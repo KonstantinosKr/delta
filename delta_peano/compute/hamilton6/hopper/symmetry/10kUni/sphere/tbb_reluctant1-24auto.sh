@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7X3-hopperUni10k-reluctant-spheres-auto-TBB12
 exp7o=/ddn/data/rfmw74/h7X3-hopperUni10k-reluctant-spheres-auto-TBB16
 exp8o=/ddn/data/rfmw74/h7X3-hopperUni10k-reluctant-spheres-auto-TBB24
 
-exp0="./dem-3d-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 1"
-exp1="./dem-3d-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 2"
-exp2="./dem-3d-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 3"
-exp3="./dem-3d-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 4"
-exp4="./dem-3d-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 6"
-exp5="./dem-3d-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 8"
-exp6="./dem-3d-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 12"
-exp7="./dem-3d-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 16"
-exp8="./dem-3d-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 24"
+exp0="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 1"
+exp1="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 2"
+exp2="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 3"
+exp3="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 4"
+exp4="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 6"
+exp5="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 8"
+exp6="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 12"
+exp7="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 16"
+exp8="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

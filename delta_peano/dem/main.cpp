@@ -4,7 +4,6 @@
 #include "tarch/parallel/Node.h"
 #include "tarch/multicore/Jobs.h"
 
-
 #include "peano/peano.h"
 
 #include "dem/runners/Runner.h"
@@ -521,7 +520,7 @@ int main(int argc, char** argv)
 
   dem::mappings::Collision::gravity	= (gravity=="true") ? 9.81 : 0.0;
 
-  logInfo( "main(...)", "scenario:" << (scenario)                             << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)
+  logInfo( "main(...)", "scenario:" << (scenario)                              << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)
                     << ", stepSize:" << (stepSize)                             << ", plot:"     << (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)
                     << ", gravity:"  << (dem::mappings::Collision::gravity)    << ", model:"    << (collisionModel)      << ", triangleNumber:"  << (meshMultiplier));
 

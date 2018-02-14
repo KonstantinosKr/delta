@@ -33,15 +33,15 @@ exp9o=/ddn/data/rfmw74/h7X21hopperUni500k-regular-spheres-auto-tbb12omp2
 exp10o=/ddn/data/rfmw74/h7X22hopperUni500k-adaptive-spheres-auto-tbb12omp2
 exp11o=/ddn/data/rfmw74/h7X23hopperUni500k-reluctant-spheres-auto-tbb12omp2
 
-exp0="./dem-3d-release-tbb-auto 0.1 hopperUniform500k 1000 no-grid 0.00003 never 10 true sphere 10 24"
-exp1="./dem-3d-release-tbb-auto 0.1 hopperUniform500k 1000 regular-grid 0.00003 never 10 true sphere 10 24"
-exp2="./dem-3d-release-tbb-auto 0.1 hopperUniform500k 1000 adaptive-grid 0.00003 never 10 true sphere 10 24"
-exp3="./dem-3d-release-tbb-auto 0.1 hopperUniform500k 1000 reluctant-grid 0.00003 never 10 true sphere 10 24"
+exp0="./delta-release-tbb-auto 0.1 hopperUniform500k 1000 no-grid 0.00003 never 10 true sphere 10 24"
+exp1="./delta-release-tbb-auto 0.1 hopperUniform500k 1000 regular-grid 0.00003 never 10 true sphere 10 24"
+exp2="./delta-release-tbb-auto 0.1 hopperUniform500k 1000 adaptive-grid 0.00003 never 10 true sphere 10 24"
+exp3="./delta-release-tbb-auto 0.1 hopperUniform500k 1000 reluctant-grid 0.00003 never 10 true sphere 10 24"
 
-exp8="./dem-3d-release-tbb-omp-particle-auto 0.1 hopperUniform500k 1000 no-grid 0.00003 never 10 true sphere 10 12"
-exp9="./dem-3d-release-tbb-omp-particle-auto 0.1 hopperUniform500k 1000 regular-grid 0.00003 never 10 true sphere 10 12"
-exp10="./dem-3d-release-tbb-omp-particle-auto 0.1 hopperUniform500k 1000 adaptive-grid 0.00003 never 10 true sphere 10 12"
-exp11="./dem-3d-release-tbb-omp-particle-auto 0.1 hopperUniform500k 1000 reluctant-grid 0.00003 never 10 true sphere 10 12"
+exp8="./delta-release-tbb-omp-particle-auto 0.1 hopperUniform500k 1000 no-grid 0.00003 never 10 true sphere 10 12"
+exp9="./delta-release-tbb-omp-particle-auto 0.1 hopperUniform500k 1000 regular-grid 0.00003 never 10 true sphere 10 12"
+exp10="./delta-release-tbb-omp-particle-auto 0.1 hopperUniform500k 1000 adaptive-grid 0.00003 never 10 true sphere 10 12"
+exp11="./delta-release-tbb-omp-particle-auto 0.1 hopperUniform500k 1000 reluctant-grid 0.00003 never 10 true sphere 10 12"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

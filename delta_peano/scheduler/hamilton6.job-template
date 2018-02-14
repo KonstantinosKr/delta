@@ -1,0 +1,49 @@
+#!/bin/bash
+# Mandatory parameters are:
+# time, nodes, tasks,
+# job_name, output_file, error_file,
+# job_file, spec_file, app,
+# environment, parameters
+#
+# Optional parameters are:
+# ranks, cores, mail
+
+#SBATCH --job-name={{job_name}}
+#SBATCH -o {{output_file}}
+#SBATCH -e {{error_file}}
+#SBATCH -t {{time}}
+#SBATCH --exclusive
+#SBATCH -p par6.q
+#SBATCH --nodes={{nodes}}
+#SBATCH --ntasks-per-node={{tasks}}
+#SBATCH --cpus-per-task={{cores}}
+#SBATCH --mail-user={{mail}}
+##SBATCH --mail-type=END
+module purge
+module load slurm
+module load intel/xe_2017.2
+module load intelmpi/intel/2017.2
+module load gcc/4.9.1
+
+export TBB_SHLIB="-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
+
+export I_MPI_FABRICS="shm:dapl"
+
+# pipe some information into output file
+echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
+echo ""
+module list
+echo ""
+printenv
+echo ""
+cat {{job_file}}
+echo ""
+echo "sweep/environment={{environment}}"
+echo "sweep/parameters={{parameters}}"
+cat {{spec_file}}
+
+# multiple ranks
+#mpiexec -np {{ranks}} {{app}} {{spec_file}}
+
+# single-node
+{{app}}

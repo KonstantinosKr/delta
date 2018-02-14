@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7X4hopperUni-regular-sphere-mesh60-TBB12P2
 exp7o=/ddn/data/rfmw74/h7X4hopperUni-regular-sphere-mesh60-TBB16P2
 exp8o=/ddn/data/rfmw74/h7X4hopperUni-regular-sphere-mesh60-TBB24P2
 
-exp0="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 1 true true 2"
-exp1="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 2 true true 2"
-exp2="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 3 true true 2"
-exp3="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 4 true true 2"
-exp4="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 6 true true 2"
-exp5="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 8 true true 2"
-exp6="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 12 true true 2"
-exp7="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 16 true true 2"
-exp8="./dem-3d-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 24 true true 2"
+exp0="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 1 true true 2"
+exp1="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 2 true true 2"
+exp2="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 3 true true 2"
+exp3="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 4 true true 2"
+exp4="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 6 true true 2"
+exp5="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 8 true true 2"
+exp6="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 12 true true 2"
+exp7="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 16 true true 2"
+exp8="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 24 true true 2"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

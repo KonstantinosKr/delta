@@ -16,14 +16,14 @@ exp5o=reluctantG2SphereSIMDPARTICLETRIANGLEOMP-4THREADS
 exp6o=reluctant3SphereSIMDPARTICLETRIANGLEOMP-4THREADS
 exp7o=reluctantG3SphereSIMDPARTICLETRIANGLEOMP-4THREADS
 
-exp0="./dem-3d-release-vecPARTICLETRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-grid 0.001 never 0 sphere"
-exp1="./dem-3d-release-vecPARTICLETRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-grid 0.001 never 1 10 sphere"
-exp2="./dem-3d-release-vecPARTICLETRIANGLE 0.05 0.05 random-velocities 500 reluctant-grid 0.001 never 0 sphere"
-exp3="./dem-3d-release-vecPARTICLETRIANGLE 0.05 0.05 random-velocities 500 reluctant-grid 0.001 never 1 10 sphere"
-exp4="./dem-3d-release-vecPARTICLETRIANGLE 0.05 0.01 random-velocities 500 reluctant-grid 0.001 never 0 sphere"
-exp5="./dem-3d-release-vecPARTICLETRIANGLE 0.05 0.01 random-velocities 500 reluctant-grid 0.001 never 1 10 sphere"
-exp6="./dem-3d-release-vecPARTICLETRIANGLE 0.05 0.001 random-velocities 500 reluctant-grid 0.001 never 0 sphere"
-exp7="./dem-3d-release-vecPARTICLETRIANGLE 0.05 0.001 random-velocities 500 reluctant-grid 0.001 never 1 10 sphere"
+exp0="./delta-release-vecPARTICLETRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-grid 0.001 never 0 sphere"
+exp1="./delta-release-vecPARTICLETRIANGLE 0.5 0.5 0.5 random-velocities 500 reluctant-grid 0.001 never 1 10 sphere"
+exp2="./delta-release-vecPARTICLETRIANGLE 0.05 0.05 random-velocities 500 reluctant-grid 0.001 never 0 sphere"
+exp3="./delta-release-vecPARTICLETRIANGLE 0.05 0.05 random-velocities 500 reluctant-grid 0.001 never 1 10 sphere"
+exp4="./delta-release-vecPARTICLETRIANGLE 0.05 0.01 random-velocities 500 reluctant-grid 0.001 never 0 sphere"
+exp5="./delta-release-vecPARTICLETRIANGLE 0.05 0.01 random-velocities 500 reluctant-grid 0.001 never 1 10 sphere"
+exp6="./delta-release-vecPARTICLETRIANGLE 0.05 0.001 random-velocities 500 reluctant-grid 0.001 never 0 sphere"
+exp7="./delta-release-vecPARTICLETRIANGLE 0.05 0.001 random-velocities 500 reluctant-grid 0.001 never 1 10 sphere"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT} > ${JOB_SCRIPT}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT}_tmp > ${JOB_SCRIPT}_tmp1

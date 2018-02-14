@@ -17,11 +17,11 @@ exp5o=/ddn/data/rfmw74/h7regularbfTBB3_200_plus_5triangle
 exp6o=/ddn/data/rfmw74/h7regularbfTBB3_200_plus_13triangle
 exp7o=/ddn/data/rfmw74/h7regularbfTBB3_200_plus_21triangle
 
-exp3="./dem-3d-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
-exp4="./dem-3d-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
-exp5="./dem-3d-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
-exp6="./dem-3d-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
-exp7="./dem-3d-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
+exp3="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
+exp4="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
+exp5="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
+exp6="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
+exp7="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 200 3"
 
 
 sed "s,{OUTPUT_FILE},$exp3o,g" ${JOB_SCRIPT3} > ${JOB_SCRIPT3}_tmp
