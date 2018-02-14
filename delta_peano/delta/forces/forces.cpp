@@ -8,7 +8,7 @@
 //#define SPRING 50
 //#define DAMPER 0.2
 //mine
-#define SPRING 1E3
+#define SPRING 1E4
 #define DAMPER 0.5
 
 #define FRICTION 0.5

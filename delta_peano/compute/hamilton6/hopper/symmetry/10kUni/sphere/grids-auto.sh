@@ -33,15 +33,15 @@ exp9o=/ddn/data/rfmw74/h7X21hopperUni10k-regular-spheres-auto-tbb12omp2
 exp10o=/ddn/data/rfmw74/h7X22hopperUni10k-adaptive-spheres-auto-tbb12omp2
 exp11o=/ddn/data/rfmw74/h7X23hopperUni10k-reluctant-spheres-auto-tbb12omp2
 
-exp0="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10 24"
-exp1="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10 24"
-exp2="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10 24"
-exp3="./delta-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 24"
+exp0="./delta-icc-release-tbb-auto 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10 24"
+exp1="./delta-icc-release-tbb-auto 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10 24"
+exp2="./delta-icc-release-tbb-auto 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10 24"
+exp3="./delta-icc-release-tbb-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 24"
 
-exp8="./delta-release-tbb-omp-particle-auto 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10 12"
-exp9="./delta-release-tbb-omp-particle-auto 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10 12"
-exp10="./delta-release-tbb-omp-particle-auto 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10 12"
-exp11="./delta-release-tbb-omp-particle-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 12"
+exp8="./delta-icc-release-tbb-omp-particle-auto 0.1 hopperUniform10k 1000 no-grid 0.00003 never 10 true sphere 10 12"
+exp9="./delta-icc-release-tbb-omp-particle-auto 0.1 hopperUniform10k 1000 regular-grid 0.00003 never 10 true sphere 10 12"
+exp10="./delta-icc-release-tbb-omp-particle-auto 0.1 hopperUniform10k 1000 adaptive-grid 0.00003 never 10 true sphere 10 12"
+exp11="./delta-icc-release-tbb-omp-particle-auto 0.1 hopperUniform10k 1000 reluctant-grid 0.00003 never 10 true sphere 10 12"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

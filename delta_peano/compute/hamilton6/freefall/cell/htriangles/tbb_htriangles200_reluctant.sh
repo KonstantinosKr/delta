@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsTBB8_200
 exp6o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsTBB16_200
 exp7o=/ddn/data/rfmw74/h7reluctanthybrid-on-triangle-pairsTBB24_200
 
-exp0="./delta-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 1"
-exp1="./delta-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 2"
-exp2="./delta-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
-exp3="./delta-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 4"
-exp4="./delta-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 6"
-exp5="./delta-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 8"
-exp6="./delta-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 16"
-exp7="./delta-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 24"
+exp0="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 1"
+exp1="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 2"
+exp2="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
+exp3="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 4"
+exp4="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 6"
+exp5="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 8"
+exp6="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 16"
+exp7="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 reluctant-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

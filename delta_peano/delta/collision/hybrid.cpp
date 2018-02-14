@@ -90,7 +90,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
-      #pragma simd
+      #pragma omp simd
     #else
       #pragma omp simd
     #endif
@@ -118,7 +118,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
     if ( oneHasFailed ) {
       #if defined(__INTEL_COMPILER)
         #pragma forceinline recursive
-        #pragma simd
+        #pragma omp simd
       #else
         #pragma omp simd
       #endif
@@ -200,7 +200,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
-      #pragma simd
+      #pragma omp simd
     #else
       #pragma omp simd
     #endif
@@ -219,7 +219,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
 
     bool fail = false; int counter=0;
     #if defined(__INTEL_COMPILER)
-      #pragma simd reduction(+:counter)
+      #pragma omp simd reduction(+:counter)
     #else 
       #pragma omp simd
     #endif
@@ -241,7 +241,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     {
       #if defined(__INTEL_COMPILER)
         #pragma forceinline recursive
-        #pragma simd
+        #pragma omp simd
       #else
         #pragma omp simd
       #endif
@@ -331,7 +331,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridBatchStat(
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
-      #pragma simd
+      #pragma omp simd
     #else
       #pragma omp simd
     #endif
@@ -382,7 +382,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridBatchStat(
     {
       #if defined(__INTEL_COMPILER)
         #pragma forceinline recursive
-        #pragma simd
+        #pragma omp simd
       #else
 	      #pragma omp simd
       #endif
@@ -471,7 +471,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridTriangleStat
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
-      #pragma simd
+      #pragma omp simd
     #else
       #pragma omp simd
     #endif
@@ -522,7 +522,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridTriangleStat
     {
       #if defined(__INTEL_COMPILER)
         #pragma forceinline recursive
-        #pragma simd
+        #pragma omp simd
       #else
         #pragma omp simd
       #endif

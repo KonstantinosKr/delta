@@ -120,7 +120,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -149,7 +149,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -178,7 +178,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -207,7 +207,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -236,7 +236,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -265,7 +265,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -294,7 +294,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -323,7 +323,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -352,7 +352,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -381,7 +381,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -410,7 +410,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -439,7 +439,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -468,7 +468,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -497,7 +497,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -526,7 +526,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -555,7 +555,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -584,7 +584,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -613,7 +613,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -642,7 +642,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -671,7 +671,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -950,7 +950,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -979,7 +979,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1034,7 +1034,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1063,7 +1063,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1118,7 +1118,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1147,7 +1147,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1202,7 +1202,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1231,7 +1231,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1286,7 +1286,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1315,7 +1315,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1370,7 +1370,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1399,7 +1399,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1454,7 +1454,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1483,7 +1483,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1538,7 +1538,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1567,7 +1567,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1622,7 +1622,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1651,7 +1651,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1706,7 +1706,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1735,7 +1735,7 @@ class dem::records::Particle {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2121,7 +2121,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2150,7 +2150,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2179,7 +2179,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2208,7 +2208,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2237,7 +2237,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2266,7 +2266,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2295,7 +2295,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2324,7 +2324,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2353,7 +2353,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2382,7 +2382,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2411,7 +2411,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2440,7 +2440,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2469,7 +2469,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2498,7 +2498,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2527,7 +2527,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2556,7 +2556,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2585,7 +2585,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2614,7 +2614,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2643,7 +2643,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2672,7 +2672,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2947,7 +2947,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2976,7 +2976,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3031,7 +3031,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3060,7 +3060,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3115,7 +3115,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3144,7 +3144,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3199,7 +3199,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3228,7 +3228,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3283,7 +3283,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3312,7 +3312,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3367,7 +3367,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3396,7 +3396,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3451,7 +3451,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3480,7 +3480,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3535,7 +3535,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3564,7 +3564,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3619,7 +3619,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3648,7 +3648,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3703,7 +3703,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3732,7 +3732,7 @@ class dem::records::ParticlePacked {
           * with -DUseManualAlignment you may add 
           * \code
           #pragma vector aligned
-          #pragma simd
+          #pragma omp simd
           \endcode to this for loop to enforce your compiler to use SSE/AVX.
           * 
           * The alignment is tied to the unpacked records, i.e. for packed class

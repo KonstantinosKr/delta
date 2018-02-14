@@ -96,7 +96,7 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     double* refy = fineGridVertex.getYRefCoordinates(i);
     double* refz = fineGridVertex.getZRefCoordinates(i);
 
-    //#pragma simd - vectorizes
+    //#pragma omp simd - vectorizes
     for(int j=0; j<particle.getNumberOfTriangles()*DIMENSIONS; j++)
     {
       delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],

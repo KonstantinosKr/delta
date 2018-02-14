@@ -67,7 +67,7 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
     __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
 
     #if defined(__INTEL_COMPILER)
-    #pragma simd
+    #pragma omp simd
     #else 
     #pragma omp simd
     #endif

@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7regularbfTBB8_2000
 exp6o=/ddn/data/rfmw74/h7regularbfTBB16_2000
 exp7o=/ddn/data/rfmw74/h7regularbfTBB24_2000
 
-exp0="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 1"
-exp1="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 2"
-exp2="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 3"
-exp3="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 4"
-exp4="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 6"
-exp5="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 8"
-exp6="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 16"
-exp7="./delta-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 24"
+exp0="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 1"
+exp1="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 2"
+exp2="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 3"
+exp3="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 4"
+exp4="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 6"
+exp5="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 8"
+exp6="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 16"
+exp7="./delta-icc-release-tbb 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true bf 2000 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

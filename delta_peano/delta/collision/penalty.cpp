@@ -33,7 +33,7 @@ namespace {
 
 void delta::collision::cleanPenaltyStatistics() {
   #if defined(__INTEL_COMPILER)
-    #pragma simd
+    #pragma omp simd
   #else
     #pragma omp simd
   #endif
@@ -88,7 +88,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
-      #pragma simd
+      #pragma omp simd
     #else
       #pragma omp simd
     #endif
@@ -174,7 +174,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
-      #pragma simd
+      #pragma omp simd
     #else
       #pragma omp simd
     #endif

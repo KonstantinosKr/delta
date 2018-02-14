@@ -12,10 +12,10 @@ exp1o=/ddn/data/rfmw74/h7-hopperUniform1k-regular-hybrid-on-batches-m40-vec-FLOP
 exp2o=/ddn/data/rfmw74/h7-hopperUniform1k-regular-hybrid-on-batches-m40-vec-L2CACHE
 exp3o=/ddn/data/rfmw74/h7-hopperUniform1k-regular-hybrid-on-batches-m40-vec-MEM
 
-exp0="likwid-perfctr -f -C 1 -g BRANCH ./delta-release-tbb-omp-triangle 0.1 hopperUniform1k 25 regular-grid 0.0001 never 10 true hybrid-on-batches 40"
-exp1="likwid-perfctr -f -C 1 -g FLOPS_DP ./delta-release-tbb-omp-triangle 0.1 hopperUniform1k 25 regular-grid 0.0001 never 10 true hybrid-on-batches 40"
-exp2="likwid-perfctr -f -C 1 -g L2CACHE ./delta-release-tbb-omp-triangle 0.1 hopperUniform1k 25 regular-grid 0.0001 never 10 true hybrid-on-batches 40"
-exp3="likwid-perfctr -f -C 1 -g MEM ./delta-release-tbb-omp-triangle 0.1 hopperUniform1k 25 regular-grid 0.0001 never 10 true hybrid-on-batches 40"
+exp0="likwid-perfctr -f -C 1 -g BRANCH ./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 25 regular-grid 0.0001 never 10 true hybrid-on-batches 40"
+exp1="likwid-perfctr -f -C 1 -g FLOPS_DP ./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 25 regular-grid 0.0001 never 10 true hybrid-on-batches 40"
+exp2="likwid-perfctr -f -C 1 -g L2CACHE ./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 25 regular-grid 0.0001 never 10 true hybrid-on-batches 40"
+exp3="likwid-perfctr -f -C 1 -g MEM ./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform1k 25 regular-grid 0.0001 never 10 true hybrid-on-batches 40"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

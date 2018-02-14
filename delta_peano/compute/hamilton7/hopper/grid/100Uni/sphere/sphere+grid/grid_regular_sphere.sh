@@ -25,15 +25,15 @@ exp6o=/ddn/data/rfmw74/h7-hopperUniform100-regular-sphere-TBB12
 exp7o=/ddn/data/rfmw74/h7-hopperUniform100-regular-sphere-TBB16
 exp8o=/ddn/data/rfmw74/h7-hopperUniform100-regular-sphere-TBB24
 
-exp0="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 1 true false off"
-exp1="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 2 true false off"
-exp2="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 3 true false off"
-exp3="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 4 true false off"
-exp4="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 6 true false off"
-exp5="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 8 true false off"
-exp6="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 12 true false off"
-exp7="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 16 true false off"
-exp8="./delta-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 24 true false off"
+exp0="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 1 true false off"
+exp1="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 2 true false off"
+exp2="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 3 true false off"
+exp3="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 4 true false off"
+exp4="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 6 true false off"
+exp5="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 8 true false off"
+exp6="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 12 true false off"
+exp7="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 16 true false off"
+exp8="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform 1000 regular-grid 0.00003 never 10 true sphere 60 24 true false off"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

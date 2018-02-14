@@ -23,14 +23,14 @@ exp5o=/ddn/data/rfmw74/h7X4hopperUni100k-reluctant-hybrid-on-batches-mesh40-TBB2
 exp6o=/ddn/data/rfmw74/h7X4hopperUni100k-reluctant-hybrid-on-triangle-mesh80-TBB24
 exp7o=/ddn/data/rfmw74/h7X4hopperUni100k-reluctant-hybrid-on-batches-mesh80-TBB24
 
-exp0="./delta-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 10 24"
-exp1="./delta-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 10 24"
-exp2="./delta-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 24"
-exp3="./delta-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 20 24"
-exp4="./delta-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40 24"
-exp5="./delta-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 40 24"
-exp6="./delta-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 80 24"
-exp7="./delta-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 80 24"
+exp0="./delta-icc-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 10 24"
+exp1="./delta-icc-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 10 24"
+exp2="./delta-icc-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 20 24"
+exp3="./delta-icc-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 20 24"
+exp4="./delta-icc-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 40 24"
+exp5="./delta-icc-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 40 24"
+exp6="./delta-icc-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-triangle-pairs 80 24"
+exp7="./delta-icc-release-tbb 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true hybrid-on-batches 80 24"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1

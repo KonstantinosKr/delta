@@ -17,11 +17,11 @@ exp5o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB3_200_plus_5triangle
 exp6o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB3_200_plus_13triangle
 exp7o=/ddn/data/rfmw74/h7regularhybrid-on-triangle-pairsTBB3_200_plus_21triangle
 
-exp3="./delta-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
-exp4="./delta-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
-exp5="./delta-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
-exp6="./delta-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
-exp7="./delta-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
+exp3="./delta-icc-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
+exp4="./delta-icc-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
+exp5="./delta-icc-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
+exp6="./delta-icc-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
+exp7="./delta-icc-release-tbb-omp-triangle 0.1 freefallWithGranulates 1000 regular-grid 0.0001 never 10 true hybrid-on-triangle-pairs 200 3"
 
 
 sed "s,{OUTPUT_FILE},$exp3o,g" ${JOB_SCRIPT3} > ${JOB_SCRIPT3}_tmp

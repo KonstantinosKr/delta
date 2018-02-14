@@ -19,12 +19,12 @@ exp3o=/ddn/data/rfmw74/h7-hopperUniform100k-reluctant-penalty-m20-TBB1
 exp4o=/ddn/data/rfmw74/h7-hopperUniform100k-reluctant-bf-m40-TBB1
 exp5o=/ddn/data/rfmw74/h7-hopperUniform100k-reluctant-penalty-m40-TBB1
 
-exp0="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true bf 10 1"
-exp1="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true penalty 10 1"
-exp2="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true bf 20 1"
-exp3="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true penalty 20 1"
-exp4="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true bf 40 1"
-exp5="./delta-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true penalty 40 1"
+exp0="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true bf 10 1"
+exp1="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true penalty 10 1"
+exp2="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true bf 20 1"
+exp3="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true penalty 20 1"
+exp4="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true bf 40 1"
+exp5="./delta-icc-release-tbb-omp-triangle 0.1 hopperUniform100k 1000 reluctant-grid 0.00003 never 10 true penalty 40 1"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
