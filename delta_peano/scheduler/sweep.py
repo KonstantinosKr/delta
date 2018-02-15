@@ -295,12 +295,12 @@ def generateScripts():
 
                                 executable   = "./" + value
 
-                                if parameterDict["enable-tbb"] == True and cores == "tbb":
+                                if parameterDict["enable-tbb"] == "true" and cores == "tbb":
                                     cores = parameterDict["tbb-core-count"] #get core count from parameters
                                     tbbthread = cores
                                 else:
                                     tbbthread = str(0)
-                                if  parameterDict["enable-background"] == True:
+                                if  parameterDict["enable-background"] == "true":
                                     backtasks = parameterDict["background-count"]
                                 else:
                                     backtasks = str(0)
@@ -356,12 +356,12 @@ def verifyAllJobScriptsExist():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
-                                if parameterDict["enable-tbb"] == True and cores == "tbb":
+                                if parameterDict["enable-tbb"] == "true" and cores == "tbb":
                                     cores = parameterDict["tbb-core-count"] #get core count from parameters
-                                    tbbthread= cores
+                                    tbbthread = cores
                                 else:
                                     tbbthread = str(0)
-                                if  parameterDict["enable-background"] == True:
+                                if  parameterDict["enable-background"] == "true":
                                     backtasks = parameterDict["background-count"]
                                 else:
                                     backtasks = str(0)
@@ -457,12 +457,12 @@ def submitJobs():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
-                                if parameterDict["enable-tbb"] == True and cores == "tbb":
+                                if parameterDict["enable-tbb"] == "true" and cores == "tbb":
                                     cores = parameterDict["tbb-core-count"] #get core count from parameters
-                                    tbbthread= cores
+                                    tbbthread = cores
                                 else:
                                     tbbthread = str(0)
-                                if  parameterDict["enable-background"] == True:
+                                if  parameterDict["enable-background"] == "true":
                                     backtasks = parameterDict["background-count"]
                                 else:
                                     backtasks = str(0)
