@@ -104,10 +104,6 @@ void dem::mappings::Collision::endIteration(
 ) {
 	logTraceInWith1Argument( "endIteration(State)", solverState );
 
-	while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-	  tarch::multicore::jobs::processBackgroundJobs();
-	}
-
 	_state.merge(_backgroundTaskState);
   solverState.merge(_state);
 
@@ -1084,6 +1080,10 @@ void dem::mappings::Collision::leaveCell(
     const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
   all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
+
+  while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
+    tarch::multicore::jobs::processBackgroundJobs();
+  }
 }
 
 dem::mappings::Collision::Collision() {
