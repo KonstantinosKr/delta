@@ -138,7 +138,7 @@ def build(buildOnlyMissing=False):
                 print("--------------------------------------------------------------------------------")
                 executables+=1
             else:
-                print("skipped building of '"+executable+"' as it already exists.")
+                print("skipped building of '"+newExecutable+"' as it already exists.")
 
     print("built executables: "+str(executables))
 
@@ -280,6 +280,7 @@ def generateScripts():
 
     # generate job scrips
     jobScripts = 0
+    changeJobScriptCores = True
     for nodes in nodeCounts:
         for tasks in taskCounts:
             for parsedCores in coreCounts:
@@ -294,7 +295,30 @@ def generateScripts():
 
                                 executable   = "./" + value
 
-                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + "-t"+tasks+"-c"+cores+"-o"+ompthread
+                                if parameterDict["enable-tbb"] == True and cores == "tbb":
+                                    cores = parameterDict["tbb-core-count"] #get core count from parameters
+                                    tbbthread= cores
+                                else:
+                                    tbbthread = 0
+                                if  parameterDict["enable-background"] == True:
+                                    backtasks = parameterDict["background-count"]
+                                else:
+                                    backtasks = 0
+
+                                if cores == "omp":
+                                    cores = ompthread
+                                elif cores == "tbb":
+                                    cores = tbbthread
+                                elif cores == "off":
+                                    cores = cores
+                                else:
+                                    cores = parsedCores
+                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
+                                                 "-t"+tasks+\
+                                                 "-c"+cores+\
+                                                 "-tbb"+tbbthread+\
+                                                 "-omp"+ompthread +\
+                                                 "-bck"+backtasks
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
                                 outputFileName = resultsFolderPath + "/" + projectName + "/" + jobName + ".out"
@@ -332,8 +356,30 @@ def verifyAllJobScriptsExist():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
-                                jobName        = value + "-" + parameterDictHash + \
-                                                 "-n" + nodes + "-t"+tasks+"-c"+cores+"-o"+ompthread
+                                if parameterDict["enable-tbb"] == True and cores == "tbb":
+                                    cores = parameterDict["tbb-core-count"] #get core count from parameters
+                                    tbbthread= cores
+                                else:
+                                    tbbthread = 0
+                                if  parameterDict["enable-background"] == True:
+                                    backtasks = parameterDict["background-count"]
+                                else:
+                                    backtasks = 0
+
+                                if cores == "omp":
+                                    cores = ompthread
+                                elif cores == "tbb":
+                                    cores = tbbthread
+                                elif cores == "off":
+                                    cores = cores
+                                else:
+                                    cores = parsedCores
+                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
+                                                 "-t"+tasks+\
+                                                 "-c"+cores+\
+                                                 "-tbb"+tbbthread+\
+                                                 "-omp"+ompthread +\
+                                                 "-bck"+backtasks
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
 
@@ -411,7 +457,30 @@ def submitJobs():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
-                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + "-t"+tasks+"-c"+cores+"-o"+ompthread
+                                if parameterDict["enable-tbb"] == True and cores == "tbb":
+                                    cores = parameterDict["tbb-core-count"] #get core count from parameters
+                                    tbbthread= cores
+                                else:
+                                    tbbthread = 0
+                                if  parameterDict["enable-background"] == True:
+                                    backtasks = parameterDict["background-count"]
+                                else:
+                                    backtasks = 0
+
+                                if cores == "omp":
+                                    cores = ompthread
+                                elif cores == "tbb":
+                                    cores = tbbthread
+                                elif cores == "off":
+                                    cores = cores
+                                else:
+                                    cores = parsedCores
+                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
+                                                 "-t"+tasks+\
+                                                 "-c"+cores+\
+                                                 "-tbb"+tbbthread+\
+                                                 "-omp"+ompthread +\
+                                                 "-bck"+backtasks
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
 
