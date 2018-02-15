@@ -299,11 +299,11 @@ def generateScripts():
                                     cores = parameterDict["tbb-core-count"] #get core count from parameters
                                     tbbthread = cores
                                 else:
-                                    tbbthread = 0
+                                    tbbthread = str(0)
                                 if  parameterDict["enable-background"] == True:
                                     backtasks = parameterDict["background-count"]
                                 else:
-                                    backtasks = 0
+                                    backtasks = str(0)
 
                                 if cores == "omp":
                                     cores = ompthread
@@ -360,11 +360,11 @@ def verifyAllJobScriptsExist():
                                     cores = parameterDict["tbb-core-count"] #get core count from parameters
                                     tbbthread= cores
                                 else:
-                                    tbbthread = 0
+                                    tbbthread = str(0)
                                 if  parameterDict["enable-background"] == True:
                                     backtasks = parameterDict["background-count"]
                                 else:
-                                    backtasks = 0
+                                    backtasks = str(0)
 
                                 if cores == "omp":
                                     cores = ompthread
