@@ -22,8 +22,6 @@ def parseList(string):
     """
     for line in csv.reader([string],delimiter=","):
       values = line
-      for i,value in enumerate(values):
-          values[i] = value.replace(" ","")
       return values
 
 def parseParameterSpace(config,section):
@@ -70,104 +68,147 @@ def createPlots():
     Create a plot per plotDict. 
     Per plot, plot all rows found for the elements of the perPlotSpace.
     """
-    perPlotDictKeys = {}
+    TINY_SIZE   = 7
+    SMALL_SIZE  = 11
+    MEDIUM_SIZE = 11
+    BIGGER_SIZE = 11
+    
+    pyplot.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    pyplot.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+    pyplot.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    pyplot.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    pyplot.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    pyplot.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    
+    pyplot.rc('text', usetex=True)
+    pyplot.rc('font', family='serif')
     
     for plotDict in dictProduct(plotsSpace):
-        # create new plot
-        figure = pyplot.figure()
-        axes   = figure.add_subplot(111)
-        
-        counter = 0
-        positions  = []
-        labels     = []
-        dataPoints = []
-        for perPlotDict in dictProduct(perPlotSpace):
-            def tableFilter(row):
-                hit = True
-                for key,index in indexMappingPlots.items():
-                    hit = hit and row[index]==plotDict[key]
-                for key,index in indexMappingPerPlot.items():
-                    hit = hit and row[index]==perPlotDict[key]
-                return hit
+        for yScale in yScales:
+            # create new plot
+            figure = pyplot.figure()
+            axes   = figure.add_subplot(111)
             
-            filtered = list(filter(tableFilter,tableData))
-            filterKeyAsStringPart1 = ",".join("%s=%s" %  pair for pair in plotDict.items())
-            filterkeyAsStringPart2 = ",".join("%s=%s" %  pair for pair in perPlotDict.items())
-            filterKeyAsString      = filterKeyAsStringPart1 + "," + filterkeyAsStringPart2
-            if len(filtered)>1:
-                print("ERROR: Parameter combinations are not unique!",file=sys.stderr)
-                print("ERROR: Found multiple rows for filter key=("+filterKeyAsString+").",file=sys.stderr)
-                print("ERROR: Differing column values:",file=sys.stderr)
-                for index,name in enumerate(columnNames):
-                    values = set(column(filtered,index))
-                    if len(values)>1:
-                        print("ERROR: "+name+"={"+",".join(values)+"}",file=sys.stderr)
-                sys.exit()
-            elif len(filtered)==1:
-                positions.append(counter)
-                labels.append(""+"-".join(perPlotDict.values())+"")
-                dataPoints.append(float(filtered[0][dataColumnIndex]))
-                counter += 1
-            elif len(filtered)==0:
-                print("WARNING: Found no rows for key=("+filterKeyAsString+")!",file=sys.stderr)
-        
-        if counter>0:
-            # plot
-            container = axes.bar(positions,dataPoints,width=0.8,color="0.8",edgecolor="0.8",align='center',log=False,label=labels)
-            # annotate the bar chart
-            dataMin = min(dataPoints)
-            dataMax = max(dataPoints)
-            iMin    = dataPoints.index(dataMin)
-            iMax    = dataPoints.index(dataMax)
-            container.patches[iMin].set_color("g")
-            container.patches[iMax].set_color("r")
-            for i,x in enumerate(positions):
-                label = labels[i]
-                axes.text(x,dataMax*0.05,"%s" % label,ha='center', va='bottom',fontweight="bold",fontsize=6,rotation=90)
+            positions  = []
+            labels     = []
+            dataPoints = []
+            for perPlotDict in dictProduct(perPlotSpace):
+                def tableFilter(row):
+                    hit = True
+                    for key,index in indexMappingPlots.items():
+                        hit = hit and row[index]==plotDict[key]
+                    for key,index in indexMappingPerPlot.items():
+                        hit = hit and row[index]==perPlotDict[key]
+                    return hit
+                
+                filtered = list(filter(tableFilter,tableData))
+                filterKeyAsStringPart1 = ",".join("%s=%s" %  pair for pair in plotDict.items())
+                filterkeyAsStringPart2 = ",".join("%s=%s" %  pair for pair in perPlotDict.items())
+                filterKeyAsString      = filterKeyAsStringPart1 + "," + filterkeyAsStringPart2
+                if len(filtered)>1:
+                    print("ERROR: Parameter combinations are not unique!",file=sys.stderr)
+                    print("ERROR: Found multiple rows for filter key=("+filterKeyAsString+").",file=sys.stderr)
+                    print("ERROR: Differing column values:",file=sys.stderr)
+                    for index,name in enumerate(columnNames):
+                        values = set(column(filtered,index))
+                        if len(values)>1:
+                            print("ERROR: "+name+"={"+",".join(values)+"}",file=sys.stderr)
+                    sys.exit()
+                elif len(filtered)==1:
+                    positions.append(len(positions))
+                    labels.append(""+"-".join(perPlotDict.values())+"")
+                    dataPoints.append(float(filtered[0][dataColumnIndex]))
+                elif len(filtered)==0:
+                    print("WARNING: Found no rows for key=("+filterKeyAsString+")!",file=sys.stderr)
             
-            axes.set_ylabel(dataColumnName)
-            axes.set_ylim([0,dataMax*1.05])
-            
-            axes.get_xaxis().set_visible(False)
-            axes.set_xlim([-0.6,counter-1++0.6])
-            
-            #axes.set_xticks(positions)
-            #axes.set_xticklabels(labels)
-            #figure.autofmt_xdate()
-            
-            axes.ticklabel_format(axis='y', style='sci', scilimits=(-2,2))
-            
-            axes.grid(True, which='both')
-            
-            if not os.path.exists(plotFolderPath):
-                print("create directory "+plotFolderPath)
-                os.makedirs(plotFolderPath)
-            
-            # write files
-            figure.set_size_inches(4.90,4.90)
-            #figure.set_size_inches(2.40,2.20) # width: 0.470 * SIAM SISC \textwidth (=5.125in)
-            
-            filename = plotFolderPath + "/" + plotPrefix + "-" + "-".join(plotDict.values())
-            figure.savefig('%s-linear.pdf' % filename, bbox_inches="tight")
-            figure.savefig('%s-linear.png' % filename, bbox_inches="tight")
-            print("created plot: %s-linear.pdf" % filename)
-            print("created plot: %s-linear.png" % filename)
-            
-            #axes.set_yscale("log", base=10)
-            #figure.savefig('%s-log.pdf' % filename, bbox_inches="tight")
-            #figure.savefig('%s-log.png' % filename, bbox_inches="tight")
-            #print("created plot: %s-log.pdf" % filename)
-            #print("created plot: %s-log.png" % filename)
-            
-            # memorise keys for the caption rendering
-            perPlotDictKeys[str(plotDict.keys())] = perPlotDict.keys()
-    
-    return perPlotDictKeys
+            if len(positions):
+                # plot
+                container = axes.bar(positions,dataPoints,width=0.8,color="0.8",edgecolor="0.8",align='center',log=(yScale=="log"),label=labels)
+                axes.grid(True, which="both")
+                
+                # x axis
+                axes.get_xaxis().set_visible(False)
+                xMargin = 0.6
+                xLimits = [-xMargin,len(positions)-1+xMargin]
+                axes.set_xlim(xLimits)
+                
+                # y axis and annotate the bar chart
+                dataMin = min(dataPoints)
+                dataMax = max(dataPoints)
+                iMin    = dataPoints.index(dataMin)
+                iMax    = dataPoints.index(dataMax)
+                
+                colours = ["0.8","0.8"]
+                if   best=="min":
+                  colours = ["g", "r"]
+                elif best=="max":
+                  colours = ["r", "g"]
+                container.patches[iMin].set_color(colours[0])
+                container.patches[iMax].set_color(colours[1])
+                
+                axes.set_ylabel(yLabel)
+                if (yScale=="linear"):
+                    axes.ticklabel_format(axis="y", style="sci", scilimits=(-2,2))
+                    axes.set_ylim([0,dataMax*1.05])
+                else:
+                    yMin = 10**math.floor(math.log10(dataMin))
+                    yMax = max(dataMax*1.05,2.2*yMin)
+                    axes.set_ylim([yMin,yMax])
+                    
+                for i,x in enumerate(positions):
+                    xTrans = ( xMargin + float(x) ) / (xLimits[1]-xLimits[0])
+                    label  = labels[i]
+                    axes.text(xTrans,0.05,"%s" % label,ha='center', va='bottom',fontweight="bold",fontsize=TINY_SIZE,rotation=90,transform=axes.transAxes)
+                
+                if not os.path.exists(plotFolderPath):
+                    print("create directory "+plotFolderPath)
+                    os.makedirs(plotFolderPath)
+                
+                # write files
+                figure.set_size_inches(4.90,4.90)
+                #figure.set_size_inches(2.40,2.20) # width: 0.470 * SIAM SISC \textwidth (=5.125in)
+                
+                filename = plotFolderPath + "/" + plotPrefix + "-" + "-".join(plotDict.values())
+                figure.savefig('%s-%s.pdf' % (filename,yScale), bbox_inches="tight")
+                pyplot.close(figure)
+                print("created plot: %s-%s.pdf" % (filename,yScale))
 
 def renderPDF():
     """
     Render a LaTeX document.
     """
+    latexFigureTemplate = \
+r"""
+\begin{figure}
+\centering
+\includegraphics[scale=1.0]{{{file}}}
+\caption{{{caption}}}
+\end{figure}
+"""
+
+    latexFileTemplate = \
+r"""
+\title{{{title}}}
+\author{{{author}}}
+\date{\today}
+
+\documentclass[11pt]{article}
+
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[justification=justified,singlelinecheck=false]{caption}
+%\usepackage{layouts}
+
+\begin{document}
+\maketitle
+
+%\printinunitsof{in}\prntlen{\textwidth}
+
+{{body}}
+
+\end{document}
+"""
+    
     latexFileContent = latexFileTemplate;
     latexFileContent = latexFileContent.replace("{{title}}",plotPrefix)
     latexFileContent = latexFileContent.replace("{{author}}",os.environ["USER"])
@@ -178,17 +219,17 @@ def renderPDF():
         plotFileName = plotFolder + "/" + plotPrefix + "-" + "-".join(plotDict.values())
         
         if os.path.exists(outputPath + "/" + plotFileName+"-linear.pdf"):
-            for scale in ["linear"]:
+            for yScale in yScales:
                 renderedFigure = latexFigureTemplate;
                 
                 caption  = "\\textbf{"+", ".join("%s: %s" %  pair for pair in plotDict.items())
-                caption += ":} "
+                caption += " (y-scale: "+yScale+"):} "
                 caption += "The bars show measurements for different values of the tuples ("
-                caption += ",".join("%s" % item for item in perPlotDictKeys[str(plotDict.keys())]) 
+                caption += ",".join("%s" % item for item in perPlotSpace.keys()) 
                 caption += ")."
                 renderedFigure = renderedFigure.replace("{{caption}}",caption)
                 
-                ending = "-"+scale+".pdf"
+                ending = "-"+yScale+".pdf"
                 body += renderedFigure.replace("{{file}}",plotFileName+ending) + "\n\n"
                 if counter % 10 == 0:
                     body += r"\clearpage"
@@ -257,37 +298,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as pyplot
     import matplotlib.ticker as ticker
     
-    latexFigureTemplate = \
-r"""
-\begin{figure}
-\centering
-\includegraphics[scale=1.0]{{{file}}}
-\caption{{{caption}}}
-\end{figure}
-"""
-
-    latexFileTemplate = \
-r"""
-\title{{{title}}}
-\author{{{author}}}
-\date{\today}
-
-\documentclass[11pt]{article}
-
-\usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage[justification=justified,singlelinecheck=false]{caption}
-%\usepackage{layouts}
-
-\begin{document}
-\maketitle
-
-%\printinunitsof{in}\prntlen{\textwidth}
-
-{{body}}
-
-\end{document}
-"""
+    import math
     
     if haveToPrintHelpMessage(sys.argv):
         info = \
@@ -317,6 +328,9 @@ NOTE: The order of the parameters in the section 'per_plot' is preserved.
     plotFolderPath  = outputPath + "/" + plotFolder
     
     dataColumnName = configParser["to_plot"]["data"].replace("\"","")
+    yLabel         = configParser["to_plot"]["label"].replace("\"","")
+    yScales        = parseList(configParser["to_plot"]["scale"])
+    best           = configParser["to_plot"]["best"].replace("\"","")
     
     plotsSpace     = parseParameterSpace(configParser,"plots")
     perPlotSpace   = parseParameterSpace(configParser,"per_plot")
@@ -334,5 +348,5 @@ NOTE: The order of the parameters in the section 'per_plot' is preserved.
     indexMappingPerPlot = createParameterKeysToColumnIndexMapping(perPlotSpace)
     
     # plot
-    perPlotDictKeys = createPlots()
+    createPlots()
     renderPDF()
