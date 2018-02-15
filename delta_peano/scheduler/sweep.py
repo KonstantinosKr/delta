@@ -297,7 +297,7 @@ def generateScripts():
 
                                 if parameterDict["enable-tbb"] == True and cores == "tbb":
                                     cores = parameterDict["tbb-core-count"] #get core count from parameters
-                                    tbbthread= cores
+                                    tbbthread = cores
                                 else:
                                     tbbthread = 0
                                 if  parameterDict["enable-background"] == True:
@@ -316,9 +316,9 @@ def generateScripts():
                                 jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
                                                  "-t"+tasks+\
                                                  "-c"+cores+\
-                                                 "-tbb"+tbbthread+\
-                                                 "-omp"+ompthread +\
-                                                 "-bck"+backtasks
+                                                 "-tbb"+str(tbbthread)+\
+                                                 "-omp"+str(ompthread) +\
+                                                 "-bck"+str(backtasks)
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
                                 outputFileName = resultsFolderPath + "/" + projectName + "/" + jobName + ".out"
@@ -377,9 +377,9 @@ def verifyAllJobScriptsExist():
                                 jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
                                                  "-t"+tasks+\
                                                  "-c"+cores+\
-                                                 "-tbb"+tbbthread+\
-                                                 "-omp"+ompthread +\
-                                                 "-bck"+backtasks
+                                                 "-tbb"+str(tbbthread)+\
+                                                 "-omp"+str(ompthread) +\
+                                                 "-bck"+str(backtasks)
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
 
