@@ -296,10 +296,12 @@ def generateScripts():
                                 executable   = "./" + value
 
                                 if parameterDict["enable-tbb"] == "true" and cores == "tbb":
-                                    cores = parameterDict["tbb-core-count"] #get core count from parameters
-                                    tbbthread = cores
-                                else:
-                                    tbbthread = str(0)
+                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
+                                    cores = tbbthread
+                                elif parameterDict["enable-tbb"] == "false" and cores == "tbb":
+                                    print("ERROR: inconsistency in .ini", file=sys.stderr)
+                                    sys.exit()
+
                                 if  parameterDict["enable-background"] == "true":
                                     backtasks = parameterDict["background-count"]
                                 else:
@@ -307,12 +309,7 @@ def generateScripts():
 
                                 if cores == "omp":
                                     cores = ompthread
-                                elif cores == "tbb":
-                                    cores = tbbthread
-                                elif cores == "off":
-                                    cores = cores
-                                else:
-                                    cores = parsedCores
+
                                 jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
                                                  "-t"+tasks+\
                                                  "-c"+cores+\
@@ -357,10 +354,12 @@ def verifyAllJobScriptsExist():
                                 parameterDictHash = hashDictionary(parameterDict)
 
                                 if parameterDict["enable-tbb"] == "true" and cores == "tbb":
-                                    cores = parameterDict["tbb-core-count"] #get core count from parameters
-                                    tbbthread = cores
-                                else:
-                                    tbbthread = str(0)
+                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
+                                    cores = tbbthread
+                                elif parameterDict["enable-tbb"] == "false" and cores == "tbb":
+                                    print("ERROR: inconsistency in .ini", file=sys.stderr)
+                                    sys.exit()
+
                                 if  parameterDict["enable-background"] == "true":
                                     backtasks = parameterDict["background-count"]
                                 else:
@@ -368,12 +367,7 @@ def verifyAllJobScriptsExist():
 
                                 if cores == "omp":
                                     cores = ompthread
-                                elif cores == "tbb":
-                                    cores = tbbthread
-                                elif cores == "off":
-                                    cores = cores
-                                else:
-                                    cores = parsedCores
+
                                 jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
                                                  "-t"+tasks+\
                                                  "-c"+cores+\
@@ -458,10 +452,12 @@ def submitJobs():
                                 parameterDictHash = hashDictionary(parameterDict)
 
                                 if parameterDict["enable-tbb"] == "true" and cores == "tbb":
-                                    cores = parameterDict["tbb-core-count"] #get core count from parameters
-                                    tbbthread = cores
-                                else:
-                                    tbbthread = str(0)
+                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
+                                    cores = tbbthread
+                                elif parameterDict["enable-tbb"] == "false" and cores == "tbb":
+                                    print("ERROR: inconsistency in .ini", file=sys.stderr)
+                                    sys.exit()
+
                                 if  parameterDict["enable-background"] == "true":
                                     backtasks = parameterDict["background-count"]
                                 else:
@@ -469,12 +465,7 @@ def submitJobs():
 
                                 if cores == "omp":
                                     cores = ompthread
-                                elif cores == "tbb":
-                                    cores = tbbthread
-                                elif cores == "off":
-                                    cores = cores
-                                else:
-                                    cores = parsedCores
+
                                 jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
                                                  "-t"+tasks+\
                                                  "-c"+cores+\
