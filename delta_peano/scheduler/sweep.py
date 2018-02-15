@@ -295,10 +295,10 @@ def generateScripts():
 
                                 executable   = "./" + value
 
-                                if parameterDict["enable-tbb"] == "true" and cores == "tbb":
+                                if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                     tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                     cores = tbbthread
-                                elif parameterDict["enable-tbb"] == "false" and cores == "tbb":
+                                elif parameterDict["enable-tbb"] == "false" and changeJobScriptCores == True:
                                     print("ERROR: inconsistency in .ini", file=sys.stderr)
                                     sys.exit()
 
@@ -341,6 +341,7 @@ def verifyAllJobScriptsExist():
         sys.exit()
 
     allJobScriptsExist = True
+    changeJobScriptCores = True
     for nodes in nodeCounts:
         for tasks in taskCounts:
             for parsedCores in coreCounts:
@@ -353,10 +354,10 @@ def verifyAllJobScriptsExist():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
-                                if parameterDict["enable-tbb"] == "true" and cores == "tbb":
+                                if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                     tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                     cores = tbbthread
-                                elif parameterDict["enable-tbb"] == "false" and cores == "tbb":
+                                elif parameterDict["enable-tbb"] == "false" and changeJobScriptCores == True:
                                     print("ERROR: inconsistency in .ini", file=sys.stderr)
                                     sys.exit()
 
@@ -439,6 +440,7 @@ def submitJobs():
 
     # loop over job scrips
     jobIds = []
+    changeJobScriptCores = True
     for nodes in nodeCounts:
         for tasks in taskCounts:
             for parsedCores in coreCounts:
@@ -451,10 +453,10 @@ def submitJobs():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
-                                if parameterDict["enable-tbb"] == "true" and cores == "tbb":
+                                if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                     tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                     cores = tbbthread
-                                elif parameterDict["enable-tbb"] == "false" and cores == "tbb":
+                                elif parameterDict["enable-tbb"] == "false" and changeJobScriptCores == True:
                                     print("ERROR: inconsistency in .ini", file=sys.stderr)
                                     sys.exit()
 
