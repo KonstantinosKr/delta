@@ -461,11 +461,11 @@ def submitJobs():
                                     cores = parameterDict["tbb-core-count"] #get core count from parameters
                                     tbbthread= cores
                                 else:
-                                    tbbthread = 0
+                                    tbbthread = str(0)
                                 if  parameterDict["enable-background"] == True:
                                     backtasks = parameterDict["background-count"]
                                 else:
-                                    backtasks = 0
+                                    backtasks = str(0)
 
                                 if cores == "omp":
                                     cores = ompthread
@@ -478,9 +478,9 @@ def submitJobs():
                                 jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
                                                  "-t"+tasks+\
                                                  "-c"+cores+\
-                                                 "-tbb"+tbbthread+\
-                                                 "-omp"+ompthread +\
-                                                 "-bck"+backtasks
+                                                 "-tbb"+str(tbbthread)+\
+                                                 "-omp"+str(ompthread) +\
+                                                 "-bck"+str(backtasks)
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
 
