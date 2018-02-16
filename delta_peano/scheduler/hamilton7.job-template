@@ -35,11 +35,11 @@ export OMP_NUM_THREADS={{ompthread}}
 # pipe some information into output file
 echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
 echo ""
-module list
+#module list
 echo ""
-printenv
+#printenv
 echo ""
-cat {{job_file}}
+#cat {{job_file}}
 echo ""
 echo "sweep/environment={{environment}}"
 echo "sweep/parameters={{parameters}}"
