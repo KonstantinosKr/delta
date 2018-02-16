@@ -310,12 +310,15 @@ def generateScripts():
                                 if cores == "omp":
                                     cores = ompthread
 
-                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
-                                                 "-t"+tasks+\
-                                                 "-c"+cores+\
-                                                 "-tbb"+str(tbbthread)+\
-                                                 "-omp"+str(ompthread) +\
-                                                 "-bck"+str(backtasks)
+                                jobName        = value + "-" + parameterDictHash + \
+                                                 "-s" + parameterDict["scenarios"] + \
+                                                 "-g" + parameterDict["grid-type"] + \
+                                                 "-n" + nodes + \
+                                                 "-t" + tasks+ \
+                                                 "-c" + cores+ \
+                                                 "-tbb" + str(tbbthread)+ \
+                                                 "-omp" + str(ompthread) + \
+                                                 "-bck" + str(backtasks)
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
                                 outputFileName = resultsFolderPath + "/" + jobName + ".out"
@@ -369,12 +372,15 @@ def verifyAllJobScriptsExist():
                                 if cores == "omp":
                                     cores = ompthread
 
-                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
-                                                 "-t"+tasks+\
-                                                 "-c"+cores+\
-                                                 "-tbb"+str(tbbthread)+\
-                                                 "-omp"+str(ompthread) +\
-                                                 "-bck"+str(backtasks)
+                                jobName        = value + "-" + parameterDictHash + \
+                                                 "-s" + parameterDict["scenarios"] + \
+                                                 "-g" + parameterDict["grid-type"] + \
+                                                 "-n" + nodes + \
+                                                 "-t" + tasks+ \
+                                                 "-c" + cores+ \
+                                                 "-tbb" + str(tbbthread)+ \
+                                                 "-omp" + str(ompthread) + \
+                                                 "-bck" + str(backtasks)
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
 
@@ -468,12 +474,15 @@ def submitJobs():
                                 if cores == "omp":
                                     cores = ompthread
 
-                                jobName        = value + "-" + parameterDictHash + "-n" + nodes + \
-                                                 "-t"+tasks+\
-                                                 "-c"+cores+\
-                                                 "-tbb"+str(tbbthread)+\
-                                                 "-omp"+str(ompthread) +\
-                                                 "-bck"+str(backtasks)
+                                jobName        = value + "-" + parameterDictHash + \
+                                                 "-s" + parameterDict["scenarios"] + \
+                                                 "-g" + parameterDict["grid-type"] + \
+                                                 "-n" + nodes + \
+                                                 "-t" + tasks+ \
+                                                 "-c" + cores+ \
+                                                 "-tbb" + str(tbbthread)+ \
+                                                 "-omp" + str(ompthread) + \
+                                                 "-bck" + str(backtasks)
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
 
