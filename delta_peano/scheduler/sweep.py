@@ -313,6 +313,7 @@ def generateScripts():
                                 jobName        = value + "-" + parameterDictHash + \
                                                  "-s" + parameterDict["scenarios"] + \
                                                  "-g" + parameterDict["grid-type"] + \
+                                                 "-cm" + parameterDict["collision-model"] + \
                                                  "-n" + nodes + \
                                                  "-t" + tasks+ \
                                                  "-c" + cores+ \
@@ -375,6 +376,7 @@ def verifyAllJobScriptsExist():
                                 jobName        = value + "-" + parameterDictHash + \
                                                  "-s" + parameterDict["scenarios"] + \
                                                  "-g" + parameterDict["grid-type"] + \
+                                                 "-cm" + parameterDict["collision-model"] + \
                                                  "-n" + nodes + \
                                                  "-t" + tasks+ \
                                                  "-c" + cores+ \
@@ -477,6 +479,7 @@ def submitJobs():
                                 jobName        = value + "-" + parameterDictHash + \
                                                  "-s" + parameterDict["scenarios"] + \
                                                  "-g" + parameterDict["grid-type"] + \
+                                                 "-cm" + parameterDict["collision-model"] + \
                                                  "-n" + nodes + \
                                                  "-t" + tasks+ \
                                                  "-c" + cores+ \
