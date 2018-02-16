@@ -62,7 +62,7 @@ def clean(subFolder=""):
     Clean the complete output folder or just a subfolder
     if specified.
     """
-    folder = deltaRoot+"/"+outputPath+"/"+subFolder
+    folder = outputPath+"/"+subFolder
     print("rm -r "+folder)
     subprocess.call("rm -r "+folder, shell=True)
 
@@ -293,7 +293,7 @@ def generateScripts():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
-                                executable   = "./" + value
+                                executable   = projectPath + value
 
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                     tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
@@ -318,7 +318,7 @@ def generateScripts():
                                                  "-bck"+str(backtasks)
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
-                                outputFileName = resultsFolderPath + "/" + projectName + "/" + jobName + ".out"
+                                outputFileName = resultsFolderPath + "/" + jobName + ".out"
 
                                 jobScriptBody = renderJobScript(jobScriptTemplate,environmentDict,parameterDict,jobs,
                                                                 jobName,jobFilePath,outputFileName,executable,
