@@ -256,7 +256,7 @@ void dem::mappings::CreateGrid::beginIteration(
     auto material = delta::geometry::material::MaterialType::WOOD;
     int hopperParticles = 0;
 
-#if false
+#if true
     delta::world::object objectHopper("hopper", 0, position, material, isObstacle, isFriction);
     objectHopper.generateMesh(hopperWidth, hopperHeight, hopperWidth, 0, 0, 0, hopperWidth, _noPointsPerParticle);
     _coarseObjects.push_back(objectHopper);
@@ -630,7 +630,7 @@ void dem::mappings::CreateGrid::createInnerVertex(
     {
       fineGridVertex.refine();
     }
-    else if((_gridType == AdaptiveGrid ))//|| _gridType == ReluctantAdaptiveGrid))
+    else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
     {
       if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
@@ -669,7 +669,7 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
     {
       fineGridVertex.refine();
     }
-    else if((_gridType == AdaptiveGrid)) //|| _gridType == ReluctantAdaptiveGrid))
+    else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
     {
       if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&

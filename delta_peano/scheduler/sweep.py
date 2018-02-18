@@ -320,9 +320,20 @@ def generateScripts():
                                                  "-tbb" + str(tbbthread)+ \
                                                  "-omp" + str(ompthread) + \
                                                  "-bck" + str(backtasks)
+
+                                jobNameOut        = value + "-" + \
+                                                 "-s" + parameterDict["scenarios"] + \
+                                                 "-g" + parameterDict["grid-type"] + \
+                                                 "-cm" + parameterDict["collision-model"] + \
+                                                 "-n" + nodes + \
+                                                 "-t" + tasks+ \
+                                                 "-c" + cores+ \
+                                                 "-tbb" + str(tbbthread)+ \
+                                                 "-omp" + str(ompthread) + \
+                                                 "-bck" + str(backtasks)
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
-                                outputFileName = resultsFolderPath + "/" + jobName + ".out"
+                                outputFileName = resultsFolderPath + "/" + jobNameOut + ".out"
 
                                 jobScriptBody = renderJobScript(jobScriptTemplate,environmentDict,parameterDict,jobs,
                                                                 jobName,jobFilePath,outputFileName,executable,
