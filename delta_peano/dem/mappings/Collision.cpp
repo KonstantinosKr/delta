@@ -388,7 +388,7 @@ void dem::mappings::Collision::collisionDetection(
   bool approach = triggerParticleTooClose(particleA, particleB, *state);
   if (protectStateAccess) lock.free();
 
-  if(!approach) return;
+  //if(!approach) return;
 
   std::vector<delta::collision::contactpoint> newContactPoints;
 
@@ -623,7 +623,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 ) {
 	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-	double timeStepSize = _backgroundTaskState.getTimeStepSize();
+	double timeStepSize = _state.getTimeStepSize();
 
 	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
 	{

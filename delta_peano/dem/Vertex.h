@@ -178,7 +178,7 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
     const DEMDoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber ) const;
 
     void setNumberOfParticlesInUnrefinedVertex(double number);
-    int getNumberOfParticlesInUnrefinedVertex();
+    double getNumberOfParticlesInUnrefinedVertex();
 
     /**
      * Part of the dynamic AMR.

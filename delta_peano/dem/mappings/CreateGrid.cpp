@@ -7,7 +7,7 @@
 #include <cmath>
 #include <ctime>
 
-#define epsilon 0.002
+#define epsilon 0.001
 
 peano::CommunicationSpecification   dem::mappings::CreateGrid::communicationSpecification() const {
 	return peano::CommunicationSpecification(
@@ -256,7 +256,7 @@ void dem::mappings::CreateGrid::beginIteration(
     auto material = delta::geometry::material::MaterialType::WOOD;
     int hopperParticles = 0;
 
-#if true
+#if false
     delta::world::object objectHopper("hopper", 0, position, material, isObstacle, isFriction);
     objectHopper.generateMesh(hopperWidth, hopperHeight, hopperWidth, 0, 0, 0, hopperWidth, _noPointsPerParticle);
     _coarseObjects.push_back(objectHopper);

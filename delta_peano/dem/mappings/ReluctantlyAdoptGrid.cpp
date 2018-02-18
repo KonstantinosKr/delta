@@ -135,33 +135,15 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   //     If all particles move away from each other, there's not need
   //     to refine.
 
-  if(fineGridVertex.getNumberOfParticles() > 1 && (_state.getTwoParticlesAreClose() > 0 || _backgroundTaskState.getTwoParticlesAreClose() > 0))
+  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0)
   {
-    for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
-    {
-      if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
-      {
-        logDebug( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
-
-        if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
-        {
-          fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() + fineGridVertex.getNumberOfParticles() * 0.5);
-        }
-        fineGridVertex.refine();
-      }
-    }
-  }
-
-  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0)
-  {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() - fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * 0.6);
-  }
-
-  if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * 0.9);
+  } else if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
   {
     fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles());
   }
 
+  if(fineGridVertex.getNumberOfParticles() < 0.0) fineGridVertex.setNumberOfParticlesInUnrefinedVertex(0.0);
 
   double timeStepSize = _state.getTimeStepSize();
 
@@ -466,10 +448,7 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
     dfor2(k)
       if(!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
       {
-        if(fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl() == Vertex::Records::Unrefined)
-        {
-          fineGridVertices[ fineGridVerticesEnumerator(k) ].setNumberOfParticlesInUnrefinedVertex(fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() + fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() * 0.5);
-        }
+        fineGridVertices[ fineGridVerticesEnumerator(k) ].setNumberOfParticlesInUnrefinedVertex(fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() * 1.1);
         fineGridVertices[ fineGridVerticesEnumerator(k) ].refine();
       }
     enddforx

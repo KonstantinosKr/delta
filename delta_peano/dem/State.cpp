@@ -78,10 +78,18 @@ void dem::State::merge( const State& otherState ) {
 
   _stateData.setTwoParticlesSeparate(_stateData.getTwoParticlesSeparate() || otherState._stateData.getTwoParticlesSeparate() );
 
-  if(_stateData.getTwoParticlesAreClose() < otherState._stateData.getTwoParticlesAreClose())
+  //printf("%f %f\n", _stateData.getTwoParticlesAreClose(), otherState._stateData.getTwoParticlesAreClose());
+  if(_stateData.getTwoParticlesAreClose() > 0.0 && otherState._stateData.getTwoParticlesAreClose() > 0.0)
   {
-    _stateData.setTwoParticlesAreClose( otherState._stateData.getTwoParticlesAreClose());
+    _stateData.setTwoParticlesAreClose( std::min(_stateData.getTwoParticlesAreClose(), otherState._stateData.getTwoParticlesAreClose()));
+  } else if(_stateData.getTwoParticlesAreClose() > 0.0 || otherState._stateData.getTwoParticlesAreClose() > 0.0)
+  {
+    if(otherState._stateData.getTwoParticlesAreClose() > 0.0 && (otherState._stateData.getTwoParticlesAreClose() < _stateData.getTwoParticlesAreClose() || _stateData.getTwoParticlesAreClose() == 0.0))
+    {
+      _stateData.setTwoParticlesAreClose( otherState._stateData.getTwoParticlesAreClose());
+    }
   }
+  //printf("Result - %f %f\n", _stateData.getTwoParticlesAreClose(), otherState._stateData.getTwoParticlesAreClose());
 
   if(_stateData.getMaxVelocityApproach() < otherState._stateData.getMaxVelocityApproach())
   {
@@ -112,7 +120,14 @@ void dem::State::setInitialTimeStepSize(double value) {
 }
 
 void dem::State::informStateThatTwoParticlesAreClose(double decrementFactor) {
-  _stateData.setTwoParticlesAreClose(decrementFactor);
+
+  if(decrementFactor < _stateData.getTwoParticlesAreClose() &&  _stateData.getTwoParticlesAreClose() != 0.0)
+  {
+    _stateData.setTwoParticlesAreClose(decrementFactor);
+  } else if(_stateData.getTwoParticlesAreClose() == 0.0)
+  {
+    _stateData.setTwoParticlesAreClose(decrementFactor);
+  }
 }
 
 void dem::State::informStateThatTwoParticlesAreSeparate() {

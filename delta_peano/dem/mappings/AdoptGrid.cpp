@@ -94,18 +94,19 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
   {
     if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
     {
-      fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() + 3);
+      fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() + 2);
       //logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
       fineGridVertex.refine();
     }
   }
+  //if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0)
+  //printf("%f\n", fineGridVertex.getNumberOfParticlesInUnrefinedVertex());
 
-  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0)
+  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0)
   {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() / 2);
-  }
-
-  if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() - 0.1);
+    printf("entered %f \n", fineGridVertex.getNumberOfParticlesInUnrefinedVertex());
+  } else if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined && fineGridVertex.getNumberOfParticles() == 0.0)
   {
     fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles());
   }

@@ -557,7 +557,7 @@ void dem::Vertex::setNumberOfParticlesInUnrefinedVertex(double number)
   _vertexData.setNumberOfParticlesInUnrefinedVertex(number);
 }
 
-int dem::Vertex::getNumberOfParticlesInUnrefinedVertex()
+double dem::Vertex::getNumberOfParticlesInUnrefinedVertex()
 {
   return _vertexData.getNumberOfParticlesInUnrefinedVertex();
 }
