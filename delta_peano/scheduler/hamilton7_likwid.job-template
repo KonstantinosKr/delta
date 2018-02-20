@@ -26,34 +26,24 @@ module unload gcc/4.9.1
 module load gcc/4.9.1
 module load likwid/4.1
 
-setenv TBB_SHLIB="-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
+setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
 
-setenv I_MPI_FABRICS="tmi"
+setenv I_MPI_FABRICS "tmi"
 
-setenv OMP_NUM_THREADS={{ompthread}}
+setenv OMP_NUM_THREADS {{ompthread}}
 
 # pipe some information into output file
-echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
-echo ""
-#module list
-echo ""
-#printenv
-echo ""
+#echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
 #cat {{job_file}}
-echo ""
-echo "sweep/environment={{environment}}"
-echo "sweep/parameters={{parameters}}"
-
+# likwid measurements for single-node experiments
+#echo "sweep/environment={{environment}}" >>  {{output_file}}.likwid
+#echo "sweep/parameters={{parameters}}"   >> {{output_file}}.likwid
 # multiple ranks
 #mpiexec -np {{ranks}} {{app}} {{parameters}}
 srun {{app}}
 
-# likwid measurements for single-node experiments
-# NOTE: The following two lines are mandatory for parsing
-echo "sweep/environment={{environment}}" >>  {{output_file}}.likwid
-echo "sweep/parameters={{parameters}}"   >> {{output_file}}.likwid
 
-if (( {{cores}}==1 )); then
+if ( {{cores}} == 1 ) then
   likwid-pin -c 0 {{app}}
 
   likwid-perfctr -f -C 0 -g MEM      {{app}} >> {{output_file}}.likwid
@@ -63,7 +53,7 @@ if (( {{cores}}==1 )); then
   likwid-perfctr -f -C 0 -g L3       {{app}} >> {{output_file}}.likwid
   likwid-perfctr -f -C 0 -g BRANCH   {{app}} >> {{output_file}}.likwid
 else
-  let maxCore={{cores}}-1
+  set maxCore = {{cores}} - 1
 
   likwid-pin -c 0-$maxCore {{app}}
   likwid-perfctr -f -C 0-$maxCore -g MEM      {{app}} >> {{output_file}}.likwid
@@ -72,4 +62,4 @@ else
   likwid-perfctr -f -C 0-$maxCore -g L3CACHE  {{app}} >> {{output_file}}.likwid
   likwid-perfctr -f -C 0-$maxCore -g L3       {{app}} >> {{output_file}}.likwid
   likwid-perfctr -f -C 0-$maxCore -g BRANCH   {{app}} >> {{output_file}}.likwid
-fi
+endif

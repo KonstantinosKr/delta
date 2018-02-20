@@ -293,7 +293,7 @@ def generateScripts():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
-                                executable   = deltaRoot + value
+                                executable   = buildFolderPath + value
 
                                 tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:

@@ -1,49 +1,43 @@
 #!/bin/csh
 # Mandatory parameters are:
 # time, nodes, tasks,
-# job_name, output_file, error_file,
-# job_file, spec_file, app,
-# environment, parameters
+# job_name, output_file,
+# job_file, app,
+# environment, parameters, ompthreads
 #
 # Optional parameters are:
 # ranks, cores, mail
 
 #SBATCH --job-name={{job_name}}
 #SBATCH -o {{output_file}}
-#SBATCH -e {{error_file}}
 #SBATCH -t {{time}}
 #SBATCH --exclusive
-#SBATCH -p par6.q
+#SBATCH -p par7.q
 #SBATCH --nodes={{nodes}}
 #SBATCH --ntasks-per-node={{tasks}}
 #SBATCH --cpus-per-task={{cores}}
+#SBATCH --mail-type=END
 #SBATCH --mail-user={{mail}}
-##SBATCH --mail-type=END
 module purge
 module load slurm
 module load intel/xe_2017.2
 module load intelmpi/intel/2017.2
+module unload gcc/4.9.1
 module load gcc/4.9.1
 
-setenv TBB_SHLIB="-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
+setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
 
-setenv I_MPI_FABRICS="shm:dapl"
+setenv I_MPI_FABRICS "tmi"
+
+setenv OMP_NUM_THREADS {{ompthread}}
 
 # pipe some information into output file
-echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
-echo ""
-module list
-echo ""
-printenv
-echo ""
-cat {{job_file}}
-echo ""
-echo "sweep/environment={{environment}}"
-echo "sweep/parameters={{parameters}}"
-cat {{spec_file}}
-
+#echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
+#cat {{job_file}}
+# likwid measurements for single-node experiments
+#echo "sweep/environment={{environment}}" >  {{output_file}}.likwid
+#echo "sweep/parameters={{parameters}}"   >> {{output_file}}.likwid
 # multiple ranks
-#mpiexec -np {{ranks}} {{app}} {{spec_file}}
+#mpiexec -np {{ranks}} {{app}} {{parameters}}
+srun {{app}}
 
-# single-node
-{{app}}
