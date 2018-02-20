@@ -298,9 +298,6 @@ def generateScripts():
                                 tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                     cores = tbbthread
-                                elif parameterDict["enable-tbb"] == "false" and changeJobScriptCores == True:
-                                    print("ERROR: inconsistency in .ini", file=sys.stderr)
-                                    sys.exit()
 
                                 if  parameterDict["enable-background"] == "true":
                                     backtasks = parameterDict["background-count"]
@@ -361,9 +358,6 @@ def verifyAllJobScriptsExist():
                                 tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                     cores = tbbthread
-                                elif parameterDict["enable-tbb"] == "false" and changeJobScriptCores == True:
-                                    print("ERROR: inconsistency in .ini", file=sys.stderr)
-                                    sys.exit()
 
                                 if  parameterDict["enable-background"] == "true":
                                     backtasks = parameterDict["background-count"]
