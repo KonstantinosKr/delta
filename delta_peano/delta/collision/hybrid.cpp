@@ -156,7 +156,6 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerTrian
   return result;
 }
 
-
 std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatchFallBack(
   int             numberOfTrianglesOfGeometryA,
   const iREAL*    xCoordinatesOfPointsOfGeometryA,
@@ -221,7 +220,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     #if defined(__INTEL_COMPILER)
       #pragma omp simd reduction(+:counter)
     #else 
-      #pragma omp simd
+      #pragma omp simd reduction(+:counter)
     #endif
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
@@ -229,7 +228,7 @@ std::vector<delta::collision::contactpoint> delta::collision::hybridWithPerBatch
     }
 
     iREAL localbatchError = counter * MaxErrorOfPenalty;
-    if(localbatchError > ((iREAL)MaxErrorOfPenalty*(iREAL)numberOfTrianglesOfGeometryB)/32)
+    if(localbatchError > ((iREAL)MaxErrorOfPenalty*(iREAL)numberOfTrianglesOfGeometryB)/32.0)
     {
       fail = true;
     }

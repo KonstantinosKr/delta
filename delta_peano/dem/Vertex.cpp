@@ -586,7 +586,7 @@ void dem::Vertex::inheritCoarseGridParticles(
     const tarch::la::Vector<DIMENSIONS,double>& fineGridX,
     double fineGridH)
 {
-  //return;
+
   if(!coarseVertex.isOutside())
   {
 

@@ -105,7 +105,6 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
   if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0)
   {
     fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() - 0.1);
-    printf("entered %f \n", fineGridVertex.getNumberOfParticlesInUnrefinedVertex());
   } else if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined && fineGridVertex.getNumberOfParticles() == 0.0)
   {
     fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles());
