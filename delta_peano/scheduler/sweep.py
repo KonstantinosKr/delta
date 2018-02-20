@@ -295,8 +295,8 @@ def generateScripts():
 
                                 executable   = deltaRoot + value
 
+                                tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
-                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                     cores = tbbthread
                                 elif parameterDict["enable-tbb"] == "false" and changeJobScriptCores == True:
                                     print("ERROR: inconsistency in .ini", file=sys.stderr)
@@ -310,8 +310,7 @@ def generateScripts():
                                 if cores == "omp":
                                     cores = ompthread
 
-                                jobName        = value + "-" + parameterDictHash + \
-                                                 "-s" + parameterDict["scenarios"] + \
+                                jobName        = "-s" + parameterDict["scenarios"] + \
                                                  "-g" + parameterDict["grid-type"] + \
                                                  "-cm" + parameterDict["collision-model"] + \
                                                  "-n" + nodes + \
@@ -321,19 +320,9 @@ def generateScripts():
                                                  "-omp" + str(ompthread) + \
                                                  "-bck" + str(backtasks)
 
-                                jobNameOut        = value + "-" + \
-                                                 "-s" + parameterDict["scenarios"] + \
-                                                 "-g" + parameterDict["grid-type"] + \
-                                                 "-cm" + parameterDict["collision-model"] + \
-                                                 "-n" + nodes + \
-                                                 "-t" + tasks+ \
-                                                 "-c" + cores+ \
-                                                 "-tbb" + str(tbbthread)+ \
-                                                 "-omp" + str(ompthread) + \
-                                                 "-bck" + str(backtasks)
-                                jobFilePrefix  = scriptsFolderPath + "/" + jobName
+                                jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
-                                outputFileName = resultsFolderPath + "/" + jobNameOut + ".out"
+                                outputFileName = resultsFolderPath + "/" + value + "-" + jobName + ".out"
 
                                 jobScriptBody = renderJobScript(jobScriptTemplate,environmentDict,parameterDict,jobs,
                                                                 jobName,jobFilePath,outputFileName,executable,
@@ -369,8 +358,8 @@ def verifyAllJobScriptsExist():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
+                                tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
-                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                     cores = tbbthread
                                 elif parameterDict["enable-tbb"] == "false" and changeJobScriptCores == True:
                                     print("ERROR: inconsistency in .ini", file=sys.stderr)
@@ -472,12 +461,9 @@ def submitJobs():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
+                                tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
-                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                     cores = tbbthread
-                                elif parameterDict["enable-tbb"] == "false" and changeJobScriptCores == True:
-                                    print("ERROR: inconsistency in .ini", file=sys.stderr)
-                                    sys.exit()
 
                                 if  parameterDict["enable-background"] == "true":
                                     backtasks = parameterDict["background-count"]
@@ -487,7 +473,7 @@ def submitJobs():
                                 if cores == "omp":
                                     cores = ompthread
 
-                                jobName        = value + "-" + parameterDictHash + \
+                                jobName        =  parameterDictHash + \
                                                  "-s" + parameterDict["scenarios"] + \
                                                  "-g" + parameterDict["grid-type"] + \
                                                  "-cm" + parameterDict["collision-model"] + \
@@ -497,7 +483,7 @@ def submitJobs():
                                                  "-tbb" + str(tbbthread)+ \
                                                  "-omp" + str(ompthread) + \
                                                  "-bck" + str(backtasks)
-                                jobFilePrefix  = scriptsFolderPath + "/" + jobName
+                                jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
 
                                 command=jobSubmissionTool + " " + jobFilePath
