@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/csh
 # Mandatory parameters are:
 # time, nodes, tasks,
 # job_name, output_file, error_file,
@@ -25,9 +25,9 @@ module load intel/xe_2017.2
 module load intelmpi/intel/2017.2
 module load gcc/4.9.1
 
-export TBB_SHLIB="-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
+setenv TBB_SHLIB="-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
 
-export I_MPI_FABRICS="shm:dapl"
+setenv I_MPI_FABRICS="shm:dapl"
 
 # pipe some information into output file
 echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
