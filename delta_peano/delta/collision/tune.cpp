@@ -25,7 +25,7 @@
 
 #include "tune.h"
 #include <map>
-
+/*
 struct delta::collision::triangleSetStat {
   iREAL T1A[3], T1B[3], T1C[3];
   iREAL T2A[3], T2B[3], T2C[3];
@@ -235,7 +235,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyTune(
 
 void delta::collision::computeHistogram(std::vector<triangleSetStat> particleTriangleSet)
 {
-  /*for(auto triangleSet : particleTriangleSet)
+  for(auto triangleSet : particleTriangleSet)
   {
     std::vector<iREAL> eps = triangleSet.epsilonHistory;
     //std::array<do = new int[eps.size()];
@@ -243,7 +243,7 @@ void delta::collision::computeHistogram(std::vector<triangleSetStat> particleTri
     {
       //eps =
     }
-  }*/
+  }
 }
 
 void delta::collision::penalty(
@@ -393,6 +393,6 @@ void delta::collision::penalty(
   xPB = xCoordinatesOfTriangleB[0]+(ED[0] * x[2])+(FD[0] * x[3]);
   yPB = yCoordinatesOfTriangleB[0]+(ED[1] * x[2])+(FD[1] * x[3]);
   zPB = zCoordinatesOfTriangleB[0]+(ED[2] * x[2])+(FD[2] * x[3]);
-}
+}*/
 
 

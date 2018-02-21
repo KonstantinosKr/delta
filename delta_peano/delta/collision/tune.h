@@ -32,7 +32,7 @@
 
 namespace delta {
   namespace collision {
-
+/*
   void computeHistogram(std::vector<triangleSetStat> particleTriangleSet);
 
   struct delta::collision::triangleSetStat;
@@ -72,5 +72,6 @@ namespace delta {
       iREAL         maxError,
       int&          maxNumberOfNewtonIterations,
       int&          numberOfNewtonIterationsRequired);
+      */
   }
 }
