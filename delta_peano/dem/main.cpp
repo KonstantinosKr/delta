@@ -492,6 +492,9 @@ int main(int argc, char** argv)
   else if (collisionModel=="penaltyStat") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::PenaltyStat;
   }
+  else if (collisionModel=="penaltyTune") {
+    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::PenaltyTune;
+  }
   else if((collisionModel=="hybrid-on-triangle-pairs") || (collisionModel=="sphere-hybrid-on-triangle-pairs"))
   {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridOnTrianglePairs;

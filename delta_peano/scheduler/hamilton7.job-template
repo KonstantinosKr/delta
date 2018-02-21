@@ -39,5 +39,4 @@ setenv OMP_NUM_THREADS {{ompthread}}
 #echo "sweep/parameters={{parameters}}"   >> {{output_file}}.likwid
 # multiple ranks
 #mpiexec -np {{ranks}} {{app}} {{parameters}}
-srun {{app}}
-
+{{app}}

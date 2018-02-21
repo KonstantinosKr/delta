@@ -26,17 +26,11 @@
 #include "penalty.h"
 
 namespace {
-  //__attribute__ ((aligned(byteAlignment))) const int MaxNumberOfNewtonIterations = 8;
-
   std::vector<int> numberOfNewtonIterations(MaxNumberOfNewtonIterations+1);
 }
 
 void delta::collision::cleanPenaltyStatistics() {
-  #if defined(__INTEL_COMPILER)
-    #pragma omp simd
-  #else
-    #pragma omp simd
-  #endif
+  #pragma omp simd
   for(int i=0; i<MaxNumberOfNewtonIterations+1; i++) {
     numberOfNewtonIterations[i] = 0;
   }
@@ -47,35 +41,25 @@ std::vector<int> delta::collision::getPenaltyStatistics() {
 }
 
 std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
-  int       numberOfTrianglesOfGeometryA,
-  const iREAL*   xCoordinatesOfPointsOfGeometryA,
-  const iREAL*   yCoordinatesOfPointsOfGeometryA,
-  const iREAL*   zCoordinatesOfPointsOfGeometryA,
-  iREAL    epsilonA,
-  bool      frictionA,
-  int 		  particleA,
+  int             numberOfTrianglesOfGeometryA,
+  const iREAL*    xCoordinatesOfPointsOfGeometryA,
+  const iREAL*    yCoordinatesOfPointsOfGeometryA,
+  const iREAL*    zCoordinatesOfPointsOfGeometryA,
+  iREAL           epsilonA,
+  bool            frictionA,
+  int             particleA,
 
-  int       numberOfTrianglesOfGeometryB,
-  const iREAL*   xCoordinatesOfPointsOfGeometryB,
-  const iREAL*   yCoordinatesOfPointsOfGeometryB,
-  const iREAL*   zCoordinatesOfPointsOfGeometryB,
-  iREAL    epsilonB,
-  bool      frictionB,
-  int 		  particleB)
+  int             numberOfTrianglesOfGeometryB,
+  const iREAL*    xCoordinatesOfPointsOfGeometryB,
+  const iREAL*    yCoordinatesOfPointsOfGeometryB,
+  const iREAL*    zCoordinatesOfPointsOfGeometryB,
+  iREAL           epsilonB,
+  bool            frictionB,
+  int             particleB)
 {
   const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
 
   std::vector<contactpoint> result;
-
-  #if defined(__INTEL_COMPILER)
-  __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
-  __assume_aligned(yCoordinatesOfPointsOfGeometryA, byteAlignment);
-  __assume_aligned(zCoordinatesOfPointsOfGeometryA, byteAlignment);
-
-  __assume_aligned(xCoordinatesOfPointsOfGeometryB, byteAlignment);
-  __assume_aligned(yCoordinatesOfPointsOfGeometryB, byteAlignment);
-  __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
-  #endif
 
   #ifdef ompTriangle
     #pragma omp parallel for
@@ -83,14 +67,11 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyStat(
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
     __attribute__ ((aligned(byteAlignment))) iREAL	epsilonMargin = (epsilonA+epsilonB);
-    contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
+    contactpoint *nearestContactPoint = nullptr;
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
-      #pragma omp simd
-    #else
-      #pragma omp simd
     #endif
     for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
@@ -151,7 +132,6 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   int		          particleB
 ) {
   __attribute__ ((aligned(byteAlignment)))  const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
-
   std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
 
   #if defined(__INTEL_COMPILER)
@@ -174,10 +154,8 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
-      #pragma omp simd
-    #else
-      #pragma omp simd
     #endif
+    #pragma omp simd
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
       penalty(xCoordinatesOfPointsOfGeometryA+(iA),
@@ -193,10 +171,10 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
     }
 
     __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
-    contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
-
     __attribute__ ((aligned(byteAlignment))) iREAL minD = 1E99;
+    contactpoint *nearestContactPoint = nullptr;
+
     for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
       minD          = std::min( d[iB], minD );
     }
@@ -246,10 +224,8 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
  *
  */
 #if defined(__INTEL_COMPILER)
-  #if defined(ompParticle) || defined(ompTriangle)
   #pragma omp declare simd
   #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
-  #endif
 #endif
 extern void delta::collision::penalty(
   const iREAL   *xCoordinatesOfTriangleA,
@@ -258,14 +234,14 @@ extern void delta::collision::penalty(
   const iREAL   *xCoordinatesOfTriangleB,
   const iREAL   *yCoordinatesOfTriangleB,
   const iREAL   *zCoordinatesOfTriangleB,
-  iREAL&  xPA,
-  iREAL&  yPA,
-  iREAL&  zPA,
-  iREAL&  xPB,
-  iREAL&  yPB,
-  iREAL&  zPB,
-  iREAL MaxErrorOfPenaltyMethod,
-  bool& failed)
+  iREAL&        xPA,
+  iREAL&        yPA,
+  iREAL&        zPA,
+  iREAL&        xPB,
+  iREAL&        yPB,
+  iREAL&        zPB,
+  iREAL         MaxErrorOfPenaltyMethod,
+  bool&         failed)
 {
 
    __attribute__ ((aligned(byteAlignment))) iREAL BA[3];
@@ -405,14 +381,14 @@ void delta::collision::penalty(
   const iREAL   xCoordinatesOfTriangleB[],
   const iREAL   yCoordinatesOfTriangleB[],
   const iREAL   zCoordinatesOfTriangleB[],
-    iREAL&  xPA,
-    iREAL&  yPA,
-    iREAL&  zPA,
-    iREAL&  xPB,
-    iREAL&  yPB,
-    iREAL&  zPB,
-    iREAL   maxError,
-    int&     numberOfNewtonIterationsRequired)
+  iREAL&        xPA,
+  iREAL&        yPA,
+  iREAL&        zPA,
+  iREAL&        xPB,
+  iREAL&        yPB,
+  iREAL&        zPB,
+  iREAL         maxError,
+  int&          numberOfNewtonIterationsRequired)
  {
   __attribute__ ((aligned(byteAlignment))) iREAL BA[3];
   __attribute__ ((aligned(byteAlignment))) iREAL CA[3];

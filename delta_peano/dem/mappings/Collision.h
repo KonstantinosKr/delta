@@ -134,6 +134,7 @@ class dem::mappings::Collision {
     	BruteForce,
     	Penalty,
     	PenaltyStat,
+    PenaltyTune,
     	HybridOnTrianglePairs,
     	HybridOnBatches,
     	HybridStat,

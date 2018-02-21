@@ -443,13 +443,17 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
 
   // @We should refine if more than one virtual or real particle are in the cell and if at least one particle is real
   // @We should furthermore refine if and only if the at least one real particles approaches any other particles,
-  if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1 && minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0)
+  if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1)
   {
     dfor2(k)
-      if(!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode() && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
+      fineGridVertices[ fineGridVerticesEnumerator(k) ].setNumberOfParticlesInUnrefinedVertex(fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() * 2);
+
+      if(!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode())
       {
-        fineGridVertices[ fineGridVerticesEnumerator(k) ].setNumberOfParticlesInUnrefinedVertex(fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() * 1.1);
-        fineGridVertices[ fineGridVerticesEnumerator(k) ].refine();
+        if(minDiameter < fineGridVerticesEnumerator.getCellSize()(0)/3.0 && fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Unrefined)
+        {
+          fineGridVertices[ fineGridVerticesEnumerator(k) ].refine();
+        }
       }
     enddforx
   }

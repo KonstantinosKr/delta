@@ -31,12 +31,9 @@ setenv I_MPI_FABRICS "tmi"
 
 setenv OMP_NUM_THREADS {{ompthread}}
 
-# pipe some information into output file
 #echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
 #cat {{job_file}}
-# likwid measurements for single-node experiments
 #echo "sweep/environment={{environment}}" >  {{output_file}}.likwid
 #echo "sweep/parameters={{parameters}}"   >> {{output_file}}.likwid
-# multiple ranks
 #mpiexec -np {{ranks}} {{app}} {{parameters}}
-{{app}}
+amplxe-cl -r {{output_file}} -collect general-exploration -no-auto-finalize -- {{app}}

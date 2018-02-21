@@ -81,7 +81,7 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryB,
       iREAL           epsilonB,
       bool            frictionB,
-      int 	            particleB);
+      int             particleB);
 
     #if defined(ompParticle) || defined(ompTriangle)
       #pragma omp declare simd
@@ -89,19 +89,19 @@ namespace delta {
     #endif
     extern void penalty(
       const iREAL   *xCoordinatesOfTriangleA,
-       const iREAL   *yCoordinatesOfTriangleA,
-       const iREAL   *zCoordinatesOfTriangleA,
-       const iREAL   *xCoordinatesOfTriangleB,
-       const iREAL   *yCoordinatesOfTriangleB,
-       const iREAL   *zCoordinatesOfTriangleB,
-       iREAL&  xPA,
-       iREAL&  yPA,
-       iREAL&  zPA,
-       iREAL&  xPB,
-       iREAL&  yPB,
-       iREAL&  zPB,
-       iREAL MaxErrorOfPenaltyMethod,
-       bool& failed);
+      const iREAL   *yCoordinatesOfTriangleA,
+      const iREAL   *zCoordinatesOfTriangleA,
+      const iREAL   *xCoordinatesOfTriangleB,
+      const iREAL   *yCoordinatesOfTriangleB,
+      const iREAL   *zCoordinatesOfTriangleB,
+      iREAL&        xPA,
+      iREAL&        yPA,
+      iREAL&        zPA,
+      iREAL&        xPB,
+      iREAL&        yPB,
+      iREAL&        zPB,
+      iREAL         MaxErrorOfPenaltyMethod,
+      bool&         failed);
 
     /**
      * This is a second variant of the penalty method. Different to the one
@@ -115,13 +115,13 @@ namespace delta {
       const iREAL   xCoordinatesOfTriangleB[],
       const iREAL   yCoordinatesOfTriangleB[],
       const iREAL   zCoordinatesOfTriangleB[],
-      iREAL&  xPA,
-      iREAL&  yPA,
-      iREAL&  zPA,
-      iREAL&  xPB,
-      iREAL&  yPB,
-      iREAL&  zPB,
-      iREAL   maxError,
-      int&     numberOfNewtonIterationsRequired);
+      iREAL&        xPA,
+      iREAL&        yPA,
+      iREAL&        zPA,
+      iREAL&        xPB,
+      iREAL&        yPB,
+      iREAL&        zPB,
+      iREAL         maxError,
+      int&          numberOfNewtonIterationsRequired);
   }
 }

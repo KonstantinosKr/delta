@@ -514,6 +514,26 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getGlobalParticleId());
 
       break;
+    case CollisionModel::PenaltyTune:
+
+      newContactPoints = delta::collision::penaltyStat(
+        numberOfTrianglesA,
+        xCoordinatesA,
+        yCoordinatesA,
+        zCoordinatesA,
+        particleA.getEpsilon(),
+        particleA.getFriction(),
+        particleA.getGlobalParticleId(),
+
+        numberOfTrianglesB,
+        xCoordinatesB,
+        yCoordinatesB,
+        zCoordinatesB,
+        particleB.getEpsilon(),
+        particleB.getFriction(),
+        particleB.getGlobalParticleId());
+
+      break;
     case CollisionModel::HybridOnBatches:
 
       newContactPoints = delta::collision::hybridWithPerBatchFallBack(
