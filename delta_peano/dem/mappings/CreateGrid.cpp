@@ -34,27 +34,27 @@ peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification(in
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-tarch::logging::Log                  dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
-dem::mappings::CreateGrid::Scenario  dem::mappings::CreateGrid::_scenario[4];
-dem::mappings::CreateGrid::GridType  dem::mappings::CreateGrid::_gridType;
-double                               dem::mappings::CreateGrid::_maxH;
+tarch::logging::Log                   dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
+dem::mappings::CreateGrid::Scenario   dem::mappings::CreateGrid::_scenario[4];
+dem::mappings::CreateGrid::GridType   dem::mappings::CreateGrid::_gridType;
+double                                dem::mappings::CreateGrid::_maxH;
 
-double                               dem::mappings::CreateGrid::_minComputeDomain[3];
-double                               dem::mappings::CreateGrid::_maxComputeDomain[3];
-double                               dem::mappings::CreateGrid::_minParticleDiam;
-double                               dem::mappings::CreateGrid::_maxParticleDiam;
+double                                dem::mappings::CreateGrid::_minComputeDomain[3];
+double                                dem::mappings::CreateGrid::_maxComputeDomain[3];
+double                                dem::mappings::CreateGrid::_minParticleDiam;
+double                                dem::mappings::CreateGrid::_maxParticleDiam;
 
-double								                dem::mappings::CreateGrid::_epsilon;
-int 								                  dem::mappings::CreateGrid::_noPointsPerParticle;
-bool                                 dem::mappings::CreateGrid::_isSphere;
+double								                 dem::mappings::CreateGrid::_epsilon;
+int 								                   dem::mappings::CreateGrid::_noPointsPerParticle;
+bool                                  dem::mappings::CreateGrid::_isSphere;
 
-std::vector<delta::world::object>   dem::mappings::CreateGrid::_coarseObjects;
-std::vector<delta::world::object>   dem::mappings::CreateGrid::_insitufineObjects;
-std::vector<delta::world::object>   dem::mappings::CreateGrid::_fineObjects;
+std::vector<delta::world::object>     dem::mappings::CreateGrid::_coarseObjects;
+std::vector<delta::world::object>     dem::mappings::CreateGrid::_insitufineObjects;
+std::vector<delta::world::object>     dem::mappings::CreateGrid::_fineObjects;
 
-int                                 dem::mappings::CreateGrid::_numberOfParticles;
-int                                 dem::mappings::CreateGrid::_numberOfTriangles;
-int                                 dem::mappings::CreateGrid::_numberOfObstacles;
+int                                   dem::mappings::CreateGrid::_numberOfParticles;
+int                                   dem::mappings::CreateGrid::_numberOfTriangles;
+int                                   dem::mappings::CreateGrid::_numberOfObstacles;
 
 void dem::mappings::CreateGrid::setScenario(
     Scenario scenario[4],
@@ -62,16 +62,16 @@ void dem::mappings::CreateGrid::setScenario(
     GridType gridType,
     int noPointsPerGranulate)
 {
-	_scenario[0]        	= scenario[0];
+	_scenario[0]          = scenario[0];
   _scenario[1]          = scenario[1];
   _scenario[2]          = scenario[2];
   _scenario[3]          = scenario[3];
-	_maxH            		  = maxH;
-	_minParticleDiam 		  = _maxH;
-	_maxParticleDiam 		  = _maxH;
-	_gridType        		  = gridType;
-	_epsilon 		 		    = epsilon;
-	_noPointsPerParticle	= noPointsPerGranulate;
+	_maxH                 = maxH;
+	_minParticleDiam      = _maxH;
+	_maxParticleDiam      = _maxH;
+	_gridType             = gridType;
+	_epsilon              = epsilon;
+	_noPointsPerParticle  = noPointsPerGranulate;
 }
 
 void dem::mappings::CreateGrid::computeBoundary()
