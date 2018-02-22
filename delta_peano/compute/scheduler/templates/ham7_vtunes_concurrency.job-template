@@ -12,7 +12,7 @@
 #SBATCH -o {{output_file}}
 #SBATCH -t {{time}}
 #SBATCH --exclusive
-#SBATCH -p par7.q
+#SBATCH -p test.q
 #SBATCH --nodes={{nodes}}
 #SBATCH --ntasks-per-node={{tasks}}
 #SBATCH --cpus-per-task={{cores}}
