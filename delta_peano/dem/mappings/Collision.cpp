@@ -15,7 +15,7 @@
 
 #include "tarch/multicore/Jobs.h"
 
-#include "tarch/multicore/invasivetbb/BooleanSemaphore.h"
+#include "tarch/multicore/BooleanSemaphore.h"
 
 #include <unordered_map>
 
