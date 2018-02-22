@@ -15,10 +15,6 @@
 #include "tarch/multicore/Jobs.h"
 #include "peano/datatraversal/TaskSet.h"
 
-
-/**
- * @todo Please tailor the parameters to your mapping's properties.
- */
 peano::CommunicationSpecification   dem::mappings::ReluctantlyAdoptGrid::communicationSpecification() const {
   return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
