@@ -25,21 +25,8 @@
 
 #include "tune.h"
 #include <map>
-/*
-struct delta::collision::triangleSetStat {
-  iREAL T1A[3], T1B[3], T1C[3];
-  iREAL T2A[3], T2B[3], T2C[3];
 
-  std::vector<double> epsilonHistory;
-
-  std::vector<double> rpointDifference;
-  std::vector<double> rdistanceDifference;
-
-  std::vector<double> pointFail;
-  std::vector<double> distanceFail;
-};
-
-std::vector<delta::collision::contactpoint> delta::collision::penaltyTune(
+void delta::collision::penaltyTune(
   int             numberOfTrianglesOfGeometryA,
   const iREAL*    xCoordinatesOfPointsOfGeometryA,
   const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -56,6 +43,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyTune(
   bool            frictionB,
   int             particleB)
 {
+  /*
   const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
   int eps_lo_pow = -20;
   int eps_hi_pow = 20;
@@ -91,24 +79,15 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyTune(
 
       for (int ie = eps_lo_pow; ie<=eps_hi_pow; ie++)
       {
-        __attribute__ ((aligned(byteAlignment))) iREAL r;
-        __attribute__ ((aligned(byteAlignment))) iREAL e;
-        __attribute__ ((aligned(byteAlignment))) iREAL pxPA;
-        __attribute__ ((aligned(byteAlignment))) iREAL pyPA;
-        __attribute__ ((aligned(byteAlignment))) iREAL pzPA;
-        __attribute__ ((aligned(byteAlignment))) iREAL pxPB;
-        __attribute__ ((aligned(byteAlignment))) iREAL pyPB;
-        __attribute__ ((aligned(byteAlignment))) iREAL pzPB;
+        iREAL r, e;
+        iREAL pxPA, pyPA, pzPA;
+        iREAL pxPB, pyPB, pzPB;
 
-        __attribute__ ((aligned(byteAlignment))) iREAL bxPA;
-        __attribute__ ((aligned(byteAlignment))) iREAL byPA;
-        __attribute__ ((aligned(byteAlignment))) iREAL bzPA;
-        __attribute__ ((aligned(byteAlignment))) iREAL bxPB;
-        __attribute__ ((aligned(byteAlignment))) iREAL byPB;
-        __attribute__ ((aligned(byteAlignment))) iREAL bzPB;
+        iREAL bxPA, byPA, bzPA;
+        iREAL bxPB, byPB, bzPB;
 
-        __attribute__ ((aligned(byteAlignment))) int maxNumberOfNewtonIterations  = 10;
-        __attribute__ ((aligned(byteAlignment))) int numberOfNewtonIterationsRequired  = 0;
+        int maxNumberOfNewtonIterations  = 10;
+        int numberOfNewtonIterationsRequired  = 0;
 
         e = std::pow(10, ie);
         penalty(r, e,
@@ -135,14 +114,14 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyTune(
         iREAL bd = std::sqrt(((bxPB-bxPA)*(bxPB-bxPA))+((byPB-byPA)*(byPB-byPA))+((bzPB-bzPA)*(bzPB-bzPA)));
 
         iREAL pbPA[3];
-        pbPA[0] = pxPA[0] - bxPA[0];
-        pbPA[1] = pyPA[1] - byPA[1];
-        pbPA[1] = pzPA[2] - bzPA[2];
+        pbPA[0] = pxPA - bxPA;
+        pbPA[1] = pyPA - byPA;
+        pbPA[2] = pzPA - bzPA;
 
         iREAL pbPB[3];
-        pbPB[0] = pxPB[0] - bxPB[0];
-        pbPB[1] = pyPB[1] - byPB[1];
-        pbPB[1] = pzPB[2] - bzPB[2];
+        pbPB[0] = pxPB - bxPB;
+        pbPB[1] = pyPB - byPB;
+        pbPB[2] = pzPB - bzPB;
 
         iREAL pointDifference = sqrt(DOT(pbPA,pbPA) + DOT(pbPB,pbPB));
         iREAL distanceDifference = std::abs(pd-bd);
@@ -169,49 +148,42 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyTune(
         }
         epsilonHistory.push_back(e);
       }
-      triangleSetStat set = new triangleSetStat;
+      triangleSetStat *set = new triangleSetStat;
 
       iREAL T1A[3], T1B[3], T1C[3];
       iREAL T2A[3], T2B[3], T2C[3];
 
-      std::vector<double> epsilonHistory;
+      set->T1A[0] = xCoordinatesOfPointsOfGeometryA+(iA);
+      set->T1A[1] = yCoordinatesOfPointsOfGeometryA+(iA);
+      set->T1A[2] = zCoordinatesOfPointsOfGeometryA+(iA);
 
-      std::vector<double> rpointDifference;
-      std::vector<double> rdistanceDifference;
+      set->T1B[0] = xCoordinatesOfPointsOfGeometryA+(iA);
+      set->T1B[1] = yCoordinatesOfPointsOfGeometryA+(iA);
+      set->T1B[2] = zCoordinatesOfPointsOfGeometryA+(iA);
 
-      std::vector<double> pointFail;
-      std::vector<double> distanceFail;
-      set.T1A[0] = xCoordinatesOfPointsOfGeometryA+(iA)[0];
-      set.T1A[1] = yCoordinatesOfPointsOfGeometryA+(iA)[0];
-      set.T1A[2] = zCoordinatesOfPointsOfGeometryA+(iA)[0];
+      set->T1C[0] = xCoordinatesOfPointsOfGeometryA+(iA);
+      set->T1C[1] = yCoordinatesOfPointsOfGeometryA+(iA);
+      set->T1C[2] = zCoordinatesOfPointsOfGeometryA+(iA);
 
-      set.T1B[0] = xCoordinatesOfPointsOfGeometryA+(iA)[1];
-      set.T1B[1] = yCoordinatesOfPointsOfGeometryA+(iA)[1];
-      set.T1B[2] = zCoordinatesOfPointsOfGeometryA+(iA)[1];
+      set->T2A[0] = xCoordinatesOfPointsOfGeometryB+(iB);
+      set->T2A[1] = yCoordinatesOfPointsOfGeometryB+(iB);
+      set->T2A[2] = zCoordinatesOfPointsOfGeometryB+(iB);
 
-      set.T1C[0] = xCoordinatesOfPointsOfGeometryA+(iA)[2];
-      set.T1C[1] = yCoordinatesOfPointsOfGeometryA+(iA)[2];
-      set.T1C[2] = zCoordinatesOfPointsOfGeometryA+(iA)[2];
+      set->T2B[0] = xCoordinatesOfPointsOfGeometryB+(iB+1);
+      set->T2B[1] = xCoordinatesOfPointsOfGeometryB+(iB+1);
+      set->T2B[2] = xCoordinatesOfPointsOfGeometryB+(iB+1);
 
-      set.T2A[0] = xCoordinatesOfPointsOfGeometryB+(iB)[0];
-      set.T2A[1] = yCoordinatesOfPointsOfGeometryB+(iB)[0];
-      set.T2A[2] = zCoordinatesOfPointsOfGeometryB+(iB)[0];
+      set->T2C[0] = xCoordinatesOfPointsOfGeometryB+(iB+2);
+      set->T2C[1] = xCoordinatesOfPointsOfGeometryB+(iB+2);
+      set->T2C[2] = xCoordinatesOfPointsOfGeometryB+(iB+2);
 
-      set.T2B[0] = xCoordinatesOfPointsOfGeometryB+(iB)[1];
-      set.T2B[1] = xCoordinatesOfPointsOfGeometryB+(iB)[1];
-      set.T2B[2] = xCoordinatesOfPointsOfGeometryB+(iB)[1];
+      set->epsilonHistory = epsilonHistory;
 
-      set.T2C[0] = xCoordinatesOfPointsOfGeometryB+(iB)[2];
-      set.T2C[1] = xCoordinatesOfPointsOfGeometryB+(iB)[2];
-      set.T2C[2] = xCoordinatesOfPointsOfGeometryB+(iB)[2];
+      set->rpointDifference = rpointDifference;
+      set->rdistanceDifference = rdistanceDifference;
 
-      set.epsilonHistory = epsilonHistory;
-
-      set.rpointDifference = rpointDifference;
-      set.rdistanceDifference = rdistanceDifference;
-
-      set.pointFail = pointFail;
-      set.distanceFail = distanceFail;
+      set->pointFail = pointFail;
+      set->distanceFail = distanceFail;
 
       epsilonHistory.clear();
       rpointDifference.clear();
@@ -219,7 +191,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyTune(
       pointFail.clear();
       distanceFail.clear();
 
-      particleTriangleSet.push_back(set);
+      particleTriangleSet.push_back(*set);
 
     }
   }
@@ -230,9 +202,9 @@ std::vector<delta::collision::contactpoint> delta::collision::penaltyTune(
     printf("DEPS: %f C: %d\n", e, epsToDSuccessCount.at(e));
     printf("PEPS: %f C: %d\n", e, epsToPSuccessCount.at(e));
   }
-
+*/
 }
-
+/*
 void delta::collision::computeHistogram(std::vector<triangleSetStat> particleTriangleSet)
 {
   for(auto triangleSet : particleTriangleSet)
@@ -245,7 +217,7 @@ void delta::collision::computeHistogram(std::vector<triangleSetStat> particleTri
     }
   }
 }
-
+*/
 void delta::collision::penalty(
   const iREAL   e,
   const iREAL   r,
@@ -393,6 +365,7 @@ void delta::collision::penalty(
   xPB = xCoordinatesOfTriangleB[0]+(ED[0] * x[2])+(FD[0] * x[3]);
   yPB = yCoordinatesOfTriangleB[0]+(ED[1] * x[2])+(FD[1] * x[3]);
   zPB = zCoordinatesOfTriangleB[0]+(ED[2] * x[2])+(FD[2] * x[3]);
-}*/
+
+}
 
 

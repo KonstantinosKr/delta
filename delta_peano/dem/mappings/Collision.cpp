@@ -764,6 +764,7 @@ void dem::mappings::Collision::touchVertexLastTime(
           &_backgroundTaskState,
           true
         );
+        return false;
        },
        peano::datatraversal::TaskSet::TaskType::Background
       );
@@ -838,6 +839,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
             &backgroundstate,
             true
           );
+          return false;
          },
          peano::datatraversal::TaskSet::TaskType::Background
         );

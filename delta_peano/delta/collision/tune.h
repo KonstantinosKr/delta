@@ -33,11 +33,22 @@
 namespace delta {
   namespace collision {
 /*
-  void computeHistogram(std::vector<triangleSetStat> particleTriangleSet);
+    struct triangleSetStat {
+      iREAL T1A[3], T1B[3], T1C[3];
+      iREAL T2A[3], T2B[3], T2C[3];
 
-  struct delta::collision::triangleSetStat;
+      std::vector<double> epsilonHistory;
 
-    std::vector<contactpoint> penaltyTune(
+      std::vector<double> rpointDifference;
+      std::vector<double> rdistanceDifference;
+
+      std::vector<double> pointFail;
+      std::vector<double> distanceFail;
+    };
+
+    void computeHistogram(std::vector<triangleSetStat> particleTriangleSet);
+  */
+    void penaltyTune(
       int             numberOfTrianglesOfGeometryA,
       const iREAL*    xCoordinatesOfPointsOfGeometryA,
       const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -72,6 +83,7 @@ namespace delta {
       iREAL         maxError,
       int&          maxNumberOfNewtonIterations,
       int&          numberOfNewtonIterationsRequired);
-      */
+
   }
+
 }

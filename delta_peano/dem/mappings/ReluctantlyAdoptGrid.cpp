@@ -271,6 +271,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
             &_backgroundTaskState,
             true
           );
+          return false;
        },
        peano::datatraversal::TaskSet::TaskType::Background
       );
