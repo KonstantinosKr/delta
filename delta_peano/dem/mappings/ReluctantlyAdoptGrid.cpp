@@ -265,7 +265,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
       auto p9 = fineGridVertex.getZCoordinates(j);
 
       peano::datatraversal::TaskSet backgroundTask(
-       [=] () {
+       [=] ()->bool {
           dem::mappings::Collision::collisionDetection(
             p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
             &_backgroundTaskState,

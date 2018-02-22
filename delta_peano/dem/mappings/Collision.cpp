@@ -516,7 +516,7 @@ void dem::mappings::Collision::collisionDetection(
       break;
     case CollisionModel::PenaltyTune:
 
-      newContactPoints = delta::collision::penaltyStat(
+      delta::collision::penaltyStat(
         numberOfTrianglesA,
         xCoordinatesA,
         yCoordinatesA,
@@ -758,7 +758,7 @@ void dem::mappings::Collision::touchVertexLastTime(
       auto p9 = fineGridVertex.getZCoordinates(j);
 
       peano::datatraversal::TaskSet backgroundTask(
-       [=] () {
+       [=] ()->bool {
         dem::mappings::Collision::collisionDetection(
           p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
           &_backgroundTaskState,
@@ -833,7 +833,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
         auto p9 = vertexB.getZCoordinates(j);
 
         peano::datatraversal::TaskSet backgroundTask(
-         [=, &backgroundstate] () {
+         [=, &backgroundstate] ()->bool {
           dem::mappings::Collision::collisionDetection(
             p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
             &backgroundstate,
