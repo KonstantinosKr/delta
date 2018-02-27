@@ -85,16 +85,16 @@ std::string initSharedMemory(
           true, //  bool useMultithreading                  = true,
           0,    //  int  grainSizeOfUserDefinedRegions      = 0,
           peano::datatraversal::autotuning::OracleForOnePhaseDummy::SplitVertexReadsOnRegularSubtree::Split, //  SplitVertexReadsOnRegularSubtree splitTheTree = SplitVertexReadsOnRegularSubtree::Split,
-          true, //bool pipelineDescendProcessing          = false,
-          true, //  bool pipelineAscendProcessing           = false,
+          false, //bool pipelineDescendProcessing          = false,
+          false, //  bool pipelineAscendProcessing           = false,
           0,    //  int  smallestProblemSizeForAscendDescend  = tarch::la::aPowI(DIMENSIONS,3*3*3*3/2),
           0,    //   int  grainSizeForAscendDescend          = 3,
-          1,    //  int  smallestProblemSizeForEnterLeaveCell = tarch::la::aPowI(DIMENSIONS,9/2),
-          1,    //  int  grainSizeForEnterLeaveCell         = 2,
-          1,    //  int  smallestProblemSizeForTouchFirstLast = tarch::la::aPowI(DIMENSIONS,3*3*3*3+1),
-          1,    //  int  grainSizeForTouchFirstLast         = 64,
-          1,    //  int  smallestProblemSizeForSplitLoadStore = tarch::la::aPowI(DIMENSIONS,3*3*3),
-          1     //  int  grainSizeForSplitLoadStore         = 8
+          5,    //  int  smallestProblemSizeForEnterLeaveCell = tarch::la::aPowI(DIMENSIONS,9/2),
+          5,    //  int  grainSizeForEnterLeaveCell         = 2,
+          5,    //  int  smallestProblemSizeForTouchFirstLast = tarch::la::aPowI(DIMENSIONS,3*3*3*3+1),
+          5,    //  int  grainSizeForTouchFirstLast         = 64,
+          5,    //  int  smallestProblemSizeForSplitLoadStore = tarch::la::aPowI(DIMENSIONS,3*3*3),
+          5     //  int  grainSizeForSplitLoadStore         = 8
         ));
     }
     return sharedMemoryPropertiesFileName;
