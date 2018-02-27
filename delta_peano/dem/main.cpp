@@ -222,7 +222,7 @@ int main(int argc, char** argv)
       if (numberOfBackgroundTasks>=1) {
         logError( "main()", "max number of background tasks is set to " << numberOfBackgroundTasks );
         dem::mappings::Collision::RunParticleComparisionsInBackground = true;
-        tarch::multicore::jobs::BackgroundJob::setMaxNumberOfRunningBackgroundThreads( numberOfBackgroundTasks );
+        tarch::multicore::jobs::Job::setMaxNumberOfRunningBackgroundThreads( numberOfBackgroundTasks );
       }
       else {
         logError( "main()", "run in background either has to be true or false" );

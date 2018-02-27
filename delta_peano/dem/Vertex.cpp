@@ -22,6 +22,8 @@ tarch::multicore::BooleanSemaphore                                  dem::Vertex:
 
 void dem::Vertex::init() {
 #if defined(SharedMemoryParallelisation)
+
+  tarch::multicore::Lock lock(_VertexSemaphore);
   int returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   _vertexData.setParticles(returnedHeapIndex);
 
@@ -29,6 +31,7 @@ void dem::Vertex::init() {
   _vertexData.setParticlesOnCoarserLevels(returnedHeapIndex);
 
   _vertexData.setNumberOfParticlesInUnrefinedVertex(0);
+  lock.free();
 #else
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
@@ -38,8 +41,10 @@ void dem::Vertex::init() {
 
 void dem::Vertex::destroy() const {
 #if defined(SharedMemoryParallelisation)
+  tarch::multicore::Lock lock(_VertexSemaphore);
   ParticleHeap::getInstance().deleteData( _vertexData.getParticles(), true);
   ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels(), true);
+  lock.free();
 #else
   ParticleHeap::getInstance().deleteData( _vertexData.getParticles());
   ParticleHeap::getInstance().deleteData( _vertexData.getParticlesOnCoarserLevels());

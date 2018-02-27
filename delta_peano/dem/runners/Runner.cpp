@@ -26,8 +26,6 @@
 #include <stdlib.h>
 #include <string>
 
-
-
 tarch::logging::Log dem::runners::Runner::_log( "dem::runners::Runner" );
 
 dem::runners::Runner::Runner() {
