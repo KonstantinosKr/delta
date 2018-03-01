@@ -1,5 +1,7 @@
-#include "dem/mappings/ReluctantlyAdoptGrid.h"
+#include "dem/mappings/ReluctantlyAdoptGridMerged.h"
 #include "dem/mappings/AdoptGrid.h"
+#include "dem/mappings/ReluctantlyAdoptGrid.h"
+#include "dem/mappings/MoveParticles.h"
 
 #include "delta/collision/hybrid.h"
 #include "delta/collision/sphere.h"
@@ -15,78 +17,87 @@
 #include "tarch/multicore/Jobs.h"
 #include "peano/datatraversal/TaskSet.h"
 
-peano::CommunicationSpecification   dem::mappings::ReluctantlyAdoptGrid::communicationSpecification() const {
-  return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
+peano::CommunicationSpecification   dem::mappings::ReluctantlyAdoptGridMerged::communicationSpecification() const {
+  return peano::CommunicationSpecification(
+      peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,
+      peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,
+      false
+  );
 }
 
-/**
- * @see AdoptGrid::dropParticles() for an explanation.
- */
-peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
+peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGridMerged::touchVertexFirstTimeSpecification(int level) const {
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,
+      dem::mappings::Collision::RunGridTraversalInParallel ?
+      peano::MappingSpecification::RunConcurrentlyOnFineGrid :
+      peano::MappingSpecification::Serial,
+      true);
 }
 
-peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::enterCellSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
+peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGridMerged::enterCellSpecification(int level) const {
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,
+      dem::mappings::Collision::RunGridTraversalInParallel ?
+      peano::MappingSpecification::AvoidFineGridRaces :
+      peano::MappingSpecification::Serial,
+      true);
 }
 
-peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::leaveCellSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidFineGridRaces,true);
+peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGridMerged::leaveCellSpecification(int level) const {
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,
+      dem::mappings::Collision::RunGridTraversalInParallel ?
+      peano::MappingSpecification::AvoidFineGridRaces :
+      peano::MappingSpecification::Serial,
+      true);
 }
 
-/**
- * @see AdoptGrid::restrictCoarseningVetoToCoarseGrid() for an explanation.
- */
-peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
+peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGridMerged::touchVertexLastTimeSpecification(int level) const {
+  return peano::MappingSpecification(peano::MappingSpecification::WholeTree,
+      dem::mappings::Collision::RunGridTraversalInParallel ?
+      peano::MappingSpecification::AvoidCoarseGridRaces :
+      peano::MappingSpecification::Serial,
+      true);
 }
 
-peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::ascendSpecification(int level) const {
+peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGridMerged::ascendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGrid::descendSpecification(int level) const {
+peano::MappingSpecification   dem::mappings::ReluctantlyAdoptGridMerged::descendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-tarch::logging::Log                   dem::mappings::ReluctantlyAdoptGrid::_log( "dem::mappings::ReluctantlyAdoptGrid" );
-tarch::multicore::BooleanSemaphore    dem::mappings::ReluctantlyAdoptGrid::_ReluctantSemaphore;
-dem::State                            dem::mappings::ReluctantlyAdoptGrid::_backgroundTaskState;
+tarch::logging::Log                dem::mappings::ReluctantlyAdoptGridMerged::_log( "dem::mappings::ReluctantlyAdoptGridMerged" ); 
+tarch::multicore::BooleanSemaphore dem::mappings::ReluctantlyAdoptGridMerged::_ReluctantSemaphoreMerged;
+dem::State                         dem::mappings::ReluctantlyAdoptGridMerged::_backgroundTaskState;
 
-double dem::mappings::ReluctantlyAdoptGrid::_coarsenCoefficientReluctant;
-double dem::mappings::ReluctantlyAdoptGrid::_refinementCoefficientReluctant;
-
-dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid() {
-  logTraceIn( "ReluctantlyAdoptGrid()" );
-
-  logTraceOut( "ReluctantlyAdoptGrid()" );
+dem::mappings::ReluctantlyAdoptGridMerged::ReluctantlyAdoptGridMerged() {
+  logTraceIn( "ReluctantlyAdoptGridMerged()" );
+  logTraceOut( "ReluctantlyAdoptGridMerged()" );
 }
 
-dem::mappings::ReluctantlyAdoptGrid::~ReluctantlyAdoptGrid() {
-  logTraceIn( "~ReluctantlyAdoptGrid()" );
-  // @todo Insert your code here
-  logTraceOut( "~ReluctantlyAdoptGrid()" );
+dem::mappings::ReluctantlyAdoptGridMerged::~ReluctantlyAdoptGridMerged() {
+  logTraceIn( "~ReluctantlyAdoptGridMerged()" );
+  logTraceOut( "~ReluctantlyAdoptGridMerged()" );
 }
 
 #if defined(SharedMemoryParallelisation)
-dem::mappings::ReluctantlyAdoptGrid::ReluctantlyAdoptGrid(const ReluctantlyAdoptGrid&  masterThread) {
-  logTraceIn( "ReluctantlyAdoptGrid(ReluctantlyAdoptGrid)" );
+dem::mappings::ReluctantlyAdoptGridMerged::ReluctantlyAdoptGridMerged(const ReluctantlyAdoptGridMerged&  masterThread) {
+  logTraceIn( "ReluctantlyAdoptGridMerged(ReluctantlyAdoptGridMerged)" );
 
   _state.clearAccumulatedData();
 
-  logTraceOut( "ReluctantlyAdoptGrid(ReluctantlyAdoptGrid)" );
+  logTraceOut( "ReluctantlyAdoptGridMerged(ReluctantlyAdoptGridMerged)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorkerThread(const ReluctantlyAdoptGrid& workerThread) {
-  logTraceIn( "mergeWithWorkerThread(ReluctantlyAdoptGrid)" );
+void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithWorkerThread(const ReluctantlyAdoptGridMerged& workerThread) {
+  logTraceIn( "mergeWithWorkerThread(ReluctantlyAdoptGridMerged)" );
 
   _state.merge(workerThread._state);
 
-  logTraceOut( "mergeWithWorkerThread(ReluctantlyAdoptGrid)" );
+  logTraceOut( "mergeWithWorkerThread(ReluctantlyAdoptGridMerged)" );
 }
 #endif
 
-void dem::mappings::ReluctantlyAdoptGrid::beginIteration(
+void dem::mappings::ReluctantlyAdoptGridMerged::beginIteration(
   dem::State&  solverState
 ) {
   logTraceInWith1Argument( "beginIteration(State)", solverState );
@@ -107,7 +118,7 @@ void dem::mappings::ReluctantlyAdoptGrid::beginIteration(
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::endIteration(
+void dem::mappings::ReluctantlyAdoptGridMerged::endIteration(
   dem::State&  solverState
 ) {
   logTraceInWith1Argument( "endIteration(State)", solverState );
@@ -146,16 +157,17 @@ void dem::mappings::ReluctantlyAdoptGrid::endIteration(
   logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
-  dem::Vertex&                                 fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&  fineGridH,
-  dem::Vertex * const                          coarseGridVertices,
-  const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-  dem::Cell&                                   coarseGridCell,
-  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+void dem::mappings::ReluctantlyAdoptGridMerged::touchVertexFirstTime(
+      dem::Vertex&               fineGridVertex,
+      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
+      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+      dem::Vertex * const        coarseGridVertices,
+      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
+      dem::Cell&                 coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
 
   // @Refine only if there are more than one particles
   //     and at least one of the particle pairs approach each other.
@@ -164,7 +176,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
 
   if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0)
   {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * _coarsenCoefficientReluctant);
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * dem::mappings::ReluctantlyAdoptGrid::_coarsenCoefficientReluctant);
   }
 
   double timeStepSize = _state.getTimeStepSize();
@@ -241,34 +253,46 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
   enddforx
 
 
+  if (fineGridVertex.isBoundary())
+  {
+    dem::mappings::MoveParticles::reflectParticles(fineGridVertex);
+  }
+
+  dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(fineGridVertex, _state);
+
+
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::enterCell(
-  dem::Cell&                                 fineGridCell,
-  dem::Vertex * const                        fineGridVertices,
-  const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator,
-  dem::Vertex * const                        coarseGridVertices,
-  const peano::grid::VertexEnumerator&       coarseGridVerticesEnumerator,
-  dem::Cell&                                 coarseGridCell,
-  const tarch::la::Vector<DIMENSIONS,int>&   fineGridPositionOfCell
+void dem::mappings::ReluctantlyAdoptGridMerged::enterCell(
+      dem::Cell&                 fineGridCell,
+      dem::Vertex * const        fineGridVertices,
+      const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
+      dem::Vertex * const        coarseGridVertices,
+      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
+      dem::Cell&                 coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
   logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
   dem::mappings::Collision::all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
 
+  dem::mappings::MoveParticles::reassignParticles(fineGridVertices, fineGridVerticesEnumerator, _state);
+
   logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
+void dem::mappings::ReluctantlyAdoptGridMerged::leaveCell(
       dem::Cell&           fineGridCell,
       dem::Vertex * const  fineGridVertices,
       const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
       dem::Vertex * const  coarseGridVertices,
       const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&      fineGridPositionOfCell
+      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
+  logTraceInWith4Arguments( "leaveCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+
   while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
     tarch::multicore::jobs::processBackgroundJobs();
   }
@@ -294,7 +318,7 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
   if(numberOfRealParticles > 0 && numberOfVirtualAndRealParticles > 1)
   {
     dfor2(k)
-      fineGridVertices[ fineGridVerticesEnumerator(k) ].setNumberOfParticlesInUnrefinedVertex(fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() * _refinementCoefficientReluctant);
+      fineGridVertices[ fineGridVerticesEnumerator(k) ].setNumberOfParticlesInUnrefinedVertex(fineGridVertices[ fineGridVerticesEnumerator(k) ].getNumberOfParticles() * dem::mappings::ReluctantlyAdoptGrid::_refinementCoefficientReluctant);
 
       if(!fineGridVertices[ fineGridVerticesEnumerator(k) ].isHangingNode())
       {
@@ -305,16 +329,17 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
       }
     enddforx
   }
+  logTraceOutWith1Argument( "leaveCell(...)", fineGridCell );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
-  dem::Vertex&                                 fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&  fineGridH,
-  dem::Vertex * const                          coarseGridVertices,
-  const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-  dem::Cell&                                   coarseGridCell,
-  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+void dem::mappings::ReluctantlyAdoptGridMerged::touchVertexLastTime(
+      dem::Vertex&         fineGridVertex,
+      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
+      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+      dem::Vertex * const  coarseGridVertices,
+      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+      dem::Cell&           coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
@@ -393,7 +418,7 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexLastTime(
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::createHangingVertex(
+void dem::mappings::ReluctantlyAdoptGridMerged::createHangingVertex(
       dem::Vertex&     fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,
       const tarch::la::Vector<DIMENSIONS,double>&                fineGridH,
@@ -409,18 +434,18 @@ void dem::mappings::ReluctantlyAdoptGrid::createHangingVertex(
   logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::destroyHangingVertex(
-  const dem::Vertex&                            fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
-  dem::Vertex * const                           coarseGridVertices,
-  const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-  dem::Cell&                                    coarseGridCell,
-  const tarch::la::Vector<DIMENSIONS,int>&      fineGridPositionOfVertex
+void dem::mappings::ReluctantlyAdoptGridMerged::destroyHangingVertex(
+      const dem::Vertex&   fineGridVertex,
+      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
+      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+      dem::Vertex * const  coarseGridVertices,
+      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+      dem::Cell&           coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  tarch::multicore::Lock lock(_ReluctantSemaphore);
+  tarch::multicore::Lock lock(_ReluctantSemaphoreMerged);
   liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
   lock.free();
 
@@ -429,14 +454,14 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyHangingVertex(
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
-  dem::Vertex&                                 fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&  fineGridH,
-  dem::Vertex * const                          coarseGridVertices,
-  const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-  dem::Cell&                                   coarseGridCell,
-  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+void dem::mappings::ReluctantlyAdoptGridMerged::createInnerVertex(
+      dem::Vertex&               fineGridVertex,
+      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
+      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+      dem::Vertex * const        coarseGridVertices,
+      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
+      dem::Cell&                 coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
@@ -445,14 +470,14 @@ void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
+void dem::mappings::ReluctantlyAdoptGridMerged::createBoundaryVertex(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&        fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&        fineGridH,
+      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
+      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
       dem::Vertex * const        coarseGridVertices,
-      const peano::grid::VertexEnumerator&               coarseGridVerticesEnumerator,
+      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&           fineGridPositionOfVertex
+      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
@@ -461,18 +486,18 @@ void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
+void dem::mappings::ReluctantlyAdoptGridMerged::destroyVertex(
       const dem::Vertex&   fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&    fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&    fineGridH,
+      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
+      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
       dem::Vertex * const  coarseGridVertices,
-      const peano::grid::VertexEnumerator&           coarseGridVerticesEnumerator,
+      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&       fineGridPositionOfVertex
+      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  tarch::multicore::Lock lock(_ReluctantSemaphore);
+  tarch::multicore::Lock lock(_ReluctantSemaphoreMerged);
   liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
   lock.free();
 
@@ -482,30 +507,36 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::createCell(
+void dem::mappings::ReluctantlyAdoptGridMerged::createCell(
       dem::Cell&                 fineGridCell,
       dem::Vertex * const        fineGridVertices,
       const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&            fineGridPositionOfCell
+      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
+  logTraceInWith4Arguments( "createCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+
+  logTraceOutWith1Argument( "createCell(...)", fineGridCell );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::destroyCell(
+void dem::mappings::ReluctantlyAdoptGridMerged::destroyCell(
       const dem::Cell&           fineGridCell,
       dem::Vertex * const        fineGridVertices,
       const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&            fineGridPositionOfCell
+      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
+  logTraceInWith4Arguments( "destroyCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+
+  logTraceOutWith1Argument( "destroyCell(...)", fineGridCell );
 }
 
 #ifdef Parallel
-void dem::mappings::ReluctantlyAdoptGrid::mergeWithNeighbour(
+void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithNeighbour(
   dem::Vertex&  vertex,
   const dem::Vertex&  neighbour,
   int                                           fromRank,
@@ -518,7 +549,7 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithNeighbour(
   logTraceOut( "mergeWithNeighbour(...)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::prepareSendToNeighbour(
+void dem::mappings::ReluctantlyAdoptGridMerged::prepareSendToNeighbour(
   dem::Vertex&  vertex,
       int                                           toRank,
       const tarch::la::Vector<DIMENSIONS,double>&   x,
@@ -530,7 +561,7 @@ void dem::mappings::ReluctantlyAdoptGrid::prepareSendToNeighbour(
   logTraceOut( "prepareSendToNeighbour(...)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::prepareCopyToRemoteNode(
+void dem::mappings::ReluctantlyAdoptGridMerged::prepareCopyToRemoteNode(
   dem::Vertex&  localVertex,
       int                                           toRank,
       const tarch::la::Vector<DIMENSIONS,double>&   x,
@@ -542,7 +573,7 @@ void dem::mappings::ReluctantlyAdoptGrid::prepareCopyToRemoteNode(
   logTraceOut( "prepareCopyToRemoteNode(...)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::prepareCopyToRemoteNode(
+void dem::mappings::ReluctantlyAdoptGridMerged::prepareCopyToRemoteNode(
   dem::Cell&  localCell,
       int                                           toRank,
       const tarch::la::Vector<DIMENSIONS,double>&   cellCentre,
@@ -554,7 +585,7 @@ void dem::mappings::ReluctantlyAdoptGrid::prepareCopyToRemoteNode(
   logTraceOut( "prepareCopyToRemoteNode(...)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::mergeWithRemoteDataDueToForkOrJoin(
+void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithRemoteDataDueToForkOrJoin(
   dem::Vertex&  localVertex,
   const dem::Vertex&  masterOrWorkerVertex,
   int                                       fromRank,
@@ -567,7 +598,7 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithRemoteDataDueToForkOrJoin(
   logTraceOut( "mergeWithRemoteDataDueToForkOrJoin(...)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::mergeWithRemoteDataDueToForkOrJoin(
+void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithRemoteDataDueToForkOrJoin(
   dem::Cell&  localCell,
   const dem::Cell&  masterOrWorkerCell,
   int                                       fromRank,
@@ -580,7 +611,7 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithRemoteDataDueToForkOrJoin(
   logTraceOut( "mergeWithRemoteDataDueToForkOrJoin(...)" );
 }
 
-bool dem::mappings::ReluctantlyAdoptGrid::prepareSendToWorker(
+bool dem::mappings::ReluctantlyAdoptGridMerged::prepareSendToWorker(
   dem::Cell&                 fineGridCell,
   dem::Vertex * const        fineGridVertices,
   const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
@@ -596,7 +627,7 @@ bool dem::mappings::ReluctantlyAdoptGrid::prepareSendToWorker(
   return true;
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::prepareSendToMaster(
+void dem::mappings::ReluctantlyAdoptGridMerged::prepareSendToMaster(
   dem::Cell&                       localCell,
   dem::Vertex *                    vertices,
   const peano::grid::VertexEnumerator&       verticesEnumerator, 
@@ -610,7 +641,7 @@ void dem::mappings::ReluctantlyAdoptGrid::prepareSendToMaster(
   logTraceOut( "prepareSendToMaster(...)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::mergeWithMaster(
+void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithMaster(
   const dem::Cell&           workerGridCell,
   dem::Vertex * const        workerGridVertices,
  const peano::grid::VertexEnumerator& workerEnumerator,
@@ -630,7 +661,7 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithMaster(
   logTraceOut( "mergeWithMaster(...)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::receiveDataFromMaster(
+void dem::mappings::ReluctantlyAdoptGridMerged::receiveDataFromMaster(
       dem::Cell&                        receivedCell, 
       dem::Vertex *                     receivedVertices,
       const peano::grid::VertexEnumerator&        receivedVerticesEnumerator,
@@ -647,7 +678,7 @@ void dem::mappings::ReluctantlyAdoptGrid::receiveDataFromMaster(
   logTraceOut( "receiveDataFromMaster(...)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorker(
+void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithWorker(
   dem::Cell&           localCell, 
   const dem::Cell&     receivedMasterCell,
   const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
@@ -659,7 +690,7 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorker(
   logTraceOutWith1Argument( "mergeWithWorker(...)", localCell.toString() );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorker(
+void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithWorker(
   dem::Vertex&        localVertex,
   const dem::Vertex&  receivedMasterVertex,
   const tarch::la::Vector<DIMENSIONS,double>&   x,
@@ -672,7 +703,7 @@ void dem::mappings::ReluctantlyAdoptGrid::mergeWithWorker(
 }
 #endif
 
-void dem::mappings::ReluctantlyAdoptGrid::descend(
+void dem::mappings::ReluctantlyAdoptGridMerged::descend(
   dem::Cell * const          fineGridCells,
   dem::Vertex * const        fineGridVertices,
   const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
@@ -685,7 +716,7 @@ void dem::mappings::ReluctantlyAdoptGrid::descend(
   logTraceOut( "descend(...)" );
 }
 
-void dem::mappings::ReluctantlyAdoptGrid::ascend(
+void dem::mappings::ReluctantlyAdoptGridMerged::ascend(
   dem::Cell * const    fineGridCells,
   dem::Vertex * const  fineGridVertices,
   const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,

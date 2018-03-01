@@ -30,12 +30,12 @@ void dem::Vertex::init() {
   returnedHeapIndex = ParticleHeap::getInstance().createData(0,0,peano::heap::Allocation::UseRecycledEntriesIfPossibleCreateNewEntriesIfRequired);
   _vertexData.setParticlesOnCoarserLevels(returnedHeapIndex);
 
-  _vertexData.setNumberOfParticlesInUnrefinedVertex(0);
+  _vertexData.setNumberOfParticlesInUnrefinedVertex(0.0);
   lock.free();
 #else
   _vertexData.setParticles( ParticleHeap::getInstance().createData() );
   _vertexData.setParticlesOnCoarserLevels( ParticleHeap::getInstance().createData() );
-  _vertexData.setNumberOfParticlesInUnrefinedVertex(0);
+  _vertexData.setNumberOfParticlesInUnrefinedVertex(0.0);
 #endif
 }
 
@@ -545,11 +545,11 @@ const dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getZRefCoordinatesAsVector( 
 }
 
 void dem::Vertex::clearGridRefinementAnalysisData() {
-  _vertexData.setNumberOfParticlesInUnrefinedVertex(0);
+  _vertexData.setNumberOfParticlesInUnrefinedVertex(0.0);
 }
 
 void dem::Vertex::propagageCoarseningFlagToCoarseGrid(const Vertex& fineGridVertex) {
-  _vertexData.setNumberOfParticlesInUnrefinedVertex( _vertexData.getNumberOfParticlesInUnrefinedVertex() + fineGridVertex._vertexData.getNumberOfParticlesInUnrefinedVertex());
+  _vertexData.setNumberOfParticlesInUnrefinedVertex(_vertexData.getNumberOfParticlesInUnrefinedVertex() + fineGridVertex._vertexData.getNumberOfParticlesInUnrefinedVertex());
 }
 
 void dem::Vertex::setNumberOfParticlesInUnrefinedVertex(double number)
@@ -562,15 +562,15 @@ double dem::Vertex::getNumberOfParticlesInUnrefinedVertex()
   return _vertexData.getNumberOfParticlesInUnrefinedVertex();
 }
 
-void dem::Vertex::eraseIfParticleDistributionPermits(bool realiseAggressiveCoarsening) {
+void dem::Vertex::eraseIfParticleDistributionPermits(bool realiseAggressiveCoarsening, int particles) {
   if(realiseAggressiveCoarsening)
   {
-    if (_vertexData.getNumberOfParticlesInUnrefinedVertex() <= 1 && getRefinementControl()==Records::Refined)
+    if (_vertexData.getNumberOfParticlesInUnrefinedVertex() <= 1.0 && getRefinementControl()==Records::Refined)
     {
       erase();
     }
   } else {
-    if (_vertexData.getNumberOfParticlesInUnrefinedVertex() <= 0 && getRefinementControl()==Records::Refined)
+    if (_vertexData.getNumberOfParticlesInUnrefinedVertex() <= 1.0 && getRefinementControl()==Records::Refined)
     {
       erase();
     }

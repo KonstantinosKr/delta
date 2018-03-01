@@ -51,14 +51,15 @@ class dem::mappings::MoveParticles {
     static tarch::logging::Log  _log;
 
     State                       _state;
+  public:
+    static void moveAllParticlesAssociatedToVertex(dem::Vertex&  fineGridVertex, State& state);
 
-    void moveAllParticlesAssociatedToVertex(dem::Vertex&  fineGridVertex);
+    static void reflectParticles(dem::Vertex&  fineGridVertices);
 
-    void reflectParticles(dem::Vertex&  fineGridVertices);
-
-    void reassignParticles(
+    static void reassignParticles(
       dem::Vertex * const                        fineGridVertices,
-      const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator
+      const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator,
+      State& state
     );
 
 

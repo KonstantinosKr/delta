@@ -31,7 +31,7 @@ namespace dem {
  *
  * 		   build date: 09-02-2014 14:40
  *
- * @date   06/02/2018 18:49
+ * @date   28/02/2018 01:49
  */
 class dem::records::RepositoryState { 
    
@@ -40,7 +40,7 @@ class dem::records::RepositoryState {
       typedef dem::records::RepositoryStatePacked Packed;
       
       enum Action {
-         WriteCheckpoint = 0, ReadCheckpoint = 1, Terminate = 2, RunOnAllNodes = 3, UseAdapterCreateGrid = 4, UseAdapterCreateGridAndPlot = 5, UseAdapterTimeStep = 6, UseAdapterTimeStepAndPlot = 7, UseAdapterCollision = 8, UseAdapterMoveParticles = 9, UseAdapterAdopt = 10, UseAdapterPlotData = 11, UseAdapterTimeStepOnDynamicGrid = 12, UseAdapterTimeStepAndPlotOnDynamicGrid = 13, UseAdapterTimeStepOnReluctantDynamicGrid = 14, UseAdapterTimeStepAndPlotOnReluctantDynamicGrid = 15, NumberOfAdapters = 16
+         WriteCheckpoint = 0, ReadCheckpoint = 1, Terminate = 2, RunOnAllNodes = 3, UseAdapterCreateGrid = 4, UseAdapterCreateGridAndPlot = 5, UseAdapterTimeStep = 6, UseAdapterTimeStepAndPlot = 7, UseAdapterCollision = 8, UseAdapterMoveParticles = 9, UseAdapterAdopt = 10, UseAdapterPlotData = 11, UseAdapterTimeStepOnDynamicGrid = 12, UseAdapterTimeStepOnDynamicGridMerged = 13, UseAdapterTimeStepAndPlotOnDynamicGrid = 14, UseAdapterTimeStepOnReluctantDynamicGrid = 15, UseAdapterTimeStepOnReluctantDynamicGridMerged = 16, UseAdapterTimeStepAndPlotOnReluctantDynamicGrid = 17, NumberOfAdapters = 18
       };
       
       struct PersistentRecords {
@@ -289,7 +289,7 @@ class dem::records::RepositoryState {
  *
  * 		   build date: 09-02-2014 14:40
  *
- * @date   06/02/2018 18:49
+ * @date   28/02/2018 01:49
  */
 class dem::records::RepositoryStatePacked { 
    

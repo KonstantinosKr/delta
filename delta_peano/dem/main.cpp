@@ -475,6 +475,7 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
+  dem::mappings::Collision::_enableOverlapCheck = false;
   if (collisionModel=="sphere" || collisionModel=="sphere-sphere") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::Sphere;
     if(collisionModel=="sphere-sphere") {dem::mappings::Collision::_enableOverlapCheck = true;}
@@ -544,7 +545,7 @@ int main(int argc, char** argv)
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano", true ) );
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano::utils", false ) );
     dem::runners::Runner runner;
-    programExitCode = runner.run(iterations, plot, gridType, numberOfCores, stepSize, realSnapshot, true);
+    programExitCode = runner.run(iterations, plot, gridType, numberOfCores, stepSize, realSnapshot, false);
   }
   
   if (programExitCode==0)

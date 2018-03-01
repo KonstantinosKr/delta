@@ -26,12 +26,7 @@ peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexFirstTime
     true
   );
 }
-/**
- * Reflect
- */
-peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexLastTimeSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
-}
+
 /**
  * Reassign
  */
@@ -47,6 +42,14 @@ peano::MappingSpecification   dem::mappings::MoveParticles::enterCellSpecificati
 peano::MappingSpecification   dem::mappings::MoveParticles::leaveCellSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
 }
+
+/**
+ * Reflect
+ */
+peano::MappingSpecification   dem::mappings::MoveParticles::touchVertexLastTimeSpecification(int level) const {
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
+}
+
 peano::MappingSpecification   dem::mappings::MoveParticles::ascendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
@@ -56,9 +59,9 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
 
 tarch::logging::Log		dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" );
 
-void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Vertex&	fineGridVertex)
+void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Vertex&	fineGridVertex, State& state)
 {
-  double timeStepSize = _state.getTimeStepSize();
+  double timeStepSize = state.getTimeStepSize();
 
   for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
@@ -79,9 +82,9 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
     //printf("iteration current position A: %f %f %f\n", particle.getCentre(0), particle.getCentre(1), particle.getCentre(2));
 
     iREAL v = sqrt(particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0) + particle._persistentRecords._velocity(1) * particle._persistentRecords._velocity(1) + particle._persistentRecords._velocity(2) * particle._persistentRecords._velocity(2));
-    if(v > _state.getMaximumVelocityTravel())
+    if(v > state.getMaximumVelocityTravel())
     {
-      _state.setMaximumVelocityTravel(v);
+      state.setMaximumVelocityTravel(v);
     }
     /*
     delta::dynamics::updateRotationMatrix(&particle._persistentRecords._angular(0),
@@ -109,7 +112,8 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
 
 void dem::mappings::MoveParticles::reassignParticles(
   dem::Vertex * const                        fineGridVertices,
-  const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator)
+  const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator,
+  State& state)
 {
   int numberOfReassignments = 0;
   dfor2(k) //size 2, dimension 3
@@ -137,7 +141,7 @@ void dem::mappings::MoveParticles::reassignParticles(
       }
     }
   enddforx
-  _state.incNumberOfParticleReassignments(numberOfReassignments);
+  state.incNumberOfParticleReassignments(numberOfReassignments);
 }
 
 void dem::mappings::MoveParticles::reflectParticles(dem::Vertex& fineGridVertex)
@@ -182,57 +186,6 @@ void dem::mappings::MoveParticles::reflectParticles(dem::Vertex& fineGridVertex)
   }
 }
 
-void dem::mappings::MoveParticles::touchVertexFirstTime(
-  dem::Vertex&               fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
-  dem::Vertex * const        coarseGridVertices,
-  const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
-  dem::Cell&                 coarseGridCell,
-  const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
-) {
-  logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-
-  if (fineGridVertex.isBoundary())
-  {
-    reflectParticles(fineGridVertex);
-  }
-
-  moveAllParticlesAssociatedToVertex(fineGridVertex);
-
-  logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
-}
-
-void dem::mappings::MoveParticles::enterCell(
-  dem::Cell&                                 fineGridCell,
-  dem::Vertex * const                        fineGridVertices,
-  const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator,
-  dem::Vertex * const                        coarseGridVertices,
-  const peano::grid::VertexEnumerator&       coarseGridVerticesEnumerator,
-  dem::Cell&                                 coarseGridCell,
-  const tarch::la::Vector<DIMENSIONS,int>&   fineGridPositionOfCell
-) {
-  logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-
-  reassignParticles(fineGridVertices, fineGridVerticesEnumerator);
-
-  logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
-}
-
-void dem::mappings::MoveParticles::touchVertexLastTime(
-  dem::Vertex&         fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
-  dem::Vertex * const  coarseGridVertices,
-  const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-  dem::Cell&           coarseGridCell,
-  const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
-) {
-  logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-
-  logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
-}
-
 void dem::mappings::MoveParticles::beginIteration(
   dem::State&  solverState
 ) {
@@ -266,7 +219,6 @@ dem::mappings::MoveParticles::MoveParticles(const MoveParticles&  masterThread):
   _state.clearAccumulatedData();
 }
 
-
 void dem::mappings::MoveParticles::mergeWithWorkerThread(const MoveParticles& workerThread) {
   logTraceIn( "mergeWithWorkerThread(MoveParticles)" );
 
@@ -275,6 +227,71 @@ void dem::mappings::MoveParticles::mergeWithWorkerThread(const MoveParticles& wo
   logTraceOut( "mergeWithWorkerThread(MoveParticles)" );
 }
 #endif
+
+void dem::mappings::MoveParticles::touchVertexFirstTime(
+  dem::Vertex&               fineGridVertex,
+  const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
+  const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+  dem::Vertex * const        coarseGridVertices,
+  const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
+  dem::Cell&                 coarseGridCell,
+  const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
+) {
+  logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
+  if (fineGridVertex.isBoundary())
+  {
+    reflectParticles(fineGridVertex);
+  }
+
+  moveAllParticlesAssociatedToVertex(fineGridVertex, _state);
+
+  logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
+}
+
+void dem::mappings::MoveParticles::enterCell(
+  dem::Cell&                                 fineGridCell,
+  dem::Vertex * const                        fineGridVertices,
+  const peano::grid::VertexEnumerator&       fineGridVerticesEnumerator,
+  dem::Vertex * const                        coarseGridVertices,
+  const peano::grid::VertexEnumerator&       coarseGridVerticesEnumerator,
+  dem::Cell&                                 coarseGridCell,
+  const tarch::la::Vector<DIMENSIONS,int>&   fineGridPositionOfCell
+) {
+  logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+
+  reassignParticles(fineGridVertices, fineGridVerticesEnumerator, _state);
+
+  logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
+}
+
+void dem::mappings::MoveParticles::leaveCell(
+      dem::Cell&           fineGridCell,
+      dem::Vertex * const  fineGridVertices,
+      const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
+      dem::Vertex * const  coarseGridVertices,
+      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+      dem::Cell&           coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
+) {
+  logTraceInWith4Arguments( "leaveCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+  // @todo Insert your code here
+  logTraceOutWith1Argument( "leaveCell(...)", fineGridCell );
+}
+
+void dem::mappings::MoveParticles::touchVertexLastTime(
+  dem::Vertex&         fineGridVertex,
+  const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
+  const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+  dem::Vertex * const  coarseGridVertices,
+  const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+  dem::Cell&           coarseGridCell,
+  const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
+) {
+  logTraceInWith6Arguments( "touchVertexLastTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
+  logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
+}
 
 void dem::mappings::MoveParticles::createHangingVertex(
       dem::Vertex&     fineGridVertex,
@@ -532,20 +549,6 @@ void dem::mappings::MoveParticles::mergeWithWorker(
   logTraceOutWith1Argument( "mergeWithWorker(...)", localVertex.toString() );
 }
 #endif
-
-void dem::mappings::MoveParticles::leaveCell(
-      dem::Cell&           fineGridCell,
-      dem::Vertex * const  fineGridVertices,
-      const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
-      dem::Vertex * const  coarseGridVertices,
-      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-      dem::Cell&           coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
-) {
-  logTraceInWith4Arguments( "leaveCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-  // @todo Insert your code here
-  logTraceOutWith1Argument( "leaveCell(...)", fineGridCell );
-}
 
 void dem::mappings::MoveParticles::descend(
   dem::Cell * const          fineGridCells,

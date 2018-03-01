@@ -78,167 +78,108 @@ bool dem::mappings::Collision::RunParticleLoopInParallel            = true;
 bool dem::mappings::Collision::RunParticleComparisionsInBackground  = false;
 dem::State dem::mappings::Collision::_backgroundTaskState;
 
-void dem::mappings::Collision::beginIteration(
-		dem::State&  solverState
-) {
-	logTraceInWith1Argument( "beginIteration(State)", solverState );
-
-	_state = solverState;
-	_backgroundTaskState = solverState;
-	//_state.clearAccumulatedData();//redundant
-	//_backgroundTaskState.clearAccumulatedData();
-
-	assertion( _collisionsOfNextTraversal.empty() );
-
-	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
-	delta::collision::cleanPenaltyStatistics();
-
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
-  delta::collision::cleanHybridStatistics();
-
-	logTraceOutWith1Argument( "beginIteration(State)", solverState);
-}
-
-void dem::mappings::Collision::endIteration(
-		dem::State&  solverState
-) {
-	logTraceInWith1Argument( "endIteration(State)", solverState );
-
-	_state.merge(_backgroundTaskState);
-  solverState.merge(_state);
-
-	_activeCollisions.clear();
-
-	assertion( _activeCollisions.empty() );
-	assertion( _state.getNumberOfContactPoints()==0 || !_collisionsOfNextTraversal.empty() );
-
-	_activeCollisions.insert(_collisionsOfNextTraversal.begin(), _collisionsOfNextTraversal.end());
-
-	assertion( _state.getNumberOfContactPoints()==0 || !_activeCollisions.empty() );
-	_collisionsOfNextTraversal.clear();
-
-	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
-	{
-		std::vector<int> penaltyStatistics = delta::collision::getPenaltyStatistics();
-		for (int i=0; i<static_cast<int>(penaltyStatistics.size()); i++)
-		{
-			logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
-		}
-	}
-
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
-  {
-    logInfo( "endIteration(State)", std::endl
-                                 << "Penalty Fails: " << delta::collision::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::collision::getPenaltyFails()/(double)delta::collision::getBatchSize() << std::endl
-                                 << "Batch Size: " << delta::collision::getBatchSize() << std::endl
-                                 << "Batch Fails: " << delta::collision::getBatchFails() << " BatchFail avg: " << (double)delta::collision::getBatchFails()/(double)delta::collision::getBatchSize() << std::endl
-                                 << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
-  }
-
-	logTraceOutWith1Argument( "endIteration(State)", solverState);
-}
 
 void dem::mappings::Collision::addCollision(
-		std::vector<delta::collision::contactpoint> & newContactPoints,
-		const records::Particle&                    particleA,
-		const records::Particle&                    particleB,
-		bool sphere
+    std::vector<delta::collision::contactpoint> & newContactPoints,
+    const records::Particle&                    particleA,
+    const records::Particle&                    particleB,
+    bool sphere
 ) {
-	assertion( !newContactPoints.empty() );
+  assertion( !newContactPoints.empty() );
 
-	//////////////START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
-	if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
-		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
-	}
+  //////////////START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
+  if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
+    _collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
+  }
 
-	if( _collisionsOfNextTraversal.count(particleB.getGlobalParticleId())==0 ) {
-		_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleId(), std::vector<Collisions>()));
-	}
-	///////////////END
+  if( _collisionsOfNextTraversal.count(particleB.getGlobalParticleId())==0 ) {
+    _collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleId(), std::vector<Collisions>()));
+  }
+  ///////////////END
 
-	//START DATASET pointer
-	Collisions* dataSetA = nullptr;
-	Collisions* dataSetB = nullptr;
-	//////////////END
+  //START DATASET pointer
+  Collisions* dataSetA = nullptr;
+  Collisions* dataSetB = nullptr;
+  //////////////END
 
-	/////////////////START if already exist | find and assign reference collision list to dataA or dataB particle
-	for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].begin();
-		 p!=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].end();  p++)
-	{
-		if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleB.getGlobalParticleId())
-		{
-			dataSetA = &(*p);
-		}
-	}
+  /////////////////START if already exist | find and assign reference collision list to dataA or dataB particle
+  for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].begin();
+     p!=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].end();  p++)
+  {
+    if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleB.getGlobalParticleId())
+    {
+      dataSetA = &(*p);
+    }
+  }
 
-	for(std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].begin();
-		 p!=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].end(); p++)
-	{
-		if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleA.getGlobalParticleId())
-		{
-			dataSetB = &(*p);
-		}
-	}
-	//////////////END
+  for(std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].begin();
+     p!=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].end(); p++)
+  {
+    if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleA.getGlobalParticleId())
+    {
+      dataSetB = &(*p);
+    }
+  }
+  //////////////END
 
-	if((dataSetA!=nullptr && dataSetB!=nullptr)) {
-	  newContactPoints.clear();
-	  return;
-	}
+  if((dataSetA!=nullptr && dataSetB!=nullptr)) {
+    newContactPoints.clear();
+    return;
+  }
 
-	///ASSERT we have data assigned to both data pointers
-	assertion( (dataSetA==nullptr && dataSetB==nullptr) || (dataSetA!=nullptr && dataSetB!=nullptr) );
+  ///ASSERT we have data assigned to both data pointers
+  assertion( (dataSetA==nullptr && dataSetB==nullptr) || (dataSetA!=nullptr && dataSetB!=nullptr) );
   //END
 
-	//START if dataset A and B is empty
-	if(dataSetA==nullptr)
-	{
-		//START push_back collisions object into corresponding both A and B particle index collision list
-		_collisionsOfNextTraversal[particleA.getGlobalParticleId()].push_back( Collisions() );
-		_collisionsOfNextTraversal[particleB.getGlobalParticleId()].push_back( Collisions() );
-		//END push_back
+  //START if dataset A and B is empty
+  if(dataSetA==nullptr)
+  {
+    //START push_back collisions object into corresponding both A and B particle index collision list
+    _collisionsOfNextTraversal[particleA.getGlobalParticleId()].push_back( Collisions() );
+    _collisionsOfNextTraversal[particleB.getGlobalParticleId()].push_back( Collisions() );
+    //END push_back
 
-		//START reference of vector to data A and B ready to used
-		dataSetA = &(_collisionsOfNextTraversal[particleA.getGlobalParticleId()].back());
-		dataSetB = &(_collisionsOfNextTraversal[particleB.getGlobalParticleId()].back());
-		//END
+    //START reference of vector to data A and B ready to used
+    dataSetA = &(_collisionsOfNextTraversal[particleA.getGlobalParticleId()].back());
+    dataSetB = &(_collisionsOfNextTraversal[particleB.getGlobalParticleId()].back());
+    //END
 
-		//START add copy of master and slave particles to sets (dual contact reference)
-		dataSetA->_copyOfPartnerParticle = particleB;
-		dataSetB->_copyOfPartnerParticle = particleA;
-		//END
-	}
-	////////END
+    //START add copy of master and slave particles to sets (dual contact reference)
+    dataSetA->_copyOfPartnerParticle = particleB;
+    dataSetB->_copyOfPartnerParticle = particleA;
+    //END
+  }
+  ////////END
 
   //delta::collision::filterNewContacts(newContactPoints);
-	if(sphere)
-	{
+  if(sphere)
+  {
     //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints);
     //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints);
-	} else {	//filter multiple contacts for same area of mesh
+  } else {  //filter multiple contacts for same area of mesh
     //delta::collision::filterOldContacts(dataSetA->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
     //delta::collision::filterOldContacts(dataSetB->_contactPoints, newContactPoints, std::min(particleA.getHMin(), particleB.getHMin()));
-	}
+  }
 
-	/*
-	 * Problem here was:
-	 * Although all normals were pointing to opposite direction for each particle due to how we loop particles
-	 * A. at each vertex or grid initial contact direction is interchangeable depending on what is A and B
-	 * B. we always want to have the normal for particles to the position update direction (inner-direction)
-	 * C. we always want to ensure that normal of particle point away from obstacle
-	 * D. we don't care about normal of obstacle.
-	 */
-	dataSetA->_contactPoints.insert(dataSetA->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
+  /*
+   * Problem here was:
+   * Although all normals were pointing to opposite direction for each particle due to how we loop particles
+   * A. at each vertex or grid initial contact direction is interchangeable depending on what is A and B
+   * B. we always want to have the normal for particles to the position update direction (inner-direction)
+   * C. we always want to ensure that normal of particle point away from obstacle
+   * D. we don't care about normal of obstacle.
+   */
+  dataSetA->_contactPoints.insert(dataSetA->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
 
-	for (std::vector<delta::collision::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
-	{
-		//invert normal for particle B
-		p->normal[0] = -1.0 * p->normal[0];
-		p->normal[1] = -1.0 * p->normal[1];
-		p->normal[2] = -1.0 * p->normal[2];
-	}
+  for (std::vector<delta::collision::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
+  {
+    //invert normal for particle B
+    p->normal[0] = -1.0 * p->normal[0];
+    p->normal[1] = -1.0 * p->normal[1];
+    p->normal[2] = -1.0 * p->normal[2];
+  }
 
-	dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
+  dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
 }
 
 bool dem::mappings::Collision::triggerParticleTooClose(
@@ -632,196 +573,33 @@ void dem::mappings::Collision::collisionDetection(
   if (protectStateAccess) lock.free();
 }
 
-void dem::mappings::Collision::touchVertexFirstTime(
-		dem::Vertex&                                 fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&  fineGridH,
-		dem::Vertex * const                          coarseGridVertices,
-		const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-		dem::Cell&                                   coarseGridCell,
-		const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
-) {
-	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-
-	double timeStepSize = _state.getTimeStepSize();
-
-	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
-	{
-		records::Particle& currentParticle = fineGridVertex.getParticle(i);
-
-		//if value doesn't exist in map - no collision - skip particle
-		if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
-
-		//double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
-		double force[3]  = {0.0,0.0,0.0};
-		double torque[3] = {0.0,0.0,0.0};
-
-		//collisions with partner particles
-		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin();
-		                                      p != _activeCollisions[currentParticle.getGlobalParticleId()].end();
-		                                      p++)
-		{
-			double rforce[3]  = {0.0,0.0,0.0};
-			double rtorque[3] = {0.0,0.0,0.0};
-
-			delta::forces::getContactsForces(p->_contactPoints,
-                                       &(currentParticle._persistentRecords._centreOfMass(0)),
-                                       &(currentParticle._persistentRecords._referentialCentreOfMass(0)),
-                                       &(currentParticle._persistentRecords._angular(0)),
-                                       &(currentParticle._persistentRecords._referentialAngular(0)),
-                                       &(currentParticle._persistentRecords._velocity(0)),
-                                       currentParticle.getMass(),
-                                       &(currentParticle._persistentRecords._inverse(0)),
-                                       &(currentParticle._persistentRecords._orientation(0)),
-                                       currentParticle.getMaterial(),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._angular(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._referentialAngular(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._velocity(0)),
-                                       p->_copyOfPartnerParticle.getMass(),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._inverse(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._orientation(0)),
-                                       p->_copyOfPartnerParticle.getMaterial(),
-                                       rforce, rtorque,
-                                       (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
-
-			force[0] += rforce[0];
-			force[1] += rforce[1];
-			force[2] += rforce[2];
-
-			torque[0] += rtorque[0];
-			torque[1] += rtorque[1];
-			torque[2] += rtorque[2];
-		}
-
-		if(!currentParticle.getIsObstacle())
-		{
-			currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle.getMass());
-			currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle.getMass());
-			currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle.getMass());
-
-			delta::dynamics::updateAngular(&currentParticle._persistentRecords._referentialAngular(0),
-                                      &currentParticle._persistentRecords._orientation(0),
-                                      &currentParticle._persistentRecords._inertia(0),
-                                      &currentParticle._persistentRecords._inverse(0),
-                                      currentParticle.getMass(), //why mass is passed here, remove if not used
-                                      torque, timeStepSize);
-		}
-	}
-
-  fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
-
-	dfor2(k)
-	fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
-	enddforx
-
-	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
-}
-
-void dem::mappings::Collision::touchVertexLastTime(
-    dem::Vertex&         fineGridVertex,
-    const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-    const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
-    dem::Vertex * const  coarseGridVertices,
-    const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-    dem::Cell&           coarseGridCell,
-    const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
-) {
-  if (fineGridVertex.getNumberOfParticles()==0) return;
-
-  #ifdef SharedTBB
-  const int grainSize = (RunParticleLoopInParallel||fineGridVertex.getNumberOfParticles()==0) ? 1 : fineGridVertex.getNumberOfParticles();
-  tbb::parallel_for(
-   tbb::blocked_range<int>(0,fineGridVertex.getNumberOfParticles(),grainSize),
-   [&](const tbb::blocked_range<int>& r) {
-    for (int i=r.begin(); i!=r.end(); i++) {
-  #else
-  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
-  #endif
-    for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
-    {
-    if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
-       (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
-      continue;
-
-    if (RunParticleComparisionsInBackground) {
-      auto p0 = fineGridVertex.getParticle(i);
-      auto p1 = fineGridVertex.getNumberOfTriangles(i);
-      auto p2 = fineGridVertex.getXCoordinates(i);
-      auto p3 = fineGridVertex.getYCoordinates(i);
-      auto p4 = fineGridVertex.getZCoordinates(i);
-      auto p5 = fineGridVertex.getParticle(j);
-      auto p6 = fineGridVertex.getNumberOfTriangles(j);
-      auto p7 = fineGridVertex.getXCoordinates(j);
-      auto p8 = fineGridVertex.getYCoordinates(j);
-      auto p9 = fineGridVertex.getZCoordinates(j);
-
-      peano::datatraversal::TaskSet backgroundTask(
-       [=] ()->bool {
-        dem::mappings::Collision::collisionDetection(
-          p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
-          &_backgroundTaskState,
-          true
-        );
-        return false;
-       },
-       peano::datatraversal::TaskSet::TaskType::Background
-      );
-
-      logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
-    }
-    else {
-      collisionDetection(
-        fineGridVertex.getParticle(i),
-        fineGridVertex.getNumberOfTriangles(i),
-        fineGridVertex.getXCoordinates(i),
-        fineGridVertex.getYCoordinates(i),
-        fineGridVertex.getZCoordinates(i),
-        fineGridVertex.getParticle(j),
-        fineGridVertex.getNumberOfTriangles(j),
-        fineGridVertex.getXCoordinates(j),
-        fineGridVertex.getYCoordinates(j),
-        fineGridVertex.getZCoordinates(j),
-        &_state,
-        false
-      );
-    }
-   }
-  #ifdef SharedTBB
-  }});
-  #else
-  }
-  #endif
-}
-
 void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
   dem::Vertex&  vertexA,
-	dem::Vertex&  vertexB,
-	State& state,
-	State& backgroundstate
+  dem::Vertex&  vertexB,
+  State& state,
+  State& backgroundstate
 ) {
-	logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexA.toString() << ", " << vertexA.getNumberOfRealAndVirtualParticles() );
-	logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexB.toString() << ", " << vertexB.getNumberOfRealAndVirtualParticles() );
+  logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexA.toString() << ", " << vertexA.getNumberOfRealAndVirtualParticles() );
+  logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexB.toString() << ", " << vertexB.getNumberOfRealAndVirtualParticles() );
 
   #ifdef SharedTBB
-	// Take care: grain size has to be possitive even if loop degenerates
-	const int grainSize = (RunParticleLoopInParallel || vertexA.getNumberOfParticles()==0) ? 1 : vertexA.getNumberOfParticles();
+  // Take care: grain size has to be possitive even if loop degenerates
+  const int grainSize = (RunParticleLoopInParallel || vertexA.getNumberOfParticles()==0) ? 1 : vertexA.getNumberOfParticles();
   tbb::parallel_for(
    tbb::blocked_range<int>(0,vertexA.getNumberOfParticles(),grainSize),
    [&](const tbb::blocked_range<int>& r) {
-	  for (int i=r.begin(); i!=r.end(); i++) {
+    for (int i=r.begin(); i!=r.end(); i++) {
   #else
-	for(int i=0; i<vertexA.getNumberOfParticles(); i++) {
+  for(int i=0; i<vertexA.getNumberOfParticles(); i++) {
   #endif
-		for(int j=0; j<vertexB.getNumberOfParticles(); j++)
-		{
-			if((vertexA.getParticle(i).getIsObstacle() && vertexB.getParticle(j).getIsObstacle()) ||
-			   (vertexA.getParticle(i).getGlobalParticleId() == vertexB.getParticle(j).getGlobalParticleId()))
-			  continue;
+    for(int j=0; j<vertexB.getNumberOfParticles(); j++)
+    {
+      if((vertexA.getParticle(i).getIsObstacle() && vertexB.getParticle(j).getIsObstacle()) ||
+         (vertexA.getParticle(i).getGlobalParticleId() == vertexB.getParticle(j).getGlobalParticleId()))
+        continue;
 
-			if (RunParticleComparisionsInBackground) {
-			  auto p0 = vertexA.getParticle(i);
+      if (RunParticleComparisionsInBackground) {
+        auto p0 = vertexA.getParticle(i);
         auto p1 = vertexA.getNumberOfTriangles(i);
         auto p2 = vertexA.getXCoordinates(i);
         auto p3 = vertexA.getYCoordinates(i);
@@ -844,30 +622,30 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
          peano::datatraversal::TaskSet::TaskType::Background
         );
         logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
-			}
-			else {
-	      collisionDetection(
-	        vertexA.getParticle(i),
-	        vertexA.getNumberOfTriangles(i),
-	        vertexA.getXCoordinates(i),
-	        vertexA.getYCoordinates(i),
-	        vertexA.getZCoordinates(i),
-	        vertexB.getParticle(j),
-	        vertexB.getNumberOfTriangles(j),
-	        vertexB.getXCoordinates(j),
-	        vertexB.getYCoordinates(j),
-	        vertexB.getZCoordinates(j),
-	        &state,
-	        false
-	      );
-			}
-		}
+      }
+      else {
+        collisionDetection(
+          vertexA.getParticle(i),
+          vertexA.getNumberOfTriangles(i),
+          vertexA.getXCoordinates(i),
+          vertexA.getYCoordinates(i),
+          vertexA.getZCoordinates(i),
+          vertexB.getParticle(j),
+          vertexB.getNumberOfTriangles(j),
+          vertexB.getXCoordinates(j),
+          vertexB.getYCoordinates(j),
+          vertexB.getZCoordinates(j),
+          &state,
+          false
+        );
+      }
+    }
   #ifdef SharedTBB
-	  }}
-	);
+    }}
+  );
   #else
   }
-	#endif
+  #endif
 }
 
 dem::Vertex dem::mappings::reduceVirtuals(
@@ -1078,6 +856,174 @@ void dem::mappings::Collision::all_to_all(
   ///
 }
 
+dem::mappings::Collision::Collision() {
+  logTraceIn( "Collision()" );
+
+  logTraceOut( "Collision()" );
+}
+
+dem::mappings::Collision::~Collision() {
+  logTraceIn( "~Collision()" );
+  logTraceOut( "~Collision()" );
+}
+
+#if defined(SharedMemoryParallelisation)
+dem::mappings::Collision::Collision(const Collision&  masterThread): _state(masterThread._state) {
+  _state.clearAccumulatedData();
+}
+
+void dem::mappings::Collision::mergeWithWorkerThread(const Collision& workerThread) {
+  _state.merge( workerThread._state );
+}
+#endif
+
+void dem::mappings::Collision::beginIteration(
+		dem::State&  solverState
+) {
+	logTraceInWith1Argument( "beginIteration(State)", solverState );
+
+	_state = solverState;
+	_backgroundTaskState = solverState;
+	//_state.clearAccumulatedData();//redundant
+	//_backgroundTaskState.clearAccumulatedData();
+
+	assertion( _collisionsOfNextTraversal.empty() );
+
+	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
+	delta::collision::cleanPenaltyStatistics();
+
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+  delta::collision::cleanHybridStatistics();
+
+	logTraceOutWith1Argument( "beginIteration(State)", solverState);
+}
+
+void dem::mappings::Collision::endIteration(
+		dem::State&  solverState
+) {
+	logTraceInWith1Argument( "endIteration(State)", solverState );
+
+	_state.merge(_backgroundTaskState);
+  solverState.merge(_state);
+
+	_activeCollisions.clear();
+
+	assertion( _activeCollisions.empty() );
+	assertion( _state.getNumberOfContactPoints()==0 || !_collisionsOfNextTraversal.empty() );
+
+	_activeCollisions.insert(_collisionsOfNextTraversal.begin(), _collisionsOfNextTraversal.end());
+
+	assertion( _state.getNumberOfContactPoints()==0 || !_activeCollisions.empty() );
+	_collisionsOfNextTraversal.clear();
+
+	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
+	{
+		std::vector<int> penaltyStatistics = delta::collision::getPenaltyStatistics();
+		for (int i=0; i<static_cast<int>(penaltyStatistics.size()); i++)
+		{
+			logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
+		}
+	}
+
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+  {
+    logInfo( "endIteration(State)", std::endl
+                                 << "Penalty Fails: " << delta::collision::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::collision::getPenaltyFails()/(double)delta::collision::getBatchSize() << std::endl
+                                 << "Batch Size: " << delta::collision::getBatchSize() << std::endl
+                                 << "Batch Fails: " << delta::collision::getBatchFails() << " BatchFail avg: " << (double)delta::collision::getBatchFails()/(double)delta::collision::getBatchSize() << std::endl
+                                 << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
+  }
+
+	logTraceOutWith1Argument( "endIteration(State)", solverState);
+}
+
+void dem::mappings::Collision::touchVertexFirstTime(
+		dem::Vertex&                                 fineGridVertex,
+		const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
+		const tarch::la::Vector<DIMENSIONS,double>&  fineGridH,
+		dem::Vertex * const                          coarseGridVertices,
+		const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
+		dem::Cell&                                   coarseGridCell,
+		const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+) {
+	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
+	double timeStepSize = _state.getTimeStepSize();
+
+	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+	{
+		records::Particle& currentParticle = fineGridVertex.getParticle(i);
+
+		//if value doesn't exist in map - no collision - skip particle
+		if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
+
+		//double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
+		double force[3]  = {0.0,0.0,0.0};
+		double torque[3] = {0.0,0.0,0.0};
+
+		//collisions with partner particles
+		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin();
+		                                      p != _activeCollisions[currentParticle.getGlobalParticleId()].end();
+		                                      p++)
+		{
+			double rforce[3]  = {0.0,0.0,0.0};
+			double rtorque[3] = {0.0,0.0,0.0};
+
+			delta::forces::getContactsForces(p->_contactPoints,
+                                       &(currentParticle._persistentRecords._centreOfMass(0)),
+                                       &(currentParticle._persistentRecords._referentialCentreOfMass(0)),
+                                       &(currentParticle._persistentRecords._angular(0)),
+                                       &(currentParticle._persistentRecords._referentialAngular(0)),
+                                       &(currentParticle._persistentRecords._velocity(0)),
+                                       currentParticle.getMass(),
+                                       &(currentParticle._persistentRecords._inverse(0)),
+                                       &(currentParticle._persistentRecords._orientation(0)),
+                                       currentParticle.getMaterial(),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._angular(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._referentialAngular(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._velocity(0)),
+                                       p->_copyOfPartnerParticle.getMass(),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._inverse(0)),
+                                       &(p->_copyOfPartnerParticle._persistentRecords._orientation(0)),
+                                       p->_copyOfPartnerParticle.getMaterial(),
+                                       rforce, rtorque,
+                                       (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
+
+			force[0] += rforce[0];
+			force[1] += rforce[1];
+			force[2] += rforce[2];
+
+			torque[0] += rtorque[0];
+			torque[1] += rtorque[1];
+			torque[2] += rtorque[2];
+		}
+
+		if(!currentParticle.getIsObstacle())
+		{
+			currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle.getMass());
+			currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle.getMass());
+			currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle.getMass());
+
+			delta::dynamics::updateAngular(&currentParticle._persistentRecords._referentialAngular(0),
+                                      &currentParticle._persistentRecords._orientation(0),
+                                      &currentParticle._persistentRecords._inertia(0),
+                                      &currentParticle._persistentRecords._inverse(0),
+                                      currentParticle.getMass(), //why mass is passed here, remove if not used
+                                      torque, timeStepSize);
+		}
+	}
+
+  fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
+
+	dfor2(k)
+	fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));
+	enddforx
+
+	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
+}
+
 void dem::mappings::Collision::enterCell(
 		dem::Cell&                                fineGridCell,
 		dem::Vertex * const                       fineGridVertices,
@@ -1108,28 +1054,81 @@ void dem::mappings::Collision::leaveCell(
   }
 }
 
-dem::mappings::Collision::Collision() {
-	logTraceIn( "Collision()" );
+void dem::mappings::Collision::touchVertexLastTime(
+    dem::Vertex&         fineGridVertex,
+    const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
+    const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+    dem::Vertex * const  coarseGridVertices,
+    const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+    dem::Cell&           coarseGridCell,
+    const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
+) {
+  if (fineGridVertex.getNumberOfParticles()==0) return;
 
-  _enableOverlapCheck = false;
+  #ifdef SharedTBB
+  const int grainSize = (RunParticleLoopInParallel||fineGridVertex.getNumberOfParticles()==0) ? 1 : fineGridVertex.getNumberOfParticles();
+  tbb::parallel_for(
+   tbb::blocked_range<int>(0,fineGridVertex.getNumberOfParticles(),grainSize),
+   [&](const tbb::blocked_range<int>& r) {
+    for (int i=r.begin(); i!=r.end(); i++) {
+  #else
+  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++) {
+  #endif
+    for(int j=i+1; j<fineGridVertex.getNumberOfParticles(); j++)
+    {
+    if((fineGridVertex.getParticle(i).getGlobalParticleId() == fineGridVertex.getParticle(j).getGlobalParticleId()) ||
+       (fineGridVertex.getParticle(i).getIsObstacle() && fineGridVertex.getParticle(j).getIsObstacle()))
+      continue;
 
-	logTraceOut( "Collision()" );
+    if (RunParticleComparisionsInBackground) {
+      auto p0 = fineGridVertex.getParticle(i);
+      auto p1 = fineGridVertex.getNumberOfTriangles(i);
+      auto p2 = fineGridVertex.getXCoordinates(i);
+      auto p3 = fineGridVertex.getYCoordinates(i);
+      auto p4 = fineGridVertex.getZCoordinates(i);
+      auto p5 = fineGridVertex.getParticle(j);
+      auto p6 = fineGridVertex.getNumberOfTriangles(j);
+      auto p7 = fineGridVertex.getXCoordinates(j);
+      auto p8 = fineGridVertex.getYCoordinates(j);
+      auto p9 = fineGridVertex.getZCoordinates(j);
+
+      peano::datatraversal::TaskSet backgroundTask(
+       [=] ()->bool {
+        dem::mappings::Collision::collisionDetection(
+          p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,
+          &_backgroundTaskState,
+          true
+        );
+        return false;
+       },
+       peano::datatraversal::TaskSet::TaskType::Background
+      );
+
+      logDebug( "collideParticlesOfTwoDifferentVertices(...)", "spawn background task" );
+    }
+    else {
+      collisionDetection(
+        fineGridVertex.getParticle(i),
+        fineGridVertex.getNumberOfTriangles(i),
+        fineGridVertex.getXCoordinates(i),
+        fineGridVertex.getYCoordinates(i),
+        fineGridVertex.getZCoordinates(i),
+        fineGridVertex.getParticle(j),
+        fineGridVertex.getNumberOfTriangles(j),
+        fineGridVertex.getXCoordinates(j),
+        fineGridVertex.getYCoordinates(j),
+        fineGridVertex.getZCoordinates(j),
+        &_state,
+        false
+      );
+    }
+   }
+  #ifdef SharedTBB
+  }});
+  #else
+  }
+  #endif
 }
-
-dem::mappings::Collision::~Collision() {
-	logTraceIn( "~Collision()" );
-	logTraceOut( "~Collision()" );
-}
-
-#if defined(SharedMemoryParallelisation)
-dem::mappings::Collision::Collision(const Collision&  masterThread): _state(masterThread._state) {
-	_state.clearAccumulatedData();
-}
-
-void dem::mappings::Collision::mergeWithWorkerThread(const Collision& workerThread) {
-	_state.merge( workerThread._state );
-}
-#endif
 
 void dem::mappings::Collision::createHangingVertex(
 		dem::Vertex&     fineGridVertex,

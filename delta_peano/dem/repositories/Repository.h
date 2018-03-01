@@ -78,8 +78,10 @@ class dem::repositories::Repository {
     virtual void switchToAdopt() = 0;    
     virtual void switchToPlotData() = 0;    
     virtual void switchToTimeStepOnDynamicGrid() = 0;    
+    virtual void switchToTimeStepOnDynamicGridMerged() = 0;    
     virtual void switchToTimeStepAndPlotOnDynamicGrid() = 0;    
     virtual void switchToTimeStepOnReluctantDynamicGrid() = 0;    
+    virtual void switchToTimeStepOnReluctantDynamicGridMerged() = 0;    
     virtual void switchToTimeStepAndPlotOnReluctantDynamicGrid() = 0;    
 
     virtual bool isActiveAdapterCreateGrid() const = 0;
@@ -91,8 +93,10 @@ class dem::repositories::Repository {
     virtual bool isActiveAdapterAdopt() const = 0;
     virtual bool isActiveAdapterPlotData() const = 0;
     virtual bool isActiveAdapterTimeStepOnDynamicGrid() const = 0;
+    virtual bool isActiveAdapterTimeStepOnDynamicGridMerged() const = 0;
     virtual bool isActiveAdapterTimeStepAndPlotOnDynamicGrid() const = 0;
     virtual bool isActiveAdapterTimeStepOnReluctantDynamicGrid() const = 0;
+    virtual bool isActiveAdapterTimeStepOnReluctantDynamicGridMerged() const = 0;
     virtual bool isActiveAdapterTimeStepAndPlotOnReluctantDynamicGrid() const = 0;
 
 

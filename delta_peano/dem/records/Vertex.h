@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   06/02/2018 18:49
+    * @date   28/02/2018 01:49
     */
    class dem::records::Vertex { 
       
@@ -229,7 +229,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -258,7 +258,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -307,7 +307,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -336,7 +336,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -638,7 +638,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -667,7 +667,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -742,7 +742,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -771,7 +771,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -974,7 +974,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   06/02/2018 18:49
+    * @date   28/02/2018 01:49
     */
    class dem::records::VertexPacked { 
       
@@ -1183,7 +1183,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1212,7 +1212,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1261,7 +1261,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1290,7 +1290,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1622,7 +1622,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1651,7 +1651,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1726,7 +1726,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1755,7 +1755,7 @@ namespace dem {
              * with -DUseManualAlignment you may add 
              * \code
              #pragma vector aligned
-             #pragma omp simd
+             #pragma simd
              \endcode to this for loop to enforce your compiler to use SSE/AVX.
              * 
              * The alignment is tied to the unpacked records, i.e. for packed class
@@ -1963,7 +1963,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::Vertex { 
          
@@ -2153,7 +2153,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2182,7 +2182,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2484,7 +2484,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2513,7 +2513,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2716,7 +2716,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::VertexPacked { 
          
@@ -2923,7 +2923,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -2952,7 +2952,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3281,7 +3281,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3310,7 +3310,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3516,7 +3516,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::Vertex { 
          
@@ -3710,7 +3710,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3739,7 +3739,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3788,7 +3788,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -3817,7 +3817,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -4079,7 +4079,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -4108,7 +4108,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -4183,7 +4183,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -4212,7 +4212,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -4375,7 +4375,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::VertexPacked { 
          
@@ -4582,7 +4582,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -4611,7 +4611,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -4660,7 +4660,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -4689,7 +4689,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -4975,7 +4975,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -5004,7 +5004,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -5079,7 +5079,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -5108,7 +5108,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -5271,7 +5271,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::Vertex { 
          
@@ -5461,7 +5461,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -5490,7 +5490,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -5792,7 +5792,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -5821,7 +5821,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -6024,7 +6024,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::VertexPacked { 
          
@@ -6231,7 +6231,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -6260,7 +6260,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -6592,7 +6592,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -6621,7 +6621,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -6830,7 +6830,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::Vertex { 
          
@@ -7395,7 +7395,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::VertexPacked { 
          
@@ -8011,7 +8011,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::Vertex { 
          
@@ -8199,7 +8199,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -8228,7 +8228,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -8490,7 +8490,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -8519,7 +8519,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -8682,7 +8682,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::VertexPacked { 
          
@@ -8887,7 +8887,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -8916,7 +8916,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -9202,7 +9202,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -9231,7 +9231,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -9394,7 +9394,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::Vertex { 
          
@@ -9582,7 +9582,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -9611,7 +9611,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -9873,7 +9873,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -9902,7 +9902,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -10065,7 +10065,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::VertexPacked { 
          
@@ -10270,7 +10270,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -10299,7 +10299,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -10582,7 +10582,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -10611,7 +10611,7 @@ namespace dem {
                 * with -DUseManualAlignment you may add 
                 * \code
                 #pragma vector aligned
-                #pragma omp simd
+                #pragma simd
                 \endcode to this for loop to enforce your compiler to use SSE/AVX.
                 * 
                 * The alignment is tied to the unpacked records, i.e. for packed class
@@ -10771,7 +10771,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::Vertex { 
          
@@ -11254,7 +11254,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   06/02/2018 18:49
+       * @date   28/02/2018 01:49
        */
       class dem::records::VertexPacked { 
          

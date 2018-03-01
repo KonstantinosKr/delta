@@ -23,6 +23,7 @@
 #include "dem/mappings/MoveParticles.h"
 #include "dem/mappings/CreateGrid.h"
 #include "dem/mappings/Plot.h"
+#include "dem/mappings/ReluctantlyAdoptGrid.h"
 #include <stdlib.h>
 #include <string>
 
@@ -89,12 +90,12 @@ std::string initSharedMemory(
           false, //  bool pipelineAscendProcessing           = false,
           0,    //  int  smallestProblemSizeForAscendDescend  = tarch::la::aPowI(DIMENSIONS,3*3*3*3/2),
           0,    //   int  grainSizeForAscendDescend          = 3,
-          5,    //  int  smallestProblemSizeForEnterLeaveCell = tarch::la::aPowI(DIMENSIONS,9/2),
-          5,    //  int  grainSizeForEnterLeaveCell         = 2,
-          5,    //  int  smallestProblemSizeForTouchFirstLast = tarch::la::aPowI(DIMENSIONS,3*3*3*3+1),
-          5,    //  int  grainSizeForTouchFirstLast         = 64,
-          5,    //  int  smallestProblemSizeForSplitLoadStore = tarch::la::aPowI(DIMENSIONS,3*3*3),
-          5     //  int  grainSizeForSplitLoadStore         = 8
+          10,    //  int  smallestProblemSizeForEnterLeaveCell = tarch::la::aPowI(DIMENSIONS,9/2),
+          10,    //  int  grainSizeForEnterLeaveCell         = 2,
+          10,    //  int  smallestProblemSizeForTouchFirstLast = tarch::la::aPowI(DIMENSIONS,3*3*3*3+1),
+          10,    //  int  grainSizeForTouchFirstLast         = 64,
+          10,    //  int  smallestProblemSizeForSplitLoadStore = tarch::la::aPowI(DIMENSIONS,3*3*3),
+          10     //  int  grainSizeForSplitLoadStore         = 8
         ));
     }
     return sharedMemoryPropertiesFileName;
@@ -170,6 +171,12 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   peano::utils::UserInterface::writeHeader();
 
   delta::core::Delta();
+
+  dem::mappings::AdoptGrid::_refinementCoefficient = 1.8;
+  dem::mappings::AdoptGrid::_coarsenCoefficient = 0.5;
+
+  dem::mappings::ReluctantlyAdoptGrid::_coarsenCoefficientReluctant = 1.8;
+  dem::mappings::ReluctantlyAdoptGrid::_refinementCoefficientReluctant = 0.5;
 
   logInfo( "runAsMaster(...)", "create grid" );
 
@@ -267,11 +274,11 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     } else {
       if (gridType==mappings::CreateGrid::AdaptiveGrid)
       {
-        repository.switchToTimeStepOnDynamicGrid();
+        repository.switchToTimeStepOnDynamicGridMerged();
       }
       else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
       {
-        repository.switchToTimeStepOnReluctantDynamicGrid();
+        repository.switchToTimeStepOnReluctantDynamicGridMerged();
       } else {
         repository.switchToTimeStep();
       }

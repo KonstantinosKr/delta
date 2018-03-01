@@ -221,7 +221,7 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      * i.e. invokes coarse(), if no refinement veto is set. See
      * restrictParticleResponsibilityData() for a discussion on this veto.
      */
-    void eraseIfParticleDistributionPermits(bool realiseAggressiveCoarsening);
+    void eraseIfParticleDistributionPermits(bool realiseAggressiveCoarsening, int particles);
 
 
     /**

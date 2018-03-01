@@ -79,6 +79,10 @@ class dem::mappings::AdoptGrid {
     static tarch::logging::Log  _log;
 
     static tarch::multicore::BooleanSemaphore        _AdoptSemaphore;
+
+  public:
+    static double _refinementCoefficient;
+    static double _coarsenCoefficient;
   public:
   /**
    * These flags are used to inform Peano about your operation. It tells the

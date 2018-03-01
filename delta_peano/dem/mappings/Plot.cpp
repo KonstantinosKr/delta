@@ -37,6 +37,48 @@ int                  dem::mappings::Plot::_snapshotCounter( 0 );
 int                  dem::mappings::Plot::_mini;
 int                  dem::mappings::Plot::_maxi;
 
+dem::mappings::Plot::Plot() {
+  logTraceIn( "Plot()" );
+  // @todo Insert your code here
+  logTraceOut( "Plot()" );
+}
+
+dem::mappings::Plot::~Plot() {
+  logTraceIn( "~Plot()" );
+  // @todo Insert your code here
+  logTraceOut( "~Plot()" );
+}
+
+#if defined(SharedMemoryParallelisation)
+dem::mappings::Plot::Plot(const Plot&  masterThread):
+  _writer(masterThread._writer),
+
+  _vertexWriter(masterThread._vertexWriter),
+  _cellWriter(masterThread._cellWriter),
+
+  _type(masterThread._type),
+  _level(masterThread._level),
+  _faceVertexAssociation(masterThread._faceVertexAssociation),
+
+  _velocitiesAndNormals(masterThread._velocitiesAndNormals),
+  _frictionNormals(masterThread._frictionNormals),
+  _particleVelocity(masterThread._particleVelocity),
+  _particleAngular(masterThread._particleAngular),
+  _particleDiameter(masterThread._particleDiameter),
+  _particleEpsilon(masterThread._particleEpsilon),
+  _particleInfluence(masterThread._particleInfluence),
+  _vertexColoring(masterThread._vertexColoring),
+
+  _vertexCounter(masterThread._vertexCounter),
+  _particleCounter(masterThread._particleCounter),
+  _collisionPointCounter(masterThread._collisionPointCounter),
+  _iterationNumber(masterThread._collisionPointCounter)
+{}
+
+
+void dem::mappings::Plot::mergeWithWorkerThread(const Plot& workerThread) {}
+#endif
+
 void dem::mappings::Plot::beginIteration(dem::State&  solverState)
 {
   logTraceInWith1Argument( "beginIteration(State)", solverState );
@@ -57,13 +99,13 @@ void dem::mappings::Plot::beginIteration(dem::State&  solverState)
     _faceVertexAssociation = _writer->createCellDataWriter( "face-vertex-association", 1 );
 
     _velocitiesAndNormals  = _writer->createVertexDataWriter( "velocities-and-contact-normals", DIMENSIONS );
-    _frictionNormals 		    = _writer->createVertexDataWriter( "friction-normals", DIMENSIONS );
-    _particleVelocity		    = _writer->createVertexDataWriter( "particle-velocity", 1);
-    _particleAngular		    = _writer->createVertexDataWriter( "particle-angular", DIMENSIONS);
-    _particleDiameter  	    = _writer->createVertexDataWriter( "particle-radius", 1);
-    _particleEpsilon  	    = _writer->createVertexDataWriter( "particle-epsilon", 1);
+    _frictionNormals        = _writer->createVertexDataWriter( "friction-normals", DIMENSIONS );
+    _particleVelocity       = _writer->createVertexDataWriter( "particle-velocity", 1);
+    _particleAngular        = _writer->createVertexDataWriter( "particle-angular", DIMENSIONS);
+    _particleDiameter       = _writer->createVertexDataWriter( "particle-radius", 1);
+    _particleEpsilon        = _writer->createVertexDataWriter( "particle-epsilon", 1);
     _particleInfluence      = _writer->createVertexDataWriter( "particle-influence", 1);
-    _vertexColoring 		    = _writer->createVertexDataWriter( "particle-coloring", 1);
+    _vertexColoring         = _writer->createVertexDataWriter( "particle-coloring", 1);
 
     _vertexCounter         = 0;
     _particleCounter       = 0;
@@ -317,6 +359,48 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
   }
 
   logTraceOutWith1Argument( "endIteration(State)", solverState);
+}
+
+void dem::mappings::Plot::touchVertexFirstTime(
+      dem::Vertex&               fineGridVertex,
+      const tarch::la::Vector<DIMENSIONS,double>&         fineGridX,
+      const tarch::la::Vector<DIMENSIONS,double>&         fineGridH,
+      dem::Vertex * const        coarseGridVertices,
+      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
+      dem::Cell&                 coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&            fineGridPositionOfVertex
+) {
+  logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+  // @todo Insert your code here
+  logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
+}
+
+void dem::mappings::Plot::enterCell(
+      dem::Cell&                 fineGridCell,
+      dem::Vertex * const        fineGridVertices,
+      const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
+      dem::Vertex * const        coarseGridVertices,
+      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
+      dem::Cell&                 coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&            fineGridPositionOfCell
+) {
+  logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+  // @todo Insert your code here
+  logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
+}
+
+void dem::mappings::Plot::leaveCell(
+      dem::Cell&           fineGridCell,
+      dem::Vertex * const  fineGridVertices,
+      const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
+      dem::Vertex * const  coarseGridVertices,
+      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+      dem::Cell&           coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&      fineGridPositionOfCell
+) {
+  logTraceInWith4Arguments( "leaveCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
+  // @todo Insert your code here
+  logTraceOutWith1Argument( "leaveCell(...)", fineGridCell );
 }
 
 void dem::mappings::Plot::touchVertexLastTime(
@@ -664,48 +748,6 @@ void dem::mappings::Plot::touchVertexLastTime(
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
 
-#if defined(SharedMemoryParallelisation)
-dem::mappings::Plot::Plot(const Plot&  masterThread):
-  _writer(masterThread._writer),
-
-  _vertexWriter(masterThread._vertexWriter),
-  _cellWriter(masterThread._cellWriter),
-
-  _type(masterThread._type),
-  _level(masterThread._level),
-  _faceVertexAssociation(masterThread._faceVertexAssociation),
-
-  _velocitiesAndNormals(masterThread._velocitiesAndNormals),
-  _frictionNormals(masterThread._frictionNormals),
-  _particleVelocity(masterThread._particleVelocity),
-  _particleAngular(masterThread._particleAngular),
-  _particleDiameter(masterThread._particleDiameter),
-  _particleEpsilon(masterThread._particleEpsilon),
-  _particleInfluence(masterThread._particleInfluence),
-  _vertexColoring(masterThread._vertexColoring),
-
-  _vertexCounter(masterThread._vertexCounter),
-  _particleCounter(masterThread._particleCounter),
-  _collisionPointCounter(masterThread._collisionPointCounter),
-  _iterationNumber(masterThread._collisionPointCounter)
-{}
-
-
-void dem::mappings::Plot::mergeWithWorkerThread(const Plot& workerThread) {}
-#endif
-
-dem::mappings::Plot::Plot() {
-  logTraceIn( "Plot()" );
-  // @todo Insert your code here
-  logTraceOut( "Plot()" );
-}
-
-dem::mappings::Plot::~Plot() {
-  logTraceIn( "~Plot()" );
-  // @todo Insert your code here
-  logTraceOut( "~Plot()" );
-}
-
 void dem::mappings::Plot::createHangingVertex(
       dem::Vertex&     fineGridVertex,
       const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
@@ -977,48 +1019,6 @@ void dem::mappings::Plot::mergeWithWorker(
   logTraceOutWith1Argument( "mergeWithWorker(...)", localVertex.toString() );
 }
 #endif
-
-void dem::mappings::Plot::touchVertexFirstTime(
-      dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&         fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&         fineGridH,
-      dem::Vertex * const        coarseGridVertices,
-      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
-      dem::Cell&                 coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&            fineGridPositionOfVertex
-) {
-  logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-  // @todo Insert your code here
-  logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
-}
-
-void dem::mappings::Plot::enterCell(
-      dem::Cell&                 fineGridCell,
-      dem::Vertex * const        fineGridVertices,
-      const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
-      dem::Vertex * const        coarseGridVertices,
-      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
-      dem::Cell&                 coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&            fineGridPositionOfCell
-) {
-  logTraceInWith4Arguments( "enterCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-  // @todo Insert your code here
-  logTraceOutWith1Argument( "enterCell(...)", fineGridCell );
-}
-
-void dem::mappings::Plot::leaveCell(
-      dem::Cell&           fineGridCell,
-      dem::Vertex * const  fineGridVertices,
-      const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
-      dem::Vertex * const  coarseGridVertices,
-      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-      dem::Cell&           coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&      fineGridPositionOfCell
-) {
-  logTraceInWith4Arguments( "leaveCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-  // @todo Insert your code here
-  logTraceOutWith1Argument( "leaveCell(...)", fineGridCell );
-}
 
 void dem::mappings::Plot::descend(
   dem::Cell * const          fineGridCells,

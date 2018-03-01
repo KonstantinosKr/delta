@@ -14,7 +14,7 @@
 #define FRICTION 0.5
 
 //sphere parameters for piling simulation
-#define SSPRING 1E5
+#define SSPRING 1E4
 #define SDAMPER 0.5
 #define SFRICTIONGOLD 1
 #define SFRICTIONWOOD 1

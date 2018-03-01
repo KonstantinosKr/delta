@@ -22,8 +22,10 @@
  #include "dem/adapters/Adopt.h" 
  #include "dem/adapters/PlotData.h" 
  #include "dem/adapters/TimeStepOnDynamicGrid.h" 
+ #include "dem/adapters/TimeStepOnDynamicGridMerged.h" 
  #include "dem/adapters/TimeStepAndPlotOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepOnReluctantDynamicGrid.h" 
+ #include "dem/adapters/TimeStepOnReluctantDynamicGridMerged.h" 
  #include "dem/adapters/TimeStepAndPlotOnReluctantDynamicGrid.h" 
 
 

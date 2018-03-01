@@ -19,6 +19,13 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexFirstTimeSpec
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::RunConcurrentlyOnFineGrid,true);
 }
 
+peano::MappingSpecification   dem::mappings::AdoptGrid::enterCellSpecification(int level) const {
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
+}
+peano::MappingSpecification   dem::mappings::AdoptGrid::leaveCellSpecification(int level) const {
+  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
+}
+
 /**
  * Restrict data to coarser grid
  */
@@ -26,12 +33,6 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::touchVertexLastTimeSpeci
   return peano::MappingSpecification(peano::MappingSpecification::WholeTree,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-peano::MappingSpecification   dem::mappings::AdoptGrid::enterCellSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
-}
-peano::MappingSpecification   dem::mappings::AdoptGrid::leaveCellSpecification(int level) const {
-  return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidFineGridRaces,true);
-}
 peano::MappingSpecification   dem::mappings::AdoptGrid::ascendSpecification(int level) const {
   return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
@@ -41,6 +42,8 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::descendSpecification(int
 
 tarch::logging::Log dem::mappings::AdoptGrid::_log( "dem::mappings::AdoptGrid" );
 tarch::multicore::BooleanSemaphore  dem::mappings::AdoptGrid::_AdoptSemaphore;
+double dem::mappings::AdoptGrid::_refinementCoefficient;
+double dem::mappings::AdoptGrid::_coarsenCoefficient;
 
 void dem::mappings::dropParticles(
   dem::Vertex&                                 fineGridVertex,
@@ -79,38 +82,24 @@ void dem::mappings::dropParticles(
   }
 }
 
-void dem::mappings::AdoptGrid::touchVertexFirstTime(
-  dem::Vertex&                                 fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&  fineGridH,
-  dem::Vertex * const                          coarseGridVertices,
-  const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
-  dem::Cell&                                   coarseGridCell,
-  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+void dem::mappings::liftAllParticles(
+  const dem::Vertex&                            fineGridVertex,
+  dem::Vertex * const                           coarseGridVertices,
+  const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator
 ) {
-  logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-
-  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  int i=0;
+  while (i<fineGridVertex.getNumberOfParticles())
   {
-    if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0 && fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+    tarch::la::Vector<DIMENSIONS,int> destinationVertex;
+    for (int d=0; d<DIMENSIONS; d++)
     {
-      fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() + 2);
-      //logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
-      fineGridVertex.refine();
+      destinationVertex(d) = fineGridVertex.getParticle(i).getCentre(d) < coarseGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
     }
-  }
-  //if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0)
-  //printf("%f\n", fineGridVertex.getNumberOfParticlesInUnrefinedVertex());
+    coarseGridVertices[ coarseGridVerticesEnumerator(destinationVertex) ].appendParticle( fineGridVertex.getParticle(i) );
+    //printf("lifted particle:%i\n", fineGridVertex.getParticle(i).getGlobalParticleId());
 
-  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0)
-  {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() - 0.1);
-  } else if(fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined && fineGridVertex.getNumberOfParticles() == 0.0)
-  {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles());
+    i++;
   }
-
-  logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
 void dem::mappings::propagageCoarseningFlagToCoarseGrid(
@@ -132,6 +121,133 @@ void dem::mappings::propagageCoarseningFlagToCoarseGrid(
   enddforx
 }
 
+dem::mappings::AdoptGrid::AdoptGrid() {
+  logTraceIn( "AdoptGrid()" );
+  // @todo Insert your code here
+  logTraceOut( "AdoptGrid()" );
+}
+
+dem::mappings::AdoptGrid::~AdoptGrid() {
+  logTraceIn( "~AdoptGrid()" );
+  // @todo Insert your code here
+  logTraceOut( "~AdoptGrid()" );
+}
+
+#if defined(SharedMemoryParallelisation)
+dem::mappings::AdoptGrid::AdoptGrid(const AdoptGrid&  masterThread) {
+  logTraceIn( "AdoptGrid(AdoptGrid)" );
+  // @todo Insert your code here
+  logTraceOut( "AdoptGrid(AdoptGrid)" );
+}
+
+void dem::mappings::AdoptGrid::mergeWithWorkerThread(const AdoptGrid& workerThread) {
+  logTraceIn( "mergeWithWorkerThread(AdoptGrid)" );
+  // @todo Insert your code here
+  logTraceOut( "mergeWithWorkerThread(AdoptGrid)" );
+}
+#endif
+
+void dem::mappings::AdoptGrid::beginIteration(
+  dem::State&  solverState
+) {
+}
+
+void dem::mappings::AdoptGrid::endIteration(
+  dem::State&  solverState
+) {
+}
+
+void dem::mappings::AdoptGrid::touchVertexFirstTime(
+  dem::Vertex&                                 fineGridVertex,
+  const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
+  const tarch::la::Vector<DIMENSIONS,double>&  fineGridH,
+  dem::Vertex * const                          coarseGridVertices,
+  const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
+  dem::Cell&                                   coarseGridCell,
+  const tarch::la::Vector<DIMENSIONS,int>&     fineGridPositionOfVertex
+) {
+  logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
+  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  {
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() * dem::mappings::AdoptGrid::_refinementCoefficient);
+    if(fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+    {
+      if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0)
+      {
+        //logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
+        fineGridVertex.refine();
+      }
+    }
+  }
+
+  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0)
+  {
+    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * dem::mappings::AdoptGrid::_coarsenCoefficient);
+  }
+
+
+  /*
+  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  {
+    if(fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+    {
+      if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0)
+      {
+        fineGridVertex.refine();
+        fineGridVertex.setNumberOfParticlesInUnrefinedVertex(1);
+        //logInfo( "touchVertexFirstTime(...)", "refine " << fineGridVertex.toString() );
+      }
+    }
+  }*/
+
+
+/*
+  if(fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+  {
+    if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 1E-6)
+    {
+      printf("before sub %f\n", fineGridVertex.getNumberOfParticlesInUnrefinedVertex());
+
+      fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * _coarsenCoefficient);
+
+      printf("after sub %f\n", fineGridVertex.getNumberOfParticlesInUnrefinedVertex());
+    } else if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 1E-6 && fineGridVertex.getNumberOfParticles() > 0)
+    {
+      printf("before more %f\n", fineGridVertex.getNumberOfParticlesInUnrefinedVertex());
+      if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() < 2.0)
+      {
+        fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * _refinementCoefficient);
+      }
+      printf("more %f\n", fineGridVertex.getNumberOfParticlesInUnrefinedVertex());
+    }
+  }
+*/
+  logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
+}
+
+void dem::mappings::AdoptGrid::enterCell(
+      dem::Cell&                 fineGridCell,
+      dem::Vertex * const        fineGridVertices,
+      const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
+      dem::Vertex * const        coarseGridVertices,
+      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
+      dem::Cell&                 coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
+) {
+}
+
+void dem::mappings::AdoptGrid::leaveCell(
+      dem::Cell&           fineGridCell,
+      dem::Vertex * const  fineGridVertices,
+      const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
+      dem::Vertex * const  coarseGridVertices,
+      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
+      dem::Cell&           coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
+) {
+}
+
 void dem::mappings::AdoptGrid::touchVertexLastTime(
   dem::Vertex&                                 fineGridVertex,
   const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
@@ -147,7 +263,8 @@ void dem::mappings::AdoptGrid::touchVertexLastTime(
 
   propagageCoarseningFlagToCoarseGrid(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator,fineGridPositionOfVertex);
 
-  fineGridVertex.eraseIfParticleDistributionPermits(false);
+  //printf("LASTTOUCH: %f\n", fineGridVertex.getNumberOfParticlesInUnrefinedVertex());
+  fineGridVertex.eraseIfParticleDistributionPermits(false, fineGridVertex.getNumberOfParticles());
 
   logTraceOutWith1Argument( "touchVertexLastTime(...)", fineGridVertex );
 }
@@ -166,26 +283,6 @@ void dem::mappings::AdoptGrid::createHangingVertex(
   fineGridVertex.init();
 
   logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
-}
-
-void dem::mappings::liftAllParticles(
-  const dem::Vertex&                            fineGridVertex,
-  dem::Vertex * const                           coarseGridVertices,
-  const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator
-) {
-  int i=0;
-  while (i<fineGridVertex.getNumberOfParticles())
-  {
-    tarch::la::Vector<DIMENSIONS,int> destinationVertex;
-    for (int d=0; d<DIMENSIONS; d++)
-    {
-      destinationVertex(d) = fineGridVertex.getParticle(i).getCentre(d) < coarseGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
-    }
-    coarseGridVertices[ coarseGridVerticesEnumerator(destinationVertex) ].appendParticle( fineGridVertex.getParticle(i) );
-    //printf("lifted particle:%i\n", fineGridVertex.getParticle(i).getGlobalParticleId());
-
-    i++;
-  }
 }
 
 void dem::mappings::AdoptGrid::destroyHangingVertex(
@@ -257,32 +354,6 @@ void dem::mappings::AdoptGrid::destroyVertex(
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
-
-dem::mappings::AdoptGrid::AdoptGrid() {
-  logTraceIn( "AdoptGrid()" );
-  // @todo Insert your code here
-  logTraceOut( "AdoptGrid()" );
-}
-
-dem::mappings::AdoptGrid::~AdoptGrid() {
-  logTraceIn( "~AdoptGrid()" );
-  // @todo Insert your code here
-  logTraceOut( "~AdoptGrid()" );
-}
-
-#if defined(SharedMemoryParallelisation)
-dem::mappings::AdoptGrid::AdoptGrid(const AdoptGrid&  masterThread) {
-  logTraceIn( "AdoptGrid(AdoptGrid)" );
-  // @todo Insert your code here
-  logTraceOut( "AdoptGrid(AdoptGrid)" );
-}
-
-void dem::mappings::AdoptGrid::mergeWithWorkerThread(const AdoptGrid& workerThread) {
-  logTraceIn( "mergeWithWorkerThread(AdoptGrid)" );
-  // @todo Insert your code here
-  logTraceOut( "mergeWithWorkerThread(AdoptGrid)" );
-}
-#endif
 
 void dem::mappings::AdoptGrid::createCell(
       dem::Cell&                 fineGridCell,
@@ -479,38 +550,6 @@ void dem::mappings::AdoptGrid::mergeWithWorker(
   logTraceOutWith1Argument( "mergeWithWorker(...)", localVertex.toString() );
 }
 #endif
-
-void dem::mappings::AdoptGrid::enterCell(
-      dem::Cell&                 fineGridCell,
-      dem::Vertex * const        fineGridVertices,
-      const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
-      dem::Vertex * const        coarseGridVertices,
-      const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
-      dem::Cell&                 coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
-) {
-}
-
-void dem::mappings::AdoptGrid::leaveCell(
-      dem::Cell&           fineGridCell,
-      dem::Vertex * const  fineGridVertices,
-      const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
-      dem::Vertex * const  coarseGridVertices,
-      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-      dem::Cell&           coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
-) {
-}
-
-void dem::mappings::AdoptGrid::beginIteration(
-  dem::State&  solverState
-) {
-}
-
-void dem::mappings::AdoptGrid::endIteration(
-  dem::State&  solverState
-) {
-}
 
 void dem::mappings::AdoptGrid::descend(
   dem::Cell * const          fineGridCells,

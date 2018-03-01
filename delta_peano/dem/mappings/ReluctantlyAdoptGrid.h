@@ -61,6 +61,10 @@ class dem::mappings::ReluctantlyAdoptGrid {
         dem::Vertex&  vertexA);
 
   public:
+    static double _coarsenCoefficientReluctant;
+    static double _refinementCoefficientReluctant;
+
+  public:
   /**
    * These flags are used to inform Peano about your operation. It tells the
    * framework whether the operation is empty, whether it works only on the
