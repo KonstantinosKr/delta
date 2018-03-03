@@ -240,8 +240,7 @@ bool dem::mappings::Collision::triggerParticleTooClose(
   iREAL pvBA = ((vB[0] * pdAB[0]) + (vB[1] * pdAB[1]) + (vB[2] * pdAB[2])) -
                ((vA[0] * pdAB[0]) + (vA[1] * pdAB[1]) + (vA[2] * pdAB[2]));
 
-  //if velocity of B relative to A is greater than zero and predicted relative velocity of B to A is greater than zero
-  //particles separate
+  //if velocity of B relative to A is greater than zero and predicted relative velocity of B to A is greater than zero particles separate
   if (vBA > 0 && pvBA > 0) { //pvBA > 0 is redundant
     //printf("separation: %f\n", vBA);
 
@@ -275,8 +274,11 @@ bool dem::mappings::Collision::triggerParticleTooClose(
     double epsilonA = particleA.getEpsilon();
     double epsilonB = particleB.getEpsilon();
 
-    double remainingDistance = d -rrA -rrB -epsilonA -epsilonB;
-
+    double remainingDistance = (d -rrA -rrB -epsilonA -epsilonB);
+    if(remainingDistance < 0.0)
+    {
+      remainingDistance * -1.1;
+    }
     iREAL localMaxdt = remainingDistance * 0.82;
 
     if(localMaxdt < 0.0) localMaxdt = -1*localMaxdt;

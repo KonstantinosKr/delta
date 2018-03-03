@@ -124,7 +124,7 @@ void dem::State::informStateThatTwoParticlesAreClose(double decrementFactor) {
   if(decrementFactor < _stateData.getTwoParticlesAreClose() &&  _stateData.getTwoParticlesAreClose() != 0.0)
   {
     _stateData.setTwoParticlesAreClose(decrementFactor);
-  } else if(_stateData.getTwoParticlesAreClose() == 0.0)
+  } else if(_stateData.getTwoParticlesAreClose() == 0.0 && decrementFactor > 0.0)
   {
     _stateData.setTwoParticlesAreClose(decrementFactor);
   }
@@ -151,39 +151,50 @@ void dem::State::adaptiveTimeStep()
   _stateData.setStepIncrement(increaseFactor);
 
   const double mindt = 1E-4;
-  _maxdt = _stateData.getMinMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocityApproach());
+  _maxdt = _stateData.getMinMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocityApproach()) * 0.80;
 
   if(_maxdt > _stateData.getMaxMeshWidth()(0))
   {
-    _maxdt = _stateData.getMaxMeshWidth()(0);
+    //_maxdt = _stateData.getMaxMeshWidth()(0);
+    //printf("triggered set maxdt : %f\n", _maxdt);
   }
 
   if(_stateData.getTwoParticlesAreClose() > 0.0) //approach
   {
-    if(_stateData.getTimeStepSize() > mindt) //critical approach
+    if(_stateData.getTimeStepSize() >= mindt) //critical approach
     {
-      //printf("triggered step decrement\n");
-      double decrementFactor = _stateData.getTwoParticlesAreClose();
-      _stateData.setTimeStepSize(decrementFactor);
+      double decrementStep = _stateData.getTwoParticlesAreClose();
+      //increment carefully
+      if(decrementStep > increaseFactor * _stateData.getTimeStepSize())
+      {
+
+      } else {
+        //decrement
+        printf("triggered step decrement : %f\n", decrementStep);
+        _stateData.setTimeStepSize(decrementStep);
+      }
       return;
+    } else if(_stateData.getTimeStepSize() < mindt)
+    {
+      _stateData.setTimeStepSize(mindt);
     }
   } else //separation or no collision
   {
-    //printf("triggered step increment\n");
+    printf("triggered step increment : %f\n", increaseFactor);
     if(_stateData.getTimeStep() > 2)
     {
-      //if(_stateData.getTwoParticlesSeparate() && _stateData.getTwoParticlesAreClose() == 0 && dem::mappings::CreateGrid::_gridType == dem::mappings::CreateGrid::ReluctantAdaptiveGrid)
+      /*if(_stateData.getTwoParticlesSeparate() && _stateData.getTwoParticlesAreClose() == 0 && dem::mappings::CreateGrid::_gridType == dem::mappings::CreateGrid::ReluctantAdaptiveGrid)
       {
-        //_stateData.setTimeStepSize(_maxdt);
-        //return;
-      }
+        _stateData.setTimeStepSize(_maxdt);
+        return;
+      }*/
       _stateData.setTimeStepSize(increaseFactor * _stateData.getTimeStepSize());
     }
   }
 
   if(_stateData.getTimeStepSize() > _maxdt) //upper bound constraint
   {
-    //printf("employed step size higher than maxdt, reduce to maxdt: %f\n", _maxdt);
+    printf("employed step size higher than maxdt, reduce to maxdt: %f\n", _maxdt);
     _stateData.setTimeStepSize(_maxdt);
   }
   //printf("maxdt:%f\n", maxdt);
