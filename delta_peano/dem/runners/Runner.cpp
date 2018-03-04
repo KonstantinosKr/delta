@@ -91,7 +91,7 @@ std::string initSharedMemory(
           0,    //  int  smallestProblemSizeForAscendDescend  = tarch::la::aPowI(DIMENSIONS,3*3*3*3/2),
           0,    //   int  grainSizeForAscendDescend          = 3,
           10,    //  int  smallestProblemSizeForEnterLeaveCell = tarch::la::aPowI(DIMENSIONS,9/2),
-          10,    //  int  grainSizeForEnterLeaveCell         = 2,
+          100,    //  int  grainSizeForEnterLeaveCell         = 2,
           10,    //  int  smallestProblemSizeForTouchFirstLast = tarch::la::aPowI(DIMENSIONS,3*3*3*3+1),
           10,    //  int  grainSizeForTouchFirstLast         = 64,
           10,    //  int  smallestProblemSizeForSplitLoadStore = tarch::la::aPowI(DIMENSIONS,3*3*3),
