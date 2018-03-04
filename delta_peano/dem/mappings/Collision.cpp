@@ -277,7 +277,7 @@ bool dem::mappings::Collision::triggerParticleTooClose(
     double remainingDistance = (d -rrA -rrB -epsilonA -epsilonB);
     if(remainingDistance < 0.0)
     {
-      remainingDistance * -1.1;
+      remainingDistance = remainingDistance * -1.1;
     }
     iREAL localMaxdt = remainingDistance * 0.82;
 
@@ -936,6 +936,12 @@ void dem::mappings::Collision::endIteration(
                                  << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
   }
 
+  int counter= 0;
+  while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
+    printf("%i %i\n", tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs(), counter++);
+    tarch::multicore::jobs::processBackgroundJobs();
+  }
+
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
 
@@ -1051,9 +1057,6 @@ void dem::mappings::Collision::leaveCell(
 ) {
   all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
 
-  while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-    tarch::multicore::jobs::processBackgroundJobs();
-  }
 }
 
 void dem::mappings::Collision::touchVertexLastTime(
