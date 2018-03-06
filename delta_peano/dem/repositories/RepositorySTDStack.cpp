@@ -229,7 +229,7 @@ void dem::repositories::RepositorySTDStack::iterate(int numberOfIterations, bool
   #endif
   
   for (int i=0; i<numberOfIterations; i++) {
-    if (_repositoryState.getNumberOfIterations()==1) {
+    if (numberOfIterations==1) {
       _solverState.currentlyRunsMultipleIterations(State::BatchState::NoBatch);
     }
     else if (i==0) {
