@@ -50,12 +50,7 @@ std::string initSharedMemory(
   #ifdef SharedMemoryParallelisation
     tarch::multicore::Core::getInstance().configure(tbbThreads, tarch::multicore::Core::UseDefaultStackSize);
 
-    std::string sharedMemoryPropertiesFileName = "shared-memory-"
-        + std::to_string( DIMENSIONS ) + "d-"
-        + std::to_string( numberOfTimeSteps ) + "-time-steps-"
-        + std::to_string( tbbThreads ) + "-threads-"
-        + std::to_string( stepSize ) + "-dt-"
-        + std::to_string( realSnapshot );
+    std::string sharedMemoryPropertiesFileName = "shared-memory-"+ std::to_string( tbbThreads ) + "-threads-";
 
     switch (gridType)
     {
@@ -90,12 +85,12 @@ std::string initSharedMemory(
           false, //  bool pipelineAscendProcessing           = false,
           0,    //  int  smallestProblemSizeForAscendDescend  = tarch::la::aPowI(DIMENSIONS,3*3*3*3/2),
           0,    //   int  grainSizeForAscendDescend          = 3,
-          10,    //  int  smallestProblemSizeForEnterLeaveCell = tarch::la::aPowI(DIMENSIONS,9/2),
-          10,    //  int  grainSizeForEnterLeaveCell         = 2,
-          10,    //  int  smallestProblemSizeForTouchFirstLast = tarch::la::aPowI(DIMENSIONS,3*3*3*3+1),
-          10,    //  int  grainSizeForTouchFirstLast         = 64,
-          10,    //  int  smallestProblemSizeForSplitLoadStore = tarch::la::aPowI(DIMENSIONS,3*3*3),
-          10     //  int  grainSizeForSplitLoadStore         = 8
+          64,    //  int  smallestProblemSizeForEnterLeaveCell = tarch::la::aPowI(DIMENSIONS,9/2),
+          2,    //  int  grainSizeForEnterLeaveCell         = 2,
+          32,    //  int  smallestProblemSizeForTouchFirstLast = tarch::la::aPowI(DIMENSIONS,3*3*3*3+1),
+          2,    //  int  grainSizeForTouchFirstLast         = 64,
+          32,    //  int  smallestProblemSizeForSplitLoadStore = tarch::la::aPowI(DIMENSIONS,3*3*3),
+          8     //  int  grainSizeForSplitLoadStore         = 8
         ));
     }
     return sharedMemoryPropertiesFileName;

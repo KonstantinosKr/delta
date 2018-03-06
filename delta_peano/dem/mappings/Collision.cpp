@@ -906,7 +906,7 @@ void dem::mappings::Collision::endIteration(
 	logTraceInWith1Argument( "endIteration(State)", solverState );
 
 	_state.merge(_backgroundTaskState);
-  solverState.merge(_state);
+	solverState.merge(_state);
 
 	_activeCollisions.clear();
 
@@ -927,20 +927,18 @@ void dem::mappings::Collision::endIteration(
 		}
 	}
 
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
-  {
-    logInfo( "endIteration(State)", std::endl
-                                 << "Penalty Fails: " << delta::collision::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::collision::getPenaltyFails()/(double)delta::collision::getBatchSize() << std::endl
-                                 << "Batch Size: " << delta::collision::getBatchSize() << std::endl
-                                 << "Batch Fails: " << delta::collision::getBatchFails() << " BatchFail avg: " << (double)delta::collision::getBatchFails()/(double)delta::collision::getBatchSize() << std::endl
-                                 << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
-  }
+	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+	{
+	logInfo( "endIteration(State)", std::endl
+								 << "Penalty Fails: " << delta::collision::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::collision::getPenaltyFails()/(double)delta::collision::getBatchSize() << std::endl
+								 << "Batch Size: " << delta::collision::getBatchSize() << std::endl
+								 << "Batch Fails: " << delta::collision::getBatchFails() << " BatchFail avg: " << (double)delta::collision::getBatchFails()/(double)delta::collision::getBatchSize() << std::endl
+								 << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
+	}
 
-  int counter= 0;
-  while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-    printf("%i %i\n", tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs(), counter++);
-    tarch::multicore::jobs::processBackgroundJobs();
-  }
+	while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
+		tarch::multicore::jobs::processBackgroundJobs();
+	}
 
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
