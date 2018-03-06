@@ -44,6 +44,7 @@ std::string dem::records::RepositoryState::toString(const Action& param) {
       case UseAdapterCollision: return "UseAdapterCollision";
       case UseAdapterMoveParticles: return "UseAdapterMoveParticles";
       case UseAdapterAdopt: return "UseAdapterAdopt";
+      case UseAdapterAdoptReluctantly: return "UseAdapterAdoptReluctantly";
       case UseAdapterPlotData: return "UseAdapterPlotData";
       case UseAdapterTimeStepOnDynamicGrid: return "UseAdapterTimeStepOnDynamicGrid";
       case UseAdapterTimeStepOnDynamicGridMerged: return "UseAdapterTimeStepOnDynamicGridMerged";
@@ -57,7 +58,7 @@ std::string dem::records::RepositoryState::toString(const Action& param) {
 }
 
 std::string dem::records::RepositoryState::getActionMapping() {
-   return "Action(WriteCheckpoint=0,ReadCheckpoint=1,Terminate=2,RunOnAllNodes=3,UseAdapterCreateGrid=4,UseAdapterCreateGridAndPlot=5,UseAdapterTimeStep=6,UseAdapterTimeStepAndPlot=7,UseAdapterCollision=8,UseAdapterMoveParticles=9,UseAdapterAdopt=10,UseAdapterPlotData=11,UseAdapterTimeStepOnDynamicGrid=12,UseAdapterTimeStepOnDynamicGridMerged=13,UseAdapterTimeStepAndPlotOnDynamicGrid=14,UseAdapterTimeStepOnReluctantDynamicGrid=15,UseAdapterTimeStepOnReluctantDynamicGridMerged=16,UseAdapterTimeStepAndPlotOnReluctantDynamicGrid=17,NumberOfAdapters=18)";
+   return "Action(WriteCheckpoint=0,ReadCheckpoint=1,Terminate=2,RunOnAllNodes=3,UseAdapterCreateGrid=4,UseAdapterCreateGridAndPlot=5,UseAdapterTimeStep=6,UseAdapterTimeStepAndPlot=7,UseAdapterCollision=8,UseAdapterMoveParticles=9,UseAdapterAdopt=10,UseAdapterAdoptReluctantly=11,UseAdapterPlotData=12,UseAdapterTimeStepOnDynamicGrid=13,UseAdapterTimeStepOnDynamicGridMerged=14,UseAdapterTimeStepAndPlotOnDynamicGrid=15,UseAdapterTimeStepOnReluctantDynamicGrid=16,UseAdapterTimeStepOnReluctantDynamicGridMerged=17,UseAdapterTimeStepAndPlotOnReluctantDynamicGrid=18,NumberOfAdapters=19)";
 }
 
 

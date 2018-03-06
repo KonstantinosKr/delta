@@ -176,10 +176,21 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   logInfo( "runAsMaster(...)", "create grid" );
 
   repository.switchToCreateGrid();
-
   repository.iterate();
 
   //do { repository.iterate(); } while ( !repository.getState().isGridStationary() );
+
+  if(gridType == dem::mappings::CreateGrid::GridType::AdaptiveGrid)
+  {
+	  repository.switchToAdopt();
+	  for(int i=0; i<10; i++) repository.iterate();
+	  logInfo( "runAsMaster(...)", "adopt grid" );
+  } else if(gridType == dem::mappings::CreateGrid::GridType::ReluctantAdaptiveGrid)
+  {
+	  repository.switchToAdoptReluctantly();
+	  for(int i=0; i<10; i++) repository.iterate();
+	  logInfo( "runAsMaster(...)", "reluctantly adopt grid" );
+  }
 
   logInfo( "runAsMaster(...)", "start time stepping" );
 

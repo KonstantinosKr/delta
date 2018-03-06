@@ -70,6 +70,10 @@ adapter:
 adapter:
   name: Adopt
   merge-with-user-defined-mapping: AdoptGrid
+  
+adapter:
+  name: AdoptReluctantly
+  merge-with-user-defined-mapping: ReluctantlyAdoptGrid
 
 adapter: 
   name: PlotData

@@ -23,6 +23,7 @@
  #include "dem/adapters/Collision.h" 
  #include "dem/adapters/MoveParticles.h" 
  #include "dem/adapters/Adopt.h" 
+ #include "dem/adapters/AdoptReluctantly.h" 
  #include "dem/adapters/PlotData.h" 
  #include "dem/adapters/TimeStepOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepOnDynamicGridMerged.h" 
@@ -62,6 +63,7 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::Collision> _gridWithCollision;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::MoveParticles> _gridWithMoveParticles;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::Adopt> _gridWithAdopt;
+    peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::AdoptReluctantly> _gridWithAdoptReluctantly;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::PlotData> _gridWithPlotData;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnDynamicGrid> _gridWithTimeStepOnDynamicGrid;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnDynamicGridMerged> _gridWithTimeStepOnDynamicGridMerged;
@@ -80,6 +82,7 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     tarch::timing::Measurement _measureCollisionCPUTime;
     tarch::timing::Measurement _measureMoveParticlesCPUTime;
     tarch::timing::Measurement _measureAdoptCPUTime;
+    tarch::timing::Measurement _measureAdoptReluctantlyCPUTime;
     tarch::timing::Measurement _measurePlotDataCPUTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridCPUTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridMergedCPUTime;
@@ -95,6 +98,7 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     tarch::timing::Measurement _measureCollisionCalendarTime;
     tarch::timing::Measurement _measureMoveParticlesCalendarTime;
     tarch::timing::Measurement _measureAdoptCalendarTime;
+    tarch::timing::Measurement _measureAdoptReluctantlyCalendarTime;
     tarch::timing::Measurement _measurePlotDataCalendarTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridCalendarTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridMergedCalendarTime;
@@ -148,6 +152,7 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     virtual void switchToCollision();    
     virtual void switchToMoveParticles();    
     virtual void switchToAdopt();    
+    virtual void switchToAdoptReluctantly();    
     virtual void switchToPlotData();    
     virtual void switchToTimeStepOnDynamicGrid();    
     virtual void switchToTimeStepOnDynamicGridMerged();    
@@ -163,6 +168,7 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     virtual bool isActiveAdapterCollision() const;
     virtual bool isActiveAdapterMoveParticles() const;
     virtual bool isActiveAdapterAdopt() const;
+    virtual bool isActiveAdapterAdoptReluctantly() const;
     virtual bool isActiveAdapterPlotData() const;
     virtual bool isActiveAdapterTimeStepOnDynamicGrid() const;
     virtual bool isActiveAdapterTimeStepOnDynamicGridMerged() const;
