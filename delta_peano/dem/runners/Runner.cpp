@@ -198,7 +198,11 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   repository.getState().setMaximumVelocityApproach(0.1);
 
   repository.switchToMoveParticles();
-  for(int i=0; i<10; i++) repository.iterate();
+  for(int i=0; i<8; i++) repository.iterate();
+  repository.getState().clearAccumulatedData();
+  repository.getState().setInitialTimeStepSize(initialStepSize);
+  repository.iterate();
+
 
   /////////////////////////////////////////////////////////////////////
   logInfo( "runAsMaster(...)", "start time stepping" );
