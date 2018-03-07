@@ -58,6 +58,7 @@ peano::MappingSpecification   dem::mappings::MoveParticles::descendSpecification
 }
 
 tarch::logging::Log		dem::mappings::MoveParticles::_log( "dem::mappings::MoveParticles" );
+tarch::multicore::BooleanSemaphore  dem::mappings::MoveParticles::_MoveParticlesSemaphore;
 
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Vertex&	fineGridVertex, State& state)
 {
@@ -302,6 +303,9 @@ void dem::mappings::MoveParticles::createHangingVertex(
       dem::Cell&       coarseGridCell,
       const tarch::la::Vector<DIMENSIONS,int>&                   fineGridPositionOfVertex
 ) {
+
+  fineGridVertex.init();
+
 }
 
 void dem::mappings::MoveParticles::destroyHangingVertex(
@@ -313,6 +317,12 @@ void dem::mappings::MoveParticles::destroyHangingVertex(
       dem::Cell&           coarseGridCell,
       const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
+
+  tarch::multicore::Lock lock(_MoveParticlesSemaphore);
+  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+  lock.free();
+  fineGridVertex.destroy();
+
 }
 
 void dem::mappings::MoveParticles::createInnerVertex(
@@ -324,6 +334,9 @@ void dem::mappings::MoveParticles::createInnerVertex(
       dem::Cell&                 coarseGridCell,
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
+
+  fineGridVertex.init();
+
 }
 
 void dem::mappings::MoveParticles::createBoundaryVertex(
@@ -336,7 +349,9 @@ void dem::mappings::MoveParticles::createBoundaryVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-  // @todo Insert your code here
+
+  fineGridVertex.init();
+
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
 
@@ -350,7 +365,12 @@ void dem::mappings::MoveParticles::destroyVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-  // @todo Insert your code here
+
+  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+
+  assertion( fineGridVertex.getNumberOfParticles()==0 );
+  fineGridVertex.destroy();
+
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
 

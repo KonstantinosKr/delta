@@ -1,4 +1,4 @@
-  #include <delta/core/sys.h>
+#include <delta/core/sys.h>
 #include "dem/runners/Runner.h"
 
 #include "dem/repositories/Repository.h"
@@ -182,16 +182,25 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 
   if(gridType == dem::mappings::CreateGrid::GridType::AdaptiveGrid)
   {
-	  repository.switchToAdopt();
-	  for(int i=0; i<10; i++) repository.iterate();
-	  logInfo( "runAsMaster(...)", "adopt grid" );
+	logInfo( "runAsMaster(...)", "adopt grid" );
   } else if(gridType == dem::mappings::CreateGrid::GridType::ReluctantAdaptiveGrid)
   {
-	  repository.switchToAdoptReluctantly();
-	  for(int i=0; i<10; i++) repository.iterate();
-	  logInfo( "runAsMaster(...)", "reluctantly adopt grid" );
+	logInfo( "runAsMaster(...)", "reluctantly adopt grid" );
   }
 
+  repository.switchToAdopt();
+  for(int i=0; i<10; i++) repository.iterate();
+
+
+  logInfo( "runAsMaster(...)", "pre-conditioning" );
+
+  repository.getState().setInitialTimeStepSize(1E-16);
+  repository.getState().setMaximumVelocityApproach(0.1);
+
+  repository.switchToMoveParticles();
+  for(int i=0; i<10; i++) repository.iterate();
+
+  /////////////////////////////////////////////////////////////////////
   logInfo( "runAsMaster(...)", "start time stepping" );
 
   repository.getState().clearAccumulatedData();
@@ -211,8 +220,6 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     dem::mappings::Plot::_mini = minRange;
     dem::mappings::Plot::_maxi = maxRange;
   }
-
-  repository.getState().setMaximumVelocityApproach(0.1);
 
   /*
   //////////////////PLOT TIME ZERO//////////////////////////////////////////////////////
@@ -291,6 +298,7 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
     }
 
     repository.iterate();
+
     elapsed = repository.getState().getTime() - timestamp;
 
     logInfo("runAsMaster(...)", "i=" << i

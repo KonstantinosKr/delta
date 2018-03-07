@@ -170,7 +170,7 @@ void dem::State::adaptiveTimeStep()
 
       } else {
         //decrement
-        printf("triggered step decrement : %f\n", decrementStep);
+        //printf("triggered step decrement : %f\n", decrementStep);
         _stateData.setTimeStepSize(decrementStep);
       }
       return;
@@ -180,7 +180,7 @@ void dem::State::adaptiveTimeStep()
     }
   } else //separation or no collision
   {
-    printf("triggered step increment : %f\n", increaseFactor);
+    //printf("triggered step increment : %f\n", increaseFactor);
     if(_stateData.getTimeStep() > 2)
     {
       /*if(_stateData.getTwoParticlesSeparate() && _stateData.getTwoParticlesAreClose() == 0 && dem::mappings::CreateGrid::_gridType == dem::mappings::CreateGrid::ReluctantAdaptiveGrid)
@@ -194,7 +194,7 @@ void dem::State::adaptiveTimeStep()
 
   if(_stateData.getTimeStepSize() > _maxdt) //upper bound constraint
   {
-    printf("employed step size higher than maxdt, reduce to maxdt: %f\n", _maxdt);
+    //printf("employed step size higher than maxdt, reduce to maxdt: %f\n", _maxdt);
     _stateData.setTimeStepSize(_maxdt);
   }
   //printf("maxdt:%f\n", maxdt);

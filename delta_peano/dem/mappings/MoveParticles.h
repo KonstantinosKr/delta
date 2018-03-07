@@ -51,6 +51,8 @@ class dem::mappings::MoveParticles {
     static tarch::logging::Log  _log;
 
     State                       _state;
+    static tarch::multicore::BooleanSemaphore        _MoveParticlesSemaphore;
+
   public:
     static void moveAllParticlesAssociatedToVertex(dem::Vertex&  fineGridVertex, State& state);
 
