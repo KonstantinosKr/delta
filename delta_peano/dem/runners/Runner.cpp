@@ -188,26 +188,31 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
 	logInfo( "runAsMaster(...)", "reluctantly adopt grid" );
   }
 
-  repository.switchToAdopt();
-  for(int i=0; i<8; i++)
+  if(gridType == dem::mappings::CreateGrid::GridType::AdaptiveGrid ||
+	  gridType == dem::mappings::CreateGrid::GridType::ReluctantAdaptiveGrid)
   {
-	repository.iterate();
-  }
-
-
-  logInfo( "runAsMaster(...)", "pre-conditioning" );
-
-  repository.getState().setInitialTimeStepSize(1E-16);
-  repository.getState().setMaximumVelocityApproach(0.1);
-
-  for(int i=0; i<8; i++)
-  {
-	repository.switchToMoveParticles();
-	repository.iterate();
 	repository.switchToAdopt();
-	repository.iterate();
+	for(int i=0; i<6; i++)
+	{
+	  repository.iterate();
+	}
+
+	logInfo( "runAsMaster(...)", "pre-conditioning init" );
+
+	repository.getState().setInitialTimeStepSize(1E-16);
+	repository.getState().setMaximumVelocityApproach(0.1);
+
+	for(int i=0; i<8; i++)
+	{
+	  repository.switchToMoveParticles();
+	  repository.iterate();
+	  repository.switchToAdopt();
+	  repository.iterate();
+	  logInfo( "runAsMaster(...)", "pre-conditioning step " << i << " out of " << 8);
+	}
   }
 
+  logInfo( "runAsMaster(...)", "pre-conditioning end" );
   /////////////////////////////////////////////////////////////////////
   logInfo( "runAsMaster(...)", "start time stepping" );
 
