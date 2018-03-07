@@ -307,15 +307,28 @@ def generateScripts():
                                 if cores == "omp":
                                     cores = ompthread
 
-                                jobName        = "-s" + parameterDict["scenarios"] + \
-                                                 "-g" + parameterDict["grid-type"] + \
-                                                 "-cm" + parameterDict["collision-model"] + \
-                                                 "-n" + nodes + \
-                                                 "-t" + tasks+ \
-                                                 "-c" + cores+ \
-                                                 "-tbb" + str(tbbthread)+ \
-                                                 "-omp" + str(ompthread) + \
-                                                 "-bck" + str(backtasks)
+                                jobName = ""
+                                if parameterDict["collision-model"] == "sphere":
+                                    jobName        = "-s" + parameterDict["scenarios"] + \
+                                                     "-g" + parameterDict["grid-type"] + \
+                                                     "-cm" + parameterDict["collision-model"] + \
+                                                     "-n" + nodes + \
+                                                     "-t" + tasks+ \
+                                                     "-c" + cores+ \
+                                                     "-tbb" + str(tbbthread)+ \
+                                                     "-omp" + str(ompthread) + \
+                                                     "-bck" + str(backtasks)
+                                else:
+                                    jobName        = "-s" + parameterDict["scenarios"] + \
+                                                     "-g" + parameterDict["grid-type"] + \
+                                                     "-cm" + parameterDict["collision-model"] + \
+                                                     "-n" + nodes + \
+                                                     "-t" + tasks+ \
+                                                     "-c" + cores+ \
+                                                     "-tbb" + str(tbbthread)+ \
+                                                     "-omp" + str(ompthread) + \
+                                                     "-bck" + str(backtasks) + \
+                                                     "-msh" + str(parameterDict["mesh-density"])
 
                                 jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
@@ -367,17 +380,30 @@ def verifyAllJobScriptsExist():
                                 if cores == "omp":
                                     cores = ompthread
 
-                                jobName        = value + "-" + parameterDictHash + \
-                                                 "-s" + parameterDict["scenarios"] + \
-                                                 "-g" + parameterDict["grid-type"] + \
-                                                 "-cm" + parameterDict["collision-model"] + \
-                                                 "-n" + nodes + \
-                                                 "-t" + tasks+ \
-                                                 "-c" + cores+ \
-                                                 "-tbb" + str(tbbthread)+ \
-                                                 "-omp" + str(ompthread) + \
-                                                 "-bck" + str(backtasks)
-                                jobFilePrefix  = scriptsFolderPath + "/" + jobName
+                                jobName = ""
+                                if parameterDict["collision-model"] == "sphere":
+                                    jobName        = "-s" + parameterDict["scenarios"] + \
+                                                     "-g" + parameterDict["grid-type"] + \
+                                                     "-cm" + parameterDict["collision-model"] + \
+                                                     "-n" + nodes + \
+                                                     "-t" + tasks+ \
+                                                     "-c" + cores+ \
+                                                     "-tbb" + str(tbbthread)+ \
+                                                     "-omp" + str(ompthread) + \
+                                                     "-bck" + str(backtasks)
+                                else:
+                                    jobName        = "-s" + parameterDict["scenarios"] + \
+                                                     "-g" + parameterDict["grid-type"] + \
+                                                     "-cm" + parameterDict["collision-model"] + \
+                                                     "-n" + nodes + \
+                                                     "-t" + tasks+ \
+                                                     "-c" + cores+ \
+                                                     "-tbb" + str(tbbthread)+ \
+                                                     "-omp" + str(ompthread) + \
+                                                     "-bck" + str(backtasks) + \
+                                                     "-msh" + str(parameterDict["mesh-density"])
+
+                                jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
 
                                 if not os.path.exists(jobFilePath):
@@ -467,17 +493,30 @@ def submitJobs():
                                 if cores == "omp":
                                     cores = ompthread
 
-                                jobName        =  parameterDictHash + \
-                                                 "-s" + parameterDict["scenarios"] + \
-                                                 "-g" + parameterDict["grid-type"] + \
-                                                 "-cm" + parameterDict["collision-model"] + \
-                                                 "-n" + nodes + \
-                                                 "-t" + tasks+ \
-                                                 "-c" + cores+ \
-                                                 "-tbb" + str(tbbthread)+ \
-                                                 "-omp" + str(ompthread) + \
-                                                 "-bck" + str(backtasks)
-                                jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + jobName
+                                jobName = ""
+                                if parameterDict["collision-model"] == "sphere":
+                                    jobName        = "-s" + parameterDict["scenarios"] + \
+                                                     "-g" + parameterDict["grid-type"] + \
+                                                     "-cm" + parameterDict["collision-model"] + \
+                                                     "-n" + nodes + \
+                                                     "-t" + tasks+ \
+                                                     "-c" + cores+ \
+                                                     "-tbb" + str(tbbthread)+ \
+                                                     "-omp" + str(ompthread) + \
+                                                     "-bck" + str(backtasks)
+                                else:
+                                    jobName        = "-s" + parameterDict["scenarios"] + \
+                                                     "-g" + parameterDict["grid-type"] + \
+                                                     "-cm" + parameterDict["collision-model"] + \
+                                                     "-n" + nodes + \
+                                                     "-t" + tasks+ \
+                                                     "-c" + cores+ \
+                                                     "-tbb" + str(tbbthread)+ \
+                                                     "-omp" + str(ompthread) + \
+                                                     "-bck" + str(backtasks) + \
+                                                     "-msh" + str(parameterDict["mesh-density"])
+
+                                jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
 
                                 command=jobSubmissionTool + " " + jobFilePath

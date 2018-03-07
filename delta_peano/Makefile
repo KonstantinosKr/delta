@@ -101,8 +101,8 @@ delta-gcc-release-dstats: header build
 delta-gcc-release-tbb-omp-triangle: CC=g++ -std=c++14
 delta-gcc-release-tbb-omp-triangle: DIM=-DDim3
 delta-gcc-release-tbb-omp-triangle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
-delta-gcc-release-tbb-omp-triangle: CFLAGS=$(GCCRUN) $(GCC_OMP_SHAREDMEMORY) $(INCLUDE_TBB)
-delta-gcc-release-tbb-omp-triangle: LFLAGS=$(LINK_TBB) $(LINK_OMP)
+delta-gcc-release-tbb-omp-triangle: CFLAGS=$(GCCRUN) $(INCLUDE_TBB)
+delta-gcc-release-tbb-omp-triangle: LFLAGS=$(LINK_TBB) 
 delta-gcc-release-tbb-omp-triangle: EXECUTABLE=delta-gcc-release-tbb-omp-triangle
 delta-gcc-release-tbb-omp-triangle: header build
 
