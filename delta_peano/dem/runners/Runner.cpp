@@ -189,7 +189,10 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   }
 
   repository.switchToAdopt();
-  for(int i=0; i<10; i++) repository.iterate();
+  for(int i=0; i<8; i++)
+  {
+	repository.iterate();
+  }
 
 
   logInfo( "runAsMaster(...)", "pre-conditioning" );
@@ -197,11 +200,13 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   repository.getState().setInitialTimeStepSize(1E-16);
   repository.getState().setMaximumVelocityApproach(0.1);
 
-  repository.switchToMoveParticles();
-  for(int i=0; i<8; i++) repository.iterate();
-  repository.getState().clearAccumulatedData();
-  repository.getState().setInitialTimeStepSize(initialStepSize);
-  for(int i=0; i<2; i++) repository.iterate();
+  for(int i=0; i<8; i++)
+  {
+	repository.switchToMoveParticles();
+	repository.iterate();
+	repository.switchToAdopt();
+	repository.iterate();
+  }
 
   /////////////////////////////////////////////////////////////////////
   logInfo( "runAsMaster(...)", "start time stepping" );
