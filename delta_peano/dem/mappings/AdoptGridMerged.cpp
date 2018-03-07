@@ -125,7 +125,6 @@ void dem::mappings::AdoptGridMerged::beginIteration(
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
   delta::collision::cleanHybridStatistics();
 
-
   _state = solverState;
   _state.clearAccumulatedData();
 
@@ -168,6 +167,9 @@ void dem::mappings::AdoptGridMerged::endIteration(
                                  << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
   }
 
+  while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
+    tarch::multicore::jobs::processBackgroundJobs();
+  }
 
   logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
@@ -325,10 +327,6 @@ void dem::mappings::AdoptGridMerged::leaveCell(
   logTraceInWith4Arguments( "leaveCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
 
   dem::mappings::Collision::all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
-
-  while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-    tarch::multicore::jobs::processBackgroundJobs();
-  }
 
   logTraceOutWith1Argument( "leaveCell(...)", fineGridCell );
 }

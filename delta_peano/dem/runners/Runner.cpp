@@ -147,12 +147,12 @@ int dem::runners::Runner::run(int numberOfTimeSteps,
     result = runAsWorker(*repository);
   }
   #endif
-  
+
   shutSharedMemory(sharedMemoryPropertiesFileName);
   shutDistributedMemory();
 
   delete repository;
-  
+
   return result;
 }
 
