@@ -1183,7 +1183,9 @@ void dem::mappings::CreateGrid::createCell(
   if(coarseGridCell.isRoot())
   {
     deployCoarseEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0), centreAsArray);
-  } else if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(fineGridVertices, fineGridVerticesEnumerator, Vertex::Records::Unrefined) &&
+  }
+
+  if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(fineGridVertices, fineGridVerticesEnumerator, Vertex::Records::Unrefined) &&
       !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices, fineGridVerticesEnumerator))
   {
     deployFineEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0), centreAsArray);
