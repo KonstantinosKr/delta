@@ -22,13 +22,13 @@ exp4o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE6_50_100hopper_
 exp5o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE8_50_100hopper_batch3
 exp6o=/ddn/data/rfmw74/h7Scaleregularhybrid-on-batchesOMPTRIANGLE16_50_100hopper_batch1
 
-exp0="./delta-icc-release-tbb-omp-triangle25 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
-exp1="./delta-icc-release-tbb-omp-triangle20 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
-exp2="./delta-icc-release-tbb-omp-triangle15 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
-exp3="./delta-icc-release-tbb-omp-triangle10 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
-exp4="./delta-icc-release-tbb-omp-triangle5 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
-exp5="./delta-icc-release-tbb-omp-triangle3 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
-exp6="./delta-icc-release-tbb-omp-triangle1 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp0="./delta-icc-release-tbb25 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp1="./delta-icc-release-tbb20 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp2="./delta-icc-release-tbb15 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp3="./delta-icc-release-tbb10 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp4="./delta-icc-release-tbb5 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp5="./delta-icc-release-tbb3 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
+exp6="./delta-icc-release-tbb1 0.1 hopperUniformMesh 100 regular-grid 0.00001 never 10 true hybrid-on-batches 50"
 
 sed "s,{OUTPUT_FILE},$exp0o,g" ${JOB_SCRIPT0} > ${JOB_SCRIPT0}_tmp
 sed "s,{RUN},$exp0,g" ${JOB_SCRIPT0}_tmp > ${JOB_SCRIPT0}_tmp1
