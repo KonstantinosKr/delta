@@ -161,8 +161,8 @@ delta-icc-asserts: header build
 delta-icc-release-tbb-omp-triangle: CC=icpc -std=c++14
 delta-icc-release-tbb-omp-triangle: DIM=-DDim3
 delta-icc-release-tbb-omp-triangle: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
-delta-icc-release-tbb-omp-triangle: CFLAGS=$(ICCRUN) $(INCLUDE_TBB)
-delta-icc-release-tbb-omp-triangle: LFLAGS=$(LINK_TBB)
+delta-icc-release-tbb-omp-triangle: CFLAGS=$(ICCRUN) $(INCLUDE_TBB) $(ICC_OMP_SHAREDMEMORY) 
+delta-icc-release-tbb-omp-triangle: LFLAGS=$(LINK_TBB) $(LINK_OMP)
 delta-icc-release-tbb-omp-triangle: EXECUTABLE=delta-icc-release-tbb-omp-triangle
 delta-icc-release-tbb-omp-triangle: header build
 

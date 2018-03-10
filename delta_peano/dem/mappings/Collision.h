@@ -124,7 +124,7 @@ class dem::mappings::Collision {
         const records::Particle& particleA,
         const records::Particle& particleB,
         State& state);
-  
+
     static tarch::multicore::BooleanSemaphore        _mySemaphore;
 
     static double    gravity;

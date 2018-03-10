@@ -14,7 +14,6 @@
 #include "peano/datatraversal/TaskSet.h"
 
 #include "tarch/multicore/Jobs.h"
-
 #include "tarch/multicore/BooleanSemaphore.h"
 
 #include <unordered_map>
@@ -69,7 +68,7 @@ tarch::logging::Log                                                 dem::mapping
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_activeCollisions;
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_collisionsOfNextTraversal;
 dem::mappings::Collision::CollisionModel                            dem::mappings::Collision::_collisionModel;
-bool																                                dem::mappings::Collision::_enableOverlapCheck;
+bool																   dem::mappings::Collision::_enableOverlapCheck;
 tarch::multicore::BooleanSemaphore                                  dem::mappings::Collision::_mySemaphore;
 double                                                              dem::mappings::Collision::gravity = 0.0;
 
@@ -414,7 +413,8 @@ void dem::mappings::Collision::collisionDetection(
         zCoordinatesB,
         particleB.getEpsilon(),
         particleB.getFriction(),
-        particleB.getGlobalParticleId());
+        particleB.getGlobalParticleId(),
+		_mySemaphore);
 
       break;
     case CollisionModel::Penalty:
@@ -434,7 +434,8 @@ void dem::mappings::Collision::collisionDetection(
         zCoordinatesB,
         particleB.getEpsilon(),
         particleB.getFriction(),
-        particleB.getGlobalParticleId());
+        particleB.getGlobalParticleId(),
+		_mySemaphore);
 
       break;
     case CollisionModel::PenaltyStat:
@@ -494,7 +495,8 @@ void dem::mappings::Collision::collisionDetection(
         zCoordinatesB,
         particleB.getEpsilon(),
         particleB.getFriction(),
-        particleB.getGlobalParticleId());
+        particleB.getGlobalParticleId(),
+		_mySemaphore);
 
       break;
     case CollisionModel::HybridOnTrianglePairs:
@@ -514,7 +516,8 @@ void dem::mappings::Collision::collisionDetection(
         zCoordinatesB,
         particleB.getEpsilon(),
         particleB.getFriction(),
-        particleB.getGlobalParticleId());
+        particleB.getGlobalParticleId(),
+		_mySemaphore);
 
       break;
     case CollisionModel::HybridStat:

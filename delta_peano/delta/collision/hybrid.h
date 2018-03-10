@@ -27,7 +27,9 @@
 #include "delta/collision/penalty.h"
 #include "delta/collision/bf.h"
 #include "delta/collision/contactpoint.h"
-
+#include "peano/utils/Loop.h"
+#include "tarch/multicore/Lock.h"
+#include "tarch/multicore/BooleanSemaphore.h"
 
 namespace delta {
   namespace collision {
@@ -56,7 +58,7 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryA,
       iREAL           epsilonA,
       bool            frictionA,
-      int 	            particleA,
+      int 	          particleA,
 
       int             numberOfTrianglesOfGeometryB,
       const iREAL*    xCoordinatesOfPointsOfGeometryB,
@@ -64,7 +66,8 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryB,
       iREAL           epsilonB,
       bool            frictionB,
-      int 	            particleB);
+      int 	          particleB,
+	  tarch::multicore::BooleanSemaphore &semaphore);
 
     std::vector<contactpoint> hybridWithPerBatchFallBack(
       int             numberOfTrianglesOfGeometryA,
@@ -73,7 +76,7 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryA,
       iREAL           epsilonA,
       bool            frictionA,
-      int 	            particleA,
+      int 	          particleA,
 
       int             numberOfTrianglesOfGeometryB,
       const iREAL*    xCoordinatesOfPointsOfGeometryB,
@@ -81,7 +84,8 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryB,
       iREAL           epsilonB,
       bool            frictionB,
-      int 	           particleB);
+      int 	          particleB,
+	  tarch::multicore::BooleanSemaphore &semaphore);
 
 
     std::vector<contactpoint> hybridBatchStat(

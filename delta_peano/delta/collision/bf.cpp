@@ -24,6 +24,7 @@
 
 #include "bf.h"
 
+
 std::vector<delta::collision::contactpoint> delta::collision::bf(
     int             numberOfTrianglesOfGeometryA,
     const iREAL*    xCoordinatesOfPointsOfGeometryA,
@@ -39,7 +40,8 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
     const iREAL*    zCoordinatesOfPointsOfGeometryB,
     iREAL           epsilonB,
     bool            frictionB,
-    int 	            particleB)
+    int 	            particleB,
+	tarch::multicore::BooleanSemaphore &semaphore)
 {
 #if defined(__INTEL_COMPILER)
   __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
@@ -52,27 +54,33 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
 #endif
 
   std::vector<contactpoint> result;
+  //convert to number of points
+  numberOfTrianglesOfGeometryA *= 3;
+  numberOfTrianglesOfGeometryB *= 3;
 
-  numberOfTrianglesOfGeometryA *=3;
-  numberOfTrianglesOfGeometryB *=3;
+  tarch::multicore::Lock lock(semaphore,false);
 
-  #ifdef ompTriangle
-	  #pragma omp parallel for schedule(static) shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
+  #ifdef SharedTBB
+	// Take care: grain size has to be positive even if loop degenerates
+	const int grainSize = numberOfTrianglesOfGeometryA;
+	tbb::parallel_for(
+	 tbb::blocked_range<int>(0, numberOfTrianglesOfGeometryA, grainSize), [&](const tbb::blocked_range<int>& r)
+	 {
+	   for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
+  #else
+	#ifdef ompTriangle
+	  #pragma omp parallel for shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
+	#endif
+	  for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   #endif
-  for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   {
-
-    __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
 
-    #if defined(__INTEL_COMPILER)
     #pragma omp simd
-    #else 
-    #pragma omp simd
-    #endif
     for(int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
     {
+      __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
       __attribute__ ((aligned(byteAlignment))) iREAL xPA=0.0;
       __attribute__ ((aligned(byteAlignment))) iREAL yPA=0.0;
       __attribute__ ((aligned(byteAlignment))) iREAL zPA=0.0;
@@ -81,17 +89,17 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
       __attribute__ ((aligned(byteAlignment))) iREAL zPB=0.0;
 
       bf(xCoordinatesOfPointsOfGeometryA+(iA),
-        yCoordinatesOfPointsOfGeometryA+(iA),
-        zCoordinatesOfPointsOfGeometryA+(iA),
-        xCoordinatesOfPointsOfGeometryB+(iB),
-        yCoordinatesOfPointsOfGeometryB+(iB),
-        zCoordinatesOfPointsOfGeometryB+(iB),
-        xPA,
-        yPA,
-        zPA,
-        xPB,
-        yPB,
-        zPB);
+		 yCoordinatesOfPointsOfGeometryA+(iA),
+		 zCoordinatesOfPointsOfGeometryA+(iA),
+		 xCoordinatesOfPointsOfGeometryB+(iB),
+		 yCoordinatesOfPointsOfGeometryB+(iB),
+		 zCoordinatesOfPointsOfGeometryB+(iB),
+		 xPA,
+		 yPA,
+		 zPA,
+		 xPB,
+		 yPB,
+		 zPB);
 
       iREAL d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
       if(d <= epsilonMargin && d <= dd)
@@ -103,12 +111,22 @@ std::vector<delta::collision::contactpoint> delta::collision::bf(
 
     if(nearestContactPoint != nullptr)
     {
-      #ifdef ompTriangle
-        #pragma omp critical
-      #endif
-      result.push_back(*nearestContactPoint);
+	  #ifdef SharedTBB
+		lock.lock();
+		  result.push_back(*nearestContactPoint);
+		lock.free();
+	  #else
+		#ifdef ompTriangle
+		  #pragma omp critical
+		#endif
+		result.push_back(*nearestContactPoint);
+	  #endif
     }
+  #ifdef SharedTBB
+  }});
+  #else
   }
+  #endif
   return result;
 }
 
@@ -179,9 +197,6 @@ int NoDivTriTriIsect(
   return 0;
 }
 
-#if defined(__INTEL_COMPILER)
-//#pragma omp declare simd
-#endif
 void delta::collision::bf(
   const iREAL   *xxCoordinatesOfPointsOfGeometryA,
   const iREAL   *yyCoordinatesOfPointsOfGeometryA,

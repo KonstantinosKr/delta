@@ -28,6 +28,9 @@
 #include <limits>
 #include <float.h>
 #include "delta/core/algo.h"
+#include "peano/utils/Loop.h"
+#include "tarch/multicore/Lock.h"
+#include "tarch/multicore/BooleanSemaphore.h"
 
 #define MaxNumberOfNewtonIterations 16
 
@@ -56,7 +59,7 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryA,
       iREAL           epsilonA,
       bool            frictionA,
-      int 	            particleA,
+      int 	          particleA,
 
       int             numberOfTrianglesOfGeometryB,
       const iREAL*    xCoordinatesOfPointsOfGeometryB,
@@ -64,7 +67,7 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryB,
       iREAL           epsilonB,
       bool            frictionB,
-      int 	           particleB);
+      int 	          particleB);
 
     std::vector<contactpoint> penalty(
       int             numberOfTrianglesOfGeometryA,
@@ -73,7 +76,7 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryA,
       iREAL           epsilonA,
       bool            frictionA,
-      int 	           particleA,
+      int 	          particleA,
 
       int             numberOfTrianglesOfGeometryB,
       const iREAL*    xCoordinatesOfPointsOfGeometryB,
@@ -81,7 +84,9 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryB,
       iREAL           epsilonB,
       bool            frictionB,
-      int             particleB);
+      int             particleB,
+	  tarch::multicore::BooleanSemaphore &semaphore
+	  );
 
     #if defined(ompParticle) || defined(ompTriangle)
       #pragma omp declare simd

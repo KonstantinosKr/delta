@@ -23,15 +23,18 @@
  */
 
 #include <vector>
-#include "delta/collision/contactpoint.h"
 #include <complex>
 #include <limits>
 #include <iostream>
 #include "delta/core/algo.h"
-
+#include "delta/collision/contactpoint.h"
+#include "peano/utils/Loop.h"
+#include "tarch/multicore/Lock.h"
+#include "tarch/multicore/BooleanSemaphore.h"
 
 namespace delta {
   namespace collision {
+
 
     /**
      * @see hybrid() function with the same arguments for default
@@ -43,7 +46,7 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryA,
       iREAL           epsilonA,
       bool            frictionA,
-      int 	            particleA,
+      int 	          particleA,
 
       int             numberOfTrianglesOfGeometryB,
       const iREAL*    xCoordinatesOfPointsOfGeometryB,
@@ -51,9 +54,9 @@ namespace delta {
       const iREAL*    zCoordinatesOfPointsOfGeometryB,
       iREAL           epsilonB,
       bool            frictionB,
-      int 	            particleB
+      int 	          particleB,
+	  tarch::multicore::BooleanSemaphore &semaphore
     );
-
 
     /**
      * Brute force method for finite computation of the minimum distance
@@ -64,9 +67,7 @@ namespace delta {
      *
      * @param xPA Output parameter. x coordinate on triangle A.
      */
-    #if defined(ompParticle) || defined(ompTriangle)
     #pragma omp declare simd
-    #endif
     void bf(
       const iREAL   *xCoordinatesOfTriangleA,
       const iREAL   *yCoordinatesOfTriangleA,
@@ -81,5 +82,6 @@ namespace delta {
       iREAL&  yPB,
       iREAL&  zPB
     );
+
   }
 }

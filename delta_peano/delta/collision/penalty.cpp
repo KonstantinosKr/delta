@@ -121,7 +121,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   const iREAL*    zCoordinatesOfPointsOfGeometryA,
   const iREAL     epsilonA,
   bool            frictionA,
-  int	  	          particleA,
+  int	  	      particleA,
 
   int             numberOfTrianglesOfGeometryB,
   const iREAL*    xCoordinatesOfPointsOfGeometryB,
@@ -129,7 +129,8 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   const iREAL*    zCoordinatesOfPointsOfGeometryB,
   const iREAL     epsilonB,
   bool            frictionB,
-  int		          particleB
+  int		      particleB,
+  tarch::multicore::BooleanSemaphore &semaphore
 ) {
   __attribute__ ((aligned(byteAlignment)))  const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
   std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
@@ -144,10 +145,25 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
   __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
   #endif
 
-  #ifdef ompTriangle
-    #pragma omp parallel for schedule(static) shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
+  //convert to number of points
+  numberOfTrianglesOfGeometryA *= 3;
+  numberOfTrianglesOfGeometryB *= 3;
+
+  tarch::multicore::Lock lock(semaphore,false);
+
+  #ifdef SharedTBB
+	  // Take care: grain size has to be positive even if loop degenerates
+	  const int grainSize = numberOfTrianglesOfGeometryA;
+	  tbb::parallel_for(
+	   tbb::blocked_range<int>(0, numberOfTrianglesOfGeometryA, grainSize), [&](const tbb::blocked_range<int>& r)
+	   {
+		 for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
+  #else
+	  #ifdef ompTriangle
+		#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
+	  #endif
+		for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   #endif
-  for (int iA=0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
     __attribute__ ((aligned(byteAlignment))) bool failed = 0;
     __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
@@ -156,7 +172,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
       #pragma forceinline recursive
     #endif
     #pragma omp simd
-    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
     {
       penalty(xCoordinatesOfPointsOfGeometryA+(iA),
               yCoordinatesOfPointsOfGeometryA+(iA),
@@ -175,21 +191,31 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
     __attribute__ ((aligned(byteAlignment))) iREAL minD = 1E99;
     contactpoint *nearestContactPoint = nullptr;
 
-    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3) {
       minD          = std::min( d[iB], minD );
     }
 
     // Grab the closest one and insert it into the result
-    for (int iB=0; iB<numberOfTrianglesOfGeometryB*3; iB+=3) {
+    for (int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3) {
       if ( d[iB] <= minD && d[iB] < epsilonMargin) {
-        delta::collision::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-        #ifdef ompTriangle
-          #pragma omp critical
-        #endif
-        result.push_back(*nearestContactPoint);
+    		delta::collision::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
+		#ifdef SharedTBB
+			lock.lock();
+			  result.push_back(*nearestContactPoint);
+			lock.free();
+		#else
+			#ifdef ompTriangle
+			  #pragma omp critical
+			#endif
+			result.push_back(*nearestContactPoint);
+		#endif
       }
     }
+  #ifdef SharedTBB
+  }});
+  #else
   }
+  #endif
   return result;
 }
 
@@ -224,8 +250,9 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
  *
  */
 #if defined(__INTEL_COMPILER)
-  #pragma omp declare simd
   #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
+#else
+#pragma omp declare simd
 #endif
 extern void delta::collision::penalty(
   const iREAL   *xCoordinatesOfTriangleA,
