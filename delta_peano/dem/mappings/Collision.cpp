@@ -77,7 +77,6 @@ bool dem::mappings::Collision::RunParticleLoopInParallel            = true;
 bool dem::mappings::Collision::RunParticleComparisionsInBackground  = false;
 dem::State dem::mappings::Collision::_backgroundTaskState;
 
-
 void dem::mappings::Collision::addCollision(
     std::vector<delta::collision::contactpoint> & newContactPoints,
     const records::Particle&                    particleA,
@@ -897,8 +896,8 @@ void dem::mappings::Collision::beginIteration(
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
 	delta::collision::cleanPenaltyStatistics();
 
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
-  delta::collision::cleanHybridStatistics();
+	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+	delta::collision::cleanHybridStatistics();
 
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }

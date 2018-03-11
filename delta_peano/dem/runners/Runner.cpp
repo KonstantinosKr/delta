@@ -178,8 +178,6 @@ int dem::runners::Runner::runAsMaster(dem::repositories::Repository& repository,
   repository.switchToCreateGrid();
   repository.iterate();
 
-  //do { repository.iterate(); } while ( !repository.getState().isGridStationary() );
-
   if(gridType == dem::mappings::CreateGrid::GridType::AdaptiveGrid)
   {
 	logInfo( "runAsMaster(...)", "adopt grid" );

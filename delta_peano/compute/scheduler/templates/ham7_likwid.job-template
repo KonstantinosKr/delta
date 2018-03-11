@@ -53,7 +53,7 @@ if ( {{cores}} == 1 ) then
   likwid-perfctr -f -C 0 -g L3       {{app}} >> {{output_file}}.likwid
   likwid-perfctr -f -C 0 -g BRANCH   {{app}} >> {{output_file}}.likwid
 else
-  set maxCore = {{cores}} - 1
+  @ maxCore={{cores}} - 1
 
   likwid-pin -c 0-$maxCore {{app}}
   likwid-perfctr -f -C 0-$maxCore -g MEM      {{app}} >> {{output_file}}.likwid
