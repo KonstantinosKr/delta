@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """
 .. module:: sweep
-  :platform: Unix, Windows, Mac
-  :synopsis: Generate benchmark suites for ExaHyPE.
 
 .. moduleauthor:: Dominic Etienne Charrier <dominic.e.charrier@durham.ac.uk>,
 
