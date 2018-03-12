@@ -1102,7 +1102,6 @@ void dem::mappings::CreateGrid::createInnerVertex(
   {
     if(_gridType == RegularGrid)
     {
-      if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
       fineGridVertex.refine();
     }
     else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
@@ -1111,12 +1110,10 @@ void dem::mappings::CreateGrid::createInnerVertex(
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
          fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
       {
-        if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
         fineGridVertex.refine();
       }
       else if(fineGridH(0) >= 0.33)
       {
-        if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
         fineGridVertex.refine();
       }
     }
@@ -1145,7 +1142,6 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 	{
 	  if(_gridType == RegularGrid)
 	  {
-		if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
 		fineGridVertex.refine();
 	  }
 	  else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
@@ -1154,12 +1150,10 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 		   fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
 		   fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
 		{
-		  if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
 		  fineGridVertex.refine();
 		}
 		else if(fineGridH(0) >= 0.33)
 		{
-		  if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
 		  fineGridVertex.refine();
 		}
 	  }
