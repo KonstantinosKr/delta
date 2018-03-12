@@ -847,7 +847,6 @@ void dem::mappings::Collision::all_to_all(
     }
   }
 
-
   //full coarse inheritance check
   dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v0, state, backgroundstate);
   dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(vcentre, v1, state, backgroundstate);
@@ -1023,7 +1022,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		}
 	}
 
-  fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
+	fineGridVertex.clearInheritedCoarseGridParticles();// clear adaptivity/multilevel data
 
 	dfor2(k)
 	fineGridVertex.inheritCoarseGridParticles(coarseGridVertices[coarseGridVerticesEnumerator(k)], fineGridX, fineGridH(0));

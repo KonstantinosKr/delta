@@ -63,9 +63,9 @@ void dem::mappings::CreateGrid::setScenario(
     int noPointsPerGranulate)
 {
 	_scenario[0]          = scenario[0];
-  _scenario[1]          = scenario[1];
-  _scenario[2]          = scenario[2];
-  _scenario[3]          = scenario[3];
+	_scenario[1]          = scenario[1];
+	_scenario[2]          = scenario[2];
+	_scenario[3]          = scenario[3];
 	_maxH                 = maxH;
 	_minParticleDiam      = _maxH;
 	_maxParticleDiam      = _maxH;
@@ -1096,11 +1096,13 @@ void dem::mappings::CreateGrid::createInnerVertex(
   fineGridVertex.init();
 
   dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
+  bool spheremodel = (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
 
   if(_gridType != NoGrid && fineGridH(0) > _maxH && fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
   {
     if(_gridType == RegularGrid)
     {
+      if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
       fineGridVertex.refine();
     }
     else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
@@ -1109,10 +1111,12 @@ void dem::mappings::CreateGrid::createInnerVertex(
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
          fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
       {
+        if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
         fineGridVertex.refine();
       }
       else if(fineGridH(0) >= 0.33)
       {
+        if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
         fineGridVertex.refine();
       }
     }
@@ -1134,28 +1138,32 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 
 	fineGridVertex.init();
 
-  dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
+	dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
+	bool spheremodel = (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
 
-  if(_gridType != NoGrid && fineGridH(0) > _maxH && fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
-  {
-    if(_gridType == RegularGrid)
-    {
-      fineGridVertex.refine();
-    }
-    else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
-    {
-      if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
-         fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
-         fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
-      {
-        fineGridVertex.refine();
-      }
-      else if(fineGridH(0) >= 0.33)
-      {
-        fineGridVertex.refine();
-      }
-    }
-  }
+	if(_gridType != NoGrid && fineGridH(0) > _maxH && fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
+	{
+	  if(_gridType == RegularGrid)
+	  {
+		if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
+		fineGridVertex.refine();
+	  }
+	  else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
+	  {
+		if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
+		   fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
+		   fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
+		{
+		  if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
+		  fineGridVertex.refine();
+		}
+		else if(fineGridH(0) >= 0.33)
+		{
+		  if(spheremodel && fineGridVertex.getNumberOfParticles() > 10)
+		  fineGridVertex.refine();
+		}
+	  }
+	}
 
 	logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
