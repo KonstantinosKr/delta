@@ -109,7 +109,6 @@ dem::runners::Runner::Runner() {
 dem::runners::Runner::~Runner() {
 }
 
-
 bool dem::runners::Runner::switchrepo(dem::repositories::Repository& repository, int i, dem::mappings::CreateGrid::GridType gridType, Plot plot, double elapsed, double realSnapshot) {
   bool plotThisTraversal = (plot == EveryIteration) ||  (plot == Track) ||
                            (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
@@ -147,7 +146,6 @@ bool dem::runners::Runner::switchrepo(dem::repositories::Repository& repository,
   }
   return plotThisTraversal;
 }
-
 
 void initHPCEnvironment() {
   peano::performanceanalysis::Analysis::getInstance().enable(false);

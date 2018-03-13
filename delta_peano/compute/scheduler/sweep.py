@@ -315,7 +315,8 @@ def generateScripts():
                                                      "-c" + cores+ \
                                                      "-tbb" + str(tbbthread)+ \
                                                      "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks)
+                                                     "-bck" + str(backtasks) + \
+                                                     "-tun" + parameterDict["autotuning"]
                                 else:
                                     jobName        = "-s" + parameterDict["scenarios"] + \
                                                      "-g" + parameterDict["grid-type"] + \
@@ -326,6 +327,7 @@ def generateScripts():
                                                      "-tbb" + str(tbbthread)+ \
                                                      "-omp" + str(ompthread) + \
                                                      "-bck" + str(backtasks) + \
+                                                     "-tun" + parameterDict["autotuning"]
                                                      "-msh" + str(parameterDict["mesh-density"])
 
                                 jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
@@ -379,6 +381,7 @@ def verifyAllJobScriptsExist():
                                     cores = ompthread
 
                                 jobName = ""
+
                                 if parameterDict["collision-model"] == "sphere":
                                     jobName        = "-s" + parameterDict["scenarios"] + \
                                                      "-g" + parameterDict["grid-type"] + \
@@ -388,7 +391,8 @@ def verifyAllJobScriptsExist():
                                                      "-c" + cores+ \
                                                      "-tbb" + str(tbbthread)+ \
                                                      "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks)
+                                                     "-bck" + str(backtasks) + \
+                                                     "-tun" + parameterDict["autotuning"]
                                 else:
                                     jobName        = "-s" + parameterDict["scenarios"] + \
                                                      "-g" + parameterDict["grid-type"] + \
@@ -399,6 +403,7 @@ def verifyAllJobScriptsExist():
                                                      "-tbb" + str(tbbthread)+ \
                                                      "-omp" + str(ompthread) + \
                                                      "-bck" + str(backtasks) + \
+                                                     "-tun" + parameterDict["autotuning"]
                                                      "-msh" + str(parameterDict["mesh-density"])
 
                                 jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
@@ -492,6 +497,7 @@ def submitJobs():
                                     cores = ompthread
 
                                 jobName = ""
+
                                 if parameterDict["collision-model"] == "sphere":
                                     jobName        = "-s" + parameterDict["scenarios"] + \
                                                      "-g" + parameterDict["grid-type"] + \
@@ -501,7 +507,8 @@ def submitJobs():
                                                      "-c" + cores+ \
                                                      "-tbb" + str(tbbthread)+ \
                                                      "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks)
+                                                     "-bck" + str(backtasks) + \
+                                                     "-tun" + parameterDict["autotuning"]
                                 else:
                                     jobName        = "-s" + parameterDict["scenarios"] + \
                                                      "-g" + parameterDict["grid-type"] + \
@@ -512,6 +519,7 @@ def submitJobs():
                                                      "-tbb" + str(tbbthread)+ \
                                                      "-omp" + str(ompthread) + \
                                                      "-bck" + str(backtasks) + \
+                                                     "-tun" + parameterDict["autotuning"]
                                                      "-msh" + str(parameterDict["mesh-density"])
 
                                 jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
