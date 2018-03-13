@@ -216,8 +216,7 @@ int main(int argc, char** argv)
     if (std::string(argv[14])=="off") {
       dem::mappings::Collision::RunParticleComparisionsInBackground = false;
     }
-    else if(std::string(argv[14]=="auto")) {
-      dem::mappings::collisionModel::RunParticleComparisionsInBackground = true;
+    else if(std::string(argv[14])=="auto") {
       logError( "main()", "max number of background tasks is set to " << numberOfCores );
       dem::mappings::Collision::RunParticleComparisionsInBackground = true;
       tarch::multicore::jobs::Job::setMaxNumberOfRunningBackgroundThreads( numberOfCores );
