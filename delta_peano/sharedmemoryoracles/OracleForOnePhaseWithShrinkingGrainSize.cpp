@@ -681,7 +681,7 @@ sharedmemoryoracles::OracleForOnePhaseWithShrinkingGrainSize::DatabaseEntry::Dat
       _biggestProblemSize = 65536;
       logError( "DatabaseEntry(std::string)", "unable to parse file entries w.r.t. biggest problem size" );
     }
-    logError( "DatabaseEntry(std::string)", "input file seems to have been corrupted. Restart entry " << toString() << ". Corrupted line: " << inputLine );
+    logError( "DatabaseEntry(std::string)", "input seems corrupted. Restart entry " << toString() << ". Corrupted line: " << inputLine );
 
     *this = DatabaseEntry(_biggestProblemSize);
     restart();

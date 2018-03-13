@@ -8,10 +8,12 @@
 #ifndef _DEM_RUNNERS_RUNNER_H_ 
 #define _DEM_RUNNERS_RUNNER_H_ 
 
-
 #include "tarch/logging/Log.h"
 #include "dem/mappings/CreateGrid.h"
 
+#include "peano/datatraversal/autotuning/Oracle.h"
+#include "peano/datatraversal/autotuning/OracleForOnePhaseDummy.h"
+#include "sharedmemoryoracles/OracleForOnePhaseWithShrinkingGrainSize.h"
 
 namespace dem {
   namespace runners {
@@ -41,7 +43,22 @@ class dem::runners::Runner {
   private:
     static tarch::logging::Log _log;
 
-    int runAsMaster(dem::repositories::Repository& repository, int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, double timeStepSize, double realSnapshot);
+    void precondition(dem::repositories::Repository& repository, dem::mappings::CreateGrid::GridType gridType);
+
+    bool switchrepo(dem::repositories::Repository& repository, int i, dem::mappings::CreateGrid::GridType gridType, Plot plot, double elapsed, double realSnapshot);
+
+    void tuneOrNotTotune(bool useAutotuning, std::string sharedMemoryPropertiesFileName);
+
+    std::string initSharedMemory( bool useAutotuning, int tbbThreads, dem::mappings::CreateGrid::GridType gridType);
+
+    int runAsMaster(dem::repositories::Repository& repository,
+			bool useAutotuning,
+			std::string sharedMemoryPropertiesFileName,
+			int numberOfTimeSteps,
+			double realSnapshot,
+			Plot plot,
+			dem::mappings::CreateGrid::GridType gridType,
+			double timeStepSize);
     
     #ifdef Parallel
     int runAsWorker(dem::repositories::Repository& repository);
@@ -62,7 +79,7 @@ class dem::runners::Runner {
     /**
      * Run
      */
-    int run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads, double initialTimeStepSize, double realSnapshot, bool useAutotuning);
+    int run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads, double initialTimeStepSize, double realSnapshot, int useAutotuning);
 };
 
 #endif

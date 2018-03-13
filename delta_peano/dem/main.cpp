@@ -164,7 +164,7 @@ int main(int argc, char** argv)
   }
 
   #ifdef SharedMemoryParallelisation
-  	  const int NumberOfArguments = 15;
+  	  const int NumberOfArguments = 16;
   #else
   	  const int NumberOfArguments = 11;
   #endif
@@ -177,16 +177,17 @@ int main(int argc, char** argv)
     return -1;
   }
 
-  const double       gridHMax            = atof(argv[1]);
-  const std::string  scenario            = argv[2];
-  const int          iterations          = atoi(argv[3]);
-  const std::string  gridTypeIdentifier  = argv[4];
-  const double       stepSize         	   = atof(argv[5]);
-  const std::string  plotIdentifier      = argv[6];
-  const double		    realSnapshot		     = atof(argv[7]);
-  const std::string  gravity             = argv[8];
-  const std::string  collisionModel      = argv[9];
-  const int			    meshMultiplier      = atof(argv[10]);
+  const double       	gridHMax            	= atof(argv[1]);
+  const std::string  	scenario            	= argv[2];
+  const int          	iterations         	= atoi(argv[3]);
+  const std::string  	gridTypeIdentifier  	= argv[4];
+  const double       	stepSize         	= atof(argv[5]);
+  const std::string  	plotIdentifier      	= argv[6];
+  const double			realSnapshot		    = atof(argv[7]);
+  const std::string  	gravity             	= argv[8];
+  const std::string  	collisionModel     	= argv[9];
+  const int			    meshMultiplier      	= atof(argv[10]);
+  bool					autotune 			= false;
 
   #ifdef SharedMemoryParallelisation
 	  const int          numberOfCores       = atoi(argv[11]);
@@ -234,6 +235,18 @@ int main(int argc, char** argv)
         return -1;
       }
     }
+
+   if (std::string(argv[15])=="true")
+   {
+	 autotune = true;
+   } else if (std::string(argv[15])=="false")
+   {
+	 autotune = false;
+   }
+   else {
+     logError( "main()", "autotuning either has to be true or false" );
+     return -1;
+   }
   #else
 	  const int          numberOfCores       = 0;
   #endif
@@ -550,7 +563,7 @@ int main(int argc, char** argv)
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano", true ) );
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "info", -1, "peano::utils", false ) );
     dem::runners::Runner runner;
-    programExitCode = runner.run(iterations, plot, gridType, numberOfCores, stepSize, realSnapshot, false);
+    programExitCode = runner.run(iterations, plot, gridType, numberOfCores, stepSize, realSnapshot, autotune);
   }
   
   if (programExitCode==0)
