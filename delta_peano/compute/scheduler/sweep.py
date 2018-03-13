@@ -297,7 +297,7 @@ def generateScripts():
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                     cores = tbbthread
 
-                                if  parameterDict["enable-background"] == "true":
+                                if  parameterDict["enable-p-to-p"] == "true":
                                     backtasks = parameterDict["background-count"]
                                 else:
                                     backtasks = str(0)
@@ -370,7 +370,7 @@ def verifyAllJobScriptsExist():
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                     cores = tbbthread
 
-                                if  parameterDict["enable-background"] == "true":
+                                if  parameterDict["enable-p-to-p"] == "true":
                                     backtasks = parameterDict["background-count"]
                                 else:
                                     backtasks = str(0)
@@ -483,7 +483,7 @@ def submitJobs():
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                     cores = tbbthread
 
-                                if  parameterDict["enable-background"] == "true":
+                                if  parameterDict["enable-p-to-p"] == "true":
                                     backtasks = parameterDict["background-count"]
                                 else:
                                     backtasks = str(0)
