@@ -140,7 +140,7 @@ delta-gcc-release-tbb-phi: header build
 
 delta-gcc-release-mpi: CC=mpic++ -std=c++14
 delta-gcc-release-mpi: DIM=-DDim3
-delta-gcc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel
+delta-gcc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel -DMPICH_IGNORE_CXX_SEEK -DMultipleThreadsMayTriggerMPICalls 
 delta-gcc-release-mpi: CFLAGS=$(GCCRUN) $(INCLUDE_TBB) $(INCLUDE_MPI)
 delta-gcc-release-mpi: LFLAGS=$(LINK_TBB) $(LINK_MPI)
 delta-gcc-release-mpi: EXECUTABLE=delta-gcc-release-mpi-tbb
@@ -208,9 +208,9 @@ delta-icc-release-dstats: header build
 
 delta-icc-release-mpi: CC=mpiicc -std=c++14
 delta-icc-release-mpi: DIM=-DDim3
-delta-icc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel
-delta-icc-release-mpi: CFLAGS=$(ICCRUN) $(INCLUDE_MPI) $(INCLUDE_TBB)
-delta-icc-release-mpi: LFLAGS=$(LINK_MPI) $(LINK_TBB)
+delta-icc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel -DMPICH_IGNORE_CXX_SEEK -DMultipleThreadsMayTriggerMPICalls 
+delta-icc-release-mpi: CFLAGS=$(ICCRUN) $(ICC_OMP_SHAREDMEMORY) $(INCLUDE_MPI) $(INCLUDE_TBB)
+delta-icc-release-mpi: LFLAGS=$(LINK_MPI) $(LINK_OMP) $(LINK_TBB)
 delta-icc-release-mpi: EXECUTABLE=delta-icc-release-mpi-tbb
 delta-icc-release-mpi: header build
 
