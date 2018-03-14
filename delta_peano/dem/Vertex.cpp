@@ -121,21 +121,21 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._orientation(7) = 0;
   newParticle._persistentRecords._orientation(8) = 1.0;
 
-  newParticle._persistentRecords._mass            = mass;
-  newParticle._persistentRecords._friction			  = friction;
-  newParticle._persistentRecords._haloDiameter = (newParticle.getDiameter()+epsilon*2) * 1.1;
-  newParticle._persistentRecords._epsilon			    = epsilon;
-  newParticle._persistentRecords._hMin 				    = hMin;
+  newParticle._persistentRecords._mass           = mass;
+  newParticle._persistentRecords._friction		= friction;
+  newParticle._persistentRecords._haloDiameter 	= (newParticle.getDiameter()+epsilon*2) * 1.1;
+  newParticle._persistentRecords._epsilon		= epsilon;
+  newParticle._persistentRecords._hMin 			= hMin;
 
-  newParticle._persistentRecords._numberOfTriangles = xCoordinates.size()/DIMENSIONS;
-  newParticle._persistentRecords._isObstacle 		   = isObstacle;
-  newParticle._persistentRecords._material 			   = int(material);
-  newParticle._persistentRecords._globalParticleId  = particleId;
-  newParticle._persistentRecords._localParticleId   = localparticleId;
+  newParticle._persistentRecords._numberOfTriangles 	= xCoordinates.size()/DIMENSIONS;
+  newParticle._persistentRecords._isObstacle 		= isObstacle;
+  newParticle._persistentRecords._material 			= int(material);
+  newParticle._persistentRecords._globalParticleId 	= particleId;
+  newParticle._persistentRecords._localParticleId   	= localparticleId;
 
-  newParticle._persistentRecords._velocity    = tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._velocity    		= tarch::la::Vector<DIMENSIONS,double>(0.0);
   newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._referentialAngular= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._referentialAngular	= tarch::la::Vector<DIMENSIONS,double>(0.0);
 
   newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
@@ -229,21 +229,21 @@ int dem::Vertex::createSubParticle(
   newParticle._persistentRecords._orientation(7) = 0;
   newParticle._persistentRecords._orientation(8) = 1;
 
-  newParticle._persistentRecords._mass            = mass;
-  newParticle._persistentRecords._friction        = friction;
-  newParticle._persistentRecords._haloDiameter = (newParticle._persistentRecords._diameter+epsilon*2) * 1.1;
-  newParticle._persistentRecords._epsilon         = epsilon;
-  newParticle._persistentRecords._hMin            = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);;
+  newParticle._persistentRecords._mass            	= mass;
+  newParticle._persistentRecords._friction        	= friction;
+  newParticle._persistentRecords._haloDiameter 		= (newParticle._persistentRecords._diameter+epsilon*2) * 1.1;
+  newParticle._persistentRecords._epsilon        	 	= epsilon;
+  newParticle._persistentRecords._hMin            	= delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);;
 
-  newParticle._persistentRecords._numberOfTriangles = xCoordinates.size()/DIMENSIONS;
-  newParticle._persistentRecords._isObstacle        = isObstacle;
-  newParticle._persistentRecords._material          = int(material);
-  newParticle._persistentRecords._globalParticleId  = particleId;
-  newParticle._persistentRecords._localParticleId  = localparticleId;
+  newParticle._persistentRecords._numberOfTriangles 	= xCoordinates.size()/DIMENSIONS;
+  newParticle._persistentRecords._isObstacle        	= isObstacle;
+  newParticle._persistentRecords._material          	= int(material);
+  newParticle._persistentRecords._globalParticleId  	= particleId;
+  newParticle._persistentRecords._localParticleId  	= localparticleId;
 
-  newParticle._persistentRecords._velocity    = tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._angular     = tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._referentialAngular= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._velocity    		= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._angular     		= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._referentialAngular	= tarch::la::Vector<DIMENSIONS,double>(0.0);
 
   newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
@@ -341,22 +341,22 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._orientation(7) = 0;
   newParticle._persistentRecords._orientation(8) = 1;
 
-  newParticle._persistentRecords._mass				      = mass;
-  newParticle._persistentRecords._friction			    = friction;
-  newParticle._persistentRecords._diameter			    = radius*2;
-  newParticle._persistentRecords._haloDiameter 	= (radius*2+epsilon*2) * 1.1;
-  newParticle._persistentRecords._epsilon			      = epsilon;
-  newParticle._persistentRecords._hMin 				      = 0;
+  newParticle._persistentRecords._mass				= mass;
+  newParticle._persistentRecords._friction			= friction;
+  newParticle._persistentRecords._diameter			= radius*2;
+  newParticle._persistentRecords._haloDiameter 		= (radius*2+epsilon*2) * 1.1;
+  newParticle._persistentRecords._epsilon			= epsilon;
+  newParticle._persistentRecords._hMin 				= 0;
 
-  newParticle._persistentRecords._numberOfTriangles = 0;
-  newParticle._persistentRecords._isObstacle 		    = isObstacle;
-  newParticle._persistentRecords._material 			    = int(material);
-  newParticle._persistentRecords._globalParticleId  = particleId;
-  newParticle._persistentRecords._localParticleId   = 0;
+  newParticle._persistentRecords._numberOfTriangles 	= 0;
+  newParticle._persistentRecords._isObstacle 		= isObstacle;
+  newParticle._persistentRecords._material 			= int(material);
+  newParticle._persistentRecords._globalParticleId  	= particleId;
+  newParticle._persistentRecords._localParticleId   	= 0;
 
   newParticle._persistentRecords._velocity           = tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._angular		 	      = tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._referentialAngular= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._referentialAngular	= tarch::la::Vector<DIMENSIONS,double>(0.0);
 
   newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
@@ -589,7 +589,6 @@ void dem::Vertex::inheritCoarseGridParticles(
 
   if(!coarseVertex.isOutside())
   {
-
     iREAL v[3] = {fineGridX(0), fineGridX(1), fineGridX(2)};
 
     /* This bounding sphere has to have the radius =
