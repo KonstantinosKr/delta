@@ -327,7 +327,7 @@ def generateScripts():
                                                      "-tbb" + str(tbbthread)+ \
                                                      "-omp" + str(ompthread) + \
                                                      "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"]
+                                                     "-tun" + parameterDict["autotuning"] +\
                                                      "-msh" + str(parameterDict["mesh-density"])
 
                                 jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
@@ -403,7 +403,7 @@ def verifyAllJobScriptsExist():
                                                      "-tbb" + str(tbbthread)+ \
                                                      "-omp" + str(ompthread) + \
                                                      "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"]
+                                                     "-tun" + parameterDict["autotuning"] + \
                                                      "-msh" + str(parameterDict["mesh-density"])
 
                                 jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
@@ -519,7 +519,7 @@ def submitJobs():
                                                      "-tbb" + str(tbbthread)+ \
                                                      "-omp" + str(ompthread) + \
                                                      "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"]
+                                                     "-tun" + parameterDict["autotuning"] + \
                                                      "-msh" + str(parameterDict["mesh-density"])
 
                                 jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
