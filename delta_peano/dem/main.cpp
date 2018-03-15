@@ -218,7 +218,7 @@ int main(int argc, char** argv)
       dem::mappings::Collision::RunParticleComparisionsInBackground = false;
     }
     else if(std::string(argv[14])=="auto") {
-      logError( "main()", "max number of background tasks is set to " << numberOfCores );
+      logInfo( "main()", "max number of background tasks is set to  " << numberOfCores );
       dem::mappings::Collision::RunParticleComparisionsInBackground = true;
       tarch::multicore::jobs::Job::setMaxNumberOfRunningBackgroundThreads( numberOfCores );
     }
@@ -226,12 +226,12 @@ int main(int argc, char** argv)
       const int  numberOfBackgroundTasks = atoi(argv[14]);
 
       if (numberOfBackgroundTasks>=1) {
-        logError( "main()", "max number of background tasks is set to " << numberOfBackgroundTasks);
+        logInfo( "main()", "max number of background tasks is set to  " << numberOfBackgroundTasks );
         dem::mappings::Collision::RunParticleComparisionsInBackground = true;
         tarch::multicore::jobs::Job::setMaxNumberOfRunningBackgroundThreads( numberOfBackgroundTasks);
       }
       else {
-        logError( "main()", "run in background either has to be true or false" );
+        logInfo( "main()", "run in background either has to be true or false" );
         return -1;
       }
     }
