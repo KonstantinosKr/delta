@@ -226,9 +226,9 @@ int main(int argc, char** argv)
       const int  numberOfBackgroundTasks = atoi(argv[14]);
 
       if (numberOfBackgroundTasks>=1) {
-        logError( "main()", "max number of background tasks is set to " << numberOfBackgroundTasks -1 );
+        logError( "main()", "max number of background tasks is set to " << numberOfBackgroundTasks);
         dem::mappings::Collision::RunParticleComparisionsInBackground = true;
-        tarch::multicore::jobs::Job::setMaxNumberOfRunningBackgroundThreads( numberOfBackgroundTasks -1 );
+        tarch::multicore::jobs::Job::setMaxNumberOfRunningBackgroundThreads( numberOfBackgroundTasks);
       }
       else {
         logError( "main()", "run in background either has to be true or false" );
