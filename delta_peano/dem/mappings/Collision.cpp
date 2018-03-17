@@ -69,7 +69,7 @@ std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mapping
 std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_collisionsOfNextTraversal;
 dem::mappings::Collision::CollisionModel                            dem::mappings::Collision::_collisionModel;
 bool																   dem::mappings::Collision::_enableOverlapCheck;
-tarch::multicore::BooleanSemaphore                                  dem::mappings::Collision::_mySemaphore;
+tarch::multicore::BooleanSemaphore                                  dem::mappings::Collision::_collisionSemaphore;
 double                                                              dem::mappings::Collision::gravity = 0.0;
 
 bool dem::mappings::Collision::RunGridTraversalInParallel           = true;
@@ -323,7 +323,7 @@ void dem::mappings::Collision::collisionDetection(
     if (!overlap) return;
   }
 
-  tarch::multicore::Lock lock(_mySemaphore,false);
+  tarch::multicore::Lock lock(_collisionSemaphore,false);
 
   if (protectStateAccess) lock.lock();
   bool approach = triggerParticleTooClose(particleA, particleB, *state);
@@ -413,7 +413,7 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId(),
-		_mySemaphore);
+		_collisionSemaphore);
 
       break;
     case CollisionModel::Penalty:
@@ -434,7 +434,7 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId(),
-		_mySemaphore);
+		_collisionSemaphore);
 
       break;
     case CollisionModel::PenaltyStat:
@@ -495,7 +495,7 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId(),
-		_mySemaphore);
+		_collisionSemaphore);
 
       break;
     case CollisionModel::HybridOnTrianglePairs:
@@ -516,7 +516,7 @@ void dem::mappings::Collision::collisionDetection(
         particleB.getEpsilon(),
         particleB.getFriction(),
         particleB.getGlobalParticleId(),
-		_mySemaphore);
+		_collisionSemaphore);
 
       break;
     case CollisionModel::HybridStat:

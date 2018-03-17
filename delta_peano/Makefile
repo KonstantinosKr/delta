@@ -55,19 +55,17 @@ default: header
 	@echo delta-gcc-asserts
 	@echo delta-gcc-pstats
 	@echo delta-gcc-dstats
-	@echo delta-gcc-asserts-tbb-omp-triangle
-	@echo delta-gcc-release-tbbnovec
-	@echo delta-gcc-asserts-tbbcounter
-	@echo delta-gcc-release-tbbnovec-counter
+	@echo delta-gcc-release-tbb-novec
+	@echo delta-gcc-asserts-tbb-counter
+	@echo delta-gcc-release-tbb-novec-counter
 	@echo delta-gcc-release-mpi
 	@echo --ICC-------------------------------
 	@echo delta-icc-asserts
 	@echo delta-icc-release-pstats
 	@echo delta-icc-release-dstats
-	@echo delta-icc-asserts-tbb-omp-triangle
-	@echo delta-icc-release-tbbnovec
-	@echo delta-icc-asserts-tbbcounter
-	@echo delta-icc-release-tbbnovec-counter
+	@echo delta-icc-release-tbb-novec
+	@echo delta-icc-asserts-tbb-counter
+	@echo delta-icc-release-tbb-novec-counter
 	@echo delta-icc-release-mpi
 
 ################################################################################################################
