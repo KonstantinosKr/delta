@@ -172,6 +172,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
       #pragma forceinline recursive
     #endif
     #pragma omp simd
+//	#pragma prefetch xCoordinatesOfPointsOfGeometryB:1 yCoordinatesOfPointsOfGeometryB:1 zCoordinatesOfPointsOfGeometryB:1 xPA:1, yPA:1, zPA:1, xPB:1, yPB:1, zPB:1
     for (int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
     {
       penalty(xCoordinatesOfPointsOfGeometryA+(iA),
@@ -252,7 +253,7 @@ std::vector<delta::collision::contactpoint> delta::collision::penalty(
 #if defined(__INTEL_COMPILER)
   #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
 #else
-#pragma omp declare simd
+  #pragma omp declare simd
 #endif
 extern void delta::collision::penalty(
   const iREAL   *xCoordinatesOfTriangleA,

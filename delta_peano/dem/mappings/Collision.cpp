@@ -1054,6 +1054,7 @@ void dem::mappings::Collision::leaveCell(
     dem::Cell&           coarseGridCell,
     const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
+
   all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
 
 }
