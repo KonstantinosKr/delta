@@ -148,7 +148,6 @@ int main(int argc, char** argv)
 
   if ( parallelSetup!=0 ) {
     #ifdef Parallel
-	  // Please do not use the logging if MPI doesn't work properly.
 	  std::cerr << "mpi initialisation wasn't successful. Application shut down" << std::endl;
     #else
 	  _log.error("main()", "mpi initialisation wasn't successful. Application shut down");
