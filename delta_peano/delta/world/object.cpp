@@ -64,21 +64,21 @@ void delta::world::object::generateMesh(
   iREAL position[3] = {_centre[0], _centre[1], _centre[2]};
   if(_component == "granulate")
   {
-    delta::geometry::granulates::generateParticle(position, rad*2, xCoordinates, yCoordinates, zCoordinates, mesh);
+    delta::geometry::primitive::granulate::generateParticle(position, rad*2, xCoordinates, yCoordinates, zCoordinates, mesh);
   } else if(_component == "granulate-load")
   {
-    delta::geometry::granulates::loadParticle(position, (rad*2), xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::primitive::granulate::loadParticle(position, (rad*2), xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "cube")
   {
-    delta::geometry::cubes::generateHullCube(position, wx, wy, wz, rx, ry, rz, mesh, xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::primitive::cube::generateHullCube(position, wx, wy, wz, rx, ry, rz, mesh, xCoordinates, yCoordinates, zCoordinates);
   }
   else if(_component == "hopper")
   {
     double _hopperHatch = 0.05; double _hopperThickness = 0.005; int refinement = 0;
-    delta::geometry::hopper::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01, xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::primitive::hopper::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01, xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "FB")
   {
-    delta::geometry::graphite::generateBrickFB(position, rad, xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::primitive::graphite::generateBrickFB(position, rad, xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "mesh")
   {
 

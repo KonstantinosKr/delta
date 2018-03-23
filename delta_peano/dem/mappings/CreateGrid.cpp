@@ -379,7 +379,7 @@ void dem::mappings::CreateGrid::decomposeMeshByOctsection(
     }
     xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
-    int numOfSubParticles = delta::geometry::triangle::octSectParticle(octSectTimes, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
+    int numOfSubParticles = delta::geometry::primitive::triangle::octSectParticle(octSectTimes, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
 
     ////////LOOP ALL subdivisions of quadtree and create particles
     for(unsigned i=numOfSubParticles; i>(octSectTimes-1)*8; i--)

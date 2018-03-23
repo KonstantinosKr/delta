@@ -409,7 +409,6 @@ void delta::world::assembly::uniMeshGeometry(
   //printf("MASSSPHERE:%f MASSMESH:%f\n", masssphere, reMassTotal);
 }
 
-
 void delta::world::assembly::uniMeshGeometry(
     iREAL totalMass,
     delta::geometry::material::MaterialType material,
@@ -434,7 +433,7 @@ void delta::world::assembly::uniMeshGeometry(
     position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
 
     std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
-    delta::geometry::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
+    delta::geometry::primitive::granulate::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
 
     xCoordinatesArray.push_back(xCoordinates);
     yCoordinatesArray.push_back(yCoordinates);
@@ -500,7 +499,7 @@ void delta::world::assembly::uniCubeGeometry(
 
     std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
 
-    delta::geometry::cubes::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::primitive::cube::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
 
     xCoordinatesArray.push_back(xCoordinates);
     yCoordinatesArray.push_back(yCoordinates);
@@ -654,7 +653,7 @@ void delta::world::assembly::nonUniMeshGeometry(
     rad.push_back(particleDiameter/2);
     radius = particleDiameter/2;
 
-    delta::geometry::granulates::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
+    delta::geometry::primitive::granulate::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
 
     xCoordinatesArray.push_back(xCoordinates);
     yCoordinatesArray.push_back(yCoordinates);
@@ -707,7 +706,7 @@ void delta::world::assembly::loadNuclearGeometry(
 
   //measurements
   std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
-  delta::geometry::graphite::generateBrickFB(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::primitive::graphite::generateBrickFB(xCoordinates, yCoordinates, zCoordinates);
   iREAL w = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
   iREAL h = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -766,7 +765,7 @@ void delta::world::assembly::makeBrickGrid(
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
   iREAL pos[3]; pos[0] = pos[1] = pos[2] = 0;
-  delta::geometry::graphite::generateBrickFB(pos, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::primitive::graphite::generateBrickFB(pos, xCoordinates, yCoordinates, zCoordinates);
   iREAL width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
   iREAL height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();

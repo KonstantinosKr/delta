@@ -30,7 +30,6 @@ std::vector<std::string> splitString(std::string input, std::string delimiter)
  return output;
 }
 
-
 void delta::core::parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid, std::vector<std::string> &componentSeq)
 {
 	std::string line;

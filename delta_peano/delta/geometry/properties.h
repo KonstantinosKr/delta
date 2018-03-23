@@ -30,7 +30,7 @@
 #include <limits>
 #include <array>
 #include <stdio.h>
-#include "delta/hull/alg.h"
+#include "delta/geometry/hull/alg.h"
 #include "delta/geometry/material.h"
 
 namespace delta {

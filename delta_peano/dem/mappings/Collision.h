@@ -9,6 +9,8 @@
 #define DEM_MAPPINGS_Collision_H_
 
 
+#include <delta/contact/contactpoint.h>
+
 #include "tarch/logging/Log.h"
 #include "tarch/la/Vector.h"
 #include "tarch/logging/CommandLineLogger.h"
@@ -23,8 +25,6 @@
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"
-
-#include "delta/collision/contactpoint.h"
 
 #include <vector>
 
@@ -109,7 +109,7 @@ class dem::mappings::Collision {
     );
 
     static void addCollision(
-      std::vector<delta::collision::contactpoint>& newContactPoints,
+      std::vector<delta::contact::contactpoint>& newContactPoints,
       const records::Particle&                    particleA,
       const records::Particle&                    particleB,
       bool sphere
@@ -145,7 +145,7 @@ class dem::mappings::Collision {
 
     struct Collisions {
       records::Particle                            _copyOfPartnerParticle;
-      std::vector<delta::collision::contactpoint>  _contactPoints;
+      std::vector<delta::contact::contactpoint>  _contactPoints;
     };
 
     /**

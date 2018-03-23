@@ -30,16 +30,15 @@
 #include "dem/State.h"
 #include "dem/mappings/AdoptGrid.h"
 
-#include "delta/geometry/triangle.h"
+#include "delta/geometry/primitive/triangle.h"
 #include "delta/geometry/material.h"
-
-#include "delta/geometry/cubes.h"
-#include "delta/geometry/granulates.h"
+#include "delta/geometry/primitive/cube.h"
+#include "delta/geometry/primitive/granulate.h"
 #include "delta/geometry/properties.h"
-#include "delta/geometry/hopper.h"
-#include "delta/geometry/blender.h"
-#include <delta/geometry/graphite.h>
-#include <delta/geometry/surface.h>
+#include "delta/geometry/primitive/hopper.h"
+#include "delta/geometry/primitive/blender.h"
+#include <delta/geometry/primitive/graphite.h>
+#include <delta/geometry/primitive/surface.h>
 #include <delta/world/assembly.h>
 
 namespace dem {

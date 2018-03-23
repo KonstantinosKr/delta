@@ -26,9 +26,9 @@
 #include <array>
 #include "delta/geometry/material.h"
 #include "delta/geometry/properties.h"
-#include "delta/geometry/granulates.h"
-#include "delta/geometry/graphite.h"
-#include "delta/geometry/cubes.h"
+#include "delta/geometry/primitive/granulate.h"
+#include "delta/geometry/primitive/graphite.h"
+#include "delta/geometry/primitive/cube.h"
 #include "delta/world/object.h"
 
 #include "stdlib.h"

@@ -29,7 +29,7 @@
 #include "dem/Cell.h"
 #include "dem/State.h"
 #include <vector>
-#include "delta/forces/forces.h"
+#include "delta/contact/forces/forces.h"
 #include "dem/mappings/Collision.h"
 #include "delta/geometry/properties.h"
 

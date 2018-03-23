@@ -1,14 +1,16 @@
 #include "dem/mappings/AdoptGridMerged.h"
+
+#include <delta/contact/detection/bf.h>
+#include <delta/contact/filter.h>
+#include <delta/contact/detection/gjk.h>
+#include <delta/contact/detection/hybrid.h>
+#include <delta/contact/detection/penalty.h>
+#include <delta/contact/detection/sphere.h>
+
 #include "dem/mappings/AdoptGrid.h"
 #include "dem/mappings/Collision.h"
 
-#include "delta/collision/hybrid.h"
-#include "delta/collision/sphere.h"
-#include "delta/collision/bf.h"
-#include "delta/collision/penalty.h"
-#include "delta/collision/gjk.h"
-#include "delta/collision/filter.h"
-#include "delta/forces/forces.h"
+#include "delta/contact/forces/forces.h"
 #include "delta/dynamics/dynamics.h"
 
 #include "dem/mappings/MoveParticles.h"
@@ -120,10 +122,10 @@ void dem::mappings::AdoptGridMerged::beginIteration(
   assertion( _collisionsOfNextTraversal.empty() );
 
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
-  delta::collision::cleanPenaltyStatistics();
+  delta::contact::detection::cleanPenaltyStatistics();
 
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
-  delta::collision::cleanHybridStatistics();
+  delta::contact::detection::cleanHybridStatistics();
 
   _state = solverState;
   _state.clearAccumulatedData();
@@ -151,7 +153,7 @@ void dem::mappings::AdoptGridMerged::endIteration(
 
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
   {
-    std::vector<int> penaltyStatistics = delta::collision::getPenaltyStatistics();
+    std::vector<int> penaltyStatistics = delta::contact::detection::getPenaltyStatistics();
     for (int i=0; i<static_cast<int>(penaltyStatistics.size()); i++)
     {
       logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
@@ -161,10 +163,10 @@ void dem::mappings::AdoptGridMerged::endIteration(
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
   {
     logInfo( "endIteration(State)", std::endl
-                                 << "Penalty Fails: " << delta::collision::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::collision::getPenaltyFails()/(double)delta::collision::getBatchSize() << std::endl
-                                 << "Batch Size: " << delta::collision::getBatchSize() << std::endl
-                                 << "Batch Fails: " << delta::collision::getBatchFails() << " BatchFail avg: " << (double)delta::collision::getBatchFails()/(double)delta::collision::getBatchSize() << std::endl
-                                 << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
+                                 << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::contact::detection::getPenaltyFails()/(double)delta::contact::detection::getBatchSize() << std::endl
+                                 << "Batch Size: " << delta::contact::detection::getBatchSize() << std::endl
+                                 << "Batch Fails: " << delta::contact::detection::getBatchFails() << " BatchFail avg: " << (double)delta::contact::detection::getBatchFails()/(double)delta::contact::detection::getBatchSize() << std::endl
+                                 << "BatchError avg: " << (double)delta::contact::detection::getBatchError()/(double)delta::contact::detection::getBatchSize());
   }
 
   while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
@@ -231,7 +233,7 @@ void dem::mappings::AdoptGridMerged::touchVertexFirstTime(
       double rforce[3]  = {0.0,0.0,0.0};
       double rtorque[3] = {0.0,0.0,0.0};
 
-      delta::forces::getContactsForces(p->_contactPoints,
+      delta::contact::forces::getContactsForces(p->_contactPoints,
                                        &(currentParticle._persistentRecords._centreOfMass(0)),
                                        &(currentParticle._persistentRecords._referentialCentreOfMass(0)),
                                        &(currentParticle._persistentRecords._angular(0)),

@@ -1,13 +1,15 @@
-#include "delta/collision/hybrid.h"
-#include "delta/collision/sphere.h"
-#include "delta/collision/bf.h"
-#include "delta/collision/penalty.h"
-#include "delta/collision/gjk.h"
-#include "delta/collision/filter.h"
-#include "delta/forces/forces.h"
+#include "delta/contact/forces/forces.h"
 #include "delta/dynamics/dynamics.h"
 
 #include "dem/mappings/Collision.h"
+
+#include <delta/contact/detection/bf.h>
+#include <delta/contact/filter.h>
+#include <delta/contact/detection/gjk.h>
+#include <delta/contact/detection/hybrid.h>
+#include <delta/contact/detection/penalty.h>
+#include <delta/contact/detection/sphere.h>
+
 #include "dem/mappings/MoveParticles.h"
 
 #include "peano/utils/Loop.h"
@@ -78,7 +80,7 @@ bool dem::mappings::Collision::RunParticleComparisionsInBackground  = false;
 dem::State dem::mappings::Collision::_backgroundTaskState;
 
 void dem::mappings::Collision::addCollision(
-    std::vector<delta::collision::contactpoint> & newContactPoints,
+    std::vector<delta::contact::contactpoint> & newContactPoints,
     const records::Particle&                    particleA,
     const records::Particle&                    particleB,
     bool sphere
@@ -169,7 +171,7 @@ void dem::mappings::Collision::addCollision(
    */
   dataSetA->_contactPoints.insert(dataSetA->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
 
-  for (std::vector<delta::collision::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
+  for (std::vector<delta::contact::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
   {
     //invert normal for particle B
     p->normal[0] = -1.0 * p->normal[0];
@@ -309,7 +311,7 @@ void dem::mappings::Collision::collisionDetection(
 {
   if(_enableOverlapCheck)
   {
-    bool overlap = delta::collision::isSphereOverlayInContact(
+    bool overlap = delta::contact::detection::isSphereOverlayInContact(
       particleA.getCentre(0),
       particleA.getCentre(1),
       particleA.getCentre(2),
@@ -331,7 +333,7 @@ void dem::mappings::Collision::collisionDetection(
 
   //if(!approach) return;
 
-  std::vector<delta::collision::contactpoint> newContactPoints;
+  std::vector<delta::contact::contactpoint> newContactPoints;
 
   switch (_collisionModel) {
     case CollisionModel::Sphere:
@@ -339,7 +341,7 @@ void dem::mappings::Collision::collisionDetection(
         particleA.getIsObstacle() &&
         !particleB.getIsObstacle()
       ) {
-        newContactPoints = delta::collision::sphereWithBarrierBA(
+        newContactPoints = delta::contact::detection::sphereWithBarrierBA(
               particleB.getCentre(0),
               particleB.getCentre(1),
               particleB.getCentre(2),
@@ -359,7 +361,7 @@ void dem::mappings::Collision::collisionDetection(
         !particleA.getIsObstacle() &&
          particleB.getIsObstacle()
       ) {
-        newContactPoints = delta::collision::sphereWithBarrierAB(
+        newContactPoints = delta::contact::detection::sphereWithBarrierAB(
               particleA.getCentre(0),
               particleA.getCentre(1),
               particleA.getCentre(2),
@@ -377,7 +379,7 @@ void dem::mappings::Collision::collisionDetection(
               particleB.getGlobalParticleId());
       }
       else {
-        newContactPoints = delta::collision::sphere(
+        newContactPoints = delta::contact::detection::sphere(
             particleA.getCentre(0),
             particleA.getCentre(1),
             particleA.getCentre(2),
@@ -397,7 +399,7 @@ void dem::mappings::Collision::collisionDetection(
       break;
     case CollisionModel::BruteForce:
 
-      newContactPoints = delta::collision::bf(
+      newContactPoints = delta::contact::detection::bf(
         numberOfTrianglesA,
         xCoordinatesA,
         yCoordinatesA,
@@ -418,7 +420,7 @@ void dem::mappings::Collision::collisionDetection(
       break;
     case CollisionModel::Penalty:
 
-      newContactPoints = delta::collision::penalty(
+      newContactPoints = delta::contact::detection::penalty(
         numberOfTrianglesA,
         xCoordinatesA,
         yCoordinatesA,
@@ -439,7 +441,7 @@ void dem::mappings::Collision::collisionDetection(
       break;
     case CollisionModel::PenaltyStat:
 
-      newContactPoints = delta::collision::penaltyStat(
+      newContactPoints = delta::contact::detection::penaltyStat(
         numberOfTrianglesA,
         xCoordinatesA,
         yCoordinatesA,
@@ -459,7 +461,7 @@ void dem::mappings::Collision::collisionDetection(
       break;
     case CollisionModel::PenaltyTune:
 
-      delta::collision::penaltyStat(
+      delta::contact::detection::penaltyStat(
         numberOfTrianglesA,
         xCoordinatesA,
         yCoordinatesA,
@@ -479,7 +481,7 @@ void dem::mappings::Collision::collisionDetection(
       break;
     case CollisionModel::HybridOnBatches:
 
-      newContactPoints = delta::collision::hybridWithPerBatchFallBack(
+      newContactPoints = delta::contact::detection::hybridWithPerBatchFallBack(
         numberOfTrianglesA,
         xCoordinatesA,
         yCoordinatesA,
@@ -500,7 +502,7 @@ void dem::mappings::Collision::collisionDetection(
       break;
     case CollisionModel::HybridOnTrianglePairs:
 
-      newContactPoints = delta::collision::hybridWithPerTriangleFallBack(
+      newContactPoints = delta::contact::detection::hybridWithPerTriangleFallBack(
         numberOfTrianglesA,
         xCoordinatesA,
         yCoordinatesA,
@@ -521,7 +523,7 @@ void dem::mappings::Collision::collisionDetection(
       break;
     case CollisionModel::HybridStat:
 
-      newContactPoints = delta::collision::hybridTriangleStat(
+      newContactPoints = delta::contact::detection::hybridTriangleStat(
         numberOfTrianglesA,
         xCoordinatesA,
         yCoordinatesA,
@@ -893,10 +895,10 @@ void dem::mappings::Collision::beginIteration(
 	assertion( _collisionsOfNextTraversal.empty() );
 
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
-	delta::collision::cleanPenaltyStatistics();
+	delta::contact::detection::cleanPenaltyStatistics();
 
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
-	delta::collision::cleanHybridStatistics();
+	delta::contact::detection::cleanHybridStatistics();
 
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
@@ -921,7 +923,7 @@ void dem::mappings::Collision::endIteration(
 
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
 	{
-		std::vector<int> penaltyStatistics = delta::collision::getPenaltyStatistics();
+		std::vector<int> penaltyStatistics = delta::contact::detection::getPenaltyStatistics();
 		for (int i=0; i<static_cast<int>(penaltyStatistics.size()); i++)
 		{
 			logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
@@ -931,10 +933,10 @@ void dem::mappings::Collision::endIteration(
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
 	{
 	logInfo( "endIteration(State)", std::endl
-								 << "Penalty Fails: " << delta::collision::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::collision::getPenaltyFails()/(double)delta::collision::getBatchSize() << std::endl
-								 << "Batch Size: " << delta::collision::getBatchSize() << std::endl
-								 << "Batch Fails: " << delta::collision::getBatchFails() << " BatchFail avg: " << (double)delta::collision::getBatchFails()/(double)delta::collision::getBatchSize() << std::endl
-								 << "BatchError avg: " << (double)delta::collision::getBatchError()/(double)delta::collision::getBatchSize());
+								 << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::contact::detection::getPenaltyFails()/(double)delta::contact::detection::getBatchSize() << std::endl
+								 << "Batch Size: " << delta::contact::detection::getBatchSize() << std::endl
+								 << "Batch Fails: " << delta::contact::detection::getBatchFails() << " BatchFail avg: " << (double)delta::contact::detection::getBatchFails()/(double)delta::contact::detection::getBatchSize() << std::endl
+								 << "BatchError avg: " << (double)delta::contact::detection::getBatchError()/(double)delta::contact::detection::getBatchSize());
 	}
 
 	while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
@@ -976,7 +978,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 			double rforce[3]  = {0.0,0.0,0.0};
 			double rtorque[3] = {0.0,0.0,0.0};
 
-			delta::forces::getContactsForces(p->_contactPoints,
+			delta::contact::forces::getContactsForces(p->_contactPoints,
                                        &(currentParticle._persistentRecords._centreOfMass(0)),
                                        &(currentParticle._persistentRecords._referentialCentreOfMass(0)),
                                        &(currentParticle._persistentRecords._angular(0)),
