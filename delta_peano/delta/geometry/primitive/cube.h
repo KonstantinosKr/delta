@@ -29,8 +29,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "delta/geometry/hull/hull.h"
-#include "delta/geometry/hull/alg.h"
+#include "delta/geometry/operator/hull/hull.h"
+#include "delta/geometry/operator/hull/alg.h"
 #include "delta/geometry/primitive/triangle.h"
 
 namespace delta {

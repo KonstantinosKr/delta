@@ -44,12 +44,12 @@ class delta::world::object
   public:
 
     object(
-        std::string                   component,
-        int                           particleID,
-        std::array<double, 3>         centre,
-        delta::geometry::material::MaterialType material,
-        bool                          isObstacle,
-        bool                          isFriction
+        std::string                   			component,
+        int                           			particleID,
+        std::array<double, 3>         			centre,
+        delta::geometry::material::MaterialType 	material,
+        bool                          			isObstacle,
+        bool                          			isFriction
         );
 
     void generateSphere(double  rad);

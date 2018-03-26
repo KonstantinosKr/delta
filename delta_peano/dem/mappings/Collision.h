@@ -144,8 +144,8 @@ class dem::mappings::Collision {
     static bool _enableOverlapCheck;
 
     struct Collisions {
-      records::Particle                            _copyOfPartnerParticle;
-      std::vector<delta::contact::contactpoint>  _contactPoints;
+      records::Particle                            	_copyOfPartnerParticle;
+      std::vector<delta::contact::contactpoint>		_contactPoints;
     };
 
     /**
