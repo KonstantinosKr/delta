@@ -6,10 +6,14 @@
  */
 
 #include <delta/core/read.h>
-#include "math.h"
-#include <stdlib.h>
 
-std::vector<std::string> splitString(std::string input, std::string delimiter)
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
+
+std::vector<std::string> splitString(
+  std::string input,
+  std::string delimiter)
 {
  std::vector<std::string> output;
  char *pch;
@@ -30,12 +34,15 @@ std::vector<std::string> splitString(std::string input, std::string delimiter)
  return output;
 }
 
-void delta::core::parseModelGridSchematics(std::string inputfile, std::vector<std::vector<std::string>> &componentGrid, std::vector<std::string> &componentSeq)
+void delta::core::parseModelGridSchematics(
+	std::string fileName,
+	std::vector<std::vector<std::string>> &componentGrid,
+	std::vector<std::string> &componentSeq)
 {
 	std::string line;
 	//46 * 46
 	std::ifstream myfile;
-	myfile.open(inputfile);
+	myfile.open(fileName);
 
 	if (myfile.is_open())
 	{
@@ -57,15 +64,16 @@ void delta::core::parseModelGridSchematics(std::string inputfile, std::vector<st
 	else std::cout << "Unable to open file";
 }
 
-void delta::core::readVTKGeometry(char* fileinput,
-							  std::vector<iREAL>&  xCoordinates,
-							  std::vector<iREAL>&  yCoordinates,
-							  std::vector<iREAL>&  zCoordinates)
+void delta::core::readSingleVTKGeometry(
+	char* fileName,
+	std::vector<iREAL>&  xCoordinates,
+	std::vector<iREAL>&  yCoordinates,
+	std::vector<iREAL>&  zCoordinates)
 {
 	//////////VTK format////////////
 
 	char filename[100];
-	strncpy(filename, fileinput, 100);
+	strncpy(filename, fileName, 100);
 	FILE *fp1 = fopen(filename, "r+");
 
 	if( fp1 == NULL )
@@ -135,4 +143,60 @@ void delta::core::readVTKGeometry(char* fileinput,
 	} while (ch != EOF);
 
 	fclose(fp1);
+}
+
+void delta::core::readSceneGeometry(std::string fileName) {
+
+  Assimp::Importer importer;
+
+  const aiScene* scene = importer.ReadFile( fileName,
+        aiProcess_CalcTangentSpace       |
+        aiProcess_Triangulate            |
+        aiProcess_JoinIdenticalVertices  |
+        aiProcess_SortByPType);
+
+  bool n = scene->HasMeshes();
+  int nn = scene->mNumMeshes;
+
+  printf("has %i meshes:%i\n", nn, n);
+
+  std::vector<iREAL> g_vp;
+
+  for(uint m_i = 0; m_i < scene->mNumMeshes; m_i++)
+  {
+      const aiMesh* mesh = scene->mMeshes[m_i];
+
+      //delta::world::Object *Object = new delta::world::Object();
+
+      g_vp.reserve(3 * mesh->mNumVertices);
+
+      //vertices
+      for(uint v_i = 0; v_i < mesh->mNumVertices; v_i++)
+      {
+          if(mesh->HasPositions())
+          {
+              const aiVector3D* vp = &(mesh->mVertices[v_i]);
+              g_vp.push_back(vp->x);
+              g_vp.push_back(vp->y);
+              g_vp.push_back(vp->z);
+
+              std::cout << vp->x << vp->y << vp->z << std::endl;
+          }
+      }
+
+      ///Faces
+      for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
+      {
+    		//printf("number of indices: %i\n", mesh->mFaces[f_i].mNumIndices);
+    		for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index++)
+    		{
+    		  const aiVector3D* vp = &(mesh->mVertices[index]);
+
+    		  //flat triangles
+    		  //delta::core::Delta::_trianglesXCoordinates.push_back(vp->x);
+    		  //delta::core::Delta::_trianglesYCoordinates.push_back(vp->y);
+    		  //delta::core::Delta::_trianglesZCoordinates.push_back(vp->z);
+    		}
+      }
+  }
 }

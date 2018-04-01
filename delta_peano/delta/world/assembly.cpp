@@ -6,6 +6,11 @@
  */
 
 #include "assembly.h"
+#include "delta/geometry/material.h"
+#include "delta/geometry/properties.h"
+#include "delta/geometry/primitive/granulate.h"
+#include "delta/geometry/primitive/cube.h"
+#include "delta/world/body/graphite.h"
 
 
 iREAL delta::world::assembly::getDiscritization(
@@ -116,7 +121,14 @@ std::vector<std::array<iREAL, 3>> delta::world::assembly::array3d(
 	return array;
 }
 
-void delta::world::assembly::collapseUniformGrid(iREAL position[3], std::vector<std::array<iREAL, 3>>& grid, int xzcuts, int ycuts, iREAL elementWidth, iREAL elementHeight, iREAL epsilon)
+void delta::world::assembly::collapseUniformGrid(
+	iREAL position[3],
+	std::vector<std::array<iREAL, 3>>& grid,
+	int xzcuts,
+	int ycuts,
+	iREAL elementWidth,
+	iREAL elementHeight,
+	iREAL epsilon)
 {
   int xAxisLoc = 0;
   int zAxisLoc = 0;
@@ -231,7 +243,7 @@ void delta::world::assembly::uniform(
       int index,
       bool isSphereOrNone,
       int noPointsPerParticle,
-      std::vector<delta::world::object> &_insitufineObjects)
+      std::vector<delta::world::Object> &_insitufineObjects)
 {
 
   if(isSphereOrNone)
@@ -302,7 +314,7 @@ void delta::world::assembly::nonuniform(
           iREAL isSphereOrNone,
           iREAL subcellx,
           int _noPointsPerParticle,
-          std::vector<delta::world::object> &_insitufineObjects)
+          std::vector<delta::world::Object> &_insitufineObjects)
 {
   if(isSphereOrNone)
   {
@@ -337,7 +349,7 @@ void delta::world::assembly::uniSphereRadius(
 void delta::world::assembly::uniSphereRadius(
     iREAL totalMass,
     int index,
-    std::vector<delta::world::object> &_insitufineObjects)
+    std::vector<delta::world::Object> &_insitufineObjects)
 {
 
   if((!_insitufineObjects.size()) > 0) return;
@@ -356,7 +368,7 @@ void delta::world::assembly::uniSphereRadius(
 void delta::world::assembly::uniMeshGeometry(
     iREAL totalMass,
     int noPointsPerParticle,
-    std::vector<delta::world::object> &_insitufineObjects,
+    std::vector<delta::world::Object> &_insitufineObjects,
     int index)
 {
   iREAL massPerParticle = totalMass/(iREAL)_insitufineObjects.size();
@@ -574,7 +586,7 @@ void delta::world::assembly::nonUniSphereRadius(
     iREAL totalMass,
     int index,
     iREAL subcellx,
-    std::vector<delta::world::object> &_insitufineObjects)
+    std::vector<delta::world::Object> &_insitufineObjects)
 {
   if((!_insitufineObjects.size()) > 0) return;
 
@@ -699,14 +711,14 @@ void delta::world::assembly::loadNuclearGeometry(
     iREAL position[3],
     iREAL width,
     int layers,
-    std::vector<delta::world::object>& _insitufineObjects)
+    std::vector<delta::world::Object>& _insitufineObjects)
 {
 
   //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
 
   //measurements
   std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
-  delta::geometry::primitive::graphite::generateBrickFB(xCoordinates, yCoordinates, zCoordinates);
+  delta::world::body::generateBrickFB(xCoordinates, yCoordinates, zCoordinates);
   iREAL w = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
   iREAL h = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -741,7 +753,7 @@ void delta::world::assembly::loadNuclearGeometry(
     {
       auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-      delta::world::object obj("FB", 0, tmp[i], material, false, false);
+      delta::world::Object obj("FB", 0, tmp[i], material, false, false);
       _insitufineObjects.push_back(obj);
     }
     //std::cout << tmp.size() << " " << particleGrid.size() << std::endl;
@@ -758,14 +770,14 @@ void delta::world::assembly::makeBrickGrid(
     int   xzElements,
     iREAL arrayYlength,
     int   yElements,
-    std::vector<delta::world::object>& _insitufineObjects)
+    std::vector<delta::world::Object>& _insitufineObjects)
 {
   std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
 
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
   iREAL pos[3]; pos[0] = pos[1] = pos[2] = 0;
-  delta::geometry::primitive::graphite::generateBrickFB(pos, xCoordinates, yCoordinates, zCoordinates);
+  delta::world::body::generateBrickFB(pos, xCoordinates, yCoordinates, zCoordinates);
   iREAL width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
   iREAL height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
@@ -811,7 +823,7 @@ void delta::world::assembly::makeBrickGrid(
   {
     auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-    delta::world::object obj("FB", i, particleGrid[i], material, false, false);
+    delta::world::Object obj("FB", i, particleGrid[i], material, false, false);
     obj.setRad(scalePercentage);
     _insitufineObjects.push_back(obj);
   }

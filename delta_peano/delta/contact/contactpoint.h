@@ -61,18 +61,18 @@ struct delta::contact::contactpoint {
    */
 
   contactpoint(
-    const iREAL&  xPA,
-    const iREAL&  yPA,
-    const iREAL&  zPA,
-    const iREAL&  epsilonA,
-    const int masterID,
+    const iREAL&  	xPA,
+    const iREAL&  	yPA,
+    const iREAL&  	zPA,
+    const iREAL&  	epsilonA,
+    const int 		masterID,
 
-    const iREAL&  xQB,
-    const iREAL&  yQB,
-    const iREAL&  zQB,
-    const iREAL&  epsilonB,
-    const int slaveID,
-    const bool&    type
+    const iREAL&  	xQB,
+    const iREAL&  	yQB,
+    const iREAL&  	zQB,
+    const iREAL&  	epsilonB,
+    const int 		slaveID,
+    const bool&    	type
   );
 
   /**

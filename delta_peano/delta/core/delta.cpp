@@ -23,9 +23,21 @@
  */
 
 #include <delta/core/delta.h>
+#include <vector>
+#include <iostream>
+
+#include "delta/core/read.h"
+#include "delta/geometry/mesh/triangle.h"
+#include "delta/geometry/mesh/vertex.h"
+#include "delta/geometry/material.h"
+
+std::vector< delta::world::Object> 	delta::core::Delta::_objects;
 
 delta::core::Delta::Delta()
 {
+  //delta::world::Object *n = new delta::world::Object();
+  //_objects.push_back(*n);
+  //readSceneGeometry("miniKey.stl");
   delta::geometry::material::materialInit();
 }
 

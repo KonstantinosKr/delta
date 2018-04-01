@@ -30,14 +30,14 @@
 #include "dem/State.h"
 #include "dem/mappings/AdoptGrid.h"
 
-#include "delta/geometry/primitive/triangle.h"
+#include "delta/geometry/operators/triangle.h"
 #include "delta/geometry/material.h"
 #include "delta/geometry/primitive/cube.h"
 #include "delta/geometry/primitive/granulate.h"
 #include "delta/geometry/properties.h"
-#include "delta/geometry/primitive/hopper.h"
-#include "delta/geometry/primitive/blender.h"
-#include <delta/geometry/primitive/graphite.h>
+#include "delta/world/body/hopper.h"
+#include "delta/world/body/blender.h"
+#include <delta/world/body/graphite.h>
 #include <delta/geometry/primitive/surface.h>
 #include <delta/world/assembly.h>
 
@@ -165,9 +165,9 @@ class dem::mappings::CreateGrid {
     static int   _numberOfObstacles;
     static int   _numberOfTriangles;
 
-    static std::vector<delta::world::object> _coarseObjects;
-    static std::vector<delta::world::object> _fineObjects;
-    static std::vector<delta::world::object> _insitufineObjects;
+    static std::vector<delta::world::Object> _coarseObjects;
+    static std::vector<delta::world::Object> _fineObjects;
+    static std::vector<delta::world::Object> _insitufineObjects;
 
     void computeBoundary();
 
@@ -177,7 +177,7 @@ class dem::mappings::CreateGrid {
     void deployFineEnviroment(dem::Vertex& vertex, double cellSize,
         iREAL centreAsArray[3]);
 
-    void deployObject(dem::Vertex& vertex, delta::world::object object);
+    void deployObject(dem::Vertex& vertex, delta::world::Object Object);
 
     void decomposeMeshByOctsection(
         int octSectTimes,
@@ -187,7 +187,7 @@ class dem::mappings::CreateGrid {
         delta::geometry::material::MaterialType material,
         bool isFriction,
         bool isObstacle,
-        std::vector<delta::world::object> &fineObjects);
+        std::vector<delta::world::Object> &fineObjects);
 
     int decomposeMeshIntoParticles(
         std::vector<double> xCoordinates,
@@ -196,7 +196,7 @@ class dem::mappings::CreateGrid {
         delta::geometry::material::MaterialType material,
         bool isObstacle,
         bool isFriction,
-        std::vector<delta::world::object> &fineObjects);
+        std::vector<delta::world::Object> &fineObjects);
 
   public:
   /**
@@ -233,7 +233,7 @@ class dem::mappings::CreateGrid {
    *   values set by the constructor are meaningless.
    * - Whenever the mapping's beginIteration() operation is called, the
    *   mapping has to initialise itself. To do this, it has to analyse the
-   *   passed state object. The beginIteration() operation may set attributes
+   *   passed state Object. The beginIteration() operation may set attributes
    *   of the mapping and these attributes now have a valid state.
    * - All the subsequent calls on the mapping can rely on valid mapping
    *   attributes until
@@ -299,8 +299,8 @@ class dem::mappings::CreateGrid {
    * You may not copy a plotter, and it does not make sense to merge a plotter.
    * So, in this case, I recommend to hold a pointer to the plotter in the
    * original mapping and to create the plotter on the heap. This pointer then
-   * is copied to all thread-local mappings and all threads use the same object
-   * on the heap. However, you should protect this object by a BooleanSemaphore
+   * is copied to all thread-local mappings and all threads use the same Object
+   * on the heap. However, you should protect this Object by a BooleanSemaphore
    * and a lock to serialise all accesses to the plotter.
    */
   void mergeWithWorkerThread(const CreateGrid& workerThread);
@@ -397,7 +397,7 @@ class dem::mappings::CreateGrid {
    * @see peano::MappingSpecification for information on thread safety.
    *
    * @param fineGridVertex  Vertex that is to be initialised. This is the
-   *                        central object you should set values to.
+   *                        central Object you should set values to.
    * @param fineGridX       Position of vertex.
    * @param fineGridH       Size of the surrounding cells of fineGridVertex.
    * @param coarseGridVertices Vertices of the coarser grid. These vertices
@@ -493,7 +493,7 @@ class dem::mappings::CreateGrid {
    * @see peano::MappingSpecification for information on thread safety.
    *
    * @param fineGridVertex  Vertex that is to be initialised. This is the
-   *                        central object you should set values to.
+   *                        central Object you should set values to.
    * @param fineGridX       Position of vertex.
    * @param fineGridH       Size of the surrounding cells of fineGridVertex.
    * @param coarseGridVertices Vertices of the coarser grid. These vertices
@@ -1318,7 +1318,7 @@ class dem::mappings::CreateGrid {
    * <h2> Parallelisation </h2>
    *
    * If you run your code in parallel, beginIteration() and endIteration()
-   * realise the following lifecycle together with the state object:
+   * realise the following lifecycle together with the state Object:
    *
    * - Receive the state from the master if there is a master.
    * - beginIteration()
@@ -1334,13 +1334,13 @@ class dem::mappings::CreateGrid {
    *
    * <h2> State persistency </h2>
    *
-   * The state object handed into beginIteration() is not required to persist.
-   * Do never store a pointer to solverState as the object might move around
+   * The state Object handed into beginIteration() is not required to persist.
+   * Do never store a pointer to solverState as the Object might move around
    * in memory. If you require the state, copy it. There are some state attributes
    * that do change over time. The most important example is the set of forked
    * ranks. All those attributes that do change and that you may access within a
    * mapping besides in beginIteration() and endIteration() are static, so no
-   * pointers to the state object are required.
+   * pointers to the state Object are required.
    *
    * @see CreateGrid()
    */
@@ -1355,13 +1355,13 @@ class dem::mappings::CreateGrid {
    * This operation is called at the very end, i.e. after all the handleCell()
    * and touchVertexLastTime() operations have been invoked. In this
    * operation, you have to write all the data you will need later on back to
-   * the state object passed. Afterwards, the attributes of your mapping
-   * object (as well as global static fields) might be overwritten.
+   * the state Object passed. Afterwards, the attributes of your mapping
+   * Object (as well as global static fields) might be overwritten.
    *
    * !!! Parallelisation
    *
    * If you run your code in parallel, beginIteration() and endIteration()
-   * realise the following lifecycle together with the state object:
+   * realise the following lifecycle together with the state Object:
    *
    * - Receive the state from the master if there is a master.
    * - beginIteration()

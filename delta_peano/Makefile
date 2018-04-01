@@ -8,11 +8,13 @@ PROJECT_HOME = .
 INCLUDE_TBB=$(TBB_INC)
 INCLUDE_OMP=
 INCLUDE_MPI=$(MPI_INC)
+INCLUDE_LIBS=$(ASSIMP_INC) #-I/Users/konstantinos/Devel/libraries/assimp/include/
 
 LINK_TBB=$(TBB_SHLIB)
 LINK_OMP=$(OMP_SHLIB)
 LINK_OMP=-fopenmp
-LINK_MPI=-L /usr/local/Cluster-Apps/openmpi/gcc-4.9.1/1.8.2/lib/ -lmpi
+LINK_MPI=-L/usr/local/Cluster-Apps/openmpi/gcc-4.9.1/1.8.2/lib/ -lmpi
+LINK_LIBS=$(ASSIMP_LIB) #-L/Users/konstantinos/Devel/libraries/assimp/lib/ -lassimp
 
 ##############################################################################################
 
@@ -39,8 +41,8 @@ GCCNOVEC=-O3 -Wall -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loop
 GCCNOVECCNT=-O3 -Wall -g -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing
 ##############################################################################################
 
-ICCRUN=-O3 -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHOST
-ICCRUNCNT=-O3 -g -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=3 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHOST
+ICCRUN=-O3 -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=2 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHOST
+ICCRUNCNT=-O3 -g -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=2 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -fno-rtti -no-ipo -ip -xHOST
 ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors
 ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -xHOST
 ICCNOVECCNT=-O3 -Wall -g -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -fno-rtti -xHOST
@@ -158,9 +160,9 @@ delta-icc-asserts: header build
 
 delta-icc-release-tbb: CC=icpc -std=c++14
 delta-icc-release-tbb: DIM=-DDim3
-delta-icc-release-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
-delta-icc-release-tbb: CFLAGS=$(ICCRUN) $(ICC_OMP_SHAREDMEMORY) $(INCLUDE_TBB)
-delta-icc-release-tbb: LFLAGS=$(LINK_TBB) $(LINK_OMP)
+delta-icc-release-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB# -DompTriangle
+delta-icc-release-tbb: CFLAGS=$(ICCRUN) $(ICC_OMP_SHAREDMEMORY) $(INCLUDE_TBB) $(INCLUDE_LIBS)
+delta-icc-release-tbb: LFLAGS=$(LINK_TBB) $(LINK_OMP) $(LINK_LIBS)
 delta-icc-release-tbb: EXECUTABLE=delta-icc-release-tbb
 delta-icc-release-tbb: header build
 
@@ -221,7 +223,7 @@ OBJECTS=$(SOURCES:.cpp=.o)
 files.mk:
 	touch files.mk
 	echo SOURCES=\\ > files.mk
-	find -L $(PROJECT_HOME) -name '*.cpp' | tr '\n' ' ' >> files.mk
+	find -L $(PROJECT_HOME)  -path delta/core/libraries/ -prune -o -name '*.cpp' | grep -v ./libraries/ | tr '\n' ' ' >> files.mk
 
 header:
 	@echo  --- This is Delta @ Peano 3 ---

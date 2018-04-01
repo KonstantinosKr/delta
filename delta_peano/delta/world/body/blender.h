@@ -30,18 +30,16 @@
 #include <assert.h>
 
 namespace delta {
-  namespace geometry {
-	namespace primitive {
-	  namespace blender {
-		void generateBlender(
-		  iREAL  center[3],
-		  iREAL 	width,
-		  std::vector<iREAL>&  xCoordinates,
-		  std::vector<iREAL>&  yCoordinates,
-		  std::vector<iREAL>&  zCoordinates
-		);
-	  }
-    }
+  namespace world {
+	namespace body {
+	  void generateBlender(
+		iREAL  center[3],
+		iREAL 	width,
+		std::vector<iREAL>&  xCoordinates,
+		std::vector<iREAL>&  yCoordinates,
+		std::vector<iREAL>&  zCoordinates
+	  );
+	}
   }
 }
 

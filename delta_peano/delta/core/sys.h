@@ -25,13 +25,11 @@
 #ifndef DELTA_CORE_SYS_H_
 #define DELTA_CORE_SYS_H_
 
-
 #include <time.h>
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <string>
-
 
 namespace delta {
 	namespace core {
@@ -46,19 +44,34 @@ public:
 	void saveScenario(int particles, int obstacles);
 	void saveIteration(iREAL timeStepSize, int currentIteration, int iteration);
 
-	void saveParticleProperties(int id, iREAL positionSpatial[3], iREAL positionReferential[3], iREAL linear[3], iREAL angular[3],
-							    iREAL inertia[9], iREAL orientation[9], iREAL mass);
-	void saveParticleGeometry(int id, std::vector<iREAL> xCoordinatesSpatial, std::vector<iREAL> yCoordinatesSpatial, std::vector<iREAL> zCoordinatesSpatial,
-							  std::vector<iREAL> xCoordinatesRef, std::vector<iREAL> yCoordinatesRef, std::vector<iREAL> zCoordinatesRef);
-private:
-	static int _noOfParticles;
-	static int _noOfObstacles;
-	static iREAL _timeStepSize;
-	static int _currentIteration;
-	static int	_totalIterations;
+	void saveParticleProperties(
+		int id,
+		iREAL positionSpatial[3],
+		iREAL positionReferential[3],
+		iREAL linear[3],
+		iREAL angular[3],
+		iREAL inertia[9],
+		iREAL orientation[9],
+		iREAL mass);
 
-	static std::vector<int> _id;
-	static std::ofstream _checkpointFile;
+	void saveParticleGeometry(
+		int id,
+		std::vector<iREAL> xCoordinatesSpatial,
+		std::vector<iREAL> yCoordinatesSpatial,
+		std::vector<iREAL> zCoordinatesSpatial,
+		std::vector<iREAL> xCoordinatesRef,
+		std::vector<iREAL> yCoordinatesRef,
+		std::vector<iREAL> zCoordinatesRef);
+
+private:
+	static int 		_noOfParticles;
+	static int 		_noOfObstacles;
+	static iREAL 	_timeStepSize;
+	static int 		_currentIteration;
+	static int		_totalIterations;
+
+	static std::vector<int> 	_id;
+	static std::ofstream 	_checkpointFile;
 };
 
 

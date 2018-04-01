@@ -8,17 +8,17 @@
 #include <fstream>
 #include <iomanip>
 #include <string.h>
-#include <delta/geometry/primitive/graphite.h>
+#include <delta/world/body/graphite.h>
 
 //Intact Poly Brick
-void delta::geometry::primitive::graphite::generateBrickFB(
+void delta::world::body::generateBrickFB(
   iREAL center[3], iREAL h,
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
   std::vector<iREAL>&  zCoordinates)
 {
 	char fileinput[100] = "input/bricksmall.vtk";
-	delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+	delta::core::readSingleVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	iREAL centerOfGeometry[3];
 	delta::geometry::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
@@ -31,13 +31,13 @@ void delta::geometry::primitive::graphite::generateBrickFB(
 	delta::geometry::properties::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::geometry::primitive::graphite::generateBrickFB(
+void delta::world::body::generateBrickFB(
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
   std::vector<iREAL>&  zCoordinates)
 {
   char fileinput[100] = "input/bricksmall.vtk";
-  delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+  delta::core::readSingleVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
   iREAL center[] = {0,0,0};
   iREAL centerOfGeometry[3];
   delta::geometry::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
@@ -48,15 +48,14 @@ void delta::geometry::primitive::graphite::generateBrickFB(
   delta::geometry::properties::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
 }
 
-
-void delta::geometry::primitive::graphite::generateBrickFB(
+void delta::world::body::generateBrickFB(
   iREAL center[3],
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
   std::vector<iREAL>&  zCoordinates)
 {
   char fileinput[100] = "input/bricksmall.vtk";
-  delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+  delta::core::readSingleVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
   iREAL centerOfGeometry[3];
   delta::geometry::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
@@ -66,14 +65,14 @@ void delta::geometry::primitive::graphite::generateBrickFB(
 }
 
 //Loose keys - orientation X-wise
-void delta::geometry::primitive::graphite::generateKeyXK(
+void delta::world::body::generateKeyXK(
   iREAL center[3], iREAL h,
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
   std::vector<iREAL>&  zCoordinates)
 {
 	char fileinput[100] = "input/keysmall.vtk";
-	delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+	delta::core::readSingleVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	iREAL centerOfGeometry[3];
 	delta::geometry::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);
@@ -85,14 +84,14 @@ void delta::geometry::primitive::graphite::generateKeyXK(
 }
 
 //Loose keys - orientation Y-wise
-void delta::geometry::primitive::graphite::generateKeyYK(
+void delta::world::body::generateKeyYK(
   iREAL center[3], iREAL h,
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
   std::vector<iREAL>&  zCoordinates)
 {
 	char fileinput[100] = "input/keysmall.vtk";
-	delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+	delta::core::readSingleVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
 
 	iREAL centerOfGeometry[3];
 	delta::geometry::properties::centerOfGeometry(centerOfGeometry, xCoordinates, yCoordinates, zCoordinates);

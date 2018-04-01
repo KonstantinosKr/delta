@@ -25,32 +25,28 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <stdio.h>
 #include <delta/geometry/material.h>
 #include <delta/geometry/properties.h>
-#include <delta/geometry/primitive/granulate.h>
-#include <delta/geometry/primitive/cube.h>
-#include <delta/geometry/primitive/hopper.h>
-#include <delta/geometry/primitive/graphite.h>
-
 
 namespace delta {
   namespace world {
-    class object;
+    class Object;
   }
 }
 
-class delta::world::object
+class delta::world::Object
 {
   public:
-
-    object(
-        std::string                   			component,
-        int                           			particleID,
-        std::array<double, 3>         			centre,
-        delta::geometry::material::MaterialType 	material,
-        bool                          			isObstacle,
-        bool                          			isFriction
-        );
+	Object();
+	Object(
+		std::string                   				component,
+		int                           				particleID,
+		std::array<double, 3>         				centre,
+		delta::geometry::material::MaterialType 		material,
+		bool                          				isObstacle,
+		bool                          				isFriction
+		);
 
     void generateSphere(double  rad);
 
@@ -115,7 +111,7 @@ class delta::world::object
     double getMinZ();
     double getMaxZ();
 
-    virtual ~object();
+    virtual ~Object();
 
   private:
     std::string           _component;
@@ -123,6 +119,9 @@ class delta::world::object
     std::array<double, 3> _centre;
     double                _rad;
     double                _mass;
+
+	//std::map<int, std::vector<delta::geometry::mesh::Vertex> >		_vertices;
+	//std::map<int, std::vector<delta::geometry::mesh::Triangle> > 	_triangles;
 
     std::vector<double>   _xCoordinates;
     std::vector<double>   _yCoordinates;

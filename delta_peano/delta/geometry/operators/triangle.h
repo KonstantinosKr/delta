@@ -36,7 +36,7 @@
 
 namespace delta {
   namespace geometry {
-	namespace primitive {
+	namespace operators {
 	  namespace triangle {
 		void bisectTriangle(
 			iREAL xT[3],

@@ -5,8 +5,14 @@ dem::records::Particle::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::Particle::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+dem::records::Particle::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<6,double>& verticesA, const tarch::la::Vector<6,double>& verticesB, const tarch::la::Vector<6,double>& verticesC, const tarch::la::Vector<6,double>& verticesrefA, const tarch::la::Vector<6,double>& verticesrefB, const tarch::la::Vector<6,double>& verticesrefC, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
 _vertices(vertices),
+_verticesA(verticesA),
+_verticesB(verticesB),
+_verticesC(verticesC),
+_verticesrefA(verticesrefA),
+_verticesrefB(verticesrefB),
+_verticesrefC(verticesrefC),
 _orientation(orientation),
 _inertia(inertia),
 _inverse(inverse),
@@ -36,13 +42,13 @@ dem::records::Particle::Particle() {
 
 
 dem::records::Particle::Particle(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._haloDiameter, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
+_persistentRecords(persistentRecords._vertices, persistentRecords._verticesA, persistentRecords._verticesB, persistentRecords._verticesC, persistentRecords._verticesrefA, persistentRecords._verticesrefB, persistentRecords._verticesrefC, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._haloDiameter, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
    
 }
 
 
-dem::records::Particle::Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
-_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, haloDiameter, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
+dem::records::Particle::Particle(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<6,double>& verticesA, const tarch::la::Vector<6,double>& verticesB, const tarch::la::Vector<6,double>& verticesC, const tarch::la::Vector<6,double>& verticesrefA, const tarch::la::Vector<6,double>& verticesrefB, const tarch::la::Vector<6,double>& verticesrefC, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+_persistentRecords(vertices, verticesA, verticesB, verticesC, verticesrefA, verticesrefB, verticesrefC, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, haloDiameter, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
    
 }
 
@@ -64,6 +70,42 @@ void dem::records::Particle::toString (std::ostream& out) const {
       out << getVertices(i) << ",";
    }
    out << getVertices(6-1) << "]";
+   out << ",";
+   out << "verticesA:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesA(i) << ",";
+   }
+   out << getVerticesA(6-1) << "]";
+   out << ",";
+   out << "verticesB:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesB(i) << ",";
+   }
+   out << getVerticesB(6-1) << "]";
+   out << ",";
+   out << "verticesC:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesC(i) << ",";
+   }
+   out << getVerticesC(6-1) << "]";
+   out << ",";
+   out << "verticesrefA:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesrefA(i) << ",";
+   }
+   out << getVerticesrefA(6-1) << "]";
+   out << ",";
+   out << "verticesrefB:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesrefB(i) << ",";
+   }
+   out << getVerticesrefB(6-1) << "]";
+   out << ",";
+   out << "verticesrefC:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesrefC(i) << ",";
+   }
+   out << getVerticesrefC(6-1) << "]";
    out << ",";
    out << "orientation:[";
    for (int i = 0; i < 9-1; i++) {
@@ -151,6 +193,12 @@ dem::records::Particle::PersistentRecords dem::records::Particle::getPersistentR
 dem::records::ParticlePacked dem::records::Particle::convert() const{
    return ParticlePacked(
       getVertices(),
+      getVerticesA(),
+      getVerticesB(),
+      getVerticesC(),
+      getVerticesrefA(),
+      getVerticesrefB(),
+      getVerticesrefC(),
       getOrientation(),
       getInertia(),
       getInverse(),
@@ -192,14 +240,14 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          #endif
          MPI_Datatype subtypes[Attributes] = {
             #ifndef MPI2
-            MPI_UB
+            , MPI_UB
             #endif
             
          };
          
          int blocklen[Attributes] = {
             #ifndef MPI2
-            1
+            , 1
             #endif
             
          };
@@ -248,12 +296,18 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          Particle dummyParticle[2];
          
          #ifdef MPI2
-         const int Attributes = 21;
+         const int Attributes = 27;
          #else
-         const int Attributes = 22;
+         const int Attributes = 28;
          #endif
          MPI_Datatype subtypes[Attributes] = {
               MPI_DOUBLE		 //vertices
+            , MPI_DOUBLE		 //verticesA
+            , MPI_DOUBLE		 //verticesB
+            , MPI_DOUBLE		 //verticesC
+            , MPI_DOUBLE		 //verticesrefA
+            , MPI_DOUBLE		 //verticesrefB
+            , MPI_DOUBLE		 //verticesrefC
             , MPI_DOUBLE		 //orientation
             , MPI_DOUBLE		 //inertia
             , MPI_DOUBLE		 //inverse
@@ -282,6 +336,12 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          
          int blocklen[Attributes] = {
               6		 //vertices
+            , 6		 //verticesA
+            , 6		 //verticesB
+            , 6		 //verticesC
+            , 6		 //verticesrefA
+            , 6		 //verticesrefB
+            , 6		 //verticesrefC
             , 9		 //orientation
             , 9		 //inertia
             , 9		 //inverse
@@ -321,104 +381,134 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._vertices[0]))), 		&disp[0] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._orientation[0]))), 		&disp[1] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesA[0]))), 		&disp[1] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._orientation[0]))), 		&disp[1] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesA[0]))), 		&disp[1] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._inertia[0]))), 		&disp[2] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesB[0]))), 		&disp[2] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._inertia[0]))), 		&disp[2] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesB[0]))), 		&disp[2] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._inverse[0]))), 		&disp[3] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesC[0]))), 		&disp[3] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._inverse[0]))), 		&disp[3] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesC[0]))), 		&disp[3] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._centre[0]))), 		&disp[4] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesrefA[0]))), 		&disp[4] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._centre[0]))), 		&disp[4] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesrefA[0]))), 		&disp[4] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._centreOfMass[0]))), 		&disp[5] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesrefB[0]))), 		&disp[5] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._centreOfMass[0]))), 		&disp[5] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesrefB[0]))), 		&disp[5] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._referentialCentreOfMass[0]))), 		&disp[6] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesrefC[0]))), 		&disp[6] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._referentialCentreOfMass[0]))), 		&disp[6] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._verticesrefC[0]))), 		&disp[6] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._velocity[0]))), 		&disp[7] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._orientation[0]))), 		&disp[7] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._velocity[0]))), 		&disp[7] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._orientation[0]))), 		&disp[7] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._angular[0]))), 		&disp[8] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._inertia[0]))), 		&disp[8] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._angular[0]))), 		&disp[8] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._inertia[0]))), 		&disp[8] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._referentialAngular[0]))), 		&disp[9] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._inverse[0]))), 		&disp[9] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._referentialAngular[0]))), 		&disp[9] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._inverse[0]))), 		&disp[9] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._diameter))), 		&disp[10] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._centre[0]))), 		&disp[10] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._diameter))), 		&disp[10] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._centre[0]))), 		&disp[10] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._haloDiameter))), 		&disp[11] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._centreOfMass[0]))), 		&disp[11] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._haloDiameter))), 		&disp[11] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._centreOfMass[0]))), 		&disp[11] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._epsilon))), 		&disp[12] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._referentialCentreOfMass[0]))), 		&disp[12] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._epsilon))), 		&disp[12] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._referentialCentreOfMass[0]))), 		&disp[12] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._mass))), 		&disp[13] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._velocity[0]))), 		&disp[13] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._mass))), 		&disp[13] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._velocity[0]))), 		&disp[13] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._hMin))), 		&disp[14] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._angular[0]))), 		&disp[14] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._hMin))), 		&disp[14] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._angular[0]))), 		&disp[14] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._globalParticleId))), 		&disp[15] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._referentialAngular[0]))), 		&disp[15] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._globalParticleId))), 		&disp[15] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._referentialAngular[0]))), 		&disp[15] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._localParticleId))), 		&disp[16] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._diameter))), 		&disp[16] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._localParticleId))), 		&disp[16] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._diameter))), 		&disp[16] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._numberOfTriangles))), 		&disp[17] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._haloDiameter))), 		&disp[17] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._numberOfTriangles))), 		&disp[17] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._haloDiameter))), 		&disp[17] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._material))), 		&disp[18] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._epsilon))), 		&disp[18] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._material))), 		&disp[18] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._epsilon))), 		&disp[18] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._isObstacle))), 		&disp[19] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._mass))), 		&disp[19] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._isObstacle))), 		&disp[19] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._mass))), 		&disp[19] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._friction))), 		&disp[20] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._hMin))), 		&disp[20] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._friction))), 		&disp[20] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._hMin))), 		&disp[20] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._globalParticleId))), 		&disp[21] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._globalParticleId))), 		&disp[21] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._localParticleId))), 		&disp[22] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._localParticleId))), 		&disp[22] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._numberOfTriangles))), 		&disp[23] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._numberOfTriangles))), 		&disp[23] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._material))), 		&disp[24] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._material))), 		&disp[24] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._isObstacle))), 		&disp[25] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._isObstacle))), 		&disp[25] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._friction))), 		&disp[26] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[0]._persistentRecords._friction))), 		&disp[26] );
          #endif
          #ifdef MPI2
          for (int i=1; i<Attributes; i++) {
@@ -436,9 +526,9 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
             assertion4(disp[i]<static_cast<int>(sizeof(Particle)), i, disp[i], Attributes, sizeof(Particle));
          }
          #ifndef MPI2
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[1]))), 		&disp[21] );
-         disp[21] -= base;
-         disp[21] += disp[0];
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticle[1]))), 		&disp[27] );
+         disp[27] -= base;
+         disp[27] += disp[0];
          #endif
          #ifdef MPI2
          MPI_Datatype tmpType; 
@@ -480,7 +570,6 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
       else {
       
          MPI_Request* sendRequestHandle = new MPI_Request();
-         MPI_Status   status;
          int          flag = 0;
          int          result;
          
@@ -512,11 +601,11 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
             << ": " << tarch::parallel::MPIReturnValueToString(result);
             _log.error( "send(int)",msg.str() );
          }
-         result = MPI_Test( sendRequestHandle, &flag, &status );
+         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
          while (!flag) {
             if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
             if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-            result = MPI_Test( sendRequestHandle, &flag, &status );
+            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
             if (result!=MPI_SUCCESS) {
                std::ostringstream msg;
                msg << "testing for finished send task for dem::records::Particle "
@@ -566,8 +655,7 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
    void dem::records::Particle::receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep) {
       if (communicateSleep<0) {
       
-         MPI_Status  status;
-         const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
+         const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), MPI_STATUS_IGNORE);
          if ( result != MPI_SUCCESS ) {
             std::ostringstream msg;
             msg << "failed to start to receive dem::records::Particle from node "
@@ -579,7 +667,6 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
       else {
       
          MPI_Request* sendRequestHandle = new MPI_Request();
-         MPI_Status   status;
          int          flag = 0;
          int          result;
          
@@ -608,11 +695,11 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
             _log.error( "receive(int)", msg.str() );
          }
          
-         result = MPI_Test( sendRequestHandle, &flag, &status );
+         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
          while (!flag) {
             if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
             if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-            result = MPI_Test( sendRequestHandle, &flag, &status );
+            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
             if (result!=MPI_SUCCESS) {
                std::ostringstream msg;
                msg << "testing for finished receive task for dem::records::Particle failed: "
@@ -688,8 +775,14 @@ dem::records::ParticlePacked::PersistentRecords::PersistentRecords() {
 }
 
 
-dem::records::ParticlePacked::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+dem::records::ParticlePacked::PersistentRecords::PersistentRecords(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<6,double>& verticesA, const tarch::la::Vector<6,double>& verticesB, const tarch::la::Vector<6,double>& verticesC, const tarch::la::Vector<6,double>& verticesrefA, const tarch::la::Vector<6,double>& verticesrefB, const tarch::la::Vector<6,double>& verticesrefC, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
 _vertices(vertices),
+_verticesA(verticesA),
+_verticesB(verticesB),
+_verticesC(verticesC),
+_verticesrefA(verticesrefA),
+_verticesrefB(verticesrefB),
+_verticesrefC(verticesrefC),
 _orientation(orientation),
 _inertia(inertia),
 _inverse(inverse),
@@ -719,13 +812,13 @@ dem::records::ParticlePacked::ParticlePacked() {
 
 
 dem::records::ParticlePacked::ParticlePacked(const PersistentRecords& persistentRecords):
-_persistentRecords(persistentRecords._vertices, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._haloDiameter, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
+_persistentRecords(persistentRecords._vertices, persistentRecords._verticesA, persistentRecords._verticesB, persistentRecords._verticesC, persistentRecords._verticesrefA, persistentRecords._verticesrefB, persistentRecords._verticesrefC, persistentRecords._orientation, persistentRecords._inertia, persistentRecords._inverse, persistentRecords._centre, persistentRecords._centreOfMass, persistentRecords._referentialCentreOfMass, persistentRecords._velocity, persistentRecords._angular, persistentRecords._referentialAngular, persistentRecords._diameter, persistentRecords._haloDiameter, persistentRecords._epsilon, persistentRecords._mass, persistentRecords._hMin, persistentRecords._globalParticleId, persistentRecords._localParticleId, persistentRecords._numberOfTriangles, persistentRecords._material, persistentRecords._isObstacle, persistentRecords._friction) {
    
 }
 
 
-dem::records::ParticlePacked::ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
-_persistentRecords(vertices, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, haloDiameter, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
+dem::records::ParticlePacked::ParticlePacked(const tarch::la::Vector<6,double>& vertices, const tarch::la::Vector<6,double>& verticesA, const tarch::la::Vector<6,double>& verticesB, const tarch::la::Vector<6,double>& verticesC, const tarch::la::Vector<6,double>& verticesrefA, const tarch::la::Vector<6,double>& verticesrefB, const tarch::la::Vector<6,double>& verticesrefC, const tarch::la::Vector<9,double>& orientation, const tarch::la::Vector<9,double>& inertia, const tarch::la::Vector<9,double>& inverse, const tarch::la::Vector<DIMENSIONS,double>& centre, const tarch::la::Vector<DIMENSIONS,double>& centreOfMass, const tarch::la::Vector<DIMENSIONS,double>& referentialCentreOfMass, const tarch::la::Vector<DIMENSIONS,double>& velocity, const tarch::la::Vector<DIMENSIONS,double>& angular, const tarch::la::Vector<DIMENSIONS,double>& referentialAngular, const double& diameter, const double& haloDiameter, const double& epsilon, const double& mass, const double& hMin, const int& globalParticleId, const int& localParticleId, const int& numberOfTriangles, const int& material, const bool& isObstacle, const bool& friction):
+_persistentRecords(vertices, verticesA, verticesB, verticesC, verticesrefA, verticesrefB, verticesrefC, orientation, inertia, inverse, centre, centreOfMass, referentialCentreOfMass, velocity, angular, referentialAngular, diameter, haloDiameter, epsilon, mass, hMin, globalParticleId, localParticleId, numberOfTriangles, material, isObstacle, friction) {
    
 }
 
@@ -747,6 +840,42 @@ void dem::records::ParticlePacked::toString (std::ostream& out) const {
       out << getVertices(i) << ",";
    }
    out << getVertices(6-1) << "]";
+   out << ",";
+   out << "verticesA:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesA(i) << ",";
+   }
+   out << getVerticesA(6-1) << "]";
+   out << ",";
+   out << "verticesB:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesB(i) << ",";
+   }
+   out << getVerticesB(6-1) << "]";
+   out << ",";
+   out << "verticesC:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesC(i) << ",";
+   }
+   out << getVerticesC(6-1) << "]";
+   out << ",";
+   out << "verticesrefA:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesrefA(i) << ",";
+   }
+   out << getVerticesrefA(6-1) << "]";
+   out << ",";
+   out << "verticesrefB:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesrefB(i) << ",";
+   }
+   out << getVerticesrefB(6-1) << "]";
+   out << ",";
+   out << "verticesrefC:[";
+   for (int i = 0; i < 6-1; i++) {
+      out << getVerticesrefC(i) << ",";
+   }
+   out << getVerticesrefC(6-1) << "]";
    out << ",";
    out << "orientation:[";
    for (int i = 0; i < 9-1; i++) {
@@ -834,6 +963,12 @@ dem::records::ParticlePacked::PersistentRecords dem::records::ParticlePacked::ge
 dem::records::Particle dem::records::ParticlePacked::convert() const{
    return Particle(
       getVertices(),
+      getVerticesA(),
+      getVerticesB(),
+      getVerticesC(),
+      getVerticesrefA(),
+      getVerticesrefB(),
+      getVerticesrefC(),
       getOrientation(),
       getInertia(),
       getInverse(),
@@ -875,14 +1010,14 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          #endif
          MPI_Datatype subtypes[Attributes] = {
             #ifndef MPI2
-            MPI_UB
+            , MPI_UB
             #endif
             
          };
          
          int blocklen[Attributes] = {
             #ifndef MPI2
-            1
+            , 1
             #endif
             
          };
@@ -931,12 +1066,18 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          ParticlePacked dummyParticlePacked[2];
          
          #ifdef MPI2
-         const int Attributes = 21;
+         const int Attributes = 27;
          #else
-         const int Attributes = 22;
+         const int Attributes = 28;
          #endif
          MPI_Datatype subtypes[Attributes] = {
               MPI_DOUBLE		 //vertices
+            , MPI_DOUBLE		 //verticesA
+            , MPI_DOUBLE		 //verticesB
+            , MPI_DOUBLE		 //verticesC
+            , MPI_DOUBLE		 //verticesrefA
+            , MPI_DOUBLE		 //verticesrefB
+            , MPI_DOUBLE		 //verticesrefC
             , MPI_DOUBLE		 //orientation
             , MPI_DOUBLE		 //inertia
             , MPI_DOUBLE		 //inverse
@@ -965,6 +1106,12 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          
          int blocklen[Attributes] = {
               6		 //vertices
+            , 6		 //verticesA
+            , 6		 //verticesB
+            , 6		 //verticesC
+            , 6		 //verticesrefA
+            , 6		 //verticesrefB
+            , 6		 //verticesrefC
             , 9		 //orientation
             , 9		 //inertia
             , 9		 //inverse
@@ -1004,104 +1151,134 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._vertices[0]))), 		&disp[0] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._orientation[0]))), 		&disp[1] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesA[0]))), 		&disp[1] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._orientation[0]))), 		&disp[1] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesA[0]))), 		&disp[1] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._inertia[0]))), 		&disp[2] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesB[0]))), 		&disp[2] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._inertia[0]))), 		&disp[2] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesB[0]))), 		&disp[2] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._inverse[0]))), 		&disp[3] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesC[0]))), 		&disp[3] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._inverse[0]))), 		&disp[3] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesC[0]))), 		&disp[3] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._centre[0]))), 		&disp[4] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesrefA[0]))), 		&disp[4] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._centre[0]))), 		&disp[4] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesrefA[0]))), 		&disp[4] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._centreOfMass[0]))), 		&disp[5] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesrefB[0]))), 		&disp[5] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._centreOfMass[0]))), 		&disp[5] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesrefB[0]))), 		&disp[5] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._referentialCentreOfMass[0]))), 		&disp[6] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesrefC[0]))), 		&disp[6] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._referentialCentreOfMass[0]))), 		&disp[6] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._verticesrefC[0]))), 		&disp[6] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._velocity[0]))), 		&disp[7] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._orientation[0]))), 		&disp[7] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._velocity[0]))), 		&disp[7] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._orientation[0]))), 		&disp[7] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._angular[0]))), 		&disp[8] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._inertia[0]))), 		&disp[8] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._angular[0]))), 		&disp[8] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._inertia[0]))), 		&disp[8] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._referentialAngular[0]))), 		&disp[9] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._inverse[0]))), 		&disp[9] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._referentialAngular[0]))), 		&disp[9] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._inverse[0]))), 		&disp[9] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._diameter))), 		&disp[10] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._centre[0]))), 		&disp[10] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._diameter))), 		&disp[10] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._centre[0]))), 		&disp[10] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._haloDiameter))), 		&disp[11] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._centreOfMass[0]))), 		&disp[11] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._haloDiameter))), 		&disp[11] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._centreOfMass[0]))), 		&disp[11] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._epsilon))), 		&disp[12] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._referentialCentreOfMass[0]))), 		&disp[12] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._epsilon))), 		&disp[12] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._referentialCentreOfMass[0]))), 		&disp[12] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._mass))), 		&disp[13] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._velocity[0]))), 		&disp[13] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._mass))), 		&disp[13] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._velocity[0]))), 		&disp[13] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._hMin))), 		&disp[14] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._angular[0]))), 		&disp[14] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._hMin))), 		&disp[14] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._angular[0]))), 		&disp[14] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._globalParticleId))), 		&disp[15] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._referentialAngular[0]))), 		&disp[15] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._globalParticleId))), 		&disp[15] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._referentialAngular[0]))), 		&disp[15] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._localParticleId))), 		&disp[16] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._diameter))), 		&disp[16] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._localParticleId))), 		&disp[16] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._diameter))), 		&disp[16] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._numberOfTriangles))), 		&disp[17] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._haloDiameter))), 		&disp[17] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._numberOfTriangles))), 		&disp[17] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._haloDiameter))), 		&disp[17] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._material))), 		&disp[18] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._epsilon))), 		&disp[18] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._material))), 		&disp[18] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._epsilon))), 		&disp[18] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._isObstacle))), 		&disp[19] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._mass))), 		&disp[19] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._isObstacle))), 		&disp[19] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._mass))), 		&disp[19] );
          #endif
          #ifdef MPI2
-         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._friction))), 		&disp[20] );
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._hMin))), 		&disp[20] );
          #else
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._friction))), 		&disp[20] );
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._hMin))), 		&disp[20] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._globalParticleId))), 		&disp[21] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._globalParticleId))), 		&disp[21] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._localParticleId))), 		&disp[22] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._localParticleId))), 		&disp[22] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._numberOfTriangles))), 		&disp[23] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._numberOfTriangles))), 		&disp[23] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._material))), 		&disp[24] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._material))), 		&disp[24] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._isObstacle))), 		&disp[25] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._isObstacle))), 		&disp[25] );
+         #endif
+         #ifdef MPI2
+         MPI_Get_address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._friction))), 		&disp[26] );
+         #else
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[0]._persistentRecords._friction))), 		&disp[26] );
          #endif
          #ifdef MPI2
          for (int i=1; i<Attributes; i++) {
@@ -1119,9 +1296,9 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
             assertion4(disp[i]<static_cast<int>(sizeof(ParticlePacked)), i, disp[i], Attributes, sizeof(ParticlePacked));
          }
          #ifndef MPI2
-         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[1]))), 		&disp[21] );
-         disp[21] -= base;
-         disp[21] += disp[0];
+         MPI_Address( const_cast<void*>(static_cast<const void*>(&(dummyParticlePacked[1]))), 		&disp[27] );
+         disp[27] -= base;
+         disp[27] += disp[0];
          #endif
          #ifdef MPI2
          MPI_Datatype tmpType; 
@@ -1163,7 +1340,6 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
       else {
       
          MPI_Request* sendRequestHandle = new MPI_Request();
-         MPI_Status   status;
          int          flag = 0;
          int          result;
          
@@ -1195,11 +1371,11 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
             << ": " << tarch::parallel::MPIReturnValueToString(result);
             _log.error( "send(int)",msg.str() );
          }
-         result = MPI_Test( sendRequestHandle, &flag, &status );
+         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
          while (!flag) {
             if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
             if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-            result = MPI_Test( sendRequestHandle, &flag, &status );
+            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
             if (result!=MPI_SUCCESS) {
                std::ostringstream msg;
                msg << "testing for finished send task for dem::records::ParticlePacked "
@@ -1249,8 +1425,7 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
    void dem::records::ParticlePacked::receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep) {
       if (communicateSleep<0) {
       
-         MPI_Status  status;
-         const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
+         const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), MPI_STATUS_IGNORE);
          if ( result != MPI_SUCCESS ) {
             std::ostringstream msg;
             msg << "failed to start to receive dem::records::ParticlePacked from node "
@@ -1262,7 +1437,6 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
       else {
       
          MPI_Request* sendRequestHandle = new MPI_Request();
-         MPI_Status   status;
          int          flag = 0;
          int          result;
          
@@ -1291,11 +1465,11 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
             _log.error( "receive(int)", msg.str() );
          }
          
-         result = MPI_Test( sendRequestHandle, &flag, &status );
+         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
          while (!flag) {
             if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
             if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-            result = MPI_Test( sendRequestHandle, &flag, &status );
+            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
             if (result!=MPI_SUCCESS) {
                std::ostringstream msg;
                msg << "testing for finished receive task for dem::records::ParticlePacked failed: "

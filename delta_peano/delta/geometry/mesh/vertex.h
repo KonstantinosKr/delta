@@ -40,10 +40,6 @@ class delta::geometry::mesh::Vertex {
 
   private:
 	iREAL _x, _y, _z;
-
-  protected:
-    std::map<int, std::vector<delta::geometry::mesh::Vertex> >   	_vertices;
-
 };
 
 #endif /* GEOMETRY_MESH_VERTEX_H_ */

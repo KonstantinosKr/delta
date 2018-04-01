@@ -290,7 +290,6 @@
          else {
          
             MPI_Request* sendRequestHandle = new MPI_Request();
-            MPI_Status   status;
             int          flag = 0;
             int          result;
             
@@ -322,11 +321,11 @@
                << ": " << tarch::parallel::MPIReturnValueToString(result);
                _log.error( "send(int)",msg.str() );
             }
-            result = MPI_Test( sendRequestHandle, &flag, &status );
+            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
             while (!flag) {
                if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                if (result!=MPI_SUCCESS) {
                   std::ostringstream msg;
                   msg << "testing for finished send task for dem::records::Cell "
@@ -377,8 +376,8 @@
          if (communicateSleep<0) {
          
             MPI_Status  status;
-            const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-            _senderDestinationRank = status.MPI_SOURCE;
+            const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+            _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
             if ( result != MPI_SUCCESS ) {
                std::ostringstream msg;
                msg << "failed to start to receive dem::records::Cell from node "
@@ -419,11 +418,11 @@
                _log.error( "receive(int)", msg.str() );
             }
             
-            result = MPI_Test( sendRequestHandle, &flag, &status );
+            result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
             while (!flag) {
                if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                if (result!=MPI_SUCCESS) {
                   std::ostringstream msg;
                   msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -459,7 +458,7 @@
             
             delete sendRequestHandle;
             
-            _senderDestinationRank = status.MPI_SOURCE;
+            _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
             #ifdef Debug
             _log.debug("receive(int,int)", "received " + toString() ); 
             #endif
@@ -793,7 +792,6 @@
          else {
          
             MPI_Request* sendRequestHandle = new MPI_Request();
-            MPI_Status   status;
             int          flag = 0;
             int          result;
             
@@ -825,11 +823,11 @@
                << ": " << tarch::parallel::MPIReturnValueToString(result);
                _log.error( "send(int)",msg.str() );
             }
-            result = MPI_Test( sendRequestHandle, &flag, &status );
+            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
             while (!flag) {
                if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                if (result!=MPI_SUCCESS) {
                   std::ostringstream msg;
                   msg << "testing for finished send task for dem::records::CellPacked "
@@ -880,8 +878,8 @@
          if (communicateSleep<0) {
          
             MPI_Status  status;
-            const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-            _senderDestinationRank = status.MPI_SOURCE;
+            const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+            _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
             if ( result != MPI_SUCCESS ) {
                std::ostringstream msg;
                msg << "failed to start to receive dem::records::CellPacked from node "
@@ -922,11 +920,11 @@
                _log.error( "receive(int)", msg.str() );
             }
             
-            result = MPI_Test( sendRequestHandle, &flag, &status );
+            result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
             while (!flag) {
                if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                if (result!=MPI_SUCCESS) {
                   std::ostringstream msg;
                   msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -962,7 +960,7 @@
             
             delete sendRequestHandle;
             
-            _senderDestinationRank = status.MPI_SOURCE;
+            _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
             #ifdef Debug
             _log.debug("receive(int,int)", "received " + toString() ); 
             #endif
@@ -1332,7 +1330,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -1364,11 +1361,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -1419,8 +1416,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -1461,11 +1458,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -1501,7 +1498,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -1868,7 +1865,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -1900,11 +1896,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -1955,8 +1951,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -1997,11 +1993,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -2037,7 +2033,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -2390,7 +2386,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -2422,11 +2417,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -2477,8 +2472,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -2519,11 +2514,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -2559,7 +2554,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -2915,7 +2910,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -2947,11 +2941,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -3002,8 +2996,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -3044,11 +3038,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -3084,7 +3078,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -3426,7 +3420,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -3458,11 +3451,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -3513,8 +3506,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -3555,11 +3548,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -3595,7 +3588,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -3940,7 +3933,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -3972,11 +3964,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -4027,8 +4019,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -4069,11 +4061,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -4109,7 +4101,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -4458,7 +4450,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -4490,11 +4481,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -4545,8 +4536,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -4587,11 +4578,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -4627,7 +4618,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -4979,7 +4970,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -5011,11 +5001,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -5066,8 +5056,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -5108,11 +5098,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -5148,7 +5138,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -5537,7 +5527,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -5569,11 +5558,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -5624,8 +5613,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -5666,11 +5655,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -5706,7 +5695,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -6091,7 +6080,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -6123,11 +6111,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -6178,8 +6166,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -6220,11 +6208,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -6260,7 +6248,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -6624,7 +6612,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -6656,11 +6643,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -6711,8 +6698,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -6753,11 +6740,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -6793,7 +6780,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -7160,7 +7147,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -7192,11 +7178,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -7247,8 +7233,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -7289,11 +7275,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -7329,7 +7315,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -7700,7 +7686,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -7732,11 +7717,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -7787,8 +7772,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -7829,11 +7814,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -7869,7 +7854,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -8243,7 +8228,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -8275,11 +8259,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -8330,8 +8314,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -8372,11 +8356,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -8412,7 +8396,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -8772,7 +8756,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -8804,11 +8787,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -8859,8 +8842,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -8901,11 +8884,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -8941,7 +8924,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -9304,7 +9287,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -9336,11 +9318,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -9391,8 +9373,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -9433,11 +9415,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -9473,7 +9455,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -9866,7 +9848,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -9898,11 +9879,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -9953,8 +9934,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -9995,11 +9976,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -10035,7 +10016,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -10424,7 +10405,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -10456,11 +10436,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -10511,8 +10491,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -10553,11 +10533,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -10593,7 +10573,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -10975,7 +10955,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -11007,11 +10986,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -11062,8 +11041,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -11104,11 +11083,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -11144,7 +11123,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -11522,7 +11501,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -11554,11 +11532,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -11609,8 +11587,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -11651,11 +11629,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -11691,7 +11669,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -12073,7 +12051,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -12105,11 +12082,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -12160,8 +12137,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -12202,11 +12179,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -12242,7 +12219,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -12627,7 +12604,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -12659,11 +12635,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -12714,8 +12690,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -12756,11 +12732,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -12796,7 +12772,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -13207,7 +13183,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -13239,11 +13214,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -13294,8 +13269,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -13336,11 +13311,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -13376,7 +13351,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -13783,7 +13758,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -13815,11 +13789,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -13870,8 +13844,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -13912,11 +13886,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -13952,7 +13926,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -14356,7 +14330,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -14388,11 +14361,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -14443,8 +14416,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -14485,11 +14458,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -14525,7 +14498,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -14925,7 +14898,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -14957,11 +14929,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -15012,8 +14984,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -15054,11 +15026,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -15094,7 +15066,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -15494,7 +15466,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -15526,11 +15497,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -15581,8 +15552,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -15623,11 +15594,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -15663,7 +15634,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -16059,7 +16030,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -16091,11 +16061,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -16146,8 +16116,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -16188,11 +16158,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -16228,7 +16198,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -16650,7 +16620,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -16682,11 +16651,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::Cell "
@@ -16737,8 +16706,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::Cell from node "
@@ -16779,11 +16748,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::Cell failed: "
@@ -16819,7 +16788,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif
@@ -17237,7 +17206,6 @@
             else {
             
                MPI_Request* sendRequestHandle = new MPI_Request();
-               MPI_Status   status;
                int          flag = 0;
                int          result;
                
@@ -17269,11 +17237,11 @@
                   << ": " << tarch::parallel::MPIReturnValueToString(result);
                   _log.error( "send(int)",msg.str() );
                }
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished send task for dem::records::CellPacked "
@@ -17324,8 +17292,8 @@
             if (communicateSleep<0) {
             
                MPI_Status  status;
-               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &status);
-               _senderDestinationRank = status.MPI_SOURCE;
+               const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                if ( result != MPI_SUCCESS ) {
                   std::ostringstream msg;
                   msg << "failed to start to receive dem::records::CellPacked from node "
@@ -17366,11 +17334,11 @@
                   _log.error( "receive(int)", msg.str() );
                }
                
-               result = MPI_Test( sendRequestHandle, &flag, &status );
+               result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                while (!flag) {
                   if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
                   if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-                  result = MPI_Test( sendRequestHandle, &flag, &status );
+                  result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE );
                   if (result!=MPI_SUCCESS) {
                      std::ostringstream msg;
                      msg << "testing for finished receive task for dem::records::CellPacked failed: "
@@ -17406,7 +17374,7 @@
                
                delete sendRequestHandle;
                
-               _senderDestinationRank = status.MPI_SOURCE;
+               _senderDestinationRank = source==MPI_ANY_SOURCE ? status.MPI_SOURCE : source;
                #ifdef Debug
                _log.debug("receive(int,int)", "received " + toString() ); 
                #endif

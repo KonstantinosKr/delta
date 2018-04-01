@@ -69,8 +69,15 @@ void delta::core::Sys::closeCheckpoint(){
 	_checkpointFile.close();
 }
 
-void delta::core::Sys::saveParticleProperties(int id, iREAL positionSpatial[3], iREAL positionReferential[3], iREAL linear[3], iREAL angular[3],
-								   iREAL inertia[9], iREAL orientation[9], iREAL mass)
+void delta::core::Sys::saveParticleProperties(
+	int id,
+	iREAL positionSpatial[3],
+	iREAL positionReferential[3],
+	iREAL linear[3],
+	iREAL angular[3],
+	iREAL inertia[9],
+	iREAL orientation[9],
+	iREAL mass)
 {
 	_checkpointFile << "@:"<< ":" << id <<":"<<
 					   positionSpatial[0] << "," << positionSpatial[1] << "," << positionSpatial[2] << ":" <<
@@ -86,8 +93,14 @@ void delta::core::Sys::saveParticleProperties(int id, iREAL positionSpatial[3], 
 					   mass << "\n";
 }
 
-void delta::core::Sys::saveParticleGeometry(int id, std::vector<iREAL> xCoordinatesSpatial, std::vector<iREAL> yCoordinatesSpatial, std::vector<iREAL> zCoordinatesSpatial,
-						  std::vector<iREAL> xCoordinatesRef, std::vector<iREAL> yCoordinatesRef, std::vector<iREAL> zCoordinatesRef)
+void delta::core::Sys::saveParticleGeometry(
+	int id,
+	std::vector<iREAL> xCoordinatesSpatial,
+	std::vector<iREAL> yCoordinatesSpatial,
+	std::vector<iREAL> zCoordinatesSpatial,
+	std::vector<iREAL> xCoordinatesRef,
+	std::vector<iREAL> yCoordinatesRef,
+	std::vector<iREAL> zCoordinatesRef)
 {
 
 	for(unsigned i=0;i<xCoordinatesSpatial.size();i++)

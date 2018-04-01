@@ -29,8 +29,8 @@
 #include <vector>
 #include <array>
 
-#include "delta/geometry/operator/hull/hull.h"
-#include "delta/geometry/operator/hull/alg.h"
+#include "delta/geometry/operators/hull/hull.h"
+#include "delta/geometry/operators/hull/alg.h"
 #include "delta/geometry/primitive/surface.h"
 #include "delta/geometry/properties.h"
 
@@ -39,40 +39,40 @@ namespace delta {
 	namespace primitive {
 	  namespace surface {
 		void generateBoundBox(
-		  iREAL center[3],
-		  std::array<iREAL, 3> minPoint,
-		  std::array<iREAL, 3> maxPoint,
-		  std::vector<iREAL>&  xCoordinates,
-		  std::vector<iREAL>&  yCoordinates,
-		  std::vector<iREAL>&  zCoordinates
+		  iREAL 					center[3],
+		  std::array<iREAL, 3> 	minPoint,
+		  std::array<iREAL, 3> 	maxPoint,
+		  std::vector<iREAL>&  	xCoordinates,
+		  std::vector<iREAL>&  	yCoordinates,
+		  std::vector<iREAL>&  	zCoordinates
 		);
 
 		void generateSurface(
-		  iREAL    center[3],
-		  iREAL 	width,
-		  iREAL	height,
-		  std::vector<iREAL>&  xCoordinates,
-		  std::vector<iREAL>&  yCoordinates,
-		  std::vector<iREAL>&  zCoordinates
+		  iREAL 					center[3],
+		  iREAL 					width,
+		  iREAL					height,
+		  std::vector<iREAL>&  	xCoordinates,
+		  std::vector<iREAL>&  	yCoordinates,
+		  std::vector<iREAL>&  	zCoordinates
 		);
 
 		void generateXYZBox(
-			iREAL center[3],
-			iREAL xw,
-			iREAL yw,
-			iREAL zw,
-			std::vector<iREAL>&  xCoordinates,
-			std::vector<iREAL>&  yCoordinates,
-			std::vector<iREAL>&  zCoordinates
+		  iREAL 					center[3],
+		  iREAL 					xw,
+		  iREAL 					yw,
+		  iREAL 					zw,
+		  std::vector<iREAL>& 	xCoordinates,
+		  std::vector<iREAL>&  	yCoordinates,
+		  std::vector<iREAL>&  	zCoordinates
 		);
 
 		void generateCuboid(
-		  iREAL    center[3],
-		  iREAL 	width,
-		  iREAL    height,
-		  std::vector<iREAL>&  xCoordinates,
-		  std::vector<iREAL>&  yCoordinates,
-		  std::vector<iREAL>&  zCoordinates
+		  iREAL 					center[3],
+		  iREAL 					width,
+		  iREAL 					height,
+		  std::vector<iREAL>&  	xCoordinates,
+		  std::vector<iREAL>&  	yCoordinates,
+		  std::vector<iREAL>&  	zCoordinates
 		);
 	  }
     }

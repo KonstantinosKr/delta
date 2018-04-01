@@ -13,6 +13,12 @@ Packed-Type: short int;
 class dem::records::Particle {  
 
   persistent expose double vertices[6];
+  persistent expose double verticesA[6];
+  persistent expose double verticesB[6];
+  persistent expose double verticesC[6];
+  persistent expose double verticesrefA[6];
+  persistent expose double verticesrefB[6];
+  persistent expose double verticesrefC[6];
   persistent expose double orientation[9];
   persistent expose double inertia[9];
   persistent expose double inverse[9];

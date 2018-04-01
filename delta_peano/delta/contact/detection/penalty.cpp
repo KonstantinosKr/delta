@@ -132,11 +132,8 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
   int		      particleB,
   tarch::multicore::BooleanSemaphore &semaphore
 ) {
-  __attribute__ ((aligned(byteAlignment)))  const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
-  std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
-
   #if defined(__INTEL_COMPILER)
-  __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
+  __assume_aligned(xCoordinatesOfPointsOfGeometryB, byteAlignment);
   __assume_aligned(yCoordinatesOfPointsOfGeometryA, byteAlignment);
   __assume_aligned(zCoordinatesOfPointsOfGeometryA, byteAlignment);
 
@@ -145,36 +142,48 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
   __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
   #endif
 
+  std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
+
   //convert to number of points
-  numberOfTrianglesOfGeometryA *= 3;
-  numberOfTrianglesOfGeometryB *= 3;
+  numberOfTrianglesOfGeometryA *= 4;
+  numberOfTrianglesOfGeometryB *= 4;
 
   tarch::multicore::Lock lock(semaphore,false);
 
   #ifdef SharedTBB
-	  // Take care: grain size has to be positive even if loop degenerates
-	  const int grainSize = numberOfTrianglesOfGeometryA;
-	  tbb::parallel_for(
-	   tbb::blocked_range<int>(0, numberOfTrianglesOfGeometryA, grainSize), [&](const tbb::blocked_range<int>& r)
-	   {
-		 for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
+	 // Take care: grain size has to be positive even if loop degenerates
+	const int grainSize = numberOfTrianglesOfGeometryA;
+	tbb::parallel_for(
+	 tbb::blocked_range<int>(0, numberOfTrianglesOfGeometryA, grainSize), [&](const tbb::blocked_range<int>& r)
+	 {
+	   for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
   #else
 	  #ifdef ompTriangle
 		#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
 	  #endif
-		for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
+	  for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
   #endif
   {
-    __attribute__ ((aligned(byteAlignment))) bool failed = 0;
-    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
+	iREAL xPA[10000] __attribute__ ((aligned(byteAlignment)));
+	iREAL yPA[10000] __attribute__ ((aligned(byteAlignment)));
+	iREAL zPA[10000] __attribute__ ((aligned(byteAlignment)));
+	iREAL xPB[10000] __attribute__ ((aligned(byteAlignment)));
+	iREAL yPB[10000] __attribute__ ((aligned(byteAlignment)));
+	iREAL zPB[10000] __attribute__ ((aligned(byteAlignment)));
+	iREAL d[10000] __attribute__ ((aligned(byteAlignment)));
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
     #endif
-    #pragma omp simd
-//	#pragma prefetch xCoordinatesOfPointsOfGeometryB:1 yCoordinatesOfPointsOfGeometryB:1 zCoordinatesOfPointsOfGeometryB:1 xPA:1, yPA:1, zPA:1, xPB:1, yPB:1, zPB:1
+	  #pragma code_align(byteAlignment)
+	  #pragma omp simd simdlen(4) aligned(xCoordinatesOfPointsOfGeometryA,yCoordinatesOfPointsOfGeometryA,zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB,yCoordinatesOfPointsOfGeometryB,zCoordinatesOfPointsOfGeometryB:byteAlignment)
+	  //	#pragma prefetch xCoordinatesOfPointsOfGeometryB:1 yCoordinatesOfPointsOfGeometryB:1 zCoordinatesOfPointsOfGeometryB:1 xPA:1, yPA:1, zPA:1, xPB:1, yPB:1, zPB:1
+	  #pragma vector aligned
     for (int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
     {
+      __attribute__ ((aligned(byteAlignment))) bool failed = 0;
+      __attribute__ ((aligned(byteAlignment))) const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
+
       penalty(xCoordinatesOfPointsOfGeometryA+(iA),
               yCoordinatesOfPointsOfGeometryA+(iA),
               zCoordinatesOfPointsOfGeometryA+(iA),
@@ -183,19 +192,17 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
               zCoordinatesOfPointsOfGeometryB+(iB),
               xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB],
               MaxError, failed);
-
       d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
     __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
     __attribute__ ((aligned(byteAlignment))) iREAL minD = 1E99;
-    contactpoint *nearestContactPoint = nullptr;
 
     for (int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3) {
       minD          = std::min( d[iB], minD );
     }
 
+    contactpoint *nearestContactPoint = nullptr;
     // Grab the closest one and insert it into the result
     for (int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3) {
       if ( d[iB] <= minD && d[iB] < epsilonMargin) {
@@ -251,7 +258,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
  *
  */
 #if defined(__INTEL_COMPILER)
-  #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
+  #pragma omp declare simd aligned (xCoordinatesOfTriangleB, yCoordinatesOfTriangleB, zCoordinatesOfTriangleB) nomask notinbranch
 #else
   #pragma omp declare simd
 #endif
@@ -271,6 +278,13 @@ extern void delta::contact::detection::penalty(
   iREAL         MaxErrorOfPenaltyMethod,
   bool&         failed)
 {
+  __assume_aligned(xCoordinatesOfTriangleA, byteAlignment);
+  __assume_aligned(yCoordinatesOfTriangleA, byteAlignment);
+  __assume_aligned(zCoordinatesOfTriangleA, byteAlignment);
+
+  __assume_aligned(xCoordinatesOfTriangleB, byteAlignment);
+  __assume_aligned(yCoordinatesOfTriangleB, byteAlignment);
+  __assume_aligned(zCoordinatesOfTriangleB, byteAlignment);
 
    __attribute__ ((aligned(byteAlignment))) iREAL BA[3];
    __attribute__ ((aligned(byteAlignment))) iREAL CA[3];

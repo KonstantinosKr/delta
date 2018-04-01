@@ -22,9 +22,9 @@
  SOFTWARE.
  */
 
-#include <delta/geometry/primitive/triangle.h>
+#include <delta/geometry/operators/triangle.h>
 
-void delta::geometry::primitive::triangle::bisectTriangle(
+void delta::geometry::operators::triangle::bisectTriangle(
 		iREAL A[3],
 		iREAL B[3],
 		iREAL C[3],
@@ -59,7 +59,7 @@ void delta::geometry::primitive::triangle::bisectTriangle(
 	zCoordinates.push_back((C[2] + B[2])*0.5);
 }
 
-void delta::geometry::primitive::triangle::triSectTriangle(
+void delta::geometry::operators::triangle::triSectTriangle(
     iREAL A[3],
     iREAL B[3],
     iREAL C[3],
@@ -113,7 +113,7 @@ void delta::geometry::primitive::triangle::triSectTriangle(
   zCoordinates.push_back(B[2]);
 }
 
-void delta::geometry::primitive::triangle::fiveSectTriangle(
+void delta::geometry::operators::triangle::fiveSectTriangle(
     iREAL A[3],
     iREAL B[3],
     iREAL C[3],
@@ -222,7 +222,7 @@ void delta::geometry::primitive::triangle::fiveSectTriangle(
   zCoordinates.push_back(AB[2]);
 }
 
-void delta::geometry::primitive::triangle::biSideSectTriangle(
+void delta::geometry::operators::triangle::biSideSectTriangle(
     iREAL A[3],
     iREAL B[3],
     iREAL C[3],
@@ -302,7 +302,7 @@ void delta::geometry::primitive::triangle::biSideSectTriangle(
   zCoordinates.push_back(gamma[2]);
 }
 
-void delta::geometry::primitive::triangle::meshDenser(
+void delta::geometry::operators::triangle::meshDenser(
 		int meshRefinement,
 		double gridH,
 		std::vector<iREAL>&  xCoordinates,
@@ -354,7 +354,7 @@ void delta::geometry::primitive::triangle::meshDenser(
 	meshDenser(meshRefinement-1, gridH, xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::geometry::primitive::triangle::meshDenser(
+void delta::geometry::operators::triangle::meshDenser(
     int meshRefinement,
     std::vector<iREAL>&  xCoordinates,
     std::vector<iREAL>&  yCoordinates,
@@ -391,7 +391,7 @@ void delta::geometry::primitive::triangle::meshDenser(
   meshDenser(meshRefinement-1, xCoordinates, yCoordinates, zCoordinates);
 }
 
-int delta::geometry::primitive::triangle::octSectParticle(
+int delta::geometry::operators::triangle::octSectParticle(
     int octSectTimes,
     std::vector<std::vector<iREAL>>&  xCoordinatesMultiLevel,
     std::vector<std::vector<iREAL>>&  yCoordinatesMultiLevel,
@@ -421,7 +421,7 @@ int delta::geometry::primitive::triangle::octSectParticle(
   return octSect(octSectTimes, 0, minpoint, midpoint, maxpoint, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);;
 }
 
-int delta::geometry::primitive::triangle::octSect(
+int delta::geometry::operators::triangle::octSect(
     int level,
     int index,
     std::array<iREAL, 3> minpoint,
@@ -661,7 +661,7 @@ int delta::geometry::primitive::triangle::octSect(
   return index;
 }
 
-double delta::geometry::primitive::triangle::getTriangleLength(iREAL A[3], iREAL B[3], iREAL C[3])
+double delta::geometry::operators::triangle::getTriangleLength(iREAL A[3], iREAL B[3], iREAL C[3])
 {
   std::vector<iREAL>  xCoordinates;
   std::vector<iREAL>  yCoordinates;
@@ -682,7 +682,7 @@ double delta::geometry::primitive::triangle::getTriangleLength(iREAL A[3], iREAL
   return delta::geometry::properties::getXYZWidth(xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::geometry::primitive::triangle::getTrianglesInBoundingBox(
+void delta::geometry::operators::triangle::getTrianglesInBoundingBox(
     std::array<iREAL, 3> minpoint,
     std::array<iREAL, 3> maxpoint,
     std::vector<iREAL>&  xCoordinatesRoot,

@@ -32,9 +32,6 @@ class delta::geometry::mesh::Triangle : public delta::geometry::mesh::Vertex {
   private:
 	int _vertexIndexA, _vertexIndexB, _vertexIndexC;
 
-  protected:
-    std::map<int, std::vector<delta::geometry::mesh::Triangle> >   _triangles;
-
 };
 
 #endif /* GEOMETRY_MESH_TRIANGLE_H_ */

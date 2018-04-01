@@ -1,16 +1,53 @@
+#include "Object.h"
 
-#include "object.h"
-#include <stdio.h>
+#include <delta/geometry/primitive/granulate.h>
+#include <delta/geometry/primitive/cube.h>
+#include <delta/world/body/hopper.h>
+#include <delta/world/body/graphite.h>
 
-delta::world::object::object(
-    std::string                   component,
-    int                           particleID,
-    std::array<double, 3>         centre,
-    delta::geometry::material::MaterialType material,
-    bool                          isObstacle,
-    bool                          isFriction)
+
+delta::world::Object::Object()
 {
+  this->_component = "particle";
+  this->_particleID = 0;
 
+  this->_centre[0] = 0.0;
+  this->_centre[1] = 0.0;
+  this->_centre[2] = 0.0;
+
+  this->_material = delta::geometry::material::MaterialType::WOOD;
+  this->_isObstacle = false;
+  this->_isFriction = false;
+
+  this->_linearVelocity[0] = 0.0;
+  this->_linearVelocity[1] = 0.0;
+  this->_linearVelocity[2] = 0.0;
+
+  this->_angularVelocity[0] = 0.0;
+  this->_angularVelocity[1] = 0.0;
+  this->_angularVelocity[2] = 0.0;
+
+  this->_rad = 0.0;
+
+  this->_wx = 0;
+  this->_wy = 0;
+  this->_wz = 0;
+
+  this->_rx = 0;
+  this->_ry = 0;
+  this->_rz = 0;
+
+  this->_mass = 0.0;
+}
+
+delta::world::Object::Object(
+    std::string                   			component,
+    int                           			particleID,
+    std::array<double, 3>         			centre,
+    delta::geometry::material::MaterialType 	material,
+    bool                          			isObstacle,
+    bool                          			isFriction)
+{
   this->_component = component;
   this->_particleID = particleID;
 
@@ -30,10 +67,20 @@ delta::world::object::object(
   this->_angularVelocity[1] = 0.0;
   this->_angularVelocity[2] = 0.0;
 
-  //this->_rad = 0.0001;
+  this->_rad = 0.0;
+
+  this->_wx = 0;
+  this->_wy = 0;
+  this->_wz = 0;
+
+  this->_rx = 0;
+  this->_ry = 0;
+  this->_rz = 0;
+
+  this->_mass = 0.0;
 }
 
-void delta::world::object::generateSphere(
+void delta::world::Object::generateSphere(
     double                        rad)
 {
   this->_rad = rad;
@@ -42,7 +89,7 @@ void delta::world::object::generateSphere(
   this->_centreOfMass[2] = _centre[2];
 }
 
-void delta::world::object::generateMesh(
+void delta::world::Object::generateMesh(
     double wx,
     double wy,
     double wz,
@@ -75,10 +122,10 @@ void delta::world::object::generateMesh(
   else if(_component == "hopper")
   {
     double _hopperHatch = 0.05; double _hopperThickness = 0.005; int refinement = 0;
-    delta::geometry::primitive::hopper::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01, xCoordinates, yCoordinates, zCoordinates);
+    delta::world::body::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01, xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "FB")
   {
-    delta::geometry::primitive::graphite::generateBrickFB(position, rad, xCoordinates, yCoordinates, zCoordinates);
+    delta::world::body::generateBrickFB(position, rad, xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "mesh")
   {
 
@@ -123,32 +170,32 @@ void delta::world::object::generateMesh(
   _rad = rad;
 }
 
-std::string delta::world::object::getComponent()
+std::string delta::world::Object::getComponent()
 {
   return _component;
 }
 
-void delta::world::object::setParticleID(int id)
+void delta::world::Object::setParticleID(int id)
 {
   _particleID = id;
 }
 
-std::vector<double> delta::world::object::getxCoordinates()
+std::vector<double> delta::world::Object::getxCoordinates()
 {
   return _xCoordinates;
 }
 
-std::vector<double> delta::world::object::getyCoordinates()
+std::vector<double> delta::world::Object::getyCoordinates()
 {
   return _yCoordinates;
 }
 
-std::vector<double> delta::world::object::getzCoordinates()
+std::vector<double> delta::world::Object::getzCoordinates()
 {
   return _zCoordinates;
 }
 
-void delta::world::object::setxyzCoordinates(
+void delta::world::Object::setxyzCoordinates(
     std::vector<double> xCoordinates,
     std::vector<double> yCoordinates,
     std::vector<double> zCoordinates)
@@ -161,17 +208,17 @@ void delta::world::object::setxyzCoordinates(
   }
 }
 
-int delta::world::object::getParticleID()
+int delta::world::Object::getParticleID()
 {
   return _particleID;
 }
 
-std::array<double, 3> delta::world::object::getCentre()
+std::array<double, 3> delta::world::Object::getCentre()
 {
   return _centre;
 }
 
-void delta::world::object::setCentre(double centre[3])
+void delta::world::Object::setCentre(double centre[3])
 {
   this->_centre[0] = centre[0];
   this->_centre[1] = centre[1];
@@ -182,47 +229,47 @@ void delta::world::object::setCentre(double centre[3])
   this->_centreOfMass[2] = _centre[2];
 }
 
-double delta::world::object::getRad()
+double delta::world::Object::getRad()
 {
   return _rad;
 }
 
-void delta::world::object::setRad(double rad)
+void delta::world::Object::setRad(double rad)
 {
   _rad = rad;
 }
 
-double delta::world::object::getMass()
+double delta::world::Object::getMass()
 {
   return _mass;
 }
 
-void delta::world::object::setMass(double mass)
+void delta::world::Object::setMass(double mass)
 {
   _mass = mass;
 }
 
-delta::geometry::material::MaterialType delta::world::object::getMaterial()
+delta::geometry::material::MaterialType delta::world::Object::getMaterial()
 {
   return _material;
 }
 
-bool delta::world::object::getIsObstacle()
+bool delta::world::Object::getIsObstacle()
 {
   return _isObstacle;
 }
 
-bool delta::world::object::getIsFriction()
+bool delta::world::Object::getIsFriction()
 {
   return _isFriction;
 }
 
-std::array<double, 9> delta::world::object::getInertia()
+std::array<double, 9> delta::world::Object::getInertia()
 {
   return _inertia;
 }
 
-void delta::world::object::setInertia(double inertia[9])
+void delta::world::Object::setInertia(double inertia[9])
 {
   _inertia[0] = inertia[0];
   _inertia[1] = inertia[1];
@@ -235,12 +282,12 @@ void delta::world::object::setInertia(double inertia[9])
   _inertia[8] = inertia[8];
 }
 
-std::array<double, 9> delta::world::object::getInverse()
+std::array<double, 9> delta::world::Object::getInverse()
 {
   return _inverse;
 }
 
-void delta::world::object::setInverse(double inverse[9])
+void delta::world::Object::setInverse(double inverse[9])
 {
   _inverse[0] = inverse[0];
   _inverse[1] = inverse[1];
@@ -253,48 +300,48 @@ void delta::world::object::setInverse(double inverse[9])
   _inverse[8] = inverse[8];
 }
 
-std::array<double, 3> delta::world::object::getxyzDimensions()
+std::array<double, 3> delta::world::Object::getxyzDimensions()
 {
   return _xyzDimensions;
 }
 
-std::array<double, 3> delta::world::object::getCentreOfMass()
+std::array<double, 3> delta::world::Object::getCentreOfMass()
 {
   return _centreOfMass;
 }
 
-void delta::world::object::setCentreOfMass(double centreOfMass[3])
+void delta::world::Object::setCentreOfMass(double centreOfMass[3])
 {
   _centreOfMass[0] = centreOfMass[0];
   _centreOfMass[1] = centreOfMass[1];
   _centreOfMass[2] = centreOfMass[2];
 }
 
-void delta::world::object::setLinearVelocity(std::array<double, 3>  linearVelocity)
+void delta::world::Object::setLinearVelocity(std::array<double, 3>  linearVelocity)
 {
   this->_linearVelocity[0] = linearVelocity[0];
   this->_linearVelocity[1] = linearVelocity[1];
   this->_linearVelocity[2] = linearVelocity[2];
 }
 
-void delta::world::object::setAngularVelocity(std::array<double, 3>  angularVelocity)
+void delta::world::Object::setAngularVelocity(std::array<double, 3>  angularVelocity)
 {
   this->_angularVelocity[0] = angularVelocity[0];
   this->_angularVelocity[1] = angularVelocity[1];
   this->_angularVelocity[2] = angularVelocity[2];
 }
 
-std::array<double, 3> delta::world::object::getLinearVelocity()
+std::array<double, 3> delta::world::Object::getLinearVelocity()
 {
   return _linearVelocity;
 }
 
-std::array<double, 3> delta::world::object::getAngularVelocity()
+std::array<double, 3> delta::world::Object::getAngularVelocity()
 {
   return _angularVelocity;
 }
 
-double delta::world::object::getMinX()
+double delta::world::Object::getMinX()
 {
   iREAL minx = std::numeric_limits<double>::max();
   if(_xCoordinates.size() > 0)
@@ -309,7 +356,7 @@ double delta::world::object::getMinX()
   return minx;
 }
 
-double delta::world::object::getMaxX()
+double delta::world::Object::getMaxX()
 {
   iREAL maxx = std::numeric_limits<double>::min();
   if(_xCoordinates.size() > 0)
@@ -324,7 +371,7 @@ double delta::world::object::getMaxX()
   return maxx;
 }
 
-double delta::world::object::getMinY()
+double delta::world::Object::getMinY()
 {
   iREAL miny = std::numeric_limits<double>::max();
   if(_yCoordinates.size() > 0)
@@ -339,7 +386,7 @@ double delta::world::object::getMinY()
   return miny;
 }
 
-double delta::world::object::getMaxY()
+double delta::world::Object::getMaxY()
 {
   iREAL maxy = std::numeric_limits<double>::min();
   if(_yCoordinates.size() > 0)
@@ -354,7 +401,7 @@ double delta::world::object::getMaxY()
   return maxy;
 }
 
-double delta::world::object::getMinZ()
+double delta::world::Object::getMinZ()
 {
   iREAL minz = std::numeric_limits<double>::max();
   if(_xCoordinates.size() > 0)
@@ -369,7 +416,7 @@ double delta::world::object::getMinZ()
   return minz;
 }
 
-double delta::world::object::getMaxZ()
+double delta::world::Object::getMaxZ()
 {
   iREAL maxz = std::numeric_limits<double>::min();
   if(_zCoordinates.size() > 0)
@@ -384,7 +431,7 @@ double delta::world::object::getMaxZ()
   return maxz;
 }
 
-delta::world::object::~object() {
+delta::world::Object::~Object() {
 
 }
 

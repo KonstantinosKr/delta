@@ -22,9 +22,9 @@
  SOFTWARE.
  */
 
-#include <delta/geometry/primitive/blender.h>
+#include <delta/world/body/blender.h>
 
-void delta::geometry::primitive::blender::generateBlender(
+void delta::world::body::generateBlender(
 		iREAL    center[3],
 		iREAL 	width,
 		std::vector<iREAL>&  xCoordinates,

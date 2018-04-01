@@ -37,7 +37,7 @@ void delta::geometry::primitive::granulate::loadParticle(
   std::vector<iREAL>&  zCoordinates
 ) {
   char fileinput[100] = "input/rock.vtk";
-  delta::core::readVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
+  delta::core::readSingleVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
   iREAL diagonal = delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
   delta::geometry::properties::scaleXYZ(h/1.0/diagonal, center, xCoordinates, yCoordinates, zCoordinates);
 }

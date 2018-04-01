@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
 
- Copyright (c) 2015 Konstantinos Krestenitis
+ Copyright (c) 6 Sep 2016 Konstantinos Krestenitis
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,43 +22,56 @@
  SOFTWARE.
  */
 
+#ifndef DELTA_geometry_GRAPHITE_H_
+#define DELTA_geometry_GRAPHITE_H_
+
+
 #include <vector>
 
-#include <cmath>
-#include <assert.h>
-#include <stdlib.h>
-#include "delta/geometry/operators/hull/hull.h"
-#include "delta/geometry/operators/hull/alg.h"
-#include "delta/geometry/properties.h"
 #include "delta/core/read.h"
+#include "delta/geometry/properties.h"
 
 namespace delta {
-  namespace geometry {
-	namespace primitive {
-	  namespace granulate {
-		void generateParticle(
-		  iREAL    				center[2],
-		  iREAL    				h,
-		  std::vector<iREAL>&  	xCoordinates,
-		  std::vector<iREAL>&  	yCoordinates
+  namespace world {
+	namespace body {
+		void generateBrickFB(
+		 iREAL    center[3],
+		 iREAL    h,
+		 std::vector<iREAL>&  xCoordinates,
+		 std::vector<iREAL>&  yCoordinates,
+		 std::vector<iREAL>&  zCoordinates
 		);
 
-		void loadParticle(
-		  iREAL  				center[3],
-		  iREAL  				h,
-		  std::vector<iREAL>&  	xCoordinates,
-		  std::vector<iREAL>&  	yCoordinates,
-		  std::vector<iREAL>&  	zCoordinates
+		void generateBrickFB(
+		  std::vector<iREAL>&  xCoordinates,
+		  std::vector<iREAL>&  yCoordinates,
+		  std::vector<iREAL>&  zCoordinates);
+
+		void generateBrickFB(
+		 iREAL    center[3],
+		 std::vector<iREAL>&  xCoordinates,
+		 std::vector<iREAL>&  yCoordinates,
+		 std::vector<iREAL>&  zCoordinates
 		);
 
-		void generateParticle(
-		  iREAL    				center[3],
-		  iREAL    				h,
-		  std::vector<iREAL>&  	xCoordinates,
-		  std::vector<iREAL>&  	yCoordinates,
-		  std::vector<iREAL>&  	zCoordinates,
-		  int 					noPointsPerParticle);
-	  }
+		void generateKeyXK(
+		 iREAL    center[3],
+		 iREAL    h,
+		 std::vector<iREAL>&  xCoordinates,
+		 std::vector<iREAL>&  yCoordinates,
+		 std::vector<iREAL>&  zCoordinates
+		);
+
+		void generateKeyYK(
+		 iREAL    center[3],
+		 iREAL    h,
+		 std::vector<iREAL>&  xCoordinates,
+		 std::vector<iREAL>&  yCoordinates,
+		 std::vector<iREAL>&  zCoordinates
+		);
 	}
   }
 }
+
+
+#endif /* DELTA_geometry_GRAPHITE_H_ */

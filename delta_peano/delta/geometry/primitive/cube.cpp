@@ -44,7 +44,6 @@ void delta::geometry::primitive::cube::generateSquare(
   yCoordinates[6] = center[1] + h/2.0 * std::sin(2.0*pi * (0.75+rotationAngle) );
 }
 
-
 void delta::geometry::primitive::cube::generateCube(
   iREAL center[3], iREAL h,
   iREAL alphaX,
@@ -266,8 +265,6 @@ void delta::geometry::primitive::cube::generateCube(
     zCoordinates[i] += center[2];
   }
 }
-
-
 
 void delta::geometry::primitive::cube::generateCube(
   iREAL center[3],
@@ -494,7 +491,6 @@ void delta::geometry::primitive::cube::generateCube(
   }
 }
 
-
 void delta::geometry::primitive::cube::generateHullCube(
   iREAL  center[3],
   iREAL  diagonal,
@@ -586,7 +582,6 @@ void delta::geometry::primitive::cube::generateHullCube(
   }
   free(tr);
 }
-
 
 void delta::geometry::primitive::cube::generateHullCube(
         iREAL  center[3],
@@ -742,5 +737,5 @@ void delta::geometry::primitive::cube::generateHullCube(
     yCoordinates[i] += center[1];
     zCoordinates[i] += center[2];
   }
-  delta::geometry::primitive::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::operators::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
 }

@@ -24,12 +24,7 @@
 
 #include <vector>
 #include <array>
-#include "delta/geometry/material.h"
-#include "delta/geometry/properties.h"
-#include "delta/geometry/primitive/granulate.h"
-#include "delta/geometry/primitive/graphite.h"
-#include "delta/geometry/primitive/cube.h"
-#include "delta/world/object.h"
+#include "delta/world/Object.h"
 
 #include "stdlib.h"
 #include <string>
@@ -39,17 +34,42 @@ namespace delta {
     namespace assembly {
   	  iREAL getDiscritization(iREAL length, int number);
 
-  	  std::vector<std::array<iREAL, 3>> array1d(iREAL position[3], iREAL xAxisLength, int partsNo);
+  	  std::vector<std::array<iREAL, 3>> array1d(
+  		  iREAL position[3],
+		  iREAL xAxisLength,
+		  int partsNo);
 
-  	  std::vector<std::array<iREAL, 3>> array2d(iREAL position[3], iREAL xyAxisLength, int partsNo);
+  	  std::vector<std::array<iREAL, 3>> array2d(
+  		  iREAL position[3],
+		  iREAL xyAxisLength,
+		  int partsNo);
 
-  	  std::vector<std::array<iREAL, 3>> array3d(iREAL position[3], iREAL xyzAxisLength, int partsNo);
+  	  std::vector<std::array<iREAL, 3>> array3d(
+  		  iREAL position[3],
+		  iREAL xyzAxisLength,
+		  int partsNo);
 
-  	  std::vector<std::array<iREAL, 3>> array3d(iREAL position[3], iREAL xyzAxisLength, int partsXYZNo, iREAL yAxisLength, int partsYNo);
+  	  std::vector<std::array<iREAL, 3>> array3d(
+  		  iREAL position[3],
+		  iREAL xyzAxisLength,
+		  int partsXYZNo,
+		  iREAL yAxisLength,
+		  int partsYNo);
 
-  	  std::vector<std::array<iREAL, 3>> getGridArrayList(iREAL position[3], int xzcuts, int ycuts, iREAL width);
+  	  std::vector<std::array<iREAL, 3>> getGridArrayList(
+  		  iREAL position[3],
+		  int xzcuts,
+		  int ycuts,
+		  iREAL width);
 
-  	  void collapseUniformGrid(iREAL position[3], std::vector<std::array<iREAL, 3>>& grid, int xzcuts, int ycuts, iREAL elementWidth, iREAL elementHeight, iREAL epsilon);
+  	  void collapseUniformGrid(
+  		  iREAL position[3],
+		  std::vector<std::array<iREAL, 3>>& grid,
+		  int xzcuts,
+		  int ycuts,
+		  iREAL elementWidth,
+		  iREAL elementHeight,
+		  iREAL epsilon);
 
   	  void uniform(
   	      iREAL totalMass,
@@ -69,7 +89,7 @@ namespace delta {
           int index,
           bool isSphereOrNone,
           int noPointsPerParticle,
-          std::vector<delta::world::object>& _insitufineObjects);
+          std::vector<delta::world::Object>& _insitufineObjects);
 
   	  void nonuniform (
   	      iREAL totalMass,
@@ -86,12 +106,12 @@ namespace delta {
 		  int index);
 
   	  void nonuniform(
-  	            iREAL totalMass,
-              int index,
-  	            iREAL isSphereOrNone,
-  	            iREAL subcellx,
-  	            int _noPointsPerParticle,
-  	            std::vector<delta::world::object>& _insitufineObjects);
+		  iREAL totalMass,
+		  int index,
+		  iREAL isSphereOrNone,
+		  iREAL subcellx,
+		  int _noPointsPerParticle,
+		  std::vector<delta::world::Object>& _insitufineObjects);
 
   	  void uniSphereRadius(
   	      iREAL totalMass,
@@ -103,13 +123,13 @@ namespace delta {
 
   	  void uniSphereRadius(
   	      iREAL totalMass,
-        int index,
-  	      std::vector<delta::world::object>& _insitufineObjects);
+		  int index,
+  	      std::vector<delta::world::Object>& _insitufineObjects);
 
   	  void uniMeshGeometry(
   	      iREAL totalMass,
   	      int noPointsPerParticle,
-  	      std::vector<delta::world::object> &_insitufineObjects,
+  	      std::vector<delta::world::Object> &_insitufineObjects,
   	      int index);
 
   	  void uniMeshGeometry(
@@ -149,7 +169,7 @@ namespace delta {
           iREAL totalMass,
           int index,
           iREAL subcellx,
-          std::vector<delta::world::object>& _insitufineObjects);
+          std::vector<delta::world::Object>& _insitufineObjects);
 
   	  void nonUniMeshGeometry(
   	      iREAL totalMass,
@@ -167,7 +187,7 @@ namespace delta {
   	  void loadNuclearGeometry(iREAL position[3],
   	      iREAL width,
   	      int layers,
-  	      std::vector<delta::world::object>& _insitufineObjects);
+  	      std::vector<delta::world::Object>& _insitufineObjects);
 
   	  void makeBrickGrid(
   	      iREAL position[3],
@@ -175,7 +195,7 @@ namespace delta {
   	      int   xzElements,
   	      iREAL arrayYlength,
   	      int   yElements,
-  	      std::vector<delta::world::object>& _insitufineObjects);
+  	      std::vector<delta::world::Object>& _insitufineObjects);
     }
   }
 }
