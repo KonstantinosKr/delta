@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include <delta/world/body/hopper.h>
+#include <delta/geometry/body/hopper.h>
 
 void delta::world::body::generateInnerHopper(
 		iREAL  center[3],

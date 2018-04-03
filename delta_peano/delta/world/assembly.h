@@ -24,14 +24,16 @@
 
 #include <vector>
 #include <array>
-#include "delta/world/Object.h"
-
 #include "stdlib.h"
 #include <string>
+
+#include "delta/geometry/material.h"
+//#include "delta/world/Object.h"
 
 namespace delta {
   namespace world {
     namespace assembly {
+    /*
   	  iREAL getDiscritization(iREAL length, int number);
 
   	  std::vector<std::array<iREAL, 3>> array1d(
@@ -195,7 +197,7 @@ namespace delta {
   	      int   xzElements,
   	      iREAL arrayYlength,
   	      int   yElements,
-  	      std::vector<delta::world::Object>& _insitufineObjects);
+  	      std::vector<delta::world::Object>& _insitufineObjects);*/
     }
   }
 }

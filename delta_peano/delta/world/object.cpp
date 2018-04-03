@@ -2,9 +2,8 @@
 
 #include <delta/geometry/primitive/granulate.h>
 #include <delta/geometry/primitive/cube.h>
-#include <delta/world/body/hopper.h>
-#include <delta/world/body/graphite.h>
-
+#include <delta/geometry/body/hopper.h>
+#include <delta/geometry/body/graphite.h>
 
 delta::world::Object::Object()
 {
@@ -125,7 +124,7 @@ void delta::world::Object::generateMesh(
     delta::world::body::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01, xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "FB")
   {
-    delta::world::body::generateBrickFB(position, rad, xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::body::generateBrickFB(position, rad, xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "mesh")
   {
 

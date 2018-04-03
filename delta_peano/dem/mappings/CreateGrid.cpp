@@ -7,6 +7,13 @@
 #include <cmath>
 #include <ctime>
 
+#include "delta/geometry/operators/triangle.h"
+#include "delta/geometry/material.h"
+#include "delta/geometry/properties.h"
+
+#include "delta/world/configuration.h"
+//#include "delta/world/Object.h"
+
 #define epsilon 0.001
 
 peano::CommunicationSpecification   dem::mappings::CreateGrid::communicationSpecification() const {
@@ -575,35 +582,35 @@ void dem::mappings::CreateGrid::beginIteration(
 
     if(_scenario[0] == sla)
     {
-      delta::world::assembly::loadNuclearGeometry(pos, width, 1, _fineObjects);
+      delta::world::configuration::loadNuclearGeometry(pos, width, 1, _fineObjects);
     } else if(_scenario[0] == dla)
     {
-      delta::world::assembly::loadNuclearGeometry(pos, width, 2, _fineObjects);
+      delta::world::configuration::loadNuclearGeometry(pos, width, 2, _fineObjects);
     }
     else if(_scenario[0] == nuclearDeck)
     {
       if(_scenario[2] == n1)
       {
         //nuclear deck 1s
-        delta::world::assembly::makeBrickGrid(pos, 0.10, 1, 0.1, 1, _fineObjects);
+        delta::world::configuration::makeBrickGrid(pos, 0.10, 1, 0.1, 1, _fineObjects);
       }else if(_scenario[2] == n4)
       {
         //nuclear deck 4s
-        delta::world::assembly::makeBrickGrid(pos, 0.10, 2, 0.1, 1, _fineObjects);
+        delta::world::configuration::makeBrickGrid(pos, 0.10, 2, 0.1, 1, _fineObjects);
       }else if(_scenario[2] == n32)
       {
         //nuclear deck 32s
-        delta::world::assembly::makeBrickGrid(pos, 0.15, 4, 0.1, 2, _fineObjects);
+        delta::world::configuration::makeBrickGrid(pos, 0.15, 4, 0.1, 2, _fineObjects);
       }
       else if(_scenario[2] == n64)
       {
         //nuclear deck 64
-        delta::world::assembly::makeBrickGrid(pos, 0.15, 4, 0.4, 4, _fineObjects);
+        delta::world::configuration::makeBrickGrid(pos, 0.15, 4, 0.4, 4, _fineObjects);
       }
       else if(_scenario[2] == n256)
       {
         //nuclear deck 256
-        delta::world::assembly::makeBrickGrid(pos, 0.15, 10, 0.08, 4, _fineObjects);
+        delta::world::configuration::makeBrickGrid(pos, 0.15, 10, 0.08, 4, _fineObjects);
       }
     }
   } else if(_scenario[1] == hopper)
@@ -657,9 +664,9 @@ void dem::mappings::CreateGrid::beginIteration(
     ///////////////////////////////////////////////////////////////////////////////////////////
 
 
-	  ////////////////////////////////////////////////////////////////////
-	  //////////PARTICLE GRID/////////////////////////////////////////////
-	  ////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
+	//////////PARTICLE GRID/////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
     iREAL xzcuts = 0; iREAL ycuts = 0;
     if(_scenario[3] == n100)
     {
@@ -694,7 +701,7 @@ void dem::mappings::CreateGrid::beginIteration(
     iREAL pos[3] = {(centre[0] - hopperWidth/2), centre[1] + hopperHeight/2, (centre[2] - hopperWidth/2)};
 
     //create xzy cuts above hopper, position starts at left lower inner corner
-    std::vector<std::array<iREAL, 3>> grid = delta::world::assembly::getGridArrayList(pos, xzcuts, ycuts, subGridLength);
+    std::vector<std::array<iREAL, 3>> grid = delta::world::configuration::getGridArrayList(pos, xzcuts, ycuts, subGridLength);
 
     iREAL xmin = 1; iREAL xmax = 0;
     for(unsigned i=0; i<grid.size(); i++)
@@ -732,12 +739,12 @@ void dem::mappings::CreateGrid::beginIteration(
 
     if(_scenario[2] == uniform)
     {
-      delta::world::assembly::uniform(totalMass, hopperParticles, _isSphere, _noPointsPerParticle, _insitufineObjects);
+      delta::world::configuration::uniform(totalMass, hopperParticles, _isSphere, _noPointsPerParticle, _insitufineObjects);
     }
     else if(_scenario[2] == nonuniform)
     {
       iREAL subcellx = ((double)subGridLength/(double)xzcuts) - _epsilon*4;
-      delta::world::assembly::nonuniform(totalMass, hopperParticles, _isSphere, subcellx, _noPointsPerParticle, _insitufineObjects);
+      delta::world::configuration::nonuniform(totalMass, hopperParticles, _isSphere, subcellx, _noPointsPerParticle, _insitufineObjects);
     }
 
     //////////////////////////////////////////////////////

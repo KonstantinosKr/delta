@@ -1,5 +1,7 @@
 #include "properties.h"
 
+#include "delta/geometry/operators/hull/alg.h"
+
 void delta::geometry::properties::moveMeshFromPositionToOrigin(
     iREAL center[3],
     std::vector<iREAL>&  xCoordinates,

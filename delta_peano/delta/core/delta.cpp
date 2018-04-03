@@ -37,7 +37,7 @@ delta::core::Delta::Delta()
 {
   //delta::world::Object *n = new delta::world::Object();
   //_objects.push_back(*n);
-  //readSceneGeometry("miniKey.stl");
+  readSceneGeometry("miniKey.stl");
   delta::geometry::material::materialInit();
 }
 

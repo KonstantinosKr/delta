@@ -32,7 +32,7 @@
 #include "delta/geometry/properties.h"
 
 namespace delta {
-  namespace world {
+  namespace geometry {
 	namespace body {
 		void generateBrickFB(
 		 iREAL    center[3],

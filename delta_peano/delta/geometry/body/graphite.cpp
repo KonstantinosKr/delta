@@ -8,10 +8,10 @@
 #include <fstream>
 #include <iomanip>
 #include <string.h>
-#include <delta/world/body/graphite.h>
+#include <delta/geometry/body/graphite.h>
 
 //Intact Poly Brick
-void delta::world::body::generateBrickFB(
+void delta::geometry::body::generateBrickFB(
   iREAL center[3], iREAL h,
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
@@ -31,7 +31,7 @@ void delta::world::body::generateBrickFB(
 	delta::geometry::properties::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::world::body::generateBrickFB(
+void delta::geometry::body::generateBrickFB(
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
   std::vector<iREAL>&  zCoordinates)
@@ -48,7 +48,7 @@ void delta::world::body::generateBrickFB(
   delta::geometry::properties::moveMeshFromOriginToPosition(center, xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::world::body::generateBrickFB(
+void delta::geometry::body::generateBrickFB(
   iREAL center[3],
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
@@ -65,7 +65,7 @@ void delta::world::body::generateBrickFB(
 }
 
 //Loose keys - orientation X-wise
-void delta::world::body::generateKeyXK(
+void delta::geometry::body::generateKeyXK(
   iREAL center[3], iREAL h,
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
@@ -84,7 +84,7 @@ void delta::world::body::generateKeyXK(
 }
 
 //Loose keys - orientation Y-wise
-void delta::world::body::generateKeyYK(
+void delta::geometry::body::generateKeyYK(
   iREAL center[3], iREAL h,
   std::vector<iREAL>&  xCoordinates,
   std::vector<iREAL>&  yCoordinates,
