@@ -5,7 +5,7 @@
 #include <delta/geometry/body/hopper.h>
 #include <delta/geometry/body/graphite.h>
 
-delta::world::Object::Object()
+delta::geometry::Object::Object()
 {
   this->_component = "particle";
   this->_particleID = 0;
@@ -39,7 +39,7 @@ delta::world::Object::Object()
   this->_mass = 0.0;
 }
 
-delta::world::Object::Object(
+delta::geometry::Object::Object(
     std::string                   			component,
     int                           			particleID,
     std::array<double, 3>         			centre,
@@ -79,7 +79,7 @@ delta::world::Object::Object(
   this->_mass = 0.0;
 }
 
-void delta::world::Object::generateSphere(
+void delta::geometry::Object::generateSphere(
     double                        rad)
 {
   this->_rad = rad;
@@ -88,7 +88,7 @@ void delta::world::Object::generateSphere(
   this->_centreOfMass[2] = _centre[2];
 }
 
-void delta::world::Object::generateMesh(
+void delta::geometry::Object::generateMesh(
     double wx,
     double wy,
     double wz,
@@ -121,7 +121,7 @@ void delta::world::Object::generateMesh(
   else if(_component == "hopper")
   {
     double _hopperHatch = 0.05; double _hopperThickness = 0.005; int refinement = 0;
-    delta::world::body::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01, xCoordinates, yCoordinates, zCoordinates);
+    delta::geometry::body::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01, xCoordinates, yCoordinates, zCoordinates);
   } else if(_component == "FB")
   {
     delta::geometry::body::generateBrickFB(position, rad, xCoordinates, yCoordinates, zCoordinates);
@@ -169,32 +169,32 @@ void delta::world::Object::generateMesh(
   _rad = rad;
 }
 
-std::string delta::world::Object::getComponent()
+std::string delta::geometry::Object::getComponent()
 {
   return _component;
 }
 
-void delta::world::Object::setParticleID(int id)
+void delta::geometry::Object::setParticleID(int id)
 {
   _particleID = id;
 }
 
-std::vector<double> delta::world::Object::getxCoordinates()
+std::vector<double> delta::geometry::Object::getxCoordinates()
 {
   return _xCoordinates;
 }
 
-std::vector<double> delta::world::Object::getyCoordinates()
+std::vector<double> delta::geometry::Object::getyCoordinates()
 {
   return _yCoordinates;
 }
 
-std::vector<double> delta::world::Object::getzCoordinates()
+std::vector<double> delta::geometry::Object::getzCoordinates()
 {
   return _zCoordinates;
 }
 
-void delta::world::Object::setxyzCoordinates(
+void delta::geometry::Object::setxyzCoordinates(
     std::vector<double> xCoordinates,
     std::vector<double> yCoordinates,
     std::vector<double> zCoordinates)
@@ -207,17 +207,17 @@ void delta::world::Object::setxyzCoordinates(
   }
 }
 
-int delta::world::Object::getParticleID()
+int delta::geometry::Object::getParticleID()
 {
   return _particleID;
 }
 
-std::array<double, 3> delta::world::Object::getCentre()
+std::array<double, 3> delta::geometry::Object::getCentre()
 {
   return _centre;
 }
 
-void delta::world::Object::setCentre(double centre[3])
+void delta::geometry::Object::setCentre(double centre[3])
 {
   this->_centre[0] = centre[0];
   this->_centre[1] = centre[1];
@@ -228,47 +228,47 @@ void delta::world::Object::setCentre(double centre[3])
   this->_centreOfMass[2] = _centre[2];
 }
 
-double delta::world::Object::getRad()
+double delta::geometry::Object::getRad()
 {
   return _rad;
 }
 
-void delta::world::Object::setRad(double rad)
+void delta::geometry::Object::setRad(double rad)
 {
   _rad = rad;
 }
 
-double delta::world::Object::getMass()
+double delta::geometry::Object::getMass()
 {
   return _mass;
 }
 
-void delta::world::Object::setMass(double mass)
+void delta::geometry::Object::setMass(double mass)
 {
   _mass = mass;
 }
 
-delta::geometry::material::MaterialType delta::world::Object::getMaterial()
+delta::geometry::material::MaterialType delta::geometry::Object::getMaterial()
 {
   return _material;
 }
 
-bool delta::world::Object::getIsObstacle()
+bool delta::geometry::Object::getIsObstacle()
 {
   return _isObstacle;
 }
 
-bool delta::world::Object::getIsFriction()
+bool delta::geometry::Object::getIsFriction()
 {
   return _isFriction;
 }
 
-std::array<double, 9> delta::world::Object::getInertia()
+std::array<double, 9> delta::geometry::Object::getInertia()
 {
   return _inertia;
 }
 
-void delta::world::Object::setInertia(double inertia[9])
+void delta::geometry::Object::setInertia(double inertia[9])
 {
   _inertia[0] = inertia[0];
   _inertia[1] = inertia[1];
@@ -281,12 +281,12 @@ void delta::world::Object::setInertia(double inertia[9])
   _inertia[8] = inertia[8];
 }
 
-std::array<double, 9> delta::world::Object::getInverse()
+std::array<double, 9> delta::geometry::Object::getInverse()
 {
   return _inverse;
 }
 
-void delta::world::Object::setInverse(double inverse[9])
+void delta::geometry::Object::setInverse(double inverse[9])
 {
   _inverse[0] = inverse[0];
   _inverse[1] = inverse[1];
@@ -299,48 +299,48 @@ void delta::world::Object::setInverse(double inverse[9])
   _inverse[8] = inverse[8];
 }
 
-std::array<double, 3> delta::world::Object::getxyzDimensions()
+std::array<double, 3> delta::geometry::Object::getxyzDimensions()
 {
   return _xyzDimensions;
 }
 
-std::array<double, 3> delta::world::Object::getCentreOfMass()
+std::array<double, 3> delta::geometry::Object::getCentreOfMass()
 {
   return _centreOfMass;
 }
 
-void delta::world::Object::setCentreOfMass(double centreOfMass[3])
+void delta::geometry::Object::setCentreOfMass(double centreOfMass[3])
 {
   _centreOfMass[0] = centreOfMass[0];
   _centreOfMass[1] = centreOfMass[1];
   _centreOfMass[2] = centreOfMass[2];
 }
 
-void delta::world::Object::setLinearVelocity(std::array<double, 3>  linearVelocity)
+void delta::geometry::Object::setLinearVelocity(std::array<double, 3>  linearVelocity)
 {
   this->_linearVelocity[0] = linearVelocity[0];
   this->_linearVelocity[1] = linearVelocity[1];
   this->_linearVelocity[2] = linearVelocity[2];
 }
 
-void delta::world::Object::setAngularVelocity(std::array<double, 3>  angularVelocity)
+void delta::geometry::Object::setAngularVelocity(std::array<double, 3>  angularVelocity)
 {
   this->_angularVelocity[0] = angularVelocity[0];
   this->_angularVelocity[1] = angularVelocity[1];
   this->_angularVelocity[2] = angularVelocity[2];
 }
 
-std::array<double, 3> delta::world::Object::getLinearVelocity()
+std::array<double, 3> delta::geometry::Object::getLinearVelocity()
 {
   return _linearVelocity;
 }
 
-std::array<double, 3> delta::world::Object::getAngularVelocity()
+std::array<double, 3> delta::geometry::Object::getAngularVelocity()
 {
   return _angularVelocity;
 }
 
-double delta::world::Object::getMinX()
+double delta::geometry::Object::getMinX()
 {
   iREAL minx = std::numeric_limits<double>::max();
   if(_xCoordinates.size() > 0)
@@ -355,7 +355,7 @@ double delta::world::Object::getMinX()
   return minx;
 }
 
-double delta::world::Object::getMaxX()
+double delta::geometry::Object::getMaxX()
 {
   iREAL maxx = std::numeric_limits<double>::min();
   if(_xCoordinates.size() > 0)
@@ -370,7 +370,7 @@ double delta::world::Object::getMaxX()
   return maxx;
 }
 
-double delta::world::Object::getMinY()
+double delta::geometry::Object::getMinY()
 {
   iREAL miny = std::numeric_limits<double>::max();
   if(_yCoordinates.size() > 0)
@@ -385,7 +385,7 @@ double delta::world::Object::getMinY()
   return miny;
 }
 
-double delta::world::Object::getMaxY()
+double delta::geometry::Object::getMaxY()
 {
   iREAL maxy = std::numeric_limits<double>::min();
   if(_yCoordinates.size() > 0)
@@ -400,7 +400,7 @@ double delta::world::Object::getMaxY()
   return maxy;
 }
 
-double delta::world::Object::getMinZ()
+double delta::geometry::Object::getMinZ()
 {
   iREAL minz = std::numeric_limits<double>::max();
   if(_xCoordinates.size() > 0)
@@ -415,7 +415,7 @@ double delta::world::Object::getMinZ()
   return minz;
 }
 
-double delta::world::Object::getMaxZ()
+double delta::geometry::Object::getMaxZ()
 {
   iREAL maxz = std::numeric_limits<double>::min();
   if(_zCoordinates.size() > 0)
@@ -430,7 +430,7 @@ double delta::world::Object::getMaxZ()
   return maxz;
 }
 
-delta::world::Object::~Object() {
+delta::geometry::Object::~Object() {
 
 }
 

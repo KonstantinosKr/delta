@@ -30,12 +30,12 @@
 #include <delta/geometry/properties.h>
 
 namespace delta {
-  namespace world {
-    class Object;
+  namespace geometry {
+	  class Object;
   }
 }
 
-class delta::world::Object
+class delta::geometry::Object
 {
   public:
 	Object();

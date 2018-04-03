@@ -29,7 +29,7 @@
 #include "dem/Cell.h"
 #include "dem/State.h"
 #include "dem/mappings/AdoptGrid.h"
-
+#include "delta/world/configuration.h"
 
 namespace dem {
   namespace mappings {
@@ -155,9 +155,9 @@ class dem::mappings::CreateGrid {
     static int   _numberOfObstacles;
     static int   _numberOfTriangles;
 
-    static std::vector<delta::world::Object> _coarseObjects;
-    static std::vector<delta::world::Object> _fineObjects;
-    static std::vector<delta::world::Object> _insitufineObjects;
+    static std::vector<delta::geometry::Object> _coarseObjects;
+    static std::vector<delta::geometry::Object> _fineObjects;
+    static std::vector<delta::geometry::Object> _insitufineObjects;
 
     void computeBoundary();
 
@@ -167,7 +167,7 @@ class dem::mappings::CreateGrid {
     void deployFineEnviroment(dem::Vertex& vertex, double cellSize,
         iREAL centreAsArray[3]);
 
-    void deployObject(dem::Vertex& vertex, delta::world::Object Object);
+    void deployObject(dem::Vertex& vertex, delta::geometry::Object Object);
 
     void decomposeMeshByOctsection(
         int octSectTimes,
@@ -177,7 +177,7 @@ class dem::mappings::CreateGrid {
         delta::geometry::material::MaterialType material,
         bool isFriction,
         bool isObstacle,
-        std::vector<delta::world::Object> &fineObjects);
+        std::vector<delta::geometry::Object> &fineObjects);
 
     int decomposeMeshIntoParticles(
         std::vector<double> xCoordinates,
@@ -186,7 +186,7 @@ class dem::mappings::CreateGrid {
         delta::geometry::material::MaterialType material,
         bool isObstacle,
         bool isFriction,
-        std::vector<delta::world::Object> &fineObjects);
+        std::vector<delta::geometry::Object> &fineObjects);
 
   public:
   /**

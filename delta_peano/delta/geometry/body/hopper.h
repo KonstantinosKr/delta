@@ -36,7 +36,7 @@
 #include "delta/geometry/operators/triangle.h"
 
 namespace delta {
-  namespace world {
+  namespace geometry {
 	namespace body {
 	  void generateInnerHopper(
 			iREAL  center[3],

@@ -24,7 +24,7 @@
 
 #include <delta/geometry/body/hopper.h>
 
-void delta::world::body::generateInnerHopper(
+void delta::geometry::body::generateInnerHopper(
 		iREAL  center[3],
 		iREAL 	width,
 		iREAL  height,
@@ -302,7 +302,7 @@ void delta::world::body::generateInnerHopper(
 	//delta::geometry::hopper::explode(xCoordinates, yCoordinates, zCoordinates, 0.1);
 }
 
-void delta::world::body::generateOuterHopper(
+void delta::geometry::body::generateOuterHopper(
     iREAL  center[3],
     iREAL  width,
     iREAL  height,
@@ -404,7 +404,7 @@ void delta::world::body::generateOuterHopper(
   std::vector<iREAL> ezCoordinates = zCoordinates;
 
   //delta::geometry::hopper::scaleXYZ(1.2, exCoordinates, eyCoordinates, ezCoordinates);
-  delta::world::body::generateInnerHopper(center, width, height, hatch, exCoordinates, eyCoordinates, ezCoordinates);
+  delta::geometry::body::generateInnerHopper(center, width, height, hatch, exCoordinates, eyCoordinates, ezCoordinates);
 
   xCoordinates.insert(xCoordinates.end(), exCoordinates.begin(), exCoordinates.end());
   yCoordinates.insert(yCoordinates.end(), eyCoordinates.begin(), eyCoordinates.end());
@@ -1053,7 +1053,7 @@ void delta::world::body::generateOuterHopper(
   zCoordinates[35] = tmp[2];
 }
 
-void delta::world::body::generateHopper(
+void delta::geometry::body::generateHopper(
     iREAL  center[3],
     iREAL  width,
     iREAL  thickness,
@@ -1066,8 +1066,8 @@ void delta::world::body::generateHopper(
     std::vector<iREAL>&  zCoordinates
 )
 {
-  delta::world::body::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
-  delta::world::body::generateOuterHopper(center, width+thickness, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::body::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::body::generateOuterHopper(center, width+thickness, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
   delta::geometry::operators::triangle::meshDenser(meshRefinement, gridH, xCoordinates, yCoordinates, zCoordinates);
 }
 

@@ -27,7 +27,7 @@
 
 #include <map>
 #include <vector>
-#include "delta/world/Object.h"
+//#include "delta/geometry/Object.h"
 
 namespace delta {
 	namespace core {
@@ -45,8 +45,8 @@ class delta::core::Delta
     Delta();
     virtual ~Delta();
 
-	public:
-	  static std::vector< delta::world::Object> 	_objects;
+	//public:
+	//  static std::vector< delta::geometry::Object> 	_objects;
 };
 
 
