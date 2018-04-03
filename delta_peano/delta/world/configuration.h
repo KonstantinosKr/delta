@@ -95,7 +95,7 @@ namespace delta {
 		iREAL elementHeight,
 		iREAL epsilon);
 
-	   std::vector<std::array<iREAL, 3>> getGridArrayList(
+	   std::vector<std::array<iREAL, 3>> makeGridLayout(
 		iREAL position[3],
 		int xzcuts,
 		int ycuts,

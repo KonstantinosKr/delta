@@ -175,7 +175,7 @@
 
 }
 
- std::vector<std::array<iREAL, 3>> delta::world::getGridArrayList(
+ std::vector<std::array<iREAL, 3>> delta::world::makeGridLayout(
     iREAL position[3],
     int xzcuts,
     int ycuts,

@@ -698,7 +698,7 @@ void dem::mappings::CreateGrid::beginIteration(
     iREAL pos[3] = {(centre[0] - hopperWidth/2), centre[1] + hopperHeight/2, (centre[2] - hopperWidth/2)};
 
     //create xzy cuts above hopper, position starts at left lower inner corner
-    std::vector<std::array<iREAL, 3>> grid = delta::world::getGridArrayList(pos, xzcuts, ycuts, subGridLength);
+    std::vector<std::array<iREAL, 3>> grid = delta::world::makeGridLayout(pos, xzcuts, ycuts, subGridLength);
 
     iREAL xmin = 1; iREAL xmax = 0;
     for(unsigned i=0; i<grid.size(); i++)
