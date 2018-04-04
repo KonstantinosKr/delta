@@ -121,7 +121,7 @@ namespace delta {
 		    bool isFriction,
 		    bool isObstacle,
 			iREAL epsilon,
-		    std::vector<Object> &fineObjects,
+		    std::vector<delta::geometry::Object> &fineObjects,
 			int &numberOfParticles,
 			int &numberOfObstacles);
 
@@ -133,7 +133,7 @@ namespace delta {
 		    bool isObstacle,
 		    bool isFriction,
 			iREAL epsilon,
-		    std::vector<Object> &fineObjects);
+		    std::vector<delta::geometry::Object> &fineObjects);
 	  }
     }
   }
