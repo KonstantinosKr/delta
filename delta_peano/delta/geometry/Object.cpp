@@ -37,6 +37,7 @@ delta::geometry::Object::Object()
   this->_rz = 0;
 
   this->_mass = 0.0;
+  this->_epsilon = 0.0;
 }
 
 delta::geometry::Object::Object(
@@ -45,7 +46,8 @@ delta::geometry::Object::Object(
     std::array<double, 3>         			centre,
     delta::geometry::material::MaterialType 	material,
     bool                          			isObstacle,
-    bool                          			isFriction)
+    bool                          			isFriction,
+	iREAL 									epsilon)
 {
   this->_component = component;
   this->_particleID = particleID;
@@ -77,6 +79,7 @@ delta::geometry::Object::Object(
   this->_rz = 0;
 
   this->_mass = 0.0;
+  this->_epsilon = epsilon;
 }
 
 void delta::geometry::Object::generateSphere(
@@ -227,6 +230,17 @@ void delta::geometry::Object::setCentre(double centre[3])
   this->_centreOfMass[1] = _centre[1];
   this->_centreOfMass[2] = _centre[2];
 }
+
+double delta::geometry::Object::getEpsilon()
+{
+  return _epsilon;
+}
+
+void delta::geometry::Object::setEpsilon(double epsilon)
+{
+  _epsilon = epsilon;
+}
+
 
 double delta::geometry::Object::getRad()
 {

@@ -40,13 +40,13 @@ class delta::geometry::Object
   public:
 	Object();
 	Object(
-		std::string                   				component,
-		int                           				particleID,
-		std::array<double, 3>         				centre,
-		delta::geometry::material::MaterialType 		material,
-		bool                          				isObstacle,
-		bool                          				isFriction
-		);
+	    std::string                   			component,
+	    int                           			particleID,
+	    std::array<double, 3>         			centre,
+	    delta::geometry::material::MaterialType 	material,
+	    bool                          			isObstacle,
+	    bool                          			isFriction,
+		iREAL 									epsilon);
 
     void generateSphere(double  rad);
 
@@ -81,6 +81,9 @@ class delta::geometry::Object
 
     double getMass();
     void setMass(double mass);
+
+    double getEpsilon();
+    void setEpsilon(double epsilon);
 
     delta::geometry::material::MaterialType getMaterial();
     bool getIsObstacle();
@@ -119,6 +122,7 @@ class delta::geometry::Object
     std::array<double, 3> _centre;
     double                _rad;
     double                _mass;
+    double 				 _epsilon;
 
 	//std::map<int, std::vector<delta::geometry::mesh::Vertex> >		_vertices;
 	//std::map<int, std::vector<delta::geometry::mesh::Triangle> > 	_triangles;

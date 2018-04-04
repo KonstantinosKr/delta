@@ -7,6 +7,11 @@
 
 #include "delta/world/configuration.h"
 
+#include "delta/geometry/properties.h"
+#include "delta/geometry/primitive/granulate.h"
+#include "delta/geometry/primitive/cube.h"
+#include "delta/geometry/body/graphite.h"
+
  iREAL delta::world::getDiscritization(
     iREAL length,
     int number)
@@ -179,24 +184,66 @@
     iREAL position[3],
     int xzcuts,
     int ycuts,
-    iREAL width)
+    iREAL gridxyLength)
 {
-  return delta::world::array3d(position, width, xzcuts, width, ycuts);
+  return delta::world::array3d(position, gridxyLength, xzcuts, gridxyLength, ycuts);
 }
 
  void delta::world::uniformlyDistributedTotalMass(
+	  iREAL position[3],
+	  int xzcuts,
+	  int ycuts,
+	  iREAL gridxyLength,
       iREAL totalMass,
+	  iREAL hopperWidth,
       int index,
+	  iREAL epsilon,
       bool isSphereOrNone,
       int noPointsPerParticle,
-      std::vector<delta::geometry::Object> &_insitufineObjects)
+      std::vector<delta::geometry::Object> &insitufineObjects)
 {
+   //create xzy cuts above hopper, position starts at left lower inner corner
+   std::vector<std::array<iREAL, 3>> grid = delta::world::makeGridLayout(position, xzcuts, ycuts, gridxyLength);
+
+   delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
+   bool isObstacle = false;
+   bool isFriction = false;
+
+   iREAL xmin = 1; iREAL xmax = 0;
+   for(unsigned i=0; i<grid.size(); i++)
+   {
+     std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
+
+	 delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, isObstacle, isFriction, epsilon);
+
+     std::array<double, 3> l = {0, -1, 0};
+     particles.setLinearVelocity(l);
+     insitufineObjects.push_back(particles);
+
+     if(p[0] < xmin) xmin = p[0];
+     if(p[0] > xmax) xmax = p[0];
+   }
+
+   //adjustment of xz dimension
+   gridxyLength = xmax - xmin;
+   //iREAL dx = (hopperWidth - gridxyLength)/2;
+   iREAL dx = (hopperWidth - gridxyLength)/2;
+   //printf("length1:%f\n", subGridLength);
+   //printf("length2:%f\n", _hopperWidth-margin*2);
+
+   for(unsigned i=0; i<insitufineObjects.size(); i++)
+   {
+     std::array<double, 3> position = insitufineObjects[i].getCentre();
+     position[0] += dx;  position[2] += dx;
+     iREAL tmp[3] = {position[0], position[1], position[2]};
+     insitufineObjects[i].setCentre(tmp);
+   }
 
   if(isSphereOrNone)
   {
-    delta::world::uniSphereRadius(totalMass, index, _insitufineObjects);
+    delta::world::uniSphereRadius(totalMass, index, insitufineObjects);
   } else {
-    delta::world::uniMeshGeometry(totalMass, noPointsPerParticle, _insitufineObjects, index);
+    delta::world::uniMeshGeometry(totalMass, noPointsPerParticle, insitufineObjects, index);
 
     /*
     delta::world::uniCubeGeometry(
@@ -212,19 +259,94 @@
         index);
     */
   }
+
+  //////////////////////////////////////////////////////
+  /////MIN AND MAX RADIUS//////////////////////////////
+  //////////////////////////////////////////////////////
+  double maxRad = 0.0;
+  double minRad = 1.00;
+
+  for(unsigned i=index; i<insitufineObjects.size(); i++)
+  {
+    if(maxRad <= insitufineObjects[i].getRad()) maxRad = insitufineObjects[i].getRad();
+    if(minRad >= insitufineObjects[i].getRad()) minRad = insitufineObjects[i].getRad();
+  }
+
+
+  //lift above max radii
+  for(unsigned i=index; i<insitufineObjects.size(); i++)
+  {
+    std::array<double, 3> pos = insitufineObjects[i].getCentre();
+    iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
+    insitufineObjects[i].setCentre(p);
+
+    auto yCoordinates = insitufineObjects[i].getyCoordinates();
+
+    if(yCoordinates.size() >= 0)
+    {
+      for(unsigned i=0; i<yCoordinates.size(); i++)
+      {
+        yCoordinates[i] += maxRad+epsilon;
+      }
+    }
+  }
 }
 
  void delta::world::nonUniformlyDistributedTotalMass(
-          iREAL totalMass,
-          int index,
+		  iREAL position[3],
+		  int xzcuts,
+		  int ycuts,
+		  iREAL gridxyLength,
+		  iREAL totalMass,
+		  iREAL hopperWidth,
+		  int index,
+		  iREAL epsilon,
           iREAL isSphereOrNone,
           iREAL subcellx,
           int _noPointsPerParticle,
-          std::vector<delta::geometry::Object::Object> &_insitufineObjects)
+          std::vector<delta::geometry::Object::Object> &insitufineObjects)
 {
+
+   //create xzy cuts above hopper, position starts at left lower inner corner
+   std::vector<std::array<iREAL, 3>> grid = delta::world::makeGridLayout(position, xzcuts, ycuts, gridxyLength);
+
+   delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
+   bool isObstacle = false;
+   bool isFriction = false;
+
+   iREAL xmin = 1; iREAL xmax = 0;
+   for(unsigned i=0; i<grid.size(); i++)
+   {
+     std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
+
+	 delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, isObstacle, isFriction, epsilon);
+
+     std::array<double, 3> l = {0, -1, 0};
+     particles.setLinearVelocity(l);
+     insitufineObjects.push_back(particles);
+
+     if(p[0] < xmin) xmin = p[0];
+     if(p[0] > xmax) xmax = p[0];
+   }
+
+   //adjustment of xz dimension
+   gridxyLength = xmax - xmin;
+   //iREAL dx = (hopperWidth - gridxyLength)/2;
+   iREAL dx = (hopperWidth - gridxyLength)/2;
+   //printf("length1:%f\n", subGridLength);
+   //printf("length2:%f\n", _hopperWidth-margin*2);
+
+   for(unsigned i=0; i<insitufineObjects.size(); i++)
+   {
+     std::array<double, 3> position = insitufineObjects[i].getCentre();
+     position[0] += dx;  position[2] += dx;
+     iREAL tmp[3] = {position[0], position[1], position[2]};
+     insitufineObjects[i].setCentre(tmp);
+   }
+
   if(isSphereOrNone)
   {
-    delta::world::nonUniSphereRadius(totalMass, index, subcellx, _insitufineObjects);
+    delta::world::nonUniSphereRadius(totalMass, index, subcellx, insitufineObjects);
   } else {
 
 	/*
@@ -234,35 +356,68 @@
         _noPointsPerParticle);*/
 
      }
+
+  //////////////////////////////////////////////////////
+  /////MIN AND MAX RADIUS//////////////////////////////
+  //////////////////////////////////////////////////////
+  double maxRad = 0.0;
+  double minRad = 1.00;
+
+  for(unsigned i=index; i<insitufineObjects.size(); i++)
+  {
+    if(maxRad <= insitufineObjects[i].getRad()) maxRad = insitufineObjects[i].getRad();
+    if(minRad >= insitufineObjects[i].getRad()) minRad = insitufineObjects[i].getRad();
+  }
+
+
+  //lift above max radii
+  for(unsigned i=index; i<insitufineObjects.size(); i++)
+  {
+    std::array<double, 3> pos = insitufineObjects[i].getCentre();
+    iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
+    insitufineObjects[i].setCentre(p);
+
+    auto yCoordinates = insitufineObjects[i].getyCoordinates();
+
+    if(yCoordinates.size() >= 0)
+    {
+      for(unsigned i=0; i<yCoordinates.size(); i++)
+      {
+        yCoordinates[i] += maxRad+epsilon;
+      }
+    }
+  }
+  //////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////
 }
 
  void delta::world::uniSphereRadius(
     iREAL totalMass,
     int index,
-    std::vector<delta::geometry::Object> &_insitufineObjects)
+    std::vector<delta::geometry::Object> &insitufineObjects)
 {
 
-  if((!_insitufineObjects.size()) > 0) return;
+  if((!insitufineObjects.size()) > 0) return;
 
-  delta::geometry::material::MaterialType material = _insitufineObjects[0].getMaterial();
+  delta::geometry::material::MaterialType material = insitufineObjects[0].getMaterial();
 
-  iREAL massPerParticle = totalMass/(iREAL)_insitufineObjects.size();
+  iREAL massPerParticle = totalMass/(iREAL)insitufineObjects.size();
   iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
-  for(unsigned i=index; i<_insitufineObjects.size(); i++)
+  for(unsigned i=index; i<insitufineObjects.size(); i++)
   {
-    _insitufineObjects[i].generateSphere(radius);
+    insitufineObjects[i].generateSphere(radius);
   }
 }
 
  void delta::world::uniMeshGeometry(
     iREAL totalMass,
     int noPointsPerParticle,
-    std::vector<delta::geometry::Object> &_insitufineObjects,
+    std::vector<delta::geometry::Object> &insitufineObjects,
     int index)
 {
-  iREAL massPerParticle = totalMass/(iREAL)_insitufineObjects.size();
-  delta::geometry::material::MaterialType material = _insitufineObjects[0].getMaterial();
+  iREAL massPerParticle = totalMass/(iREAL)insitufineObjects.size();
+  delta::geometry::material::MaterialType material = insitufineObjects[0].getMaterial();
 
   iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
@@ -270,11 +425,11 @@
   //iREAL masssphere = 0;
 
   iREAL position[3];
-  for(unsigned i=index; i<_insitufineObjects.size(); i++)
+  for(unsigned i=index; i<insitufineObjects.size(); i++)
   {
-    _insitufineObjects[i].setParticleID(index);
-    _insitufineObjects[i].generateMesh(0,0,0,0,0,0,noPointsPerParticle, radius);
-    iREAL mt = _insitufineObjects[i].getMass();
+    insitufineObjects[i].setParticleID(index);
+    insitufineObjects[i].generateMesh(0,0,0,0,0,0,noPointsPerParticle, radius);
+    iREAL mt = insitufineObjects[i].getMass();
 
     //iREAL vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
     //iREAL vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
@@ -288,13 +443,13 @@
   //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
 
   reMassTotal=0;
-  for(unsigned j=0; j<_insitufineObjects.size(); j++)
+  for(unsigned j=0; j<insitufineObjects.size(); j++)
   {
-    std::array<iREAL, 3> ar = _insitufineObjects[j].getCentre(); position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
+    std::array<iREAL, 3> ar = insitufineObjects[j].getCentre(); position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
 
-    std::vector<double> xCoordinates = _insitufineObjects[j].getxCoordinates();
-    std::vector<double> yCoordinates = _insitufineObjects[j].getyCoordinates();
-    std::vector<double> zCoordinates = _insitufineObjects[j].getzCoordinates();
+    std::vector<double> xCoordinates = insitufineObjects[j].getxCoordinates();
+    std::vector<double> yCoordinates = insitufineObjects[j].getyCoordinates();
+    std::vector<double> zCoordinates = insitufineObjects[j].getzCoordinates();
 
     delta::geometry::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
 
@@ -365,13 +520,13 @@
     iREAL totalMass,
     int index,
     iREAL subcellx,
-    std::vector<delta::geometry::Object> &_insitufineObjects)
+    std::vector<delta::geometry::Object> &insitufineObjects)
 {
-  if((!_insitufineObjects.size()) > 0) return;
+  if((!insitufineObjects.size()) > 0) return;
 
-  delta::geometry::material::MaterialType material = _insitufineObjects[0].getMaterial();
+  delta::geometry::material::MaterialType material = insitufineObjects[0].getMaterial();
 
-  iREAL massPerParticle = totalMass/(iREAL)_insitufineObjects.size();
+  iREAL massPerParticle = totalMass/(iREAL)insitufineObjects.size();
   iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
   iREAL reMassTotal = 0;
@@ -383,7 +538,7 @@
     printf("ERROR:radius bigger than subcellx\n");
 
   std::vector<double> rad;
-  for(unsigned i=index; i<_insitufineObjects.size(); i++)
+  for(unsigned i=index; i<insitufineObjects.size(); i++)
   {
     iREAL particleDiameter = mindiam + (iREAL)(rand()) / ((iREAL) (RAND_MAX/(maxdiam-mindiam)));
     rad.push_back(particleDiameter/2);
@@ -400,7 +555,7 @@
   for(unsigned i=0; i<rad.size(); i++)
   {
     rad[i] = rad[i] * rescale;
-    _insitufineObjects[index+i].generateSphere(rad[i]);
+    insitufineObjects[index+i].generateSphere(rad[i]);
 
     reMassTotal += (4.0/3.0) * 3.14 * std::pow(i,3) * int(delta::geometry::material::materialToDensitymap.find(material)->second); //volume * mass
   }
@@ -490,7 +645,8 @@
     iREAL position[3],
     iREAL width,
     int layers,
-	std::vector<delta::geometry::Object>& _insitufineObjects)
+	iREAL epsilon,
+	std::vector<delta::geometry::Object>& insitufineObjects)
 {
 
   //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
@@ -532,14 +688,14 @@
     {
       auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-      delta::geometry::Object obj("FB", 0, tmp[i], material, false, false);
-      _insitufineObjects.push_back(obj);
+      delta::geometry::Object obj("FB", 0, tmp[i], material, false, false, epsilon);
+      insitufineObjects.push_back(obj);
     }
     //std::cout << tmp.size() << " " << particleGrid.size() << std::endl;
   }
 
-  for(unsigned i=0; i<_insitufineObjects.size(); i++) {
-    _insitufineObjects[i].setRad(scalePercentage);
+  for(unsigned i=0; i<insitufineObjects.size(); i++) {
+    insitufineObjects[i].setRad(scalePercentage);
   }
 }
 
@@ -549,7 +705,8 @@
     int   xzElements,
     iREAL arrayYlength,
     int   yElements,
-    std::vector<delta::geometry::Object>& _insitufineObjects)
+	iREAL epsilon,
+    std::vector<delta::geometry::Object>& insitufineObjects)
 {
   std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
 
@@ -602,8 +759,103 @@
   {
     auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-    delta::geometry::Object obj("FB", i, particleGrid[i], material, false, false);
+    delta::geometry::Object obj("FB", i, particleGrid[i], material, false, false, epsilon);
     obj.setRad(scalePercentage);
-    _insitufineObjects.push_back(obj);
+    insitufineObjects.push_back(obj);
   }
 }
+
+
+ void delta::world::computeBoundary(
+	 std::vector<delta::geometry::Object>& coarseObjects,
+	 std::vector<delta::geometry::Object>& fineObjects,
+	 std::vector<delta::geometry::Object>& insitufineObjects,
+	 iREAL& minParticleDiam,
+	 iREAL& maxParticleDiam,
+	 iREAL *minComputeDomain,
+	 iREAL *maxComputeDomain)
+ {
+   //COMPUTE MIN/MAX XYZ DOMAIN
+   iREAL minx = std::numeric_limits<double>::max(), miny = std::numeric_limits<double>::max(), minz = std::numeric_limits<double>::max();
+   iREAL maxx = std::numeric_limits<double>::min(), maxy = std::numeric_limits<double>::min(), maxz = std::numeric_limits<double>::min();
+
+   iREAL minDiameter = std::numeric_limits<double>::max();
+   iREAL maxDiameter = std::numeric_limits<double>::min();
+
+   for(unsigned i=0; i<coarseObjects.size(); i++)
+   {
+     iREAL ominx = coarseObjects[i].getMinX();
+     iREAL ominy = coarseObjects[i].getMinY();
+     iREAL ominz = coarseObjects[i].getMinZ();
+     if(ominx < minx) minx = ominx;
+     if(ominy < miny) miny = ominy;
+     if(ominz < minz) minz = ominz;
+
+     iREAL omaxx = coarseObjects[i].getMaxX();
+     iREAL omaxy = coarseObjects[i].getMaxY();
+     iREAL omaxz = coarseObjects[i].getMaxZ();
+     if(omaxx > maxx) maxx = omaxx;
+     if(omaxy > maxy) maxy = omaxy;
+     if(omaxz > maxz) maxz = omaxz;
+
+     if(coarseObjects[i].getRad() * 2.0 < minDiameter)
+     minDiameter = coarseObjects[i].getRad() * 2.0;
+     if(coarseObjects[i].getRad() * 2.0 > maxDiameter)
+     maxDiameter = coarseObjects[i].getRad() * 2.0;
+   }
+
+   for(unsigned i=0; i<insitufineObjects.size(); i++)
+   {
+     iREAL ominx = insitufineObjects[i].getMinX();
+     iREAL ominy = insitufineObjects[i].getMinY();
+     iREAL ominz = insitufineObjects[i].getMinZ();
+     if(ominx < minx) minx = ominx;
+     if(ominy < miny) miny = ominy;
+     if(ominz < minz) minz = ominz;
+
+     iREAL omaxx = insitufineObjects[i].getMaxX();
+     iREAL omaxy = insitufineObjects[i].getMaxY();
+     iREAL omaxz = insitufineObjects[i].getMaxZ();
+     if(omaxx > maxx) maxx = omaxx;
+     if(omaxy > maxy) maxy = omaxy;
+     if(omaxz > maxz) maxz = omaxz;
+
+     if(insitufineObjects[i].getRad() * 2.0 < minDiameter)
+     minDiameter = insitufineObjects[i].getRad() * 2.0;
+     if(insitufineObjects[i].getRad() * 2.0 > maxDiameter)
+     maxDiameter = insitufineObjects[i].getRad() * 2.0;
+   }
+
+   for(unsigned i=0; i<fineObjects.size(); i++)
+   {
+    iREAL ominx = fineObjects[i].getMinX();
+    iREAL ominy = fineObjects[i].getMinY();
+    iREAL ominz = fineObjects[i].getMinZ();
+    if(ominx < minx) minx = ominx;
+    if(ominy < miny) miny = ominy;
+    if(ominz < minz) minz = ominz;
+
+    iREAL omaxx = fineObjects[i].getMaxX();
+    iREAL omaxy = fineObjects[i].getMaxY();
+    iREAL omaxz = fineObjects[i].getMaxZ();
+    if(omaxx > maxx) maxx = omaxx;
+    if(omaxy > maxy) maxy = omaxy;
+    if(omaxz > maxz) maxz = omaxz;
+
+    if(fineObjects[i].getRad() * 2.0 < minDiameter)
+    minDiameter = fineObjects[i].getRad() * 2.0;
+    if(fineObjects[i].getRad() * 2.0 > maxDiameter)
+    maxDiameter = fineObjects[i].getRad() * 2.0;
+   }
+
+   maxParticleDiam = maxDiameter;
+   minParticleDiam = minDiameter;
+
+   minComputeDomain[0] = minx;
+   minComputeDomain[1] = miny;
+   minComputeDomain[2] = minz;
+
+   maxComputeDomain[0] = maxx;
+   maxComputeDomain[1] = maxy;
+   maxComputeDomain[2] = maxz;
+ }

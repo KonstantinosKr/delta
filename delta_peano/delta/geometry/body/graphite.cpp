@@ -10,6 +10,10 @@
 #include <string.h>
 #include <delta/geometry/body/graphite.h>
 
+
+#include "delta/core/read.h"
+#include "delta/geometry/properties.h"
+
 //Intact Poly Brick
 void delta::geometry::body::generateBrickFB(
   iREAL center[3], iREAL h,

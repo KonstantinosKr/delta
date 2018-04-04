@@ -28,9 +28,6 @@
 
 #include <vector>
 
-#include "delta/core/read.h"
-#include "delta/geometry/properties.h"
-
 namespace delta {
   namespace geometry {
 	namespace body {

@@ -11,12 +11,7 @@
 #include <string>
 
 #include "delta/geometry/material.h"
-#include "delta/geometry/properties.h"
-#include "delta/geometry/primitive/granulate.h"
-#include "delta/geometry/primitive/cube.h"
-#include "delta/geometry/body/graphite.h"
-
-#include "delta/geometry/Object.h"
+//#include "delta/geometry/Object.h"
 
 namespace delta {
   namespace world {
@@ -99,18 +94,30 @@ namespace delta {
 		iREAL position[3],
 		int xzcuts,
 		int ycuts,
-		iREAL width);
+		iREAL gridxyLength);
 
 	   void uniformlyDistributedTotalMass(
+		iREAL position[3],
+		int xzcuts,
+		int ycuts,
+		iREAL gridxyLength,
 		iREAL totalMass,
+		iREAL hopperWidth,
 		int index,
+		iREAL epsilon,
 		bool isSphereOrNone,
 		int noPointsPerParticle,
 		std::vector<delta::geometry::Object>& _insitufineObjects);
 
 	   void nonUniformlyDistributedTotalMass(
+		iREAL position[3],
+		int xzcuts,
+		int ycuts,
+		iREAL gridxyLength,
 		iREAL totalMass,
+		iREAL hopperWidth,
 		int index,
+		iREAL epsilon,
 		iREAL isSphereOrNone,
 		iREAL subcellx,
 		int _noPointsPerParticle,
@@ -120,6 +127,7 @@ namespace delta {
 		iREAL position[3],
 		iREAL width,
 		int layers,
+		iREAL epsilon,
 		std::vector<delta::geometry::Object>& _insitufineObjects);
 
 	   void makeBrickGrid(
@@ -128,7 +136,18 @@ namespace delta {
 		int   xzElements,
 		iREAL arrayYlength,
 		int   yElements,
+		iREAL epsilon,
 		std::vector<delta::geometry::Object>& _insitufineObjects);
+
+
+	   void computeBoundary(
+	  	 std::vector<delta::geometry::Object>& coarseObjects,
+	  	 std::vector<delta::geometry::Object>& fineObjects,
+	  	 std::vector<delta::geometry::Object>& insitufineObjects,
+	  	 iREAL& minParticleDiam,
+	  	 iREAL& maxParticleDiam,
+	  	 iREAL* minComputeDomain,
+	  	 iREAL* maxComputeDomain);
   }
 }
 

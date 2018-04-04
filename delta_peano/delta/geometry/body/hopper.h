@@ -30,10 +30,6 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "delta/geometry/operators/hull/hull.h"
-#include "delta/geometry/operators/hull/alg.h"
-#include "delta/geometry/properties.h"
-#include "delta/geometry/operators/triangle.h"
 
 namespace delta {
   namespace geometry {

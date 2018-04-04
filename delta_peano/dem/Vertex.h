@@ -18,6 +18,7 @@
 
 #include "dem/mappings/Collision.h"
 #include "delta/geometry/material.h"
+#include "delta/geometry/Object.h"
 #include <iomanip>
 
 
@@ -117,12 +118,8 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
 
     int createSphereParticle(
         const tarch::la::Vector<DIMENSIONS,double>&  center,
-    		  double radius,
-    		  double epsilon,
-    		  bool friction,
-    		  delta::geometry::material::MaterialType material,
-    		  bool isObstacle,
-    		  int particleId);
+		delta::geometry::Object::Object Object,
+		int particleId);
 
     int getNumberOfParticles() const;
     int getNumberOfTriangles( int particleNumber ) const;

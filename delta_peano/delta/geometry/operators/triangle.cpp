@@ -24,6 +24,12 @@
 
 #include <delta/geometry/operators/triangle.h>
 
+#include <stdlib.h>
+#include <assert.h>
+#include <cmath>
+#include <delta/geometry/primitive/surface.h>
+#include "delta/geometry/properties.h"
+
 void delta::geometry::operators::triangle::bisectTriangle(
 		iREAL A[3],
 		iREAL B[3],
@@ -732,4 +738,169 @@ void delta::geometry::operators::triangle::getTrianglesInBoundingBox(
       zCoordinatesBounded.push_back(zCoordinatesRoot[i+2]);
     }
   }
+}
+
+void delta::geometry::operators::triangle::decomposeMeshByOctsection(
+    int octSectTimes,
+    std::vector<double> xCoordinates,
+    std::vector<double> yCoordinates,
+    std::vector<double> zCoordinates,
+    delta::geometry::material::MaterialType material,
+    bool isFriction,
+    bool isObstacle,
+	iREAL epsilon,
+    std::vector<delta::geometry::Object::Object> &fineObjects,
+	int &numberOfParticles,
+	int &numberOfObstacles)
+{
+
+  std::vector<std::array<double, 3>> centroid;
+
+  double centerOfMass[3];
+  double inertia[9];
+  double inverse[9];
+  double mass;
+
+  if(octSectTimes && xCoordinates.size() > 0)
+  {
+    std::vector<std::vector<double>> xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel;
+
+    xCoordinatesMultiLevel.resize(1); yCoordinatesMultiLevel.resize(1); zCoordinatesMultiLevel.resize(1);
+
+    delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
+    delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
+
+
+    centroid.resize(1);
+    xCoordinatesMultiLevel.resize(1); yCoordinatesMultiLevel.resize(1); zCoordinatesMultiLevel.resize(1);
+
+    centroid[0][0] = centerOfMass[0];
+    centroid[0][1] = centerOfMass[1];
+    centroid[0][2] = centerOfMass[2];
+
+
+    for(unsigned i=0; i<xCoordinates.size(); i++)
+    {//coarse triangle push
+      xCoordinatesMultiLevel[0].push_back(xCoordinates[i]);
+      yCoordinatesMultiLevel[0].push_back(yCoordinates[i]);
+      zCoordinatesMultiLevel[0].push_back(zCoordinates[i]);
+    }
+    xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+
+    int numOfSubParticles = delta::geometry::operators::triangle::octSectParticle(octSectTimes, xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel, centroid);
+
+    ////////LOOP ALL subdivisions of quadtree and create particles
+    for(unsigned i=numOfSubParticles; i>(octSectTimes-1)*8; i--)
+    {
+      for(unsigned j=0; j<xCoordinatesMultiLevel[i].size(); j++)
+      {
+        xCoordinates.push_back(xCoordinatesMultiLevel[i][j]);
+        yCoordinates.push_back(yCoordinatesMultiLevel[i][j]);
+        zCoordinates.push_back(zCoordinatesMultiLevel[i][j]);
+      }
+
+      delta::geometry::Object::Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, epsilon);
+
+      obj.setxyzCoordinates(
+          {xCoordinates[0], xCoordinates[1], xCoordinates[2]},
+          {yCoordinates[0], yCoordinates[1], yCoordinates[2]},
+          {zCoordinates[0], zCoordinates[1], zCoordinates[2]});
+
+      obj.setMass(mass);
+      obj.setInertia(inertia);
+      obj.setInverse(inverse);
+      obj.setCentreOfMass(centerOfMass);
+
+      fineObjects.push_back(obj);
+
+      //_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+      xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+    }
+    ////////END LOOP
+  } else {
+    //delta::world::object::Object::Object obj("mesh", 0, centerOfMass, material, isObstacle, isFriction);
+    delta::geometry::Object::Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, epsilon);
+
+    obj.setxyzCoordinates(
+        {xCoordinates[0], xCoordinates[1], xCoordinates[2]},
+        {yCoordinates[0], yCoordinates[1], yCoordinates[2]},
+        {zCoordinates[0], zCoordinates[1], zCoordinates[2]});
+
+    obj.setMass(mass);
+    obj.setInertia(inertia);
+    obj.setInverse(inverse);
+    obj.setCentreOfMass(centerOfMass);
+
+    fineObjects.push_back(obj);
+
+    //_numberOfTriangles += xCoordinates.size()/DIMENSIONS;
+  }
+  numberOfParticles++;
+  if(isObstacle) numberOfObstacles++;
+  xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+}
+
+int delta::geometry::operators::triangle::decomposeMeshIntoParticles(
+    std::vector<double> xCoordinates,
+    std::vector<double> yCoordinates,
+    std::vector<double> zCoordinates,
+    delta::geometry::material::MaterialType material,
+    bool isObstacle,
+    bool isFriction,
+	iREAL epsilon,
+    std::vector<delta::geometry::Object::Object> &fineObjects
+)
+{
+  double mass;
+  double centerOfMass[3];
+  double inertia[9];
+  double inverse[9];
+
+  delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
+  delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
+
+  for(unsigned i=0; i<xCoordinates.size(); i+=3)
+  {
+    iREAL A[3] = {xCoordinates[i], yCoordinates[i], zCoordinates[i]};
+    iREAL B[3] = {xCoordinates[i+1], yCoordinates[i+1], zCoordinates[i+1]};
+    iREAL C[3] = {xCoordinates[i+2], yCoordinates[i+2], zCoordinates[i+2]};
+
+    iREAL O[3] = {A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0,  A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0, A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0};
+
+    std::vector<double> subxCoordinates;
+    std::vector<double> subyCoordinates;
+    std::vector<double> subzCoordinates;
+
+    subxCoordinates.push_back(A[0]);
+    subxCoordinates.push_back(B[0]);
+    subxCoordinates.push_back(C[0]);
+
+    subyCoordinates.push_back(A[1]);
+    subyCoordinates.push_back(B[1]);
+    subyCoordinates.push_back(C[1]);
+
+    subzCoordinates.push_back(A[2]);
+    subzCoordinates.push_back(B[2]);
+    subzCoordinates.push_back(C[2]);
+
+    std::array<iREAL, 3> Oarray = {O[0], O[1], O[2]};
+
+    delta::geometry::Object obj("mesh", 0, Oarray, material, isObstacle, isFriction, epsilon);
+
+    obj.setxyzCoordinates(
+        {subxCoordinates[0], subxCoordinates[1], subxCoordinates[2]},
+        {subyCoordinates[0], subyCoordinates[1], subyCoordinates[2]},
+        {subzCoordinates[0], subzCoordinates[1], subzCoordinates[2]});
+
+    //_numberOfTriangles++;
+
+    obj.setMass(mass);
+    obj.setInertia(inertia);
+    obj.setInverse(inverse);
+    obj.setCentreOfMass(centerOfMass);
+
+    fineObjects.push_back(obj);
+  }
+
+  return xCoordinates.size()/3;
 }

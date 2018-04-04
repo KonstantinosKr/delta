@@ -24,6 +24,11 @@
 
 #include <delta/geometry/body/hopper.h>
 
+#include "delta/geometry/operators/hull/hull.h"
+#include "delta/geometry/operators/hull/alg.h"
+#include "delta/geometry/properties.h"
+#include "delta/geometry/operators/triangle.h"
+
 void delta::geometry::body::generateInnerHopper(
 		iREAL  center[3],
 		iREAL 	width,

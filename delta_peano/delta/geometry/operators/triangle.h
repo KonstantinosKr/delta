@@ -25,14 +25,11 @@
 #ifndef DELTA_geometry_TRIANGLE_H_
 #define DELTA_geometry_TRIANGLE_H_
 
-
 #include <vector>
 #include <array>
-#include <stdlib.h>
-#include <assert.h>
-#include <cmath>
-#include <delta/geometry/primitive/surface.h>
-#include "delta/geometry/properties.h"
+#include "delta/geometry/material.h"
+#include "delta/geometry/Object.h"
+
 
 namespace delta {
   namespace geometry {
@@ -115,6 +112,29 @@ namespace delta {
 			std::vector<iREAL>&  xCoordinatesBounded,
 			std::vector<iREAL>&  yCoordinatesBounded,
 			std::vector<iREAL>&  zCoordinatesBounded);
+
+		void decomposeMeshByOctsection(
+		    int octSectTimes,
+		    std::vector<double> xCoordinates,
+		    std::vector<double> yCoordinates,
+		    std::vector<double> zCoordinates,
+		    delta::geometry::material::MaterialType material,
+		    bool isFriction,
+		    bool isObstacle,
+			iREAL epsilon,
+		    std::vector<delta::geometry::Object::Object> &fineObjects,
+			int &numberOfParticles,
+			int &numberOfObstacles);
+
+		int decomposeMeshIntoParticles(
+		    std::vector<double> xCoordinates,
+		    std::vector<double> yCoordinates,
+		    std::vector<double> zCoordinates,
+		    delta::geometry::material::MaterialType material,
+		    bool isObstacle,
+		    bool isFriction,
+			iREAL epsilon,
+		    std::vector<delta::geometry::Object::Object> &fineObjects);
 	  }
     }
   }

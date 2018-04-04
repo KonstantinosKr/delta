@@ -138,7 +138,7 @@ void printManual()
     << " 0 - infinity" << std::endl << std::endl
 
 	  << " Usage: ./dem-xxx grid_h_max(double) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(double in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl
-	  << " eg: ./dem-xxx 0.5 0.5 0.5 hopperUniform 10000 regular-grid 0.00001 every-batch 10 true bf 50 2" << std::endl;
+	  << " eg: ./delta-icc-release-tbb 0.1 hopperUniform 10 regular-grid 0.0001 never 1 true sphere 10 3 true true auto false" << std::endl;
 }
 
 int main(int argc, char** argv)

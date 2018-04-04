@@ -280,12 +280,8 @@ int dem::Vertex::createSubParticle(
 
 int dem::Vertex::createSphereParticle(
     const tarch::la::Vector<DIMENSIONS,double>& center,
-		double radius,
-		double epsilon,
-		bool friction,
-		delta::geometry::material::MaterialType material,
-		bool isObstacle,
-		int particleId)
+	delta::geometry::Object::Object Object,
+	int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
@@ -293,19 +289,19 @@ int dem::Vertex::createSphereParticle(
 
   double inertia[9], inverse[9];
 
-  iREAL density = int(delta::geometry::material::materialToDensitymap.find(material)->second);
-  iREAL volume = (4.0/3.0) * 3.14 * radius * radius * radius;
+  iREAL density = int(delta::geometry::material::materialToDensitymap.find(Object.getMaterial())->second);
+  iREAL volume = (4.0/3.0) * 3.14 * Object.getRad() * Object.getRad() * Object.getRad();
   double mass = volume * density;
 
-  newParticle._persistentRecords._inertia(0) = 0.4 * mass * radius * radius;
+  newParticle._persistentRecords._inertia(0) = 0.4 * mass * Object.getRad() * Object.getRad();
   newParticle._persistentRecords._inertia(1) = 0.0;
   newParticle._persistentRecords._inertia(2) = 0.0;
   newParticle._persistentRecords._inertia(3) = 0.0;
-  newParticle._persistentRecords._inertia(4) = 0.4 * mass * radius * radius;
+  newParticle._persistentRecords._inertia(4) = 0.4 * mass * Object.getRad() * Object.getRad();
   newParticle._persistentRecords._inertia(5) = 0.0;
   newParticle._persistentRecords._inertia(6) = 0.0;
   newParticle._persistentRecords._inertia(7) = 0.0;
-  newParticle._persistentRecords._inertia(8) = 0.4 * mass * radius * radius;
+  newParticle._persistentRecords._inertia(8) = 0.4 * mass * Object.getRad() * Object.getRad();
 
   inertia[0] = newParticle._persistentRecords._inertia(0);
   inertia[1] = newParticle._persistentRecords._inertia(1);
@@ -331,7 +327,7 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._centre(1) = center(1);
   newParticle._persistentRecords._centre(2) = center(2);
 
-  delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
+  delta::geometry::properties::getInverseInertia(inertia, inverse, Object.getIsObstacle());
 
   newParticle._persistentRecords._inverse(0) = inverse[0];
   newParticle._persistentRecords._inverse(1) = inverse[1];
@@ -354,15 +350,15 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._orientation(8) = 1;
 
   newParticle._persistentRecords._mass				= mass;
-  newParticle._persistentRecords._friction			= friction;
-  newParticle._persistentRecords._diameter			= radius*2;
-  newParticle._persistentRecords._haloDiameter 		= (radius*2+epsilon*2) * 1.1;
-  newParticle._persistentRecords._epsilon			= epsilon;
+  newParticle._persistentRecords._friction			= Object.getIsFriction();
+  newParticle._persistentRecords._diameter			= Object.getRad()*2;
+  newParticle._persistentRecords._haloDiameter 		= (Object.getRad()*2+Object.getEpsilon()*2) * 1.1;
+  newParticle._persistentRecords._epsilon			= Object.getEpsilon();
   newParticle._persistentRecords._hMin 				= 0;
 
   newParticle._persistentRecords._numberOfTriangles 	= 0;
-  newParticle._persistentRecords._isObstacle 		= isObstacle;
-  newParticle._persistentRecords._material 			= int(material);
+  newParticle._persistentRecords._isObstacle 		= Object.getIsObstacle();
+  newParticle._persistentRecords._material 			= int(Object.getMaterial());
   newParticle._persistentRecords._globalParticleId  	= particleId;
   newParticle._persistentRecords._localParticleId   	= 0;
 
