@@ -32,6 +32,7 @@ namespace delta {
   namespace geometry {
 	namespace primitive {
 	  namespace granulate {
+
 		void generateParticle(
 		  iREAL    				center[2],
 		  iREAL    				h,

@@ -5,13 +5,17 @@
  *      Author: konstantinos
  */
 
+#ifndef CONFIGURATION_H
+#define CONFIGURATION_H
+
+
 #include <vector>
 #include <array>
 #include "stdlib.h"
 #include <string>
 
 #include "delta/geometry/material.h"
-//#include "delta/geometry/Object.h"
+#include "delta/geometry/Object.h"
 
 namespace delta {
   namespace world {
@@ -150,4 +154,4 @@ namespace delta {
 	  	 iREAL* maxComputeDomain);
   }
 }
-
+#endif

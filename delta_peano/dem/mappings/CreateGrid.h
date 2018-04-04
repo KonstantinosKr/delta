@@ -23,15 +23,13 @@
 #include <array>
 #include <vector>
 
-//#include "delta/core/delta.h"
+#include "delta/core/delta.h"
 #include "dem/Vertex.h"
 #include "dem/Cell.h"
 #include "dem/State.h"
 #include "dem/mappings/AdoptGrid.h"
 
-
 #include "delta/geometry/material.h"
-#include "delta/geometry/properties.h"
 #include "delta/world/configuration.h"
 
 namespace dem {

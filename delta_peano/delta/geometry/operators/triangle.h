@@ -30,7 +30,6 @@
 #include "delta/geometry/material.h"
 #include "delta/geometry/Object.h"
 
-
 namespace delta {
   namespace geometry {
 	namespace operators {
@@ -122,7 +121,7 @@ namespace delta {
 		    bool isFriction,
 		    bool isObstacle,
 			iREAL epsilon,
-		    std::vector<delta::geometry::Object::Object> &fineObjects,
+		    std::vector<Object> &fineObjects,
 			int &numberOfParticles,
 			int &numberOfObstacles);
 
@@ -134,7 +133,7 @@ namespace delta {
 		    bool isObstacle,
 		    bool isFriction,
 			iREAL epsilon,
-		    std::vector<delta::geometry::Object::Object> &fineObjects);
+		    std::vector<Object> &fineObjects);
 	  }
     }
   }

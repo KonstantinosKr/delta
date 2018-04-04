@@ -5,6 +5,8 @@
 #include <delta/geometry/body/hopper.h>
 #include <delta/geometry/body/graphite.h>
 
+#include <delta/geometry/properties.h>
+
 delta::geometry::Object::Object()
 {
   this->_component = "particle";
@@ -47,7 +49,9 @@ delta::geometry::Object::Object(
     delta::geometry::material::MaterialType 	material,
     bool                          			isObstacle,
     bool                          			isFriction,
-	iREAL 									epsilon)
+	iREAL 									epsilon,
+	std::array<double, 3> linear,
+	std::array<double, 3> angular)
 {
   this->_component = component;
   this->_particleID = particleID;
@@ -60,13 +64,13 @@ delta::geometry::Object::Object(
   this->_isObstacle = isObstacle;
   this->_isFriction = isFriction;
 
-  this->_linearVelocity[0] = 0.0;
-  this->_linearVelocity[1] = 0.0;
-  this->_linearVelocity[2] = 0.0;
+  this->_linearVelocity[0] = linear[0];
+  this->_linearVelocity[1] = linear[1];
+  this->_linearVelocity[2] = linear[2];
 
-  this->_angularVelocity[0] = 0.0;
-  this->_angularVelocity[1] = 0.0;
-  this->_angularVelocity[2] = 0.0;
+  this->_angularVelocity[0] = angular[0];
+  this->_angularVelocity[1] = angular[1];
+  this->_angularVelocity[2] = angular[2];
 
   this->_rad = 0.0;
 
@@ -240,7 +244,6 @@ void delta::geometry::Object::setEpsilon(double epsilon)
 {
   _epsilon = epsilon;
 }
-
 
 double delta::geometry::Object::getRad()
 {

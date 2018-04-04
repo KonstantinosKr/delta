@@ -52,16 +52,14 @@ void dem::Vertex::destroy() const {
 }
 
 int dem::Vertex::createParticle(
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates,
-    double epsilon,
-    bool friction,
-    delta::geometry::material::MaterialType material,
-    bool isObstacle,
+	delta::geometry::Object Object,
     int particleId,
     int localparticleId)
 {
+  std::vector<double> xCoordinates = Object.getxCoordinates();
+  std::vector<double> yCoordinates = Object.getyCoordinates();
+  std::vector<double> zCoordinates = Object.getzCoordinates();
+
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
@@ -75,7 +73,7 @@ int dem::Vertex::createParticle(
   //printf("WIDTH%f\n", delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates));
   hMin = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);
 
-  delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
+  delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, Object.getMaterial(), mass, centerOfMass, inertia);
 
   newParticle._persistentRecords._inertia(0) = inertia[0];
   newParticle._persistentRecords._inertia(1) = inertia[1];
@@ -99,7 +97,7 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._centre(1) = centerOfMass[1];
   newParticle._persistentRecords._centre(2) = centerOfMass[2];
 
-  delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
+  delta::geometry::properties::getInverseInertia(inertia, inverse, Object.getIsObstacle());
 
   newParticle._persistentRecords._inverse(0) = inverse[0];
   newParticle._persistentRecords._inverse(1) = inverse[1];
@@ -122,14 +120,14 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._orientation(8) = 1.0;
 
   newParticle._persistentRecords._mass           = mass;
-  newParticle._persistentRecords._friction		= friction;
-  newParticle._persistentRecords._haloDiameter 	= (newParticle.getDiameter()+epsilon*2) * 1.1;
-  newParticle._persistentRecords._epsilon		= epsilon;
+  newParticle._persistentRecords._friction		= Object.getIsFriction();
+  newParticle._persistentRecords._haloDiameter 	= (newParticle.getDiameter()+Object.getEpsilon()*2) * 1.1;
+  newParticle._persistentRecords._epsilon		= Object.getEpsilon();
   newParticle._persistentRecords._hMin 			= hMin;
 
   newParticle._persistentRecords._numberOfTriangles 	= xCoordinates.size()/DIMENSIONS;
-  newParticle._persistentRecords._isObstacle 		= isObstacle;
-  newParticle._persistentRecords._material 			= int(material);
+  newParticle._persistentRecords._isObstacle 		= Object.getIsObstacle();
+  newParticle._persistentRecords._material 			= int(Object.getMaterial());
   newParticle._persistentRecords._globalParticleId 	= particleId;
   newParticle._persistentRecords._localParticleId   	= localparticleId;
 
@@ -161,25 +159,57 @@ int dem::Vertex::createParticle(
               << "influRa=" << std::fixed << std::setprecision(10) << newParticle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << newParticle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << newParticle.getHMin() << std::endl;
   #endif
 
+  if(particleId > -1)
+  {
+  newParticle._persistentRecords._velocity(0) = Object.getLinearVelocity()[0];
+  newParticle._persistentRecords._velocity(1) = Object.getLinearVelocity()[1];
+  newParticle._persistentRecords._velocity(2) = Object.getLinearVelocity()[2];
+
+  newParticle._persistentRecords._angular(0) = Object.getAngularVelocity()[0];
+  newParticle._persistentRecords._angular(1) = Object.getAngularVelocity()[1];
+  newParticle._persistentRecords._angular(2) = Object.getAngularVelocity()[2];
+
+  newParticle._persistentRecords._referentialAngular(0) = Object.getAngularVelocity()[0];
+  newParticle._persistentRecords._referentialAngular(1) = Object.getAngularVelocity()[1];
+  newParticle._persistentRecords._referentialAngular(2) = Object.getAngularVelocity()[2];
+  }
+
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 
 int dem::Vertex::createSubParticle(
-    const tarch::la::Vector<DIMENSIONS,double>& center,
-    double centerOfMass[3],
-    double inertia[9],
-    double inverse[9],
-    double mass,
-    std::vector<double>&  xCoordinates,
-    std::vector<double>&  yCoordinates,
-    std::vector<double>&  zCoordinates,
-    double epsilon,
-    bool friction,
-    delta::geometry::material::MaterialType material,
-    bool isObstacle,
+	delta::geometry::Object Object,
     int particleId,
     int localparticleId)
 {
+  std::vector<double> xCoordinates = Object.getxCoordinates();
+  std::vector<double> yCoordinates = Object.getyCoordinates();
+  std::vector<double> zCoordinates = Object.getzCoordinates();
+
+  const tarch::la::Vector<DIMENSIONS,double>& center = {Object.getCentre()[0], Object.getCentre()[1], Object.getCentre()[2]};
+  iREAL centerOfMass[3] = {Object.getCentreOfMass()[0], Object.getCentreOfMass()[1], Object.getCentreOfMass()[2]};
+
+  iREAL inertia[9] = {
+      Object.getInertia()[0],
+      Object.getInertia()[1],
+      Object.getInertia()[2],
+      Object.getInertia()[3],
+      Object.getInertia()[4],
+      Object.getInertia()[5],
+      Object.getInertia()[6],
+      Object.getInertia()[7],
+      Object.getInertia()[8]};
+
+  iREAL inverse[9] = {
+      Object.getInverse()[0],
+      Object.getInverse()[1],
+      Object.getInverse()[2],
+      Object.getInverse()[3],
+      Object.getInverse()[4],
+      Object.getInverse()[5],
+      Object.getInverse()[6],
+      Object.getInverse()[7],
+      Object.getInverse()[8]};
 
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
@@ -229,15 +259,15 @@ int dem::Vertex::createSubParticle(
   newParticle._persistentRecords._orientation(7) = 0;
   newParticle._persistentRecords._orientation(8) = 1;
 
-  newParticle._persistentRecords._mass            	= mass;
-  newParticle._persistentRecords._friction        	= friction;
-  newParticle._persistentRecords._haloDiameter 		= (newParticle._persistentRecords._diameter+epsilon*2) * 1.1;
-  newParticle._persistentRecords._epsilon        	 	= epsilon;
+  newParticle._persistentRecords._mass            	= Object.getMass();
+  newParticle._persistentRecords._friction        	= Object.getIsFriction();
+  newParticle._persistentRecords._haloDiameter 		= (newParticle._persistentRecords._diameter+Object.getEpsilon()*2) * 1.1;
+  newParticle._persistentRecords._epsilon        	 	= Object.getEpsilon();
   newParticle._persistentRecords._hMin            	= delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);;
 
   newParticle._persistentRecords._numberOfTriangles 	= xCoordinates.size()/DIMENSIONS;
-  newParticle._persistentRecords._isObstacle        	= isObstacle;
-  newParticle._persistentRecords._material          	= int(material);
+  newParticle._persistentRecords._isObstacle        	= Object.getIsObstacle();
+  newParticle._persistentRecords._material          	= int(Object.getMaterial());
   newParticle._persistentRecords._globalParticleId  	= particleId;
   newParticle._persistentRecords._localParticleId  	= localparticleId;
 
@@ -275,14 +305,30 @@ int dem::Vertex::createSubParticle(
     getZRefCoordinatesAsVector(ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1).push_back(zCoordinates[i]);
   }
 
+  if(particleId > -1)
+  {
+	newParticle._persistentRecords._velocity(0) = Object.getLinearVelocity()[0];
+	newParticle._persistentRecords._velocity(1) = Object.getLinearVelocity()[1];
+	newParticle._persistentRecords._velocity(2) = Object.getLinearVelocity()[2];
+
+	newParticle._persistentRecords._angular(0) = Object.getAngularVelocity()[0];
+	newParticle._persistentRecords._angular(1) = Object.getAngularVelocity()[1];
+	newParticle._persistentRecords._angular(2) = Object.getAngularVelocity()[2];
+
+	newParticle._persistentRecords._referentialAngular(0) = Object.getAngularVelocity()[0];
+	newParticle._persistentRecords._referentialAngular(1) = Object.getAngularVelocity()[1];
+	newParticle._persistentRecords._referentialAngular(2) = Object.getAngularVelocity()[2];
+  }
+
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 
 int dem::Vertex::createSphereParticle(
-    const tarch::la::Vector<DIMENSIONS,double>& center,
-	delta::geometry::Object::Object Object,
+	delta::geometry::Object Object,
 	int particleId)
 {
+
+  const tarch::la::Vector<DIMENSIONS,double>& center = {Object.getCentre()[0], Object.getCentre()[1], Object.getCentre()[2]};
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
@@ -372,6 +418,21 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._vertices(3) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(4) = DEMDoubleHeap::getInstance().createData();
   newParticle._persistentRecords._vertices(5) = DEMDoubleHeap::getInstance().createData();
+
+  if(particleId > -1)
+  {
+	newParticle._persistentRecords._velocity(0) = Object.getLinearVelocity()[0];
+	newParticle._persistentRecords._velocity(1) = Object.getLinearVelocity()[1];
+	newParticle._persistentRecords._velocity(2) = Object.getLinearVelocity()[2];
+
+	newParticle._persistentRecords._angular(0) = Object.getAngularVelocity()[0];
+	newParticle._persistentRecords._angular(1) = Object.getAngularVelocity()[1];
+	newParticle._persistentRecords._angular(2) = Object.getAngularVelocity()[2];
+
+	newParticle._persistentRecords._referentialAngular(0) = Object.getAngularVelocity()[0];
+	newParticle._persistentRecords._referentialAngular(1) = Object.getAngularVelocity()[1];
+	newParticle._persistentRecords._referentialAngular(2) = Object.getAngularVelocity()[2];
+  }
 
   #if defined(PARTICLESTATSMIN) || defined(PARTICLESTATSFULL)
   std::cout   << "#####PARTICLE-INIT-PROPERTIES-DATA#####" << std::endl

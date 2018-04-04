@@ -205,19 +205,13 @@
    //create xzy cuts above hopper, position starts at left lower inner corner
    std::vector<std::array<iREAL, 3>> grid = delta::world::makeGridLayout(position, xzcuts, ycuts, gridxyLength);
 
-   delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
-   bool isObstacle = false;
-   bool isFriction = false;
-
    iREAL xmin = 1; iREAL xmax = 0;
    for(unsigned i=0; i<grid.size(); i++)
    {
      std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
-	 delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, isObstacle, isFriction, epsilon);
+     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, false, false, epsilon, {0, -1, 0}, {0,0,0});
 
-     std::array<double, 3> l = {0, -1, 0};
-     particles.setLinearVelocity(l);
      insitufineObjects.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
@@ -304,7 +298,7 @@
           iREAL isSphereOrNone,
           iREAL subcellx,
           int _noPointsPerParticle,
-          std::vector<delta::geometry::Object::Object> &insitufineObjects)
+          std::vector<delta::geometry::Object> &insitufineObjects)
 {
 
    //create xzy cuts above hopper, position starts at left lower inner corner
@@ -319,10 +313,8 @@
    {
      std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
-	 delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, isObstacle, isFriction, epsilon);
+     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, isObstacle, isFriction, epsilon, {0, -1, 0}, {0,0,0});
 
-     std::array<double, 3> l = {0, -1, 0};
-     particles.setLinearVelocity(l);
      insitufineObjects.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
@@ -688,7 +680,7 @@
     {
       auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-      delta::geometry::Object obj("FB", 0, tmp[i], material, false, false, epsilon);
+      delta::geometry::Object obj("FB", 0, tmp[i], material, false, false, epsilon, {0,0,0}, {0,0,0});
       insitufineObjects.push_back(obj);
     }
     //std::cout << tmp.size() << " " << particleGrid.size() << std::endl;
@@ -759,7 +751,7 @@
   {
     auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-    delta::geometry::Object obj("FB", i, particleGrid[i], material, false, false, epsilon);
+    delta::geometry::Object obj("FB", i, particleGrid[i], material, false, false, epsilon, {0,0,0}, {0,0,0});
     obj.setRad(scalePercentage);
     insitufineObjects.push_back(obj);
   }

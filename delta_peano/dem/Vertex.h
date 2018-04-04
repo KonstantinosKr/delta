@@ -16,10 +16,11 @@
 #include "peano/utils/Globals.h"
 #include "peano/heap/DoubleHeap.h"
 
+#include <iomanip>
+
 #include "dem/mappings/Collision.h"
 #include "delta/geometry/material.h"
 #include "delta/geometry/Object.h"
-#include <iomanip>
 
 
 namespace dem { 
@@ -91,34 +92,17 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      *                    which particle a triangle belongs to
      */
     int createParticle(
-  		  std::vector<double>&  xCoordinates,
-  		  std::vector<double>&  yCoordinates,
-  		  std::vector<double>&  zCoordinates,
-  		  double epsilon, bool friction,
-  		  delta::geometry::material::MaterialType material,
-  		  bool isObstacle,
-  		  int particleId,
-  		  int localparticleId);
+    		delta::geometry::Object Object,
+		int particleId,
+		int localparticleId);
 
     int createSubParticle(
-        const tarch::la::Vector<DIMENSIONS,double>& center,
-        double centerOfMass[3],
-        double inertia[9],
-        double inverse[9],
-        double mass,
-        std::vector<double>&  xCoordinates,
-        std::vector<double>&  yCoordinates,
-        std::vector<double>&  zCoordinates,
-        double epsilon,
-        bool friction,
-        delta::geometry::material::MaterialType material,
-        bool isObstacle,
+    		delta::geometry::Object Object,
         int particleId,
         int localparticleId);
 
     int createSphereParticle(
-        const tarch::la::Vector<DIMENSIONS,double>&  center,
-		delta::geometry::Object::Object Object,
+    		delta::geometry::Object Object,
 		int particleId);
 
     int getNumberOfParticles() const;

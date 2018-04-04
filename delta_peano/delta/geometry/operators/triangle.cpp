@@ -749,7 +749,7 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
     bool isFriction,
     bool isObstacle,
 	iREAL epsilon,
-    std::vector<delta::geometry::Object::Object> &fineObjects,
+    std::vector<Object> &fineObjects,
 	int &numberOfParticles,
 	int &numberOfObstacles)
 {
@@ -799,7 +799,7 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
         zCoordinates.push_back(zCoordinatesMultiLevel[i][j]);
       }
 
-      delta::geometry::Object::Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, epsilon);
+      Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, epsilon, {0,0,0}, {0,0,0});
 
       obj.setxyzCoordinates(
           {xCoordinates[0], xCoordinates[1], xCoordinates[2]},
@@ -819,7 +819,7 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
     ////////END LOOP
   } else {
     //delta::world::object::Object::Object obj("mesh", 0, centerOfMass, material, isObstacle, isFriction);
-    delta::geometry::Object::Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, epsilon);
+    Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, epsilon, {0,0,0}, {0,0,0});
 
     obj.setxyzCoordinates(
         {xCoordinates[0], xCoordinates[1], xCoordinates[2]},
@@ -848,7 +848,7 @@ int delta::geometry::operators::triangle::decomposeMeshIntoParticles(
     bool isObstacle,
     bool isFriction,
 	iREAL epsilon,
-    std::vector<delta::geometry::Object::Object> &fineObjects
+    std::vector<Object> &fineObjects
 )
 {
   double mass;
@@ -885,7 +885,7 @@ int delta::geometry::operators::triangle::decomposeMeshIntoParticles(
 
     std::array<iREAL, 3> Oarray = {O[0], O[1], O[2]};
 
-    delta::geometry::Object obj("mesh", 0, Oarray, material, isObstacle, isFriction, epsilon);
+    Object obj("mesh", 0, Oarray, material, isObstacle, isFriction, epsilon, {0,0,0}, {0,0,0});
 
     obj.setxyzCoordinates(
         {subxCoordinates[0], subxCoordinates[1], subxCoordinates[2]},

@@ -22,16 +22,18 @@
  SOFTWARE.
  */
 
+#ifndef OBJECT_H
+#define OBJECT_H
+
 #include <vector>
 #include <array>
 #include <string>
 #include <stdio.h>
 #include <delta/geometry/material.h>
-#include <delta/geometry/properties.h>
 
 namespace delta {
   namespace geometry {
-	  class Object;
+	class Object;
   }
 }
 
@@ -46,7 +48,9 @@ class delta::geometry::Object
 	    delta::geometry::material::MaterialType 	material,
 	    bool                          			isObstacle,
 	    bool                          			isFriction,
-		iREAL 									epsilon);
+		iREAL 									epsilon,
+		std::array<double, 3> linear,
+		std::array<double, 3> angular);
 
     void generateSphere(double  rad);
 
@@ -152,3 +156,5 @@ class delta::geometry::Object
     double                _ry;
     double                _rz;
 };
+
+#endif
