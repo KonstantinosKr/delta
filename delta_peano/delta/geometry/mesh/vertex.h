@@ -21,12 +21,8 @@ namespace delta {
 
 class delta::geometry::mesh::Vertex {
   public:
-
-	Vertex();
-
 	Vertex(iREAL x, iREAL y, iREAL z);
-
-	void insertVertexToMap(delta::geometry::mesh::Vertex vertex);
+	Vertex(iREAL A[3]);
 
 	void setX(iREAL value);
 	void setY(iREAL value);

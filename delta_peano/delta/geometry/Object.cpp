@@ -2,10 +2,9 @@
 
 #include <delta/geometry/primitive/granulate.h>
 #include <delta/geometry/primitive/cube.h>
-#include <delta/geometry/body/hopper.h>
-#include <delta/geometry/body/graphite.h>
-
 #include <delta/geometry/properties.h>
+#include <delta/geometry/defined/graphite.h>
+#include <delta/geometry/defined/hopper.h>
 
 delta::geometry::Object::Object()
 {
@@ -105,10 +104,6 @@ void delta::geometry::Object::generateMesh(
     int mesh,
     double rad)
 {
-  double mass;
-  double centerOfMass[3];
-  double inertia[9];
-  double inverse[9];
 
   std::vector<double> xCoordinates;
   std::vector<double> yCoordinates;
@@ -137,6 +132,11 @@ void delta::geometry::Object::generateMesh(
 
   }
 
+  double mass;
+  double centerOfMass[3];
+  double inertia[9];
+  double inverse[9];
+
   delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, _material, mass, centerOfMass, inertia);
   delta::geometry::properties::getInverseInertia(inertia, inverse, _isObstacle);
 
@@ -147,6 +147,8 @@ void delta::geometry::Object::generateMesh(
     this->_yCoordinates.push_back(yCoordinates[i]);
     this->_zCoordinates.push_back(zCoordinates[i]);
   }
+
+  _mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
 
   _inertia[0] = inertia[0];
   _inertia[1] = inertia[1];
@@ -212,6 +214,14 @@ void delta::geometry::Object::setxyzCoordinates(
     _yCoordinates.push_back(yCoordinates[i]);
     _zCoordinates.push_back(zCoordinates[i]);
   }
+
+  _mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+}
+
+void delta::geometry::Object::setMesh(
+    delta::geometry::mesh::Mesh& mesh)
+{
+  _mesh = &mesh;
 }
 
 int delta::geometry::Object::getParticleID()

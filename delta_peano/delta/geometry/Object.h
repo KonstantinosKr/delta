@@ -30,6 +30,7 @@
 #include <string>
 #include <stdio.h>
 #include <delta/geometry/material.h>
+#include <delta/geometry/mesh/mesh.h>
 
 namespace delta {
   namespace geometry {
@@ -109,6 +110,8 @@ class delta::geometry::Object
     std::array<double, 3> getLinearVelocity();
     std::array<double, 3> getAngularVelocity();
 
+    void setMesh(delta::geometry::mesh::Mesh& mesh);
+
     double getMinX();
     double getMaxX();
 
@@ -128,8 +131,7 @@ class delta::geometry::Object
     double                _mass;
     double 				 _epsilon;
 
-	//std::map<int, std::vector<delta::geometry::mesh::Vertex> >		_vertices;
-	//std::map<int, std::vector<delta::geometry::mesh::Triangle> > 	_triangles;
+	delta::geometry::mesh::Mesh	*_mesh;
 
     std::vector<double>   _xCoordinates;
     std::vector<double>   _yCoordinates;
@@ -148,10 +150,12 @@ class delta::geometry::Object
     std::array<double, 9> _inertia;
     std::array<double, 9> _inverse;
 
+    //dimensions
     double                _wx;
     double                _wy;
     double                _wz;
 
+    //rotational configuration 0-1
     double                _rx;
     double                _ry;
     double                _rz;

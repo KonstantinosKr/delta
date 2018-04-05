@@ -20,17 +20,39 @@ namespace delta {
   }
 }
 
-class delta::geometry::mesh::Triangle : public delta::geometry::mesh::Vertex {
+class delta::geometry::mesh::Triangle {
   public:
-	Triangle();
+	Triangle(
+		delta::geometry::mesh::Vertex &A,
+		delta::geometry::mesh::Vertex &B,
+		delta::geometry::mesh::Vertex &C);
 
-	int getVertexIndexOnMapA();
-	int getVertexIndexOnMapB();
-	int getVertexIndexOnMapC();
+	Triangle(
+		iREAL A[3],
+		iREAL B[3],
+		iREAL C[3]);
+
+	Triangle(
+		iREAL Ax,
+		iREAL Ay,
+		iREAL Az,
+
+		iREAL Bx,
+		iREAL By,
+		iREAL Bz,
+
+		iREAL Cx,
+		iREAL Cy,
+		iREAL Cz);
+
+	delta::geometry::mesh::Vertex getVertexA();
+	delta::geometry::mesh::Vertex getVertexB();
+	delta::geometry::mesh::Vertex getVertexC();
+
 	virtual ~Triangle();
 
   private:
-	int _vertexIndexA, _vertexIndexB, _vertexIndexC;
+	delta::geometry::mesh::Vertex *_A, *_B, *_C;
 
 };
 

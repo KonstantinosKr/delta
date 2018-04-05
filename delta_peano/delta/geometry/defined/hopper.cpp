@@ -22,8 +22,7 @@
  SOFTWARE.
  */
 
-#include <delta/geometry/body/hopper.h>
-
+#include <delta/geometry/defined/hopper.h>
 #include "delta/geometry/operators/hull/hull.h"
 #include "delta/geometry/operators/hull/alg.h"
 #include "delta/geometry/properties.h"

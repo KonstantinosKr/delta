@@ -7,13 +7,6 @@
 
 #include <delta/geometry/mesh/vertex.h>
 
-delta::geometry::mesh::Vertex::Vertex()
-{
-  this->_x = 0;
-  this->_y = 0;
-  this->_z = 0;
-}
-
 delta::geometry::mesh::Vertex::Vertex(iREAL x, iREAL y, iREAL z)
 {
   this->_x = x;
@@ -21,10 +14,13 @@ delta::geometry::mesh::Vertex::Vertex(iREAL x, iREAL y, iREAL z)
   this->_z = z;
 }
 
-void delta::geometry::mesh::Vertex::insertVertexToMap(delta::geometry::mesh::Vertex vertex)
+delta::geometry::mesh::Vertex::Vertex(iREAL A[3])
 {
-  //_vertices.insert(std::pair<int, delta::geometry::mesh::Vertex>(_vertices.size(), vertex));
+  this->_x = A[0];
+  this->_y = A[1];
+  this->_z = A[2];
 }
+
 
 void delta::geometry::mesh::Vertex::setX(iREAL value)
 {

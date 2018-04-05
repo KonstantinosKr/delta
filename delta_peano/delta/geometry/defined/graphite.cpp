@@ -8,10 +8,8 @@
 #include <fstream>
 #include <iomanip>
 #include <string.h>
-#include <delta/geometry/body/graphite.h>
-
-
 #include "delta/core/read.h"
+#include <delta/geometry/defined/graphite.h>
 #include "delta/geometry/properties.h"
 
 //Intact Poly Brick

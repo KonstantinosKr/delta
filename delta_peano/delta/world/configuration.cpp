@@ -5,12 +5,12 @@
  *      Author: konstantinos
  */
 
+#include <delta/geometry/defined/graphite.h>
 #include "delta/world/configuration.h"
 
 #include "delta/geometry/properties.h"
 #include "delta/geometry/primitive/granulate.h"
 #include "delta/geometry/primitive/cube.h"
-#include "delta/geometry/body/graphite.h"
 
  iREAL delta::world::getDiscritization(
     iREAL length,

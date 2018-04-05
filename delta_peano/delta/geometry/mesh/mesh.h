@@ -23,16 +23,20 @@ namespace delta {
 
 class delta::geometry::mesh::Mesh {
   public:
-	Mesh();
+	Mesh(std::vector<iREAL>& xCoordinates,
+		std::vector<iREAL>& yCoordinates,
+		std::vector<iREAL>& zCoordinates);
+
+	Mesh(std::vector<delta::geometry::mesh::Triangle> _triangles);
 
 	void flatten (
-		std::vector<iREAL> xCoordinates,
-		std::vector<iREAL> yCoordinates,
-		std::vector<iREAL> zCoordinates);
+		std::vector<iREAL>& xCoordinates,
+		std::vector<iREAL>& yCoordinates,
+		std::vector<iREAL>& zCoordinates);
 
 	virtual ~Mesh();
-//  private:
-
+  private:
+	std::vector<delta::geometry::mesh::Triangle> _triangles;
 };
 
 #endif /* GEOMETRY_MESH_MESH_H_ */
