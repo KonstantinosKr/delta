@@ -31,7 +31,6 @@
 #include <vector>
 #include "delta/contact/forces/forces.h"
 #include "dem/mappings/Collision.h"
-#include "delta/geometry/properties.h"
 
 namespace dem {
   namespace mappings {

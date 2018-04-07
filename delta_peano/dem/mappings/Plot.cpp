@@ -500,7 +500,7 @@ void dem::mappings::Plot::touchVertexLastTime(
       //double resizePercentage = (particle.getDiameter()+particle.getEpsilon())/ particle.getDiameter();
       //delta::geometry::properties::scaleXYZ(resizePercentage, center, xCoordinatesWider, yCoordinatesWider, zCoordinatesWider);
 
-      delta::geometry::properties::explode(xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, 5);
+      //delta::geometry::properties::explode(xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, 5);
 
       for (int j=0; j<particle.getNumberOfTriangles(); j++)
       {

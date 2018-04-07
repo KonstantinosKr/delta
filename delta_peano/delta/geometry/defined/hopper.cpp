@@ -25,10 +25,9 @@
 #include <delta/geometry/defined/hopper.h>
 #include "delta/geometry/operators/hull/hull.h"
 #include "delta/geometry/operators/hull/alg.h"
-#include "delta/geometry/properties.h"
 #include "delta/geometry/operators/triangle.h"
 
-void delta::geometry::body::generateInnerHopper(
+void delta::geometry::defined::generateInnerHopper(
 		iREAL  center[3],
 		iREAL 	width,
 		iREAL  height,
@@ -306,7 +305,7 @@ void delta::geometry::body::generateInnerHopper(
 	//delta::geometry::hopper::explode(xCoordinates, yCoordinates, zCoordinates, 0.1);
 }
 
-void delta::geometry::body::generateOuterHopper(
+void delta::geometry::defined::generateOuterHopper(
     iREAL  center[3],
     iREAL  width,
     iREAL  height,
@@ -408,7 +407,7 @@ void delta::geometry::body::generateOuterHopper(
   std::vector<iREAL> ezCoordinates = zCoordinates;
 
   //delta::geometry::hopper::scaleXYZ(1.2, exCoordinates, eyCoordinates, ezCoordinates);
-  delta::geometry::body::generateInnerHopper(center, width, height, hatch, exCoordinates, eyCoordinates, ezCoordinates);
+  delta::geometry::defined::generateInnerHopper(center, width, height, hatch, exCoordinates, eyCoordinates, ezCoordinates);
 
   xCoordinates.insert(xCoordinates.end(), exCoordinates.begin(), exCoordinates.end());
   yCoordinates.insert(yCoordinates.end(), eyCoordinates.begin(), eyCoordinates.end());
@@ -1057,21 +1056,25 @@ void delta::geometry::body::generateOuterHopper(
   zCoordinates[35] = tmp[2];
 }
 
-void delta::geometry::body::generateHopper(
+delta::geometry::mesh::Mesh *delta::geometry::defined::generateHopper(
     iREAL  center[3],
     iREAL  width,
     iREAL  thickness,
     iREAL  height,
     iREAL  hatch,
     int    meshRefinement,
-    double gridH,
-    std::vector<iREAL>&  xCoordinates,
-    std::vector<iREAL>&  yCoordinates,
-    std::vector<iREAL>&  zCoordinates
+    double gridH
 )
 {
-  delta::geometry::body::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
-  delta::geometry::body::generateOuterHopper(center, width+thickness, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
+  std::vector<iREAL>	xCoordinates;
+  std::vector<iREAL>	yCoordinates;
+  std::vector<iREAL>	zCoordinates;
+  delta::geometry::defined::generateInnerHopper(center, width, height, hatch, xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::defined::generateOuterHopper(center, width+thickness, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
   delta::geometry::operators::triangle::meshDenser(meshRefinement, gridH, xCoordinates, yCoordinates, zCoordinates);
+
+  delta::geometry::mesh::Mesh *mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+
+  return mesh;
 }
 

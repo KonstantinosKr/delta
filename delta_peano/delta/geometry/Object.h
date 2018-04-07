@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <delta/geometry/material.h>
 #include <delta/geometry/mesh/mesh.h>
+#include "delta/core/algo.h"
 
 namespace delta {
   namespace geometry {
@@ -72,11 +73,6 @@ class delta::geometry::Object
     std::vector<double> getyCoordinates();
     std::vector<double> getzCoordinates();
 
-    void setxyzCoordinates(
-        std::vector<double> xCoordinates,
-        std::vector<double> yCoordinates,
-        std::vector<double> zCoordinates);
-
     int getParticleID();
 
     std::array<double, 3> getCentre();
@@ -110,6 +106,11 @@ class delta::geometry::Object
     std::array<double, 3> getLinearVelocity();
     std::array<double, 3> getAngularVelocity();
 
+    delta::geometry::mesh::Mesh getMesh();
+    void setMesh(
+        std::vector<double> xCoordinates,
+        std::vector<double> yCoordinates,
+        std::vector<double> zCoordinates);
     void setMesh(delta::geometry::mesh::Mesh& mesh);
 
     double getMinX();
@@ -120,6 +121,22 @@ class delta::geometry::Object
 
     double getMinZ();
     double getMaxZ();
+
+    iREAL computeVolume();
+
+	void computeInertia(
+		delta::geometry::material::MaterialType material,
+		iREAL& mass,
+		iREAL center[3],
+		iREAL inertia[9]);
+
+	iREAL computeMass(
+	    delta::geometry::material::MaterialType material);
+
+	void computeInverseInertia(
+	    iREAL inertia[9],
+	    iREAL inverse[9],
+	    bool isObject);
 
     virtual ~Object();
 
@@ -159,6 +176,8 @@ class delta::geometry::Object
     double                _rx;
     double                _ry;
     double                _rz;
+
+    iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
 };
 
 #endif

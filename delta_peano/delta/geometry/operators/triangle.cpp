@@ -27,8 +27,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <cmath>
-#include <delta/geometry/primitive/surface.h>
-#include "delta/geometry/properties.h"
 
 void delta::geometry::operators::triangle::bisectTriangle(
 		iREAL A[3],
@@ -309,11 +307,11 @@ void delta::geometry::operators::triangle::biSideSectTriangle(
 }
 
 void delta::geometry::operators::triangle::meshDenser(
-		int meshRefinement,
-		double gridH,
-		std::vector<iREAL>&  xCoordinates,
-		std::vector<iREAL>&  yCoordinates,
-		std::vector<iREAL>&  zCoordinates)
+	int meshRefinement,
+	double gridH,
+	std::vector<iREAL>&  xCoordinates,
+	std::vector<iREAL>&  yCoordinates,
+	std::vector<iREAL>&  zCoordinates)
 {
 
   if(meshRefinement < 1) return;
@@ -323,41 +321,45 @@ void delta::geometry::operators::triangle::meshDenser(
 
 	for(unsigned i=0;i<xCoordinates.size();i+=3)
 	{
-		iREAL A[3], B[3], C[3];
-		A[0] = xCoordinates[i];
-		A[1] = yCoordinates[i];
-		A[2] = zCoordinates[i];
+	  iREAL A[3], B[3], C[3];
+	  A[0] = xCoordinates[i];
+	  A[1] = yCoordinates[i];
+	  A[2] = zCoordinates[i];
 
-		B[0] = xCoordinates[i+1];
-		B[1] = yCoordinates[i+1];
-		B[2] = zCoordinates[i+1];
+	  B[0] = xCoordinates[i+1];
+	  B[1] = yCoordinates[i+1];
+	  B[2] = zCoordinates[i+1];
 
-		C[0] = xCoordinates[i+2];
-		C[1] = yCoordinates[i+2];
-		C[2] = zCoordinates[i+2];
+	  C[0] = xCoordinates[i+2];
+	  C[1] = yCoordinates[i+2];
+	  C[2] = zCoordinates[i+2];
 
-		if(getTriangleLength(A,B,C) >= gridH && meshRefinement > 0) {
+	  delta::geometry::mesh::Triangle triangle = delta::geometry::mesh::Triangle(A,B,C);
+
+	  if(triangle.getTriangleLength() >= gridH && meshRefinement > 0)
+	  {
 	    biSideSectTriangle(A, B, C, xNewCoordinates, yNewCoordinates, zNewCoordinates);
-		} else
-		{
-		  xNewCoordinates.push_back(A[0]);
-      xNewCoordinates.push_back(B[0]);
-      xNewCoordinates.push_back(C[0]);
+	  }
+	  else
+	  {
+		xNewCoordinates.push_back(A[0]);
+		xNewCoordinates.push_back(B[0]);
+		xNewCoordinates.push_back(C[0]);
 
-      yNewCoordinates.push_back(A[1]);
-      yNewCoordinates.push_back(B[1]);
-      yNewCoordinates.push_back(C[1]);
+		yNewCoordinates.push_back(A[1]);
+		yNewCoordinates.push_back(B[1]);
+		yNewCoordinates.push_back(C[1]);
 
-      zNewCoordinates.push_back(A[2]);
-      zNewCoordinates.push_back(B[2]);
-      zNewCoordinates.push_back(C[2]);
-		}
+		zNewCoordinates.push_back(A[2]);
+		zNewCoordinates.push_back(B[2]);
+		zNewCoordinates.push_back(C[2]);
+	  }
 	}
 
 	xCoordinates = xNewCoordinates;
 	yCoordinates = yNewCoordinates;
 	zCoordinates = zNewCoordinates;
-	meshDenser(meshRefinement-1, gridH, xCoordinates, yCoordinates, zCoordinates);
+	delta::geometry::operators::triangle::meshDenser(meshRefinement-1, gridH, xCoordinates, yCoordinates, zCoordinates);
 }
 
 void delta::geometry::operators::triangle::meshDenser(
@@ -403,8 +405,8 @@ int delta::geometry::operators::triangle::octSectParticle(
     std::vector<std::vector<iREAL>>&  yCoordinatesMultiLevel,
     std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel, std::vector<std::array<iREAL, 3>>& centroid)
 {
-  std::array<iREAL, 3> minpoint = delta::geometry::properties::getMinBoundaryVertex(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]);
-  std::array<iREAL, 3> maxpoint = delta::geometry::properties::getMaxBoundaryVertex(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]);
+  std::array<iREAL, 3> minpoint = delta::geometry::mesh::Mesh(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]).getMinBoundaryVertex();
+  std::array<iREAL, 3> maxpoint = delta::geometry::mesh::Mesh(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]).getMaxBoundaryVertex();
 
   iREAL xw = maxpoint[0]-minpoint[0]; iREAL yw = maxpoint[1]-minpoint[1]; iREAL zw = maxpoint[2]-minpoint[2];
   std::array<iREAL, 3> midpoint = {minpoint[0]+xw/2, minpoint[1]+yw/2, minpoint[2]+zw/2};
@@ -667,27 +669,6 @@ int delta::geometry::operators::triangle::octSect(
   return index;
 }
 
-double delta::geometry::operators::triangle::getTriangleLength(iREAL A[3], iREAL B[3], iREAL C[3])
-{
-  std::vector<iREAL>  xCoordinates;
-  std::vector<iREAL>  yCoordinates;
-  std::vector<iREAL>  zCoordinates;
-
-  xCoordinates.push_back(A[0]);
-  xCoordinates.push_back(B[0]);
-  xCoordinates.push_back(C[0]);
-
-  yCoordinates.push_back(A[1]);
-  yCoordinates.push_back(B[1]);
-  yCoordinates.push_back(C[1]);
-
-  zCoordinates.push_back(A[2]);
-  zCoordinates.push_back(B[2]);
-  zCoordinates.push_back(C[2]);
-
-  return delta::geometry::properties::getXYZWidth(xCoordinates, yCoordinates, zCoordinates);
-}
-
 void delta::geometry::operators::triangle::getTrianglesInBoundingBox(
     std::array<iREAL, 3> minpoint,
     std::array<iREAL, 3> maxpoint,
@@ -742,9 +723,7 @@ void delta::geometry::operators::triangle::getTrianglesInBoundingBox(
 
 void delta::geometry::operators::triangle::decomposeMeshByOctsection(
     int octSectTimes,
-    std::vector<double> xCoordinates,
-    std::vector<double> yCoordinates,
-    std::vector<double> zCoordinates,
+    delta::geometry::mesh::Mesh mesh,
     delta::geometry::material::MaterialType material,
     bool isFriction,
     bool isObstacle,
@@ -753,7 +732,6 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
 	int &numberOfParticles,
 	int &numberOfObstacles)
 {
-
   std::vector<std::array<double, 3>> centroid;
 
   double centerOfMass[3];
@@ -761,15 +739,20 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
   double inverse[9];
   double mass;
 
+  std::vector<iREAL> xCoordinates;
+  std::vector<iREAL> yCoordinates;
+  std::vector<iREAL> zCoordinates;
+
+  mesh.flatten(xCoordinates, yCoordinates, zCoordinates);
+
   if(octSectTimes && xCoordinates.size() > 0)
   {
     std::vector<std::vector<double>> xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel;
 
     xCoordinatesMultiLevel.resize(1); yCoordinatesMultiLevel.resize(1); zCoordinatesMultiLevel.resize(1);
 
-    delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
-    delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
-
+    mesh.computeInertia(material, mass, centerOfMass, inertia);
+    mesh.computeInverseInertia(inertia, inverse, isObstacle);
 
     centroid.resize(1);
     xCoordinatesMultiLevel.resize(1); yCoordinatesMultiLevel.resize(1); zCoordinatesMultiLevel.resize(1);
@@ -801,7 +784,7 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
 
       delta::geometry::Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, epsilon, {0,0,0}, {0,0,0});
 
-      obj.setxyzCoordinates(
+      obj.setMesh(
           {xCoordinates[0], xCoordinates[1], xCoordinates[2]},
           {yCoordinates[0], yCoordinates[1], yCoordinates[2]},
           {zCoordinates[0], zCoordinates[1], zCoordinates[2]});
@@ -821,7 +804,7 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
     //delta::world::object::Object::Object obj("mesh", 0, centerOfMass, material, isObstacle, isFriction);
 	delta::geometry::Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, epsilon, {0,0,0}, {0,0,0});
 
-    obj.setxyzCoordinates(
+    obj.setMesh(
         {xCoordinates[0], xCoordinates[1], xCoordinates[2]},
         {yCoordinates[0], yCoordinates[1], yCoordinates[2]},
         {zCoordinates[0], zCoordinates[1], zCoordinates[2]});
@@ -841,9 +824,7 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
 }
 
 int delta::geometry::operators::triangle::decomposeMeshIntoParticles(
-    std::vector<double> xCoordinates,
-    std::vector<double> yCoordinates,
-    std::vector<double> zCoordinates,
+    delta::geometry::mesh::Mesh mesh,
     delta::geometry::material::MaterialType material,
     bool isObstacle,
     bool isFriction,
@@ -856,8 +837,14 @@ int delta::geometry::operators::triangle::decomposeMeshIntoParticles(
   double inertia[9];
   double inverse[9];
 
-  delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, material, mass, centerOfMass, inertia);
-  delta::geometry::properties::getInverseInertia(inertia, inverse, isObstacle);
+  std::vector<iREAL> xCoordinates;
+  std::vector<iREAL> yCoordinates;
+  std::vector<iREAL> zCoordinates;
+
+  mesh.flatten(xCoordinates, yCoordinates, zCoordinates);
+
+  mesh.computeInertia(material, mass, centerOfMass, inertia);
+  mesh.computeInverseInertia(inertia, inverse, isObstacle);
 
   for(unsigned i=0; i<xCoordinates.size(); i+=3)
   {
@@ -887,7 +874,7 @@ int delta::geometry::operators::triangle::decomposeMeshIntoParticles(
 
     delta::geometry::Object obj("mesh", 0, Oarray, material, isObstacle, isFriction, epsilon, {0,0,0}, {0,0,0});
 
-    obj.setxyzCoordinates(
+    obj.setMesh(
         {subxCoordinates[0], subxCoordinates[1], subxCoordinates[2]},
         {subyCoordinates[0], subyCoordinates[1], subyCoordinates[2]},
         {subzCoordinates[0], subzCoordinates[1], subzCoordinates[2]});

@@ -28,6 +28,7 @@
 #include <cmath>
 #include <assert.h>
 #include <stdlib.h>
+#include "delta/geometry/mesh/mesh.h"
 
 
 namespace delta {
@@ -47,38 +48,29 @@ namespace delta {
 		   std::vector<iREAL>&  yCoordinates
 		 );
 
-		 void generateCube(
+		 delta::geometry::mesh::Mesh *generateCube(
 		   iREAL    center[3],
 		   iREAL    h,
 		   iREAL    alphaX,
 		   iREAL    alphaY,
-		   iREAL    alphaZ,
-		   std::vector<iREAL>&  xCoordinates,
-		   std::vector<iREAL>&  yCoordinates,
-		   std::vector<iREAL>&  zCoordinates
+		   iREAL    alphaZ
 		 );
 
-		 void generateCube(
+		 delta::geometry::mesh::Mesh *generateCube(
 		   iREAL center[3],
 		   iREAL x,
 		   iREAL y,
 		   iREAL z,
 		   iREAL alphaX,
 		   iREAL alphaY,
-		   iREAL alphaZ,
-		   std::vector<iREAL>&  xCoordinates,
-		   std::vector<iREAL>&  yCoordinates,
-		   std::vector<iREAL>&  zCoordinates
+		   iREAL alphaZ
 		 );
 
-		 void generateHullCube(
+		 delta::geometry::mesh::Mesh *generateHullCube(
 		   iREAL  center[3],
-		   iREAL  diagonal,
-		   std::vector<iREAL>&  xCoordinates,
-		   std::vector<iREAL>&  yCoordinates,
-		   std::vector<iREAL>&  zCoordinates);
+		   iREAL  diagonal);
 
-		 void generateHullCube(
+		 delta::geometry::mesh::Mesh *generateHullCube(
 			   iREAL  center[3],
 			   iREAL x,
 			   iREAL y,
@@ -86,10 +78,7 @@ namespace delta {
 			   iREAL alphaX,
 			   iREAL alphaY,
 			   iREAL alphaZ,
-			   int    meshmultiplier,
-			   std::vector<iREAL>&  xCoordinates,
-			   std::vector<iREAL>&  yCoordinates,
-			   std::vector<iREAL>&  zCoordinates);
+			   int    meshmultiplier);
 	  }
 	}
   }

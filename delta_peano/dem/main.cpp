@@ -12,8 +12,6 @@
 #include "dem/mappings/MoveParticles.h"
 #include "delta/geometry/material.h"
 
-#include "delta/geometry/properties.h"
-
 #include <iomanip>
 
 tarch::logging::Log _log("");

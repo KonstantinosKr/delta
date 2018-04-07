@@ -27,45 +27,27 @@
 
 
 #include <vector>
+#include "delta/geometry/mesh/mesh.h"
 
 namespace delta {
   namespace geometry {
-	namespace body {
-		void generateBrickFB(
+	namespace defined {
+		delta::geometry::mesh::Mesh *generateBrickFB(
 		 iREAL    center[3],
-		 iREAL    h,
-		 std::vector<iREAL>&  xCoordinates,
-		 std::vector<iREAL>&  yCoordinates,
-		 std::vector<iREAL>&  zCoordinates
-		);
+		 iREAL    h);
 
-		void generateBrickFB(
-		  std::vector<iREAL>&  xCoordinates,
-		  std::vector<iREAL>&  yCoordinates,
-		  std::vector<iREAL>&  zCoordinates);
+		delta::geometry::mesh::Mesh *generateBrickFB();
 
-		void generateBrickFB(
+		delta::geometry::mesh::Mesh *generateBrickFB(
+		 iREAL    center[3]);
+
+		delta::geometry::mesh::Mesh *generateKeyXK(
 		 iREAL    center[3],
-		 std::vector<iREAL>&  xCoordinates,
-		 std::vector<iREAL>&  yCoordinates,
-		 std::vector<iREAL>&  zCoordinates
-		);
+		 iREAL    h);
 
-		void generateKeyXK(
+		delta::geometry::mesh::Mesh *generateKeyYK(
 		 iREAL    center[3],
-		 iREAL    h,
-		 std::vector<iREAL>&  xCoordinates,
-		 std::vector<iREAL>&  yCoordinates,
-		 std::vector<iREAL>&  zCoordinates
-		);
-
-		void generateKeyYK(
-		 iREAL    center[3],
-		 iREAL    h,
-		 std::vector<iREAL>&  xCoordinates,
-		 std::vector<iREAL>&  yCoordinates,
-		 std::vector<iREAL>&  zCoordinates
-		);
+		 iREAL    h);
 	}
   }
 }

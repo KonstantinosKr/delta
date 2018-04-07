@@ -49,15 +49,16 @@ void delta::geometry::primitive::cube::generateSquare(
   yCoordinates[6] = center[1] + h/2.0 * std::sin(2.0*pi * (0.75+rotationAngle) );
 }
 
-void delta::geometry::primitive::cube::generateCube(
+delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateCube(
   iREAL center[3], iREAL h,
   iREAL alphaX,
   iREAL alphaY,
-  iREAL alphaZ,
-  std::vector<iREAL>&  xCoordinates,
-  std::vector<iREAL>&  yCoordinates,
-  std::vector<iREAL>&  zCoordinates
+  iREAL alphaZ
 ) {
+  std::vector<iREAL>	xCoordinates;
+  std::vector<iREAL>	yCoordinates;
+  std::vector<iREAL>	zCoordinates;
+
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
   assert(zCoordinates.empty());
@@ -269,20 +270,25 @@ void delta::geometry::primitive::cube::generateCube(
     yCoordinates[i] += center[1];
     zCoordinates[i] += center[2];
   }
+
+  delta::geometry::mesh::Mesh *mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+
+  return mesh;
 }
 
-void delta::geometry::primitive::cube::generateCube(
+delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateCube(
   iREAL center[3],
   iREAL x,
   iREAL y,
   iREAL z,
   iREAL alphaX,
   iREAL alphaY,
-  iREAL alphaZ,
-  std::vector<iREAL>&  xCoordinates,
-  std::vector<iREAL>&  yCoordinates,
-  std::vector<iREAL>&  zCoordinates
+  iREAL alphaZ
 ) {
+  std::vector<iREAL>	xCoordinates;
+  std::vector<iREAL>	yCoordinates;
+  std::vector<iREAL>	zCoordinates;
+
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
   assert(zCoordinates.empty());
@@ -494,15 +500,20 @@ void delta::geometry::primitive::cube::generateCube(
     yCoordinates[i] += center[1];
     zCoordinates[i] += center[2];
   }
+
+  delta::geometry::mesh::Mesh *mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+
+  return mesh;
 }
 
-void delta::geometry::primitive::cube::generateHullCube(
+delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
   iREAL  center[3],
-  iREAL  diagonal,
-  std::vector<iREAL>&  xCoordinates,
-  std::vector<iREAL>&  yCoordinates,
-  std::vector<iREAL>&  zCoordinates)
+  iREAL  diagonal)
 {
+  std::vector<iREAL>	xCoordinates;
+  std::vector<iREAL>	yCoordinates;
+  std::vector<iREAL>	zCoordinates;
+
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
   assert(zCoordinates.empty());
@@ -586,9 +597,13 @@ void delta::geometry::primitive::cube::generateHullCube(
     counter++;
   }
   free(tr);
+
+  delta::geometry::mesh::Mesh *mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+
+  return mesh;
 }
 
-void delta::geometry::primitive::cube::generateHullCube(
+delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
         iREAL  center[3],
         iREAL x,
         iREAL y,
@@ -596,11 +611,12 @@ void delta::geometry::primitive::cube::generateHullCube(
         iREAL alphaX,
         iREAL alphaY,
         iREAL alphaZ,
-        int    meshmultiplier,
-        std::vector<iREAL>&  xCoordinates,
-        std::vector<iREAL>&  yCoordinates,
-        std::vector<iREAL>&  zCoordinates)
+        int    meshmultiplier)
 {
+  std::vector<iREAL>	xCoordinates;
+  std::vector<iREAL>	yCoordinates;
+  std::vector<iREAL>	zCoordinates;
+
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
   assert(zCoordinates.empty());
@@ -743,4 +759,8 @@ void delta::geometry::primitive::cube::generateHullCube(
     zCoordinates[i] += center[2];
   }
   delta::geometry::operators::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
+
+  delta::geometry::mesh::Mesh *mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+
+  return mesh;
 }

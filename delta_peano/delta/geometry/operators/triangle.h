@@ -29,6 +29,9 @@
 #include <array>
 #include "delta/geometry/material.h"
 #include "delta/geometry/Object.h"
+#include "delta/geometry/mesh/mesh.h"
+#include "delta/geometry/primitive/surface.h"
+#include "delta/geometry/operators/physics.h"
 
 namespace delta {
   namespace geometry {
@@ -114,9 +117,7 @@ namespace delta {
 
 		void decomposeMeshByOctsection(
 		    int octSectTimes,
-		    std::vector<double> xCoordinates,
-		    std::vector<double> yCoordinates,
-		    std::vector<double> zCoordinates,
+		    delta::geometry::mesh::Mesh mesh,
 		    delta::geometry::material::MaterialType material,
 		    bool isFriction,
 		    bool isObstacle,
@@ -126,9 +127,7 @@ namespace delta {
 			int &numberOfObstacles);
 
 		int decomposeMeshIntoParticles(
-		    std::vector<double> xCoordinates,
-		    std::vector<double> yCoordinates,
-		    std::vector<double> zCoordinates,
+		    delta::geometry::mesh::Mesh mesh,
 		    delta::geometry::material::MaterialType material,
 		    bool isObstacle,
 		    bool isFriction,

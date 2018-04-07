@@ -3,7 +3,6 @@
 
 #include "delta/geometry/operators/hull/hull.h"
 #include "delta/geometry/operators/hull/alg.h"
-#include "delta/geometry/properties.h"
 #include "delta/core/read.h"
 
 void delta::geometry::primitive::granulate::generateParticle(
@@ -35,30 +34,36 @@ void delta::geometry::primitive::granulate::generateParticle(
   }
 }
 
-void delta::geometry::primitive::granulate::loadParticle(
+delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::loadParticle(
   iREAL  center[3],
-  iREAL  h,
-  std::vector<iREAL>&  xCoordinates,
-  std::vector<iREAL>&  yCoordinates,
-  std::vector<iREAL>&  zCoordinates
+  iREAL  h
 ) {
+  std::vector<iREAL> xCoordinates;
+  std::vector<iREAL> yCoordinates;
+  std::vector<iREAL> zCoordinates;
+
   char fileinput[100] = "input/rock.vtk";
   delta::core::readSingleVTKGeometry(fileinput, xCoordinates, yCoordinates, zCoordinates);
-  iREAL diagonal = delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
-  delta::geometry::properties::scaleXYZ(h/1.0/diagonal, center, xCoordinates, yCoordinates, zCoordinates);
+
+  delta::geometry::mesh::Mesh *mesh =
+	  new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+
+  iREAL diagonal = mesh->computeDiagonal();
+  mesh->scaleXYZ(h/1.0/diagonal, center);
+
+  mesh->replace(xCoordinates, yCoordinates, zCoordinates);
+
+  return mesh;
 }
 
-void delta::geometry::primitive::granulate::generateParticle(
+delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::generateParticle(
   iREAL  center[3],
   iREAL  h,
-  std::vector<iREAL>&  xCoordinates,
-  std::vector<iREAL>&  yCoordinates,
-  std::vector<iREAL>&  zCoordinates,
   int noPointsPerParticle)
 {
-  assert(xCoordinates.empty());
-  assert(yCoordinates.empty());
-  assert(zCoordinates.empty());
+  std::vector<iREAL> xCoordinates;
+  std::vector<iREAL> yCoordinates;
+  std::vector<iREAL> zCoordinates;
 	
   unsigned int mul=1E8;
 
@@ -123,5 +128,14 @@ void delta::geometry::primitive::granulate::generateParticle(
     counter++;
   }
   free(tr);
+  /*
+  assert(xCoordinates.empty());
+  assert(yCoordinates.empty());
+  assert(zCoordinates.empty());*/
+
+  delta::geometry::mesh::Mesh *mesh =
+	  new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+
+  return mesh;
 }
 

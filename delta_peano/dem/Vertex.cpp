@@ -1,7 +1,6 @@
 #include "dem/Vertex.h"
 #include "peano/utils/Loop.h"
 #include "peano/grid/Checkpoint.h"
-#include "delta/geometry/properties.h"
 
 dem::Vertex::Vertex():
   Base() { 
@@ -56,24 +55,17 @@ int dem::Vertex::createParticle(
     int particleId,
     int localparticleId)
 {
-  std::vector<double> xCoordinates = Object.getxCoordinates();
-  std::vector<double> yCoordinates = Object.getyCoordinates();
-  std::vector<double> zCoordinates = Object.getzCoordinates();
-
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
-  double centerOfMass[3], inertia[9], inverse[9], mass, hMin;
+  double centerOfMass[3], inertia[9], inverse[9], mass;
 
-  newParticle._persistentRecords._diameter	= delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+  newParticle._persistentRecords._diameter = Object.getMesh().computeDiagonal();
 
-  //printf("diameter: %f\n", delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates));
+  double hMin = Object.getMesh().getHMin();
 
-  //printf("WIDTH%f\n", delta::geometry::properties::getXw(xCoordinates, yCoordinates, zCoordinates));
-  hMin = delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);
-
-  delta::geometry::properties::getInertia(xCoordinates, yCoordinates, zCoordinates, Object.getMaterial(), mass, centerOfMass, inertia);
+  Object.computeInertia(Object.getMaterial(), mass, centerOfMass, inertia);
 
   newParticle._persistentRecords._inertia(0) = inertia[0];
   newParticle._persistentRecords._inertia(1) = inertia[1];
@@ -97,7 +89,7 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._centre(1) = centerOfMass[1];
   newParticle._persistentRecords._centre(2) = centerOfMass[2];
 
-  delta::geometry::properties::getInverseInertia(inertia, inverse, Object.getIsObstacle());
+  Object.computeInverseInertia(inertia, inverse, Object.getIsObstacle());
 
   newParticle._persistentRecords._inverse(0) = inverse[0];
   newParticle._persistentRecords._inverse(1) = inverse[1];
@@ -124,6 +116,10 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._haloDiameter 	= (newParticle.getDiameter()+Object.getEpsilon()*2) * 1.1;
   newParticle._persistentRecords._epsilon		= Object.getEpsilon();
   newParticle._persistentRecords._hMin 			= hMin;
+
+  std::vector<double> xCoordinates = Object.getxCoordinates();
+  std::vector<double> yCoordinates = Object.getyCoordinates();
+  std::vector<double> zCoordinates = Object.getzCoordinates();
 
   newParticle._persistentRecords._numberOfTriangles 	= xCoordinates.size()/DIMENSIONS;
   newParticle._persistentRecords._isObstacle 		= Object.getIsObstacle();
@@ -215,7 +211,7 @@ int dem::Vertex::createSubParticle(
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
-  newParticle._persistentRecords._diameter  = delta::geometry::properties::computeDiagonal(xCoordinates, yCoordinates, zCoordinates);
+  newParticle._persistentRecords._diameter  = Object.getMesh().computeDiagonal();
 
   newParticle._persistentRecords._inertia(0) = inertia[0];
   newParticle._persistentRecords._inertia(1) = inertia[1];
@@ -261,9 +257,9 @@ int dem::Vertex::createSubParticle(
 
   newParticle._persistentRecords._mass            	= Object.getMass();
   newParticle._persistentRecords._friction        	= Object.getIsFriction();
-  newParticle._persistentRecords._haloDiameter 		= (newParticle._persistentRecords._diameter+Object.getEpsilon()*2) * 1.1;
+  newParticle._persistentRecords._haloDiameter 		= (newParticle.getDiameter()+Object.getEpsilon()*2) * 1.1;
   newParticle._persistentRecords._epsilon        	 	= Object.getEpsilon();
-  newParticle._persistentRecords._hMin            	= delta::geometry::properties::getHMin(xCoordinates, yCoordinates, zCoordinates);;
+  newParticle._persistentRecords._hMin            	= Object.getMesh().getHMin();;
 
   newParticle._persistentRecords._numberOfTriangles 	= xCoordinates.size()/DIMENSIONS;
   newParticle._persistentRecords._isObstacle        	= Object.getIsObstacle();
@@ -327,10 +323,9 @@ int dem::Vertex::createSphereParticle(
 	delta::geometry::Object Object,
 	int particleId)
 {
-
   const tarch::la::Vector<DIMENSIONS,double>& center = {Object.getCentre()[0], Object.getCentre()[1], Object.getCentre()[2]};
-  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
+  ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
   double inertia[9], inverse[9];
@@ -373,7 +368,7 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._centre(1) = center(1);
   newParticle._persistentRecords._centre(2) = center(2);
 
-  delta::geometry::properties::getInverseInertia(inertia, inverse, Object.getIsObstacle());
+  Object.computeInverseInertia(inertia, inverse, Object.getIsObstacle());
 
   newParticle._persistentRecords._inverse(0) = inverse[0];
   newParticle._persistentRecords._inverse(1) = inverse[1];
@@ -439,6 +434,7 @@ int dem::Vertex::createSphereParticle(
               << "partiId=" << std::fixed << std::setprecision(10) << newParticle.getGlobalParticleId()  <<", mass=" << std::fixed << std::setprecision(10) << newParticle.getMass() << ", diameter=" << std::fixed << std::setprecision(10) << newParticle.getDiameter() << std::endl
               << "influRa=" << std::fixed << std::setprecision(10) << newParticle.getInfluenceRadius() <<", epsilon=" << std::fixed << std::setprecision(10) << newParticle.getEpsilon() << ", hMin=" << std::fixed << std::setprecision(10) << newParticle.getHMin() << std::endl;
   #endif
+
   return ParticleHeap::getInstance().getData( _vertexData.getParticles() ).size()-1;
 }
 

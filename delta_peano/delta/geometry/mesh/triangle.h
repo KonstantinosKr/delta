@@ -11,6 +11,8 @@
 #include "delta/geometry/mesh/vertex.h"
 #include <map>
 #include <vector>
+#include <array>
+#include <cmath>
 
 namespace delta {
   namespace geometry {
@@ -48,6 +50,31 @@ class delta::geometry::mesh::Triangle {
 	delta::geometry::mesh::Vertex getVertexA();
 	delta::geometry::mesh::Vertex getVertexB();
 	delta::geometry::mesh::Vertex getVertexC();
+
+	void flatten (
+		std::vector<iREAL>& xCoordinates,
+		std::vector<iREAL>& yCoordinates,
+		std::vector<iREAL>& zCoordinates);
+
+	double getTriangleLength();
+
+	iREAL getXYZWidth();
+	iREAL getXZWidth();
+
+	iREAL getXw();
+	iREAL getYw();
+	iREAL getZw();
+
+	std::array<iREAL, 3> getMinBoundaryVertex();
+	std::array<iREAL, 3> getMaxBoundaryVertex();
+
+	iREAL getMaxXAxis();
+	iREAL getMaxYAxis();
+	iREAL getMaxZAxis();
+
+	iREAL getMinXAxis();
+	iREAL getMinYAxis();
+	iREAL getMinZAxis();
 
 	virtual ~Triangle();
 

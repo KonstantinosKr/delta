@@ -8,7 +8,6 @@
 #include <delta/geometry/defined/graphite.h>
 #include "delta/world/configuration.h"
 
-#include "delta/geometry/properties.h"
 #include "delta/geometry/primitive/granulate.h"
 #include "delta/geometry/primitive/cube.h"
 
@@ -247,9 +246,7 @@
         rad,
         particleGrid,
         componentGrid,
-        xCoordinatesArray,
-        yCoordinatesArray,
-        zCoordinatesArray,
+        messArray,
         index);
     */
   }
@@ -443,7 +440,7 @@
     std::vector<double> yCoordinates = insitufineObjects[j].getyCoordinates();
     std::vector<double> zCoordinates = insitufineObjects[j].getzCoordinates();
 
-    delta::geometry::properties::scaleXYZ(rescale, position, xCoordinates, yCoordinates, zCoordinates);
+    insitufineObjects[j].getMesh().scaleXYZ(rescale, position);
 
     //iREAL mt = delta::geometry::properties::getMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], delta::geometry::material::MaterialType::WOOD);
     //iREAL vt = delta::geometry::properties::getVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
@@ -465,9 +462,7 @@
     std::vector<iREAL>  &rad,
     std::vector<std::array<iREAL, 3>> &particleGrid,
     std::vector<std::string> &componentGrid,
-    std::vector<std::vector<iREAL>>  &xCoordinatesArray,
-    std::vector<std::vector<iREAL>>  &yCoordinatesArray,
-    std::vector<std::vector<iREAL>>  &zCoordinatesArray,
+    std::vector<delta::geometry::mesh::Mesh>  &meshArray,
 	int index)
 {
   iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
@@ -481,18 +476,12 @@
   {
     position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
 
-    std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
+    delta::geometry::mesh::Mesh mesh = delta::geometry::primitive::cube::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0);
+    meshArray.push_back(mesh);
 
-    delta::geometry::primitive::cube::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0, xCoordinates, yCoordinates, zCoordinates);
-
-    xCoordinatesArray.push_back(xCoordinates);
-    yCoordinatesArray.push_back(yCoordinates);
-    zCoordinatesArray.push_back(zCoordinates);
-
-    iREAL mt = delta::geometry::properties::getMass(xCoordinates, yCoordinates, zCoordinates, material);
+    iREAL mt = mesh.computeMass(material);
 
     reMassTotal += mt;
-    xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
 
     componentGrid.push_back("granulate");
     rad.push_back(radius);
@@ -501,10 +490,12 @@
   iREAL rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
 
   reMassTotal=0;
-  for(unsigned j=0; j<xCoordinatesArray.size(); j++)
+  for(unsigned j=0; j<meshArray.size(); j++)
   {
     std::array<iREAL, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-    delta::geometry::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+    delta::geometry::mesh::Mesh mesh = meshArray[j];
+    mesh.scaleXYZ(rescale, position);
+    meshArray[j] = mesh;
   }
 }
 
@@ -562,9 +553,7 @@
     std::vector<iREAL>  &rad,
     std::vector<std::array<iREAL, 3>> &particleGrid,
     std::vector<std::string> &componentGrid,
-    std::vector<std::vector<iREAL>>  &xCoordinatesArray,
-    std::vector<std::vector<iREAL>>  &yCoordinatesArray,
-    std::vector<std::vector<iREAL>>  &zCoordinatesArray,
+    std::vector<delta::geometry::mesh::Mesh>  &meshArray,
 	int index)
 {
   iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
@@ -591,13 +580,11 @@
     rad.push_back(particleDiameter/2);
     radius = particleDiameter/2;
 
-    delta::geometry::primitive::granulate::generateParticle(position, (radius*2), xCoordinates, yCoordinates, zCoordinates, noPointsPerParticle);
+    delta::geometry::mesh::Mesh mesh =
+    	  delta::geometry::primitive::granulate::generateParticle(position, (radius*2), noPointsPerParticle);
+    meshArray.push_back(mesh);
 
-    xCoordinatesArray.push_back(xCoordinates);
-    yCoordinatesArray.push_back(yCoordinates);
-    zCoordinatesArray.push_back(zCoordinates);
-
-    iREAL mt = delta::geometry::properties::getMass(xCoordinates, yCoordinates, zCoordinates, material);
+    iREAL mt = mesh.computeMass(material);
     //iREAL vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
     //iREAL vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
     //iREAL ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::geometry::material::MaterialDensity::WOOD);
@@ -613,10 +600,12 @@
   //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
 
   //reMassTotal=0;
-  for(unsigned j=0; j<xCoordinatesArray.size(); j++)
+  for(unsigned j=0; j<meshArray.size(); j++)
   {
     std::array<iREAL, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-    delta::geometry::properties::scaleXYZ(rescale, position, xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
+
+    delta::geometry::mesh::Mesh mesh = meshArray[j];
+    mesh.scaleXYZ(rescale, position);
 
     rad[j] = rad[j] * rescale;
 
@@ -644,11 +633,9 @@
   //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
 
   //measurements
-  std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
-  delta::geometry::body::generateBrickFB(xCoordinates, yCoordinates, zCoordinates);
-  iREAL w = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
-  iREAL h = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
-  xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
+  delta::geometry::mesh::Mesh mesh = delta::geometry::defined::generateBrickFB();
+  iREAL w = mesh.getXZWidth();
+  iREAL h = mesh.getYw();
 
   //read nuclear graphite schematics
   //std::vector<std::vector<std::string>> compoGrid;
@@ -704,10 +691,9 @@
 
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
-  iREAL pos[3]; pos[0] = pos[1] = pos[2] = 0;
-  delta::geometry::body::generateBrickFB(pos, xCoordinates, yCoordinates, zCoordinates);
-  iREAL width = delta::geometry::properties::getXZWidth(xCoordinates, yCoordinates, zCoordinates);
-  iREAL height = delta::geometry::properties::getYw(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::mesh::Mesh mesh = delta::geometry::defined::generateBrickFB();
+  iREAL width = mesh.getXZWidth();
+  iREAL height = mesh.getYw();
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -756,7 +742,6 @@
     insitufineObjects.push_back(obj);
   }
 }
-
 
  void delta::world::computeBoundary(
 	 std::vector<delta::geometry::Object>& coarseObjects,

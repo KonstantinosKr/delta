@@ -23,10 +23,10 @@
  */
 
 #include <vector>
-
 #include <cmath>
 #include <assert.h>
 #include <stdlib.h>
+#include "delta/geometry/mesh/mesh.h"
 
 namespace delta {
   namespace geometry {
@@ -40,20 +40,14 @@ namespace delta {
 		  std::vector<iREAL>&  	yCoordinates
 		);
 
-		void loadParticle(
+		delta::geometry::mesh::Mesh *loadParticle(
 		  iREAL  				center[3],
-		  iREAL  				h,
-		  std::vector<iREAL>&  	xCoordinates,
-		  std::vector<iREAL>&  	yCoordinates,
-		  std::vector<iREAL>&  	zCoordinates
+		  iREAL  				h
 		);
 
-		void generateParticle(
+		delta::geometry::mesh::Mesh *generateParticle(
 		  iREAL    				center[3],
 		  iREAL    				h,
-		  std::vector<iREAL>&  	xCoordinates,
-		  std::vector<iREAL>&  	yCoordinates,
-		  std::vector<iREAL>&  	zCoordinates,
 		  int 					noPointsPerParticle);
 	  }
 	}

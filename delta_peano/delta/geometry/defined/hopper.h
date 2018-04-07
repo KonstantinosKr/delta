@@ -29,11 +29,11 @@
 #include <cmath>
 #include <stdlib.h>
 #include <assert.h>
-
+#include "delta/geometry/mesh/mesh.h"
 
 namespace delta {
   namespace geometry {
-	namespace body {
+	namespace defined {
 	  void generateInnerHopper(
 			iREAL  center[3],
 			iREAL  width,
@@ -52,17 +52,14 @@ namespace delta {
 			std::vector<iREAL>&  yCoordinates,
 			std::vector<iREAL>&  zCoordinates);
 
-		void generateHopper(
+	  delta::geometry::mesh::Mesh *generateHopper(
 			iREAL  center[3],
 			iREAL  width,
 			iREAL  thickness,
 			iREAL  height,
 			iREAL  hatch,
 			int    meshRefinement,
-			double gridH,
-			std::vector<iREAL>&  xCoordinates,
-			std::vector<iREAL>&  yCoordinates,
-			std::vector<iREAL>&  zCoordinates);
+			double gridH);
 	}
   }
 }

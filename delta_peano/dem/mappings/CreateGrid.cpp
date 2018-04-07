@@ -7,8 +7,6 @@
 #include <cmath>
 #include <ctime>
 
-#include "delta/geometry/properties.h"
-
 #define epsilon 0.001
 
 peano::CommunicationSpecification   dem::mappings::CreateGrid::communicationSpecification() const {
@@ -429,7 +427,8 @@ void dem::mappings::CreateGrid::beginIteration(
     //////////////////////////////////////////////////////
   } else if(_scenario[0] == TwoParticlesCrash)
   {
-    //////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////
     /// TWO PARTICLES CRASH SCENARIO
     //////////////////////////////////////////////////////
 
@@ -437,6 +436,7 @@ void dem::mappings::CreateGrid::beginIteration(
     std::array<double, 3> linear = {0.1, 0.1, 0.1};
 
     if(_isSphere){
+
       delta::geometry::Object objectA("sphere", 0, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, _epsilon, linear, {0,0,0});
       objectA.generateSphere(0.01);
       _coarseObjects.push_back(objectA);
@@ -528,6 +528,7 @@ void dem::mappings::CreateGrid::beginIteration(
     return;
   }
 
+  printf("entered\n");
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -537,6 +538,7 @@ void dem::mappings::CreateGrid::endIteration(
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
 
+  printf("entered end\n");
   delta::world::computeBoundary(
 		 _coarseObjects,
 		 _fineObjects,
@@ -576,7 +578,7 @@ void dem::mappings::CreateGrid::touchVertexFirstTime(
 		const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
 	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-	// @todo Insert your code here
+
 	logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 

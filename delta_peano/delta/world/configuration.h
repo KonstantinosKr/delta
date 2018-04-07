@@ -61,9 +61,7 @@ namespace delta {
 		  std::vector<iREAL>  &rad,
 		  std::vector<std::array<iREAL, 3>> &particleGrid,
 		  std::vector<std::string> &componentGrid,
-		  std::vector<std::vector<iREAL>>  &xCoordinatesArray,
-		  std::vector<std::vector<iREAL>>  &yCoordinatesArray,
-		  std::vector<std::vector<iREAL>>  &zCoordinatesArray,
+		  std::vector<delta::geometry::mesh::Mesh>  &meshArray,
 		  int index);
 
 	   void nonUniSphereRadius(
@@ -80,9 +78,7 @@ namespace delta {
 		  std::vector<iREAL>  &rad,
 		  std::vector<std::array<iREAL, 3>> &particleGrid,
 		  std::vector<std::string> &componentGrid,
-		  std::vector<std::vector<iREAL>>  &xCoordinatesArray,
-		  std::vector<std::vector<iREAL>>  &yCoordinatesArray,
-		  std::vector<std::vector<iREAL>>  &zCoordinatesArray,
+		  std::vector<delta::geometry::mesh::Mesh>  &meshArray,
 		  int index);
 
 	   void collapseUniformGrid(

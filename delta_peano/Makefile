@@ -168,9 +168,9 @@ delta-icc-release-tbb: header build
 
 delta-icc-release-tbb-counter: CC=icpc -std=c++14
 delta-icc-release-tbb-counter: DIM=-DDim3
-delta-icc-release-tbb-counter: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DompTriangle
-delta-icc-release-tbb-counter: CFLAGS=$(ICCCNT) $(ICC_OMP_SHAREDMEMORY) $(INCLUDE_TBB)
-delta-icc-release-tbb-counter: LFLAGS=$(LINK_TBB) $(LINK_OMP)
+delta-icc-release-tbb-counter: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB# -DompTriangle
+delta-icc-release-tbb-counter: CFLAGS=$(ICCCNT) $(ICC_OMP_SHAREDMEMORY) $(INCLUDE_TBB) $(INCLUDE_LIBS)
+delta-icc-release-tbb-counter: LFLAGS=$(LINK_TBB) $(LINK_OMP) $(LINK_LIBS)
 delta-icc-release-tbb-counter: EXECUTABLE=delta-icc-release-tbb-counter
 delta-icc-release-tbb-counter: header build
 
